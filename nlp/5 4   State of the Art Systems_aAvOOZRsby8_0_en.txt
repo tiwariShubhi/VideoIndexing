@@ -1,0 +1,357 @@
+﻿there are a few more issues that come up
+
+in spelling correction that we want to
+
+include in any kind of state-of-the-art
+
+system one is HCI issues human-computer
+
+interaction issues so if we're very
+
+confident in the correction for example
+
+we might want to autocorrect and so that
+
+happens very often as I talked about
+
+earlier with the the example HTE which
+
+is a very common misspelling of ta G if
+
+we're slightly less confident we might
+
+want to give a single best correction
+
+but to the user to just - to say yes or
+
+no - if we're even less confident you
+
+might want to give the user a whole list
+
+and let them pick from this list and if
+
+we're just unconfident at all but we're
+
+pretty sure we saw an error we just
+
+don't know how to fix it then we might
+
+just flag what the user typed as an
+
+error so various things again depending
+
+on our application depending on the
+
+probability in the confidence value that
+
+we might generate in practice for almost
+
+all noisy channel models even though we
+
+defined that model as multiplying a
+
+prior and a and a likelihood in an error
+
+model in practice these two
+
+probabilities are computed from with
+
+making a lot of different independence
+
+assumptions about how many errors there
+
+were and and the fact that the spelling
+
+is independent of neighboring words and
+
+these are really not true and the result
+
+of these incorrect independence
+
+assumptions
+
+means that these two probabilities are
+
+often not commensurate so we do in fact
+
+is instead of just multiplying these two
+
+we weight them and the way since we're
+
+multiplying probabilities we weight them
+
+by raising one of them to a power we
+
+can't obviously multiply one of them by
+
+something so we weight them by raising
+
+one of them to a power lambda and we
+
+learn this lambda from some development
+
+tests that we pick whatever lambda to to
+
+raise the language model probability -
+
+such that the product is more likely to
+
+pick out just those errors that really
+
+are errors and we use this weighting of
+
+the of the noisy channel model in almost
+
+any application that we see of the noisy
+
+channel model something else that's used
+
+in the state-of-the-art systems is to
+
+use not just the spelling but the
+
+pronunciation of the word - how
+
+find errors so the meta phone system
+
+which is used in new a spell instead of
+
+just asking for candidates that have a
+
+similar spelling ask for candidates that
+
+have a similar pronunciation and that's
+
+done by first converting them as
+
+spelling to a pronunciation and the meta
+
+phone is a simplified pronunciation
+
+system that a set of rules that convert
+
+a word into a something approximating a
+
+pronunciation and here's the kind of
+
+rules that get use drop duplicate
+
+adjacent letters except for see if the
+
+word begins with K N or GN drop that
+
+first letter drop B if it's after an M
+
+and if it's at the end of the word and
+
+so on these are dropping various silent
+
+letters and various rules like this
+
+convert the misspelling into a kind of
+
+representation of the pronunciation as a
+
+single vowel at the beginning and then a
+
+set of consonants and then we find words
+
+whose pronunciation is nearby the
+
+misspellings of pronunciation so we've
+
+converted all other words into the into
+
+the meta phone pronunciation find
+
+similar words and now we score the words
+
+by some combination of two headed
+
+distances how likely is the candidate to
+
+be orthographically changed into the
+
+misspelling so we'll use some kind of
+
+channel model like thing and the same
+
+thing with the pronunciation how likely
+
+is that misspelling to be pronounced
+
+like the Canada mm so a meta phone
+
+system doesn't use a language model but
+
+use some potentiation based kind of
+
+channel model and you can imagine also
+
+combining a / NCA shin based model with
+
+a noisy channel model and modern models
+
+of the channel in the last decade or so
+
+allow a number of kind of improvements
+
+like this so incorporating a
+
+pronunciation component into the channel
+
+model is one and we also might want to
+
+allow which are edits so not just single
+
+letter edits but kind of at it's like a
+
+pH being incorrectly typed as an F or
+
+very common error it's not that all E's
+
+are mistakenly typed as A's but that the
+
+sequence ent is very likely
+
+miss type is a NT so a couple of
+
+different improvements that a
+
+state-of-the-art system might have in
+
+the channel model and in fact we
+
+consider a very large number of factors
+
+that could influence the probability of
+
+a misspelling given where the channel
+
+model so we've talked about the source
+
+letter or the target letter and we
+
+talked about you know maybe one
+
+surrounding letter but we can look at
+
+more surrounding letters or we could
+
+look at the position in the word maybe
+
+some errors happen in the middle of the
+
+word some happen at the end we might
+
+explicitly model the keyboard and talk
+
+about nearby keys on the keyboard or
+
+homology we're likely to miss type a
+
+word with our left hand third finger by
+
+using our right hand third finger so so
+
+a key which is a missing finger on the
+
+alternate hands homologous or again we
+
+might use / NCA shion's we might use
+
+these kind of likely morpheme
+
+transformations we talked about in the
+
+last slide lots of possible factors that
+
+could influence the problem this channel
+
+model here's a picture of one of them
+
+the keyboard so again we might want to
+
+say that R and W are likely miss miss
+
+Taipings for E and so on if we're on a
+
+some kind of a phone keyboard so
+
+combining all these different factors is
+
+often done with a classifier based model
+
+so the classifier based model is an
+
+alternative way of doing real word
+
+spelling correction and here we instead
+
+of just two models a channel model in a
+
+language model we might take those two
+
+and a number of other models and combine
+
+them in a big classifier will talk about
+
+classifiers and in the next lecture and
+
+so for example if we had a specific pair
+
+like weather and weather commonly
+
+confused the real word confusions we
+
+might look at features like well is the
+
+word cloudy in a window of plus or minus
+
+10 words or am I followed by the word -
+
+and then some verb so if I the word
+
+cloudy is near by me I'm probably the
+
+word WEA th ER if I'm followed by to
+
+verb I'm probably the word WH e th ER so
+
+whether to go whether to say whether to
+
+do is probably this weather
+
+um similarly if I'm followed by or not
+
+that I'm probably this weather so each
+
+of these features plus the language
+
+model plus the channel model could be
+
+combined into one classifier that could
+
+make a decision we might build separate
+
+classifiers for each possible likely
+
+pair of words
+
+so in summary real word spelling
+
+correction can be done with the same
+
+noisy channel algorithm that's used for
+
+non word spelling correction but we can
+
+also use a classifier based approach
+
+where you combine a lot of features and
+
+build classifiers for very frequent
+
+kinds of errors we like to model
+
+explicitly

@@ -1,0 +1,879 @@
+﻿let's introduce the noisy channel model
+
+of spelling the intuition of the noisy
+
+Channel when it comes up throughout
+
+natural language processing is that we
+
+have some original signal let's say it's
+
+a word and we imagine that it goes
+
+through some channel and the idea was
+
+originally invented for speech where
+
+there you know do you talk into a tube
+
+where we go over some kind of
+
+telecommunications line and the word is
+
+distorted and so it comes out from the
+
+original word is some noisy word and
+
+we've represented that here with it we
+
+are fond but in the spelling case we
+
+imagine that oh if somebody mistyped the
+
+word so the channel is the typewriter or
+
+the person typing or the keyboard and at
+
+the end you get a misspelled version of
+
+the word and our goal in the noisy
+
+channel model is to take that output of
+
+that noisy process and by modeling how
+
+this channel works we build a model
+
+publiced ik model of this channel we can
+
+run all possible original words through
+
+that channel and see which one looks the
+
+most like the noisy word so the decoder
+
+will take a bunch of hypotheses for each
+
+one run it through the channel there's
+
+winning hypotheses - through the channel
+
+run hypotheses 3/3 Channel and we see
+
+which word looks the most like this
+
+noisy word and we pick that as the
+
+original hypothesis for the word that
+
+started out so let's look at that first
+
+we'll introduce some probability and
+
+then we'll look at some examples the
+
+noisy Channel is a probabilistic model
+
+our goal given an observation X of some
+
+misspelling some word we've seen some
+
+surface thing we've seen some
+
+observation X we'd like to find W the
+
+correct word and we're going to model
+
+that probabilistic alee by saying we're
+
+looking the best word the word that we'd
+
+like to replace our misspelling with is
+
+that word out of the vocabulary that
+
+maximizes a probability what probability
+
+the probability of the word given them
+
+is spelling so what word given that
+
+we've seen some misspelling what's the
+
+most likely word most probable posterior
+
+probable word given that misspelling and
+
+we're gonna use Bayes rule
+
+to replace that probability so the prob
+
+W given X we're going to replace that
+
+with P of X given W P of W over P of X
+
+and then so we we can also eliminate the
+
+denominator so whatever word maximizes
+
+this equation will also maximize this
+
+equation we're asking given a
+
+misspelling X what's the most likely
+
+word and since the formula for that
+
+probability includes the probability of
+
+the word the misspelling X we're
+
+including that probability in every W
+
+that we're considering so if some W say
+
+W hypothesis one has a greater
+
+probability than hypothesis two by this
+
+equation it'll also have a greater
+
+probability by this equation because X
+
+is a constant X is the misspelling that
+
+we're trying to decide if W 100 W 2 is a
+
+better hypothesis for so that means that
+
+the noisy channel model um comes down to
+
+maximizing the product of two factors
+
+the likelihood and the prior and we
+
+generally call this term the language
+
+model and you've seen language models
+
+before that's the probability of the
+
+error probability of excuse me that's
+
+the probability of the correct word W
+
+and this likelihood term we often call
+
+this the channel model or sometimes the
+
+error model so we've got two factors the
+
+language model and the channel model and
+
+the intuition is that the language model
+
+tells us how likely would this word be
+
+to be a word perhaps in this context
+
+perhaps by itself the channel model says
+
+well if it was that word how likely
+
+would it be to generate this exact error
+
+so the channel model was sort of
+
+modeling that noisy channel that turns
+
+the correct word into the misspelling
+
+now this noisy channel model for
+
+spelling was proposed around 1990
+
+independently at two separate
+
+laboratories
+
+and the use of speech recognition models
+
+like noisy channel came in to natural
+
+language processing right around then
+
+mainly although not exclusively because
+
+of the work at these two labs at IBM and
+
+at 18 T Bell Labs and so the examples
+
+were going to take for the rest of this
+
+example come from these two important
+
+early papers by maze at all and by
+
+Kernighan at all so let's look at an
+
+example here's a misspelling the word a
+
+CR ESS so think of yourself for a second
+
+what this could mean first we're going
+
+to start with generating candidates what
+
+are the possible candidate words to
+
+replace this word and we can think of at
+
+least a couple of obvious ways to do
+
+this one is we're gonna pick words that
+
+have similar spelling so words that that
+
+are have similar spelling might
+
+naturally be mistaken for for the
+
+correct word and we're going to
+
+operationalize similar spelling as
+
+having a small at a distance to the
+
+error or we could pick words with
+
+similar pronunciation and then we're
+
+going to pick words with a small edit
+
+distance of the pronunciation to the
+
+error and we're gonna for the rest of
+
+this example I'm gonna pick the first
+
+approach so we're gonna pick words that
+
+have similar spelling as our possible
+
+candidates how do i operationalize
+
+similar spelling
+
+well we've seen edit distance before and
+
+remember with edit distance we talked
+
+about the distance between two strings
+
+the minimal number of edits that turns
+
+one string into another when we define
+
+an edit as an insertion a deletion or a
+
+substitution so any of these three for
+
+spell correction we're going to want to
+
+add a fourth possible headed operation
+
+transposition because in practice for
+
+spelling errors we often transpose two
+
+letters and that version of Edit
+
+distance is now called Dimauro
+
+Levenstein at a distance and it can be
+
+computed again by various dynamic
+
+programming approaches so let's look at
+
+the candidates that are words within
+
+edit distance one of our misspelling a
+
+CR ESS so here's our error
+
+a CR ESS and here's different possible
+
+candidates so here's a candidate actress
+
+how his actress turn into a Chris well
+
+the T turns into nothing so T was
+
+deleted so we have a deletion of a T so
+
+a deletion of a t turns actress into
+
+actress here the the proposed candidate
+
+is the word kress the kind of vegetable
+
+so here crest to turn crests into a
+
+Chris we have to add in certain a so
+
+here we had a deletion here we had an
+
+insertion
+
+how about caress caress is to turn
+
+caress and actress we turn a CA into the
+
+ACS we have a transposition of CA and AC
+
+the word could have been access here we
+
+have a substitution this C turned into
+
+an R or another substitution that the
+
+word could have been a cross in the O
+
+turn a donee e or an s could have been
+
+inserted to turn acres into into a cress
+
+but the Esk have been inserted either
+
+here or here so there's two different
+
+ways where this source word could have
+
+turned into this ever form so but two
+
+rows down for both of these possible
+
+insertion locations positions so I've
+
+just shown you candidates that are
+
+within edit distance of one it turns out
+
+that 80% of spelling errors are within
+
+at a distance of one and almost all
+
+errors are within a distance of two so
+
+most algorithms either consider just
+
+edit distance one or and it just means
+
+two possible candidates in practice we
+
+also want to allow not just insertion
+
+and substitution of letters but also
+
+spaces or hyphens so for example if the
+
+user types this idea we'd like to
+
+realize that there should be an
+
+assertion of a space or that the
+
+original space was in fact deleted to
+
+produce this error form or here the
+
+original dash in the word in law was
+
+deleted to produce this error for my NL
+
+aw we've seen Canada generation now
+
+we're ready to talk about how to rank
+
+the candidates and remember they're two
+
+factors we have the language model and
+
+the channel model now the language model
+
+we can use any of the language model
+
+we've already learned we can use you
+
+know grams and buy grams and trigrams we
+
+can use any kind of back-off algorithm
+
+we want to use or smoothing algorithm we
+
+want to use in practice for very very
+
+large-scale web-scale correction we're
+
+going to use as usual for web-scale
+
+things we're going to use stupid back
+
+off but we might want to use smarter
+
+algorithms for smaller kinds of tasks so
+
+let's look at an example of a language
+
+model here I've picked just a very
+
+simple unigram and in this case we've
+
+computed the unigram from the corpus of
+
+contemporary English one of many
+
+possible corpora and here's some counts
+
+here's counts of the different possible
+
+candidates actress kress caress and so
+
+on here's their frequency and normalized
+
+by the total number of words we get a
+
+probability here's the total number of
+
+words we get normalizing this count by
+
+the total count we get probabilities so
+
+here's probabilities of words assigned
+
+by a unigram language model how about
+
+computing the channel model probability
+
+remember the channel models also called
+
+the error model or the edit probability
+
+and we're going to take a simplifying
+
+assumption made by Kernighan Church and
+
+Gale in 1990 when they first proposed
+
+the use of the noisy channel model so
+
+let's first see how to do that let's
+
+assume that misspelled word X has a set
+
+of letters x1 through XM and the correct
+
+word W has a set of letters let's call
+
+them W 1 3w n now the probability of the
+
+edit X given W is going to be some set
+
+of deletions or insertions or
+
+substitutions or transposition some set
+
+of edits the way we're going to model
+
+that is we're going to create a
+
+confusion matrix and a confusion matrix
+
+M says for any given letter pair of
+
+letters how likely is a particular edit
+
+to happen so for example for the pair of
+
+letters X Y we want to know how often X
+
+Y is typed as X meaning how often is a Y
+
+deleted when there's an X right before
+
+it we're also going to keep a count of
+
+for insertion probabilities how often
+
+was an X typed as XY so how often is Y
+
+inserted after X so Y delete it after X
+
+Y inserted after X or we'll keep a count
+
+for substitutions how often is X typed
+
+as Y so we meant to type X we typed Y
+
+that's an X Y substitution or our
+
+transposition how often was X Y typed as
+
+Y X so these are just counts we'll keep
+
+a a matrix of these counts for every
+
+axing for every Y and notice that what
+
+we've done implicitly is we've
+
+conditioned our insertion and our
+
+deletion on the previous character so
+
+whether Y is deleted is conditioned on X
+
+we could have conditioned chosen the
+
+condition on the next character or the
+
+character 5 to the left or some other
+
+thing but we generally condition on the
+
+previous character so here's an example
+
+of a confusion matrix for spelling
+
+errors the font is a little small but
+
+just to give you a basic idea here's
+
+this is a substitution matrix that I
+
+took from Kernighan at all so here's the
+
+letter e and it's very likely in their
+
+in their data
+
+388 times to be substituted with an A so
+
+you meant to type e u incorrectly typed
+
+in a or you might have typed an I we
+
+might type to know so vowels are very
+
+likely to be miss mistaken for each
+
+other or similarly the letter M very
+
+often gets missed type doesn't him so
+
+very high probability of M and n being
+
+substituted for each other next to each
+
+other on the keyboard they sound alike
+
+lots of reasons for them to be
+
+substituting so here's our set of
+
+confusion matrices and we just compute
+
+for them one for substitution one
+
+substitution one for insertion one for
+
+deletion and one for transposition now
+
+I've shown you this table comes from
+
+Kernighan at all but you could also
+
+generate the table yourself so for
+
+example Peter Norvig post on his website
+
+a lovely list of errors
+
+um so these are errors taken from
+
+Wikipedia and other places that he talks
+
+about on his website and from a set of
+
+errors like this so here but
+
+misspellings of adaptable as as
+
+adaptable or immature with only one M
+
+and so on so various kinds of likely
+
+misspellings and from this list of
+
+errors we can get a list of counts for
+
+every possible single error single edit
+
+error of how often it happens and from
+
+that we can build so we build our little
+
+confusion matrix and then from the
+
+confusion matrix we can generate
+
+probabilities so every time a particular
+
+previous letter happens we look up in
+
+our insertion make confusion matrix and
+
+we say how often was X I inserted after
+
+a particular letter W sub I minus 1 and
+
+we divide by the number of times WI
+
+minus 1 occurred and that's going to be
+
+the probability of a particular
+
+insertion happening in a word so we can
+
+generate our probability of our surface
+
+form by for each possible single edit
+
+Erik and we're assuming a single edit
+
+now so one of the only one of these
+
+happens to generate our candidate
+
+whichever one it is we compute our
+
+probability by just normalizing the
+
+count of the deletion insertion or
+
+substitution or transposition by the
+
+appropriate count and generate a
+
+probability so this channel model for
+
+example for a word like actress where we
+
+we generated a CR ESS by when we should
+
+have typing type to see excuse me when
+
+we should have typed a CT we type to see
+
+so the word had a CT in it but the error
+
+had only a C so what's the probability
+
+of deleting a T following a C and if we
+
+normalize the probabilities in our
+
+confusion matrix here's the likelihood
+
+of this word actress being
+
+as this misspelling accros it's point
+
+zero zero zero one one seven the
+
+language model so here's the error model
+
+or the channel model and now we can add
+
+in the language model or 8lm so we have
+
+the channel model how likely was C T to
+
+be error fully turned into C so T to be
+
+deleted and how likely is the word
+
+actress anyway
+
+and we can just multiply these together
+
+and what we'll do is because these are
+
+very small numbers we'll just multiply
+
+everything by 10 to the ninth to make it
+
+readable so so this would be two point
+
+seven times ten to the minus and I think
+
+that we've multiplied everything by 10
+
+to the ninth here so you can see that
+
+the most likely word here is across by
+
+with this particular this particular
+
+channel model in this particular
+
+language model um the most likely word
+
+is across but actress is also quite
+
+likely and and acre seems a reasonably
+
+likelihood and the word cress which is
+
+just a very rare word you can see it's a
+
+very low probability and has an unusual
+
+error of inserting an A at the beginning
+
+um makes it a very low probability
+
+correction so noisy channel model likes
+
+the word across as the possible
+
+replacement unfortunately we can see
+
+from the original sentence taken from
+
+Kernighan at all's paper that the
+
+original sentence across is the wrong
+
+word the the original sentence is a
+
+stellar and versatile actress whose
+
+combination of sass and glamour and it
+
+should be clear that this word should
+
+have been actress so across is the wrong
+
+word so just using a unigram model the
+
+noisy channel makes a mistake so let's
+
+look at a bigram model how well could we
+
+do with a bigram model so we compute a
+
+very simple bigram model just using act
+
+add one smoothing from the corpus of
+
+contemporary american english so now the
+
+probability of actress given versatile
+
+just look at these three words and
+
+ignore the rest for now actress given
+
+versatile that probability is point 0 0
+
+0 to 1 and who's given actress is point
+
+0 0 1 0 so we'll compute those and now
+
+let's do the same thing for another
+
+candidate the
+
+candidate that was preferred by the
+
+intagram model the word across so we'll
+
+put a cross here instead as our
+
+hypothesis and well again compute the
+
+probability of a cross given versitile
+
+times the probability of who's given a
+
+cross so here's those probabilities and
+
+you can see that the probability of
+
+who's given Actress is much higher than
+
+the probability of who's given a cross
+
+actress who's is just a likely sequence
+
+and sure enough if we multiply these
+
+things out and the probability of
+
+versatile actress who's is a much higher
+
+probability than the product in this
+
+sequence versatile across who's so much
+
+higher probability so the noisy channel
+
+model with a bigram language model
+
+correctly picks the correction actress
+
+how are we going to evaluate the these
+
+noisy Channel and other kinds of models
+
+there are lots of good spelling error
+
+test sets
+
+um Wikipedia has a list of common
+
+english misspellings there's a filtered
+
+version of that at a spell there's a
+
+spelling our corpus at Birkbeck let's
+
+look at the Wikipedia list so there's a
+
+Vicki P Diaz list of common English
+
+misspellings and I've shown you here on
+
+the slide some various other possible
+
+lists that you can go look at on your
+
+own
+
+so from these lists of misspellings you
+
+would generate a training set to train
+
+your channel model a development set to
+
+test out your model and then a final
+
+test set to see how well your model
+
+works so that's the noisy channel model
+
+of spelling applied tuned to non real
+
+words

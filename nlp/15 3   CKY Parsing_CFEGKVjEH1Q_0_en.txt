@@ -1,0 +1,931 @@
+﻿in this segment I'm going to introduce a
+
+way of doing parsing of context-free
+
+grammars exactly in polynomial time in
+
+particular and give us a means of
+
+finding the most probable pars
+
+of a sentence according to a pcfg in
+
+polynomial time and the method I'm going
+
+to introduce the famous parsing method
+
+from the 60s called the CKY algorithm so
+
+remember our goal in constituency
+
+parsing is we start with a sentence this
+
+is an example we're going to use fish
+
+people fish tanks we have a grammar with
+
+probabilities for the rules in the pcfg
+
+and what we want to do is find a
+
+sentence structure that's licensed by
+
+the grammar and in the pcfg case
+
+normally the most probable such sentence
+
+structure and remember crucially what we
+
+want to do is do this without doing
+
+exponential amount of work and if we
+
+explore everything exhaustively since
+
+they can be an exponential number of
+
+passes we will do an exponential number
+
+of work but the CKY algorithm gives us a
+
+cubic time algorithm both in terms of
+
+the length of the sentence and the size
+
+of the grammar in terms of the number of
+
+non terminals that allows us to do this
+
+by compact representation the use of
+
+dynamic programming again just like that
+
+at a distance algorithm in the first
+
+week let's see how it goes about doing
+
+it so the secret of what it does is it
+
+uses this data structure here which gets
+
+referred to as a parse triangle or also
+
+quite commonly as a chart and so the way
+
+it works is that this cell here is going
+
+to describe things you can build over
+
+fish this square here is going to
+
+describe things that you can build over
+
+people then this square here is going to
+
+describe things that you can build over
+
+fish people and so on up and so what we
+
+can see is that since this is basically
+
+half a square the number of squares that
+
+we have is order N squared and so what
+
+we gonna show is that we can fill in
+
+each square
+
+in order in and so the resulting
+
+algorithm runs in cubic time so the
+
+secret to the CKY algorithm is that we
+
+fill up this chart working layers
+
+according to the size of the span so the
+
+first thing we do is fill in the cells a
+
+single words then we fill in the second
+
+row of the chart and so these cells in
+
+the second row of the chart are
+
+precisely the cells that describe two
+
+words then we fill up the third row of
+
+the chart which are constituents that
+
+are three words and length and finally
+
+we fill up the top cell and that will
+
+give us categories that parse the intact
+
+the cover the entire sentence let's look
+
+in detail how we fill in one of the
+
+cells of this chart so here we are
+
+assuming that we've already filled in
+
+these two cells now actually according
+
+to the grammar I'm using I haven't
+
+filled them exhaustively and I put in
+
+enough that we can get the general idea
+
+and so what we then want to do is to
+
+fill in a cell above it so we want to
+
+fill in this cell up here that describes
+
+the two-word constituent people fish and
+
+the way we do it is what we're going to
+
+do is build things in a binary fashion
+
+by saying let's take a constituent from
+
+here a constituent from here and a
+
+grammar rule that's able to combine them
+
+and then we can build the thing on the
+
+left hand side of the grammar roll I
+
+with the probability that comes from
+
+multiplying the three probabilities so
+
+what we're going to build so what we're
+
+going to build up here is that a noun
+
+phrase which is built from two noun
+
+phrases and it's probability is going to
+
+be 0.35 times zero point one four times
+
+the probability of the rule zero point
+
+one
+
+and if you multiply that all together
+
+that comes out to zero point zero zero
+
+four or nine okay but that's not the
+
+only thing that we can build in this
+
+cell so we can also take this verb and
+
+the same noun phrase and then we can
+
+build a verb phrase
+
+out of a verb and a noun phrase and so
+
+we're going to write down that
+
+possibility as well so we're going to
+
+have V P goes to V in P and so the
+
+probability of that is going to be zero
+
+point one times zero point one four
+
+times zero point five which equals zero
+
+point zero zero seven okay and then at
+
+that point we keep on going and see what
+
+else we can build well another thing
+
+that we can build is that we can take
+
+this NP and the V P and then we can
+
+combine them with this Estoril right at
+
+the top so we can build here an s out of
+
+an NP and a V P and the probability of
+
+that is 0.35 times 0.06 times esko's
+
+when P VP 0.9 and the product of those
+
+is also now it's a different number the
+
+ones we've seen before zero point zero
+
+one eight nine okay and we've run every
+
+binary role that we possibly could and
+
+one possibility is that they'll be
+
+collisions that we'll find multiple ways
+
+of building an S or a VP I don't
+
+actually have an example of that now but
+
+what I am going to do is illustrate the
+
+same thing once we extend on to unary
+
+rules so in my grandma I also have unary
+
+rules so I have a rule like s goes to VP
+
+right here
+
+so that rule can be applied just inside
+
+this cell since I can build a VP right
+
+here so I can also build s goes to VP
+
+here and the probability of that will be
+
+the probability I calculated before
+
+0.007 times the probability of that rule
+
+0.1 and then though that multiplied out
+
+its 20.000 seven okay so at this point
+
+though if to have my cubic time parsing
+
+algorithm I'm not wanting to store these
+
+two ways of making an S in a Cell what I
+
+want to do is just recognize I can build
+
+an S over this two-word span and for
+
+pcfg where I'm trying to find the most
+
+probable pars what I want to record is
+
+simply the best way of making an S over
+
+that span because precisely because the
+
+independence assumptions of a pcfg that
+
+way if that constituent is used in the
+
+most probable pars of the sentence what
+
+we'll be using is the best way of making
+
+an S over that span so in this case here
+
+what I do is compare the two ways of
+
+making an S and here their probabilities
+
+0.01 8 9 versus 0.0007 so the S Coast
+
+where NP VP is the higher probability
+
+way of making an S and so I keep that
+
+one and I just don't store this one okay
+
+and so now I filled in the cell I mean
+
+again actually strictly only partially
+
+for this higher up cell and so repeating
+
+that over and over moving up the chart
+
+is the heart of the CKY algorithm
+
+now the original CKY algorithm is just
+
+for Chomsky normal form grammars which I
+
+showed earlier but as I indicated you
+
+can easily extend the CKY algorithm to
+
+handle unary rules
+
+it makes the algorithm kind of miss yeah
+
+and it doesn't increases algorithmic
+
+complexity it turns out you can
+
+also easily extend the CK my algorithm
+
+to handle empties lets us look quickly
+
+at how you do that
+
+so if before we had the sentence people
+
+fish tanks well the way we did things
+
+was call these words word numbers 1 2 &
+
+3 and we build our CKY chart above
+
+button and this cell here is for the
+
+stuff about of word 1 the 1 1 cell this
+
+is the 2 2 cell and this is the 3 3 cell
+
+and then we call this 1 1 2 2 3 and this
+
+one is the 1 3 cell and so we're
+
+measuring our constituent spans from the
+
+first words they contain to the last
+
+word they contain inclusive on both ends
+
+if instead of that we want to work with
+
+empties in our grammar we use the trick
+
+of fence posts that you see at various
+
+places in computer science so we have
+
+the same sentence people fish tanks
+
+instead what we do is we put our numbers
+
+between the words 0 1 2 3 and then we
+
+build a chart over those numbers which
+
+has four points so we have
+
+don't like that if I need to move this
+
+three over a little okay so this then
+
+becomes the zero zero cell which will
+
+store any empties that we put here and
+
+similarly this will become the one one
+
+cell the to two cell and the three three
+
+cell and so each of these will store all
+
+and only empty constituents and so then
+
+the actual words now have a span of one
+
+because this stretches from position
+
+zero to one so we're now going to put
+
+the actual words in the second row of
+
+the chart and so there'll be the zero
+
+one one two and two three entries at
+
+that point we just continue on as we did
+
+before so here we then have the zero 2
+
+and the one three entries and here we
+
+have the zero three entry which is again
+
+things that span the whole sentence from
+
+position zero to three but that could
+
+possibly include empties here empties
+
+here or empties of any of these points
+
+in between I'm not going to go through
+
+this algorithm in detail and it's
+
+something that you could work out for an
+
+exercise and see that doesn't work in
+
+exactly the same way but what I do want
+
+to emphasize again is this idea that
+
+binarization is vital the way you get
+
+cubic time parsing algorithms to CFG s
+
+is by doing binarization that that means
+
+that each rule has at most two things on
+
+the right-hand side and that allows the
+
+cubic time algorithm as soon as you
+
+allow more than two things on the
+
+right-hand side you're minimally in a
+
+higher order polynomial algorithm and if
+
+you put you make no limits as to how
+
+along the right hand side can be or then
+
+the algorithm is exponential so if you
+
+look at the literature for CFG n pcfg
+
+parsing sometimes you see parsing
+
+algorithms that explicitly work on
+
+binarize graph
+
+that's going to be the case for the CKY
+
+algorithm that I tell you and so we're
+
+going to transform our grammar first
+
+then feed it to the CKY algorithm some
+
+other grammars aren't like that so just
+
+keep spelling there's an e in there they
+
+do the binarization internal to the
+
+grammar so the early algorithm looks
+
+like it works on an arbitrary pcfg but
+
+actually it does binarization internal
+
+to the workings of the parser okay so
+
+here's the CKY algorithm that we're
+
+going to use in the next segment we'll
+
+go through and detail how it works but
+
+let me just point out a few things about
+
+it
+
+so we're going to have an array of
+
+scores where we store the probabilities
+
+of things that we can build build so
+
+that for each span so these are the two
+
+span indices from beginning and to end
+
+and then for each non-terminal we're
+
+going to record the probability of
+
+building a constituent over that span of
+
+a certain pipe and if you can't build a
+
+certain non terminal over span we'll say
+
+its probability is 0 then secondly here
+
+we're recording back pointers which is
+
+then saying that for each non-terminal
+
+over each span we're recording a pointer
+
+as to what was the best way of building
+
+that non-terminal over the span what did
+
+you make it out of now you don't
+
+actually have to store this this is one
+
+of these time-space trade-offs you can
+
+do parsing faster if you do store this
+
+because then once you get to the end you
+
+know the best way of building every
+
+constituent over every span and so you
+
+can easily write out the resulting parse
+
+tree but if you actually prefer to
+
+conserve space you don't have to store
+
+it and so for example in the stanford
+
+parser we don't actually store these
+
+explicitly and we reconstruct the best
+
+paths
+
+simply from knowing the scores and the
+
+score table and that's actually a fairly
+
+good trade-off because it greatly
+
+reduces the space requirements and
+
+getting out the final parse is actually
+
+still quite
+
+okay so this first part of the algorithm
+
+is the part that is the part of the
+
+lexicon where we're filling in non
+
+terminals that words can rewrite as and
+
+so it's pretty simple so we're going
+
+through each word and then we're saying
+
+if we've got a rule for a non terminal
+
+of a e goes to tanks or something then
+
+we're going to put its score into this
+
+cell of the chart so it might have a
+
+probability of 0.3 and that's the main
+
+part of the CKY algorithm and then
+
+everything down here is dealing with
+
+unary rules so dealing with unary rules
+
+is a bit more complex so once we have
+
+some things in a Cell if we then have
+
+other unary rules like V goes through a
+
+well then if we put this into a cell
+
+well then we'll also be able to build a
+
+B over the same span but the problem is
+
+we might then also have a rule C goes to
+
+B and then we'll be able to build a C
+
+over the span and in fact we might even
+
+have a rule a goes to C which means we
+
+found another way to build an A over a
+
+span so what we actually have to do is
+
+keep on applying unary rules until we
+
+stop discovering new constituents that
+
+we can build over a span with better
+
+probabilities and so that's what this
+
+does
+
+so there's a little check as to whether
+
+we found a better way of building a
+
+non-terminal in an individual iteration
+
+of this while loop and so we consider
+
+all of our unary rules work out what
+
+probability they assigned to the
+
+category on the left-hand side and if
+
+it's a better probability that's right
+
+here we then store it in the back trace
+
+and say we've done some work and
+
+providing we've done some work well then
+
+we're going to do another iteration
+
+right through the loop of checking out
+
+all the all of the you possible unary
+
+rules again okay but this is still
+
+actually the easy part this is just the
+
+lexicon then we go on and actually build
+
+the
+
+to the chart and so that's this part so
+
+what we do is remember we are ordering
+
+our work by the size of constituents man
+
+so we start off with two words span and
+
+stitch once and build up to the length
+
+of the sentence and then we go across
+
+the cells from left to right so we start
+
+with two word and spec constituents
+
+starting with position zero and then
+
+heading to the rightmost position in our
+
+past triangle this works out the end and
+
+then this is the crucial part of the
+
+algorithm so when then saying okay maybe
+
+we're filling in a cell from one to
+
+seven and so we're going to build it
+
+with binary rules and so that means it
+
+has to be built in some way so it can be
+
+built with something from one to four
+
+and four to seven or alternatively it
+
+could be built with something from one
+
+to two and two to seven and so we have
+
+to try out these different possibilities
+
+and that's the choice of the split point
+
+and then once we decide the split point
+
+we're going to consider all grammar
+
+rules if they exist we work out the
+
+probability of building the left-hand
+
+side so imagine we have a rule a goes to
+
+B see the probability of building an A
+
+over this span in terms of if you build
+
+a B here and a C there and we just work
+
+out those three probabilities and
+
+multiply them together okay if we found
+
+a better way of building an A over that
+
+span we record it and so again that's
+
+the heart of the CKY algorithm for
+
+binary rules working higher up the chart
+
+all the rest of this is then again
+
+handing you Nerys which we do in exactly
+
+the same way as before over each span we
+
+then say well do we also have a rule
+
+that says D goes to a if so we can also
+
+build a B and then we have to repeat
+
+this over and over again until we've
+
+stopped being able to build anything
+
+than before okay so then that was for
+
+one cell of the chart and so then we're
+
+finishing off our four loops for the for
+
+the different beginning points working
+
+across rows of our chart and then for
+
+different spans working up the pars
+
+triangle so we go across here then kind
+
+of hit up like this okay and so then
+
+when we we've done we found the best way
+
+to build every constituent over every
+
+non-terminal over every span and we've
+
+in particular found what you can build
+
+right in the top cell here and in and if
+
+we have a start category we know that we
+
+want to build that start category so at
+
+that point we can use this chart to look
+
+down it and find the highest probability
+
+pars for a sentence and simply return
+
+that back to the user as obviously
+
+another bit of algorithm here which I'm
+
+admitting for now but as I think it
+
+should be fairly clear how to do that so
+
+there's a lot to grasp here and I think
+
+it'll take seeing the concrete example
+
+in the next segment before this makes
+
+any sense but this algorithm does give a
+
+very easy way to see why this is an
+
+algorithm that is cubic both in the
+
+length of the sentence and in the number
+
+of non terminals in the grammar so if
+
+you look at what we have here we have a
+
+for loop of the span size which is of
+
+order the length of the sentence you
+
+have a for loop of the beginning which
+
+is order a length of the sentence and
+
+then you have a for loop of the split
+
+point which is order length of the
+
+sentence so we are in cubed in terms of
+
+the length of the sentence and then once
+
+we start exploring grammar rules we're
+
+considering all triples of non terminals
+
+and so then we order G cubed for the
+
+number of non terminals in the grammars
+
+on saying that the size of the set of
+
+non terminals equals G but let me
+
+mention for when you guys are
+
+implementing your own version that this
+
+is the simplistic way of doing it
+
+which is a polynomial algorithm with the
+
+the right minimal order of complexity
+
+but in practice if you want to have a
+
+fast pcfg parser you don't want to
+
+naively do this rather you want to be
+
+doing some checking and indexing to make
+
+things go fast so the kind of thing that
+
+you want to do is not just naively
+
+iterate over all triples of
+
+non-terminals
+
+but instead to say well once I've got
+
+two here I know that I'm building say
+
+from zero to four and four to seven
+
+building up to zero to seven so I know
+
+what constituents I could build over
+
+zero to four what I actually want to do
+
+is say for each of these things there's
+
+in this list okay tell me what grammar
+
+rules have this as that each one of
+
+these is that their left corner so
+
+perhaps you have s Costa in PvP but you
+
+might also have n P goes to n P P P so
+
+these are both rules that have n P as
+
+their left corner so these are precisely
+
+the rules that are going to be ones that
+
+will work down here because they work
+
+with this category and so by doing some
+
+clever indexing you can make things
+
+quite a lot faster okay so that's the
+
+CKY algorithm
+
+I'm sure it's kind of confusing up until
+
+now I hope it'll become a lot clearer
+
+once we work through an example in the
+
+next segment

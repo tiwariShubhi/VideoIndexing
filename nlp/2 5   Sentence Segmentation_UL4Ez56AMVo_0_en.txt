@@ -1,0 +1,273 @@
+﻿our final discussion in basic text
+
+processing is segmenting out sentences
+
+from running text so how are we going to
+
+sent in segments out sentences things
+
+that end in exclamation points or
+
+question marks that's really great
+
+because those are relatively unambiguous
+
+cues that we've gotten to the end of a
+
+sentence periods unfortunately are quite
+
+ambiguous if you think about it a period
+
+can be a sentence boundary but periods
+
+are also used for abbreviations like ink
+
+or doctor they're used for numbers like
+
+0.02 or 4.3
+
+so we can't assume that a period is the
+
+end of a sentence so what we need to do
+
+to solve the period problem is build
+
+ourselves a classifier we're going to
+
+build a binary classifier looks at a
+
+period and simply makes a binary yes/no
+
+decision on my at the end of a sentence
+
+am I not at the end of the sentence and
+
+to make this classifier we could use
+
+handwritten rules we could use regular
+
+expressions we could build machine
+
+learning classifiers the simplest kind
+
+of classifier for this is a decision
+
+tree so here's a simple decision tree
+
+for deciding whether a word is an end of
+
+sentence or not so a decision tree is a
+
+simple if-then procedure that asks a
+
+question and branches based on the
+
+answer to the question so we say am I in
+
+a piece of text that has a lot of blank
+
+lines after me well if so then I'm
+
+probably an end of sentence what if
+
+there's no blank lines after me well is
+
+my final punctuation a question mark or
+
+an exclamation point
+
+if so well then I'm still probably end
+
+of sentence well if not that is my final
+
+punctuation a period if it's not well
+
+I'm not an end of sentence but if I am a
+
+period well then it depends if I'm on
+
+some long list of abbreviations like the
+
+word et Cie then I'm probably not an end
+
+of sentence I'm just a period marking an
+
+abbreviation like dr. or et Cie but if
+
+I'm not an abbreviation than I'm the end
+
+of sentence so here's a decision tree
+
+and you can imagine arbitrarily
+
+sophisticated decision tree features
+
+that we could use so one thing we can
+
+use is the case or it's called the word
+
+shape
+
+the word with a period a mite an
+
+uppercase word if my a lowercase word am
+
+i all caps so uppercase meaning the
+
+first letters uppercase lower meaning
+
+it's lowercase cap meaning it's all caps
+
+a my a number any of these kind of word
+
+shape features can give us information
+
+and all caps word is very likely to be a
+
+an a abbreviation we can look at the
+
+word with the abbreviate that with the
+
+period we can look at the word after the
+
+period if a the next word starts with a
+
+capital letter that I'm likely to be the
+
+beginning a period that ends a sentence
+
+because the next word starts with a
+
+capital letter and we can look at lots
+
+of numeric features so we can look at a
+
+my a long word or a short word so
+
+abbreviations tend to be relatively
+
+short acronyms tend to be very short and
+
+I can use very sophisticated features so
+
+I can say let's look at the the word I'm
+
+looking at right now take this word and
+
+ask in a corpus that I've already know
+
+where the sentence boundaries are how
+
+often is this word occur with a period
+
+at the end of a sentence this is the
+
+kind of word that ends a sentence is
+
+this a kind of word for example that
+
+tends to start a sentence this is the
+
+word the word that this phrase for
+
+example the word the after a period very
+
+likely to be a capital t-h-e after a
+
+period very likely to start a sentence
+
+the space in between so this will have a
+
+high probability of being a start of a
+
+sentence and we can use these kind of
+
+features depending on condition on each
+
+of the words again to help us in
+
+deciding what is or isn't a end of
+
+sentence period now a decision tree is
+
+just an if-then an else statement so the
+
+the that that's just that the definition
+
+of what decision tree is the interesting
+
+research is choosing the features so
+
+we've seen a number of features you
+
+might pick for this particular task in
+
+general the structure of this is entry
+
+is not is often too hard to build by
+
+hand in general hand building of
+
+decision trees is possible only for very
+
+simple features or simple domains you
+
+might build a sim
+
+decision tree with six or seven rules
+
+like this for for some simple tasks but
+
+it's very hard to do for numeric
+
+features because you have to pick the
+
+threshold for each of the numeric
+
+features I'm picking a probability as
+
+one of my features I've got to have a
+
+question in the decision tree is this
+
+probability greater than some threshold
+
+theta or not and I've got to set all
+
+those three betas and so you generally
+
+we use machine learning that learns the
+
+structure of the tree and learns things
+
+like the threshold for each of the
+
+questions that were asking nonetheless
+
+the questions in a decision tree we can
+
+think of them as the kind of features
+
+that could be exploited by any other
+
+kind of classifier whether it's logistic
+
+regression or SVM's of neural nets some
+
+of the classifiers we'll talk about
+
+later them so this in this intuition
+
+that we can build a classifier we can
+
+derive features that are good predictors
+
+of whether a period is acting as an end
+
+of sentence or not and then we can put
+
+these features into any kind of
+
+classifier them holds for whatever
+
+classifier we're going to be using

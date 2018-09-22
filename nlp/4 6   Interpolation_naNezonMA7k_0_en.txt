@@ -1,0 +1,491 @@
+﻿let's talk about cases where we need to
+
+interpolate but between or back off from
+
+one language model to another one and
+
+we'll also touch on the web today these
+
+are cases where it helps to use less
+
+context rather than more and the
+
+intuition is suppose that you have a
+
+very confident tribe game you've seen a
+
+try game a very large number of times
+
+you're very confident this trigram is a
+
+good estimator well we should use the
+
+trigram but suppose you only saw it once
+
+well maybe you don't really trust that
+
+trigram so you might want to back off
+
+and use the bigram instead and maybe you
+
+haven't seen the diagram either so you
+
+might back off to the you know Graham so
+
+the idea back off is sometimes if you
+
+don't have a large count or a
+
+trustworthy evidence for a larger order
+
+anagram we might back off to a smaller
+
+one a related idea is interpolation
+
+interpolation says well um sometimes the
+
+try guy may not be useful and in that
+
+case if we mix trigrams and buy grams
+
+and you know grams well then we may get
+
+more information from the you know grams
+
+and diagrams but other times try games
+
+will be more useful and so interpolation
+
+suggests that we just mix all three all
+
+the time and and and get the benefits of
+
+all of them and it turns out in practice
+
+that interpolation works better than
+
+back off so most of the time in language
+
+modeling we'll be dealing with
+
+interpolation there are two kinds of
+
+interpolation a simple linear
+
+interpolation we have our unigram our
+
+bigram and our trigram and we simply add
+
+them together with three weights lambda
+
+1 lambda 2 lambda 3 the lambdas just sum
+
+to 1 to make this a probability and and
+
+and and we can compute our new
+
+probability we'll call it P hat of a
+
+word given the previous two words by by
+
+interpolating these three language
+
+models we can do something slightly more
+
+complicated we can condition our lambdas
+
+on the context so we can say still mix
+
+our trigram or by grammar a unigram but
+
+now the lambdas are dependent on what
+
+the previous two words were so we can
+
+train even richer and
+
+more complex context conditioning for
+
+deciding how to mix our trigrams and our
+
+diagrams and our unigram z'
+
+so where do the lambdas come from the
+
+normal way to set lambdas is to use a
+
+held-out corpus so we've talked before
+
+about having a training corpus so here's
+
+our training corpus and our test corpus
+
+a hell dot corpus is yet another piece
+
+that we set out set aside from our data
+
+and we use a held-out corpus um
+
+sometimes we we use a cell that covers
+
+called a dev set the development set or
+
+other kinds of held data we use them to
+
+set meta parameters and check for things
+
+so in this we you can use the held on
+
+corpus to set our lambdas and the idea
+
+is we're going to choose lambdas which
+
+maximize the likelihood of this held-out
+
+data so here's what we do we take our
+
+training data and we train some engrams
+
+now we say which lambdas would I use to
+
+interpolate those engrams such that it
+
+gives me the highest probability of this
+
+held-out data so we we ask find the set
+
+of probabilities such that the log
+
+probability of the actual words that
+
+occur in the held-out data are highest
+
+now we've talked about cases where there
+
+are zeroes so we haven't seen some
+
+bigram before and we have to replace
+
+that zero count with some other count
+
+that's smoothing but what do we do if
+
+the actual word itself has never been
+
+seen before now sometimes that doesn't
+
+happen in tasks where let's say a menu
+
+based task where we're where we have a
+
+fixed set of commands then no other
+
+words can ever be said our vocabulary is
+
+fixed and we have a what's called a
+
+clothed vocabulary task but lots of
+
+times language modeling is applied in
+
+cases where we don't know any word could
+
+be used and there could be words we'd
+
+never seen in our training set so we
+
+call these words Oh
+
+or out of vocabulary words and one way
+
+of dealing with edible Cavalleri words
+
+is as follows we create a special token
+
+called UNK and the way we train the UNK
+
+probabilities is we create a fixed
+
+lexicon so we take our training data and
+
+we first decide which we hold out a few
+
+words the very rare words are the
+
+unimportant words and we take all those
+
+words and we change those words to UNK
+
+now we train the probabilities of UNK
+
+like a normal any normal word so we have
+
+our corporate or training corpus it has
+
+word word word and has a really low
+
+probability word word word word and
+
+we'll take that word and we'll change it
+
+to UNK
+
+and now we train our bigram word word
+
+word UNK word word word as just as if
+
+UNK had been a word in there and now
+
+with decoding time if you see a new word
+
+you haven't seen you replace that word
+
+with Punk and treat it like get it it's
+
+by Graham probabilities and it's try
+
+again probabilities from the UNK word in
+
+the training set another important issue
+
+in engrams has to do with web-scale or
+
+very large engrams so we introduced the
+
+google engrams corpus earlier how do we
+
+deal with computing probabilities in
+
+such large spaces so one answer is
+
+pruning we only store engrams that have
+
+a very large count so for example the
+
+very high order engrams we might want to
+
+remove all of those Singleton's all
+
+things with count one because by zips
+
+law those gonna be a lot of those
+
+singleton counts and we can also use
+
+other kinds of more sophisticated
+
+versions of this where we don't just
+
+remove things with counts we actually
+
+use compute the entropy or the
+
+perplexity on a test set and remove
+
+counts that are contributing less to the
+
+probability on a particular held-out set
+
+so that's pruning and we can do a number
+
+of other efficiency thing we can use
+
+efficient data structures like tries we
+
+can use approximate language models
+
+which are very efficient but are not
+
+guaranteed to give you the exact same
+
+probability we can we have to do
+
+efficient things like don't store the
+
+actual strings but just store indices we
+
+can use Huffman code
+
+and often instead of storing our
+
+probabilities as these big 8 byte floats
+
+we might just do some kind of
+
+quantization and just store a small
+
+number of bits for our probabilities
+
+what about smoothing for web-scale
+
+engrams the most popular smoothing
+
+method for these very large engrams is
+
+an algorithm called stupid back off um
+
+stupid back off is called stupid because
+
+it's very simple but it works well at
+
+the very large scale and the fact it's
+
+been shown to work as well as any more
+
+complicated algorithm when you have very
+
+large amounts of data and the intuition
+
+of stupid back off is if I want to
+
+compute the stupid back off probability
+
+of a word given some previous or set of
+
+words I use the maximum likelihood
+
+estimator this the count of the words
+
+divided by the count of the prefix if
+
+that count is greater than zero and if
+
+not I just back off to the to the
+
+probability of the previous the lower
+
+order Engram prefix with some constant
+
+weight so it's um if if the trigram
+
+would say occurs I just use the count of
+
+the trigram if it doesn't I take the
+
+bigram probability multiplied by 0.4 and
+
+just use that and then when I get down
+
+to the you know grams if I don't have
+
+anything at all and I just used the
+
+unigram I just used the unigram
+
+probability so we call this s instead of
+
+P because stupid back off doesn't
+
+produce probabilities because to produce
+
+probabilities we would have to actually
+
+use various clever kinds of weighting a
+
+backup algorithm has to discount this
+
+probability to leave some mass leftover
+
+to use the bigram probabilities
+
+otherwise we're going to end up with
+
+numbers that are greater than 1 and we
+
+won't have probabilities but but so
+
+stupid back off produces something like
+
+scores or or rather than then
+
+probabilities but it turns out that this
+
+this works quite well so in summary for
+
+smoothing so far add one smoothing is
+
+okay for text categorization but it's
+
+not recommended for language
+
+the most commonly used method we'll
+
+discuss in the Advanced section of this
+
+week is the the kinase or nigh algorithm
+
+or the extended interpolated kinase
+
+armée algorithm but for very large
+
+engrams like situations where you're
+
+using the web simplistic algorithms like
+
+stupid back off actually worked quite
+
+well how about advanced language
+
+modeling issues um recent research has
+
+focused on things like discriminative
+
+models so here the idea is pick the
+
+Engram weights instead of picking them
+
+to fit some training data whether it's
+
+maximum likelihood estimate or smooth
+
+instead choose your Engram weights that
+
+improve some tasks so we'll pick a
+
+whatever task we're doing machine
+
+translation or speech recognition and
+
+choose whatever Engram weights make that
+
+task more likely another thing we can do
+
+is instead of just using engrams we can
+
+use parsers and we'll see the use of
+
+parsers and statistical parsers later in
+
+the course or we can use caching models
+
+in a caching model we assume that a word
+
+that's been used recently is more likely
+
+to appear again so the probability the
+
+cache probability of a word given some
+
+history we mix the probability of the
+
+word with some function of the history
+
+how like how much how often the word
+
+occurred in the history with and we
+
+weight those two probabilities together
+
+it turns out that cache models don't
+
+work in certain situations and in
+
+particularly they perform poorly for
+
+speech recognition so you should think
+
+about why that might be that a cache
+
+model performs poorly for a speech
+
+recognition

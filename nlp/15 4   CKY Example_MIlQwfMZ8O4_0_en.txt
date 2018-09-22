@@ -1,0 +1,803 @@
+﻿it's hard to really get a sense of the
+
+CKY algorithm from staring at pseudocode
+
+but i think if we work through an
+
+example it'll actually seem pretty
+
+natural and straightforward so let's do
+
+that
+
+so starting off here's the grammar that
+
+we're going to use as similar than the
+
+ones that I've shown before in when we
+
+did the grammar transformations
+
+it's a grammar with you Nuri's but with
+
+no empties in it
+
+okay so there's only one conceptual leap
+
+that we have to make to get this to work
+
+and that is before I showed you past
+
+triangles the natural way that make
+
+sense and it turns out that was really
+
+hard to write text in diagonal diamonds
+
+and so by and large what everyone has
+
+decided is that is much much easier to
+
+get human beings to tilt their necks 45
+
+degrees to the right and so they can see
+
+a pass triangle rather than to actually
+
+print things that way so so conceptually
+
+you should think about it just as we've
+
+had it before that this is fish people
+
+fish tanks and so this is the first
+
+diagonal of the single words this is the
+
+second diagonal of the pairs of words
+
+the triples words and the forward
+
+constituents okay so what we need to get
+
+going we have our sentence two pars fish
+
+people fish tanks the second thing that
+
+we need is the grammar and so then once
+
+we've done that we can start doing
+
+things so in particular what we're going
+
+to do is start filling in the lexical
+
+entries so we start with the cell here
+
+and we say okay the word fish that can
+
+be a noun or a verb and so we put in
+
+that we can make a noun from fish with
+
+probability 0.2 and we can make a verb
+
+from fish with probability 0.6 and then
+
+we keep on doing this for the other
+
+cells along the diagonal so people can
+
+be a noun with probability 0.5 and
+
+people can be of
+
+with probability 0.1 and we keep on
+
+going and this is what we get okay but
+
+now our grandma also has you know ease
+
+that rewrite two categories so we also
+
+then have to apply the unary rules and
+
+so the way we'll do that is for each
+
+cell will find unary rules that apply
+
+and if they create a category that isn't
+
+there before or one with higher
+
+probability than what was there before
+
+then we'll put it into our chart and in
+
+this case the relevant unary rules here
+
+we've got one other you know a role over
+
+here actually are all creating different
+
+categories so we'll be adding new things
+
+to the chart
+
+so we'll say look we can also make a VP
+
+here which has probability 0.06
+
+so there I'm taking the 0.1 and the 0.6
+
+and multiplying it we can make an NP
+
+where the probability of that is 0.7
+
+times 0.2 0.1 4 and in the first round
+
+through that's all we all do but after
+
+we've been through all of the rules for
+
+non terminals we then say well we have
+
+added some new things so added is true
+
+and so we'll do this whole while loop
+
+once more and we need to do that so we
+
+also discover that we can apply a second
+
+layer of unary rules and put it build an
+
+s over this span so we'll also build an
+
+S and the probability of that will be
+
+0.1 times the probability of the VP so
+
+that will be zero point zero zero six
+
+okay and so then we're going to apply
+
+the unary rules down the other cells of
+
+the lexicon
+
+so at this point we're ready to start
+
+during the heart of the CKY algorithm
+
+which is building constituents over
+
+bigger spans first applying binary rules
+
+and then we'll do the units again on top
+
+of them okay so at this point the cell
+
+that we next want to fill is this one so
+
+this is the cell that's covering from
+
+words positions 0 to 2 so this version
+
+of the algorithm I've written using
+
+fenceposts even though the particular
+
+way I'm doing it there aren't any empty
+
+elements okay and so to build a binary
+
+constituent from out of this we the only
+
+way to do it is to build it something
+
+from 0 to 1 and something from 1 to 2
+
+well the things from 0 to 1 are
+
+contained in this cell and the things
+
+from 1 to 2 were contained in this cell
+
+and so what we're going to do is
+
+consider ways of combining one of each
+
+of those to make some other constituent
+
+which will be licensed providing there's
+
+a rule and the grammar
+
+over here of X goes to Y Z where Y is
+
+something here and Z is something there
+
+so what does that sort can we do well
+
+there's only there are no binary rules
+
+that have an N on the right hand side
+
+only unary rule so it won't be observe
+
+anything at the end if we look at this V
+
+here that could be made with that rule
+
+so that's something that we can make so
+
+look we've got a V P goes to V NP and so
+
+that means we can make a V P in this
+
+cell and the probability of it will be
+
+0.6 times 0.35 times the probability of
+
+this rule and at this point you're
+
+starting to stretch my ability to do
+
+mental arithmetic so that's 0.3 times
+
+0.35 so that's fine I carry the 1 or 0.1
+
+five but then there are also other
+
+things that we can build with binary
+
+rules
+
+so what other binary rules do we have
+
+we've got a rule for s goes to in PvP
+
+and well we can certainly apply that
+
+because we've got an NP here and a VP
+
+there and so we can build an S over this
+
+span and similarly for some other one so
+
+NP goes to NP NP or we've got an NP here
+
+and in P there so we can build an NP
+
+over this span I won't try and work out
+
+all of the probabilities but if we do
+
+that and apply them we then end up with
+
+all of these probabilities here now
+
+turns out that for each of the
+
+constituents that we built here in the
+
+binary phase there's only one way of
+
+making them so there wasn't any
+
+contention but we'll we have to see
+
+contention at the next unary phase and
+
+our rule for contention is always if we
+
+discover multiple ways to make a
+
+category over a span we keep the one of
+
+highest probability and so the next
+
+phase here we now do is we do you know
+
+ease for these cells down here so again
+
+we look for unary rules and if they give
+
+a way of making something with higher
+
+probability we put that into the chart
+
+and then we say we've done some work and
+
+having done some work will lead us to do
+
+the whole while loop again in case we're
+
+able to build up chains of unary rules
+
+so in this particular case there are no
+
+unary rules that have NP on the
+
+right-hand side so we can't do anything
+
+there but there is a unary rule that has
+
+VP on the right hand side and so we
+
+discover that there's another way that
+
+we can make an S where we make an S goes
+
+to VP and while the probability of that
+
+is actually going to be zero point 105
+
+zero point one which is zero point zero
+
+one zero five which is actually a lot
+
+more than the probability of this rule
+
+so we're going to record a better way of
+
+making s in our back pointers and we're
+
+going to record the probability of that
+
+new best way of making it we always just
+
+keep what constituents we can make the
+
+best probability a way of making them
+
+and if we're strong back pointers the
+
+way that was the best way of making it
+
+so if we go through all the cells and
+
+see if we can make them in better ways
+
+with unary rules we find that's possible
+
+in precisely two places this one and
+
+also over here we find a better way of
+
+making an S and so we update those two
+
+and this is now the second row okay so
+
+now we're going to go on to the third
+
+row where we're building three word
+
+constituents so this is the fish people
+
+fish cell and this is the people fish
+
+tank cell so at this point things get a
+
+little bit more interesting for building
+
+the binary constituents so when we're
+
+going to build things in this cell which
+
+are things from here to here well we're
+
+going to build binary constituents but
+
+there are two ways that we can do it we
+
+can either take something from here from
+
+zero to two and combine it with
+
+something from two to three or else we
+
+can take something from zero to one and
+
+combine it with something from one to
+
+three and that's what we do in this part
+
+of the algorithm here we choose a split
+
+point for dividing the constituent into
+
+two this is where we exploited being
+
+only binary rules to get a cubic time
+
+algorithm so we iterate across foot
+
+points which is another oh in operation
+
+and then we consider what rules that we
+
+can apply for each split point and then
+
+that part
+
+as we did it before so first off we're
+
+going to start with saying okay we're
+
+going to combine stuff from zero to two
+
+that's this cell with something from two
+
+to three
+
+that's this cell and so then we'll see
+
+what we can build and well we have an NP
+
+and an NP and so that will allow us to
+
+build a bigger NP according to that rule
+
+and we have n P and a V P so that allow
+
+us to build an S using this rule and we
+
+have well it seems like we can't
+
+actually build a VP over that span doing
+
+things that way okay let's then consider
+
+the other possibility where we do this
+
+and this well this time we can build an
+
+NP by combining this NP and then looking
+
+for the other one we're looking at this
+
+cell so this time we're using these two
+
+cells so we can use this NP and this NP
+
+which will allow us to build an NP we
+
+can use this verb and this NP which will
+
+allow us to build a VP and we can use
+
+this NP and this VP which will last
+
+build a nest and so we can build things
+
+with that span and so then what we're
+
+going to want to do is say okay we can
+
+definitely build an NP over this span
+
+but we want to find out which is these
+
+two is the highest probability one of
+
+way of making NP and keep only that and
+
+similarly you're going to want to find
+
+out which of these two is the highest
+
+probability way of making an S and keep
+
+only that now actually if you work
+
+through the math in this case there's a
+
+little fine point for the NP case
+
+because if you look at the NP case for
+
+the purple one it's zero point zero zero
+
+four nine times zero point one four and
+
+the probability of the NP role is a
+
+constant zero point one
+
+and if you go to the green one its 0.14
+
+here which is the same as there and
+
+0.004 nine which is the same as there
+
+reflecting the fact that both ways of
+
+doing it you're using the word fish
+
+twice and the word people once so
+
+actually both ways of making NP have
+
+identical probability so in practice
+
+when you have ties like this
+
+and these passes just choose one
+
+analysis the first one they come across
+
+but sort of you can just say they choose
+
+one analysis randomly okay so that then
+
+fills in that cell and we get these
+
+numbers and then at that point we would
+
+again apply apply unary rule so the only
+
+unirii rule that's active at this level
+
+is this one because the other two unary
+
+rules only work on in and V and so
+
+aren't applicable and a cell like this
+
+in this little grammar so we'd also find
+
+a new way of making an S that by making
+
+it from a vp but it's probability would
+
+be zero point one times this number so
+
+it would be zero point zero zero zero
+
+one four seven which is less than the
+
+way we've already discovered of making
+
+an S so we'll keep this as the highest
+
+probability analysis okay so then we do
+
+the this cell here the one two four cell
+
+and so again there are two split points
+
+of ways of making it up we can either
+
+make something from one to two and then
+
+three to four or else we can make
+
+something from one to three and then
+
+from three to four and so we explore all
+
+those ways of combining things and fill
+
+in the cell ok now we're almost at the
+
+end we just have to fill in the final
+
+cell of the char
+
+and it's the same thing apart from now
+
+when we iterate across split points
+
+there are three ways to do it so you can
+
+make things to put in here either by
+
+taking things from zero to one followed
+
+by two to four or you can have things
+
+that are from zero to two
+
+plus things from 2:00 to 4:00 or you can
+
+have things that are from zero to three
+
+plus things from three to four and so we
+
+explore all the ways of combining things
+
+and again choose the highest probability
+
+way of making each of a noun phrase and
+
+s and a VP which are three constituent
+
+types that we can build over that span
+
+now by the time you've gone this far up
+
+the math isn't much too difficult for me
+
+to do in real time in front of you but
+
+I've worked it all out in advance and if
+
+we fill it out and this is what we get
+
+so what we get here is that we can just
+
+ask the question of what's the highest
+
+probability pars of this sentence
+
+regardless of what category you choose
+
+for it and the answer to that is that is
+
+parsing it as a sentence but if you have
+
+a nominated start category like s you
+
+can instead say I just want to find an
+
+analysis as an S regardless and then
+
+that will also return this analysis okay
+
+I say we're finished but actually well
+
+where is the parse tree and so the
+
+answers of the parse tree is we can find
+
+it by now calling this build tree
+
+routine that traces backwards through
+
+the tree and so we know that the first
+
+thing that we built at the top just
+
+taking this starting point is it's an S
+
+goes to n P V P and at this point I have
+
+to confess that I actually left a little
+
+bit out of what's written the table just
+
+to keep things written larger but rather
+
+than simply writing the rule that you
+
+used you'll actually record which cells
+
+you built it from so that these are
+
+actually constituents over spans so this
+
+is actually a noun phrase that was built
+
+over zero to two followed by a verb
+
+phrase that was built over two to four
+
+okay so
+
+means we now look in the zero to two
+
+cell to find the noun phrase we look in
+
+the two to four cell to find the verb
+
+phrase and at that point we'll start to
+
+so this is 0 to 4 0 to 2 2 to 4 and this
+
+part point we start to recurse downwards
+
+so the highest probability way of
+
+building a noun phrase was using the
+
+noun phrase goes to noun phrase noun
+
+phrase rule and since there's a binary
+
+rule we then necessarily know that I've
+
+had to be 0 1 and 1 to 2 and the highest
+
+way of making a verb phrase is using the
+
+verb noun phrase rule where this goes
+
+from 2 to 3 and this goes from 3 to 4
+
+okay so then that means we're building
+
+this noun phrase as a noun phrase in
+
+this cell and we're building this noun
+
+phrase as a noun phrase in that cell and
+
+then over here we're building the verb
+
+as a verb in this cell and we're
+
+building the noun phrase as a noun
+
+phrase in this cell so at that point we
+
+can then say well what's the highest way
+
+of building a noun phrase here oh it's
+
+by making it as a noun from 0 to 1 well
+
+what's the highest way of making a noun
+
+over 0 to 1 from the same span because
+
+that was a unary rule well it was by
+
+realizing it as the word fish which was
+
+a word now sentence and now simile we do
+
+the same for the other cells ok so from
+
+1 to 2 the way of building a noun phrase
+
+with highest probability was building it
+
+from a noun as a unary rule and the way
+
+of building a noun with highest
+
+probability was using the word people
+
+that's a terminal and the sentence the
+
+highest probability way of build
+
+a verb from 2 to 3 is directly making it
+
+from the word fish which is a terminal
+
+our sentence and then the highest
+
+probability way of making a noun phrase
+
+over 3 to 4 is from making it from a
+
+noun from 3 to 4 of a unary rule and the
+
+highest probability way of making it now
+
+and over 3 to 4 is making it using the
+
+word tanks which is a terminal so at
+
+this point we've been able to follow the
+
+bat tracers back out and if can show you
+
+this is the highest probability pars for
+
+this sentence phew that was a bit to get
+
+through for me as well as you but I hope
+
+you can see it's actually fairly
+
+straightforward as an algorithm and it's
+
+actually much easier for computers to do
+
+it than it is for human beings filling
+
+in squares of a rectangle

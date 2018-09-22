@@ -1,0 +1,421 @@
+﻿we've seen how to correct non words of
+
+English but what happens if the error
+
+produces a real word this turns out to
+
+be a very common problem maybe between a
+
+quarter and a half of spelling errors
+
+depending on the application turn out to
+
+be real words so in these examples from
+
+from a classic paper by Karen Coolidge
+
+the word minutes is misspelled as
+
+minuets perfectly reasonable English
+
+word the word and is misspelled as the
+
+word Han a very very common English word
+
+will leave as lave by as be and so on so
+
+these are not only are these English
+
+words but some of them are quite common
+
+and frequently used English word so much
+
+tougher problem solving the real word
+
+spelling your task again what we're
+
+going to do for the real word spelling
+
+error is very similar to what we did for
+
+the the non real words we're going to
+
+generate a candidate set which includes
+
+the word itself and all single letter
+
+edits that produce English words and
+
+maybe we'll also in some versions
+
+produce include words that are
+
+homophones that sound alike
+
+and given this candidate set for each
+
+word will choose the best candidates
+
+either using the noisy channel model or
+
+you could imagine we'll talk later about
+
+more complex models that use classifiers
+
+so let's look at that in detail given a
+
+sentence with word one through word n
+
+we're going to generate for each word a
+
+set of candidates so for word one we
+
+have the candidates word one itself and
+
+then a bunch of variants the single edit
+
+distance neighbors of that word word 1
+
+prime word 1 double prime word 1 triple
+
+prime or 2 word 2 prime word 2 double
+
+Prime
+
+we're touchable home and so on for each
+
+of the words we have a whole lot of
+
+candidates for each of the words and now
+
+we're going to choose the sequence
+
+capital W the sequence of candidates
+
+that maximize it has maximal probability
+
+in other words we might pick word 1 from
+
+this candidate set and word 2 prime
+
+prime from this candidate say
+
+three prime prime prime from this
+
+candidate set and so on for each word
+
+we're gonna pick some candidate which
+
+might be the word itself or some
+
+correction of that word and we're gonna
+
+pick the sequence that is most likely
+
+let's look at an example of that we have
+
+the imagine the three words mini mini
+
+sentence two of vu th w so for each word
+
+the word to the word of and the word
+
+thew we generate potential Corrections
+
+each of which is a word of English that
+
+is at a distance of one so I've shown
+
+some here so two could have been the
+
+word teo
+
+if the word if the original word two was
+
+the error was an insertion of a w or
+
+could be in the word tau where the error
+
+was a substitution of a for W or could
+
+have been the word - substitution of an
+
+O by a W or it could have been correctly
+
+the word the word - could be correct
+
+similarly of could have been the correct
+
+word could have been off and it was a
+
+deletion of an absolute so again three
+
+candidates off on and including the word
+
+of itself and the word whew which is a
+
+real word of English could have been the
+
+word through and the are got deleted or
+
+the word thoug or the word the I'm a
+
+very common word and II W a very likely
+
+error it turns out because W is right
+
+next to e in the keyboard and so on so
+
+we have each of our candidate sets and
+
+then we just want to ask of all the
+
+possible sets of sentences produced by
+
+paths in this in this graph so here's
+
+one two of through here's another one
+
+two unthaw here's another one two of and
+
+so on for each of those possible
+
+sentences what's the most likely one
+
+according to the noisy channel I'll pick
+
+them out them excuse me the most
+
+probable one according to the noisy
+
+Channel and hopefully the noisy Channel
+
+a good noisy Channel model will predict
+
+we'll pick the correct answer two of the
+
+as our most likely sequence here in
+
+practice for spelling correction we
+
+often make the simplification that we're
+
+only seeing one error rather than
+
+letting every word have a have a
+
+possible error net in other words the
+
+set of sequences we consider is the
+
+sequences in which only one of the words
+
+is an error and the rest of the words
+
+were correct as typed so here word one
+
+word three and word four were correct as
+
+typed and it was word - that was
+
+misspelled and we replace it by word -
+
+double prime let's say or in this
+
+sequence it was the word three that was
+
+misspelled who was misspelled as though
+
+was misspelled as few and so here's the
+
+miss the error and these these three
+
+words are correct and so on so this
+
+smaller set of possible candidate
+
+sequences so instead of having to
+
+consider N squared possible sequences
+
+we're just considering constant times
+
+and possible sequences from this set now
+
+we choose the sequence that maximizes
+
+that has the maximum probability so we
+
+picked the most likely most probable and
+
+most conditionally most probable and set
+
+a sequence sequence of candidates where
+
+do we get these probabilities again we
+
+can at the language model just as we saw
+
+before we have our unigram we have our
+
+bigram which means whatever smoothing
+
+method we'd like um the channel model is
+
+just the same again as for the non word
+
+spelling error correction the only
+
+difference is we now need a probability
+
+of having no error because of course
+
+we're assuming that only one of the
+
+words is an error so we have to have a
+
+probability for all those other words
+
+that are not an error we need to be able
+
+to to decide and when we have an error
+
+and when a word is in fact correct
+
+meaning the probability of the word
+
+itself given the word is high so I'm
+
+likely to have an error how do we
+
+compute this probability of no error
+
+what's the channel probability for a
+
+correctly typed word and this obviously
+
+depends on the application and so we
+
+might make the assumption and
+
+um in a particular application you know
+
+one word in ten is typed wrong and that
+
+means that the probability of a
+
+correctly typed word is 0.9 well we
+
+might have instead the assumption that
+
+one word and 200 is wrong and so now the
+
+probability of any word being typed
+
+correctly is 0.99 five so there's our
+
+channel model probability of a word not
+
+changing let's assume that the channel
+
+model of a task is has a probability of
+
+one in twenty of an error meaning that
+
+95% of the time um a word is correct as
+
+typed so here is an example from Peter
+
+Norvig
+
+again we have the spelling error th e WN
+
+you want to know whether it should be
+
+the word the' the word few correct that
+
+it was correct as typed or thaw or
+
+through or three and so on and again for
+
+each one we generate our channel model
+
+and the other channel models for exactly
+
+and compute the same ways before we have
+
+the probability of a substitution of a
+
+substitute
+
+being substituted by an e or of an R
+
+being deleted after an H and so on that
+
+we can keep just from our channel model
+
+so here's our channel model
+
+probabilities and again we have our
+
+language model probability just as
+
+before and these are examples that Peter
+
+Norvig computed from the Google Ngram
+
+counts and again we've assumed the
+
+channel model of a word not changing of
+
+the of the error X being generated by a
+
+correct correctly generated by the word
+
+X and we can multiply these together
+
+that multiplied together
+
+the channel model with the language
+
+model and again showing you things
+
+multiplied by 10 to the ninth to make
+
+them easy to read you can see that the
+
+word the' is correctly chosen very high
+
+probability as the misspelling of the
+
+word through by itself and in context
+
+and this is using a unigram language
+
+model if we're using a bigram or a
+
+trigram or even more likely probably to
+
+be able to distinguish when
+
+in the word view really was the word
+
+through and when it was the word though
+
+so that's real wood spelling correction
+
+we simply take the the standard
+
+algorithm noisy channel algorithm for
+
+non real words add an a probability of
+
+an edit not happening and then allow
+
+every word to imagine every word could
+
+have been an error and then look for the
+
+most likely sequence simplifying usually
+
+by assuming only one error per sentence

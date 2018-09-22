@@ -1,0 +1,545 @@
+﻿in this segment I'm going to tell you
+
+about the kinds of Grammer transforms
+
+that we use to do efficient parsing a
+
+pcfg s so the most frequently known
+
+grammar transformation is the Chomsky
+
+normal form so the idea of the Chomsky
+
+normal form is that CFG rules are
+
+restricted to being of two simple forms
+
+that they're either X goes to Y Z where
+
+all of XY and z are non terminals or
+
+they're simply of the form of a non
+
+terminal X rewrites as a terminal W so
+
+you can take any CFG and transform it
+
+into its Chomsky normal form derive
+
+normal form and produce another CFG
+
+which recognizes the same language that
+
+is it doesn't necessarily give the same
+
+tree structures but the same strings are
+
+part of a not part of the language and
+
+the way that you do that is by going
+
+through a series of transforms that get
+
+rid of the empty rules and the unary
+
+rules and then divided up rules that
+
+have more than two things on the left
+
+side let's just quickly go through an
+
+example of how we do that so here's our
+
+ugly very structured grammar with all
+
+the bad cases in it so first off let's
+
+do epsilon removal so there's just one
+
+rule with epsilon in it so we're going
+
+to get rid of that one and the way we're
+
+going to do that is every time that
+
+there have been a rule that has an NP on
+
+the right-hand side we're going to split
+
+it into two rules one just as before and
+
+one that then notes that the noun phrase
+
+can be empty and so just says it's can
+
+go to VP okay so if we keep on doing
+
+that through all the other places the NP
+
+turns up we then get this grammar so
+
+then at this point we see that there are
+
+a lot of unary rules there more than
+
+there were before and so we're going to
+
+want to start getting rid of them so we
+
+have the way we do that is we pick the
+
+first one say and then we work down the
+
+consequences of it downwards so now
+
+we're saying that this can go straight
+
+to a VP and so that means we now look
+
+for where there's a VP on the left hand
+
+side and since an ESCO immediately go to
+
+a VP as well as keeping this
+
+all we're gonna have to add another one
+
+that says an S can go to the NP and so
+
+we make that change so now we have this
+
+grammar and unfortunately those changes
+
+mean that we've introduced a new unary
+
+rule with an S on the left hand side so
+
+you have to do this unary removal
+
+recursively until every unary has
+
+disappeared so now we have s goes to V
+
+and well where does V appear on the left
+
+hand side that happens in the lexicon
+
+over here so when we get rid of this
+
+rule we're going to have to add new
+
+lexical entries saying that an S can go
+
+to people and so on for the other cases
+
+and so that then gets us to this state
+
+okay and then at that point we just keep
+
+on going so we're going to get rid of
+
+this V P goes to V but that means we're
+
+going to look again for places where a V
+
+appears on the left hand side and we're
+
+going to further increase the size of
+
+our lexicon and then there are just
+
+still more u Nerys and so we keep on
+
+going so the first one here is NP goes
+
+to NP that's an a over a unary that
+
+doesn't add anything apart from perhaps
+
+for ideas of linguistic structure so we
+
+can just erase that without changing the
+
+language that's recognized and then we
+
+have here in P goes to N and so then
+
+again we're gonna have to start looking
+
+for it appears on the left hand side and
+
+what we'll find in this case is now
+
+there's nowhere in the grammar where n
+
+appears on the right hand side of a rule
+
+so we don't actually have to split these
+
+lexical entries we can actually just
+
+rename them to put in P in for each one
+
+and so then we keep on going there are a
+
+couple of other unary rules down here so
+
+once we get rid of them all we get the
+
+grammar looks like this and so now the
+
+next step is to say well gee we've still
+
+got some rules that have three things on
+
+the left hand side and we're going to
+
+have to change those into binary rules
+
+and the way that we do that is we
+
+introduce
+
+extra categories so let's take this one
+
+so what we're gonna say is that a VP
+
+goes to the first thing here a V and
+
+then we're going to introduce a new
+
+category say X and then we're going to
+
+say X goes to NP the NP P P so I just
+
+called it X here but to make this a
+
+little bit simpler we're going to use
+
+systematic but unwieldy names for them
+
+so we can call this at VP underscore V
+
+and the way to think of this is that
+
+this is just the name of a non-terminal
+
+just like any other non-terminal you
+
+just treat as an atom but we've given a
+
+systematic way to introduce them so we
+
+make those changes and then here we have
+
+this is our final grammar in Chomsky
+
+normal form now if a linguist hand to
+
+their grammar like this and you do these
+
+steps and hand it back to them and say
+
+here it is in Chomsky normal form
+
+they're not likely to like what they see
+
+because it's made a real mess of the
+
+structure of the grammar but that's
+
+something really something that you
+
+should worry about you shouldn't regard
+
+this as an internal representation side
+
+your system which will allow efficient
+
+parsing and isn't really designed to be
+
+a structure of the language as the
+
+linguist Caesar so that this is a system
+
+that lets us do grammar transformations
+
+for efficient parsing and we have an
+
+exhibitors here but with some extra
+
+bookkeeping and symbol names you can do
+
+these kind of transformations and still
+
+be able to reconstruct the original
+
+trees that you would have made without
+
+doing the grammar transformation
+
+nevertheless in practice while doing
+
+full Chomsky normal form is a pain you
+
+should be able to see from the way that
+
+we can deconstructed the rules with more
+
+than three things on the left-hand side
+
+they're turning them back into inner ear
+
+ool's from binary rules that's going to
+
+be straightforward but reconstructing
+
+the empties in the unary says trickier
+
+and so at this point there is actually a
+
+find the thing that you want to know is
+
+finalization of grammar rules is
+
+absolutely essential to the algorithms
+
+that we're going to show that allow
+
+cubic time CFG Parsa and cubic time
+
+parsing of arbitrary context-free
+
+grammars so any system for efficient
+
+polynomial time parsing of context-free
+
+grammars somewhere does binarization it
+
+might be done in advance like in the
+
+example we're going to show with the CKY
+
+algorithm where we explicitly transform
+
+the grammar and then parse or for some
+
+other forms of parsing the binarization
+
+gets hidden inside the workings of the
+
+parser but binarization has always done
+
+somewhere on the other hand the getting
+
+rid of the unary x' and the empties is
+
+more optional so if you want to have the
+
+neatest version of the algorithms you
+
+need to you will want to do the unary
+
+and empties as well but leaving the
+
+unary and empties around doesn't change
+
+the asymptotic complexity of the
+
+algorithms so commonly is more
+
+convenient to leave some of them in and
+
+we'll demonstrate that without real
+
+examples so we've discussed this as a
+
+grammar transform but what we normally
+
+actually do in statistical parsing these
+
+days is read trees from a tree bank and
+
+then do stuff to them and then count the
+
+sub trees and they become our grammar so
+
+what we're going to do is we're going to
+
+say by and large where we're reading in
+
+trees from a tree bank and look this
+
+subtree is going to be something for our
+
+grammar and this sub tree here is going
+
+to be something for our grammar well we
+
+don't want to have these sub trees with
+
+three or more things beneath them
+
+because that ruins our ficient
+
+possibility property so as we read in
+
+the trees we're going to transform them
+
+and turn them into binary trees and
+
+we've done it in the same way as we
+
+discussed before by introducing this new
+
+non terminal and dividing up the rule
+
+that had three children and we may want
+
+to do the same things within
+
+these in unary so let's just discuss
+
+that a little bit more so here is an
+
+actual tree from the penn treebank so it
+
+was a headline of a newspaper article
+
+when the headline was just a tone and so
+
+the way that's being analyzed is by
+
+saying that that's a sentence an
+
+imperative sentence so here's an
+
+imperative verb and the imperative verb
+
+has an unexpressed NP subject so this is
+
+an empty here okay and this says that
+
+it's a headline and these are the
+
+functional tags saying this as a subject
+
+so normally when we process treebank
+
+trees the kind of things we do is first
+
+of all we strip off the functional tags
+
+and we just deal with the basic
+
+categories which gets us to over here
+
+I'm very commonly our parsing algorithms
+
+don't explicitly deal with the MPS
+
+so we also just delete the empty node
+
+and everything that's above an empty
+
+node and so that then maps us onto this
+
+tree here and this tree has a lot of you
+
+Nerys in it now it's possible to also
+
+get rid of you Nerys now if you use the
+
+algorithm that we showed before you get
+
+rid of you Nerys by keeping the highest
+
+node so if you kept the truly highest
+
+node our root node you'd even get rid of
+
+this s and it would just be root goes to
+
+a toe and the start symbol of the
+
+grammar would rewrite as a word commonly
+
+we don't do that and we'll at least keep
+
+the rewrite from our start symbol to the
+
+different types of things that you can
+
+get a sentence or a noun phrase but then
+
+after that if we keep the high node will
+
+have s go straight to a word atone
+
+normally we don't want to do that
+
+because we like to keep our lexicon
+
+which has parts of speech rewriting as
+
+words so it's more usual to keep the low
+
+end of a unary chain and get rid of the
+
+higher up things but in that case if you
+
+want to have a unique start symbol you
+
+definitely have to keep your start
+
+symbol and allow the start symbol only
+
+to rewrite you know you neural e to
+
+either a non terminal phrasal category
+
+or to a pre terminal
+
+that you don't actually have to do any
+
+of this stuff and so it's perfectly okay
+
+to leave you Nerys in your grammar and
+
+use the algorithms are we're going to
+
+show it makes them a bit more complex
+
+and messier in terms of a parsing
+
+algorithm it makes it much easier to
+
+reconstruct the original parse trees on
+
+the way out
+
+so the parsing algorithms that we are
+
+about to show in the next segment
+
+actually work over a representation like
+
+this so we still have unary rules but
+
+we've deleted the functional tags and
+
+the MD elements okay so I hope you have
+
+a sense now about what are in grammar
+
+rules and how we can transform them to
+
+get them in frameworks that are allow
+
+for more efficient and cleaner parsing
+
+algorithms and now we'll go on and look
+
+at a particular parsing algorithm that
+
+works with binary and unary CFG rules

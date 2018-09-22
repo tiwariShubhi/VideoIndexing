@@ -1,0 +1,281 @@
+﻿in research NLP these days there's
+
+always a lot of talk of probabilistic
+
+models and machine learning but if you
+
+actually look at large systems under the
+
+hood what you'll almost always find is
+
+that they also make quite a bit of use
+
+of regular expressions in various places
+
+and for many tasks it turns out that
+
+regular expressions are just a very
+
+practical and capable way of specifying
+
+various kinds of natural language
+
+patterns I'm going to show you one
+
+example of this now by showing you how
+
+we use regular expressions for the
+
+English tokenizer inside the stanford
+
+NLP tools such as the parser and part of
+
+speech tagger or for the Coronel P sweet
+
+or over all ok here we are with the code
+
+for the stanford english tokenizer so
+
+what it is is it's a large deterministic
+
+regular expression and so what is
+
+written in is with the tool called G
+
+flex so G flex belongs to a family of
+
+what an commonly called and computer
+
+size Alexa's which is just another word
+
+for tokenizer z' which take a sequence
+
+of characters and cut pieces one token
+
+at a time off the front of it so there
+
+was the original Lex those part of UNIX
+
+and then flex and then this is J flex
+
+which is a Java compatible version let's
+
+scroll down to where some of the regular
+
+expressions are used to define character
+
+classes often what you find is that many
+
+of the regular expressions aren't
+
+actually very complicated that they're
+
+really nothing more than lists they've
+
+been put into regular expressions by
+
+putting vertical bars in between for
+
+alternation and so for example we see
+
+that in several places here
+
+so here we have one for abbreviated
+
+months and here we have one for
+
+abbreviated days of the week and that
+
+continued on for some of these other
+
+ones like American states and various
+
+other kinds of person named tidal
+
+acronyms down here but let's go on a
+
+little bit further the one that's a bit
+
+more interesting than that
+
+okay so here's one of phone numbers this
+
+is the kind of ill documented regular
+
+expression that's a little bit hard to
+
+actually get your head around but a much
+
+used in practice so at the very top
+
+level of this regular expression things
+
+are divided up by this alternation right
+
+here and on the right-hand side of the
+
+alternation there's a pattern where the
+
+separator is being used there's dots and
+
+so that one's separated out as
+
+consistent use of dots because otherwise
+
+it's easy for the regular expression to
+
+go wrong and also recognize various
+
+kinds of decimal numbers and other
+
+patterns and so that part of it is
+
+actually the easier part so we can have
+
+at the beginning optionally the use of
+
+plus signs which are used in Europe and
+
+most of the rest of the world as
+
+international prefix for country codes
+
+and then we can have the country code
+
+here which is just numbers of the range
+
+two to four and then all of that is
+
+optional and then after that we've got a
+
+first set of numbers which can be the
+
+area code the dot then the second set of
+
+numbers which I guess it started it was
+
+the exchange and then finally the third
+
+set of numbers and so these sets of
+
+numbers and then being given a length so
+
+this has to be between three and four
+
+numbers this has to be three and five
+
+numbers and the area code has to be two
+
+and four numbers and so those ranges are
+
+chosen so that they'll work with the
+
+phone numbers of a bunch of the
+
+countries around the world but if you
+
+know well your international phone
+
+numbers you'll realize there are
+
+actually some cases that won't still be
+
+recognized by those so what then if we
+
+go to the left hand side of the regular
+
+expression it's effectively doing the
+
+same thing but is more complex so that
+
+the first part of it is again going to
+
+recognize things like optional country
+
+codes so you can see the same piece over
+
+here
+
+I'm the optional country code but it's
+
+allowing in some other possibilities so
+
+here we've escaped the parentheses so
+
+you can actually sort of have some
+
+numbers that are put inside overt
+
+parentheses and further on we've got
+
+this character class we're allowing a
+
+variety of other separators apart from
+
+period so we can have a dash which again
+
+needs to be escaped they can just be a
+
+space or there can be a non-breaking
+
+space so here's a Unicode escape for a
+
+non-breaking space and so then over all
+
+this fall out to recognize a bunch of
+
+formats for phone numbers so it'll
+
+recognize almost all American phone
+
+numbers and generally does pretty well
+
+with things like UK and Australian phone
+
+numbers if you want an example where it
+
+doesn't work the normal phone number of
+
+format in France is you just have pairs
+
+of digits with spaces in between them
+
+and that's not included here and the
+
+difficulty isn't sort of writing a
+
+regular expression that matches that
+
+it's in this context of a deterministic
+
+make no expression match of managing to
+
+write one which won't also wrongly match
+
+various other things such as numbers
+
+they're just appearing as a sequence of
+
+numbers for some other reason well I
+
+hope that's given you some idea of the
+
+use of regular expressions in NLP
+
+systems if you poke around and other NLP
+
+systems I'm sure you'll find lots of
+
+other examples commonly when people want
+
+to match particular patterns whether
+
+they be patterns at the level of words
+
+or patterns of the level of parts of
+
+speech they can just be very convenient
+
+and practical methods to solve many
+
+practical tasks

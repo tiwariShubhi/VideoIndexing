@@ -1,0 +1,509 @@
+﻿once we've segmented outwards or
+
+tokenized them we need to normalize them
+
+and stem them so normalizing means
+
+different things for information
+
+retrieval for example we require that
+
+the index text and the query terms have
+
+to have the same form so we want to
+
+match us a dot to USA if somebody asks a
+
+question or a query with with one of
+
+them and the answer has the other we
+
+want them to match so it's like
+
+implicitly defining some kind of
+
+equivalence class of terms we might do
+
+this by always deleting periods for
+
+example it might take to have a rule
+
+that takes us a to USA an alternative is
+
+some kind of asymmetric expansion so for
+
+example let's say it's we're doing
+
+information retrieval if I enter the
+
+term window I might want to search for
+
+window or window is there any any any
+
+morphological variant of the word window
+
+but if I enter capital W windows I might
+
+only want to search for capital W
+
+windows because the person's prism we're
+
+looking for the product and not the part
+
+of your house I mean this is a
+
+potentially more powerful algorithm but
+
+less efficient and much more complicated
+
+so in general we use symmetric and
+
+relatively simple expansions so for
+
+example in information retrieval we
+
+generally remove reduce all letters to
+
+lowercase since users tend to use
+
+lowercase and with some small exceptions
+
+so for example if we see uppercase in
+
+the middle of a sentence like General
+
+Motors we might want to keep the case
+
+and this matters for distinguishing and
+
+the verb fed from the Federal Reserve
+
+Bank with a capital F or a group like s
+
+ail the Stanford artificial intelligence
+
+lab from the verb sale and it turns out
+
+that for sentiment analysis or machine
+
+translation or information extraction
+
+case is in fact very helpful so is a big
+
+difference between us and us we also
+
+often want to do lemon ization so we're
+
+reducing our inflections or variant
+
+forms to their base form so words like m
+
+and r it is we'll get
+
+to be car cars car apostrophe s and so
+
+on get limit eyes to car so a phrase
+
+like the boys cars are different colors
+
+should get lemma ties to the boy car be
+
+different color so in general the task
+
+of lemon ization is finding the correct
+
+dictionary Head word form for a word
+
+form that you're given and of course
+
+this is very important for all sorts of
+
+applications particularly machine
+
+translations where for example if you
+
+have a Spanish verb like quiero I want
+
+or quieres you want u it's very
+
+important to know that this is the same
+
+lemma as Kadare the verb to want so this
+
+general topic of looking at parts of
+
+words leads us to morphology morphology
+
+is the study of morphemes and a morpheme
+
+is the smallest unit that makes up a
+
+word we usually distinguish two kinds of
+
+morphemes stems that's the core meaning
+
+bearing units in a word and affixes
+
+ethics is the bits and pieces that
+
+adhere to the stem often they have
+
+grammatical functions so on this
+
+particular slide in fact stem is a stem
+
+and s is an affix the word ethics just
+
+to confuse us is a stem and there ES is
+
+the ethics so there's an ethics there's
+
+a pass and there's an S and meaningful
+
+there's another ethics and so on so
+
+stemming is the task of taking off these
+
+a fixes to reduce terms to their stem
+
+and it's particularly historically
+
+derived from information retrieval
+
+although it's used in all sorts of
+
+applications we use the word stemming
+
+when we specifically mean a kind of a
+
+crude chopping off of of affixes and
+
+this is of course a language dependent
+
+kind of process so the English word
+
+automate automate automatic automaton
+
+we'd like them all to to refer to the
+
+same stem automat so stemming is like a
+
+simplified version of lemon ization
+
+where we pick a prefix of the word use
+
+that to represent the word and we we
+
+chopped off
+
+all the suffixes that are relevant
+
+leading to that stem so here's an
+
+example little text for example
+
+compressed in compression are both
+
+accepted is equivalent to compress
+
+that's the text and if we stemmed that
+
+text here is the resulting output so you
+
+can see that that we've lost the Aeon
+
+example and compressed and compressing
+
+have both turned into compress and here
+
+we used our we could have used B as a
+
+representation of our but this
+
+particular example we used R and so on
+
+thus the simplest algorithm the most
+
+commonly used one for simple stemming of
+
+English is the porter algorithm and the
+
+porters algorithm is a series of an
+
+iterated series of simple rules simple
+
+replace rules so for example that one
+
+set of rules rule step one a take
+
+strings like SS es and replaces them
+
+with SS so in a word like caresses it
+
+chops off the es of caresses or a rule
+
+that takes IES to I chops off the IES of
+
+ponies and leaves Pony we're going to
+
+use Pony with an eye as a representation
+
+in Porter stemming of pony and the rules
+
+operate in order so that at this point
+
+if there's any SS is left they stay as
+
+an S but any other s's get deleted at
+
+this point so the S of cats is deleted
+
+while the SS of caress is kept
+
+similarly in step one B we move all of
+
+the ings and the EDS so we want to cross
+
+off the ink of walk and the ED of
+
+plaster but we specify the rule very
+
+carefully that in the porter stemmer
+
+only words with a vowel get their eggs
+
+removed and that's because a word like
+
+sing only words of where there's a vet
+
+and additional vowel before the inge so
+
+a word like sing which has no extra
+
+vowel sing only has one vowel about a
+
+Ning stays a sing but walking which has
+
+a vowel and in addition a vowel before
+
+the inge
+
+is allowed to delete the suffix so if a
+
+word has a vowel followed by in the
+
+English deleted and there's lots of
+
+other such rules so a tional turns into
+
+aid so we can cross off the all of
+
+relational and the tion and end up with
+
+relate and eyes are two eyes and so we
+
+cross off the R and so on and the rules
+
+get even more complicated so as you get
+
+to very long stems you're going to
+
+remove the Olive revival and the UH Bowl
+
+and and so on let's look again at this
+
+rule that strips in and practice using
+
+the UNIX tools that we saw in the last
+
+section to look at morphology in a
+
+corpus so remember why are we stripping
+
+the ings only if there's a vowel
+
+preceding the hing here was the rule and
+
+remember we said that in a word like
+
+walking we have a vowel before the inge
+
+and so it's okay to remove the inge in a
+
+word like sing there is no vowel before
+
+there's no letters at all before they
+
+ask there's no previous vowels and so
+
+sing the rule doesn't apply and let's do
+
+a little search for words ending a Ning
+
+in Shakespeare so we're gonna first take
+
+all of Shakespeare and turn all the
+
+non-alphabetic characters
+
+oops turn all the non I fell characters
+
+into new line so we're going to get one
+
+word per line then we're going to
+
+translate all of the uppercase to
+
+lowercase so we're dealing with we're
+
+combining all the uppercase and
+
+lowercase words and now let's grep out
+
+grep is a program for finding any line
+
+that contains a regular expression in
+
+the file very useful unix program so
+
+we're going to look for the regular
+
+expression ing dollar sign and so we'll
+
+find all words ending in ing and let's
+
+sort them and then we'll just take one
+
+copy of each and count them and then
+
+sort them by the counts let's see what
+
+words we find I'm ending in ing in
+
+Shakespeare and what we see is lots of
+
+these words are not words that in fact
+
+we would like to and to remove the ing
+
+from so we have words like king and
+
+nothing and thing and ring and something
+
+and sing and then anything and spring so
+
+this is this is a this is a lot of words
+
+a lot of very frequent words in fact
+
+that it would be a bad idea to remove
+
+the ing we move the ng from king we'd
+
+get cut and so on with the ing from
+
+spring we'd get spray um so let's modify
+
+our rule that we did instead of saying
+
+grabbing for all words ending in ing
+
+let's just go back and change that to
+
+grep for all words with a vowel we'll
+
+just make it BAE I owe you simulate our
+
+vowels with just old bowel letters and
+
+we need some way to say there's a vowel
+
+and then anything can happen in between
+
+followed by the ing well what's how do
+
+we say anything dot means any character
+
+star meaning zero or more of those and
+
+now let's look at and at what words we
+
+get back from that pattern and now since
+
+we've specified that the word has to
+
+start with a vowel we've done a much
+
+better job of finding two syllable words
+
+where
+
+in fact it's supposed to be stripped off
+
+so there are still some problematic
+
+words like nothing in something we don't
+
+want to get not and someth and anything
+
+but otherwise and maybe not cunning but
+
+otherwise we've done a pretty good job
+
+of making the rule a little bit better
+
+so there's a little explanation of how
+
+the porter stemmer works and then how we
+
+can actually use our unix tools to do a
+
+little corpus linguistics - and to help
+
+write rules on this kind so that's a
+
+simple example of morphology it turns
+
+out that in some languages much more
+
+complex morphology as necessary and
+
+Turkish is the famous example of this so
+
+here's a word in Turkish which I won't
+
+be able to pronounce for you which means
+
+behaving as if you were among those whom
+
+we could not civilize so I assume it's
+
+that kind of thing your mother says to
+
+you when when you've been particularly
+
+naughty and in Turkish this is one word
+
+so it's a very long word with a lot of
+
+stems we have the the civilized stem and
+
+an ethics mean to become an ethics
+
+meaning cause and ethics me not able and
+
+so on and so in languages like Turkish
+
+and as we saw earlier for the very long
+
+nouns in German we're going to have to
+
+do a richer and more complex morpheme
+
+segmentation so as we've seen word
+
+tokenization and now we've seen that
+
+words will have to be normalized and
+
+stems to map them to a normal form

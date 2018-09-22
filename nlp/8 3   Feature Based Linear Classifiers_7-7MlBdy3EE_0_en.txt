@@ -1,0 +1,561 @@
+﻿okay now let's look at how these
+
+features are used inside a classifier
+
+and in particular I want to introduce
+
+the notion of linear classifiers our
+
+feature based MaxEnt classifiers are
+
+linear classifiers and so what that
+
+means is that at the end of the day what
+
+they're going to do is going to have a
+
+set of features and then it's going to
+
+calculate a linear function of those
+
+features which will end up as a score
+
+for a particular class and the way that
+
+we do that is that for each feature fi
+
+we assign it a weight lambda I and so
+
+what we're going to do is then consider
+
+for an observed datum every particular
+
+class that we can give it and then we're
+
+going to work out what features match
+
+against that datum and therefore what
+
+the weight of the votes for a class are
+
+in terms of these land dry weights so
+
+let's look through a concrete example so
+
+this is again the example for where
+
+we're going to be wanting to determine
+
+the class for this word where our
+
+choices here a person location or drug
+
+and so what we're going to do is
+
+consider which of the classes gets the
+
+most votes in terms of the three
+
+features that we define before so the
+
+vote for a class is just going to be the
+
+sums of the weights that are assigned to
+
+each of the features so remember the
+
+three features from before the first
+
+feature looked whether the preceding
+
+word was in whether the word is
+
+capitalized and then whether the class
+
+is location so it's not going to match
+
+here but it is going to match over here
+
+and so that's a feature that would tend
+
+to pick out locations so we'll assume
+
+that it has a positive weight of 1.8 the
+
+second feature was then also feature
+
+that matched on locations and it looked
+
+for an accented Latin character here so
+
+it will match against this datum but not
+
+against the other two datums again and
+
+so in general I'm assuming that that
+
+feature at least for American English
+
+will have a negative weight because
+
+you're more likely to see accents and
+
+things like person names so it might
+
+have a weight of minus 0.6 okay then the
+
+third feature that we had to find was
+
+that the class was drugged and the word
+
+ends in C so of these three datums the
+
+one which will match is this one here
+
+and it's not true in this case but in
+
+general I think that's likely to be true
+
+because quite a few drug names like zan
+
+tech end in the sea whereas not that
+
+many regular words do so maybe we'll
+
+give that a weak positive vote and say
+
+that that feature has zero point three
+
+and so then what we're going to be doing
+
+is that we're going to be choosing the
+
+class that has the highest total votes
+
+and so there are three class choices
+
+here so this class choice of person
+
+actually matched no features so it's
+
+total vote is zero which is that kind of
+
+neither a positive nor negative
+
+preference this class choice of location
+
+in aggregate had a vote forward of 1.2
+
+and this class choice of drug in
+
+aggregate had a vote forward of 0.3 and
+
+so what we're going to choose is the
+
+class which maximizes this voting
+
+quantity is going to be location there
+
+are many ways to choose the weights for
+
+the features in our classifier so for
+
+example perceptron algorithms what they
+
+do is they look for a currently
+
+misclassified example and then they
+
+nudge the weights in a direction that
+
+will correct the classification of that
+
+one example another popular form of
+
+discriminative classifiers support
+
+vector machines which we're not going to
+
+cover in these classes but what they try
+
+to do is create a lot of distance
+
+between examples of different classes by
+
+adjusting the feature weights to achieve
+
+that direction so there
+
+max margin classifiers but the
+
+classifiers that we're going to look at
+
+here max n classifiers which are in a
+
+family which is referred to as
+
+exponential or log linear classifiers in
+
+general this family has lots and lots of
+
+names so they're things in this class
+
+are also referred to as logistic
+
+classifiers and Gibbs models which are
+
+very closely related to MaxEnt models
+
+and so the idea of this class is that
+
+what we're going to do is we're going to
+
+make a probabilistic model out of the
+
+linear combination that we already saw
+
+the sum over the dot product so as the
+
+dot product the lambda F dot product
+
+which is the sum of lambda I fi of cmd'
+
+so how do we do it well what we're going
+
+to imagine doing it is kind of in the
+
+simplest possible way so here's this sum
+
+of lambda I fi of which is a function of
+
+C and D now the problem with this linear
+
+combination is that it might come out as
+
+either positive or negative and that's
+
+bad if you're a probability and so what
+
+we're going to want to do is we're going
+
+to make that always positive and the way
+
+we're going to do that is taking an
+
+exponential of it so we're going to take
+
+e to this power so this is something
+
+that will always make the Vote positive
+
+and this forum I'm showing here so it's
+
+e thats you know the 2.8 1/8 etc and
+
+then you're raising the feature dot
+
+product to that so you can also see it
+
+just written as e to the lambda dot F
+
+where these are our vectors of features
+
+okay so now we've got something that's a
+
+positive quantity but it's not
+
+necessarily a probability so we're going
+
+to make it a probability in the simplest
+
+way possible - which is we're going to
+
+normalize it so this is some kind of
+
+score for one class and so then what we
+
+can do is work out the score for every
+
+class and divide through by it
+
+okay and then we're going to say that
+
+this quantity here is the probability
+
+that we assigned to a class a
+
+probability of a particular class for a
+
+datum given a certain set of parameters
+
+where this is our vector of all the
+
+parameters and so we can work out a
+
+concrete example so that for our
+
+previous example where we had the
+
+probability of choosing location given
+
+in Quebec well what we're going to work
+
+out is for a numerator we've got the
+
+features that match so we working out e
+
+to the 1.8 plus minus 0.6 and then we're
+
+going to divide that through by the
+
+total votes for all of the classes so
+
+one class had no features matching the
+
+second class had a single vote of 0.3
+
+and then here's the one for location
+
+which is e to the 1.8 plus minus 0.6 and
+
+you can work that out on your calculator
+
+and it comes out to be equal to about
+
+0.5 9 and so these kind of homes there
+
+you can also simplify them so adding
+
+exponents is just the same as
+
+multiplying so you can also think of
+
+this as either 1.8 times e to the minus
+
+0.6 and so that's the sense in which
+
+each of these features gives an extra
+
+multiplicative term that changes the
+
+probability that when you add a feature
+
+you're adding an extra multiplicative
+
+term that changes the probability
+
+so if you work through all of the
+
+examples of the different classes I'll
+
+just skip and show the math that what
+
+you get is that these are the different
+
+probabilities and so note that we're
+
+giving a probability of each of our
+
+three class choices and together that
+
+they do add up to one and that's
+
+precisely by the normalization that
+
+we've defined here so these weights
+
+lambda are now the parameters of a
+
+probability distribution and we're
+
+combining them by this function here
+
+this function is also referred to as the
+
+softmax function and the reason for that
+
+is because when you're using this
+
+exponent function to make things
+
+positive things get bigger so if you
+
+take something like e to the 3 that's
+
+approximately 25 or something and so the
+
+effect of that is the features with the
+
+strongest votes dominate more strongly
+
+in this form here and so it's sort of
+
+like a soft maximum so that it'll give
+
+you a value that's most strongly
+
+determined by the biggest votes so in
+
+MaxEnt or exponential models what we
+
+wanting to do is say given this model
+
+form what we're going to do is try and
+
+choose parameters lambda I that maximize
+
+the conditional likelihood of the data
+
+according to this model so we've defined
+
+probabilities over data and classes and
+
+we're going to maximize their choice of
+
+classes according to that probability
+
+distribution so a feature of these
+
+models is that we construct not only a
+
+classification function but also a
+
+probability distribution over
+
+classifications so there are many good
+
+ways of discriminating classes so SVM's
+
+boosting perceptrons many machine
+
+learning algorithms will give you a way
+
+to distinguish between classes but these
+
+other ones aren't as naturally and
+
+inherently thought of as distributions
+
+over classes though people have thought
+
+of ways to extend them in this direction
+
+you may have seen logistic regression or
+
+multi-class logistic regression
+
+in the statistics or a machine learning
+
+model so that maybe divides people if
+
+you haven't seen these before don't
+
+worry about it because the presentation
+
+and derivations that we show here are
+
+completely self-contained but on the
+
+other hand if you have seen these models
+
+before that something you might want to
+
+do is just think about how what is
+
+presented here is a little bit different
+
+and it's effectively different in two
+
+ways one is the choice of
+
+parameterization so the parameterization
+
+is slightly different than the
+
+parameterization that's normally shown
+
+for multi-class logistic regression
+
+models and statistics and there are kind
+
+of pluses and minuses to the
+
+presentation here the minuses are
+
+slightly statistically inelegant because
+
+the model is over parameterised but the
+
+plus is that this style of
+
+parameterization is actually very
+
+advantageous to NLP models which have
+
+the property that they're always a very
+
+large number of features most of which
+
+are inactive for any particular datum
+
+but secondly the thing to observe is
+
+that the way things are formulated here
+
+is in terms of feature functions feature
+
+functions of both the observed data and
+
+of the class this both shows how you can
+
+put text into the model most simply but
+
+it's actually also more general
+
+formulation than you normally see for
+
+multi-class logistic regression models
+
+we actually won't use the more general
+
+formulation in the material that is
+
+presented here but it has actually been
+
+shown to be useful once you go on to
+
+more complex natural language processing
+
+structured prediction tasks it's a quiz
+
+question for you guys to work through so
+
+we're still in the situation that we're
+
+wanting to choose some class for this
+
+final word which is now agaric and our
+
+choice of classes are the same classes
+
+as before person location or drug and we
+
+have exactly the same three features
+
+that we've been using throughout these
+
+examples and so what we'd like you to do
+
+is just concretely work through what the
+
+probabilities that are assigned to each
+
+of the three classes this time
+
+okay now I hope you understand the math
+
+of a MaxEnt model and the sense in which
+
+is one of the family of linear
+
+classifiers

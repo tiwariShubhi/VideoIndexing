@@ -1,0 +1,609 @@
+﻿now let me return to part of speech
+
+tagging and say a little bit more about
+
+how sequence models perform and what
+
+kind of features end up being used and
+
+useful so what are the main sources of
+
+information for part of speech tagging
+
+one source of information is knowledge
+
+of neighboring words and their possible
+
+part of speech tags so if our sentences
+
+bill saw that man yesterday we have a
+
+lot of part of speech ambiguities so
+
+bill can be either a proper noun or verb
+
+saw can be either a noun or a verb that
+
+can be either a determiner or what's
+
+tags I in when introducing a complement
+
+clause man can be a noun or a verb but
+
+at this point we start to notice that
+
+there are some constraints from
+
+neighborhoods so it just can't be the
+
+case that that is the determiner
+
+Bennett's followed by a verb that this
+
+is a bad sequence and so this is
+
+sequence information that gives us some
+
+ideas as to how the part of speech tag
+
+things and when people started working
+
+on power of speech tags people thought
+
+of that as the main source of evidence
+
+but turns out that that's not really the
+
+case that the easiest and biggest source
+
+of evidence is statistics knowledge
+
+about how often words have different
+
+parts of speech so we can also get a
+
+long way by just saying man is very
+
+rarely used as a verb and therefore just
+
+without even looking at the context we
+
+probably should take take the part of
+
+speech tag now for man and that latter
+
+source of information proves most useful
+
+but that's not to mean that the first
+
+source of information isn't also useful
+
+so what we're going to want to do is
+
+start putting more and better features
+
+into our maxim entry tagger producing a
+
+feature base sequence model and one part
+
+of that is just features that we can
+
+define over the word itself so knowing
+
+what the word is is useful but it
+
+turns out you can get a lot of further
+
+value especially for rare and unknown
+
+words by also putting in features that
+
+pick out properties of words so looking
+
+not just at the word but it's lowercase
+
+form so maybe there are many words that
+
+we haven't seen capitalized at the
+
+beginning of a sentence but if we know
+
+what they're lowercase form is and its
+
+parts of speech are then that will help
+
+us knowing the beginning of a word so if
+
+you know a word starts with un that
+
+gives you a bit of information about
+
+what as part of speech is knowing the
+
+suffix of a word so if you know an it
+
+word ends in ly it's almost certainly an
+
+adverb in English um capitalization is
+
+useful so in English the capital letter
+
+F once you're away from the beginning of
+
+a sentence is a very good clue that
+
+you've got a proper noun and here's an
+
+interesting different kind of feature
+
+that we've made a lot of use of and some
+
+of our Stanford systems we call these
+
+words shape features an idea first
+
+suggested by Michael Collins it's a
+
+different way of making features from
+
+words that creates natural equivalence
+
+classes that is very useful for
+
+generalization and so the idea here is
+
+that you're mapping a word into one of a
+
+small set of equivalence classes that
+
+represents its shape so here what we're
+
+doing and there are different exact
+
+schemes that you can use we can say this
+
+is a digit character this is also a
+
+digit character let's collapse for our
+
+quillin's classing sequence of
+
+characters are the same then there's a
+
+hyphen here and then we've got a
+
+sequence of lowercase letter characters
+
+and so we will give that the word shape
+
+of D - X some number of digits followed
+
+by - followed by some number of
+
+lowercase letters and that kind of
+
+feature proves to be a very useful
+
+feature and quite a few of our
+
+discriminative models so here's the
+
+headline good news if you get clever
+
+using all these kinds of features and
+
+just build a model that looks at the
+
+current word and assigns a tag to it it
+
+turns out that without looking at the
+
+context whatsoever you can build a part
+
+of speech tagger that
+
+all gets 93.7% of words right and
+
+actually does quite well on unknown
+
+words as well commonly we pull out
+
+separately the accuracy for unknown
+
+words because it's always lower and can
+
+be distinctively different from the
+
+accuracy for known words so here are
+
+some figures overall just leave your
+
+picture of the kind of accuracies you
+
+should be expecting from part-of-speech
+
+tigers and how different features impact
+
+the classification so we discussed
+
+before this idea of a baseline method of
+
+just giving the most frequent tag to
+
+words and calling everything else a noun
+
+so overall that gives about 90% but only
+
+gets about half of the unknown words
+
+right the next set of models that people
+
+looked at were hmm models hidden Markov
+
+models which I'm not really going to
+
+cover in this class but this was sort of
+
+in the mid 90s the state of art of part
+
+of speech tagging so that got around 95
+
+percent of all words right and did just
+
+a little bit of better on unknown words
+
+we just saw on the previous slide that
+
+just having a straight classifier no
+
+sequence model but with rich carefully
+
+chosen features actually works rather
+
+well it does much better on unknown
+
+words and doesn't actually perform badly
+
+into unknown words but people have gone
+
+on from there
+
+the idea that you could use features to
+
+do a better job was able to be
+
+incorporating two hidden markov models
+
+as well and so Torsten brands produces
+
+high-performance hidden Markov model
+
+based tag of of which used feature based
+
+ideas for predicting unknown words and
+
+that performed rather nicely so it gets
+
+around 96.2% overall and very
+
+competitive performance on unknown words
+
+but you can keep on building features
+
+into your Maxim entry Markov model
+
+including using context features that we
+
+didn't have in the first model so then
+
+if we go into a sort of a standard Maxim
+
+entry Markov model taker of the kind
+
+we've discussed that that might be
+
+getting almost 97% on all words and
+
+starting to do a bit better again
+
+unknown words and that work has been
+
+pushed up further at several places
+
+including at Stanford sound Stanford we
+
+have a model that's a life almost like a
+
+maximum entropy model but allows some
+
+bi-directional dependencies and so
+
+that's then pushing the overall accuracy
+
+after about 97.2% and pushing up the
+
+unknown word accuracy further to about
+
+90% and that's getting close to how good
+
+you can expect part of speech take us to
+
+the form because for reasons of humans
+
+themselves not being sure what the right
+
+answer is to a part of speech taking
+
+problems and also just because the gold
+
+standards have errors because sometimes
+
+humans goof and put in the wrong part of
+
+speech tag even when it seems like the
+
+correct answer is clear that it seems
+
+like around 98% is the upper bound of
+
+what you could possibly hope to score on
+
+the kind of test sets we have for part
+
+of speech tagging then if one wants to
+
+keep on working on improving things
+
+normally the way one goes about that is
+
+by staring hard at the output of your
+
+part of speech tag or whatever it is and
+
+looking at where it makes errors and
+
+thinking of ways in which you could
+
+encode some information into features
+
+that would let you detect that something
+
+has gone wrong and get the system to
+
+prefer some other configuration I'm just
+
+going to give an example of that now so
+
+here we have an error of the part of
+
+speech tagger that there's the word ass
+
+and the part of speech tagger has chosen
+
+the preposition tag for it whereas what
+
+it should have chosen is the adverb tag
+
+because this is as soon modifying soon
+
+well how could we fix that well it seems
+
+like the information that we want to use
+
+is that if the next word is soon that's
+
+a really good clue that as will be
+
+functioning as an adverb and so we can
+
+fix this error by adding a feature that
+
+looks at the next word so we're using
+
+next words as well as previous words and
+
+previous part of speech tags so here the
+
+part of speech tagger for intrinsic has
+
+labeled as
+
+that's a common error because if the
+
+part of speech Tiger sees a capitalized
+
+word that it never saw in the training
+
+data normally its first best guessed is
+
+to say that's a proper noun but that's
+
+not necessarily true at the beginning of
+
+a sentence when all words get
+
+capitalized but maybe we actually know
+
+about the word intrinsic and that was
+
+seen several times in the training data
+
+and we know that it's an adjective so if
+
+we can utilize that knowledge we'd be
+
+able to get this case right as well so
+
+if we put in a feature of what's the
+
+word lower cased did that feature would
+
+argue that this word should be tagged as
+
+an adjective and so he might be able to
+
+hope to fix that error note that both of
+
+those features didn't require any
+
+sequence information we were looking at
+
+features of word to the right and what's
+
+the lowercase form of a word and that's
+
+an interesting general observation in
+
+the early work on sequence models people
+
+were very fixated on sequence models and
+
+using the sort of sequence of labelings
+
+the sequence of tags to predict other
+
+tags it turns out for many of the
+
+problems that were convention that if
+
+were and are conventionally done as
+
+sequence labeling that the sequence
+
+information is barely useful it normally
+
+gives you a fraction of extra
+
+performance but very very little and so
+
+we already saw in the case of part of
+
+speech tagging that just using this
+
+model of using a lot of features of the
+
+current word to predict the tag performs
+
+very nicely so that gave us this
+
+performance of 93.7 on all tokens and
+
+82.6 on unknown tokens but you can do a
+
+lot better than that as was being
+
+suggested on the previous slide by also
+
+considering things like what's the next
+
+word and using that to influence the tag
+
+and what's the previous word and using
+
+that to influence the tag and so that's
+
+what's being referred to here as the
+
+three words model so you're having
+
+features independently of these three
+
+words in
+
+seeing the tag and it's actually quite
+
+stunning how well that performed so that
+
+gives you a token accuracy of about
+
+ninety six point six percent and an
+
+unknown word accuracy of about eighty
+
+six point eight percent and the thing to
+
+notice is that that performance is
+
+actually quite similar to the
+
+performance you get with sequence models
+
+so if we go back to the performance here
+
+that you can see that that performance
+
+is very close to the performance that's
+
+being listed here for the mm tiger in
+
+ninety six point nine eighty six point
+
+nine ninety six point six eighty six
+
+point eight fractionally below that
+
+exceedingly close in performance okay um
+
+so what we've learned about part of
+
+speech tagging is that by itself
+
+changing from generators of scrimmage of
+
+models doesn't give a big boost to part
+
+of speech taking performance the big
+
+boost comes from being able to put in
+
+lots of features of observations and
+
+combine them together in a good way so
+
+that's things like suffix analysis word
+
+shape features lower casing things like
+
+that so this additional power from
+
+having rich features has been shown to
+
+result in major improvements to the
+
+accuracy of sequence models there is
+
+some cost and the cost as you'll
+
+probably find out in the assignment is
+
+the training discriminative models is
+
+just much slower than training
+
+generative models if you remember back
+
+to language models well you can estimate
+
+language models essentially just by
+
+counting data whereas for discriminative
+
+models we have to do processes of
+
+numerical optimization and they just are
+
+much more time intensive that completes
+
+the discussion a part of speech tagger
+
+sand so now you should be in a position
+
+not only that you understand something
+
+about part of speech taking but in
+
+general how to apply maximum entropy
+
+sequence models to part of speech taking
+
+and other similar sequence problems

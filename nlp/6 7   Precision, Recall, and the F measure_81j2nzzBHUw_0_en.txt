@@ -1,0 +1,653 @@
+﻿okay let me now talk about how we
+
+evaluate text categorization and in
+
+doing this I'm going to come back to the
+
+concepts of precision and recall that we
+
+introduced informally before but define
+
+them formally and show how they get put
+
+together into combined measure the F
+
+measure that gets applied to text
+
+classification but it isn't only applied
+
+to text classification you'll see these
+
+concepts coming back again and again as
+
+ways of evaluation for tasks and natural
+
+language processing the starting point
+
+for understanding these measures is the
+
+following two-by-two contingency table
+
+and so for any particular piece of data
+
+that we're evaluating there are
+
+essentially four States on one axis
+
+we're choosing whether this piece of
+
+data correctly belongs to a class or
+
+whether it doesn't correctly belong to a
+
+class so for example if we're wanting to
+
+decide whether a piece of email is spam
+
+we're it either is spam which is the
+
+correct class or it's not which is the
+
+not correct class and so on this axis
+
+we're describing the truth now what
+
+we've done is built a system that tries
+
+to detect the truth and so secondly
+
+we're going to look at the status of our
+
+system so our system could be saying
+
+that this piece of data is spam or it
+
+could be saying that it's not spam and
+
+so we're then going to take these four
+
+things and look at the four
+
+possibilities that occur and here they
+
+are so if we're looking for spam one
+
+possibility is the truth of it that it
+
+is that it is spam and that we said it
+
+was spam and so that's then referred to
+
+as a true positive another possibility
+
+is that our system thought it wasn't
+
+spam even though actually it was
+
+and so that's then a false negative it
+
+was treated as negative falsely on the
+
+other side of the dial is possible that
+
+the piece of email actually wasn't spam
+
+in that case there again two
+
+possibilities our system mistakenly
+
+thought it was spam so that said a false
+
+positive if we're classifying something
+
+positively wrongly but the other
+
+possibility is it wasn't a piece of spam
+
+and our system said it wasn't piece of
+
+spam and then we're dealing with the
+
+true negative okay so if we're doing
+
+this kind of classification with two
+
+classes that are perhaps about equally
+
+common in your email spam and non-spam
+
+it seems the reasonable thing to do is
+
+just to look at accuracy so for accuracy
+
+the ones that count as you getting the
+
+answer correct are these ones so if you
+
+want to work out the accuracy the
+
+accuracy equals the true positives plus
+
+the true negatives over all four classes
+
+the true positives plus the false
+
+positives plus the false negatives plus
+
+the true negatives in many applications
+
+accuracy is a useful measure for systems
+
+but there's a particular scenario in
+
+which is not a useful measure and that
+
+scenario is when you're dealing with
+
+things that are uncommon so for example
+
+suppose that we are wanting to detect
+
+mentions of shoe brands in webpages so
+
+the correct class is that something is a
+
+shoe brand and the the not class is
+
+anything else
+
+well if you're just looking through
+
+random webpages or tweets or something
+
+looking for mentions of shoe brands
+
+probably I don't know 99.99% of the
+
+words you encounter I'm not going to be
+
+the name of shoe brands and so what does
+
+that mean what that is likely to mean is
+
+that perhaps in total let's say there
+
+are 10 mentions of a shoe brand in a
+
+hundred thousand words sample and ninety
+
+nine thousand nine hundred ninety was
+
+that are not shoe brands well if we
+
+build a classifier presumably even if
+
+it's a mediocre classifier we're going
+
+to say most words are not a shoe brand
+
+and if we go straight to the limit case
+
+one possibility of our classifier is it
+
+could say that no word is a shoe brand
+
+so it doesn't select any words or shoe
+
+brands and it says that all a hundred
+
+thousand words are not shoe brands and
+
+so that means the number of true
+
+negatives is ninety nine thousand nine
+
+hundred ninety but there are a few false
+
+negatives was worse shoe brands but the
+
+number of them is ten so if we then
+
+actually work out the accuracy of this
+
+system you'll see that the accuracy of
+
+the system
+
+is 99.99% so we have a 99.99% accurate
+
+system but the system has done precisely
+
+nothing this is very easy system to
+
+write you just write one line of code
+
+that says return false for any token and
+
+you're done and yet its accuracy is
+
+amazing so what's clearly missing here
+
+is that we're just not dealing with what
+
+we wanted to do so what we wanted to do
+
+was detect shoe brands so what's all
+
+important to us is the ten tokens which
+
+are instances of shoe brands and so what
+
+we want to do is come up with an
+
+evaluation metric that is much more
+
+focused on are we detecting these very
+
+few words that are the names of shoe
+
+brands and so that's what the measures
+
+of precision and recall do so precision
+
+tells you of the things that you're
+
+selecting are they the correct things so
+
+precision is saying of the things that
+
+you are selecting which is that row what
+
+percentage of them are correct things
+
+this column so precision is the number
+
+of true positives out of all the things
+
+that you selected the true positives
+
+plus the false positives and then recall
+
+is the opposite measure so for recall
+
+you're saying of the things that are
+
+correct what percentage of them did you
+
+find so if a recall the numerator is
+
+again the true positives but this time
+
+the denominator is the true positives
+
+plus the not selected false negatives
+
+and so note how looking at these
+
+measures solves the problem that we had
+
+last time with the shoe brands because
+
+the fact that there is ninety nine
+
+thousand nine hundred ninety tokens that
+
+a true negatives is now having no effect
+
+on these measures at all and so what
+
+will happen in our previous case where
+
+there are ten tokens here is and zero
+
+tokens here since our classifier said
+
+every word wasn't a shoe brand that what
+
+we'd find is that we'd say that the
+
+recall of that system is zero it's
+
+finding none of what we wanted to find
+
+and basically we say a system with zero
+
+recall isn't interesting and so this
+
+suggests we actually want to do better
+
+by returning some stuff so what we'd
+
+like to do is label some things as shoe
+
+brands so we could revise the system and
+
+when we revised the system maybe what
+
+we'll do is we'll have it return 40
+
+things as the name of shoes and so it
+
+all perhaps find eight of the shoe
+
+brands but it'll make some mistakes and
+
+claim some things as shoe brands that
+
+aren't so there'll be 32 tokens over
+
+here and then there'll be two tokens
+
+down here and then we'll the remainder
+
+of the tokens 960 will be down here so
+
+then at that point we can say well the
+
+recall of our system is pretty good so
+
+it's now finding eight out of the ten
+
+instances of shoe brands so it's recall
+
+is 80 percent but the problem is that
+
+that recall came as the cost because
+
+it's now also claiming lots of other
+
+things as shoe brands that aren't so the
+
+precision of the system is now 8 over 8
+
+plus 32 equals 8 out of 40 which equals
+
+20%
+
+one in five things it returns is correct
+
+and so for a lot of practical
+
+applications this kind of precision is
+
+going to be too low it depends on
+
+whether you're really interested in
+
+finding references to shoe brands and
+
+I've prepared to have a human being go
+
+through and check them all individually
+
+but if you want to do something more
+
+automatic 20% is too low of a precision
+
+but in this we see the secret of the
+
+trade-off that balances between recall
+
+and precision because almost inevitably
+
+if you're going to increase your recall
+
+and find instances of something you're
+
+going to make some mistakes and so your
+
+precision is going to go down and the
+
+more you try and boost recall the more
+
+your precision is going to be starting
+
+to drop and so people are trading off
+
+precision and recall so that's a good
+
+thing about having these two measures
+
+because you can discuss the trade-off
+
+and say how important to someone is the
+
+precision of what's returned versus how
+
+important is that to find all of the
+
+stuff to have high recall and that's a
+
+trade-off that is played out differently
+
+in different applications so in various
+
+applications such as for things like
+
+legal applications where you want to
+
+find all of the appropriate evidence
+
+such as in discovery procedures well
+
+what you really really want to be doing
+
+is having a system that's hot is high
+
+recall that finds as much of the
+
+relevant stuff as possible
+
+where in other contexts where what
+
+you're going to do is just show a
+
+sampling of stuff to the user user you
+
+might be more interested in the stuff
+
+that's shown to the user being stuff
+
+that is correct that looks good that
+
+your precision is high and it doesn't
+
+really matter that you're only showing
+
+to the user one tenth or one twentieth
+
+of the things that do satisfy their
+
+query so sometimes that explicit
+
+trade-off is really useful and it's a
+
+really good concept to remember when
+
+you're building an LP systems because in
+
+practice whenever you're building one of
+
+these systems you're choosing some
+
+trade-off point as to how much you
+
+emphasize
+
+precision or recall and different
+
+trade-off points are appropriate in
+
+different applications but sometimes
+
+that's a slightly annoying thing having
+
+these two measures because if people are
+
+wanting to compare systems and say which
+
+one is better then you need some way to
+
+combine these measures and so that's
+
+been thought about as well and so the
+
+standard way that's been proposed to
+
+combine these measures is something
+
+that's called
+
+the F measure and in disciplines like
+
+information retrieval and named entity
+
+recognition so what is the F measure
+
+what the F measure is is this neither
+
+more nor less than a weighted harmonic
+
+mean so at this point we have to kind of
+
+revise a little bit of math on means so
+
+you doubtless remember the arithmetic
+
+mean which is just the average of two
+
+things and you perhaps also remember a
+
+geometric mean but in addition to both
+
+of those there's a harmonic mean and in
+
+a harmonic mean what you do is you take
+
+the reciprocal of two quantities and
+
+then add them and then take the
+
+reciprocal of that and if you work
+
+through in more detail what that does
+
+the harmonic mean ends up as a very
+
+conservative average so if you put in
+
+two numbers into a harmonic mean it's
+
+fairly close to the minimum of the two
+
+numbers not completely at the minimum
+
+but it's nearer to the minimum then
+
+either the arithmetic or geometric means
+
+then in particular for this F measure
+
+we're allowed to put weights on these
+
+two terms and so this is this alpha
+
+factor so the weighting is how much to
+
+pay it more attention to the precision
+
+or how much to pay more attention to the
+
+recall so if you enter in an application
+
+and you know that precision is much more
+
+important to you you can actually
+
+express that utility trade-off by
+
+putting a particular value of alpha in
+
+that expresses it
+
+so this formulation here very clearly
+
+shows that the F measure is the weighted
+
+harmonic mean but actually that's not
+
+the formulation that you normally see in
+
+books the formulation that you normally
+
+see in books is actually this one which
+
+is I guess just a little bit tidier to
+
+write and these two formulations are
+
+related and they do all work through
+
+that in one of the exercises you can
+
+work out the relationship between alpha
+
+and beta but effectively this formula
+
+also expresses a weighted harmonic mean
+
+and it also has a control parameter beta
+
+as to how much emphasis is being put on
+
+precision versus recall so what that
+
+control parameter is useful in the
+
+absence of other evidence the most
+
+commonly used thing is a balanced F
+
+major and so the balanced def measure
+
+gets referred to as the f1 measure and
+
+what that's meaning is that you're
+
+setting beta equal to one that then
+
+gives you equal balance between
+
+precision and recall which corresponds
+
+in turn to alpha being a half and if you
+
+do the balanced f measure this formula
+
+here simplifies to just in this formula
+
+and so this is really the thing that
+
+you'll see most common so if you don't
+
+remember any of the rest of this stuff
+
+what you should do is remember this
+
+little formula for the F measure two
+
+times the precision times the recall
+
+divided by the sum of the precision and
+
+the recall so that should give you a
+
+good sense of what these measures of
+
+precision recall are how they are
+
+combined into the F measure why they're
+
+useful and how we use them to evaluate
+
+text classification

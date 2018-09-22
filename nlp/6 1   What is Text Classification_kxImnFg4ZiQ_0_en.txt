@@ -1,0 +1,369 @@
+﻿in this lecture we'll introduce the
+
+topic of text classification and the
+
+naive Bayes algorithm which is one of
+
+the most important ways of doing text
+
+classification let's begin by looking at
+
+some examples of text classification
+
+applications here I've shown an email
+
+that actually received the other day how
+
+do I know that this email is spam take a
+
+look at the mail and think of some
+
+features you might automatically extract
+
+from this email that tells you that it's
+
+spam you might notice the word great
+
+miss a misspelling of great so we have a
+
+typo here maybe you might notice
+
+important notice and maybe an
+
+exclamation point it's pretty rare that
+
+universities put exclamation points in
+
+their subject headers you might notice
+
+that there's no m dan here no it's not
+
+addressed to me in particular in it we
+
+have undisclosed recipients and there's
+
+no particular address and the URL is a
+
+little funny here that's not a Stanford
+
+URL maybe the word exciting each of
+
+these features can be combined in a
+
+classifier to give us some evidence that
+
+we've got a piece of spam another
+
+important text classification task is
+
+authorship attribution how do I know
+
+which author wrote which piece of text
+
+one of the most famous examples of
+
+authorship attribution is the famous
+
+anonymous essays called the Federalist
+
+Papers that were written at the
+
+beginning of the history of our country
+
+in part to convince the state of New
+
+York to ratify the early Constitution
+
+and three authors wrote various numbers
+
+of the letters but twelve of the letters
+
+it wasn't clear which author wrote and
+
+in 1963 the and in 1963 Mosteller and
+
+Wallace showed that Bayesian methods
+
+were able to distinguish which letters
+
+were written by Madison and which
+
+letters were written by Hamilton and the
+
+Bayesian methods that they use in 1963
+
+gave rise to the naive Bayes method that
+
+we're going to
+
+talking about today another text
+
+classification task is gender
+
+identification determining if an author
+
+is male or female recent research in
+
+gender identification has shown that we
+
+can look at the number of pronouns and
+
+other features the number of determiners
+
+the number of noun phrases are subtly
+
+indicative of the difference between
+
+male and female writers female writers
+
+tend to use more pronouns and male
+
+writers tend to use more facts and
+
+determiners in their noun phrases and
+
+you can see from that that here we have
+
+a lot of pronouns and here we have a lot
+
+of determiners and unfactual sentences
+
+with with the copula verbs and so you
+
+might determine that this is in fact a
+
+male and this is a female and that would
+
+be correct this is the author Margaret
+
+drabble and this is the author Anthony
+
+grade another text classification task
+
+is sentiment analysis and one of the
+
+classic sentiment analysis tasks is
+
+movie review identification given a
+
+review whether it's a movie or a product
+
+can I tell whether this review is
+
+positive or negative and although I'm
+
+going to show you an example here from
+
+movies this could apply to any product
+
+review for any any product or service
+
+that you might find on the web this is
+
+actually a very important commercial
+
+application so suppose we saw review
+
+that said unbelievably disappointing
+
+well that's clearly a negative review
+
+how about full of zany characters and
+
+originally applied satire positive how
+
+about this is the greatest screwball
+
+comedy ever filmed we've got words like
+
+greatest or greatest ever um that's very
+
+positive how about it was pathetic the
+
+worst part about it was the boxing
+
+scenes here we've got evidence like
+
+pathetic and worst and so on to tell us
+
+this is in fact a negative review
+
+text classification often we also apply
+
+text classification to scientific
+
+articles for example deciding what the
+
+topic of a particular article in a
+
+database like MEDLINE might be for
+
+example we might have to decide in
+
+automatically indexing an article which
+
+of various subjects antagonist or blood
+
+supply or drug therapy or epidemiology
+
+apply to any particular article that's
+
+written that's in our database so in
+
+summary text classification is the task
+
+of assigning any kind of topic category
+
+to any piece of text and that could be
+
+subject categories you know you know in
+
+some kind of an online database it can
+
+be detecting spam it can be choosing an
+
+author from a set of authors choosing
+
+their gender or maybe it's their age you
+
+want to find the young writers or old
+
+writers telling if a language Distronic
+
+if a text was written in one language
+
+versus another language and the
+
+important commercial application of
+
+sentiment analysis all of these are
+
+examples of text classification let's
+
+define the task of text classification
+
+we have as input a document D and then a
+
+fixed set of classes the set C with J
+
+classes c1 c2 up till CJ and our goal
+
+given this document and the set of
+
+classes is to predict a class C from
+
+that set of classes so our job is to
+
+take a document and assign a class to
+
+that document how do we do this the
+
+simplest possible text classification
+
+method is to use handwritten rules so
+
+for example if we're doing spam
+
+detection we might just have a list of
+
+bad email addresses a blacklist that
+
+these people are probably spammers or we
+
+might look for phrases like millions of
+
+dollars or you have been selected these
+
+are good indications that we have spam
+
+and if these rules are carefully refined
+
+by an expert you can get high accuracy
+
+from handwritten the rules but in
+
+general building and maintaining these
+
+rules is expensive so
+
+hand-coded rules are often used as part
+
+of a system of text classification we we
+
+generally combine that with an important
+
+method from machine learning this method
+
+is supervised machine learning so in
+
+supervised machine learning we have a
+
+document D just as we did before and a
+
+fixed set of classes as we did before
+
+but we need one more thing now we need a
+
+training set of some late some documents
+
+that have been hand labeled for their
+
+class so we have for document one we
+
+know that it's in class one for document
+
+two it's in some other class and maybe
+
+for document and we have a label for the
+
+class of document M so given the
+
+document the set of classes and the
+
+fixed and the training set of hand label
+
+documents the goal of machine learning
+
+is to produce a classifier and we'll use
+
+gamma to refer to the classifier and
+
+gamma is a function that given a new
+
+document will give us the class so given
+
+a set of training labels of documents
+
+and classes we'll learn a classifier
+
+that map's a document to a class there's
+
+lots of kinds of machine learning
+
+classifiers we're going to talk today
+
+about naive Bayes but we'll see we'll
+
+look later in the course we'll talk
+
+about logistic regression and we'll
+
+touch on other kinds of classifiers like
+
+support vector machines also called
+
+SVM's K nearest neighbors lots of other
+
+classifiers no matter which classifier
+
+we use the task of text classification
+
+is to take a document it's text other
+
+kinds of features and extract features
+
+that represent the document and build a
+
+classifier that can tell us which class
+
+the document belongs to

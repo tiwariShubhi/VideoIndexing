@@ -1,0 +1,719 @@
+﻿we're ready to talk now about advanced
+
+methods of smoothing remember the ad1
+
+smoothing that we had earlier in add one
+
+smoothing we add one to the numerator
+
+and V to the denominator and we saw a
+
+generalization of that ad K smoothing
+
+where we added K to the numerator and KB
+
+to the denominator and we can modify
+
+that slightly we can create a new
+
+version where we simply replace
+
+introduce a new new term new variable M
+
+equals kV and now we have a new a new
+
+way of writing atcase moving and that is
+
+going to be a helpful way of writing it
+
+and the reason is let's see on the next
+
+slide that when we write write it this
+
+way
+
+we can see that what we're doing is
+
+adding to every diagram we're adding a
+
+constant that's related to one over the
+
+vocabulary size and instead of doing
+
+that we could add a constant related to
+
+the unigram probability of the word that
+
+we're backing off too so the unigram
+
+prior smoothing algorithm is a as a
+
+extension to add K that says instead of
+
+using 1 over V as our to add to every
+
+adding some function of 1 over V to
+
+every diagram count let's add something
+
+about the unigram probability so really
+
+you know Graham prior is a kind of
+
+interpolation and so it's a variant of
+
+interpolation where we're adding a count
+
+and in some function of the you know
+
+Graham probability to the by graham
+
+count nonetheless although you know
+
+Graham prior smoothing works well it's
+
+still not well it wasn't it still
+
+doesn't work well enough to be used for
+
+language modeling nonetheless despite
+
+the fact that unigram prior smoothing
+
+works well it doesn't work well enough
+
+to be used for language modeling instead
+
+the intuition used by many smoothing
+
+algorithms good-turing smoothing kinase
+
+or nice smoothing Whitten bell smoothing
+
+is to use the count of things we've seen
+
+once to estimate the count of things
+
+we've never seen the goal of a smoothing
+
+algorithm is to replace those unseen
+
+zeros with something else and all these
+
+algorithms say
+
+look at the things you've seen once
+
+things that you saw once before are just
+
+like things that you haven't seen yet
+
+and then you're going to see them once
+
+in the test set so to see how this
+
+intuition works we're going to introduce
+
+some notation and we're going to the
+
+notation we're going to introduce is a
+
+big n sub C and that will mean the
+
+frequency of frequency C meaning how
+
+many things occurred with frequency see
+
+how big is the bin of things that
+
+occurred with frequency C and that's
+
+hard to - it's not very intuitive so
+
+let's look at some intuitions so let's
+
+take a little sentence am I am I am Sam
+
+I do not eat and let's just look at the
+
+units in there so we have I occurring
+
+three times
+
+Sam occurring twice and do not and eat
+
+occurring once each time so what is n
+
+sub one how many things occur one time
+
+well here they are there are three of
+
+them three different word types occur
+
+one time so n sub 3 sub 1 is 3
+
+how about how many things occur two
+
+times well there's two of those so n sub
+
+2 is 2 and how about things that occur
+
+three times well only one of those
+
+happens so n sub 3 is 1 all right so now
+
+that we have the intuition about how to
+
+think about frequencies of frequencies
+
+let's apply this to get the intuition
+
+for good-turing smoothing imagine you're
+
+fishing this is a scenario invented by
+
+Josh Goodman and you've caught 10 carp 3
+
+perch 2 white fish 1 trout 1 salmon and
+
+1 eel I don't know what kind of river or
+
+stream or ocean this could be but
+
+nonetheless you've caught 18 fish and I
+
+we want to estimate how likely is it the
+
+next species is trout and that's just
+
+like words we have maybe a word that's
+
+occurred ten times or three or two or
+
+one we want to know how likely is that
+
+these ones to occur again well there's
+
+been 18 fish trout's occurred one time
+
+out of 18
+
+so the probability ought to be 1 out of
+
+18 but now let's ask how likely is it
+
+that the next species
+
+a new species catfish or bass some
+
+species we haven't seen before something
+
+that occurred zero times well the good
+
+touring intuition says let's use our
+
+estimate of things we saw once to
+
+estimate these new things we've never
+
+seen before so what's our estimate of
+
+things once our estimate of thing once
+
+is drawn from n sub 1 how many things
+
+occurred once well what's n sub 1 and
+
+some what is 3 so out of the 18 things
+
+we saw 3 of them were new we're things
+
+that only occurred one time so let's use
+
+3 out of 18 as our estimate for things
+
+that that we've never seen before we're
+
+going to use our estimate of things that
+
+ount of things that we've seen once as
+
+our estimate of things that we've never
+
+seen before we're gonna reserve some
+
+probability mass for all those unseen
+
+thing well now if we do that if we use 3
+
+out of 18 as our estimate for all the
+
+unseen things we could possibly see how
+
+likely is that the next species is trout
+
+well I already asked you that question
+
+but before I said 1 over 18 but that
+
+can't be true anymore it must be less
+
+than 1 over 18 because we've used some
+
+of our probability mass for the from the
+
+original 18 fish we've saved some of
+
+that for these new fish that we've never
+
+seen before we've removed 3/18 of our
+
+probability mass and so we now have to
+
+have to discount all of our
+
+probabilities for the other fish
+
+downward a little bit how are we going
+
+to estimate what this discount factor is
+
+how much should we reduce all of these
+
+counts here's the equation for good
+
+touring here's the answer to that
+
+question good touring tells us that the
+
+probability for things that we've never
+
+seen before P star for things with zero
+
+frequency is exactly what we used on the
+
+previous slide and sub 1 the count of
+
+things that have occurred with frequency
+
+1 over n so it's just the that we saw 3
+
+out of 18 was our number before well
+
+then what do you do with with things
+
+that
+
+didn't occur with zero frequency and for
+
+that we use the second part of the good
+
+touring equation which says the new
+
+count C star the good touring count is
+
+going to be n sub C plus 1 divided by n
+
+sub C times C plus 1 so let's just work
+
+that out and will will will give you an
+
+intuition for why this is in a second
+
+let's work out the work it out and a
+
+little example first
+
+so unseen fish let's say it's bass or
+
+catfish we hadn't seen before
+
+in the training set the maximum
+
+likelihood probability estimated
+
+probability is zero we didn't see this
+
+in the training set out of zero words so
+
+it's zero out of 18 or zero but smooth
+
+we're going to use the new good touring
+
+probability and that says it's n one out
+
+of n + 1 is three we saw three things
+
+once on the previous slide out of 18
+
+things and so the new probability is
+
+going to be 3 18s what about 4 something
+
+we've seen once like trout how we going
+
+to re estimate the trout well the
+
+maximum likelihood estimate tells us
+
+that there was the count of one and so
+
+that maximally hit probability is 1 over
+
+18 but the new good touring formula here
+
+says the count of trout should be C C is
+
+1 C + 1 so 2 times n sub 2 over n sub 1
+
+and that's going to be 2 times 1/3
+
+because n sub 2 is 1 from the previous
+
+slide and n sub 1 is 3 and 2 times 1/3
+
+so 2/3 so our good touring probability
+
+takes our C star from trout m and and
+
+divides it by the 18 things we've seen
+
+so it's 2/3 / 18 or 127 so instead of
+
+the count of things we saw once before
+
+we had 1 over 18 and now we've dropped
+
+it to 2/3 2/3 over 18 so we've
+
+discounted our probability from one 18th
+
+to only 2/3 of an 18th and we've used
+
+that extra discounted probability mass
+
+to account for the zero things we've
+
+never seen before let's look at the nice
+
+intuition for good touring developed
+
+by Haman eyeing his colleagues imagine
+
+the training set this is of size see
+
+unless we'll be a training set with
+
+words in it here's a word here's another
+
+word here's another word here's another
+
+word
+
+and now let's we're gonna help hold out
+
+iteratively words from this training set
+
+let's first take one word that first
+
+word there the blue word and we'll just
+
+write it over here
+
+so now we'll think about the training
+
+set without that word that's got C minus
+
+one words and this one held outward over
+
+here the blue word and now let's do the
+
+same thing with a different word let's
+
+take out let's say the second word so we
+
+still have C minus one if we include
+
+this guy C minus one words left in
+
+training and then one more word over
+
+here in the held out set and we'll do
+
+this C times so each time we'll pull out
+
+one word so we pulled out words one by
+
+one and what we've created is a held out
+
+set that's of size C but each warden
+
+that was created from a training set
+
+that was missing that word a training
+
+set of size C minus one minus that word
+
+so imagine each of these words and their
+
+corresponding training sets and we can
+
+look at a picture developed by Dan Klein
+
+to think about this treat this intuition
+
+and here we've just turned those held
+
+out in training sets on their side so I
+
+still have a length C but I've never
+
+written them vertically and now let's um
+
+think about this intuition I've got C
+
+training sets each one of size C minus
+
+one and then I have a each one has a
+
+held out set of size one and let's try
+
+to answer the question what fraction of
+
+held out words are unseen in training
+
+well these words and sub-zero the words
+
+unseen in training each Ward that's
+
+unseen in training occurred one time in
+
+the original training set before we
+
+removed we took I each of our held out
+
+data if there was a word and occurred
+
+once in training so it's in n sub one
+
+occurred once in training and we take it
+
+out of its training set
+
+leaving C minus one words then that word
+
+occurs zero times in its training set
+
+the new training set without that word
+
+so the word the held out words and
+
+sub-zero of them those n sub zero words
+
+were the words that were n sub one in
+
+their original training set before we
+
+remove them so if we want to know how
+
+many words are unseen in training it's
+
+the words that occurred one time in the
+
+original training set or n1 / C well
+
+correspondingly if we want to know let
+
+me clear that up what fraction of words
+
+are seen K times in training let's pick
+
+a K perhaps will be 2 so we pick n sub 2
+
+then M the number of things that occur
+
+two times in our held out set is the
+
+number of things that occurred three
+
+times in the original training before we
+
+removed one eat one copy of each of
+
+those words for now they occur only
+
+twice so we need to think if you want to
+
+know how many words occur to K times in
+
+training to estimate that it's really
+
+the words that occurred k plus 1 times
+
+in our original training set and then
+
+we're gonna want to and we're gonna want
+
+to multiply that by the number of words
+
+that occur each of those words occurs
+
+and k plus 1 time so if k plus 1 and
+
+were occurrences of the end sub k plus 1
+
+bin each of which has n sub k plus 1
+
+words in it and we'll express that as a
+
+fraction out of the total word seaman
+
+for the total words or c so that's the
+
+fraction of held out words seen k times
+
+in training and um that means in the
+
+future we expect k plus 1 times n sub k
+
+plus 1 over c of the words to be those
+
+with training count k and since there
+
+are n sub k words with training count k
+
+we want to this this fraction is
+
+probability we want to distribute that
+
+over n sub k words so we're each of
+
+those n sub k words is going to occur
+
+with probability k plus 1 times n sub k
+
+plus 1 over c over n sub k because we're
+
+distributing it over those words and
+
+that means that the expected count we
+
+multiply back by c again to turn from a
+
+fraction back into account the expected
+
+count of words that occur with training
+
+couch k k sub star is k plus 1 times the
+
+ratio of n sub k plus 1 over n sub k the
+
+we talked about we always compute the
+
+count n sub K from n sub K plus 1 but
+
+what we do for words that are in fact
+
+the mug the largest set the K plus the
+
+largest number let's say that the word
+
+the is in fact the word that occurred
+
+most frequently in the corpus we don't
+
+have a more frequent word to estimate it
+
+from so for a large K the this good
+
+touring estimator doesn't work well
+
+because there's lots of words that may
+
+never have occurred let's say 4418 times
+
+or even 3722 times we're gonna have some
+
+gaps and so um we'll have some some 0 so
+
+the word maybe this is the word the' and
+
+this is some other word of and there's a
+
+missing word in here and there's missing
+
+words here so we can't always use the n
+
+plus 1 word to do the estimation and um
+
+a simple replacement for that in fact an
+
+algorithm called simple good touring is
+
+after after the counts get unreliable
+
+after the first you know first few
+
+counts we just replace our estimator
+
+with some kind of a best fit power law
+
+so we don't actually use a good tourim
+
+with each of these higher order numbers
+
+we just use them for the lower lower
+
+bins so let's look at the resulting good
+
+tour numbers from one example so here's
+
+numbers from a church and gale
+
+experiment where they use 22 million
+
+words of AP newswire here's the just
+
+remind you here's the good touring
+
+equation so the count
+
+seastar is c plus 1 times n c plus 1
+
+over n c so here's the original count
+
+see here's all here's the zeros now
+
+replaced by the good touring estimator
+
+with a little extra probability mass
+
+from from n sub 1 here's the ones the
+
+ones all turn into 0.446 all the things
+
+that occurred with count to now occur
+
+with count 1.26
+
+all the things with count 3 occur with
+
+count 2.2 4 so each of our counts has
+
+been discounted each of these counts
+
+have been discounted to us to a lower
+
+number to leave some room for the things
+
+with 0 count and the last thing i want
+
+to leave you on is is asking you what's
+
+the relationship but
+
+in each of these counts the original
+
+counts see and these count see star do
+
+you notice any general relationship

@@ -1,0 +1,247 @@
+﻿knowing the Edit distance between two
+
+strings is important but it turns out
+
+not to be sufficient we often need
+
+something more which is the alignment
+
+between two strings we want to know
+
+which symbol in string X corresponds to
+
+which symbol and string y and this is
+
+going to be important for any
+
+application we have a better distance
+
+from often from spell checking to
+
+machine translation even in
+
+computational biology the way we compute
+
+this alignment is we keep a back trace a
+
+back trace is simply a pointer when we
+
+enter each cell in the matrix that tells
+
+us where we came from and and when we
+
+reach the end the upper right corner of
+
+our matrix we can use that pointer and
+
+then trace back through all the pointers
+
+to read off the alignment let's see how
+
+this works in practice again I've given
+
+you the equation for each cell in edit
+
+distance and if we put in some of our
+
+values that we saw earlier I'll start by
+
+putting in some values so all right so
+
+we can ask how did we get to this value
+
+2 2 is we pick the minimum of three
+
+values we get it or take so 2 is the
+
+distance this 2 here is the distance
+
+between the string I and the string II
+
+and we got that by saying it's either
+
+the alignment between nothing and E +
+
+the insertion of an extra I so that's
+
+the distance of 1 + 1 is 2 or 0 plus 2
+
+is 2 or 1 + 1 is 2 so we had three
+
+different values so if we were asking
+
+which of which minimum path did we come
+
+from really they're all the same we
+
+could have come from any of them and
+
+that's going to be true for this value
+
+of 3 as well it we computed it as the
+
+minimum of 2 + 1 1 + 2 or 2 + 1 so this
+
+could have come from here here or here
+
+and similarly that's going to be true I
+
+didn't work out the arithmetic for you
+
+but it's going to be true for the cell -
+
+you can look it up for yourself um here
+
+we have a distant difference so the
+
+distance between I and T E and E we
+
+could compute that by taking the
+
+distance what it cost us to to convert
+
+int e to nothing and then add another
+
+insertion for Eve but that would be that
+
+would be silly because 4 plus 1 is 5 and
+
+there's a cheaper way to get from int e
+
+to e and that is that it cost us nothing
+
+to match this e to that e so our
+
+previous alignment between int and
+
+nothing we we can add 0 from 3 to get a
+
+3 so the minimum path for this 3 came
+
+from that 3 so well in some cases a cell
+
+came from many places in this case it
+
+unambiguously came from this previous 3
+
+and so we're gonna do this for every
+
+cell in the array and the result will
+
+look something like this where we have
+
+for every cell every place it could have
+
+come from and you'll see that in a lot
+
+of cases any path could have worked so
+
+this 6 could have come from any place
+
+but then crucially this final alignment
+
+this 8 that tells us the final distance
+
+between intention and execution our
+
+trace back tells us it came from the the
+
+best alignment between intention and
+
+execution which came from the best
+
+alignment from intense eye from execute
+
+I and so on
+
+and so we can trace back this alignment
+
+and get ourselves alignment that tells
+
+us that this n matched this N and this o
+
+match this o and so on but maybe here we
+
+have an insertion rather than a clean
+
+lining up computing the back trace very
+
+simple we take our same minimum at a
+
+distance algorithm that we've seen and
+
+here I've labeled the cases for you so
+
+when we're looking at a cell we're
+
+either deleting inserting or
+
+substituting and we simply add pointers
+
+so in the case where we're inserting we
+
+point left and the case where we're
+
+deleting we point down and in the case
+
+where I'm substituting the point
+
+diagonally and I've shown you that
+
+arrows on the previous slide
+
+so we can look at this distance matrix
+
+and think about the paths from the
+
+origin here to the the end of the matrix
+
+and any non decreasing path that goes
+
+from the origin to the point M nm
+
+corresponds to some alignment of the two
+
+sequences an optimal alignment then is
+
+composed of optimal sub sequences and
+
+that's the idea that makes it possible
+
+to use dynamic programming for this task
+
+so the resulting of our back trace are
+
+two strings and then the alignment
+
+between them so we will we'll know which
+
+which things line up exactly which
+
+things line up with substitutions and
+
+then when we should have insertions or
+
+deletions what's the performance of this
+
+algorithm in time it's order n m because
+
+our that our distance matrix is of size
+
+n m and we're filling in each cell one
+
+time and the same is true for space and
+
+then the back trace then we have to on
+
+the in the worst case go for if we had n
+
+deletions and M insertions we'd have to
+
+go n plus m with the touch n plus M
+
+cells but not more than that so that's
+
+our back trace algorithm for computing
+
+alignments

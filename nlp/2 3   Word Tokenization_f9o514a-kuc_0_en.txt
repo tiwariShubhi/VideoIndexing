@@ -1,0 +1,711 @@
+﻿word tokenization is an important part
+
+of text processing every natural
+
+language processing tax has to normalize
+
+the text in some way we start by
+
+segmenting or tokenizing the words off
+
+and we often have to normalize the
+
+format of each of the words and as part
+
+of this process we're going to have to
+
+break out sentences from the text so
+
+let's start by talking about this kind
+
+of word tokenization how many words are
+
+there in a sentence here's a sentence I
+
+do mean mainly business data processing
+
+how many words are in that sentence it's
+
+a complicated question there's a word
+
+like uh is a word or how about the
+
+cutoff mean of mainly so we call things
+
+like main fragment we call things like
+
+uh filled pause so for certain
+
+applications we might want to be
+
+counting these if we're dealing with
+
+speech synthesis or speech recognition
+
+or or correcting things
+
+what about cat and cats we've talked
+
+about The Cat in the Hat so we define
+
+the term lemma two words are the same
+
+lemma if they have the same stem the
+
+same part of speech the roughly the same
+
+word sense so cat and cats are both
+
+nouns they have similar meanings we say
+
+that cat and cats are the same lemma so
+
+the same word in that sense we define
+
+the term a word form to mean the full
+
+inflected surface form so cat and cats
+
+by that definition of word are different
+
+words or the different word forms so
+
+we're going to use different definitions
+
+depending on our goals so let's look at
+
+an example sentence they lay back on the
+
+San Francisco grass and looked at the
+
+Stars and they're so on and let's ask
+
+how many words there are in this
+
+sentence so count for yourself we can
+
+define words in a couple ways word types
+
+how many vocabulary elements there are
+
+how many unique words there are and word
+
+tokens how many instances of that
+
+particular type there are in running
+
+text so how many tokens do we have in in
+
+here well should be easy to count one
+
+two three four five and so on so if we
+
+count San and Francisco separately we
+
+end up with 15 if we count San Francisco
+
+as one token we end up with fourteen so
+
+even the definition of a word depends a
+
+little bit on what we're going to do
+
+with our spaces how about types count
+
+for your
+
+well there's 13 types again depending on
+
+how we count so we have multiple copies
+
+the word the there's the again it
+
+depends if we count San Francisco as one
+
+word or two and remember our lemmas we
+
+might decide that they and their since
+
+they are the same lemma although they're
+
+different word forms you might want to
+
+count them as the same type depending
+
+again on our goal in general we're going
+
+to be referring to the number of tokens
+
+which comes up whenever we're counting
+
+things with capital N and we'll use
+
+capital V to mean the vocabulary the set
+
+of different types and we'll use set
+
+notation so the cardinality of the set V
+
+is the size of the vocabulary although
+
+sometimes for simplification will just
+
+use capital D to mean the vocabulary
+
+size when it's not ambiguous so how many
+
+words and tokens and types are there in
+
+the kind of data sets that we look at in
+
+natural language processing let's look
+
+at a couple of these data sets of
+
+texture called corpora and here's three
+
+important corpora the switchboard corpus
+
+of phone conversations has 2.4 million
+
+word tokens and there's 20 thousand word
+
+types in those 2.4 million words
+
+Shakespeare has just under a million
+
+word tokens Hicks was quite a small
+
+corpus he wrote 800,000 words in his
+
+lifetime and in that less than a million
+
+words he actually used 31,000 distinct
+
+words that are very very broad
+
+vocabulary famously and if you look at a
+
+very huge corpus the Google engrams
+
+corpus that has a trillion different
+
+tokens a very large number of words
+
+there's 13 million types so how many
+
+words are there in English well if you
+
+look at conversation 20,000 different
+
+words if you look at Shakespeare 30,000
+
+words and if you combine the two
+
+probably somewhere not quite the sum of
+
+the two but some larger number but you
+
+look at the google engrams we have 13
+
+million words and of course some of
+
+those are probably URLs and and email
+
+addresses but even if you eliminate all
+
+those the number of words in the
+
+language is very large
+
+maybe there's a million words of English
+
+and in fact Church and Gale have
+
+suggested that the size of the
+
+vocabulary
+
+grows a greater than with the square
+
+root of the number of tokens so as you
+
+get and tokens the square root of n more
+
+vocabulary items so vocabulary keeps
+
+growing and growing and its names and
+
+other kinds of things that contribute to
+
+this growing in vocabulary we're going
+
+to introduce some standard UNIX tools
+
+that are used for text processing so I
+
+have here a corpus of Shakespeare
+
+Shakespeare's complete works you can see
+
+you here's the sonnets and it goes on
+
+through all the plays so let's start by
+
+extracting all the words in the corpus
+
+so we're gonna do this using the TR
+
+program
+
+alright so the TR program takes
+
+character and it maps every instance of
+
+that character into another character
+
+and we specify TR dash C which means
+
+complement so it means take every
+
+character that's not one of these
+
+characters and turn it into this
+
+character so in this case it's take
+
+every non alphabetic character and turn
+
+it into a carriage return so we're gonna
+
+replace all the periods and commas and
+
+spaces in Shakespeare with newline so
+
+we're going to create one line one word
+
+per line in this way so let's look at
+
+that
+
+so there's we've now turned the song
+
+it's into one word per line and now
+
+we're gonna sort those words to let us
+
+look at the unique word types so let's
+
+do that and you can see here's all the
+
+A's there's a lot of them it occurs a
+
+lot in Shakespeare and that's it this is
+
+a very boring way to look through all of
+
+Shakespeare we don't want to do this so
+
+let's instead use the program unique and
+
+the program unique will take that sordid
+
+file and tell us for each unique type
+
+the count of times that it occurs so
+
+let's try that so here we have all the
+
+words in Shakespeare done with a count
+
+along the left this is the product of
+
+the unique program and we can walk
+
+through so we know that in Shakespeare
+
+the word
+
+we're the capital a occurs once the word
+
+Achilles appears 79 times the word
+
+acquaint six times and so on so that's
+
+interesting but it would be nice if we
+
+didn't have to just look at these words
+
+in alphabetical order but if we could
+
+look at them in frequency order so let's
+
+take the same list of words and now Rhys
+
+or tit
+
+bye frequency so now we have them the
+
+most frequent word in Shakespeare is the
+
+word the followed by the word eye
+
+followed by the word hand and we have
+
+the actual accounts in Shakespeare so
+
+that here is our lexicon of Shakespeare
+
+sorted in frequency order there are some
+
+problems one is that the word hand
+
+occurs twice because we didn't map our
+
+uppercase words to lowercase words so
+
+what's but to fix the mapping of case
+
+first so let's try that again
+
+we're gonna map all of the uppercase
+
+letters to lowercase letters in
+
+Shakespeare and we're going to pipe that
+
+to another instance of the tr program
+
+which replaces all of the non
+
+alphabetics with new lines and now we're
+
+going to do our sorting as we did before
+
+we're going to use unique to find all
+
+the individual types unique - he tells
+
+us the actual count and then we're going
+
+to sort again means numerically and our
+
+means start from the highest one and
+
+then we'll look at those so let's do
+
+that alright so now we've solved the
+
+problem of the an so now we only have a
+
+lowercase and we don't have our
+
+uppercase and appearing but we have
+
+another problem we have this D here why
+
+is the word D or the word s why are they
+
+so frequent in Shakespeare
+
+we also have to decide a standard that
+
+we're going to need for these are words
+
+so for example if our input is Finland
+
+apostrophe s capital
+
+how we gonna tokenize Finland depends on
+
+our goal so we might choose to keep all
+
+the apostrophes in and then we have
+
+Finland apostrophe s we might choose to
+
+replace all the apostrophes with nothing
+
+we might choose to eliminate all the
+
+apostrophe s's similarly we might choose
+
+to expand the wetters to what our and
+
+the iams to Iams
+
+because if we're for example looking for
+
+all the cases of i if for some sentiment
+
+analysis task or if we're looking for
+
+all the cases of negation for some some
+
+task we might want to turn isn't into is
+
+not how about hewlett-packard we have to
+
+decide whether words like
+
+hewlett-packard are going to be
+
+represented or or with a space the same
+
+is true with phrases like state of the
+
+art we'll have to decide for words like
+
+lowercase should they have a dash should
+
+they have no dash at all should they
+
+have a space and we talked about the
+
+issue of San Francisco and then issues
+
+with periods become a huge issue we have
+
+to decide if we're gonna represent mph
+
+leave the periods in and then all of our
+
+algorithms that use periods for
+
+splitting things are gonna have to be
+
+sensitive to this the issue of
+
+tokenization becomes even more
+
+complicated in other languages we have
+
+the French phrase long song blue or the
+
+L apostrophe to be a separate word and
+
+if so do we turn it into the into the
+
+full article la or do we keep it as l
+
+apostrophe or just an L by itself we'd
+
+like it to match the same the same word
+
+Ensemble even if a different article
+
+occurs before it so we're gonna want to
+
+break them up for some reasons but then
+
+we're stuck with these sort of non words
+
+so another issue we have to have to deal
+
+with in German the long nouns are not
+
+segmented it as they are in English so a
+
+word like life insurance company
+
+employee in English would be segmented
+
+up in German we're gonna get into these
+
+very long phrase but spelled as a single
+
+word so for German tasks like
+
+information retrieval we're gonna need
+
+to do a compound splitting in Chinese
+
+and Japanese we have a different problem
+
+there's no spaces at all between the
+
+words
+
+so here's
+
+and we've shown you the original Chinese
+
+sentence here and now here's the
+
+sentence segmented out so here's
+
+Sharapova now lives in u.s. and so on so
+
+in English we segment out
+
+- we don't so if we want to do natural
+
+language processing on Chinese any
+
+applications we need to break things up
+
+into words and so we'll need some way of
+
+doing that
+
+similarly in Japanese we have the
+
+problem that there's no spaces between
+
+words and we have the problem there are
+
+multiple alphabets that are intermingled
+
+there is the katakana alphabet there's
+
+the hiragana alphabet they're kanji
+
+which are like the Chinese characters
+
+and there's romaji the Roman letters
+
+another complicating issue that has to
+
+be dealt with in tokenizing Japanese
+
+word tokenization in Chinese is a common
+
+research problem that has to be
+
+addressed when doing any kind of Chinese
+
+natural language processing and the
+
+characters in Chinese represent a single
+
+syllable often a single morpheme and the
+
+average word is about two point four
+
+characters long so a word has to be
+
+broken up into approximately two or
+
+three characters and there are lots of
+
+complicated algorithms for this but
+
+there is a standard a baseline
+
+segmentation algorithm called the max
+
+match the maximum matching algorithm
+
+also called the greedy algorithm so
+
+let's look at max match as an algorithm
+
+we're given a word list of Chinese so a
+
+vocabulary of Chinese a dictionary and a
+
+string we'll start a pointer at the
+
+beginning of the string we'll find the
+
+longest word in the dictionary that
+
+matches the string so far starting at
+
+the pointer will move the pointer over
+
+the word in the string and then we'll go
+
+back and and move on from the next words
+
+let's just see an example of that
+
+working I'm going to pick an English
+
+example is easier to think about we'll
+
+take the phrase imagine English was
+
+written like Chinese with no spaces we
+
+have a phrase like The Cat in the Hat
+
+all ran fun together and we have a
+
+dictionary that has words like uh and uh
+
+and cat so we look at this and we say
+
+what's the longest word in our
+
+dictionary that matches the beginning
+
+and the longest word in our dictionary
+
+is the because the duck is not a word
+
+and the
+
+not a word and so on so we'll start with
+
+the and now we've gotten to here and now
+
+we say what's the longest word starting
+
+with C and the longest word is cat so
+
+now we say what's the longest word
+
+starting with the I am and so on and we
+
+do a good job how about the phrase the
+
+table down there when we take the spaces
+
+out of the table down there what's our
+
+segmentation our max match segmentation
+
+algorithm going to do with the table
+
+down there think a little for yourself
+
+you may think that what it's going to do
+
+is produce the table down there but
+
+there's a problem English has a lot of
+
+long words English has the word theta
+
+for the variable and so instead of the
+
+table down there we're going to get
+
+theta right after that lead and then own
+
+and then there so we're going to get
+
+theta bled on there so max match is in
+
+fact not a genuine gyum for this kind of
+
+pseudo English English without spaces
+
+because English has these very long
+
+words and short words all mixed together
+
+but since Chinese in general has
+
+relatively consistent word length this
+
+works very well for for Chinese and it
+
+turns out that modern probablistic
+
+segmentation algorithms work and even
+
+better so that's the end of our section
+
+on word tokenization

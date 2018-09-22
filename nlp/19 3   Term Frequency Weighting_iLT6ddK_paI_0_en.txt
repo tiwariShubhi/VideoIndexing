@@ -1,0 +1,265 @@
+﻿the next thing I'd like to introduce
+
+this term frequency weighting which is
+
+one of the components of the kind of
+
+document scores that are regularly used
+
+in information retrieval systems let's
+
+go back to where we began with the term
+
+document incidence matrix so with this
+
+matrix we recorded a number which was
+
+either 1 or 0 in each cell of the matrix
+
+depending on whether the word occurred
+
+in the document if we then think about
+
+what the representation of each document
+
+is well what we have is a vector it's a
+
+binary vector which the dimensionality
+
+of the vector is the size of the
+
+vocabulary and it's recording these ones
+
+or zeros but we don't have to limit
+
+ourselves to a binary vector like this
+
+an obvious alternative is instead to
+
+move to a count vector so now we still
+
+have a vector for each document but
+
+rather than simply putting ones and
+
+zeros in it we're putting in the number
+
+of times the word occurs in the document
+
+so we've still got a vector of size the
+
+vocabulary but is now a vector in the
+
+natural number vector space previously
+
+in the boolean retrieval model we were
+
+just looking at a set of words that
+
+occurred in the document and doing set
+
+operations like and or now with this
+
+count model we've moved to the commonly
+
+used bag of words model so in the bag of
+
+words model we're not considering the
+
+ordering of the words in a document but
+
+we are considering how many times a word
+
+occurs in the document and this word bag
+
+is commonly used for an extension to
+
+sets which does record how often a word
+
+is used so the bag of words model has
+
+some huge limitations so John is quicker
+
+than Mary and Mary is quicker than John
+
+have exactly the same vectors there's no
+
+differentiation between them and that's
+
+obviously has its limitations so in a
+
+sense this is a step back but earlier on
+
+when we introduced positional indices
+
+they were able to just
+
+which these two documents by either
+
+proximity or phrase queries and we'll
+
+want to get back to that we'll look
+
+later at recovering positional
+
+information but for now we're going to
+
+develop the bag of words model and how
+
+it's used in vector space retrieval
+
+models so we have this quantity of the
+
+term frequency of a term and a document
+
+which is just the number of times that
+
+it occurs and so the question then is
+
+how can we use that in a retrieval score
+
+thinking about it a little I hope you
+
+can be convinced that bra term frequency
+
+is perhaps not what we really want
+
+so the idea underlying making use of
+
+term frequency is if I'm searching for
+
+something like squirrels
+
+then I should prefer a document that has
+
+the word squirrel and at three times
+
+over one that just has the word squirrel
+
+and at once but on the other hand if I
+
+find a document that has word squirrel
+
+and at thirty times it's not clear that
+
+I should prefer it's thirty times as
+
+much as the document that only mentions
+
+squirrel once and so the suggestion is
+
+that relevance goes up with number of
+
+mentions
+
+but not linearly and so we want to come
+
+up with some way of scaling term
+
+frequencies that is relative to its
+
+frequency but less than linear before I
+
+go on to an outline such a measure let
+
+me just highlight one last point we talk
+
+here about term frequency now the word
+
+frequency actually has two usages one is
+
+the rate at which something occurs the
+
+frequency of burglaries and the other
+
+sense of it is the one that's always
+
+used in information retrieval so when we
+
+talk about frequency in information
+
+retrieval frequency just means the count
+
+so the count of a word in a document
+
+okay so this now is what is standard Lee
+
+done with the term frequency what we do
+
+is we take the log of the term frequency
+
+now if the term frequency is zero the
+
+word doesn't occur in the document
+
+well the log of zero is negative
+
+infinity so that's slightly problematic
+
+so the standard fix for that is we have
+
+this two case construction where we add
+
+one to the term frequency if the term
+
+does occur in the document so if it
+
+occurs once then this value will become
+
+one because the log will be zero and
+
+then we'll add one to it and we return
+
+an answer of zero if the word doesn't
+
+occur so that means that if going on a
+
+little and if we use base 10 logarithms
+
+as here you can see how we're getting
+
+this less than linear growth so if a
+
+word occurs twice in a document it gets
+
+away to one point three a little more if
+
+it occurs ten times it gets a weight of
+
+two a thousand times away to four and so
+
+on so in order to score a document query
+
+pair we're just going to sum over these
+
+terms for each word in the query and the
+
+document so it's sufficient to take the
+
+intersection of words they're in both
+
+the query in the document because
+
+everything else will contribute nothing
+
+to the score and then for each of those
+
+terms we're going to calculate this
+
+quantity and sum them up and so note in
+
+particular that the score is indeed
+
+still zero of none of the query terms as
+
+prisoner in the document okay so that's
+
+the idea of term frequency weighting and
+
+how it can be used to give a score for
+
+documents for a particular query which
+
+can be used to rank the documents
+
+returned

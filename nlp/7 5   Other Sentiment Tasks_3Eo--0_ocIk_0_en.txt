@@ -1,0 +1,527 @@
+﻿there are other sentiment tasks than
+
+just simple positive or negative
+
+polarity one important one has to do
+
+with finding the sentiment of a of an
+
+individual sentence which we're going to
+
+want to do for finding aspects or
+
+attributes that we talked about earlier
+
+so that's the finding the target of the
+
+sentiment what it is that we're talking
+
+about the sentiment about so here's a
+
+sentence the food was great but the
+
+service was awful this whole sentence
+
+doesn't really have a sentiment it has a
+
+positive sentiment about food and a
+
+negative sentence sentiment about
+
+service so we'd like to be able to deal
+
+with this kind of micro sentiment where
+
+we haven't we have a sentiment about one
+
+attribute and a different sentiment
+
+about a different attribute or aspect so
+
+how are we going to find the aspect or
+
+attribute or sometimes it's called
+
+target of a sentiment and I'll show you
+
+an example that a way of doing things
+
+that was developed both by who and and
+
+the oh and by Blair goldenson at all and
+
+the idea is we first look through all
+
+the reviews and we find every highly
+
+frequent phrase so let's say that the
+
+word fish tacos occurs a lot in in in
+
+this particular restaurant reviews of
+
+this restaurant and then we mark down we
+
+have filters that say um we prefer
+
+highly frequent places if they occur
+
+right after a sentiment word so maybe
+
+we've very often see the phrase great
+
+followed by fish tacos or terrible
+
+followed by fish tacos that suggests
+
+that fish tacos is the is an aspect a
+
+likely aspect of a let's say a taqueria
+
+so if we see great food a lot we see
+
+food occurring very often in a review
+
+and we see the word grade and terrible
+
+and awful before it a lot we know it's
+
+probably an aspect that people are
+
+applying sentiment for and this can be
+
+used automatically to find sentiment for
+
+lots of things
+
+so Blair Goldman at all used it for
+
+example for casino reviews of casinos to
+
+find words like casino buffet pool
+
+resort and beds are the kind of things
+
+people comment about in reviews on
+
+casinos for a barber you might
+
+talk about the experience or how good a
+
+job it was or facts about the haircut
+
+for a department store you might talk
+
+about sales or or different departments
+
+or the selection of the store things
+
+like that so we can automatically find
+
+the aspect in other cases though the
+
+word that describes the aspect may not
+
+be in the sentence and so um for some
+
+sentiment topics like restaurants or
+
+hotels it's pretty well understood what
+
+the aspects are that people care about
+
+for restaurants restaurants they tend to
+
+care about food decor service value and
+
+so for cases where we know in advance
+
+what the frequent aspects are here we
+
+can take a small corpus of restaurant
+
+reviews and we can hand label it with
+
+this mark every sentence um does this
+
+sentence talk about the food does it
+
+talk about the decor or is it none of
+
+the above and then we can just build a
+
+classifier which given the sentence
+
+assigns an aspect to the sentence is
+
+this sentence about food is this
+
+sentence about decor sentence about
+
+service and so on and it could be a
+
+sentence or we could assign that with
+
+you know with phrases or maybe with
+
+clauses with pieces of sentences
+
+whichever we'd like to do so two ways of
+
+finding aspect of a sentiment we can
+
+automatically find frequent phrases so
+
+we can find phrases and then we can
+
+build up a set of phrases that occur
+
+frequently and decide those are good
+
+phrases to write to that we'd like to
+
+know about for this particular product
+
+or we can decide the aspects in advance
+
+aspects are come in advance like we know
+
+what they are for restaurants and then
+
+our job is just a little classifier to
+
+find them in the review so we can decide
+
+if what person said about the food was
+
+positive or negative so putting this all
+
+together this is the Blair goldenson
+
+algorithm from Google we have a set of
+
+reviews we're going to extract a bunch
+
+of sentences or phrases so here's our
+
+extracted sentences or phrases and now
+
+for each one of them we're going to run
+
+our set
+
+and classifier is this phrase positive
+
+negative or maybe it's neutral okay and
+
+then for the ones that are that have
+
+sentiment in them the ones that are
+
+positive or negative so in the center we
+
+have sentiments and phrases with
+
+sentiment plus minus minus plus plus
+
+minus and so on we're gonna extract the
+
+aspects of these so is this about food
+
+is it about is it about decor what's the
+
+sentence about so now we have plus food
+
+and now we have minus decor minus
+
+service and so on for each sentence or
+
+phrase we have both a sentiment and an
+
+aspect and now we aggregate these
+
+together and produce a final summary and
+
+here's an example of what you might get
+
+um as the final summary so maybe for a
+
+hotel four rooms we might get that this
+
+sentence the room was clean and
+
+everything worked fine positive
+
+sentiment another positive sentiment
+
+here's an example of negative sentiment
+
+so we first figure out that worst is a
+
+negative sentiment and then we might
+
+extract from somewhere in here that
+
+there's some mention of rooms and
+
+similarly for a service we might see the
+
+service gives new meaning to slow and
+
+that's negative
+
+we made some simplifications in the
+
+baseline method we as we gave for
+
+sentiment classification we assumed that
+
+the class is positive and negative
+
+occurred with equal frequency and that's
+
+of course not usually true in the real
+
+world and it turns out that when the
+
+classes are not balanced we can't use
+
+accuracies as an evaluation and the F
+
+score can deal well in when evaluating
+
+classes where there's many more positive
+
+than negative or maybe there's many more
+
+negative than positive reviews it turns
+
+out that this if the if there's a severe
+
+imbalance in class frequencies that can
+
+actually degrade the classifier
+
+performance and there are two standard
+
+things we do to deal with that one is we
+
+just resample before we train so for
+
+example if one class has a million
+
+reviews and one class has 10,000 reviews
+
+they
+
+and we might just dance down sample and
+
+take only um 10 to the 4th of these
+
+reviews to match with these reviews
+
+instead of resampling we can use
+
+cost-sensitive learning cost-sensitive
+
+learning we take we actually change the
+
+classifier and we tell the classifier
+
+don't even though this one you've seen a
+
+lot more of this frequent thing penalize
+
+it for misclassifying the really rare
+
+thing and so that'll force it to focus a
+
+little more on their way of things
+
+than on the very frequent thing so two
+
+things you can do to deal with the
+
+imbalanced frequency problem that often
+
+occurs in real classes we also in our in
+
+our basal base line algorithm made the
+
+simplifying assumption that sentiment
+
+was a binary problem positive or
+
+negative so how do we deal with five
+
+stars or seven stars or ten stars so
+
+there's two ways we can do this we can
+
+map onto a binary class we can say
+
+things that are more than three point
+
+five stars are positive or less than
+
+three point five or negative or we can
+
+take the average of all the data we can
+
+z-score we can do various ways of
+
+drawing a boundary between positive
+
+things and negative things or we can
+
+actually attack the seven one two seven
+
+classification tasks directly by using
+
+linear or ordinal regression or
+
+specialize models like metric labeling
+
+that's used by panin Lee so again we can
+
+either down sample and just do binary
+
+classification or we can use a more
+
+advanced method of classification that
+
+lets us predict an ordinal value or or a
+
+real-valued number so in summary
+
+sentiment generally modeled as a
+
+classification task polarity often with
+
+binary them less often and with some
+
+kind of ordinal or linear valued label
+
+and um negation a very important feature
+
+to use for lots of tasks using all the
+
+words in naive Bayes seems to work well
+
+off for other tasks using subsets of
+
+words may help and we can either use
+
+handbell polarity lexicons or for tasks
+
+for which the pluriel ex-cons seem
+
+inappropriate we can induce lexicons
+
+using semi-supervised learning
+
+some hand-built seeds now remember that
+
+sentiment is really just one of many
+
+kinds of effective state it's a it's a
+
+kind of attitude classification but
+
+there's lots of other kinds of affective
+
+state classification that come up in
+
+their computational problems that are
+
+very similar to sentiment analysis so to
+
+look at some of them for emotions we
+
+might want to detect annoyed callers to
+
+some dialogue system so it's detecting
+
+the emotion of annoyance or detect
+
+confused or frustrated students in
+
+online tutorial versus confident
+
+students for longer - removes we might
+
+want to find traumatized or depressed
+
+people like writers of some blog or text
+
+in conversations we might want to detect
+
+if someone's friendly or unfriendly in
+
+very long term personality traits we
+
+might want to detect extroverts or
+
+introverts for building dialogue systems
+
+that can communicate better with
+
+extroverts are in traversed and there's
+
+lots of research actually on all of
+
+these tasks we'll just show you one of
+
+them which is a task we've worked on
+
+here at Stanford which is detection of
+
+friendliness so um
+
+friendly speakers use it turns out use
+
+collaborative conversational style so we
+
+build classifiers that look at features
+
+like how often someone laughs or how
+
+often they use negative emotional words
+
+or how frequently they use phrases like
+
+that's too bad that indicates sympathy
+
+or agreement I think so - so the more
+
+friendly someone is the more likely they
+
+are used sympathetic words or agreement
+
+or the less likely they already use a
+
+hedge like kind of or sort of and we've
+
+shown that these classifiers help in
+
+we've looked at the task of detecting
+
+how friendly someone is or how
+
+flirtatious someone is in speed dates
+
+and we found that these kind of features
+
+help in detecting friendliness so simple
+
+lexical features like words and phrases
+
+and where we have speech speech features
+
+like prosody or pitch all of these can
+
+help in detecting sentiment simple
+
+polarity and much more rich affective
+
+meaning of all sorts of kinds

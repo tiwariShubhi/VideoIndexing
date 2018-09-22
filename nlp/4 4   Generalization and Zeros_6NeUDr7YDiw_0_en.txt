@@ -1,0 +1,263 @@
+﻿we saw earlier that lots of times
+
+probabilities or counts of by grams or
+
+trigrams would be zero what do we do in
+
+these cases let's think about this by
+
+starting with these sheep what's called
+
+the Shannon visualization method and
+
+this is what Shannon proposed to to
+
+visualize the actual Engram grammar that
+
+you've built by maximum likelihood
+
+estimation so here's the the method we
+
+choose a random by Gram according to its
+
+probability so this is a bigram with
+
+start as the first word and then any
+
+other word according to its probability
+
+roll a die and pick whichever bigram
+
+comes up so let's say we picked Tom is
+
+very likely first word so we pick start
+
+as our first by Gram now we choose
+
+another random diagram that starts with
+
+that word W we just generated and and
+
+whose next word is chosen according to
+
+its probability so now we pick want so
+
+we've picked I want and now we go on
+
+until we happen to choose the end of
+
+sentence so I want to to eat eat Chinese
+
+Chinese food food in a sentence out
+
+there we go so now we've string these
+
+words together and we've generated a
+
+sentence so the Shannon visualization
+
+method can show us a lot of things about
+
+the Ingram's that we've built so for
+
+example here's a grammar a language
+
+model trained on Shakespeare and
+
+generating random sentences so here's
+
+some unigram sentences every enter now
+
+severally so let Hill he late speaks or
+
+not very good sentences how about our by
+
+grams
+
+why does stand forth by canopy forsooth
+
+he is this palpable hit the King Henry
+
+live King follow that was better this is
+
+begin to sound like Shakespeare how
+
+about this one
+
+indeed the Duke and had a very good
+
+friend well that sounds pretty good
+
+sweet prince Falstaff shall die and now
+
+let's look at the Quadro grams it cannot
+
+be but so will you not tell me who I am
+
+that sounds very good
+
+now Shakespeare produced 800 thousand
+
+words at with a vocabulary of 30,000 and
+
+it turns out that in those eight hundred
+
+thousand word he produced about those
+
+30,000 words he produced about three
+
+hundred thousand diff
+
+by Graham type so different word unique
+
+pairs of words but that's 300,000 out of
+
+30,000 squared or out of 80 844 million
+
+possible by Graham so if we multiply
+
+that out
+
+99.9 six percent of the possible by
+
+Graham's were never seen those are going
+
+to have zero entries in the by Graham
+
+table vast number of zeros so that's
+
+just by Graham's Quadra games are even
+
+worse so the reason why those Quadra
+
+games look like shakespeare is because
+
+those were actual Shakespeare sentences
+
+because following any particular Quadra
+
+Graham really only one possible word
+
+could occur with such a small corpus as
+
+Shakespeare and we can see that if we
+
+look at them a different corpus like The
+
+Wall Street Journal it's not Shakespeare
+
+so for example here's some trigram
+
+sentences from The Wall Street Journal
+
+they also point to ninety-nine point six
+
+billion dollars from 200 4:06 three
+
+percent of the rates of interest stores
+
+as Mexico and Brazil and market
+
+conditions that sounds like The Wall
+
+Street Journal um but here's two corpora
+
+of English both written Oh both
+
+reasonable sized corpora millions of
+
+words or at least a million words and no
+
+overlap at all in the shakespeare
+
+sentences and the Wall Street Journal
+
+sentences so what's the lesson from this
+
+one lesson is the perils of overfitting
+
+and grams only work well for word
+
+prediction if the test corpus looks like
+
+the training corpus if you test on
+
+Shakespeare and your but you trained on
+
+the Wall Street Journal you're not going
+
+to predict words is read well so in real
+
+life this just doesn't happen so we'd
+
+like to Train robust models that do a
+
+better job of generalizing and I want to
+
+talk about one kind of generalization
+
+which is dealing with zeros so by zeroes
+
+I mean things that never occurred in the
+
+training set but do occur in the test
+
+set so let's look at some zeros imagine
+
+that in the training set we had phrases
+
+like denied the allegations denied the
+
+reports denied the claims denied the
+
+request and we never saw denied the
+
+offer so the probability based on
+
+maximum likelihood estimation of offer
+
+given denied the is zero now we go to a
+
+test set
+
+and we see there's a sentence denied the
+
+offer and denied the loan what's the
+
+probability of those sequences denied
+
+the offering that I do I'm going to be
+
+well the probability is going to be 0
+
+because our we've trained our
+
+probabilities on our training set we're
+
+going to do a very bad job if we're a
+
+speech recognizer will never recognize
+
+this phrase if we're a machine
+
+translator will refuse to translate into
+
+this phrase we're gonna claim this
+
+phrase is just not good English so this
+
+is a this is a big problem we need to
+
+solve so buy grams with zero probability
+
+that mean that we're going to assign
+
+zero probability to the test set and so
+
+we can never compute perplexity we can't
+
+divide by zero so we knew we're going to
+
+need a find a way of dealing with
+
+diagrams with zero probability

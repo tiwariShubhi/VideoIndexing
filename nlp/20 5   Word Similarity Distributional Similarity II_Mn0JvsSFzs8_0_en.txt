@@ -1,0 +1,395 @@
+﻿all right now in the previous segment we
+
+saw how to compute ppm I positive point
+
+wise mutual information in this segment
+
+we'll see how to take those values and
+
+compute similarity between words first
+
+let's talk about a different kind of
+
+context than just word context a common
+
+way to define context is to use syntax
+
+and this again relates back to early
+
+linguistic arguments that the meaning
+
+has to do with the restriction of
+
+combination of entities grammatically so
+
+in other words two words are similar if
+
+they have similar parse context and we
+
+haven't talked a lot about parsing but
+
+to give you the intuition the words duty
+
+and the words responsibilities can both
+
+be modified by similar adjectives so
+
+kind of additional duty administrative
+
+duty assume duty or additional
+
+responsibilities administrative
+
+responsibilities assumed responsibility
+
+and they can also be objects of similar
+
+verbs assert Duty assign a duty Asuma
+
+duty assign a responsibility assume a
+
+responsibility so it's not just if they
+
+have similar words around them but that
+
+their grammatical context can be similar
+
+they have similar parse context and we
+
+can capture this by using co-occurrence
+
+vectors that are based on syntactic
+
+dependencies so we say that the context
+
+instead of being counts of words with
+
+previous 10 words or following 10 words
+
+the context instead are how many times I
+
+have a particular word as my subject or
+
+how many times I have a particular word
+
+is my adjectival modifier so here's an
+
+example from the Colin Lynn we have the
+
+word cell and we say how often was this
+
+the subject of the verb absorb well once
+
+how often was the subject of the verb
+
+adapt how about the subject of the verb
+
+behave how about the prepositional
+
+object of the verb inside so we can get
+
+our counts for each of these contexts
+
+and now our vector is determined not by
+
+accounts of words that occur within 10
+
+words of me but counts of times I occur
+
+in a particular grammatical relation
+
+with the context and just as we saw with
+
+word counts we can use PMI or ppm I -
+
+our dependency relations so the
+
+intuition comes from early work by Don
+
+Hindle
+
+if I count in a corpus and I parsed the
+
+corpus and I see that the the verb drink
+
+has the object it three times and it has
+
+I drink anything three times I drink
+
+wine twice I drink liquid twice and so
+
+on well drink it or drink anything are
+
+in fact more common than drink wine but
+
+we'd like to say that wine is a more
+
+drinkable thing than it it's a if I
+
+found a wine occurring a lot with a verb
+
+two different verbs I would think that
+
+those verbs are probably similar more
+
+than if I found it occurring is the
+
+object of the two verbs and if I compute
+
+the p.m. is the p.m. i between the
+
+object of the verb and the verb drink
+
+now I see that wine and tea and liquid
+
+have a much higher PMI than it or
+
+anything so if I sort by p.m. I now I
+
+see that um tea and liquid and wine are
+
+the most associated words to be the
+
+object of the verb drink so p.m. I used
+
+for noun associations just for words in
+
+the context use me for word associations
+
+amor in the context and also for
+
+associations for dependency relations
+
+alright now we've seen how to compute
+
+the term context or word context matrix
+
+how to weight it with PMI and we talked
+
+about computing in two ways based on
+
+just words that are in my neighborhood
+
+of 10 words or whether I'm in a
+
+particular syntactic or grammatical
+
+relationship with words now we're ready
+
+to use those to compute the actual
+
+similarity and the cosine metric we're
+
+going to use just the same cosine that
+
+we saw from information retrieval so
+
+remember we had a dot product we said
+
+that the cosine similarity between two
+
+vectors to vectors indicating the counts
+
+of words is just the dot product between
+
+the similarity is the dot product
+
+between the two words normalized by the
+
+length of the two vectors so the dot
+
+product V dot W over length of the times
+
+length of W or we could compute think of
+
+it as computing separate unit vectors
+
+that normalizing V by its length
+
+normalizing doubled by its length to get
+
+unit vectors and just multiplying them
+
+together or we can compute the whole
+
+thing
+
+so here's our dot product for each
+
+dimension of V and H dimension W we
+
+multiply the values together and then we
+
+normalize by the square root of the sum
+
+squared values to get the length of the
+
+vectors and now let's say we're doing P
+
+PMI so V sub I is the PMI value for word
+
+V in context I W sub I is the ppm I
+
+value for word W in context I and
+
+remember that cosine as a metric if two
+
+vectors are orthogonal they're going to
+
+have a cosine of 0 if they point in
+
+opposite directions they'll have a
+
+cosine of minus 1 if they point in the
+
+same direction they'll have a cosine of
+
+plus 1 and it turns out that raw
+
+frequency or ppm I are non-negative
+
+they're always a zero or greater so that
+
+means that the cosine range is always 0
+
+to 1 rows on this part of the of the
+
+slope so cosine as a similarity metric
+
+if we use ppm i weighted counts we're
+
+gonna get or raw frequency for that
+
+matter we're gonna get a number between
+
+0 & 1 so let's compute use cosine to
+
+compute similarity and I've taken a
+
+little subset of the example we saw
+
+earlier so we have apricot digital and
+
+information and we have the context
+
+vector we have large data and computer
+
+and I'm just going to use counts here
+
+instead of keeping my values for for
+
+making the example more simple to see
+
+but in real life of course we'd use ppm
+
+I so the cosine between apricot and
+
+information is the dot product so from
+
+apricot to information we have 1 times 1
+
+plus 0 times 6 plus 0 times 1 or 1 plus
+
+0 plus 0 over the square root of the
+
+length of apricot 1 squared plus 0
+
+squared plus 0 squared over the length
+
+of information 1 squared plus 6 squared
+
+plus 1 squared and that's going to be 1
+
+over the square root of 38 or 0.16 and
+
+similarly the cosine between digital
+
+information we have from digital to
+
+information we have 0 times 1 plus 1
+
+times 6 plus 2 times 1 so that's going
+
+to be 0 plus 6 plus 2 over I mean the
+
+square root of the length did
+
+so that's the length of digital I'm
+
+sorry so that's square root of zero
+
+squared plus one squared plus two
+
+squared so root of zero plus one plus
+
+four and then the length of information
+
+the same as we saw before and now we get
+
+point five eight and similarly for
+
+apricot in digital and now the dot
+
+product between apricot and digital one
+
+times zero is zero times 1 0 times 2 is
+
+0 so we're gonna get a similarity of 0
+
+there are a number of possible
+
+similarity metrics
+
+besides cosine we can use the jacquard
+
+method that we saw earlier in
+
+information retrieval the dice metric or
+
+there's a family of information
+
+theoretic methods like Jensen Shannon
+
+divergence that can be also used for
+
+similarity the cosine is probably the
+
+most popular similarity for
+
+distributional methods is evaluated just
+
+the same as it is for the source both
+
+methods either intrinsic evaluation
+
+where we compute its correlation with
+
+some human number humanoid similarity
+
+number or extrinsically we pick some
+
+task like taking the TOEFL exam or
+
+detecting spelling errors or we can
+
+compute some error rate and now we see
+
+if our similarity metric results in a
+
+better error rate in summary
+
+distributional similarity metrics use a
+
+method of Association like ppm I and a
+
+metric for similarity like cosine to
+
+give you a similarity between two words
+
+and distributional and thesaurus both
+
+methods both very useful in deciding if
+
+two words are similar for any NLP
+
+application

@@ -1,0 +1,425 @@
+﻿let's now formalize the naive Bayes
+
+classifier in classification we have a
+
+document D and a class C and our goal is
+
+to compute the probability of for each
+
+class of it's probably its conditional
+
+probability given a document and we're
+
+going to see that the we're going to use
+
+this probability to pick the best class
+
+now how do we compute the probability of
+
+a class given a document by Bayes rule
+
+this is equal to the probability of a
+
+document given the class times the
+
+probability of the class over the
+
+probability of the document so let's see
+
+how to use that in the classifier the
+
+best class the maximum a-posteriori
+
+class the class that we're looking for
+
+to assign this document to is out of all
+
+classes the one that maximizes the
+
+probability of that class given the
+
+document so we're looking for the class
+
+whose probability given the document is
+
+greatest by Bayes rule that's the same
+
+whichever class maximizes probability of
+
+C given D also maximizes this equation
+
+the probability of D given C probability
+
+of the class over the probability of the
+
+document and as is traditional in
+
+Bayesian classification whichever
+
+document
+
+whichever excuse me whichever class
+
+maximizes this equation also maximizes
+
+this equation and what we've done here
+
+is we've dropped the denominator crossed
+
+out the denominator why is it okay to
+
+cross out the denominator D probability
+
+of D is how likely the document is now
+
+if I give you a document and I say which
+
+of these ten classes does this document
+
+belong to and for each of these classes
+
+I'm computing the probability of the
+
+document given the class that
+
+probability of the class and the
+
+probability the document that dot
+
+probably the document is identical for
+
+all ten classes for each class one more
+
+time I have to compute the probability
+
+and that means that if I'm comparing 10
+
+things each of which is divided by
+
+probability of the document that
+
+probably the document is a constant and
+
+I can eliminate that so the most likely
+
+Class C map is that class which
+
+maximizes the product of two
+
+probabilities the probability of the
+
+document given the class we'll call that
+
+the likelihood and the probability of
+
+the class we'll call that the prior the
+
+prior probability of the class
+
+so the most likely class is the one that
+
+maximizes the product of these two
+
+probabilities the probability the class
+
+will turn out to be relatively simple to
+
+compute what do I mean by the
+
+probability of a document given a class
+
+what do I mean to say this particular
+
+movie review was was how likely is it
+
+given the class positive it seems like a
+
+very complicated and confusing things to
+
+compute and one way to operationalize
+
+that is to say let's represent the
+
+document by a whole set of features x1
+
+through xn so when I say the probability
+
+of a document given a class I'm gonna
+
+I'm going to say that all that means is
+
+the probability of a vector of features
+
+given the class P of D given C we're
+
+going to represent that probability by
+
+the joint probability of x1 x2 up to xn
+
+given the class in other words we're
+
+representing this document D as a set of
+
+features x1 through xn that's the
+
+listing tell me how to compute this
+
+probability but but it'll it's it's a
+
+start so let's talk about these two
+
+pieces now how do i compute probability
+
+of a class well really that's just
+
+asking how often does this class occur
+
+our positive reviews much more common
+
+than negative reviews is Madison a much
+
+more frequent author so to decide to
+
+computing the probability of a class can
+
+be done just by counting relative
+
+frequencies in some corpus or dataset so
+
+the probability of a class is relatively
+
+easy to compute what about the
+
+likelihood of the document of these
+
+features in a document given the class
+
+well there's a lot of parameters for
+
+this probability there's if if there's
+
+any different features and each of them
+
+has a certain length that's a lot of
+
+parameters that have to be computed and
+
+we have to compute them one for each
+
+class so that's that's a that's far too
+
+many parameters that we could possibly
+
+compute we can only estimate at this
+
+number
+
+we had a huge number of training
+
+examples and we usually don't have such
+
+an enormous amount of training examples
+
+so we're going to make some simplifying
+
+assumptions in the naive Bayes
+
+classifier to make this computation more
+
+possible the first simplifying
+
+assumption we're going to make is called
+
+the bag-of-words assumption and we're
+
+going to assume that the position in the
+
+document doesn't matter so this is what
+
+I gave you the intuition of a few slides
+
+ago the position of the word in the
+
+document whether it's the first word of
+
+a seventh word or one hundred and
+
+fiftieth word isn't going to matter all
+
+we care about is which which word or
+
+which feature occurs and the second
+
+thing we're going to the second
+
+assumption we're going to make is we're
+
+going to assume that the different
+
+features x1 x2 x3 that their
+
+probabilities are independent given the
+
+class so that the the whether one
+
+feature occurs given a class and whether
+
+another feature occurs given a class are
+
+independently going to be true and of
+
+course this is a both of these
+
+assumptions are incorrect simplifying
+
+assumptions there they're absolutely
+
+wrong they're there they're a terribly
+
+completely not true nonetheless by
+
+making these simplifying these incorrect
+
+simplifying assumptions we can make our
+
+problem so much simpler that in practice
+
+were able to solve the problem with a
+
+high degree of accuracy despite the
+
+simplifications so the result of these
+
+two simplifying assumptions is we're
+
+going to represent the probability the
+
+joint probability of a whole set of
+
+features X 1 through X 1 conditioned on
+
+a class as the product of a whole bunch
+
+of independent probabilities probability
+
+of X 1 given the class probably of X 2
+
+given the class probably of X 3 given
+
+the class and so on up to probability of
+
+xn given the class we're just going to
+
+multiply them all together we're not
+
+going to care about X 1 which position
+
+that occurred in all we care about is
+
+that it was it was this particular word
+
+or feature and we're not going to care
+
+about the dependencies between X 1 and X
+
+2 in other words
+
+in order to compute our simplifying
+
+naive Bayes assumption to compute the
+
+most likely class by multiplying a
+
+likelihood the probability of a whole a
+
+whole joint string of features times a
+
+prior probability of a class we're going
+
+to simplify that and say that the best
+
+class by the night Bayes assumption is
+
+that class that maximizes these the
+
+prior probability of the class so that's
+
+the same but now more simply we're gonna
+
+just going to multiply for every feature
+
+in the set of features the probability
+
+of that feature given the class much
+
+simpler equation so now looking
+
+specifically at text first let's look
+
+we're gonna assume we're going to look
+
+at all positions all word positions in a
+
+text document so we have a text document
+
+and it has a it has a hundred words in
+
+it
+
+so for all four position of word number
+
+one position number tubes number three
+
+we're gonna take them look at all the
+
+classes and for each class we're going
+
+to say what's the probability of the
+
+class and then for each class we're
+
+gonna walk through every position in the
+
+text and for each position we're going
+
+to look at the word in that position and
+
+ask what's its probability given the
+
+class I'm looking at so we'll do this
+
+for class one we'll compute P of class
+
+one times the product over all the eyes
+
+of P of word I given class one so will
+
+compute that and it will do the same
+
+thing for class two for class two will
+
+compute P of class two and then the
+
+product over all positions I of the P
+
+award I given class two and then we're
+
+going to pick whichever of these two is
+
+the highest if this is higher
+
+we're gonna pick class two and assign it
+
+to the document if this is higher we'll
+
+assign class one to the document and of
+
+course I've shown you this with just two
+
+classes but in general this is true for
+
+a for any number of classes so that's
+
+the formalization of the naive Bayes
+
+classifier

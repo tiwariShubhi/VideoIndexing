@@ -1,0 +1,275 @@
+﻿okay let me now introduce how we
+
+evaluate named entity recognition in the
+
+named entity recognition task we have a
+
+sequence of word tokens and what we're
+
+going to want to do is predict entities
+
+so we're going to want to predict that
+
+this is an organization these two words
+
+these two words are a person this one
+
+word is an organization so in general we
+
+can have entity names that are several
+
+tokens long and we want to identify both
+
+the boundaries of the entity and then
+
+also its class that this is a person now
+
+you can think of that as making a
+
+classification for each token in
+
+sequence but in a way that doesn't
+
+terribly make sense because really our
+
+unit of interest is these whole entities
+
+the person and the organization's and so
+
+the standard and better task motivated
+
+evaluation is used for named entity
+
+recognition is to evaluate per entity
+
+not per token and so when we're working
+
+out our two-by-two contingency table of
+
+true positives and so on and here's our
+
+system guess what we're going to do is
+
+do it at the level of entities so in
+
+this data there are three entities and
+
+we could imagine perhaps that our system
+
+identified this one as a person name and
+
+identified this one as an organization
+
+name but missed this one so what we'll
+
+be doing is saying that there are two
+
+true positives and one false negative
+
+out of the three tokens and so the
+
+precision of our system here is a
+
+hundred percent everything that says is
+
+right and it's recall is two-thirds
+
+okay so that looks okay but when we get
+
+into the details it gets a little bit
+
+trickier than that so the problem is
+
+that recall and precision are
+
+straightforward for tasks like web
+
+search information retrieval or text
+
+categorization where there's only one
+
+grain size that you're putting a
+
+classification on a document but in this
+
+case what we're doing is putting
+
+classifications on sub sequences of
+
+words and the precision recall and F
+
+measures actually behave a bit funnily
+
+when that happens so here's an example
+
+to give you a good sense of the problems
+
+which actually occur commonly in systems
+
+so here's the piece of text first Bank
+
+of Chicago announced earnings and the
+
+correct entity is right here first Bank
+
+of Chicago which is a single
+
+organization name however our system
+
+made a little bit of a boo-boo our
+
+system has said Bank of Chicago is the
+
+name of an organization and so that
+
+means it's made of boundary error it's
+
+got the right boundary of the entity
+
+correct but it's got the left boundary
+
+of the entity wrong and this is the kind
+
+of error that any our systems make a lot
+
+and it's very easy to see in this case
+
+why it's made the error because first is
+
+also a common noun and at the start of a
+
+sentence is perfectly reasonable to have
+
+the common noun of first apple announced
+
+this and then Microsoft announced this
+
+so intuitively you might feel like
+
+really in this case the named entity
+
+recognized that should be count as
+
+mostly correct it identified that there
+
+was an organization name here and it
+
+labeled three of the four tokens but
+
+that's not how things work using the
+
+step based measures of false positives
+
+false negatives true positives and true
+
+negatives when you're working on
+
+sequences because what we say is that
+
+the true annotation is that there's an
+
+organization
+
+spans from token 1 through token 4 of
+
+the text whereas what our system guessed
+
+is that there was an organization that
+
+span from token 2 through token 4 of the
+
+text and each of these claims is taken
+
+as a unit and is put into a set of
+
+claims and then we count the number of
+
+matching claims that's the true
+
+positives and then we count the set
+
+differences in both directions and that
+
+gives us the false positives and the
+
+false negatives so what we end up with
+
+in our classification in this case is
+
+that this is a false negative and that
+
+this one here is a false positive and so
+
+actually our system will be scored as
+
+having made two errors if it does this
+
+and so actually the system would have
+
+scored better in an f1 evaluation of
+
+named entity recognition by having
+
+labeled nothing now that can be easily
+
+seen kind of wrong to you and it has
+
+seemed wrong to other people so there
+
+have been various suggestions to provide
+
+measures for evaluating named nd
+
+recognition systems but you get partial
+
+credit for doing things like this for
+
+getting entity almost right so for
+
+example the max score that was used in
+
+some of the prominent early evaluations
+
+of named entity recognition it had a
+
+algorithm that gave partial credit for
+
+cases like this but once you do that
+
+then there are these complicated
+
+questions of how much partial credit to
+
+give in which cases and it's not exactly
+
+clear and you have various arbitrary
+
+parameters so really most of the rest of
+
+the field hasn't gone there and has
+
+ended up using this straightforward f1
+
+measure for named entity recognition
+
+despite the complexities with boundary
+
+errors that I've just tried to
+
+illustrate ok so that should give you a
+
+good sense of what these measures of
+
+precision recall and F measure are why
+
+they're useful how we use them for named
+
+entity recognition but also a slight
+
+sense
+
+of how you have to be a little bit
+
+careful interpreting numbers in that
+
+case

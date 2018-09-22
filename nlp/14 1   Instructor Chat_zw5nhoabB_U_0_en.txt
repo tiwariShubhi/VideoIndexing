@@ -1,0 +1,493 @@
+﻿hi everyone welcome to our instructor
+
+chat we thought we'd take the
+
+opportunity to have a bit of a chance to
+
+check in with students and tell them a
+
+bit about the course and a couple of
+
+issues in the class I'm Christopher
+
+Manning and I'm dan jurafsky okay so
+
+first of all some people have just been
+
+asking for some statistics about the
+
+class so let's just give some rough
+
+numbers for how things are going maybe
+
+later in the class we'll get a class
+
+survey up and get a bit more information
+
+but the original registrations was about
+
+60,000 people and about 40,000 people
+
+created accounts but then if you're
+
+actually wondering like here we are at
+
+the end of week four how many people are
+
+really doing stuff watching all the
+
+videos or also doing the assignments it
+
+seems like we've got about 6,000 people
+
+or watching the videos each week and
+
+about 4,000 who are submitting the
+
+programming assignments so that's a
+
+pretty exciting number of you actually
+
+doing the homework which is really great
+
+for us to see cool so let's see they've
+
+also been a few questions about you know
+
+some of this stuff about the policy with
+
+closing registrations and so on oh yes
+
+and so we're happy to tell you that
+
+they've allowed us to open up all the
+
+videos now for previewing so if your
+
+friends aren't registered and you'd like
+
+them be able to see the class they can
+
+actually watch all the videos and take
+
+the in-video quizzes just by clicking on
+
+the home page on the on the preview that
+
+because there's a button called preview
+
+so have them check that out and then
+
+there are a couple of issues that kind
+
+of come up quite a bit on the forum
+
+which we think are actually really at
+
+the heart of how modern natural language
+
+processing works and they're important
+
+reasons why it works this way then we
+
+just thought we'd spend a little bit of
+
+time talking about and I think they're
+
+good to talk about because there are
+
+things that are so much second nature to
+
+us that we normally don't think about
+
+them because of course you should do
+
+things this way for tasks like natural
+
+language processing but we can see that
+
+for students coming at this for the
+
+first time it's actually different to
+
+most other things and that can seem
+
+really confusing why things are the way
+
+they are and so the first of these is
+
+the set up where we have training sets
+
+divd sets and then hidden test sets and
+
+I know at first some of you guys thought
+
+she that's just on
+
+there they're going to grade out for
+
+four months on data that we've never
+
+seen that can't be reasonable or nice
+
+and to do things but this setup is
+
+really at the heart and soul of modern
+
+empirical natural language processing so
+
+the whole basis of it is is what we'd
+
+like to do is write algorithms that will
+
+work well on new different data in the
+
+future so the idea is that you're
+
+building something like a sentiment
+
+classifier we're just wanting to say
+
+where the camera models are like London
+
+not liked but you know it's just not of
+
+interest whether it can give the right
+
+answers for the collection of tweets
+
+that you build your model over what's of
+
+interest is is this model gonna work
+
+well on the tweets that are posted next
+
+week and that's the sense in which we
+
+want to have a hidden test set and in
+
+particular for the kind of classifiers
+
+we build it's really really easy to get
+
+classifiers that work well on the
+
+particular data that you're building out
+
+them over that by having rich features
+
+putting in catching conjunctions of
+
+terms regular expressions with name
+
+lists of all the names that you happen
+
+to see in the training data that those
+
+things will fit a particular set of
+
+training data really closely and if you
+
+keep on adding more and more features
+
+you can make it if you want so you get
+
+the training data 100% right and well
+
+then you can test it out on dev data and
+
+you know the extent of their stuff
+
+that's different in the dev data well if
+
+you wanted to you could start putting
+
+them to your classifier as well and do
+
+really well in the dev data but that
+
+stuff is not interesting unless you're
+
+producing a system which will actually
+
+also work well on other data that you
+
+have never seen before
+
+and so what that means is that a lot of
+
+assessing natural language processing
+
+systems is really about whether your
+
+models generalize as to whether you've
+
+built in important features of language
+
+and the way it is used in such a way
+
+that your systems or actually work on
+
+other sets of data in the future and
+
+maybe then can say a bit more about
+
+their ngerous and how that works out
+
+with yeah so at least one of you asked
+
+on the forum will suppose I just take
+
+let's say for homework for suppose I
+
+take some names that were in the dev set
+
+and add them into my training set it's a
+
+little bit cheating
+
+but wouldn't that be a good idea in
+
+general and the reason why it's a bad
+
+idea is that although you'll do very
+
+well on the training set and DEF set
+
+you're gonna train a feature and learn a
+
+wait for that feature that really over
+
+trusts your list of names it'll say that
+
+list of names is fabulous because every
+
+name in my training set there it is in
+
+my little list of names I'm going to
+
+assign that feature a huge weight now I
+
+get to my test set and all of my other
+
+features had much lower weights and we
+
+should have been trusting those other
+
+features because my name list doesn't
+
+have any other names in my test set so
+
+it's very important to always be
+
+thinking about the test set and about
+
+generalization to data you haven't seen
+
+I wanted to say just a little bit more
+
+about the dangers of overfitting because
+
+this really comes up both when you're
+
+doing research and in real life
+
+but what happens is we're wanting to try
+
+and work out how well something performs
+
+in truth but if you have some fixed set
+
+of data that you're assessing
+
+performance on then what happens is as
+
+you develop a system you progressively
+
+over fit your system to that particular
+
+set of data and so the numbers that
+
+you're getting are unrealistically good
+
+so the way that that happens is that
+
+even if you say well here's my my set of
+
+dev data over there I've never looked at
+
+it I don't know what names it contains
+
+the natural inclination is you try out
+
+various models you change the smoothing
+
+you add more features all the kind of
+
+things we've been talking about and
+
+human nature is that when you make these
+
+changes that every time you make a
+
+change that lifts the numbers on your
+
+test set you keep that change and every
+
+time you make a change that doesn't
+
+improve your numbers you drop that
+
+change and well the problem is that a
+
+lot of those changes will just be making
+
+you do better on the dev set for no good
+
+reason that you're not actually
+
+producing a system that's better in a
+
+statistically significant way it's just
+
+the changes that you made happen to work
+
+on this one particular set of data and
+
+if you iterate over that 20 times you
+
+then sort of ten of the changes worked
+
+and you've pushed up your numbers on the
+
+dev set ten times but in maybe your
+
+system is actually no better in
+
+fundamentals and
+
+the only way to assess there is to have
+
+a separate set of final test data that
+
+you can say well are the numbers better
+
+on this final test set and in the ideal
+
+case you only ever run once on that
+
+final test set and you can say it's a
+
+pretty good measure of performance now
+
+in the real world you know it tends to
+
+be that things aren't quite that perfect
+
+you know you'll have them make run once
+
+one system think it's good and run it on
+
+the final test set and then suddenly you
+
+have some ideas some other things you
+
+could put in and you do put them in and
+
+they work out on the dev set so you
+
+think oh okay I'll run it again on the
+
+final test there and lo and behold it
+
+goes up and you know to some extent
+
+everyone does that a little bit and of
+
+ends up using the test set two or three
+
+or four times but it's really important
+
+to realize that you know if you start
+
+doing that too much well then again
+
+you're just having this problem that
+
+you're overfitting to the test set and
+
+that you're reporting unrealistically
+
+good performances and so that's one of
+
+the reasons that in the NLP community
+
+that there's this really strong
+
+tradition of having shared tasks where
+
+there's a task that set up by some
+
+organizers in which they give out
+
+training data and people are meant to
+
+come up with systems which will then be
+
+run on fresh test data and one of the
+
+things that happens again and again in
+
+these competitions is that some things
+
+that people have claimed work well and
+
+papers actually end up working terribly
+
+there's just over and over again a big
+
+difference shown between systems that
+
+actually really work when they're just
+
+run afresh on new data versus systems
+
+that people managed to get to work on
+
+some particular data set once they'd
+
+spent three months tweaking every
+
+parameter so it works well on that data
+
+set so we've been in general very happy
+
+with you guys participation in the
+
+forums everybody's helping answer each
+
+other's questions and and so it's great
+
+to see everybody out there we're on the
+
+forums as well and so keep up that work
+
+and please feel free to make suggestions
+
+ask us questions we try to take into
+
+account any suggestions you make as
+
+we're recording videos and as we're
+
+modifying fixing bugs in
+
+homeworks in the problem sets yeah
+
+thanks a lot we've been really enjoying
+
+this class and we'll try and get in
+
+touch into another one of these later in
+
+the course

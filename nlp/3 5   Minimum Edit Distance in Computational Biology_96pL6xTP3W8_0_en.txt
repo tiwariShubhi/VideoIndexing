@@ -1,0 +1,401 @@
+﻿there are a number of advanced variants
+
+of minimum at a distance that play a
+
+special role in computational biology so
+
+recall that in computational biology
+
+what we're aligning as sequences of
+
+nucleotides or sometimes proteins and
+
+our job is to take two strings like this
+
+and produce an alignment like this so in
+
+biology this is important for a number
+
+of reasons we can be finding regions in
+
+the in the genome we could be
+
+discovering functions of genes we could
+
+be looking for evolutionary things by
+
+comparing different species this is also
+
+important for assembling fragments so
+
+DNA sequencing we're going to be trying
+
+to assemble fragment and we want to look
+
+for overlapping pieces will talk about
+
+overlapping pieces and find some matches
+
+between them and find that these two
+
+pieces match them and we're comparing
+
+individuals and looking for mutations
+
+finding places where there are
+
+similarities and differences I'm in
+
+general in natural language processing
+
+we talk about distance string at a
+
+distance a minimum at a distance so
+
+we're minimizing distance and we're done
+
+computing um waits for things in
+
+computational biology we're talking
+
+about similarity so we're maximizing
+
+similarity so we're asking how similar
+
+two things are so we're trying to
+
+maximize something and we generally talk
+
+about scores rather than weights so in
+
+computational biology the standard
+
+minimum at a distance algorithm that
+
+we've just looked at them is called
+
+Needleman lunch and I've shown you the
+
+the algorithm here but it's the same um
+
+the same thing that we saw before
+
+although in general we're just going to
+
+keep them we'll use D to mean the cost
+
+of insertions and deletions and we'll
+
+have a little s value for the
+
+substitution the positive or negative
+
+value of substituting things and in
+
+general in biology we'll talk about a
+
+positive cost for things that match a
+
+positive value for things that match and
+
+a cost for things for deletions and
+
+insertions so here's the and
+
+needleman-wunsch matrix
+
+and notice that as opposed to what we
+
+did in natural language processing in
+
+general and computational biology we put
+
+the origin at the upper left so let's
+
+let's first look at some variants that
+
+are important in computational biology
+
+so one is cases where it's possible to
+
+have unlimited gaps at the beginning and
+
+end of a string and this happens exactly
+
+when we have two little snips of DNA and
+
+we know that the endpoints of one might
+
+overlap with the ends of another but
+
+there might be something else going on
+
+in other places so um here's one long
+
+sequence and here's another long
+
+sequence but it's just this piece of
+
+this sequence and this piece of this
+
+that might overlap so we don't want to
+
+penalize the fact that there's other
+
+things going on
+
+before here or after here so we'd like
+
+to modify the algorithm so it doesn't
+
+penalize gaps at the end and in fact
+
+there can be various different kinds of
+
+overlapping of this of this sort then
+
+this might happen when we're when we're
+
+doing sequencing and we have overlapping
+
+reads or it might be that we're looking
+
+for a piece of a gene inside another
+
+piece and so we have a subset piece
+
+inside a larger piece so the variant of
+
+the dynamic programming algorithm that
+
+we use for overlap detection the overlap
+
+detection variant will just make a few
+
+small changes in the algorithm so first
+
+um we just changed the initialization so
+
+that it doesn't cost us anything
+
+to start from a long string and delete
+
+everything or insert everything so it
+
+used to be that we had we had minus I
+
+minus I star D here and we had minus J
+
+star D here and we've gotten rid of
+
+those because it's we're allowing
+
+ourselves to start at a path at a random
+
+point way out here in the intersection
+
+so where we're allowing ourselves to
+
+start at zero cost here and not be
+
+penalized for not
+
+matching all these things up until here
+
+so we're looking for again edge overlaps
+
+and now for our termination condition
+
+we're gonna look for the start from not
+
+from the upper right corner because
+
+we're allowing a match not to go all the
+
+way to the edge but we'll find the the
+
+place along the final column or the
+
+final row where we have the maximum
+
+value and we'll trace back from there so
+
+in this case our maximum value is here
+
+in this last column and we'll trace back
+
+from there a similar extension of the
+
+needleman-wunsch or the standard dynamic
+
+programming algorithm for string at a
+
+distance is the local alignment problem
+
+so here's the the local alignment
+
+problem we have two strings X of length
+
+M and y of length N and we want to find
+
+two substrings whose similarity is a
+
+maximum so imagine that here's X and
+
+here's why we'd like two out of this and
+
+these two strings we'd like to find
+
+these to be some strings see see see GGG
+
+that's the largest similar substring so
+
+it's it's very similar to the overlap
+
+detection variant we saw except not only
+
+do we allow ourselves not to to ignore
+
+previously on aligned sequences at the
+
+beginning and end but also anywhere so
+
+we can basically have our maximum
+
+alignment be somewhere in the middle as
+
+it is here so in order to in order to
+
+modify the needleman-wunsch algorithm to
+
+allow any kind of local alignments this
+
+is the new version is now called the
+
+smith-waterman algorithm and we're first
+
+going to allow as we did for the overlap
+
+detection variant allow the
+
+initialization conditions to be 0 both
+
+for x and y so we don't penalize
+
+ourselves for
+
+initial strings and now we're going to
+
+make one more modification which is that
+
+in each cell when we're looking at the
+
+possible places we could come from to
+
+choose the alignment we're going to not
+
+only pick them the maximum of the three
+
+previous cells but we're also going to
+
+add a maximum of zero so we're gonna let
+
+ourselves since in in biology we're
+
+talking about maximizing similarity when
+
+things get very different than we have a
+
+very negative score we're just going to
+
+start all over again from zero and allow
+
+myself to just throw away regions that
+
+don't alone at all the termination
+
+condition of the smith-waterman
+
+algorithm depends on what we're looking
+
+for if we just want the best local
+
+alignment we'll pick the place that's
+
+that's maximum in the entire array and
+
+we'll trace back from there if we want
+
+all the local alignments that score
+
+greater than some threshold T then maybe
+
+we'll find someplace that's greater than
+
+T then find all those places and trace
+
+back all of them now this gets
+
+complicated by the fact that there can
+
+be overlapping local alignments so
+
+here's we might have two alignments like
+
+this and and it might be that they
+
+actually overlap tracing back so there
+
+can be some complications here but if
+
+you want the best local alignment that's
+
+actually much easier so here's an
+
+example of local alignment so let's
+
+let's imagine that we're we're we're
+
+getting one positive point every time
+
+two symbols match and a negative point
+
+for any deletion insertion and
+
+substitution and then let's look for all
+
+the local alignments between these two
+
+strings ATC a T and a TTA ATC and if we
+
+fill in the matrix again we start with
+
+zeros everywhere because we're doing
+
+local alignment um we see two if we then
+
+look for regions cells that have a
+
+maximum distance to trace back from we
+
+see two of these cells
+
+so one of them corresponds to the
+
+alignment ATC 82 80 t-80 so we have four
+
+strings that match one mismatch so
+
+that's going to be distance of three and
+
+the other one of them over here
+
+corresponds to the alignment between ATC
+
+and ATC where we have three matching
+
+symbols so those are some of the more
+
+advanced variants of a distance that we
+
+see in computational biology

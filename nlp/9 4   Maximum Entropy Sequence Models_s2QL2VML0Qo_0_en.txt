@@ -1,0 +1,601 @@
+﻿we've now looked in detail how to make
+
+maximum entropy classifiers and what I
+
+want to do in this segment is extend
+
+from there to show how we can build
+
+sequence models out of classifiers in
+
+particular we are going to make maximum
+
+entropy sequence models many problems in
+
+NLP have data which is a sequence of
+
+something it might be a sequence of
+
+characters sequence of words sequence of
+
+phrases sequence of lines paragraph
+
+sentences and we can think of the task
+
+perhaps with a little coding as one of
+
+labeling each item so a very
+
+straightforward example is part of
+
+speech taking that we just looked at so
+
+here we have the words and for each word
+
+we're going to label it with a
+
+particular part of speech other examples
+
+are fairly straightforward as well so
+
+for named entity recognition here we
+
+have the word and we're going to label
+
+it with an entity if it is one like
+
+organization or if it's not an entity
+
+we're going to label it with an O some
+
+other cases are things that can be done
+
+as sequence problems it's a little bit
+
+subtle to think about the encoding that
+
+is actually quite straightforward once
+
+you've worked through the ideas so here
+
+we have a piece of Chinese text and what
+
+we want to do is word segmentation so
+
+this is a word this is the second word
+
+this is a third word this is a fourth
+
+word this is a single character word and
+
+so on and what we can do is we can use a
+
+labeling to capture that so here we have
+
+what's called b.i labeling where we're
+
+distinguishing just two states begin and
+
+inside and that's sufficient to
+
+represent tasks like word segmentation
+
+so this says this is the beginning of a
+
+new word but then the next token says
+
+it's also the beginning of a new word so
+
+we start a word here but then we've got
+
+this AI class so we continue another eye
+
+class we continue so that's a three
+
+character word and then we go back to a
+
+B and we start a new word which is a two
+
+character word so although
+
+we're segmenting the characters into sub
+
+sequences we can encode the decisions we
+
+have to make by regarding the problem as
+
+a sequence labeling task here's one more
+
+slightly different example so what we
+
+have here is a stretch of text and we
+
+can think of the text as lines of a old
+
+fashioned file with hard line breaks or
+
+sentences and so what this is is an FAQ
+
+as you find commonly on websites and
+
+what we want to do is to automatically
+
+processor and to work out where are the
+
+questions and where are the answers and
+
+so we're going to regard that as a
+
+sequence labeling task where each of our
+
+items is representing a line or a
+
+sentence and so then we're encoding our
+
+decisions using exactly the same kind of
+
+to class classification over here so
+
+each line is being classified as either
+
+a question line or an answer line and
+
+then we have the answer lines grouped
+
+together for a particular answer so what
+
+are we going to do with our maximum
+
+entropy models is we're going to put
+
+them into a sequence model and these are
+
+usually referred to as maximum entropy
+
+Markov models in EMS or conditional
+
+Markov models so what the classifier
+
+does is that makes a single decision at
+
+a time but is able to be conditioned on
+
+evidence both from observations and from
+
+previous decisions so here we're showing
+
+a picture we're in the middle of doing
+
+part of speech tagging and we've already
+
+given part of speech tags to the first
+
+three words and so we're proceeding left
+
+to right and that what we're up to is
+
+giving a part of speech tag that this
+
+word here and so the idea is for
+
+features for classification we're going
+
+to be able to use features of the
+
+current word we're going to be able to
+
+use features and other words if we wish
+
+but we're also going to be allowed to
+
+use features of the previously assigned
+
+part of speech tag perhaps the part of
+
+speech tag to backwards and all of these
+
+can influence the classification and so
+
+that's what's being shown over here for
+
+our features so we have current word
+
+next word previous word previous tag
+
+previous to
+
+Peg's taken jointly as a feature and
+
+then we can also define other features
+
+of the kind that we've discussed before
+
+so here we have a heads digit feature of
+
+the current word which is being used to
+
+generalize over different numbers
+
+because maybe we don't know very much or
+
+anything about the number 22.6 in
+
+particular so generalizing a little this
+
+is the picture of how we move from our
+
+basic Maxum classifier to a sequence
+
+model so overall we have sequence data
+
+here and what we want to do is
+
+classification at the sequence level so
+
+we have individual words or characters
+
+and we want to assign to them their
+
+classes but the way we're going to do
+
+that is we're going to look at each
+
+decision individually so we're going to
+
+say okay there's a particular
+
+classification of interest this one here
+
+and how are you going to make that
+
+classification well what we're going to
+
+do is say for that particular
+
+classification there's data locally of
+
+interest to it so there's the current
+
+word the previous word the previous
+
+class and so what we're going to do is
+
+we're going to feature extraction over
+
+that data and so we have the label that
+
+we're trying to predict or which we can
+
+see in supervised training data we've
+
+got features of the observed data and
+
+previous classifications and then we're
+
+building a maxim entry model over there
+
+and so at that point we're doing all the
+
+stuff that we've talked about we're
+
+doing optimization of a model we're
+
+doing smoothing and at the end of the
+
+day we build a little local classifier
+
+that makes the individual decisions so
+
+what we'll do is we'll do it at this
+
+position but then we'll repeat the same
+
+thing over at the next position and
+
+we'll go along taking our sequence it's
+
+extremely easy to see how to do that in
+
+one way where we first of all decide
+
+this label then we go on to the side
+
+this label and then this label this
+
+label and at each point we can use
+
+preceding labels to help determine the
+
+next one and if we do that we have a
+
+greedy sequence modeler that's just
+
+deciding one sequence at a time and
+
+moving on
+
+that in many applications actually works
+
+quite well but commonly people want to
+
+explore the search space a little bit
+
+better because sometimes although here
+
+you might decide one part of speech tag
+
+is best then later on once you've looked
+
+over here that that would give some
+
+reason to think that maybe you should
+
+have chosen differently back over here
+
+and so there are a couple of methods
+
+that commonly use to do that one method
+
+is beam inference so it beam inference
+
+at each position rather than just
+
+assigning the most likely label we can
+
+keep several possibilities so we might
+
+keep the top k complete sub sequences up
+
+to the point where we're at so far and
+
+so then at each stage we'll consider
+
+each partial subsequence and extend it
+
+to one further position now beam
+
+inference is also very fast and easy to
+
+implement and it turns out that a lot of
+
+the time that beam sizes of three or
+
+five give you enough maintenance of a
+
+few possibilities and works almost as
+
+well as doing exact inference to find
+
+the best possible state sequence and
+
+it's easy to implement of course that's
+
+not necessarily true
+
+you get no guarantees that you found the
+
+globally best part of speech tag
+
+sequence or whatever your sequence
+
+problem is and it can certainly be the
+
+case that possibilities that would later
+
+have been shown to be good might fall
+
+off the beam before they get to be shown
+
+to be good we can do better than that we
+
+can actually find the best sequence of
+
+states that has the globally highest
+
+score in the model and doing that is
+
+referred to an NLP as doing the Turbie
+
+inference since Andrew Viterbi invented
+
+a lot of these algorithms finding and
+
+the best way of doing things Viterbi
+
+inference is a form of dynamic
+
+programming or you can also think about
+
+as memorization and you can do this kind
+
+of dynamic programming providing you
+
+have a small window or state influence
+
+so for example when you're trying to
+
+decide this label if it depends on words
+
+however it wants to
+
+but only depends on say the previous
+
+label and the one before that then you
+
+end up with this sort of fixed small
+
+window of stuff you need to know about
+
+to make decisions and nothing back here
+
+is affecting what decision you make
+
+providing that's true you can write
+
+dynamic programming algorithms to find
+
+the optimal States sequence and so that
+
+has the obvious advantage that you're
+
+guaranteed to find the best state
+
+sequence but it has some disadvantages
+
+its requires a bit more work to
+
+implement and it forces you to restrict
+
+your use of previous labels in your
+
+inference process to a fixed small
+
+window that is a restriction but a lot
+
+of the time is not such a bad
+
+restriction because in practice it's
+
+hard to get long distance interactions
+
+to be working effectively anyway even on
+
+something like a beam model which does
+
+allow long distance interactions ok I've
+
+introduced Maxim entry Markov models and
+
+I hope that you now feel that you
+
+understand them and will be able to
+
+build them as an assignment before I end
+
+I should just very briefly mention
+
+conditional random fields so conditional
+
+random fields are another probabilistic
+
+sequence model and if you just sort of
+
+look big-picture in the math of a
+
+conditional random field boy that
+
+equation looks exactly like the equation
+
+that we've been staring at in all of the
+
+recent slides the difference with
+
+conditional random fields is that these
+
+probabilities in terms of the entire
+
+sequences so this is the sequence of
+
+classes and the sequence of observed
+
+data values that is not in terms of
+
+particular points in that space and so
+
+we get this whole sequence conditional
+
+model rather than a chaining of local
+
+models that looks as if it would be very
+
+difficult to deal with because the space
+
+of a sequence of C's is exponential in
+
+its length and the space
+
+of a sequence of data items represented
+
+as features is that a minimum huge and
+
+perhaps even infinite but it turns out
+
+that providing the FI features remain
+
+local permitting dynamic programming
+
+that the conditional sequence likelihood
+
+can be calculated exactly training is
+
+somewhat slower but CRFs have
+
+theoretical advantages of avoiding
+
+certain causal competition biases that
+
+can occur with maximum tree Markov
+
+models however to explain the details of
+
+these models we'd have to go quite a way
+
+of field looking at in general how to do
+
+Markov random field inference which I
+
+feels a better topic for other courses
+
+so let me just mention these and say
+
+that these days using CRFs or variants
+
+of them that use a max margin criterion
+
+coming out of svms
+
+i've seen as the state-of-the-art method
+
+for doing sequence models and there are
+
+various bits of software including the
+
+stanford software for named entity
+
+recognition you can download that
+
+implement CRFs but a thing to know is
+
+that although CRFs are theoretically
+
+cleaner and can avoid some problems of
+
+MEMS that in practice when you're
+
+building models with rich features which
+
+condition on observed data both before
+
+and after you that in practice they tend
+
+to have performance that can't really be
+
+distinguished from xmen free Markov
+
+models and so there's really no problem
+
+with using maximum entry Markov models
+
+to do the job of sequence classification
+
+and that's what we'll use in the
+
+assignment ok and so I hope that you
+
+guys now have a concrete idea of how you
+
+can build a MaxEnt classifier and then
+
+incorporate it into a system for doing
+
+sequence in France

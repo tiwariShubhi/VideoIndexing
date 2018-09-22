@@ -1,0 +1,623 @@
+﻿in this segment I will give a brief
+
+introduction to the task of part of
+
+speech tagging and then we'll come back
+
+and see how discriminative sequence
+
+models can be used as a technique for
+
+part of speech tagging there are many
+
+linguistic traditions in different parts
+
+of the globe but in the West the idea of
+
+parts of speech perhaps started with
+
+Aristotle and in the 4th century before
+
+the Common Era and he suggested the idea
+
+that there were parts of speech which
+
+are otherwise known as lexical
+
+categories word classes tags or POS as a
+
+common abbreviation now but what we
+
+think of today as the parts of speech
+
+are normally attributed to Dynasty as
+
+threats of Alexandria who proposed that
+
+there were eight parts of speech and
+
+that's the number that's still with us
+
+today is the number of parts of speech
+
+people get taught in school sometime
+
+though actually if you look into the
+
+details a little the eight parts of
+
+speech the diagnosis threats proposed
+
+aren't the same that with us today
+
+so the normal list that people are
+
+taught in schools in English now noun
+
+verb adjective adverb preposition
+
+conjunction pronoun interjection but for
+
+Thrax there was actually some little
+
+differences in the list and of course he
+
+was working with ancient Greek and not
+
+with English so the beginning of the
+
+list starts out the same but note that
+
+he doesn't recognize adjectives as a
+
+part of speech in Greek and Latin
+
+adjectives and nouns behave very
+
+similarly but he does recognize possible
+
+as a part of speech and then the other
+
+difference is that a separate part of
+
+speech is given for articles words like
+
+that and are whereas in the modern list
+
+you get a class for interjections the
+
+status of articles has always been a bit
+
+controversial in our current standards
+
+set of eight parts of speech articles
+
+are seen as a case of adjectives but
+
+actually as soon as you start looking at
+
+the grammar of languages like English
+
+that the articles have a very special
+
+behavior which is quite different from
+
+regular adjectives for example
+
+adjectives you can get multiple off
+
+large green leather couch where
+
+you can't do things like that our this
+
+book except as a kind of speech
+
+hesitation as to which article you
+
+should be using when we do part of
+
+speech taking in computational
+
+linguistics we normally work with rather
+
+more than eight parts of speech because
+
+there are a lot of distinctions which
+
+can be useful to make that multiplies
+
+the number of parts of speech and I
+
+start to indicate the kinds of parts of
+
+speech you get in this slide and you can
+
+see that there are various hierarchical
+
+groupings so inside nouns we can divide
+
+into proper nouns and common nouns and
+
+we might also want to divide between
+
+singular and plural which would happen
+
+with both proper and common nouns verbs
+
+very much divided into main verb see
+
+registered verses various exhilarated
+
+modal verbs like Ken and had there are
+
+adjectives and adverbs note that
+
+adjectives at least the short adjectives
+
+in English have several forms the
+
+positive comparative and superlative and
+
+we might want to distinguish those forms
+
+as well neither of the lists on the last
+
+slide had numbers but they seemed a
+
+fairly obvious and practically useful
+
+part of speech to recognize and then
+
+similarly here among the clothes classes
+
+I'll say a bit more about clothes
+
+classes on the next slide we don't have
+
+a category of this called articles we
+
+have a category called determiners so
+
+the modern linguistic tradition is to
+
+group the articles r and r together with
+
+certain other demonstratives that behave
+
+similarly words like some this and then
+
+we have some other categories
+
+prepositions are familiar but we're
+
+distinguishing off a class of particles
+
+so the particles here and words are
+
+normally the same as prepositions but
+
+take part in English phrasal verb
+
+constructions things like made-up
+
+meaning to invent the top level
+
+distinction on the last slide was
+
+between open classes and closed classes
+
+it's very clear that not all parts of
+
+speech are the same some of them like
+
+determinants and pronouns are occupied
+
+by only a small set of words so in
+
+English for pronouns there's he/she heed
+
+him/her in the first and second person
+
+pronouns I you we third-person plural
+
+they them but it's just a very small set
+
+of words and that there aren't new
+
+pronouns being invented and so things
+
+like that we call closed class because
+
+in general closed classes don't get new
+
+members though you know sometimes
+
+occasionally they do over long term
+
+language change so sometimes people have
+
+suggested that we should be inventing
+
+some new gender-neutral pronouns in
+
+English though nothing's really taken
+
+off but in contrast the open classes
+
+nouns verbs adjectives adverbs these are
+
+classes which have a vast number of
+
+members and beyond that it's very easy
+
+for them to gain new members so that
+
+when we have a new protocol and computer
+
+science we create a new noun for it like
+
+SSH and then very quickly we decide it's
+
+useful to use that as a verb as well and
+
+then we say is SH din to my server to
+
+fix the configuration the task a part of
+
+speech tagging is to say for each word
+
+what it's part of speech is in the
+
+context of some running text the reason
+
+why that's not trivial is because lots
+
+of words have more than one part of
+
+speech so for example for the word back
+
+it can be an adjective when it's
+
+modifying a noun like the back door it
+
+can be a noun when it's referring to the
+
+body part on my back it can be an adverb
+
+in a phrase like when the voters back
+
+and it can also then be a verb in
+
+another political example promised to
+
+back the bill and so what we wanting to
+
+do is when we see an instance of the
+
+word back assign it to one of these
+
+parts of speech so in the task a part of
+
+speech tagging we start with some text
+
+plays well with others and then for each
+
+word we consider what are its possible
+
+parts of speech so that plays can be a
+
+plural noun or verb well can be an
+
+interjection and actually turf and noun
+
+or an adverb
+
+with can be is just a preposition here
+
+and others as a plural noun and so for
+
+the words that are ambiguous we're then
+
+going to choose for them what they
+
+correct part of speech is in context and
+
+so here pleases a verb and well as an
+
+adverb modifying plays and we get
+
+disambiguating these parts of speech so
+
+what we're finding here at the end when
+
+we've got you know these choices here
+
+which we're then determining these are
+
+our part of speech tags and depending on
+
+the part of speech tag said they're
+
+commonly in natural language processing
+
+applications somewhere between twelve
+
+and hundred part of speech tags that are
+
+differentiated and so you can see that
+
+this set of part of speech tags it's
+
+differentiating things like is that a
+
+plural noun or a singular noun here's a
+
+singular noun or if it is a verb what
+
+form of the verb it is so this is the
+
+third-person seeing your plays as
+
+opposed to play so the particular part
+
+of speech tag set that we're seeing here
+
+is the pin treebank part of speech tags
+
+which are the most commonly used part of
+
+speech tags the English especially in
+
+the United States I'm embarrassed to say
+
+that I've been in this business long
+
+enough that I can actually tell you off
+
+my heart what all the pin part of speech
+
+takes they're a set of 45 of them which
+
+cover word classes like this and
+
+punctuation so what good is part of
+
+speech tagging as well as letting you
+
+answer your high school English problems
+
+it has a variety of other users it has
+
+some particular users we're just parts
+
+of speech a sufficient so that if you're
+
+doing text-to-speech and you want and
+
+you see an instance of the word le ad
+
+you want to know whether to pronounce
+
+that as a lead or lead and the answer to
+
+that is what's its part of speech if
+
+it's a verb its lead if it's a noun is
+
+led having parts of speech let you
+
+easily do some surface linguistic
+
+analysis so for lots of applications is
+
+useful to pick out what we call base
+
+noun phrases so there now
+
+now in compound possibly modified in
+
+front by a determiner and some
+
+adjectives so the nearest school or an
+
+old green couch our base noun phrases
+
+where as big complex noun phrases with
+
+relative clauses off after the Mart now
+
+if we have parts of speech we can easily
+
+write regular expressions that pick out
+
+things like base noun phrases or verbs
+
+followed by particle for phrasal verbs
+
+and that can be used for a lot of
+
+applications where you want to do
+
+shallow processing but nevertheless want
+
+to be able to put to give to the user
+
+more tailored keywords or something like
+
+that
+
+part of speech taking is commonly used
+
+as input to or to speed up a parser so
+
+quite a few parcels work on already part
+
+of speech tag set text and even once
+
+that can do their own part of speech
+
+tagging can often be sped up by first
+
+doing the process a part of speech
+
+tagging and finally a lot of models we
+
+build for probability estimation are
+
+very sparse if they try and work at the
+
+word level and we discussed various ways
+
+of backing off where you might back off
+
+from a trigram drawer diagram earlier
+
+but another common way of backing off is
+
+to back off from a word that you don't
+
+know much about to its part of speech
+
+category you can predict based on
+
+knowing it's an adjective part of speech
+
+taken performance is normally measured
+
+as accuracy what percent of tags do you
+
+get right and the answer that that for
+
+the best current taggers they get about
+
+97% of words right that sounds really
+
+good it is important to realize that
+
+part of speech taking is in some sense
+
+an easy task or at least a task where
+
+you get high numbers so there's a
+
+baseline approach to part of speech
+
+tagging where you've tagged every word
+
+with this most common tag if you know
+
+about it in your training data and if
+
+you don't know about in your training
+
+data you take it as a noun and it turns
+
+out that that fairly simple baseline
+
+method already gives you performance of
+
+90% and so that's it turns out that you
+
+get this high baseline for a couple of
+
+reasons one reason is that many were
+
+birds are an unambiguous that if you see
+
+famous it's always an adjective and also
+
+the way part of speech taking is
+
+normally measured that you get points
+
+for every token so not only do you get
+
+points for every instance of unambiguous
+
+articles which are very common like that
+
+and are you even get points for getting
+
+the part of speech tags or punctuation
+
+right but that doesn't mean that all
+
+parts of speech decisions are easy some
+
+part of speech decisions and quite
+
+difficult even for human beings and so
+
+here are some examples of the word
+
+around so here we have around acting as
+
+a particle got around to here we have
+
+around again straight after a verb but
+
+this time it's this prepositional phrase
+
+around the corner and so around is being
+
+a preposition and here again in this
+
+third example around us again following
+
+straight after a verb but actually this
+
+time it's a modifier of this noun phrase
+
+of around 250 short for around $250 and
+
+so around is then an adverb it's
+
+modifying a number which is kind of like
+
+an adjective it turns out that in
+
+English corpus around 11% of the word
+
+types are ambiguous with regard to part
+
+of speech that doesn't sound like very
+
+many but most of them tend to be common
+
+words such as the word that so that can
+
+be a word that introduces a subordinate
+
+clause and in the penn treebank those
+
+words tagged as i in preposition which
+
+might surprise you there's some
+
+linguistic argument about that it can be
+
+a determiner that play or it can be an
+
+adverb so modifying here far that far is
+
+an adverb and so it turns out that
+
+although only 11% of the word types are
+
+ambiguous as to part of speech about 40%
+
+of the word tokens are ambiguous so
+
+there actually are a lot of decisions
+
+for a part of speech taker to make okay
+
+I hope that's given you a bit of
+
+background information on
+
+of speech tagging so you could make
+
+sense of the task in terms of our
+
+methods for approaching it

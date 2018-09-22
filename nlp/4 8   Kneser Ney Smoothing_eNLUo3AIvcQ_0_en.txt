@@ -1,0 +1,463 @@
+﻿let's talk about kinase Ernie smoothing
+
+one of the most sophisticated forms of
+
+smoothing but also one with a beautiful
+
+and elegant intuition remember that from
+
+good tourim we talked about the sea
+
+stars the discounted counts you end up
+
+from good touring and we discounted each
+
+of the counts of the count of one with
+
+discounted two point four an account of
+
+two discounted to one point two six and
+
+so on in order to save mass to replace
+
+the zero counts with some low number and
+
+if you look at the actual values of
+
+these counts eight point two five four
+
+nine and seven point two four four eight
+
+you'll notice that in a very large
+
+number of cases the discounted count has
+
+a very close relationship with the
+
+original count it's really the original
+
+count minus point 75 or someone close to
+
+that so in practice what good touring
+
+often does is produce a fixed small
+
+discount from the counts and that
+
+intuition that of a fixed small discount
+
+can be applied directly when we do this
+
+we call this absolute discounting and
+
+absolute discounting is a popular kind
+
+of smoothing and uhm here we're showing
+
+you absolute discounting interpolation
+
+and again the intuition is just we'll
+
+save some time and have to compute all
+
+those complicated good touring numbers
+
+and we'll just subtract 0.75 or maybe
+
+it'll be a different discount value for
+
+different corpora and here's the
+
+equation for absolute discounting so we
+
+have rudiment by grams again
+
+so the probability absolute discounted
+
+of a word given the previous word will
+
+be some discounted by gram interpolated
+
+with some interpolation weight with the
+
+unigram probability so we have a unigram
+
+probability P of W and then the bigram
+
+probability and we just subtract a fixed
+
+amount let's say it's open v from the
+
+count and otherwise compute the baigan
+
+probability in the normal way so we have
+
+a discounted by gram probability mixed
+
+with some weight which I'll talk later
+
+about how to set this weight with a
+
+unigram and maybe we might keep a couple
+
+extra values of D for a counts one and
+
+two counts one and two we saw on the
+
+previous slide weren't quite subtract
+
+point seven-five so we can model this
+
+more carefully by having separate counts
+
+for those but the problem with absolute
+
+discounting is the unigram probability
+
+itself and I want to talk about changing
+
+the unigram probability and that's the
+
+fundamental intuition of kinase or 9 so
+
+in kinase RI smoothing the idea is keep
+
+that same interpolation that we saw an
+
+absolute discounting but use a better
+
+estimate of the probabilities of the
+
+lower you know grams and the intuition
+
+for that we can go back and look at the
+
+classic Shannon games remember in the
+
+Shannon game were predicting a word from
+
+previous word so we see a sentence I
+
+can't see without my reading what's the
+
+most likely next word while glasses
+
+seems pretty likely well how about
+
+instead the word Francisco well that
+
+seems very unlikely in a situation and
+
+yet Francisco as just a unigram is more
+
+common than glasses but the reason why
+
+Francisco seems like a bad thing after
+
+reading one intuition we might be able
+
+to get is that Francisco always follows
+
+Sam very often follows saying
+
+so while Francisco is very frequent its
+
+frequent in the context of the word Sam
+
+now you know grams in an interpolation
+
+model we're mixing a unigram and a
+
+bigram are specifically useful they're
+
+very helpful just in case where we
+
+haven't seen the diagram so it's
+
+unfortunate that just in the case where
+
+we haven't seen the bigram reading
+
+Francisco we're trusting Francisco's
+
+unigram weight which is just where we
+
+shouldn't trust it so instead of using
+
+the probability of W how likely is a
+
+word our intuition is going to be when
+
+we're backing off to something we should
+
+instead use the continuation probability
+
+we're going to call it P continuation of
+
+a word how likely is the word to appear
+
+as a novel continuation well how do we
+
+measure novel continuation we're good
+
+for each word we'll just count the
+
+number of bigram types it completes how
+
+many different diagrams does it does it
+
+create by appearing after another word
+
+in other words each by gram type is a
+
+novel continuation the first time we see
+
+this new by gram in other words the
+
+continuation probability is going to be
+
+proportional to the cardinality of this
+
+set the number of word
+
+of preceding words I - one that occur
+
+with our word so how many what's how
+
+many words occur before this word in a
+
+bigram how many preceding words are
+
+there that will be that that the
+
+cardinality of that set that's a number
+
+we would like our continuation
+
+probability to be proportional to so how
+
+many times does w appear is a novel
+
+continuation we need to turn that into a
+
+probability so we just divide by the
+
+total number of word bigram types so of
+
+all word by grams that occur more than
+
+zero times
+
+what's the cardinality that said how
+
+many different word bigram types are
+
+there and we're just going to divide the
+
+two to get a probability of continuation
+
+of all the number of word bigram types
+
+how many of those have W as a novel
+
+continuation now it turns out though
+
+there's an alternative metaphor for
+
+kanay sir and I with the same equations
+
+so again we can see the numerator as the
+
+number the total number of word types
+
+that precede w how many word types can W
+
+follow and we're going to normalize it
+
+by the number of words that could
+
+proceed all words so the sum over all
+
+words of the number of word types that
+
+can precede the word and these two are
+
+the same the number of the this
+
+denominator and the denominator we saw
+
+on the previous slide are the same
+
+because the number of possible bigram
+
+types is the same as the number of word
+
+types that can proceed all words summed
+
+over all words if you think about that
+
+for a second you'll realize that's true
+
+so in other words with this kind of
+
+Keynesian model a frequent word like
+
+francisco that occurs only in one
+
+context like san will have a low
+
+continuation probability so if we put
+
+together the intuition of absolute
+
+discounting with the kinesin i
+
+probability for the lower order and
+
+graham we have i'm the kinase or and i
+
+smoothing algorithm so for the diagram
+
+itself we just have absolute discounting
+
+we take the the by graham count we
+
+subtract some d discount and I've just
+
+shown here that we take the max of that
+
+in zero because obviously if the
+
+discount happens
+
+be higher than the probability we don't
+
+want a negative probability and we're
+
+just going to interpolate that with this
+
+same continuation probability that we
+
+just saw P continuation of W sub I'm and
+
+the lambda now let's talk about how to
+
+compute that lambda the lambda is going
+
+to take all that probability mass from
+
+all those all those normalized discounts
+
+that we took out of these higher-order
+
+probabilities and use those two to us to
+
+wait how much probability we should
+
+assign to the unigram I'm going to
+
+combine those so that lambda is the the
+
+amount of the discount weight divided by
+
+the the the denominator there so it's
+
+the normalized discount and then we're
+
+going to multiply that by the total
+
+number of word types that can follow
+
+this context of UI minus 1 in other
+
+words how many different word types did
+
+we discount or how many times did we
+
+apply this normalized discount and we
+
+multiply those together and we get we
+
+know how much probability mass total we
+
+can now assign to the continuation of
+
+the word now this is the bigram
+
+formulation for kinase or nine now in
+
+this slide we're showing you the general
+
+recursive formulation for engrams in
+
+general and here we have to make a
+
+slight change to two to deal with all
+
+the high order and grams so here we're
+
+just showing the kinase high probability
+
+of a word given the prefix of the word
+
+and just like kinase renaud we saw
+
+before
+
+we're just interpolating a by a higher
+
+order Engram which is discounted with
+
+with a lambda weight and a lower order
+
+probability but now we need to
+
+distinguish between the very first
+
+top-level time that we use account and
+
+these lower order counts so we're going
+
+to use the actual count for the very
+
+highest order diagram and we're going to
+
+use the continuation value that we just
+
+defined earlier for all the lower order
+
+probabilities so we'll define this new
+
+thing count kinase or and I of dot which
+
+will mean the actual count that will you
+
+this will be actual count let's say
+
+we're doing trigrams for the trigram and
+
+then when we recurse and have the
+
+conditional probability for the lower
+
+order of things when we get down to the
+
+by grams and you know grams we'll be
+
+using the continuation count
+
+that's again this that this the single
+
+word context that we defined earlier
+
+soken extra nice smoothing a very
+
+excellent algorithm it's very commonly
+
+used in speech recognition and machine
+
+translation and yet it has a very
+
+beautiful and elegant intuition I hope
+
+you appreciate it

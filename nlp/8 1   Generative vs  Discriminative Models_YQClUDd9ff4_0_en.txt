@@ -1,0 +1,357 @@
+﻿in this section of the course we're
+
+going to start looking at discriminative
+
+models we're going to look at how they
+
+contrast with generative models that
+
+we've looked at so far and in particular
+
+go through a detailed examination of
+
+maximum entropy models so far we've been
+
+looking at generative models and
+
+particularly we've looked at language
+
+models naive Bayes models but in
+
+addition to these kind of generative
+
+models there's now much use of
+
+conditional discriminative models in
+
+natural language processing and also in
+
+related fields like speech and
+
+information retrieval or machine
+
+learning more generally and that's for a
+
+couple of good reasons these models tend
+
+to have very high accuracy performance
+
+and also they linguistically interesting
+
+because they make it easy to include
+
+lots of linguistically important
+
+features and hence they easily allow the
+
+building of language independent retard
+
+level NLP systems so let me now contrast
+
+joint versus discriminative models in
+
+both cases we're going to assume that we
+
+have some data Dec of paired
+
+observations of the data D in the hidden
+
+classes C
+
+and so the defining characteristic of
+
+joint models is that they place
+
+probabilities over both the observed
+
+data and the hidden staff so we have the
+
+probability of C and D and commonly the
+
+way that that's done is as a generative
+
+model so the generative models generate
+
+the observed data from the hidden staff
+
+these kind of joint or generative models
+
+comprise all the classic statistical NLP
+
+models not only the Engram models and
+
+naive Bayes classifiers that we've seen
+
+already but also hidden Markov models
+
+probablistic context-free grammars and
+
+the IBM machine translation alignment
+
+models in contrast discriminative or
+
+conditional models more directly target
+
+the classification decision that we want
+
+to make formally they put probability
+
+distributions that are conditional the
+
+probability of the class given the data
+
+discriminative models include logistic
+
+regression or in general the whole area
+
+of conditional log-linear models
+
+including a particular maximum entropy
+
+models and their generalization two
+
+sequences conditional random fields many
+
+other machine learning methods such as
+
+SVM's perceptrons r averaged perceptrons
+
+are also discriminative classifiers but
+
+they're not directly probabilistic
+
+models one way of showing the difference
+
+between the two model classes is by
+
+means of the graphical model diagrams
+
+that used for probabilistic models in
+
+general in these diagrams we draw
+
+circles for random variables and lines
+
+for direct dependencies between them and
+
+some of the variables are normally
+
+observed and others are hidden and then
+
+they each node is like a little
+
+classifier based on its incoming arcs if
+
+we draw these kind of models what we
+
+find is that for a naive Bayes model the
+
+picture looks like this
+
+so at classification time we are
+
+observing the various words of the
+
+document which is our given data and
+
+based on those we want to predict the
+
+class but in terms of the probabilistic
+
+model there are probability factors our
+
+prior probability of the class and then
+
+the probability of the words in the
+
+document given the class and so that we
+
+have this generative direction in which
+
+the words are generated from the class
+
+rather than actually predicting what we
+
+haven't observed in a discriminative
+
+model such as logistic regression the
+
+situation is the opposite we've again
+
+observed the words of the document and
+
+want to predict the class but this time
+
+we're directly putting a probability
+
+over the class given all of the data
+
+that we've observed d1 d2 d3 so in
+
+generative models we look at the joint
+
+probability over the data and the class
+
+and what we try and do is attempt to
+
+Mack
+
+some eyes this joint likelihood and as
+
+we've already seen that for categorical
+
+models it's trivial to optimize the
+
+joint likelihood all we do is take the
+
+relative frequencies of different events
+
+that is we count how often different
+
+things occur and then we just divide by
+
+a normalizing denominator and we're done
+
+so that's very practical for estimation
+
+in contrast the conditional model we
+
+want to work out these probabilities of
+
+C given D and so in a conditional model
+
+what we'll do is attempt to directly
+
+maximize the conditional likelihood the
+
+probability of the classes observed
+
+given the data as we'll see this turns
+
+out to be much harder to do but it's
+
+perhaps more useful because it's more
+
+directly related to classification
+
+success or error this slide gives some
+
+initial motivation for being interested
+
+in conditional models by showing that
+
+they have high performance in this slide
+
+I show the results of some experiments
+
+done by Dan Klein and me in 2002 the
+
+task here was word sense disambiguation
+
+but essentially that's the same task of
+
+sticks classification than we've looked
+
+at earlier that you're wanting to choose
+
+one of a number of senses of words such
+
+as first star whether it's a rock star
+
+in this astronomical object based on the
+
+evidence of the words around it that you
+
+see in the document and in these
+
+experiments what we were very careful to
+
+do is to set up two models which were
+
+exactly the same in all respects they
+
+had exactly the same features exactly
+
+the same methods of smoothing the data
+
+but differed only in whether we were
+
+doing conditional estimation or joint
+
+estimation and what do we see in the
+
+results of these experiments what we see
+
+is well if we just skip first of all
+
+straight to help performs on the test
+
+data we see the good news story for
+
+conditional likelihood the conditional
+
+likelihood is giving us performance
+
+that's two-and-a-half percent better
+
+than what we got from the joint
+
+likelihood naive Bayes model so this
+
+joint likelihood model is a naive Bayes
+
+model and so that's a nice gain and
+
+something that is very appealing when
+
+building practical NLP systems
+
+incidentally we can also notice
+
+something interesting by looking at
+
+performance on the training set if we
+
+look at performance on the training set
+
+the joint model gets 86 and a half
+
+percent which goes up to 98.5 percent on
+
+for the conditional likelihood model you
+
+could think that that's good news but
+
+it's also actually a cause for worry
+
+what you will find is that conditional
+
+models can very easily memorize much of
+
+a training set and so they're very prone
+
+to overfitting by memorizing too much
+
+what happened to be seen in training
+
+data which may not reappear in test data
+
+and so we'll go on and look at how to
+
+control this kind of overfitting later
+
+on in this discussion okay that's a
+
+motivating introduction for
+
+discriminative models and the screwin of
+
+estimation in the next section we'll
+
+start looking at how we can define the
+
+features that are used in these models
+
+and then go from there into the details
+
+of how they're estimated

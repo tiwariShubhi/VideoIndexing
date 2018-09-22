@@ -1,0 +1,645 @@
+﻿let's give a baseline algorithm for
+
+sentiment analysis the task we're going
+
+to use is sentiment classification of
+
+movie reviews and I've drawn on the work
+
+of pang and Lee and their collaborators
+
+in this lecture so their task was what's
+
+often called polarity detection simple
+
+positive or negative no complicated
+
+sentiment issues and they're going to
+
+apply this to movie reviews from the
+
+IMDB website and they've released some
+
+data that's that's often used in
+
+research called polarity data 2.0 which
+
+is a set of IMDB movie reviews that have
+
+been texts normalized and I pointed you
+
+here at the URL for that here are some
+
+examples of movies from their database
+
+take a look and see if you can decide
+
+which one's positive and which one's
+
+negative hopefully you decided that the
+
+first one is positive and the second one
+
+is negative and the way you would decide
+
+that is words like aggravating and
+
+unbelievably disappointing for negative
+
+and cool for positive so these are the
+
+words they're going to help us in the
+
+classification task and the baseline
+
+algorithm itself has a number of steps
+
+we're gonna start by tokenizing the
+
+words in the review itself then we're
+
+gonna extract features and the features
+
+we're going to look at mostly our words
+
+themselves and then we'll take these
+
+features and apply them in a classifier
+
+and we've talked about naive Bayes and
+
+so we're gonna use naive Bayes in
+
+today's lecture but in practice we might
+
+just as often or even more often use a
+
+Mack Sennett classifier which we'll talk
+
+about in the future or SVM classifiers
+
+really any classifier
+
+works fine sentiment tokenization a lot
+
+of the same issues come up as any kind
+
+of tokenization we've talked about
+
+earlier in sentiment you're likely to be
+
+dealing with websites so you're going to
+
+have HTML and xml markup you might be
+
+dealing with Twitter so you have to deal
+
+with hashtags and and and Twitter
+
+usernames capitalization which in many
+
+other kinds of text normalization isn't
+
+so important often it's just if we get
+
+rid of capitalization we might in
+
+sentiment want to preserve at least some
+
+of it perhaps words in all caps people
+
+are often shouting by using
+
+capitalization we're gonna want to
+
+normalize phone numbers and dates and
+
+and we its variant
+
+important in sentiment tokenization to
+
+recognize emoticons so I'll show you
+
+here a set of regular expressions for
+
+detecting emoticons from Chris pots so
+
+here we have the one long regular
+
+expression for recognizing an optional
+
+hat followed by an eye fob an optional
+
+nose and then a mouth and so on so you
+
+can see to that and either in a positive
+
+or reverse orientation and that this set
+
+of regular expressions comes from a
+
+whole sentiment tokenizer that I pointed
+
+you at here and there's other kinds of
+
+token oysters like Brendan O'Connor's
+
+I'm Twitter tokenizer you can also go
+
+look at so the number of issues come up
+
+in extracting features for sentiment
+
+classification one is negation it's very
+
+important to detect negation in a word
+
+like didn't so we know that I didn't
+
+like this movie we should be able to
+
+detect that it's quite different than I
+
+really like this movie so we're gonna
+
+need to deal with negation and we also
+
+have to deal with the question of which
+
+words to use we might want to use just
+
+adjectives we might want to use all the
+
+words in the text it turns out that I'm
+
+at least on this IMDB data and maybe in
+
+general that looking at all words is
+
+better than looking at just adjectives
+
+because often verbs or nouns or other
+
+words give us a lot of information about
+
+sentiment so how do we deal with
+
+negation here's the simplest algorithm
+
+first proposed by Dawson Chen M and used
+
+very frequently after that we simply
+
+take the fort letters and ot underbar
+
+and we we prepend them to every word
+
+between the negation word and then the
+
+following punctuation so we have a
+
+phrase like didn't like this movie comma
+
+but I and we turned that into didn't not
+
+like not this non movie so now we've
+
+essentially doubled our vocabulary size
+
+every word could be itself or the part
+
+of the word with not underbar prepended
+
+and we're gonna learn that these not
+
+underbar words and we've created words
+
+for
+
+for negative sentiment or for flipping
+
+the sentiment to remind ourselves about
+
+naivebayes the most likely class
+
+according to naive Bayes is that class
+
+out of all classes which maximizes the
+
+product of two probabilities the prior
+
+the probability of the class and the
+
+product over all positions in the
+
+document of the likelihood of the word
+
+in that document given the class so how
+
+likely are we to see a positive movie
+
+review times for every position in the
+
+document how likely is that word to have
+
+been expressed by a positive movie
+
+review and the same for negative and we
+
+pick whichever one positive or negative
+
+has highest probability if we're doing
+
+three we're doing neutral as well we
+
+could have three classes and in practice
+
+for sentiment analysis and lots of other
+
+text classification tasks we use a
+
+simple Laplace or ad1 smoothing with
+
+naive Bayes so the way we're computing
+
+this likelihood probability of a word
+
+given the class is just by adding one to
+
+the count and then the vocabulary size
+
+to the denominator for sentiment and
+
+other text classification tasks we often
+
+use a slight variant of the naive Bayes
+
+algorithm called binarized or boolean
+
+multinomial naive bayes and the
+
+intuition of this algorithm is that for
+
+sentiment and for other text
+
+classification tasks we care more
+
+whether a word occurred or not than
+
+exactly what its frequency is so for
+
+example the occurrence of the word
+
+fantastic tells us maybe a lot that we
+
+have a positive review but a fantastic
+
+occurring three times or five times may
+
+not tell us a lot more than just
+
+occurring once so in boolean multinomial
+
+naive bayes we simply clip all the word
+
+counts in each document at a count of
+
+one so instead of using the full term
+
+frequency we'll just use a count of one
+
+for each document so if we look at our
+
+original learning algorithm for
+
+multinomial naive bayes here remember we
+
+extract our vocabulary and now we're
+
+going to calculate our priors member the
+
+priors by looking for every how many
+
+documents occur with a particular
+
+glass over the total number of documents
+
+so there's our prior and for the
+
+likelihood terms for each word for each
+
+class we roughly counted how many times
+
+this word counted this word over the
+
+count of all words in a class and it
+
+gives us the likelihood of a word in a
+
+class and then we did some add one
+
+smoothing and we're gonna do the exact
+
+same thing with boolean with one extra
+
+step before we do our concatenated of
+
+all the documents into one big document
+
+and counting all the words in it we are
+
+going to remove duplicates so for each
+
+document for every word type we're just
+
+going to retain a single instance of
+
+that word so if a word occurred five
+
+times
+
+we'll keep only one copy of that word
+
+and then we'll concatenate all these
+
+documents and then we'll do our counting
+
+and and our add one smoothing and
+
+everything as we did before for naive
+
+Bayes so that's our training algorithm
+
+for naive Bayes in the boolean form the
+
+testing way doing boolean multinomial
+
+naive bayes we do the exact same thing
+
+we remove from the test document all the
+
+duplicate words so if the word occurs
+
+five times we keep only one copy of it
+
+and then we use the same naive Bayes
+
+equation we've been using before on this
+
+slightly reduced text document let's
+
+look at an example of boolean
+
+multinomial naive bayes and here we put
+
+up the little document that we saw when
+
+we were talking about naive Bayes
+
+originally so we have here four training
+
+documents and one test document and so
+
+the word Chinese occurs in Class C three
+
+documents are in Class C so it occurs
+
+four times one two three four oh five
+
+sorry five times so the count of Chinese
+
+is five and it occurs three times in our
+
+test document Chinese equals three and
+
+so on and so in our database equation
+
+we're going to be using this count to
+
+compute the likelihood the probability
+
+of Chinese given a document Class C but
+
+in the boolean format we're simply going
+
+to pre-process the documents to remove
+
+all multiple copies of a word
+
+here's our boolean version now so you'll
+
+notice that it is only one copy of the
+
+word Chinese in document one one copying
+
+document two one copy in document three
+
+so now our counts in the C class in
+
+training for Chinese the count of
+
+Chinese now that kind of Chinese is
+
+gonna be three instead of five and in
+
+the test set here count of Chinese is
+
+only one so it turns out that this
+
+version of naivebayes binarized boolean
+
+feature multinomial naive bayes works
+
+better than using the full word counts
+
+and I want to note that for those of you
+
+who know about that there's an
+
+alternative version of naive bayes
+
+called multivariate Bernoulli naive
+
+Bayes using binarized boolean features
+
+in multinomial naive bayes is not the
+
+same as multivariate Bernoulli naive
+
+Bayes in fact multi-varied Bernoulli
+
+naive Bayes doesn't seem to work as well
+
+for sentiment or other tasks so we
+
+generally use binarized words rather
+
+than the full word counts although some
+
+researchers like running it all have
+
+suggested that maybe something in
+
+between the frequency and just one word
+
+like looking at the log of the frequency
+
+which is smaller than the frequency but
+
+but maybe different than just using one
+
+may be a useful thing to try and if
+
+you're interested you can read the
+
+literature on this whole question of
+
+which a version of naive Bayes is most
+
+useful as we introduced last time and
+
+pang and Li and our baseline classifier
+
+we're going to use cross-validation so
+
+cross-validation remember we break up
+
+our data into ten folds I've shown only
+
+five folds here and inside each fold
+
+let's say we might have the same number
+
+let's say we have half positive and half
+
+negative in our data so we have let's
+
+say for positive and for negative in our
+
+test set then we're going to have also
+
+let's say we have 500 positive and 500
+
+negative in our training so we're going
+
+to want to make sure that our test set
+
+has the same distribution of positive
+
+negative as our training set and then
+
+we're going to rotate our test set
+
+through our data and each time we're
+
+going to train a classifier
+
+so classifier one classifier two will
+
+train on this training data test on this
+
+test data and compute a inaccuracy so
+
+have accuracy one accuracy two accuracy
+
+three for each of these classifiers and
+
+we'll compute these performances of
+
+these classifiers so we'll have five
+
+different or in our example here nine
+
+each time we're training on a on a fold
+
+in computing a our accuracy will take
+
+the average of all those and we'll
+
+report the average of these ten runs
+
+each one training on nine folds and
+
+testing on one test fold so and in
+
+general it's nice if we also add a final
+
+test set it turns out that other kind of
+
+classifiers max and an SVM often do
+
+better than naive Bayes it depends a lot
+
+on your data set and the size of the
+
+data but you'll want to take a look at
+
+all sorts of different classifiers when
+
+you're doing naive bayes now this
+
+baseline algorithm has a lot of problems
+
+one problem is that cinnamon is just a
+
+hard task in general so here's some
+
+examples from penn and lee take a look
+
+at them if you're reading this because
+
+it is you're dialing fragrance please
+
+wear it at home exclusively and tape the
+
+windows shut so that's a negative review
+
+of a perfume but very hard to find just
+
+by using positive and negative words or
+
+the famous wedi comment by Dorothy
+
+Parker on Katharine Hepburn she runs the
+
+gamut of emotions from A to B again
+
+quite difficult to detect another
+
+problem that often occurs in sentient is
+
+called the worded expectation problem
+
+has to do with ordering effects so here
+
+read this first review this film should
+
+be brilliant sounds like a great plot
+
+actors are first graded lots of positive
+
+things going on but at the end the
+
+reviewer says it can't hold up so seems
+
+like a positive review but it's not
+
+similarly in the sentence the very
+
+talented Laurence Fishburne not so good
+
+so here we're setting up I expected the
+
+movie to be good and it wasn't good so
+
+this kind of ordering
+
+fact is something that we're gonna have
+
+to deal with in any kind of more
+
+advanced sentiment algorithm so that's
+
+the basic baseline algorithm that we can
+
+see for sentiment analysis

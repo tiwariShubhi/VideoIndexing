@@ -1,0 +1,423 @@
+﻿today we're going to introduce the topic
+
+of language modeling one of the most
+
+important topics in natural language
+
+processing the goal of language modeling
+
+is to assign a probability to a sentence
+
+why would we want to assign a
+
+probability to a sentence this comes up
+
+in all sorts of applications and machine
+
+translation for example we'd like to be
+
+able to distinguish between good and bad
+
+translations by their probabilities so
+
+high winds tonight might be a better
+
+translation than large winds tonight
+
+because Haiyan winds go together well in
+
+spelling correction we see a phrase like
+
+15 minuets from my house that's more
+
+likely to be a mistake four minutes and
+
+one piece of information that lets us
+
+decide that is that 15 minutes from is a
+
+much more likely phrase than 15 minuets
+
+from and in speech recognition a phrase
+
+like I saw a van is much more likely
+
+than a phrase that sounds phonetically
+
+similar eyes of an but is much less
+
+likely to have that sequence of words
+
+and it turns out language modeling's
+
+play a role in summarization and
+
+question answering really everywhere so
+
+the goal of a language model is to
+
+compute the probability of a sentence or
+
+a sequence of words so given some
+
+sequence of words w1 through WN we're
+
+gonna compute their probability P of W
+
+and we'll use capital W to mean a
+
+sequence from the p1 to WN now this is
+
+related to it the task of computing the
+
+probability of an upcoming word so P of
+
+w5 given W 1 through w 4 is very related
+
+to the task of computing P of W 1 W 2 W
+
+3 w 4 W 5 a model that computes either
+
+of these things either P of W dub
+
+capital W meaning a string the joint
+
+probability of the whole string or the
+
+conditional probability of the last word
+
+given the previous words either of those
+
+we call that a language model no it
+
+might have been better to call this the
+
+grammar I mean technically what this is
+
+is telling us something about how good
+
+these words fit together and we normally
+
+use the word grammar for that but it
+
+turns out that the word language model
+
+and often we'll see the acronym LM is
+
+standard so we're gonna go with that so
+
+how are we going to compute this joint
+
+product
+
+we want to compute let's say the
+
+probability of the phrase its water is
+
+so transparent that as part of a
+
+sentence and the intuition for how
+
+language modeling works is that we were
+
+going to rely on the chain rule of
+
+probability and just to remind you about
+
+the chain rule of probability let's
+
+think about the definition of
+
+conditional probability so P of a given
+
+B equals P of a comma B over P of B and
+
+we can rewrite that so P of a given B
+
+times P of B equals P of a comma B or
+
+turning it around P of a comma B equals
+
+P of a given B it's a given times P of B
+
+and then we could generalize this to
+
+more variables so the joint probability
+
+of a whole sequence ABCD is the
+
+probability of a times B given a times C
+
+conditioned on a and B times D
+
+conditional ubc so this is the chain
+
+rule in a more general form of the chain
+
+rule we have here the probability of any
+
+joint probability of any sequence of
+
+variables is the first times the
+
+conditional the second in the first
+
+times a third condition the first two up
+
+until the last condition in the first n
+
+minus one all right the chain rule so
+
+now the chain rule can be applied to
+
+compute the joint probability of words
+
+in a sentence so let's suppose we have
+
+our phrase its water is so transparent
+
+by the chain rule the probability of
+
+that sequence is the probability of its
+
+times the probability of water given ifs
+
+times the probability of is given its
+
+water times the probability of so given
+
+its water is and finally times the
+
+probability for hands parent given its
+
+water is so or I'm more formally the
+
+probability of a joint probability of a
+
+sequence of words is the product over
+
+all I of the probability of each word
+
+times the prefix up until that word how
+
+are we going to estimate these
+
+probabilities
+
+we just count and divide we often
+
+compute probabilities by counting and
+
+dividing so the probability of the given
+
+its water is so transparent that we
+
+could just count how many times its
+
+water is so transparent that the occurs
+
+and divided by the number of times its
+
+water is so transparent occurs so we
+
+could divide this by this and get a
+
+probability we can't do that and the
+
+reason we can't do that is there's just
+
+far too many possible sentences for us
+
+to ever estimate these there's no way we
+
+could get enough data to see the counts
+
+of all possible sentences of English so
+
+what we do instead is we apply a
+
+simplifying assumption called the Markov
+
+assumption named for Andre Markov and
+
+the Markov assumption suggest that we
+
+estimate the probability of the given
+
+it's water is so transparent that just
+
+by computing instead the probability of
+
+the given the word that or the very
+
+laughs that that means the last word in
+
+the sequence or maybe we compute the
+
+probability of the given its water so
+
+transparent that given just the last two
+
+words so the given transparent that so
+
+that's the Markov assumption let's just
+
+look at the previous or maybe the couple
+
+previous words rather than the entire
+
+context more formally the Markov
+
+assumption says the probability of a
+
+sequence of words is the product for
+
+each word of the conditional probability
+
+of that word given some prefix of the
+
+last few words so in other words in the
+
+chain rule product of all the
+
+probabilities were multiplying together
+
+we estimate the probability of WI given
+
+the entire prefix from 1 to I minus 1 by
+
+a simpler to compute probability WI
+
+given just the last few words the
+
+simplest case of a Markov model is
+
+called the unigram model in the unit
+
+gram model we simply estimate the
+
+probability of a whole sequence of words
+
+by the product of probabilities of
+
+individual words you know grams and if
+
+we generated sentences by randomly
+
+picking words you can see that it would
+
+look like word salad so here's some
+
+automatically generated sentences
+
+generated by Dan Klein and you can see
+
+that with the word v the word
+
+the word of this doesn't like a sentence
+
+at all it's just a random sequence of
+
+words thrift did 80 said that's the
+
+properties of a unigram model words are
+
+independent in this model slightly more
+
+intelligent is a bigram model where we
+
+condition on the single previous word so
+
+again we estimate the probability of a
+
+word given the entire prefix from the
+
+beginning to the previous word just by
+
+the previous word so now if we use that
+
+and generate random sentences from a
+
+bigram model the sentences look a little
+
+bit more like English still something's
+
+wrong with them clearly outside new car
+
+well new car looks pretty good car
+
+parking is pretty good parking lot but
+
+together outside new car parking lot of
+
+the agreement reached that's not English
+
+so even the bigram model by giving up
+
+these conditioning that English has
+
+we're simplifying the ability of the
+
+model to model what's going on in a
+
+language now we can extend the immigrant
+
+model further to trigrams that's three
+
+grams or four grams or five grams but in
+
+general it's clear that Engram modeling
+
+is an insufficient model of language and
+
+the reason is that language has long
+
+distance dependencies so if I want to
+
+say predict the computer which I had
+
+just put into the machine room on the
+
+fifth floor and I hadn't seen this next
+
+word and I want to say what's my
+
+likelihood of the next word and I
+
+condition it just in the previous word
+
+floor I'd be very unlucky to guess
+
+crashed but really the crashed is the
+
+main verb of a sentence and computer is
+
+the subject the head of the subject noun
+
+phrase so if we if we knew computer was
+
+the subject we're much more likely to
+
+guess crashed so these kind of long
+
+distance dependencies mean that in the
+
+limit a really good model of predicting
+
+English words will have to take into
+
+account lots of long distance
+
+information but it turns out that in
+
+practice we can often get away with
+
+these Engram models because the local
+
+information especially as we get up to
+
+trigrams and four grams will turn out to
+
+be just constraining enough that in most
+
+cases it'll solve our problems for us

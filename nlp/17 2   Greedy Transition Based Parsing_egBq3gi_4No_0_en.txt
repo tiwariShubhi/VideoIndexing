@@ -1,0 +1,1343 @@
+﻿in this segment I'm going to look at the
+
+greedy transition based parsing approach
+
+to dependency parsing and in particular
+
+I'm going to describe the model that's
+
+used by more positive this framework so
+
+the idea of mult parser is that maybe we
+
+could do parsing by just making simple
+
+greedy decisions as to how to attach
+
+each word as it comes along and in
+
+particular to make those decisions or
+
+use a discriminative machine learning
+
+classifier so the positive does a
+
+sequence of actions working bottom up
+
+kind of like a shift reduce parser if
+
+you've seen that in either CFG parsing
+
+or in the programming language
+
+literature the parser has a stack which
+
+will be written with the top to the
+
+right and which will start off with a
+
+root symbol on it as I introduced last
+
+time and then a buffer which is the
+
+stuff we've yet to look at with the top
+
+written to the left and so that will
+
+have the input sentence on earth and as
+
+we go along we'll build up a set of
+
+dependency arcs which starts off empty
+
+and we'll do this by doing a set of
+
+actions this is the natural way to think
+
+of a transition based dependency parser
+
+so this is our start configuration with
+
+our stack the buffer and the empty set
+
+of dependency arcs and so essentially
+
+our moves are that we can shift a word
+
+across from the buffer onto the stack
+
+which is like the shift operation for
+
+CFG parsing or we can do a reduce
+
+operation now in dependency parsing
+
+framework we end up with two reducer
+
+operations depending on we take whether
+
+we're taking the word on the left or the
+
+word on the right as the head so here we
+
+have word iron word J and if we take the
+
+word on the right as the head we get a
+
+left R that means we're kind of creating
+
+an arc the points like this which is
+
+being added to our set of arcs here or
+
+if we do a write our copper
+
+raishin we're having a dependency that
+
+goes this way so um the word on the
+
+buffer is being a dependent of the word
+
+on the stack now if it's untyped
+
+dependency parsing there are just these
+
+two operations if you want do type
+
+dependency parsing you also when you do
+
+this reduction have to say what label
+
+you're using to connect the two words
+
+and so that means if you have
+
+twinky labels you actually end up with
+
+20 times 2 plus 141 different actions in
+
+your dependency parser and you finish
+
+when you've exhausted the buffer now
+
+something to note here is that if you
+
+have seen shift reduce parsing this
+
+something that's slightly unusual with
+
+this presentation here so normally in
+
+shift reduce parsing for CFG s you first
+
+of all put things on the stack and the
+
+reduction is done fully on the stack but
+
+for the model that's being shown here
+
+when you were doing the reductions in
+
+either direction you're actually doing a
+
+reduction with one thing that's on the
+
+stack and one thing that's on the buffer
+
+that's just a convention that's being
+
+adopted understand and what you see in
+
+the dependency parsing literature the
+
+claim is that it makes it a little bit
+
+cleaner to formulate these things that
+
+way though I'm not actually sure it
+
+makes a big difference but I've gone
+
+with it because it's just standard lis
+
+what you see um this is a simple way to
+
+do things and you can do that but it's
+
+not the standard thing that people
+
+actually do and so I'm gonna move on
+
+next to the most common method that you
+
+see for transition based dependency
+
+parsers and let me just explain why this
+
+simple way is a little bit problematic
+
+so that if you had a sentence of the
+
+sort sue tried to open door in so ah
+
+well what you're going to have is that
+
+you have a dependency from tried to open
+
+and as soon as you've
+
+up to here in the input at least by then
+
+it's obvious that you're going to have a
+
+dependency between tried to open but if
+
+you're using the kind of three action
+
+model of dependency parsing I'm shown
+
+here
+
+you can't construct this arc immediately
+
+instead because of the fact that the
+
+door is a dependent of open and this in
+
+the cellar is a dependent of door that
+
+you have to construct all of this
+
+material before you construct this arc
+
+here so the closure of the dependencies
+
+of a dependent have to be constructed
+
+before you then hook it up to a higher
+
+head so all of these dependencies have
+
+to be constructed first well what that
+
+means is that you have to have shifted
+
+on all of the words in the input before
+
+you can decide anything about this
+
+dependency and that's been found that
+
+having to do that amount of look-ahead
+
+actually makes it harder for machine
+
+learning based greedy classifiers to
+
+work well so instead what people have
+
+wanted to do is move to being able to in
+
+a greedy fashion hook up local things on
+
+the right even before you know their
+
+dependence and so that's what's being
+
+done in a different way of formulating
+
+the actions that's referred to as arc
+
+Iger dependency parsing for the arc
+
+eager dependency parser we have exactly
+
+the same start and finish configurations
+
+and the operations are sort of similar
+
+there's a shift operation and there's
+
+these left and right arc steps there we
+
+add in one new operation a reduce
+
+operation but there are a number of
+
+differences in the subtleties of what
+
+works so let's just sort of look at them
+
+for a moment so when you have the left
+
+arc operation it's doing the same thing
+
+of constructing a left dependency
+
+between the
+
+that's in the buffer and the top word on
+
+the stack and the result is the same
+
+that we're constructing this new
+
+dependency arc but we have to add on to
+
+it some preconditions so we need to have
+
+on a precondition that WI isn't already
+
+a dependent of some other word of course
+
+if we allowed that arc to be put in then
+
+we'd get an analysis where two arrows
+
+would be pointing to the same word and
+
+precisely because of the our key eager
+
+character words can still can already be
+
+on the stack even though they've been
+
+made the dependent of some other word
+
+the right arc operation is a bit more
+
+different so for the right arc operation
+
+our starting point is exactly the same
+
+that we've now going to want to make an
+
+arrow like this where we have the head
+
+on the stack and the dependent at the
+
+beginning of the buffer but and we add
+
+this dependency but the difference is we
+
+then rather than getting rid of w-j that
+
+we push it onto the stack so that means
+
+that we're keeping the word on the right
+
+so it can take its own dependence later
+
+on and so that's precisely how we get a
+
+word on the stack which is already being
+
+declared the dependent of some other
+
+word okay then it's it was the fact that
+
+we do that necessitates this extra
+
+reduce operation because once we've then
+
+found all the dependence of that word we
+
+have to eventually get rid of it so we
+
+can go back to finding dependence of
+
+other words that are higher up the
+
+syntax tree and that's what this reduce
+
+operation does and the reduce operation
+
+also has a precondition and its
+
+precondition is you can only get rid of
+
+a word from the stack if it has been
+
+made the dependent of some other word so
+
+in other words if it was introduced in
+
+this way as the dependent of some other
+
+word then at some later point you can
+
+reduce it once it's closed and that's
+
+all a bit confusing let's
+
+go through a concrete example and I
+
+think it'll make a lot more sense okay
+
+so the sentence I'm going to work with
+
+is happy children like to play with
+
+their friends and here's the UM cheat
+
+sheet of the operations that we're going
+
+to be able to perform so starting off we
+
+start off with here's the stack with
+
+just this root symbol
+
+the Alpha has our sentence and we found
+
+no dependencies so in this situation we
+
+have these four operations we could
+
+apply so if we thought that happy was
+
+the head of the whole sentence and we
+
+could immediately do a right heart
+
+operation but that doesn't seem right
+
+here so what we do is we shift it on to
+
+the stack and then we're in this
+
+situation okay well in this situation we
+
+do have that children is going to have
+
+as its dependent happy so the next thing
+
+we want to do is construct a dependency
+
+of that sort and so that means we're
+
+doing a left arc operation and in
+
+particular we're introducing it as an
+
+adjective or modifier dependent so when
+
+we do a left arc operation we add to the
+
+set of dependencies that we found and
+
+then we get rid of the dependent off of
+
+our stack so it disappears right here
+
+okay at this point children isn't the
+
+head of the sentence either so we do
+
+another shift operation well at this
+
+point we're ready to do another left arc
+
+operation because children is the
+
+subject of like and so we introduce this
+
+noun subject dependency and add that to
+
+our set of dependencies so a 2 is now a
+
+set of 2 dependencies that we've already
+
+built ok well at this point we've
+
+actually found the head of the whole
+
+sentence so like is the head of the
+
+whole sentence so that means we can
+
+connect it to the root by doing a right
+
+arc operation so we now add the root
+
+dependency for the whole sentence and
+
+remember then for the right
+
+tark operation we haven't yet found the
+
+dependence of like on the right and so
+
+therefore we're adding it into the stack
+
+as something that still has to find its
+
+own dependence on the right and indeed
+
+at this point we can immediately going
+
+to be able to start to do that because
+
+play is going to be a dependent of like
+
+but first of all we can have to get past
+
+two so for two we shift to on to the
+
+stack and then to the infinitive marker
+
+is going to be a dependent of the verb
+
+play so that's going to be another left
+
+attached as an exhilarating or fire
+
+okay then at this point we can say that
+
+like and take its first right dependent
+
+like to play and so that's done as a
+
+right attachment and so it's getting
+
+this right attached XCOM which is again
+
+adding in to our set of dependencies
+
+okay so at that point then we're making
+
+progress but we've still got more to do
+
+so this is what we are up to so far play
+
+and well play is also going to take as
+
+its argument play with so we can do
+
+another write attached of playing with
+
+and so that means again that with now
+
+moves on to the stack that we've
+
+attached we've made this dependency of
+
+play with but with hasn't found its
+
+arguments on the right so it's placed on
+
+the stack and then we're going to be
+
+able to find its arguments so with this
+
+argument is going to be two friends so
+
+before we can get to that we have to
+
+shift on there and then we can introduce
+
+there as a left arc of friends and
+
+attach it and remember formally that to
+
+apply this left arc rule each time we
+
+have to check the precondition and the
+
+precondition is that there hasn't been
+
+made the dependent of any other word and
+
+it hadn't been so that precondition is
+
+satisfied okay now we can do another
+
+write our operation
+
+where we can hook together with and
+
+friends as the object of the preposition
+
+okay so we're making good progress so at
+
+this point we've now got things that we
+
+finished with friends never had any
+
+right doesn't have any right dependence
+
+at all with we found there's only right
+
+depend and that was friends play we
+
+found it's only right dependent with
+
+their friends and at this point we have
+
+to start using the reduce operation so
+
+we reduce our friends and again remember
+
+that had a precondition and the
+
+precondition was checking that friends
+
+is hooked in as a dependent of something
+
+and indeed it is we can reduce again to
+
+get rid of with and we can reduce again
+
+to get rid of play okay at this point
+
+we've now got just the period to deal
+
+with which we say is a dependent of the
+
+main verb so we can introduce that also
+
+as a right attach operation and so now
+
+this point the offer is empty and the
+
+way we defined our finish state is as
+
+soon as the buffer is empty we can stop
+
+you could if you want to say well geez
+
+can't we just sort of reduce reduce to
+
+pop these things off back to the root
+
+and you know you could have defined
+
+things like that it wouldn't do any harm
+
+but actually it's unnecessary because
+
+once you your offer is empty you can't
+
+construct anymore dependencies because
+
+each operation that introduces a
+
+dependency is taking one thing from the
+
+stack and one thing from the buffer and
+
+that there's no way in this formulation
+
+for things to reappear in the buffer
+
+once they've been moved to the stack so
+
+we know that we're done and we found the
+
+complete set of dependencies which is
+
+you have to here kind of work back up
+
+through my list but you make a set of
+
+all the dependencies we've introduced
+
+okay so that's the model of how the
+
+parts are operates as doing these
+
+operations step by step but in each step
+
+there there are multiple things that
+
+could have been done it could have
+
+chosen to shift or it could have chosen
+
+to make a left or a right are
+
+and if it chooses to make a left or a
+
+right arc it has to label the dependency
+
+it introduces with one of many
+
+dependency labels so how do you do that
+
+well the way that's done is by using
+
+some form of discriminative classifier
+
+support vector machines svms have been
+
+most commonly used in practice but it
+
+could equally be another kind of
+
+discriminative classifiers such as a
+
+MaxEnt classifier and so these
+
+classifiers are choosing from a set of
+
+moves so if it's an untyped dependency
+
+parser there are four moves that are key
+
+here configuration but if it's typed
+
+then there are twice the number of
+
+dependency types plus two classes to
+
+choose from but it's a finite set of
+
+classes you're choosing from so what are
+
+the features that use in the dependency
+
+parser well you definitely use what's
+
+the word on top of the stack what's it's
+
+part of speech what's the first word in
+
+the buffer what's its part of speech
+
+that will let you choose operations like
+
+shifting or the kind of dependency label
+
+to choose but those aren't the only
+
+operations in good dependency parsers
+
+because remember we had other things
+
+that we knew could be important like the
+
+length of the dependency arc that's
+
+being proposed or knowing what's
+
+intervening between them and also you
+
+might want to know about for these words
+
+that at the top of the stack well what
+
+dependents do they already have that
+
+will int influence how likely you are to
+
+get other dependencies for them so you
+
+can put all of these things as features
+
+into a discriminative classifier kind of
+
+like we saw when working at maximum
+
+classifiers before so in the simplest
+
+form of transition based dependency
+
+parser there is hints absolutely no
+
+search whatsoever that at each point
+
+you're making a greedy decision that
+
+you've got the Stephan buffer in some
+
+state you run a classifier it decides
+
+the most likely next action and you just
+
+take it and that's been an approach
+
+that's been strongly pursued in the malt
+
+powers a framework to see how good a job
+
+you can do
+
+in in this manner by having really good
+
+classify as though good at choosing the
+
+next move I mean of course you don't
+
+have to do that you could do some kind
+
+of bean search to explore different
+
+possibilities but the rather stunning
+
+result is that you can do this form of
+
+completely greedy transition based
+
+parsing and do really well you can build
+
+dependency parsers that work almost as
+
+well as the best lexicalized
+
+probabilistic context-free grammars
+
+doing the kind of complete CKY parsing
+
+style search over all possibilities that
+
+we saw previously where we're taking it
+
+that we're converting the LPC FGS
+
+into dependency representations to
+
+evaluate them I'll say a bit more about
+
+evaluation in a moment well if it was
+
+just that they were close to the state
+
+of the art that would be good
+
+but the dramatic reason why people have
+
+really like these parses and they've
+
+become extremely widely used is that
+
+because they're these greedy transition
+
+based parsers that they're super super
+
+fast so this style of parsers can work
+
+way faster than any kind of dynamic
+
+program parser that is pursuing every
+
+possible alternative analysis how do we
+
+evaluate dependency parsers the standard
+
+way to do that is just fire accuracy
+
+because since for each word we're going
+
+to choose something as its governor or
+
+head we can just say how many of those
+
+decisions that did we get right let's
+
+look at an example of that so here's the
+
+simple sentence we're going to use she
+
+saw the video lecture so commonly we'll
+
+number each word of the sentence
+
+including giving a number of 0 to this
+
+route that we add to the sentence so in
+
+this analysis this is showing you the
+
+correct dependencies and we can lay them
+
+out as a chart where we have for each
+
+word we have its own word number and
+
+then we say
+
+which word index is the head of that
+
+word and in particular for the word
+
+that's the head of the whole sentence
+
+saw we're saying the word index of its
+
+governor is 0 which is this root symbol
+
+and then additionally if we want to we
+
+can also label the dependencies and that
+
+happens over here okay so then we build
+
+a parser such as a transition based
+
+dependency parser and the parser tries
+
+to parse the sentence and it gets some
+
+results and if you look over here it
+
+starts off well it says that soar is the
+
+root of this sentence and that she is
+
+the subject of soar but it actually
+
+makes a bit of a boo-boo after that so
+
+it says that it's is that she saw
+
+something lecturing so soar has as its
+
+dependent lecture as a verb and the
+
+video is being analyzed as the subject
+
+of the verb lecture well if we do that
+
+and evaluate accuracy how does it work
+
+outs over accuracy we're taking the
+
+number of correct dependencies over the
+
+total number of dependencies and there
+
+are two ways we can do that one is
+
+ignoring the labels for the graddic
+
+relations and there so that Stanley gets
+
+referred to as unlabeled attachment
+
+score and so if you look at that we're
+
+doing pretty well so this one is correct
+
+this one is correct this one is correct
+
+this one is correct and so the only
+
+place where a different word is chosen
+
+as the governor for a word is right here
+
+so here what it should be is that that
+
+is a dependent of lecture but in this
+
+wrong analysis we say that that is a
+
+dependent of video however if we look at
+
+the labeled accuracy score this wrong
+
+pars isn't doing so well so it gets this
+
+one right and then it gets this one
+
+right but everything else it gets wrong
+
+and gets them wrong for two reasons
+
+so for the case of that it chooses the
+
+wrong word to be have as its governor
+
+but for video and lecture although it
+
+chooses the right word to be the
+
+governor it chooses the wrong function
+
+so it's because it's thinking that
+
+lecture lecture is a verb that is a
+
+compliment clause of C that's wrong
+
+because it should be a direct object and
+
+then it's analyzing video as the subject
+
+of lecture and that's wrong as well
+
+really we should have this compound noun
+
+structure here and so we only get two
+
+out of five ride or 40% here are a
+
+couple of numbers just to give you a
+
+sense of how well people do with
+
+dependency parsers so if you want to
+
+look more at dependency parse evaluation
+
+one good source of information was that
+
+in the Connell conference the conference
+
+on natural language learning it was held
+
+in 2006 the shared task that was used
+
+was to do dependency parsing over a
+
+collection of 13 different languages and
+
+many dependency parsers and took part
+
+and you can see scores so if you look at
+
+the results for malt powder in that
+
+competition which was evaluated
+
+primarily by this labeled attachment
+
+score the scores range from for the best
+
+languages it's not about 92% of the
+
+dependencies right and for the worst
+
+languages that got about 65 percent
+
+right
+
+it was a huge range so some languages I
+
+think are intrinsically harder than
+
+others but I think there are also issues
+
+of the quality of some of the tree banks
+
+was much better than others and that's
+
+also reflected in the numbers but to try
+
+and connect up with what we saw earlier
+
+for constituency parsing let me also
+
+give a few numbers from English so these
+
+are all dependency numbers but this time
+
+we're looking at unlabeled attachment
+
+score since we can always get unlabeled
+
+attachments from a constituency parser
+
+that has a notion of heads where it
+
+won't be producing label
+
+so if we convert the output of the
+
+Chinese and kahlan's models of
+
+generative constituency parsing both
+
+lexicalized pcfg parsers that their
+
+accuracy on dependencies untyped is
+
+about 92% um so the the modern
+
+Matsumoto's parser is another transition
+
+based path so kind of like the mob
+
+parser and so it does a bit worse than
+
+that about ninety point four percent
+
+here's a different style of dependency
+
+parser this is the minimum spanning tree
+
+graph based style dependency parser it
+
+did 91.5% almost almost as well as these
+
+but but you know people have gone on
+
+doing research on this and partly
+
+because dependency parsers are often
+
+much simpler there's been quite a lot of
+
+work in looking at combinations of
+
+dependency parsers and so for example
+
+here's one dependency parser from 2006
+
+where it's them getting results they're
+
+a little bit above the two constituency
+
+parsers now all of these results are
+
+even a few years out-of-date there
+
+hasn't been a recent careful comparison
+
+of constituency and dependency parsers
+
+but I think the picture what you should
+
+take away is that greedy transition
+
+based dependency parsers by themselves
+
+are perhaps a little bit worse in
+
+performance than dynamic programmed pcfg
+
+parsers but if so it's only a very
+
+little bit and their other performance
+
+characteristics make them extremely
+
+extremely attractive before finishing
+
+this presentation of dependency parsing
+
+techniques there's just one more issue I
+
+should mention which is the issue of
+
+projective 'ti so if you take
+
+dependencies from a CFG tree using heads
+
+you have to get a projective dependency
+
+parse and what that means is that your
+
+dependencies can be regarded as
+
+something in which everything nests
+
+together just like constituency nests
+
+together without giving any crossing
+
+dependencies but most theories of
+
+dependency grammar allow
+
+crossing dependencies Einon projective
+
+structures and indeed you can't get the
+
+semantics of certain constructions right
+
+without these non predictive
+
+dependencies so let's look at an example
+
+of that so here's this sentence who did
+
+bill buy the coffee from yesterday so
+
+most of the dependencies nest together
+
+giving us a kind of tree structure but
+
+if we didn't want to hook up
+
+who then what we want to say is well who
+
+is the object of this preposition here
+
+from and so if we put in its dependency
+
+we then this dependency has to cross
+
+these two other dependencies and so this
+
+is a non projective dependency structure
+
+and so the question then is how do we
+
+handle this kind of non projective 'ti
+
+in parsing methods in particular the
+
+transition based our key your algorithm
+
+I presented only builds projective
+
+dependency trees and so this has been an
+
+active area of investigation the
+
+dependency literature I'm not going to
+
+cover it in detail here but I'll just
+
+briefly mention the range of possible
+
+analyses that being pursued so one
+
+possibility is just to declare defeat on
+
+non projective arcs the languages like
+
+English there are quite few non
+
+projective arcs and basically for the
+
+same reason that context-free grammars
+
+work well for English because by and
+
+large everything is tree structured you
+
+can work and getting almost everything
+
+right with a non projective parser a
+
+second possibility is to use a
+
+dependency formalism which only has
+
+projective representations you'll see
+
+one of those in the next segment and
+
+that's kind of analogous to what
+
+context-free grammars actually represent
+
+because a context-free grammar also
+
+doesn't represent any connections
+
+between words that can't be done inside
+
+a tree structure and so effectively in
+
+something like the tree Bank
+
+representations we saw for phrase
+
+structure grammar they just fail to
+
+represent connections between words that
+
+are within a tree representation they
+
+just hook the word in somewhere higher
+
+up in the structure
+
+but there are other methods that people
+
+have pursued a third method people have
+
+used is to do predictive parsing and
+
+then run some kind of post processor
+
+that perhaps picks up on classes of
+
+labels which indicate we're hooking this
+
+on to our analysis but real it should be
+
+moved somewhere else and then to work
+
+out how to resolve the non projective
+
+links well something else you can do is
+
+you can actually add extra operations to
+
+the transition based dependency parser
+
+model that can handle at least the
+
+common cases of non project ivities that
+
+is things like question words being
+
+moved to the front of the sentence in
+
+English well finally you can move to a
+
+parsing method which just doesn't as
+
+assumed project ibbity so in particular
+
+the minimum spanning tree based graph
+
+based parsing methods don't make any
+
+assumptions of projective 'ti and you
+
+can just directly build non projective
+
+structures so in a way this is appealing
+
+another way it seems like it's possibly
+
+going to a two general situation because
+
+you're going from the situation of only
+
+allowing for projective structures to
+
+making those special requirements of
+
+projective structures and if you look at
+
+natural languages what you find is that
+
+they're mostly projective and there are
+
+only particular constructions like
+
+things like wh movement that moves
+
+question words to the beginning of a
+
+sentence or various kinds of right
+
+displacements like after thoughts that
+
+create non project ivities so in the MST
+
+parser all of that when you shouldn't
+
+shouldn't have non projective 'ti is in
+
+the space of the machine learning
+
+classifier of deciding which
+
+dependencies are likely to construct
+
+okay i hope that's given you a concrete
+
+sense of how transition based dependency
+
+parsers are implemented and so maybe
+
+feel like you could go off and implement
+
+one of those

@@ -1,0 +1,491 @@
+﻿hello in this section I want to point
+
+out a problem with generative models
+
+such as naive Bayes models which is how
+
+they can over can't evidence when that's
+
+correlated and at least hint at how
+
+MaxEnt models can solve this problem I'm
+
+going to use this example so in this
+
+example here's our training data and in
+
+our training data we have eight
+
+documents and so four of those documents
+
+are about Europe and four of those
+
+documents are in the class Asia and
+
+we're wanting to do a two class
+
+classification problem between documents
+
+about Europe and Asia now to keep this
+
+example small I'm building a text
+
+classifier with a very teeny vocabulary
+
+you can always truncate the vocabulary
+
+used in the naive Bayes text classifier
+
+and people often do to make the models
+
+smaller more compact in this example
+
+I've done that to an extreme extent and
+
+so I only have three words left in my
+
+vocabulary and so in the documents we
+
+just look at instances of those words so
+
+in the first document there's two
+
+instances of monoco and no instances of
+
+the other two words in my vocabulary
+
+which are hong and calm okay so if we
+
+look at the overall statistics what are
+
+we starting to find so we've got four
+
+documents from each class and they're
+
+eight documents in total so the prior
+
+probabilities of asia and europe are
+
+half each if in total in europe there
+
+are eight words and six of them are
+
+monaco so the probability of a word
+
+being monaco given that it's in the
+
+europe category is 3/4 6/8 okay looking
+
+at the asia category there again eight
+
+words in our training data and two of
+
+those are monaco so the probability of a
+
+word being monaco in the asia category
+
+is 1/4 now let's suppose we've now built
+
+our naive Bayes model and we're going to
+
+classify a document so here's our
+
+picture of the naive Bayes model and for
+
+this particular document the only word
+
+from our vocabulary that appears in it
+
+is
+
+oh that appears once so what does our
+
+model predict so for the joint
+
+probability of asia and monaco we've got
+
+the prior probability of asia that's 1/2
+
+times the probability of monaco given
+
+asia which is 1/4 then the joint
+
+probability of europe and monica is the
+
+prior probability 1/2 times 3/4 and so
+
+to work out the posterior probabilities
+
+we're going to take each of these terms
+
+over divided by the sum of the two to
+
+normalize it and so what we have here is
+
+1/8 and 3/8 which is going to give us
+
+1/4 and for europe we're going to take
+
+3/8 over 3/8 plus 1/8 which simplifies
+
+down to 3/4 so this isn't surprising
+
+this gives us exactly what we'd expect
+
+so what we saw in our training data does
+
+Monaco appeared six times over here and
+
+twice over here the two classes are
+
+equally likely so if we've got a
+
+document with just the word Monaco
+
+appearing in it well we should expect to
+
+save as a 3/4 chance it's a document
+
+about Europe
+
+that's an naive Bayes model working
+
+correctly but now let's look at another
+
+example in this example we have exactly
+
+the same training data so the prior
+
+probabilities of each class is 1/2 but
+
+this time we're going to be working with
+
+documents with Hong and Cong in them so
+
+the probability of a word being Hong
+
+given it's about Asia so that's three
+
+out of aid and the probability of Kong
+
+being it's about Asia is again 3 out of
+
+8 so that's 3/8 then over here for
+
+Europe there's one instance each of hong
+
+and kong and there are eight words in
+
+total so we've got probabilities of 1/8
+
+okay now let's again move to test time
+
+so here's how naive Bayes model and
+
+document that we're testing on has the
+
+words Hong and Kong appearing once each
+
+and nothing else from over our
+
+vocabulary okay so if we work out the
+
+same kinds of probabilities as before we
+
+get 1/2 times 3/8 times 3/8 and here we
+
+get 1/2 times 1/8 times 1/8 the
+
+denominators are always the same so we
+
+can just look at the numerators for
+
+working it out so this is proportional
+
+to 9 and this is proportional to 1 so
+
+then when we work out these posterior
+
+probabilities for Asia we get 9 over 9
+
+plus 1 equals 9/10 and for Europe we get
+
+1 over 9 plus 1 equals 1/10 so look at
+
+what's happened the classifier is now
+
+giving 90 percent probability that it's
+
+an Asia document rather than just 3/4
+
+and intuitively that doesn't make sense
+
+that the answer should be exactly the
+
+same as from the document with just
+
+Monaco because log Hong Kong appeared
+
+once in a Europe document and it
+
+occurred three times in Asia documents
+
+so the probability should be 3/4 but why
+
+did that not happen well that didn't
+
+happen because although I'm suggesting
+
+now that Hong Kong is one word the name
+
+of one place in our model is being
+
+treated as two completely independent
+
+words that have nothing to do with each
+
+other and so it counts the evidence for
+
+each one separately and so that's
+
+precisely we're using these 3/8 times
+
+3/8 and one eighths times 1 eighths and
+
+that ends up with you having this odds
+
+ratio of 9 to 1 in favor of Asia whereas
+
+previously when you had the document
+
+with just Monaco you had a ratio of 3 to
+
+1 so so multiplying in an odds factor of
+
+3 for each repeated instance of the word
+
+so what's going on here is that really
+
+we have one piece of evidence appearance
+
+of the word the place name Hong Kong but
+
+because it's two tokens week treating it
+
+as two separate pieces of evidence and
+
+so we double count that evidence and we
+
+falsely confident that the document is
+
+about Asia does that create problems for
+
+classification it turns out it does
+
+let's look at one more example so in
+
+this example everything in the naive
+
+Bayes factors is just the same as before
+
+we have exactly the same training data
+
+that we're building a model form but
+
+this time at test time we've got exactly
+
+the same naive Bayes model but our
+
+document of interest has Hong Kong
+
+Monaco one time each so what does that
+
+mean we get when we work through our
+
+naive Bayes model predictions so the
+
+joint probability of Asia and all the
+
+words is 1/2 times Hong given Asia 3/8
+
+times 3/8 for Kong times 1/4 for Monaco
+
+the probability of this joint
+
+probability is 1/2 times 1/8 times 1/8
+
+times 3/4 again the denominators are the
+
+same and can be ignored
+
+so the posterior probability of Asia is
+
+then going to be 3 times 3 9 over 9 plus
+
+3 so that's then 3/4 and the posterior
+
+probability of Europe is going to be 3
+
+over 9 plus 3 equals 1/4 and so look at
+
+this what we've gotten out is that
+
+there's a 75% chance that this document
+
+here is an Asia document and intuitively
+
+that doesn't make sense
+
+informally in the
+
+training data there are two documents
+
+that look just like this and one was
+
+about Europe and one was about Asia but
+
+more precisely we have these statistics
+
+that the word the place Monaco appears
+
+three quarters of the time in Europe
+
+documents in one quarter of the time
+
+here and the place Hongkong occurs three
+
+quarters of the time here and one
+
+quarter of the time about Europe so
+
+those two factors should just completely
+
+cancel each other out and we should say
+
+that this document is equally likely to
+
+be a document about Europe or Asia but
+
+again we don't get that effect because
+
+the two tokens here are wrongly being
+
+treated as independent sources of
+
+evidence and so therefore we think we
+
+still have a three to one odds ratio in
+
+favor of the document being about Asia
+
+okay so what we've seen is that naive
+
+Bayes models will multi count evidence
+
+that when it streets evidences
+
+independent even when it's partly or
+
+totally correlated with other pieces of
+
+evidence each time you see a feature
+
+it's being multiplied in and what we
+
+gonna show in the upcoming part is that
+
+maximum entry models pretty much solve
+
+this problem they completely solver when
+
+two pieces of evidence are completely
+
+correlated and as we shall see this is
+
+done by weighting features by a more
+
+complex algorithm that ends up meaning
+
+that the model expectations of features
+
+match their observed empirical
+
+expectations now obviously there are
+
+names of places like Hong Kong or Saudi
+
+Arabia that are very provide two tokens
+
+that are very correlated but you might
+
+still be thinking that this doesn't come
+
+up very much but the truth is that when
+
+you're building feature-rich classifiers
+
+defining features as we discussed before
+
+this happens a ton let me just quickly
+
+give you one more example so suppose
+
+we're doing some medical documents and a
+
+word we might have in the document
+
+collection is n X and we'll have that as
+
+a word feature but we discussed how
+
+commonly
+
+you also want to have substring features
+
+and for prefixes and suffixes and so
+
+that means we might have a feature for
+
+the first four letters of a word as an R
+
+with capital X the first three letters
+
+of word as an and the first two letters
+
+and the first letter but the problem is
+
+it's quite likely in our training data
+
+that the only word that we ever see that
+
+starts with capital XA n is a next some
+
+very rare beginning of words and
+
+therefore this feature will fire only
+
+when the word is NX and this feature
+
+will fire only when the word is NX and
+
+so these three features their occurrence
+
+will be completely correlated with each
+
+other and so if we build a naive Bayes
+
+model with these three features will
+
+triple count one piece what's really one
+
+piece of evidence but as the maximum
+
+entropy model won't do that okay I hope
+
+that's given you a sense of the problem
+
+and motivated users to stick with the
+
+math that comes up ahead in explaining
+
+how maximum entropy models work

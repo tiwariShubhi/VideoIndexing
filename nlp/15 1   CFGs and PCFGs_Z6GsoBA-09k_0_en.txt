@@ -1,0 +1,655 @@
+﻿in this segment I'm going to introduce
+
+context-free grammars and their
+
+extension to with probabilities
+
+probabilistic context-free grammars so
+
+this is what a linguist calls a phrase
+
+structure grammar which is also known in
+
+computer science as a context-free
+
+grammar same thing and so what we have
+
+is these various rules where we have a
+
+category which rewrites as a sequence of
+
+other categories and then eventually
+
+this writes down to what I call terminal
+
+symbols which are words and so using
+
+this grammar we can produce sentences so
+
+we start with the start symbol s and
+
+then we can expand down using any of the
+
+rules of the grammar so it's goes to NP
+
+vpe and then there's a rule that says a
+
+noun phrase goes to a noun and then a
+
+noun can go to say people and then a
+
+verb phrase can go to a verb and a noun
+
+phrase and the verb can go to say fish
+
+and the noun phrase can go to a noun
+
+again and a noun can go to say tanks and
+
+so using this grammar we can make
+
+sentences of the language so here are
+
+two sentences in the language we just
+
+saw that this one was a sentence of
+
+language and this is another sentence of
+
+the language if you look carefully and
+
+play around with it a bit you'll see
+
+that this is actually a very very
+
+ambiguous grammar so sentences like
+
+people people people people people or
+
+fish fish fish are also sentences of
+
+this language okay so what is a
+
+context-free grammar form way so our
+
+context-free grammar formally is a four
+
+tuple consisting of a set of terminal
+
+symbols so they were our words like fish
+
+and people a set of non-terminal symbols
+
+those were our ones like s an mp4 noun
+
+phrase and vp4 verb phrase start symbol
+
+all which is one of the non-terminal
+
+symbols and then we have a set of rules
+
+or productions of the form and
+
+non-terminal rewrites as some sequence
+
+of non terminals or terminals like V P
+
+goes to V n P P P and that's our
+
+sequence so this gives us a grammar and
+
+what we'll say is that a grammar
+
+generates a language the language L is
+
+all the sentences that can be produced
+
+by doing that process of rewriting from
+
+the start symbol down to a sequence of
+
+terminals and in many cases when there's
+
+any complexity in there the size of that
+
+language will be infinite but it won't
+
+actually include all possible strings so
+
+that's the formal definition of
+
+context-free grammar in practice when
+
+we're working in linguistics and
+
+computational linguistics we always make
+
+a couple of refinements from that to
+
+this which aren't super theoretically
+
+interesting but give us a more natural
+
+form for linguistic purposes so let's
+
+just quickly look at this so here's our
+
+NLP phrase structure grammar so how is
+
+it different it's different because
+
+we've introduced this set of pre
+
+terminal symbols so in practice when
+
+we're doing linguistic grammars almost
+
+most always we have rules with non
+
+terminals like noun phrase those to
+
+determine our noun and then we have and
+
+this this part up here we often refer to
+
+as our grammar and then we have a
+
+lexicon where we have words terminal
+
+symbols that belong to categories so
+
+determinar can rewrite as da or an in
+
+can rewrite as man so in the first
+
+definition pre terminals the lexical
+
+categories had no special status but
+
+we'd kind of like them to and so that's
+
+what we do here so we say that our
+
+categories our nouns verbs and so on are
+
+the pre terminals and then we have
+
+terminals in other words as before and
+
+then the non terminals really become our
+
+phrase or category
+
+things like noun phrase okay but nothing
+
+else really changes we have a start
+
+symbol a lexicon is now just rules of
+
+the form that pre terminal rewrites as a
+
+terminal and then our grammar is a set
+
+of rewrite walls where we rewrite as
+
+sequences as before but the left-hand
+
+side is always an phrasal non-terminal
+
+and the right-hand side can include
+
+phrasal non terminals and the lexical
+
+categories so by convention for examples
+
+often this start symbol is taken to
+
+actually the S coz s can also stand for
+
+sentence but let me note that for a lot
+
+of NLP purposes including the kind of
+
+treatments we look at you always have
+
+some symbol above s because sometimes
+
+you can find things in pics that aren't
+
+full sentences they might be a fragment
+
+like the prepositional phrase or they
+
+might just be a whole noun phrase or
+
+something so we always have some symbol
+
+above there that will rewrite us s or PP
+
+or fragment or whatever
+
+commonly that's taken the name either
+
+root or top and then one fine point in
+
+here is when you can have the right hand
+
+side gamma be any sequence of phrasal
+
+and lexical categories it actually
+
+includes the empty sequence but often it
+
+seems a bit funny just have nothing on
+
+the right hand side that might be
+
+confusing to people so people commonly
+
+write in italic e to mean the right hand
+
+side is actually empty let's see all of
+
+those conventions at work in our phrase
+
+structure grammar here okay so here we
+
+have the noun phrase rewrites as empty
+
+so linguists often use empty categories
+
+in grammar because it seems useful to
+
+describe things as missing something so
+
+for example as well as having the
+
+sentence people fish tanks you can make
+
+the imperative fish tanks
+
+or you can have an unspecified object
+
+and you can say people fish and I don't
+
+want to get into the linguistic analysis
+
+a lot and this certainly isn't the
+
+linguistically refined grammar the idea
+
+is so the way you might want to think
+
+about explaining things like this is to
+
+say well actually there is a subject NP
+
+to this sentence but it's empty and
+
+there is an object NP here that it's
+
+also empty and unexpressed and so that's
+
+why grammars will often have rules like
+
+this with empties in them and we'll come
+
+back to them and often talk about ways
+
+of getting rid of them for an or P a bit
+
+later okay so this is our empty and then
+
+the other creatures we have these things
+
+are called unary rules when one category
+
+rewrites as another category then we
+
+have a bunch of things here that are
+
+binary rules but then you're also able
+
+to have rules where something rewrites
+
+as three or more things and so here's a
+
+case of that here where verb phrase
+
+rewrites as a sequence of a verb noun
+
+phrase and prepositional phrase and
+
+these are also things that we often want
+
+to get rid of doing out in all P
+
+grammars as I'll explain in a bit okay
+
+so then over here is our grammar rules
+
+and here now over here is our lexicon
+
+okay so this has just given us a phrase
+
+structure grammar context-free grammar
+
+but we want you to have probabilities in
+
+our grammars so how do we go about doing
+
+that well this is really actually a very
+
+simple extension to what we had so far
+
+so all of this stuff is just like our
+
+context-free grammar before but what we
+
+do is we add on saying that there's an
+
+one extra thing we have a probability
+
+function and so the idea of the
+
+probability function is it takes each
+
+rule and gives it a probability it Maps
+
+up to some real number between 0 and 1
+
+or you don't just let it map to any
+
+number completely under constrained we
+
+add on this cancer
+
+right here that for any non-terminal the
+
+sums of the probabilities of it rewrites
+
+add up to one so that you have a
+
+probability distribution over house
+
+hey I'll say noun phrase rewrites and if
+
+you make just this condition and
+
+actually there are a couple of technical
+
+assumptions that in practice when
+
+estimating grammars oft remakes are
+
+always true so I won't explain here the
+
+end result that you get is that you get
+
+a grammar produces a language model and
+
+the technical sense we introduced
+
+beforehand when talking about language
+
+models that is if you look at the
+
+language L that's generated by our
+
+grammar and here I just expressed that
+
+you know consider all sequences of
+
+terminals and then work out their
+
+probability here if you sum those
+
+probabilities those probabilities will
+
+sum to one so it's a language model in
+
+the same sense as language models here's
+
+an example of a pcfg
+
+so it's just like what we had before
+
+except that now next to each rule we're
+
+giving it a probability so there's only
+
+one rewrite for s so it has a
+
+probability of 1 to meet the condition
+
+we gave before but to take a more
+
+interesting example there are three
+
+rewrites for NP and if you sum these
+
+three rewrites up they sum to 1 as
+
+required now this is just about the
+
+grammar that we showed you before but I
+
+actually made one change to it here
+
+which is I deleted the noun phrase goes
+
+to empty rule and the reason I did that
+
+is this is already a really an ambiguous
+
+grammar and I if I left it in the
+
+example that I'm about to show you would
+
+get way too ambiguous and complex as you
+
+could try and work out for yourselves
+
+so it's slightly simplified ok so using
+
+this pcfg
+
+let's go through an example of working
+
+with probabilities and so there are two
+
+things that we want to look at so first
+
+of all if I draw a tree we can work out
+
+the probability of a tree and that's
+
+actually pretty easy all we do is
+
+actually take the
+
+abilities in the grammar and lexicon and
+
+that are used to generate the tree and
+
+we multiply them all together and the
+
+slightly trickier thing that we want to
+
+do is the language model question we
+
+want to know the probability of a string
+
+of words and well for that we have to
+
+consider all possible tree structures
+
+that could have generated the string and
+
+so the probability of a sequence of
+
+words is the sum of all possible all
+
+possible trees where the tree is a part
+
+of a sentence but since the tree
+
+includes the sentence down the bottom
+
+that's just the sum of all trees with
+
+that condition let's look at a concrete
+
+example
+
+so my sentence here is people fish tanks
+
+with rods and here is one parse that the
+
+grammar generates for it and what I've
+
+done is write just next to each parent
+
+category what is the probability so this
+
+0.4 says that the VP goes to V n P P P
+
+role had probability 0.4 we get us this
+
+is the pars where we get the
+
+prepositional phrase modifying the verb
+
+but as we've seen before we also get the
+
+other paths where we have the
+
+prepositional phrase modifying the noun
+
+and we can write out its pars as well in
+
+the less ambiguous grammar without the
+
+empty these are the only two passes for
+
+this sentence and so doing that we can
+
+work out the probability for each tree
+
+so the probability that each tree is
+
+just we multiply together the
+
+probabilities of each rule expansion and
+
+we get as always a very little number
+
+here and then this is the probability
+
+for the other tree with during the noun
+
+attachment so to work out the
+
+probability of the sequence of words the
+
+sentence people fish tanks with rods we
+
+simply sum the probabilities of all
+
+parsers and that gives us this
+
+probability here as the language model
+
+score if we look at this as well as game
+
+the language model score we can
+
+also see which powers the pcfg would
+
+choose as the most likely paths for the
+
+sentence and the answer is is this one
+
+it chooses the verb attachment which
+
+seems like it is the most natural
+
+reading of this sentence in English it
+
+might be interesting you for you guys to
+
+look and just think for a moment more as
+
+to why it chooses that pars and if you
+
+start looking at it what you'll see is
+
+that a lot of the probabilities in the
+
+tree are exactly the same for both
+
+parses there's really only one area of
+
+difference where in the VP attach we use
+
+this rewrite rule here well maybe I
+
+should draw it sort of bigger to include
+
+that little subtree whereas in the NP
+
+attached we have this VP rewrite rule
+
+and then we have an extra NP rewrite
+
+rule so this bit is different and so
+
+then if you look at those that what we
+
+do is we found that here we had a 0.4
+
+that was unique to this one and here we
+
+had I'm sort of this piece 0.6 times 0.2
+
+which was unique to this one so a 0.4
+
+vs. 0.12 and so if you compare those the
+
+end result is that the VP the verb
+
+attaches 3.33 3 and 1/3 times more
+
+likely than the MP attached to purely
+
+accounted for by that difference that
+
+could even make you a little bit
+
+suspicious of pcfg something we'll come
+
+back to later because this sort of looks
+
+like this one's getting lower
+
+probability because there's more depth
+
+so the tree more rewrites being done and
+
+PCF G's tend to have some slightly odd
+
+effects like that but we'll stop that
+
+exploration there for now and we'll just
+
+content ourselves by saying the pcfg is
+
+choosing the right paths for the
+
+sentence in this case and feeling that
+
+hopefully now you guys understand both
+
+what a context-free grammar is and it's
+
+probably stick extension

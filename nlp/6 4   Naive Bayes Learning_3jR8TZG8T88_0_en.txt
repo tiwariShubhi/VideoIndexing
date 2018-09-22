@@ -1,0 +1,271 @@
+﻿how do we learn the parameters for
+
+naivebayes the simplest way to learn the
+
+multinomial naive Bayes model is to use
+
+maximum likelihood estimates simply use
+
+the frequencies in the data so if we're
+
+trying to compute the prior probability
+
+of a particular document being in a
+
+class class J we have the count of all
+
+the documents and out of those how many
+
+of the documents are in class J that's
+
+our prior that a random document will be
+
+in class J for the likelihood the
+
+probability of word sub I given class
+
+sub J we count the number of times word
+
+sub I occurs in documents of class J and
+
+we normalize by the total number of
+
+words in class J so the sum over all the
+
+words in the vocabulary of the count of
+
+those words in documents of class J so
+
+out of all the words in documents of
+
+class J how many of them are our
+
+particular word word sub I were looking
+
+at so we're going to compute the
+
+fraction of times a word WI appears
+
+among all the words in the document of
+
+this particular topic C sub J we're
+
+going to do this by creating a kind of
+
+mega document for topic J by
+
+concatenating all the documents that
+
+have that topic together and then we're
+
+going to use the frequency of W in this
+
+mega document so for sentiment analysis
+
+we might have a documents of positive a
+
+mega document for all the positive
+
+documents and we're just going to
+
+concatenate them all together into some
+
+big mega document and we might have a
+
+document sub neg and so on now I've been
+
+lying to you we don't in fact use
+
+maximum likelihood for naive Bayes and
+
+the reason is the following imagine
+
+we're looking at the word fantastic R
+
+interested in the word fantastic it
+
+might occur in the test set but it
+
+happens not to appeared in the training
+
+set in the topic positive let's say so
+
+the probability of fantastic given the
+
+class positive in our training set by
+
+maximum likelihood is the count of
+
+fantastic occurring and positive
+
+normalized by the sum over all words of
+
+the count of those words in positives
+
+but fantastic never occurs so that count
+
+is zero so the maximum likelihood
+
+estimate for the likelihood of fantastic
+
+given positive will be zero why is that
+
+bad because these zero probabilities can
+
+never be conditioned away if we're
+
+looking for
+
+the most likely class that's the Arg max
+
+overall classes of the prior times the
+
+likelihood and if one of those
+
+likelihood terms is zero then this whole
+
+thing is zero and we're never going to
+
+pick that class the solution is very
+
+simple add one smoothing so here's the
+
+computation without smoothing and add
+
+one smoothing we simply add one to each
+
+of those counts so we'll add one to the
+
+count when it's in the numerator and
+
+every time that count occurs in the
+
+denominator we've added one to that two
+
+and we can rewrite that in a form we've
+
+seen before
+
+where we're taking the total number of
+
+tokens that were in Class C and we've
+
+added the vocabulary size because we
+
+added one for every vocabulary item into
+
+the denominator so classic Laplace or
+
+add one smoothing so let's walk through
+
+the calculation of these parameters
+
+first from the training corpus we're
+
+going to extract the vocabulary the list
+
+of words next we're going to calculate
+
+the priors for each class C sub J so for
+
+each class we're gonna get the list the
+
+set of all documents that have that
+
+class we'll call that set doc sub J and
+
+the number of documents in that set
+
+divided by the total number of documents
+
+that will give us our prior probability
+
+of that particular class now for the
+
+likelihood we're gonna want to compute
+
+the likelihood for every word W sub K
+
+given every topic C sub J so first we're
+
+going to create our mega document by
+
+concatenated all the documents sub J
+
+into a mega document called text sub J
+
+and now for each word W sub K in our
+
+vocabulary we're going to count the
+
+number of times W sub K occurs in the
+
+this mega document text sub J so that'll
+
+be n sub K and now the probability the
+
+likelihood of word sub K given class sub
+
+J is just the add one smooth or I've
+
+shown you the add alpha smooth version
+
+of the night Bayes algorithm so we've
+
+added alpha to n sub K and then the
+
+denominator we have n the total number
+
+of tokens in the class J
+
+what about unknown words a simple way to
+
+deal with unknown words is simply to add
+
+an extra word to the vocabulary you
+
+might call that W sub u the unknown word
+
+and now what does that do with our
+
+likelihood equation here's the
+
+likelihood equation written out again
+
+we've added a new word W sub u so I've
+
+increased our vocabulary size by 1 now
+
+what is the count of W sub u in any
+
+particular class C well the word was
+
+unknown so it never occurred in our
+
+training set so that count is zero so
+
+the likelihood term for all for that
+
+unknown word is going to be simply 1
+
+over n that's the number of tokens in
+
+the class C plus the V plus 1 so each of
+
+our unknown words is going to be modeled
+
+by this very simplistic model of the
+
+probability of an unknown word so
+
+learning the parameters for naive Bayes
+
+a simple computation for the prior and a
+
+slightly more complex computation for
+
+the likelihood in which we can use add
+
+one smoothing and we deal with unknown
+
+words

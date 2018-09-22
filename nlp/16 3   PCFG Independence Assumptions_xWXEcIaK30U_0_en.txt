@@ -1,0 +1,413 @@
+﻿in this segment we're going to dig in
+
+little deeper into the independence
+
+assumptions of pcfg s and what that
+
+means in practice so the symbols of a
+
+pcfg define the independence assumption
+
+so if we have a pair of rules like this
+
+s goes to noun phrase verb phrase noun
+
+phrase goes to determine a noun when
+
+you're expanding here the only thing you
+
+know is that you've got a noun phrase
+
+and you've got probabilities for how it
+
+expands so the right way of to think of
+
+categories in a pcfg is that they're
+
+kind of choke points the information
+
+flow so we have the outside tree up here
+
+and when we're expanding this noun
+
+phrase we know nothing about the outside
+
+tree all we know is that we're expanding
+
+a noun phrase or look that from Reverse
+
+when we're working out what should pass
+
+to choose up here we don't know in the
+
+thing about what went on down here all
+
+we know is that this is a noun phrase
+
+over some number of words and then we
+
+need to work out what happens above it
+
+so precisely this is a point at which
+
+there's an independence assumption the
+
+assumption is you can work out the
+
+probabilities of things inside here
+
+knowing only that this is a noun phrase
+
+and you can work out the probabilities
+
+of things up here knowing only that this
+
+is a noun phrase that's a very strong
+
+independence assumption and we can see
+
+clearly that it's too strong by looking
+
+at various cases come here's one example
+
+so if we just say what are the chances
+
+of expanding a noun phrase overall well
+
+the chance of a noun phrase expanding as
+
+a noun phrase prepositional phrase in
+
+the pin treebank it's about 11% and the
+
+chances of it
+
+expanding as a pronoun so this is
+
+something like a noun phrase goes to the
+
+pronoun she' that's 6% and these are
+
+just the overall statistics and let's
+
+suppose we now ask about particular
+
+categories suppose we know that this is
+
+a noun phrase under an S so that's the
+
+subject noun phrase of a sentence and we
+
+find out the statistics enormous lis
+
+different so the chance of its expanding
+
+as an NP PP go down a little but what's
+
+really dramatic is that the chances of
+
+becoming a pronoun go up enormous lis
+
+about three and a half times in contrast
+
+if we know it's a noun phrase after
+
+under a verb phrase the chance of it
+
+being a pronoun drops but the chances of
+
+it being an NP PP go up a lot they more
+
+than doubled now if you have a bit more
+
+background in linguistics you would say
+
+at this moment well of course that's
+
+exactly what you'd expect based on
+
+knowledge about information structure of
+
+language so the subjects and normally
+
+use for topics establish discourse
+
+reference and therefore it's highly
+
+appropriate for that to be a pronoun
+
+whereas inside the verb phrase what
+
+you're normally doing is introducing new
+
+information which therefore needs to be
+
+explained a little bit more and
+
+therefore it'd be quite common for that
+
+to be a noun phrase with a prepositional
+
+phrase hanging off it because that's one
+
+of the ways in which usually can express
+
+more information so you can say
+
+something like the man by the railroad
+
+tracks or something like that or you're
+
+giving more descriptive content but just
+
+thinking about it at the moment for our
+
+pcfg
+
+well what we're finding is that if we
+
+just say we're expanding a noun phrase
+
+we we're losing this additional
+
+information which would let us give much
+
+better probabilities about how to expand
+
+it another way that you can see that
+
+your independence assumptions are too
+
+strong is when you run a basic pcfg and
+
+you find that
+
+just does the wrong thing so it's
+
+choosing rules that look wrong and it
+
+shouldn't have used but somehow it's
+
+choosing to use them here's an example
+
+of this so for a noun phrase like big
+
+board composite training the noun phrase
+
+structure that you're meant to choose
+
+and the pin treebank is just this flat
+
+structure in general the pin treebank
+
+uses a lot of flat structures for
+
+compound nouns like this but if you
+
+train up a simple pcfg and runners on
+
+this sentence the structure that you
+
+actually get is this one here where it's
+
+put in an extra noun phrase node around
+
+big board well it just shouldn't have
+
+done that and your first reaction is
+
+well why did it do that because all of
+
+the compound nouns and the pin treebank
+
+have this kind of flat structure why
+
+didn't learn that but the reason that it
+
+was able to do this is that there's a
+
+different structure in the pin treebank
+
+where you do get these NP nodes at the
+
+start of NP and when that happens is
+
+with possessives so here we have this
+
+possessive NP and then you do have a
+
+noun phrase up here going to noun phrase
+
+adjective noun and so what you'd like to
+
+say is well this rule here it's okay to
+
+use it as for possessives
+
+but this noun phrase isn't a possessive
+
+but then that's precisely where the
+
+problem is because both of these nodes
+
+are just marked noun phrase and so we're
+
+not recording the information that this
+
+one here is a possessive noun phrase so
+
+somehow we want to get more information
+
+to this category to say this is a
+
+possessive noun phrase so the parser
+
+would know that you can't use that
+
+expansion rule when you have a non
+
+possessive noun phrase like big board so
+
+that's what we want to do so we can
+
+relax independence assumptions of a pcfg
+
+by encoding more information into the
+
+non terminals
+
+cymbals the process that's often
+
+referred to as state splitting so one of
+
+the first proposals for States splitting
+
+and showing how successful it was was
+
+Matt Johnson noticed that you can
+
+improve a probabilistic context-free
+
+grammar quite a lot by encoding as part
+
+of each non-terminal also what was the
+
+parent category and remember you also
+
+saw this idea in the conditioning of the
+
+Changi Act parser in a preceding segment
+
+so Johnson's observation was that if you
+
+did nothing more but changed all of the
+
+non terminals to also record in them
+
+what the parent non-terminal is so you
+
+then effectively have a number of non
+
+terminals squared space of non terminals
+
+that that change alone if you just train
+
+a pcfg in the regular manner make some
+
+big difference if push it up to your
+
+parsing numbers by a couple of a percent
+
+so that's a useful idea but there are
+
+other things that you might want to do
+
+and have a slightly different character
+
+so for the example from the previous
+
+slide if we want to rule out the big
+
+board bad pars it seems like what we
+
+also want to do is know about possessive
+
+noun phrases so possessive noun phrases
+
+are these ones like Fidelity's with an
+
+apostrophe s at the end and they have a
+
+very different nature to regular noun
+
+phrases but it wasn't being recorded in
+
+the category symbol they're just being
+
+called noun phrase so why don't we do
+
+state splitting and say oh no we're
+
+going to split out noun phrases that are
+
+possessive and pull them an NP - pause
+
+and then that information will also be
+
+captured in the grammar and again we'll
+
+have a more accurate pcfg of course
+
+there's a danger of doing this too much
+
+and that is that if we have too much
+
+state splitting we start getting more
+
+and more non terminals and our
+
+information about the non terminals
+
+becomes sparser and sparser and in
+
+particular in the model we're going to
+
+show in the next segment there was
+
+absolutely no smoothing of the rule
+
+rewrite probability
+
+and so if you did too much states
+
+wedding you would end up having zero
+
+probabilities from things that you
+
+haven't seen before but unlike with word
+
+probabilities where you basically have
+
+to smooth them you can do a reasonable
+
+amount of state splitting of categories
+
+in this sort of a way before you have to
+
+deal with smoothing and so what we're
+
+going to look at is well which ways of
+
+splitting categories are most useful for
+
+capturing probabilistic dependence
+
+that's needed for to do a good job in
+
+pcfg parsing okay I hope that gives you
+
+a more concrete sense about pcfg
+
+independence assumptions and how they
+
+can hurt you but also how to solve them

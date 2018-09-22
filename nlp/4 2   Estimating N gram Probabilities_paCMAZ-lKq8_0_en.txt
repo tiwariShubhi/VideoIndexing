@@ -1,0 +1,417 @@
+﻿how do we estimate these Engram
+
+probabilities let's look at by Gram
+
+probabilities the maximum likelihood
+
+estimate for a bigram probability the
+
+probability of a word I given the
+
+previous word I minus 1 we just asked to
+
+meet by counting we count how many times
+
+did word I minus 1 and I occur together
+
+and it divided by how many times word I
+
+minus 1 occurs so it's like saying of
+
+all the times that we saw word I minus 1
+
+how many times was it followed by word I
+
+and we'll use the notation count
+
+sometimes and sometimes we'll for
+
+simplification we'll just refer to a C
+
+well you see for account so the joint
+
+count of word I minus 1 and I divided by
+
+the count of word I minus 1 so let's
+
+walk through an example so we have again
+
+our equation the probability of word I
+
+given the word I minus 1 is the maximum
+
+likely estimate is just a little right
+
+all right MLE estimated by the maximum
+
+likelihood estimator as this this count
+
+over this count and let's look at our
+
+let's let's make up a corpus so here's
+
+our simple corpus borrowed from dr.
+
+Seuss so we have three sentences each
+
+one starts with a special token start of
+
+sentence and ends with a special token
+
+end of sentence and the very short
+
+sentence is I am Sam Sam I am I do not
+
+like green eggs and ham let's compute
+
+some language model probabilities from
+
+this small corpus
+
+so first probability of AI given the
+
+start symbol
+
+so that's computed as count of start
+
+symbol comma I big I over count of start
+
+symbol so I is the follows that start
+
+symbol twice 1 2 and the start symbol
+
+occurs three times 1 2 3
+
+so that probability is 2/3 or 0.67 so
+
+that's the probability of AI given start
+
+and you can see some examples of lots of
+
+different probabilities here so for
+
+examples to pick another one at random
+
+the probability of
+
+Sam given the word am how many times
+
+does am I'm a Sam occur it occurs once
+
+so that's one and the denominator is how
+
+many times does a m-- occur and that
+
+occurs twice so that's going to be one
+
+over two so there's our probability of
+
+Sam given you and so on so let's look at
+
+a larger corpus in order to get some
+
+more realistic counts and the corpus
+
+were using here was collected from a
+
+dialog system that answered questions
+
+about restaurants in the City of
+
+Berkeley California and here's the kind
+
+of sentences that were in this corpus
+
+can you tell me about any good Cantonese
+
+restaurants close by or mid-priced Thai
+
+food is what I'm looking for
+
+tell me about Chez Panisse and I hear
+
+some sentences unless let's compute some
+
+engrams based on these sentences so
+
+first let's start with the raw by gram
+
+counts from this small corpus of just
+
+under ten thousand sentences so what I'm
+
+showing you here is a bigram count table
+
+so here's the word I is followed by the
+
+word I five times the word I is followed
+
+by the word want eight hundred and
+
+twenty seven times the word want is
+
+followed by the word to six hundred and
+
+eighty times the word to is followed by
+
+the word eat six hundred and eighty six
+
+times and we've just put some sample
+
+words up here I picked I want to eat
+
+Chinese food lunch spend just to show
+
+you some words that might occur together
+
+in a sentence and some other words and
+
+you can see a lot of these words a lot
+
+of these probabilities are zeroes a lot
+
+of these counts I'm sorry are zeroes
+
+because it just happened in this small
+
+data set that want was never followed by
+
+want so that's this zero here or Chinese
+
+was never followed by the word to here
+
+so in order to turn these counts into
+
+probabilities all we have to do is
+
+normalize by a unigram count because
+
+remember the probability of a word I
+
+given the word I minus 1 is the count of
+
+word I
+
+- one word I over the count of word I
+
+minus one so we need to divide these
+
+joint counts of the two words by the
+
+count of the previous word here's the
+
+unigram counts we're going to need to
+
+compute those probabilities so here's
+
+the count of I it's 25 33 here's the
+
+kind of eat at 7:46 and using the
+
+equation we can now compute the bigram
+
+probability the probability for example
+
+of 2 given want how likely given that
+
+the previous word was want that the next
+
+word is 2 and it's pretty likely for
+
+example 0.66 but notice that things with
+
+counts of 0 still have probabilities of
+
+0 lots of things have zeros here so now
+
+that we've computed all of our bigram
+
+probabilities we can now estimate the
+
+probability of a sentence that's our
+
+goal for language modeling simply by
+
+multiplying together all the component
+
+probabilities so the probability of
+
+start-up sentence I want English food
+
+end of sentence is the probability of AI
+
+given start times the probability of
+
+want given I times the probability of
+
+English given want food given English
+
+start given food and so on what kinds of
+
+knowledge are expressed by these bigram
+
+probabilities why for example is the
+
+probability of English given want lower
+
+than the probability of Chinese given
+
+want well probably that's because
+
+Chinese food is more popular and more
+
+people are going to ask about it and so
+
+wanting Chinese is more likely than
+
+wanting English so that's a fact about
+
+the world it's a fact about cuisines not
+
+so much a fact about English what about
+
+the probability of two given want being
+
+so high now that's a fact about grammar
+
+that's a fact that the verb want in
+
+English requires an infinitive after it
+
+so want as infinitives and that's a
+
+grammatical fact that's grammar grammar
+
+and what about the probability that want
+
+given the previous word is spend is 0 so
+
+that 0 seems to be caused by a
+
+grammatical facts spend want
+
+is to verbs in a row that kind of verb
+
+doesn't seem to be grammatically
+
+possible in English so that zero is
+
+caused by a grammatical disallowing how
+
+about this is zero what's the why is the
+
+probability of food following to zero
+
+now here this zero is a contingent zero
+
+this you could imagine a sentence that
+
+has two food in it I'd like you to stop
+
+and think about a sentence like that
+
+yourself good it just happens that such
+
+a sentence never occurred in the
+
+training data so this is a contingent
+
+zero where this is a structural zero all
+
+right let's move on in practice we don't
+
+keep these probabilities in the form of
+
+probabilities in fact we keep them in
+
+the form of log probabilities and there
+
+are two reasons for this one is we can
+
+avoid underflow if you think about it if
+
+you have a very long sentence and you're
+
+multiplying together 20 or 30 or 40
+
+little tiny probabilities each of which
+
+is a very small number less than zero
+
+when you multiply so many small numbers
+
+you've got a very small number that
+
+often ends up with arithmetic underflow
+
+come in the computation and so we want
+
+to avoid this kind of underflow and it
+
+turns out that adding is faster than
+
+multiplying anyway so again instead of
+
+multiplying four probabilities will in
+
+general just add four log probabilities
+
+and we're going to store our language
+
+models in logs there are a number of
+
+publicly available language modeling
+
+toolkits one of them SR ILM and so you
+
+can download SR ILM another publicly
+
+available resource is the Google engrams
+
+release so this has been out for for
+
+over five years now will released a
+
+trillion word corpus over a trillion
+
+five grams and thirteen million unique
+
+words so a huge data set which you can
+
+download and use for your any kind of
+
+Engram applications you'd like to use so
+
+here's an example some of the data from
+
+the Google Ngram release some four gram
+
+counts for four grams
+
+with serve as the in words beginning
+
+with I am so it was a very big corpus
+
+and you can see that serve as the
+
+indication occurred 72 times on this web
+
+corpus you have more information on the
+
+Google web corpus there another publicly
+
+available corpus is the google book and
+
+gram corpus let's look at that
+
+so this corpus lets you plot counts of
+
+words in google books and a number of
+
+corpora are available for American
+
+English British English Chinese French
+
+and German and various kinds of court
+
+which can all be downloaded

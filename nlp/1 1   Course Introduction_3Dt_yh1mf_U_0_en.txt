@@ -1,0 +1,659 @@
+﻿hi I'm dan jurafsky and Chris Manning
+
+and I are very happy to welcome you to
+
+our course on natural language
+
+processing this is a particularly
+
+exciting time to be working on natural
+
+language processing the vast amount of
+
+data on the web and social media have
+
+made it possible to build fantastic new
+
+applications let's look at one of them
+
+question answering you may know that
+
+IBM's Watson won the Jeopardy challenge
+
+on February 16th 2011 answering
+
+questions like William Wilkinson's book
+
+inspired this authors most famous novel
+
+and you may know that the answer is Bram
+
+Stoker who famously wrote Dracula
+
+another important task is information
+
+extraction for example imagine that I
+
+have the following email from my
+
+colleague Chris about scheduling a
+
+meeting
+
+we'd like software to automatically
+
+notice that there are dates like
+
+tomorrow times like 10 to 11:30 and a
+
+room like gates 159 extract those
+
+information create a new calendar entry
+
+and then populate a calendar with this
+
+kind of structured information with the
+
+event date start and end for a calendar
+
+program and modern email and calendar
+
+programs are capable of doing this from
+
+text another application of this kind of
+
+information extraction involves
+
+sentiment analysis imagine that you're
+
+interested in cameras and you're reading
+
+a lot of reviews of cameras on the web
+
+so here's a bunch of bunch of reviews
+
+we'd like to automatically determine
+
+from the reviews that what people care
+
+about in cameras are particular about
+
+camera they want to know if it has good
+
+zoom or affordability or size and weight
+
+to want to automatically determine those
+
+attributes and then we'd like to
+
+automatically for any particular
+
+attribute determine how the reviewers
+
+felt about those attributes for example
+
+if a reviewer said nice and compact to
+
+carry that's a positive sentiment and
+
+here's another positive example but if
+
+but a phrase like flimsy is a negative
+
+sentiment so we'd like to automatically
+
+detect for each sentence what the
+
+sentiment is and then aggregate for each
+
+features for say presume for for
+
+debilities who might decide that this
+
+camera the reviews really like the flat
+
+but they weren't so happy about the
+
+ease-of-use so we might measure the
+
+positive and negative sentiment about
+
+each attribute and then aggregate those
+
+machine translation is another important
+
+new application and machine translation
+
+can be fully automatic so for example we
+
+might have a source sentence in Chinese
+
+and here's Stanford's phrasal MT system
+
+translating that into English but empty
+
+can also be used to help human
+
+translators so here we might have an
+
+Arabic text and the human translator
+
+translating it into English might need
+
+some help from the MT system for example
+
+a collection of possible next words that
+
+the empty system can build automatically
+
+and help the human translator let's look
+
+at the state-of-the-art in language
+
+technology like every field LP is
+
+divided up into specialties and
+
+subspecialties a number of these
+
+problems are pretty close to solved so
+
+for example spam detection well it's
+
+very hard to completely detect spam in
+
+our email boxes we don't have 99% spam
+
+and that's because spam detection is a
+
+relatively easy classification task um a
+
+couple of important component tasks part
+
+of speech tagging and named entity
+
+tagging we'll talk about those later in
+
+the course and those work at pretty high
+
+accuracies we're going to get 97%
+
+accuracy and part of speech timing and
+
+we see how that's important for parsing
+
+in other tasks we're making good
+
+progress not as commercial not as
+
+completely solved but there are systems
+
+out there that are being used so we
+
+talked about sentiment analysis the task
+
+of deciding thumbs up or thumbs down on
+
+a sentence or a product component
+
+technologies like word sense
+
+disambiguation deciding if we're talking
+
+about a rodent or a computer mouse when
+
+people talk about a mouse's in a search
+
+then we'll talk about parsing which is
+
+good enough now to be used in lots of
+
+applications and machine translation
+
+usable on the web a number of
+
+applications however are still quite
+
+hard so for example answering hard
+
+questions like how effective is this
+
+medicine in treating that disease by
+
+looking at the web or by summarizing
+
+information we know it was quite hard
+
+similarly while we've made some progress
+
+on deciding that the sentence XYZ
+
+company acquired a B
+
+company yesterday means something
+
+similar to ABC has been taken over by X
+
+Y Z the general problem of detecting
+
+that two phrases or sentences mean the
+
+same thing the para phrase task still
+
+quite hard even harder is the task of
+
+summarization reading a number of let's
+
+say news articles that say oh the Dow
+
+Jones is up or the S&P 500 has jumped
+
+and housing prices rose and aggregating
+
+that to give a user information like in
+
+summary the economy is good and finally
+
+one of the hardest tasks in natural
+
+language processing carrying on a
+
+complete human machine communication in
+
+dialogue so here's a simple example
+
+asking about what movie is playing when
+
+and buy movie tickets and you can get
+
+applications that do that today but the
+
+general problem of understanding
+
+everything the user might ask for and
+
+returning a sensible response is quite
+
+difficult why is natural language
+
+processing so difficult one
+
+cute example are the kinds of ambiguity
+
+problems that are called crash blossoms
+
+so ambiguity is any case where a surface
+
+form might have multiple interpretations
+
+a crash blossom is the name for a kind
+
+of headline that has two meanings and
+
+the ambiguity causes a humorous
+
+interpretation so reading this first
+
+headline violinist linked to JL crash
+
+blossoms you might think that the main
+
+verb is linked and the violinist is
+
+being linked to what he's been linked to
+
+Japan Airlines crash blossoms well what
+
+are crash blossoms
+
+well this headline gave the name to this
+
+phenomenon because the actual
+
+interpretation that the headline writer
+
+intended the main verb was blossoms who
+
+does the blossoming a violinist and this
+
+fact about being linked to JL crash was
+
+a modifier violinist similar kinds of
+
+syntactic ambiguities so here teacher
+
+strikes idle kids the writer intended
+
+the main verb to be idle the strikes
+
+caused the kids to be idle but of course
+
+the humorous interpretation is that the
+
+teacher is striking strike as the verb
+
+and we have a teacher striking idle kids
+
+another important kind of ambiguity is
+
+word sense ambiguity so in our third
+
+example red tape holds up new bridges
+
+the writer intended holds up to mean
+
+something like delay I'll call that
+
+sense one of them holds up but the
+
+amusing interpretation is the second
+
+sense of holds up which we might write
+
+down as to support and now we get the
+
+interpretation that literal red tape as
+
+opposed to bureaucratic red tape is
+
+actually supporting a bridge and we can
+
+see lots of other kinds of ambiguities
+
+in these actual headlines now it turns
+
+out that it's not just amusing headlines
+
+that have ambiguity ambiguity is
+
+pervasive throughout natural language
+
+text let's look at a sensible
+
+non-ambiguous looking headline from the
+
+New York Times so the headline we've
+
+shortened it here a bit is Fed raises
+
+interest rates well that seems
+
+unambiguous we have a verb here I'll
+
+write a little parse tree raises what
+
+gets raised a noun phrase I'll write a
+
+little two nouns here interest rates and
+
+we'll have a verb phrase so raising
+
+interest rates and then we'll have the
+
+Fed make a little noun phrase and then
+
+we'll say this is a sentence that has a
+
+noun phrase fed and a verb phrase raises
+
+and what gets raises interest rates so
+
+this is called a phrase structure parse
+
+we'll talk about that later in the
+
+course
+
+phrase structure so we could also write
+
+a dependency parse so we say the head
+
+verb raises has an argument which is fed
+
+and has another dependent which is rates
+
+and rates has another itself has a
+
+dependent interest so we can see the
+
+main verb is raising well another
+
+interpretation of the very same sentence
+
+one that people don't see
+
+but that parsers see right away is that
+
+it's not raises that's the main verb of
+
+the sentence but interest somebody
+
+interests something and then that's
+
+something that gets interested is rates
+
+and what is interesting these rates well
+
+it's fed raises raises by the Fed so if
+
+a complete different sentence with a
+
+different interpretation that something
+
+is interesting the rates whatever that
+
+could mean and it seems an unlikely
+
+interpretation for people but of course
+
+for a parser this is a perfectly
+
+reasonable interpretation that we have
+
+to learn how to rule out in fact the
+
+sentence can get even more difficult
+
+this is the actual headline was somewhat
+
+longer so we had Fed raises interest
+
+rates half a percent here we could
+
+imagine that rates is the verb and now
+
+we have what is rating Fed raises
+
+interest the interest in federal raises
+
+are rating half a percent so we might
+
+have a dependency structure like this so
+
+again interest rates the raises are what
+
+do the interesting and the Fed is a
+
+modify of raises so whether with our
+
+phrase structure parse or dependency
+
+parse and even more so as we add more
+
+words wouldn't get more and more
+
+ambiguity that have to be solved in
+
+order to build a parse for each sentence
+
+now the format of the course you're
+
+going to have in video quizzes and most
+
+lectures will include a little quiz and
+
+they're there just to check basic
+
+understanding they're simple
+
+multiple-choice questions you can retake
+
+them if you get them wrong let's see one
+
+right now a number of other things make
+
+natural language understanding difficult
+
+one of them is the non standard English
+
+that we frequently see in texts like
+
+Twitter feeds where we have
+
+capitalization and unusual spelling of
+
+words and hashtags and user IDs and so
+
+on so all of our parsers and part of
+
+speech tags that we're going to make use
+
+of are often trained on very clean
+
+newspaper text English but the actual
+
+English in the in the wild will cause us
+
+a lot of problems we'll have a lot of
+
+segmentation problems for example if we
+
+see that the string y ou R K - any W as
+
+part of New York New Haven how do we
+
+know the correct segmentation is New
+
+York and New Haven so the New York New
+
+Haven Railroad and not something like
+
+York - new this word here is not a word
+
+like in - law we have to solve the
+
+segmentation problem correctly yep
+
+with idioms and with new words that
+
+haven't be seen before
+
+and will also have problems with entity
+
+names like the movie a bug's life which
+
+has English words in it and so it's
+
+often difficult to know where the movie
+
+name starts and ends and this comes up
+
+very often in biology we have genes and
+
+proteins named with English words the
+
+task of natural language understanding
+
+it's very difficult what tools do we
+
+need well we need knowledge about
+
+language knowledge about the world and a
+
+way to combine these knowledge sources
+
+so generally the way we do this is to
+
+use probabilistic models that are built
+
+from language data so for example if we
+
+see the word Maison in French
+
+we're very likely to translate that as
+
+the word house in English on the other
+
+hand if we see the word a vocation at
+
+all in French
+
+we're very unlikely to translate that as
+
+the general avocado and training these
+
+probabilistic models in general can be
+
+very hard but it turns out that we can
+
+do an approximate job of probabilistic
+
+models with rough text features and
+
+we'll introduce those rough text
+
+features as we go so our goal in the
+
+class is teaching key theory and methods
+
+for statistical natural language
+
+processing we'll talk about
+
+the Viterbi algorithm naive Bayes and
+
+MaxEnt classifiers we'll introduce an
+
+Graham language modeling and statistical
+
+parsing we'll talk about the inverted
+
+index and tf-idf and vector models of
+
+meaning that are important in
+
+information retrieval and we'll do this
+
+for practical robust real-world
+
+applications we'll talk about
+
+information extraction about spelling
+
+correction about information retrieval
+
+the skills you'll need for the task
+
+you'll need simple linear algebra so you
+
+should know what a vector is and what a
+
+matrix is you should have some basic
+
+probability theory and you'll need to
+
+know how to program in either Java or
+
+Python because they'll be weekly
+
+programming assignments and you'll have
+
+your choice of languages we're very
+
+happy to welcome you to our course on
+
+natural language processing and we look
+
+forward to seeing you in following
+
+lectures

@@ -1,0 +1,1313 @@
+﻿in this section I'm going to talk about
+
+smoothing maximum entropy models just
+
+like for other models we build in
+
+natural language processing we still
+
+have the issue that these models can
+
+over fit and that we want to apply
+
+smoothing techniques so that the
+
+parameters we estimate don't lead to too
+
+spiky distributions that over fit what
+
+was observed in the training data this
+
+topic of smoothing Maxim entry models is
+
+often also described as using a prior
+
+distribution for the parameters or doing
+
+regularization of the models the issue
+
+of smoothing is very prominent in the
+
+models we build because the models we
+
+build have lots and lots of features
+
+typically when you do logistic
+
+regression of a statistics class your
+
+model might only have four eight twelve
+
+features and there's enough data that
+
+you can suitably estimate the parameters
+
+of all those features but typically the
+
+models will build a natural language
+
+processing will have hundreds of
+
+thousands millions even tens of millions
+
+of features and so one thing to notice
+
+right there is simply storing the array
+
+of parameter values will have a
+
+substantial memory cost but from a
+
+statistical estimation point of view
+
+more importantly that most of the
+
+parameters of those features will be
+
+very poorly estimated because we'll have
+
+very limited data in which to estimate
+
+the parameter values so there are lots
+
+of issues of sparsity overfitting to the
+
+training data is very easy and we have
+
+needs smoothing to prevent it and many
+
+features that we saw happen to see a
+
+training time for some example we might
+
+never see at all again in further use of
+
+the model at test time so we want to not
+
+give too much weight to features we have
+
+them to see at training time there are
+
+other reasons why we need to smooth our
+
+MaxEnt models if we don't feature
+
+weights can be infinite and the if
+
+iterative solvers were used to set
+
+parameter values can take a long time to
+
+get to those infinities so really we
+
+want to change the model formulation so
+
+the optimal feature weights are finite
+
+and therefore easily found in the
+
+findable by an optimization procedure
+
+let me motivate this issue of smoothing
+
+by looking at a release
+
+simple example let's assume we're
+
+tossing a coin and we have a
+
+distribution over heads and tails the
+
+natural way that that's formulated with
+
+maximum entropy features of the kind
+
+we've talked about is we have two
+
+features one thought is it a head and
+
+one is a four is a detail and then we'll
+
+have the following model distribution so
+
+this is the probability of heads where
+
+we have the feature wait for it being a
+
+head and the probability of tails with a
+
+feature wait for it being a tail and
+
+then this is our normalization term
+
+which is the same in both cases and that
+
+makes it look like there are two
+
+parameters but there are really only one
+
+degree of freedom here and this piece of
+
+math here shows how this MaxEnt
+
+formulation connects to the normal
+
+formulation you see a two class logistic
+
+regression in a statistics textbook so
+
+if we instead said what really matters
+
+is the difference between the weight of
+
+the head and tail parameter then we can
+
+say that the probability of heads can
+
+instead be written like this so what
+
+we're doing here is we've just taken
+
+this equation up here and we've
+
+multiplied each term by e to the minus
+
+lambda T and so then if we simplify that
+
+math down a little we get e to the
+
+lambda over 2 e to the lambda plus 1 and
+
+then the probability of tails doing the
+
+same kind of trickery comes out as e to
+
+the 0 e to the lambda plus 0 and again
+
+if we simplify that down that's then 1
+
+over e to the lambda plus 1 and so this
+
+is the simple form that you often see
+
+for a logistic regression model and a
+
+general that's true right that what's
+
+important is the difference of the
+
+weights of opposing parameters when you
+
+have a multi to class or multi class
+
+model ok so then if we graph lambda we
+
+get this classic logistic curve so with
+
+a weight of 0 or you get a half each
+
+chance of hits and tails and
+
+the weight goes negative the probability
+
+drops down initially sharply and then
+
+very slowly and as the lambdak becomes
+
+positive the probability climbs and they
+
+suddenly quickly and then very slowly
+
+well let's assume that we've seen just a
+
+little bit of data and we estimate
+
+lambda so as to maximize the likelihood
+
+of the observed data so then the
+
+probability of the observed data is the
+
+number of heads times the log of the
+
+probability of heads this is the log
+
+likelihood of the observed data plus the
+
+number of tails times the log likelihood
+
+of the probability of tails and using
+
+the form on the previous equation on the
+
+previous slide that comes out like this
+
+okay suppose we toss two heads and two
+
+tails they're not surprisingly the
+
+optimum value of lambda comes out as 0
+
+and that corresponds to a probability of
+
+heads and tails as 1/2 if we toss three
+
+heads and one tail then the optimum
+
+value for the lambda parameter comes out
+
+positive because there's about a
+
+three-quarters chance of a head and it
+
+comes out about there the problem is
+
+suppose in our training data we saw four
+
+heads and no tails well what that means
+
+is we have a categorical distribution in
+
+the observed data there are no tails and
+
+that means the bigger lambda gets the
+
+higher the conditional log likelihood of
+
+the observed data is because a lambda
+
+value of positive infinity corresponds
+
+to a categorical distribution where the
+
+probability of head is 1 and the
+
+probability of tails equals 0 and that's
+
+immediately problematic for both of the
+
+reasons that were mentioned earlier
+
+firstly we don't want to estimate
+
+categorical models where if a certain
+
+feature appears we say that there's a
+
+probability
+
+of some outcome we want to have
+
+smoothing because normally our data is
+
+sparse but also if we are asking our
+
+optimization procedure to optimize
+
+something where the optimum value is a
+
+pot is a infinite value for a parameter
+
+that's going to be difficult for the
+
+optimization procedure so there are
+
+several ways that this problem has been
+
+dealt with for maximum entropy models
+
+and I'll mention several of them while
+
+concentrating on the use of a prior
+
+distribution which is they usually used
+
+method these days so in the fourth zero
+
+case there were two problems so the
+
+first problem was the optimal value of
+
+land there was infinity which is a long
+
+trip for an optimization procedure to
+
+find the optimal value of a parameter
+
+and indeed a kind of cart it can just
+
+move it out and out to a large number
+
+the second problem is that we got no
+
+smoothing our learned distribution is
+
+going to be just as spiked as the
+
+empirical one and again this is going to
+
+commonly happen without NLP features
+
+because we're going to throw a million
+
+features into the model and it's just
+
+going to turn out that we're going to
+
+say words beginning with G H oh well we
+
+only saw two of them in the training
+
+data and in both cases the word was a
+
+person name therefore we're going to say
+
+anytime we see something that starts
+
+with gh oh it has to be a person name
+
+but it might turn out that in future
+
+data that's not necessarily the case it
+
+might be an organization name a place
+
+name or maybe even a word that just
+
+starts with gh Oh like Ghul which isn't
+
+a proper name at all so how can we solve
+
+this problem one crude way to solve this
+
+problem is just to stop the optimization
+
+early so we could run an iterative
+
+solver and say let's just run it for 20
+
+iterations and stop wherever we are so
+
+if we do that the value of lambda will
+
+definitely finite but would grow in
+
+fairly large and the optimization won't
+
+run in infinite loop and so this was
+
+commonly used in early MaxEnt work so
+
+the idea as we over here start the
+
+optimization procedure which
+
+cracking the likelyhood up making lambda
+
+bigger but we simply stop after a few
+
+iterations and so for example we might
+
+stop when the value of lambda is 5 and
+
+the end result of that is that the
+
+probability distribution for lambda
+
+equals 5 might be something like a 99%
+
+chance of a head and a 1% chance of a
+
+tail and we have satisfied this goal of
+
+smoothing the distribution slightly so
+
+there's no longer categorical and having
+
+our optimization procedure run in the
+
+finite amount of time but here's a
+
+better way of achieving that goal and
+
+that's to do what's referred to as using
+
+a prior distribution and so when we do
+
+this we talked about using map
+
+estimation which stands for maximum post
+
+the Horry estimation and the idea of
+
+that is we suppose that we had a prior
+
+we have a prior expectation that
+
+parameter values shouldn't be very large
+
+more strongly we can say that our prior
+
+expectation is that most features are
+
+irrelevant to the classification and so
+
+our prior expectations that feature
+
+weights are zero and then if we see
+
+evidence that they're useful features
+
+will gradually increase the weights of
+
+the parameters and so we can then
+
+balance the evidence from the observed
+
+data with our prior beliefs the evidence
+
+will never totally defeat the prior and
+
+so parameters will be smooth and kept
+
+finite and so we can do this by
+
+explicitly changing the optimization
+
+objective to maximum a posteriori
+
+likelihood and so that's what we have
+
+down here so now we're going to have a
+
+penalized log likelihood of condition a
+
+penalized conditional log likelihood of
+
+the observed data which is going to be
+
+the sum of the prior probability of the
+
+parameter weights plus the previous
+
+conditional log likelihood of the
+
+observed data which is the evidence the
+
+most common way to do this in practice
+
+is to use Gaussian which are also known
+
+as quadratic or l2 priors
+
+so our formalization here is to say
+
+that let's assume our prior belief is
+
+that each parameter will be distributed
+
+according to a Gaussian with mean mu and
+
+variance Sigma squared and so then the
+
+probability of the parameter having
+
+different values is being given by this
+
+equation for the normal curve and the
+
+reason we will soon see why this is also
+
+referred to as quadratic or l2 priors is
+
+this term ends up not really matter and
+
+the important part is this bit in here
+
+where are we getting the squared
+
+distance of the parameter value from the
+
+mean so parameters are penalized for
+
+their value drifting far from the mean
+
+and in practice usually we take this
+
+mean to be zero which is saying that the
+
+feature is irrelevant to the
+
+classification zero weight features have
+
+no influence on the classification
+
+there's this extra parameter down here a
+
+hyper parameter as to how big is the
+
+variance and this is going to control
+
+how easy it is for the parameter to move
+
+away from zero if the variance is very
+
+small the optimization will keep the
+
+parameter values clustered close to zero
+
+if the variance is very weak they'll be
+
+allowed to walk farther away as a
+
+starting off point when building models
+
+just taking two sigma squared to equal
+
+one commonly works rather well you can
+
+play with this value commonly what
+
+you'll find for the kind of sparsely
+
+evidence many feature models that we
+
+build that making Sigma much smaller
+
+than one quickly becomes problematic but
+
+you can make Sigma to Sigma squared
+
+quite a bit larger and commonly you
+
+could have it sort of it's somewhere in
+
+the range between a half and a thousand
+
+and the models and work fairly well and
+
+so here's a graph over here that sort of
+
+shows you how the optimization happens
+
+once you've got a regularization term so
+
+we have exactly the same four to zero
+
+distribution of heads and tails and when
+
+then we set the regularization
+
+differently so if you take two
+
+Sigma squared equal to one which is
+
+fairly strong regularization the maximum
+
+is positive so it's going to say you're
+
+more likely to get a hit than a tail but
+
+it's still going to be something like
+
+2/3 head one thirds tail if you take 2
+
+Sigma squared equal to 10 then the
+
+regularization is weaker and so the
+
+value of lambda is going to come out at
+
+about two and so that's going to say
+
+about 95% chance of a head and 5% chance
+
+of a tail making the two Sigma squared
+
+infinite is equivalent having no
+
+regularization at all that that's leads
+
+us back to our previous model and then
+
+the optimal value of the parameter is
+
+infinite so if we use Gaussian priors
+
+when putting in a trade-off between
+
+expectation matching vs. smaller
+
+parameter values what this means in
+
+practice is that when multiple features
+
+can be recruited to explain a certain
+
+observation it's the more common ones
+
+that will receive the most weight so the
+
+way to think about this is to think that
+
+in the model formulation that you pay
+
+the penalty of having a non 0 parameter
+
+weight just once whereas you get can
+
+gain from having a non zero parameter
+
+weight for every data item for which
+
+that parameter that feature and its
+
+parameter weight will be useful and so
+
+therefore a feature that can be useful a
+
+lot of times in explaining a data items
+
+will be allowed to have a high weight
+
+because the prior is basically
+
+overwhelmed whereas a feature that can
+
+only help in explaining a very small
+
+number of observations will have its
+
+weight greatly constrained by the prior
+
+and the other good thing to know about
+
+having Gaussian priors is putting them
+
+in will improve the accuracy of your
+
+classifier as we'll see let me just now
+
+go very concretely through what happens
+
+and the equations that you have to use
+
+when you have a prior so we're now going
+
+to use this penalized conditional log
+
+likelihood and so as well as this term
+
+for
+
+before we're adding in this term for the
+
+prior and so what is that term for the
+
+prior it's the log of the normal
+
+distribution over the parameter weights
+
+so if we then go back and look at this
+
+equation here we then have to take the
+
+log of this and so we're going to have
+
+effectively out here this is just a
+
+constant and then we're going to be
+
+taking the log of an X and that will go
+
+away and be an identity function so what
+
+we end up with here is that we're
+
+subtracting this term here where is the
+
+K over here is the log of the constant
+
+which we can ignore for the maximization
+
+of the penalized conditional likelihood
+
+and so what we're actually working out
+
+here is this squared term that is how
+
+far the parameter values away from the
+
+mean of the distribution and that term
+
+is then being scaled by this 2 sigma
+
+squared so you should be able to see
+
+that how big you make 2 Sigma squared
+
+sort of balances the trade-off between
+
+these two terms
+
+then for the derivative of the
+
+conditional penalize conditional log
+
+likelihood we're taking the derivative
+
+of this which is the part that we saw
+
+before which is the difference between
+
+the actual weight and the predicted
+
+weight of the feature and then we're
+
+subtracting off the derivative of this
+
+and so that's just an easy quadratic
+
+form so the derivative that is just over
+
+here and so what we're then going to say
+
+is that to make this zero that our
+
+predicted weight the predicted
+
+expectation of some feature being true
+
+is going to be a little bit less than
+
+its actual expectation because it's
+
+being penalized by this amount here to
+
+simplify things down one step further in
+
+practice we almost always
+
+the mean about prior distribution to be
+
+zero since the position of least
+
+commitment is to assume that features
+
+are irrelevant and so then those
+
+equations simplify down one time further
+
+and we just get the results shown here
+
+where we just have the the lambdas and
+
+so it's just how big the lambdas are in
+
+their distance away from zero that's
+
+determining what we're using let me go
+
+back to the example of making a maximum
+
+entropy named entity recognition model
+
+that I've shown you before actually when
+
+I was showing the slides before I was
+
+leaving out a detail because the
+
+parameter weights of this model were
+
+actually estimated in a model that used
+
+Gaussian prior smoothing and now that we
+
+understand a bit more than about that we
+
+can see the effect of that in the
+
+estimation of the parameters of the
+
+model so here we have two features and
+
+this feature is a conjunction feature
+
+the present tag has proper noun and the
+
+previous tag is preposition so this
+
+feature is necessarily going to be much
+
+less evidenced in the training data than
+
+this feature which is just that the
+
+current part of speech is a proper noun
+
+so the general expectation is that
+
+higher weights should be given to the
+
+more common features if they carry as
+
+much predictive information and that's
+
+what we see here that you have the high
+
+weight given to the more general feature
+
+and much smaller weights given to the
+
+more specific feature and that's because
+
+even though there is some further
+
+evidence from this conjunction feature
+
+here the fact of the matter is you're
+
+quite likely to have a named entity when
+
+the part of speech is a proper noun and
+
+so most of the weight is going to the
+
+more general features here and we also
+
+see the same effect and some of the
+
+other feature classes that we talked
+
+about before so for the two above it the
+
+current word being grace is a fairly
+
+specific and really evidence feature
+
+whereas the fact that the word begins
+
+we're the capital letter G is a much
+
+more general feature and so that we're
+
+seeing most of the weight for this being
+
+good evidence that it's a person rather
+
+than a location going to this much more
+
+general feature and if we look down
+
+further below you can maybe see other
+
+cases of the same thing happening but
+
+you should also realize that when there
+
+is a lot of extra information from a
+
+feature conjunction then that feature
+
+conjunction will get a lot of weight
+
+still and we saw an example of that with
+
+these two cases here so that we
+
+discussed how if the since most tokens
+
+should be classified as not an entity
+
+that if you just simply know that the
+
+previous word was not an entity most
+
+likely the next word is not an entity as
+
+well and so you get this highly negative
+
+weight for both entity classes but if
+
+you know that the previous word was not
+
+an entity but you also know that the
+
+current word is capitalized then in that
+
+case that there's strong evidence that
+
+you should classify things differently
+
+and so this feature does get significant
+
+weight even though it's a conjunction
+
+feature that involves this other
+
+previous feature you just get a kind of
+
+a lot of evidence from knowing that
+
+conjunction is true okay here's an
+
+example showing the effects of using a
+
+gaussian smoothing for estimating
+
+maximum entropy model and this is an
+
+example from learning a part of speech
+
+tagger from the work of christina to
+
+turnover and me and others at stanford
+
+okay and so this example shows the
+
+typical effects of what happens with
+
+smooth versus aren't smooth maximum
+
+entropy models so what we find is that
+
+so we've trained both models for up to
+
+three hundred and sixty iterations up
+
+here what we thought one thing we find
+
+is just good to know is and this is
+
+looking at accuracy on test data that
+
+the model with smoothing performs a lot
+
+better than the model without smoothing
+
+okay that's about 0.6 of a percent
+
+better but part-of-speech taking
+
+generally is highly accurate and so it's
+
+better off thinking of this as error
+
+reduction so if you're reducing the
+
+error rate from three and a half percent
+
+down to two point nine percent that's
+
+actually quite a large error reduction
+
+okay but we can see a bit more than just
+
+that so if you should see here that for
+
+the model with no smoothing it shows
+
+this very typical pattern that you used
+
+to observe for the training of MaxEnt
+
+models that as you train the model
+
+initially the accuracy improves strongly
+
+up to a peak and then it starts to
+
+decline so this is where you see the
+
+overfitting of the model to the training
+
+data in a way that actually means it
+
+does worse at test time and so common
+
+practice was to stop training of the
+
+MaxEnt models around iteration 100 and
+
+so this is sort of being a little bit
+
+unfair to what normally happened without
+
+smoothing if you did early stopping that
+
+you'd really be getting an accuracy or
+
+something like ninety six point eight
+
+seven let's say but nevertheless that's
+
+still well less than the accuracy of the
+
+smooth model on the other hand if you
+
+have a smooth model that the smooth
+
+models likelihood just nicely increases
+
+until it converges and then optimization
+
+stops giving us this performance here
+
+there's actually a second effect that's
+
+very interesting as if we focus in on
+
+particular on the performance of the
+
+work of the model on unknown words now
+
+unknown words being estimated they're
+
+part of speech tag distributions being
+
+estimated by using special features that
+
+generalize over words such as what
+
+letters do they begin with and in with
+
+but nevertheless a lot of those features
+
+are themselves pretty sparse and so what
+
+we find is that the model without
+
+smoothing especially over fits and tends
+
+to do badly on the unknown
+
+where the model with smoothing is doing
+
+three percent better here on the unknown
+
+words and so that's a very significant
+
+increase and very helpful to
+
+applications because performance on
+
+previous on words that the model wasn't
+
+trained on is especially important to
+
+the good performance of applications
+
+okay so smoothing is just good it
+
+softens distributions it pushes the
+
+weight onto more explanatory features it
+
+allows you to dump more and more
+
+features into the model without a lot of
+
+problems and at least if you don't do
+
+really stopping it speeds up the
+
+convergence of your models let me just
+
+give one terminology note I'm talking of
+
+priors and maximum a-posteriori
+
+estimation is language from bayesian
+
+statistics infrequent of Statistics
+
+people will instead talk about doing
+
+regularization of maximum entropy models
+
+and in particular a Gaussian prior is
+
+called l2 regularization I'm not really
+
+going to get into that all you really
+
+need to know is that the math comes out
+
+the same it doesn't matter what name you
+
+choose let me just then quickly mention
+
+two other ways of doing smoothing
+
+another way of thinking about smoothing
+
+is to smooth the data not the parameters
+
+and we saw that earlier when talking
+
+about language models so if the
+
+distribution we actually saw was four
+
+heads and zero tails we couldn't smooth
+
+that by doing add one smoothing say and
+
+say we got five heads and one tail and
+
+well then we've solved our problem
+
+because if we then do maximum
+
+conditional likelihood estimation that
+
+we're setting the value of the
+
+parameters are something like 1.2 and
+
+it's got a finite value and we don't
+
+have a problem that works fine for a
+
+very simple example like this the reason
+
+that's not practical for models with
+
+millions of parameters is it becomes
+
+almost impossible to know how to create
+
+artificial data in such a way that every
+
+parameter has a nonzero value without
+
+creating enormous amounts of
+
+artificial data so that the amount of
+
+artificial data overwhelms the amount of
+
+real data a final thing that's commonly
+
+done in NLP models is to use count cut
+
+offs with features so the idea there is
+
+to calculate features for each data item
+
+in your model and then you look at the
+
+features and what their empirical
+
+support and the training data is and you
+
+simply say something like okay for any
+
+feature there was observed 3 times or
+
+less in the training data I'm just going
+
+to dump it from my model and estimate
+
+the model over the remaining features in
+
+the discussion of smoothing this is a
+
+weak and indirect smoothing method so
+
+effectively what it's doing is saying
+
+we're going to estimate the weight of
+
+all rare features as 0 which you can
+
+also think of assigning them a Gaussian
+
+prior with zero variance and mean zero
+
+so that their weights can never move
+
+away from zero so dropping low counts
+
+does remove the features which are most
+
+in need of smoothing and it does speed
+
+up estimation of the model by reducing
+
+the model size but it's a very crude
+
+method of doing smoothing and so the
+
+message I'd like to give is count
+
+cut-offs generally hurt accuracy in the
+
+presence of proper smoothing a lot of
+
+people got into the habit of using count
+
+cut-offs in the days before regularized
+
+models because in those cases it was
+
+usually helped to use count cut-offs
+
+because you've got less overfitting of
+
+your model but with proper smoothing you
+
+shouldn't need to use count cut-offs to
+
+get the best possible model that doesn't
+
+mean that there's no reason to use count
+
+cut-offs the most common reason to use
+
+count cut-offs in practice is because
+
+you want to shrink the size of your
+
+model that 10 million parameters take a
+
+lot of memory to store and you might
+
+prefer to build a model that only has
+
+300,000 parameters and then obviously
+
+what you want to do is keep the most
+
+useful features which will be normally
+
+basically the ones that have significant
+
+frequency of occurrence in the data
+
+okay so that's the end of the discussion
+
+on smoothing or priors for MaxEnt models
+
+in this section we've only talked about
+
+use of gaussian or l2 priors in recent
+
+work there has been quite a bit of
+
+discussion of using other priors in
+
+particular there's common use of l1
+
+priors which is a different way of
+
+cutting down the number of features in
+
+your model you may have seen that if
+
+you've seen other things like machine
+
+learning but I'm not going to discuss
+
+that in these classes

@@ -1,0 +1,487 @@
+﻿welcome back we've introduced the idea
+
+of information extraction and one of its
+
+core tasks named entity extraction now
+
+we'd like to turn to a second core task
+
+of information extraction the task of
+
+extracting relations or relation
+
+extraction consider the following
+
+sentence from a company report
+
+International Business Machines was
+
+incorporated in the state of New York on
+
+June 16th and so on
+
+we'd like to extract a relatively
+
+complex relation about company founding
+
+we'd like to know the thing that there
+
+was a founding event and that the
+
+company was IBM that the location was in
+
+New York that there was a date that the
+
+company was originally named CTR and so
+
+on so all this kind of facts about this
+
+large structured relation that's the
+
+general task of information extraction
+
+as we've defined it but we're going to
+
+define a simpler task of relation
+
+extraction which we're going to call the
+
+task of extracting relation triples so
+
+instead of these complex events we'll
+
+extract things like founding year IBM
+
+1911 so a simple relation between a
+
+predicate and two arguments IBM was
+
+founded in the year 1911 founding year
+
+ib I mention eleven in the same with
+
+location founding location IBM New York
+
+so a series of individual triples and
+
+that will be our task extracting these
+
+triples from text so for example imagine
+
+the following Wikipedia page about
+
+Stanford University taking a sentence
+
+like the Leland Stanford junior
+
+University commonly referred to as
+
+Stanford University and so on from these
+
+fragments of sentences we'd like to
+
+extract relations like the following
+
+that Stanford is located in California
+
+and we get that from located in Stanford
+
+California or founded in 1891 there is
+
+founded the University in 1891 and the
+
+founder was Leland Stanford and here we
+
+have Leland Stanford so from this kind
+
+of text our job is to extract individual
+
+relations between the entities in the
+
+text relation extraction is important
+
+for all sorts of applications anytime we
+
+need some kind of structured knowledge
+
+and the knowledge originally is in the
+
+form of
+
+next it's more easy for an application
+
+to get that knowledge from a structured
+
+database so we'd like to extract these
+
+textual facts into structured form and
+
+that could be new structured databases
+
+or we could be adding words to current
+
+databases like the word annette
+
+thesaurus that we'll talk about later or
+
+freebase or dbpedia that we'll talk
+
+about later today these kind of
+
+relations are quite useful for example
+
+and tasks like question answering so
+
+imagine the following question that's
+
+modified from a question that was asked
+
+on the Jeopardy show I'm the
+
+granddaughter of which actor starred in
+
+the movie et and in order to answer this
+
+question we'd like to know that the
+
+relations in the question include acted
+
+in et so when I want to who acted in et
+
+and we have to know that someone is an
+
+actor and that someone is somebody
+
+else's granddaughter so these kind of
+
+relations will help both in
+
+understanding what's being asked in the
+
+question and then finding the answer in
+
+raw text that's all great but what
+
+relations should we be extracting well
+
+one set of relations comes from the
+
+automated content extraction or ace
+
+tasks where 17 relations grouped into
+
+six classes were defined so for example
+
+we had the class of person social
+
+relations so we had family so that's
+
+going to be related to a parent or a
+
+brother relation between people or we
+
+had physical locations something is
+
+located in some place or located near
+
+some place or or affiliation with some
+
+organization I might be the founder of
+
+an organization or the owner or some
+
+member of an organization or I might be
+
+the creator of some artifact the
+
+manufacturer or inventor of an artifact
+
+or I might be a corporate subsidiary or
+
+it might be a geographical sub part of
+
+some other entity so these are all the
+
+kinds of relations that are in ace and
+
+so for example and we might have the
+
+physical located in relation and that
+
+might hold between a person like he and
+
+some kind of geopolitical entity like
+
+the state of Tennessee or a part whole
+
+subsidiary that might hold between two
+
+organizations the first organization the
+
+parent company of the second
+
+organization or we talked about family
+
+relations so again holding between two
+
+people that a wife and a husband are
+
+related by the family relation or we
+
+might have the founder relation that
+
+holds between a person and an
+
+organization so we here we have relation
+
+between Steve Jobs and Apple so these
+
+are the kind of relations that we
+
+extracted you know you know using the
+
+ACE set of relations of course there's
+
+different sets of relations for every
+
+possible task so for biomedical
+
+information extraction we might want to
+
+use the you MLS the unified medical
+
+language system which defines entities
+
+and relations as well so for example we
+
+have entities like injury or
+
+physiological function and they can be
+
+related by them relations like disrupts
+
+or location of so for example we might
+
+have some pharmacological substance some
+
+drug and that might cause some
+
+pathological function might cause some
+
+disease or cause some some problem or we
+
+might have some other pathological sorry
+
+excuse me pharmacological substance or
+
+we might have some other pharmacological
+
+substance that instead treat some
+
+pathological function so we have lots of
+
+different entities in this case 134 of
+
+them in this data set and 54 relations
+
+that can hold between them now for each
+
+application we might have a different
+
+set of relations that might be useful so
+
+for example the sentence Doppler
+
+echocardiography can be used to diagnose
+
+left anterior descending artery artery
+
+stenosis and we might extract from that
+
+sentence a relation of diagnosis between
+
+this technique and this stenosis now
+
+there are lots of existing databases of
+
+relations that have been extracted from
+
+public sources like Wikipedia for
+
+example so they take the that same
+
+Stanford University Wikipedia page you
+
+may notice over on the right here a
+
+little structured part of the Wikipedia
+
+page that's called a Wikipedia infobox
+
+if you look in more detail at what we
+
+have there we have in fact a set of
+
+relations so we have type private
+
+President John Hennessy locations
+
+Stanford and so on so each of these
+
+kinds of relation names and the values
+
+of the relations and if you look at the
+
+source for
+
+this we can see the actual infobox and
+
+here for example we can see that the
+
+city of the universities is Stanford the
+
+state as California and the motto Duluth
+
+defied fate and so on and so we can
+
+extract these relations directly out of
+
+the info boxes state the relations state
+
+the relation model holding between
+
+Stanford and California or Stanford and
+
+the motto these databases that draw from
+
+Wikipedia tend to represent the
+
+information in what are called resource
+
+description framework triples or RDF
+
+triples and RDF triple is just a subject
+
+some sort of predicate and an object so
+
+are the predicate or we're calling a
+
+relation so location would be a
+
+predicate in RDF so we have Golden Gate
+
+Park location San Francisco so a
+
+location relation between Golden Gate
+
+Park in San Francisco and databases like
+
+dbpedia which draw on the Wikipedia info
+
+boxes to create these large databases of
+
+triple in fact has a billion of these
+
+triples 385 million of which that come
+
+from should say million come from
+
+English Wikipedia and in other databases
+
+like like freebase we have a lot of
+
+these kind of relations so a common
+
+relation is the nationality of a person
+
+mentioned in Wikipedia or their
+
+profession or classification of a
+
+biological entity or which locations are
+
+inside which other locations that Paris
+
+is in France and so on we can also
+
+extract ontological relations we'll talk
+
+about this more when we talk about that
+
+the sources like wordnet but every kinds
+
+of relation databases includes what are
+
+called izi or hypernym or subsumption
+
+relations so we know that a giraffe is a
+
+kind of ruminant which is a kind of Unga
+
+lip which is a kind of mammal and so on
+
+so these is or hyponym relations are
+
+very important and we can think of those
+
+as the same kind of relation extract
+
+them with similar kinds of methods
+
+there's a specific type of this kind of
+
+relation where the we have an instance
+
+and a particular entity like San
+
+Francisco which is an instance of
+
+of a city so we can have a relationship
+
+between classes the class giraffe is a
+
+sub sub type of the classroom in it or
+
+again I've an instant in San Francisco
+
+which is an instance of a class like
+
+city again these relations can be
+
+extracted from text and we can use them
+
+to augment databases or create new
+
+databases there for them how do we build
+
+these relationships tractors there's a
+
+number of methods like all information
+
+extraction as we saw with named entity
+
+tagging we can handwrite patterns and
+
+we'll talk about handwritten patterns
+
+for extracting relations we can do
+
+supervised machine learning and then
+
+there's a number of popular methods for
+
+doing semi supervised and unsupervised
+
+learning for extracting relations and
+
+we'll talk about those as well we've
+
+seen that relation extraction is an
+
+important component of information
+
+extraction useful for question answering
+
+and for building large knowledge bases
+
+from text

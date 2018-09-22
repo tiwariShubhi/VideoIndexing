@@ -1,0 +1,219 @@
+﻿there's a first simple example of the
+
+ranked retrieval model let's consider
+
+scoring with the jacquard coefficient so
+
+the jacquard coefficient is a commonly
+
+used measure for the overlap between two
+
+sets a and B and what it is is simply
+
+you take the number of items in the
+
+intersection of a and B and you divide
+
+it by the number of items in the union
+
+of a and B and so if we take the
+
+jacquard coefficient of a set with
+
+itself and the set has some size and
+
+then that's size will be also the size
+
+of the intersection the union and so the
+
+ratio be 1 and the jacquard coefficient
+
+is 1 if two sets are disjoint and have
+
+no members in common then the numerator
+
+of the jacquard coefficient will be zero
+
+and so the jacquard coefficient is zero
+
+now the two sets don't have to be the
+
+same size but you should be able to see
+
+that if the jacquard coefficient will
+
+always assign a number between 0 and 1
+
+because that most the intersection can
+
+be as large as the union so suppose we
+
+decide to make the query document match
+
+score the Jaccard coefficient computed
+
+for the sets of words the two documents
+
+contain so the idea is that let's
+
+suppose our query is Ides of March which
+
+has these three words and then we have
+
+these two documents so what we can do is
+
+say so there are three different words
+
+here and then for document 1 Caesar
+
+doesn't occur and it died doesn't occur
+
+and it doesn't occur in a March does
+
+occur in it so this size of the
+
+intersection
+
+is just one word and the total number of
+
+words is six if we then do the second
+
+document
+
+well that doesn't occur in the query
+
+long doesn't occur in the query but
+
+again March does occur in the query so
+
+this time there's a card coefficient of
+
+D 1 comma D 2 is going to be 1 divided
+
+by the number of words which is this
+
+time 5 okay and so this document is
+
+going to win as having the higher
+
+jacquard score now of course that
+
+difference may not seem very significant
+
+essentially this document is winning
+
+here just because it's shorter but if we
+
+imagined a different example where we
+
+maybe had the word Ides in the second
+
+document then we'd get that the jacquard
+
+coefficient for it is now two
+
+overlapping words over six and that
+
+maybe makes more sense to you that
+
+you're getting more overlap so the
+
+jacquard could score as higher but this
+
+idea that all else being equal a shorter
+
+document should be preferred is a common
+
+one that we'll see again in ir models
+
+okay so is jacquard scoring a good idea
+
+for a retrieval model in general it's
+
+not felt to be it has a couple of issues
+
+one is that it doesn't consider term
+
+frequency it just uses the set of words
+
+in a document ignores how many times the
+
+words occur in a document but that's
+
+typically not all the information we
+
+want and we will look at models in a
+
+minute that do deal with term frequency
+
+there's also a second finer point which
+
+is that rare terms in a collection and
+
+more informative than frequent terms
+
+when evaluating a query and that's
+
+something that we'll also want to factor
+
+into our models there's one other aspect
+
+in which the Jaccard coefficient turns
+
+out not to work very well and that is
+
+the way in which it does normalization
+
+by dividing through by the Union
+
+isn't necessarily quite right I mean in
+
+particular later on in these segments
+
+we'll introduce the idea of using cosine
+
+similarity and we'll go through the math
+
+of that for the more general case but if
+
+after you've seen that you want to kind
+
+of come back to this and work out what
+
+the cosine similarity score is if you
+
+just have a 1-0 bag-of-words and work
+
+out a cosine score it'll turn out that
+
+as this which is like the Jaccard
+
+coefficient except that we've got this
+
+slight difference in the denominator
+
+that we're now taking the square root of
+
+the union and that actually turns out to
+
+be a better form of length normalization
+
+okay and so I introduced the jacquard
+
+coefficient just as a very simple
+
+example of a ranked retrieval model but
+
+I think it was I hope it was also a way
+
+to show some of the issues that we need
+
+to deal with in a good retrieval model
+
+how to factor in the frequency of terms
+
+the rareness of words and how to
+
+normalize the score for different
+
+document lengths

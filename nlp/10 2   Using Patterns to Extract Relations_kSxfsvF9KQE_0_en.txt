@@ -1,0 +1,329 @@
+﻿perhaps the simplest way of doing
+
+relation extraction is using hand-built
+
+patterns let's look at the intuition
+
+here's a sentence agar is a substance
+
+prepared from a mixture of red algae
+
+such as gel idiom for laboratory or
+
+industrial use perhaps you like me and I
+
+didn't know what the word Jewel idiom
+
+meant but I can learn what it means from
+
+this sentence and the way we know is
+
+that we see this phrase red algae such
+
+as gel idiom so that tells us that gel
+
+idiom is a kind of red algae and this
+
+intuition from an early paper by Marti
+
+Hearst suggested that there's in fact a
+
+lot of patterns that can be used to
+
+suggest that two entities are in this is
+
+ax or hyponym relation so for example I
+
+knowing if I saw red algae such as
+
+gelatin that tells us that gel idiom is
+
+a kind of red algae so X is a kind of Y
+
+I might see other patterns them like
+
+Jalili 'm or other red algae or Jalili
+
+'m and other red algae or red algae
+
+including Jahlil 'i'm in each case I
+
+have textual pattern holding between two
+
+entities that's a strong cue that what I
+
+have here is a particular relation
+
+between the two entities an hour--the
+
+showed that these kind of patterns were
+
+able to learn the is a relation between
+
+new terms such as Bambara and dong and
+
+Boulud or learning about author names or
+
+learning country names and so on that
+
+could be added to a database now the
+
+same kind of intuition about using
+
+handwritten rules to learn relations can
+
+be used for the richer relations that
+
+we've been looking at richer than than
+
+just is ax or hyponym and the intuition
+
+for learning these more richer rules is
+
+that these relations often hold between
+
+specific entities
+
+so the location located in relation
+
+often holds between an organization and
+
+a location or the founded relation holds
+
+between a person and an organization so
+
+in addition to just coming up with
+
+clever string patterns that might
+
+indicate a relation we can also use
+
+facts about the actual entities that are
+
+involved and that will help us learn
+
+which
+
+kind of relations we might have in other
+
+words we're gonna start with the
+
+identity tags and that's going to help
+
+us do relation extraction
+
+now many of these aren't quite enough
+
+and to see this let's look at a couple
+
+of examples imagine I have an entity
+
+drug and an entity disease what kind of
+
+relations can hold between those
+
+entities well a lot we can the drug
+
+could cure a disease it could prevent a
+
+disease it could even cause a disease
+
+and that's true for any kinds of
+
+entities between a person and an
+
+organization the person could be the
+
+founder of the organization that could
+
+be an investor in the organization a
+
+member of the organization an employee
+
+of the organization they could be the
+
+president of the organization so any
+
+kind of relation may hold between these
+
+entities although there are constraints
+
+so the person can't cure can't be the
+
+Cure or the disease caused or other
+
+kinds of things though so there are
+
+constraints from the named entities but
+
+lots of other relations meet those
+
+constraints and so we're going to
+
+combine these two intuitions using a
+
+pattern and using the named entities so
+
+we can combine these two intuitions the
+
+use of a named entity and use of
+
+specific patterns to extract richer
+
+relations consider the question who
+
+holds what office in what organization
+
+so we'd like to extract from a sentence
+
+like George Marshall secretary of state
+
+of the United States that a person
+
+George Marshall played the role or had
+
+the had the office of secretary of state
+
+in an organization in the United States
+
+government and so we have an entity
+
+person an entity position and an to the
+
+organization and here's a pattern person
+
+comma position of organization that
+
+might extract from a sentence like this
+
+the position of relation between a
+
+person and an organization and we might
+
+need to have another pattern for
+
+sentences of a different form so here we
+
+have person I'm Truman appointed
+
+Marshall secretary of state so we might
+
+have person appointed or some other
+
+words like named or chose and so on
+
+person position and we might have an
+
+optional preposition in between so
+
+Truman appointed Marshall as Secretary
+
+of State would be an option there or
+
+just Truman appointed Marshall Secretary
+
+of State so again a combination of our
+
+patterns with maybe list of possible
+
+words we might get from a thesaurus or
+
+some kind of thing and the named
+
+entities of the of the entities or
+
+finally another pattern George Marshall
+
+was named US Secretary of State
+
+so again person may be a form of the
+
+verb to be and optionally followed by
+
+again one of these named or appointed
+
+words and there may be an optional
+
+preposition and then the organization
+
+and the position so by combining the
+
+named entity types with the words or
+
+perhaps parts of speech in between we
+
+can create patterns that extract
+
+particular relations now an advantage of
+
+the pattern extraction algorithm for
+
+doing a relation extraction is that
+
+these human patterns tend to be high
+
+precision if you look at a particular
+
+domain and you write rules and the rules
+
+are usually pretty high precision and
+
+they can be tailored to these very
+
+specific domains if you have a
+
+particular relation extraction task when
+
+you write rules that can they can get
+
+this high precision the minuses are the
+
+human patterns tend to be low recall
+
+often you don't think of a particular
+
+way somebody might have thought to word
+
+a certain sentence in free text that
+
+expresses a relation and it's also a lot
+
+of work to do this especially if you
+
+have a lot of relations you're going to
+
+have to come up with very specific
+
+patterns for each relation and for each
+
+domain in this relation and I'd be nice
+
+to also get a higher accuracy than you
+
+can get from these relations
+
+so while handbill patterns are useful
+
+method for relation extraction we're
+
+going to look at other methods like
+
+supervised and unsupervised methods as
+
+well so handwritten rules with named
+
+entity patterns and other kinds of words
+
+and parts of speech in between are a
+
+good way to extract relations they have
+
+some problems of accuracy and of
+
+generalizing to new domains and so we're
+
+going to also introduced other methods
+
+of doing a relation extraction like
+
+supervised and unsupervised learning
