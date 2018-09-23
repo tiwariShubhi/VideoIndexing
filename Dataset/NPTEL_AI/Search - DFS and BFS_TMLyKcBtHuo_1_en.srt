@@ -1,0 +1,2568 @@
+﻿1
+00:00:10,779 --> 00:00:28,098
+So let us get back to state space search and
+valuation that we are looking at, we are call
+
+2
+00:00:28,099 --> 00:00:36,320
+uninformed. Valuations which we are looking
+at today, I mean from in the sense, they do
+
+3
+00:00:36,320 --> 00:00:42,020
+not exploit any knowledge of any kind from
+the domain. On the next class when you
+
+4
+00:00:42,020 --> 00:00:49,350
+meet on a Wednesday, we will try to see how
+to get around this, how to exploit some
+
+5
+00:00:49,350 --> 00:00:51,059
+knowledge from the domain essentially.
+
+6
+00:00:51,058 --> 00:00:52,058
+..
+
+7
+00:00:52,058 --> 00:00:58,858
+So, the last algorithm that we saw was this,
+simple search to in which we had two sets
+
+8
+00:00:58,859 --> 00:01:04,489
+open and close, open contains a set of candidates
+set we want to inspect, and closed
+
+9
+00:01:04,489 --> 00:01:09,430
+contains, the set of candidate that we have
+already inspected. And the idea is to keep
+
+10
+00:01:09,430 --> 00:01:15,899
+generating new candidates, and adding them
+to open, and how do we can generate new
+
+11
+00:01:15,899 --> 00:01:21,000
+candidates by, removing from move the output
+of more than anything which is already
+
+12
+00:01:21,000 --> 00:01:26,030
+on open or which is in closed essentially.
+So, we will only get new candidates, and in
+
+13
+00:01:26,030 --> 00:01:30,180
+this
+ways, we will only had new candidate to inspect.
+
+14
+00:01:30,180 --> 00:01:39,110
+And if the state species finite, you can see
+that eventually, whatever states are reachable
+
+15
+00:01:39,109 --> 00:01:44,109
+from the start state, they will be explode
+at some point or the other, and it will come
+
+16
+00:01:44,109 --> 00:01:47,239
+out
+of this loop only, it open becomes empty.
+
+17
+00:01:47,239 --> 00:01:49,849
+So, there should be a check here, if open
+not
+
+18
+00:01:49,849 --> 00:01:55,228
+equal to empty then do this, open him to empty
+report failure essentially. But, let us
+
+19
+00:01:55,228 --> 00:02:00,118
+assume that there is a solution to the problem,
+which means the goal said that we are
+
+20
+00:02:00,118 --> 00:02:04,459
+talking about, is reachable from the starts
+state, in which case we would find the solution
+
+21
+00:02:04,459 --> 00:02:05,519
+that some point or the other.
+
+22
+00:02:05,519 --> 00:02:09,890
+So, let us take the main missionaries in animals
+problem or the man, goat and lion
+
+23
+00:02:09,890 --> 00:02:13,789
+problem that we have been talking about. It
+is possible for the man to take the goat,
+
+24
+00:02:13,789 --> 00:02:16,900
+and
+lion and the cabbage on the other side, what
+
+25
+00:02:16,900 --> 00:02:20,450
+will our algorithm do, this algorithm that
+we
+
+26
+00:02:20,449 --> 00:02:34,030
+.have said, what are the incase dent and what
+is the algorithm giving us. So, what are the
+
+27
+00:02:34,030 --> 00:02:43,930
+interested in it start with that, what are
+the, what should the man do right, man should
+
+28
+00:02:43,930 --> 00:02:48,560
+first take the goat, then keep the goat on
+that side, comeback with the empty boat, then
+
+29
+00:02:48,560 --> 00:02:54,098
+take the lion and all these kind of step,
+what is the algorithm giving us? It is only
+
+30
+00:02:54,098 --> 00:02:58,459
+giving
+us to state end with satisfy the goal test
+
+31
+00:02:58,459 --> 00:03:00,420
+that does not help us in any way, to solve
+the
+
+32
+00:03:00,419 --> 00:03:01,419
+problem.
+
+33
+00:03:01,419 --> 00:03:02,419
+.
+
+34
+00:03:02,419 --> 00:03:05,068
+So, that is the second problem with this solution,
+and we have to address that, but before
+
+35
+00:03:05,068 --> 00:03:10,958
+we do that, let me also clarify the there
+are two kinds of problems, one is call the
+
+36
+00:03:10,959 --> 00:03:28,500
+configuration problem, and the other kind
+is planning problems. In planning problems,
+
+37
+00:03:28,500 --> 00:03:43,430
+the solution is a path; in configuration problems,
+solution is a state. So, we can actually
+
+38
+00:03:43,430 --> 00:03:47,989
+distinguish between these two different kinds
+of problems. So, the river crossing problem
+
+39
+00:03:47,989 --> 00:03:51,759
+is the planning problem, we want to know,
+what are the sequence of moves the man must
+
+40
+00:03:51,759 --> 00:03:53,500
+do, to solve the problem.
+
+41
+00:03:53,500 --> 00:03:59,540
+But, there are problems which are configuration
+kind of problems, so for example, the N
+
+42
+00:03:59,540 --> 00:04:08,750
+queens, so you must be familiar with the N
+queens problem, I presume. The task is that
+
+43
+00:04:08,750 --> 00:04:15,658
+given a end by end chess board, you have to
+place N queens on the board, in such a
+
+44
+00:04:15,658 --> 00:04:21,149
+manner that no queen attacks, any other queens
+essentially. So, that is a well known, very
+
+45
+00:04:21,149 --> 00:04:28,750
+.commonly studied N queens problem, there
+are variations with this, which say for
+
+46
+00:04:28,750 --> 00:04:33,259
+example, every queen must say attack exactly
+to other queens. So, that is another
+
+47
+00:04:33,259 --> 00:04:34,259
+configuration problem.
+
+48
+00:04:34,259 --> 00:04:40,060
+So, in such a problem, the N queens problems
+for example, the solution is only the final
+
+49
+00:04:40,060 --> 00:04:43,839
+state that we . if you can show that such
+a state exists, then we have
+
+50
+00:04:43,839 --> 00:04:47,959
+solve the problem, it does not matter they.
+In fact, there is no notion of a path there,
+
+51
+00:04:47,959 --> 00:04:50,400
+I
+mean unless, you say this is the first queen
+
+52
+00:04:50,401 --> 00:04:53,759
+to plays on the board, and this is second
+queen to plays on the board, that does not
+
+53
+00:04:53,759 --> 00:04:58,400
+make sense. We are interested, then some
+configuration and such problems are called
+
+54
+00:04:58,399 --> 00:05:01,989
+configuration problem, for which this
+algorithm is fine because, it will return
+
+55
+00:05:01,990 --> 00:05:04,850
+to us a state with satisfies the goal constraints.
+
+56
+00:05:04,850 --> 00:05:10,020
+Whereas, for such problems, we does not work,
+because is only telling us what is the
+
+57
+00:05:10,019 --> 00:05:19,939
+final status, how do we solve this problem.
+So, for planning problems, how do we have
+
+58
+00:05:19,939 --> 00:05:25,019
+to modify the search node? So, there we said
+the search node was the state essentially.
+
+59
+00:05:25,019 --> 00:05:32,539
+For planning problems, we have to modify the
+search node. So, what do I mean by the
+
+60
+00:05:32,540 --> 00:05:38,439
+search node, the node generated by this algorithm,
+what we put into open, what we take
+
+61
+00:05:38,439 --> 00:05:46,019
+out from open, and you know things like that
+essentially. And we have to modify it in
+
+62
+00:05:46,019 --> 00:05:52,930
+such a way, that it contains the paths information
+essentially.
+
+63
+00:05:52,930 --> 00:06:02,459
+Now, one simple way of doing that, is to store
+the entire path as the search nodes
+
+64
+00:06:02,459 --> 00:06:09,250
+essentially. So, let me use a small example,
+supposing this is the start state, and this
+
+65
+00:06:09,250 --> 00:06:23,220
+is the
+successors state. So, let us a some small
+
+66
+00:06:23,220 --> 00:06:28,069
+states piece we have, some random graph I
+drawn, this is the start state, and let say
+
+67
+00:06:28,069 --> 00:06:31,941
+this is the goal state, and we have to find
+the path
+
+68
+00:06:31,940 --> 00:06:36,589
+from the start state to the goal state essentially.
+So, you say, so you will go, you will a
+
+69
+00:06:36,589 --> 00:06:40,068
+algorithm some will begin with start, then
+the move gen function will return it is
+
+70
+00:06:40,069 --> 00:06:42,090
+neighbors, which is A and B.
+
+71
+00:06:42,089 --> 00:06:45,348
+And then the algorithm will inspect a whether
+a is a goal or not and that kind of things,
+
+72
+00:06:45,348 --> 00:06:51,168
+so it will do all that stuffs. But, I want
+to know the path that the algorithm finds,
+
+73
+00:06:51,168 --> 00:06:54,209
+from
+start state to goal state. So, I modify this
+
+74
+00:06:54,209 --> 00:06:57,680
+search node, to store the entire path. So,
+what
+
+75
+00:06:57,680 --> 00:07:10,060
+does that mean, I start with this node itself
+then my successors; I call them as B S and
+
+76
+00:07:10,060 --> 00:07:19,589
+A
+S. So, I keep a list of nodes as a, so a search
+
+77
+00:07:19,589 --> 00:07:22,709
+node is a list of states or list of state
+nodes.
+
+78
+00:07:22,709 --> 00:07:27,668
+.So, this list is the list of two nodes B
+S essentially, with basically says, I came
+
+79
+00:07:27,668 --> 00:07:33,348
+to B from
+S, this says that I came to A from S essentially.
+
+80
+00:07:33,348 --> 00:07:39,469
+Then if I about to expand A, then I could
+the let us assume that we are not going to
+
+81
+00:07:39,470 --> 00:07:43,819
+add S
+to successors of A, only C and E. So, I will
+
+82
+00:07:43,819 --> 00:07:55,569
+write that as C A S and E A S. So, this is
+one
+
+83
+00:07:55,569 --> 00:08:00,969
+approach, that I am modify I am search node,
+to store the entire path. Of course, now I
+
+84
+00:08:00,970 --> 00:08:06,000
+have to modify my algorithm little bit, which
+I am not doing, but I am leaving does not
+
+85
+00:08:06,000 --> 00:08:11,470
+exercise for you to do, when you pick a node
+from the search node. So, this is, so these
+
+86
+00:08:11,470 --> 00:08:13,840
+are the search node, so this is the original
+node.
+
+87
+00:08:13,839 --> 00:08:21,779
+And then, in the new scheme of things, double
+circle stands for node gen closed, instead
+
+88
+00:08:21,779 --> 00:08:25,478
+of deleting nodes, because they not deleting
+nodes anymore, pulling them in closed. So,
+
+89
+00:08:25,478 --> 00:08:32,049
+we put this in closed, I do not know I hope
+it not to confusing, put this in closed and
+
+90
+00:08:32,049 --> 00:08:33,909
+so
+on essentially. So, these are the two nodes
+
+91
+00:08:33,909 --> 00:08:42,079
+are in open and this three, let say we have
+inspected already, when I pick a node from.
+
+92
+00:08:42,080 --> 00:08:47,509
+So, this is I mean, this is my search node,
+it is a list of states, I have to extract
+
+93
+00:08:47,509 --> 00:08:51,569
+the first
+element from this, which is C or E depending
+
+94
+00:08:51,570 --> 00:08:57,500
+on which node I pick. So, I extract seat,
+apply the goal test to C, same goal test function
+
+95
+00:08:57,500 --> 00:09:02,791
+I can apply to C, and if it is fails. So,
+let
+
+96
+00:09:02,791 --> 00:09:09,630
+say C any C does not have any children, so
+let say I pick E, I apply the goal test to
+
+97
+00:09:09,629 --> 00:09:13,000
+E, and
+goal test fails, so what do I do I generate
+
+98
+00:09:13,000 --> 00:09:16,529
+the successors of E, again the same move gen
+function, I can use to generate successors
+
+99
+00:09:16,529 --> 00:09:20,069
+of E, but I must append that.
+
+100
+00:09:20,070 --> 00:09:21,070
+..
+
+101
+00:09:21,070 --> 00:09:32,720
+So, what are the successors of E returns to
+me in this graph F and G, so I must take this
+
+102
+00:09:32,720 --> 00:09:39,990
+F, I must take this G, and append and put
+it at the head of this list. So, I must generate
+
+103
+00:09:39,990 --> 00:09:46,740
+F
+E A S and G E A S. So, I have to modified
+
+104
+00:09:46,740 --> 00:09:48,889
+the algorithm is little bit, but notice that
+I can
+
+105
+00:09:48,889 --> 00:09:54,350
+still use the same move gen function, and
+I am only going to applying to a state. And
+
+106
+00:09:54,350 --> 00:09:55,990
+I
+can use the same goal test function, because
+
+107
+00:09:55,990 --> 00:09:58,820
+I will extract the first state from this,
+and
+
+108
+00:09:58,820 --> 00:10:03,570
+apply the goal test to that, and then apply
+the move gen function that is essentially.
+
+109
+00:10:03,570 --> 00:10:11,610
+So, I will leave this as a small exercise
+for you to do, we will inset use another approach.
+
+110
+00:10:11,610 --> 00:10:18,009
+So, this is one approach, to convert everything
+into a path, the second approach is to only
+
+111
+00:10:18,009 --> 00:10:28,669
+store the parents essentially. So, search
+node is the pair, we will call it a node pair,
+
+112
+00:10:28,669 --> 00:10:36,269
+and
+the pair is current and parent, and let say
+
+113
+00:10:36,269 --> 00:10:40,539
+it is a list of two nodes, in which we store
+the
+
+114
+00:10:40,539 --> 00:10:44,469
+current node. So, we will always be interested
+in the current node, we will apply the goal
+
+115
+00:10:44,470 --> 00:10:50,230
+test to current node, will apply the move
+gen function to current node and so on
+
+116
+00:10:50,230 --> 00:10:51,230
+essentially.
+
+117
+00:10:51,230 --> 00:10:56,259
+But, we will only stores, so here we are storing
+the entire path, up to the start node from
+
+118
+00:10:56,259 --> 00:11:00,939
+that, which of course, makes the task of returning
+the path must simpler, I have to just
+
+119
+00:11:00,940 --> 00:11:06,730
+take this and reverse it and return it as
+output S. So, for example, when I generate
+
+120
+00:11:06,730 --> 00:11:09,139
+this,
+and this is the, this the satisfy the goal
+
+121
+00:11:09,139 --> 00:11:11,759
+test function, then I have to just take this
+and say
+
+122
+00:11:11,759 --> 00:11:16,439
+.the path is go from S to A, A to E and E
+to G and that is solution. So, I have just
+
+123
+00:11:16,440 --> 00:11:20,830
+reversed
+this list, and return it as a path. Now I
+
+124
+00:11:20,830 --> 00:11:28,040
+am saying, that instead of stoling this entire
+path
+
+125
+00:11:28,039 --> 00:11:37,589
+as a search node, uniformly store a search
+node as a pair, made up of the current node
+
+126
+00:11:37,590 --> 00:11:40,460
+and the parent node.
+
+127
+00:11:40,460 --> 00:11:51,639
+And my route will look like S comma nil, a
+nil stands for no parent, and then this will
+
+128
+00:11:51,639 --> 00:11:56,259
+be
+again B S, this would be A S as before, but
+
+129
+00:11:56,259 --> 00:12:08,830
+this would be now only C A and E A, and
+when I generate successors of A, I will get
+
+130
+00:12:08,830 --> 00:12:23,440
+F E and G E. So, all this is gone into closed,
+and let say whether does not matter, whether
+
+131
+00:12:23,440 --> 00:12:32,830
+we have seen this or not, and when we pick
+up this node. So, let me say this stands for
+
+132
+00:12:32,830 --> 00:12:35,300
+the fact that we have found the goal node,
+we
+
+133
+00:12:35,299 --> 00:12:42,809
+have to still return the path, but now you
+have to do a little bit of extra work, to
+
+134
+00:12:42,809 --> 00:12:43,919
+reconstruct the path.
+
+135
+00:12:43,919 --> 00:12:44,919
+.
+
+136
+00:12:44,919 --> 00:12:54,199
+So, we need than algorithm, which you will
+call as reconstruct path, and to this algorithm
+
+137
+00:12:54,200 --> 00:13:00,750
+we will give a node pair as input, and which
+node pair the one whose first elements
+
+138
+00:13:00,750 --> 00:13:07,171
+satisfy the goal test. So, this for example,
+G E will give this as input to G E, so what
+
+139
+00:13:07,171 --> 00:13:12,230
+do
+we want to G do with the G E. So in general,
+
+140
+00:13:12,230 --> 00:13:22,350
+I will have a goal node and parent node, I
+will call it P 1. So, this is I am describing
+
+141
+00:13:22,350 --> 00:13:26,230
+this algorithm reconstruct path algorithm.
+So,
+
+142
+00:13:26,230 --> 00:13:30,940
+the input to that is a goal node and it is
+parent node. So, it is a node pair and the
+
+143
+00:13:30,940 --> 00:13:34,990
+.particular node pair is a goal node and it
+is parent node. And so I start constructing
+
+144
+00:13:34,990 --> 00:13:39,180
+the
+path, I say I had.
+
+145
+00:13:39,179 --> 00:13:53,439
+So, initially as a path gets an empty list,
+and then at this point as a path get cons
+
+146
+00:13:53,440 --> 00:14:03,480
+G path.
+So, I am using the list cons functions, because
+
+147
+00:14:03,480 --> 00:14:07,389
+it is a convenient mechanism to add
+something to the head of a list, so I have
+
+148
+00:14:07,389 --> 00:14:11,039
+a list called path, and I am adding this node
+G at
+
+149
+00:14:11,039 --> 00:14:19,379
+the head of the path, then what do I do, how
+do I go to the parent, parents parent, I want
+
+150
+00:14:19,379 --> 00:14:23,259
+to go to the grandparent . parent. Of course,
+I can find from here,
+
+151
+00:14:23,259 --> 00:14:27,179
+but from the parent, I will have go to the
+grandparent, they will a find the grandparent
+
+152
+00:14:27,179 --> 00:14:28,899
+corresponding.
+
+153
+00:14:28,899 --> 00:14:29,899
+.
+
+154
+00:14:29,899 --> 00:14:37,100
+But where do I find the corresponding parent.
+
+155
+00:14:37,100 --> 00:14:41,100
+. if we store the parent .
+
+156
+00:14:41,100 --> 00:14:51,129
+But, how do I I am looking for a node pair
+of the kind P 1 P 2 correct. So, I know that
+
+157
+00:14:51,129 --> 00:14:55,409
+P
+1, I came to G from P 1, I am trying to find
+
+158
+00:14:55,409 --> 00:15:00,289
+out, where did I come to P 1 from, and that
+that is call it P 2, where will I find this
+
+159
+00:15:00,289 --> 00:15:03,179
+P 1 P 2.
+
+160
+00:15:03,179 --> 00:15:04,179
+.
+
+161
+00:15:04,179 --> 00:15:09,359
+I will find it in the closed list why, because
+I am putting all these things into closed.
+
+162
+00:15:09,360 --> 00:15:13,870
+So,
+for example, G E is what I have, and I am
+
+163
+00:15:13,870 --> 00:15:18,350
+looking for something like E followed by
+something, which is E A in this case, and
+
+164
+00:15:18,350 --> 00:15:21,750
+will find it in the clues. And likewise the
+parent
+
+165
+00:15:21,750 --> 00:15:33,429
+of A, I will find in the clues and so on.
+So, search in closed, so I search in the closed
+
+166
+00:15:33,429 --> 00:15:36,689
+to
+find this node pair, everything is a node
+
+167
+00:15:36,690 --> 00:15:39,040
+pair, opened with consists of node pairs,
+and
+
+168
+00:15:39,039 --> 00:15:49,199
+search consists of node pairs, and close consists
+of node pairs essentially. I find this, then
+
+169
+00:15:49,200 --> 00:15:59,470
+again like this, I find P 2 P 3, and I keep
+doing that, till when will I stop doing this
+
+170
+00:15:59,470 --> 00:16:00,470
+search.
+
+171
+00:16:00,470 --> 00:16:01,470
+.. .
+
+172
+00:16:01,470 --> 00:16:11,269
+Till I find the route node which is, characterized
+by some P n, followed by nil, and at
+
+173
+00:16:11,269 --> 00:16:24,919
+each stage, I will do this, cons P 1 path;
+here cons P 2 path and so on and so forth,
+
+174
+00:16:24,919 --> 00:16:28,629
+I will
+keep doing that by the time I am come here,
+
+175
+00:16:28,629 --> 00:16:34,879
+and found this, come out of this loop. So,
+all
+
+176
+00:16:34,879 --> 00:16:39,980
+this is happening inside one loop, going from
+parent to grandparent, till I find that there
+
+177
+00:16:39,980 --> 00:16:43,879
+are no more grandparents, at which point,
+my path for the win constructed, because I
+
+178
+00:16:43,879 --> 00:16:49,441
+would cons this P n to path. So, I would know
+that, I start with P n go to P n minus 1and
+
+179
+00:16:49,441 --> 00:16:50,750
+so on and so forth.
+
+180
+00:16:50,750 --> 00:16:56,679
+So, I need this extra bit of work to be done,
+to return the path, but what do I get in that
+
+181
+00:16:56,679 --> 00:17:00,870
+advantage is that I have a uniform representation
+that everything is a node pair, open
+
+182
+00:17:00,870 --> 00:17:08,449
+content consists of node pairs, close consists
+of node pairs and so on and so forth. So,
+
+183
+00:17:08,449 --> 00:17:13,808
+this part for example, searching in the closed,
+I will leave it as a small exercise to for
+
+184
+00:17:13,808 --> 00:17:22,109
+you
+to work on. And write this whole algorithm
+
+185
+00:17:22,109 --> 00:17:28,529
+in fact, for reconstruct path. So, we have
+this
+
+186
+00:17:28,529 --> 00:17:34,339
+algorithm call reconstruct, a supporting call
+reconstruct path, we have also this
+
+187
+00:17:34,339 --> 00:17:56,099
+supporting in that is call it, remove seen,
+which removes nodes 
+
+188
+00:17:56,099 --> 00:18:02,599
+already in open or closed.
+
+189
+00:18:02,599 --> 00:18:08,740
+So, let us say that we have now move completely
+to a list based representation, where
+
+190
+00:18:08,740 --> 00:18:14,010
+our path is a list, node pair is a list, everything
+is a list essentially, open is a list, close
+
+191
+00:18:14,010 --> 00:18:23,490
+is
+also a list. So remove seen, when we are generating
+
+192
+00:18:23,490 --> 00:18:28,470
+the new nodes for open, the remove
+seen function should remove things which are
+
+193
+00:18:28,470 --> 00:18:33,539
+either in the open list or in the closed list.
+Now, we must be careful here, our open and
+
+194
+00:18:33,539 --> 00:18:37,619
+closed has been modify the little bit, they
+have become pairs. So, you have to take care
+
+195
+00:18:37,619 --> 00:18:40,349
+of the fact that you are looking at the
+correct element there, so I will lead that
+
+196
+00:18:40,349 --> 00:18:44,089
+exercise for you to do.
+
+197
+00:18:44,089 --> 00:18:51,819
+And, we will assume that, we have something
+like a, suppose those of you who are
+
+198
+00:18:51,819 --> 00:18:59,929
+studied list or something similar, something
+like a map car function, which does the
+
+199
+00:18:59,930 --> 00:19:13,019
+following that. So, this removes in will represent,
+will give as a list of successors, so we
+
+200
+00:19:13,019 --> 00:19:18,789
+will apply the move gen function, which will
+gave us all the neighbors, there removes in
+
+201
+00:19:18,789 --> 00:19:22,049
+will remove from those neighbors things, which
+are already in closed or which are
+
+202
+00:19:22,049 --> 00:19:26,829
+already in open in it will give us new list.
+From this new list, we will apply this map
+
+203
+00:19:26,829 --> 00:19:32,759
+car
+function to, say that take each of the successors,
+
+204
+00:19:32,759 --> 00:19:35,240
+and construct node pairs with the parent
+
+205
+00:19:35,240 --> 00:19:37,710
+.essentially, so whatever it doing.
+
+206
+00:19:37,710 --> 00:19:38,710
+.
+
+207
+00:19:38,710 --> 00:19:45,799
+Let me draw it here, so there is some node
+N, we will call move gen, it will give us
+
+208
+00:19:45,799 --> 00:20:00,289
+some
+successors. Let us call them, let say A, B,
+
+209
+00:20:00,289 --> 00:20:08,750
+C, D, E, F then remove seen will remove some
+of them, let say this one and this one. So,
+
+210
+00:20:08,750 --> 00:20:14,730
+we are left with B D and F; then I want to
+call
+
+211
+00:20:14,730 --> 00:20:24,400
+some function, which will essentially give
+me this list of 
+
+212
+00:20:24,400 --> 00:20:33,390
+B N, D N, F N. So, it should
+give me a list of three elements, in this
+
+213
+00:20:33,390 --> 00:20:40,030
+example, of the three successors, already
+converted into node pair form. So, I can just
+
+214
+00:20:40,029 --> 00:20:43,889
+take this and upend it too, open list
+essentially.
+
+215
+00:20:43,890 --> 00:20:53,500
+So, my algorithm is still very similar, open
+is a list, I extract some element, from the
+
+216
+00:20:53,500 --> 00:20:58,109
+list,
+which is a node pair, from the node pair I
+
+217
+00:20:58,109 --> 00:21:03,919
+extract the first element, which is the current
+node I am interested. Apply the goal test
+
+218
+00:21:03,920 --> 00:21:09,920
+to that, if it works or if it returns to then
+I call
+
+219
+00:21:09,920 --> 00:21:14,279
+the reconstruct path function, with that node
+pair and it will give me the path. If he does
+
+220
+00:21:14,279 --> 00:21:22,289
+not work, I generate successors of that element
+N, node N to move anything that I have
+
+221
+00:21:22,289 --> 00:21:25,240
+seen or I have put on open already.
+
+222
+00:21:25,240 --> 00:21:32,700
+And construct node pairs from so the successors
+of N or B D and F, so I want B N, D N
+
+223
+00:21:32,700 --> 00:21:37,940
+and F N. So, these are the B D and F are the
+successors, but I want to construct the I
+
+224
+00:21:37,940 --> 00:21:38,940
+will
+
+225
+00:21:38,940 --> 00:21:43,070
+.want to remember that N is a parental B;
+N is a parental D; N is a parental F. And
+
+226
+00:21:43,069 --> 00:21:46,119
+I will
+add this to open, and the same cycle will
+
+227
+00:21:46,119 --> 00:21:49,309
+continue. So, that is a algorithm that we
+have
+
+228
+00:21:49,309 --> 00:21:58,359
+written, so the only thing that is remains
+is, when he said pick some node from open,
+
+229
+00:21:58,359 --> 00:22:02,319
+let
+us pin that down as well.
+
+230
+00:22:02,319 --> 00:22:03,319
+.
+
+231
+00:22:03,319 --> 00:22:25,689
+And we will do the following node pair, I
+call it node pair as a variable name, I will
+
+232
+00:22:25,690 --> 00:22:31,630
+always pick the first node from open, open
+is the lists now, and the simplest thing to
+
+233
+00:22:31,630 --> 00:22:33,310
+do
+with the list is to remove the head element.
+
+234
+00:22:33,309 --> 00:22:45,769
+So, I will just say I will remove the head
+element. And so, what will this give it, this
+
+235
+00:22:45,769 --> 00:22:49,690
+give me a node pair, I will extract the first
+element from that, and do all this goal tests
+
+236
+00:22:49,690 --> 00:22:52,110
+and everything is to that. So, one thing I
+have
+
+237
+00:22:52,109 --> 00:22:55,939
+pin down is, that we will always take the
+first element from the open list.
+
+238
+00:22:55,940 --> 00:23:02,519
+Open is now a list essentially, what should
+be the first element of the list that is the
+
+239
+00:23:02,519 --> 00:23:04,500
+next
+question, that will really now determine the
+
+240
+00:23:04,500 --> 00:23:09,829
+behavior of our search algorithm. So, there
+are two possibilities, so somewhere down this
+
+241
+00:23:09,829 --> 00:23:18,960
+line, I will have open 
+as the following
+
+242
+00:23:18,960 --> 00:23:31,450
+thing append. So, I want to append two lists,
+what are the two lists, one is the old open
+
+243
+00:23:31,450 --> 00:23:39,230
+minus the note pad that we have removed. And
+the second is, the new elements that we
+
+244
+00:23:39,230 --> 00:23:44,339
+have generated by this process, this list
+that we have, I have to append this two lists
+
+245
+00:23:44,339 --> 00:23:45,750
+to
+found the new open.
+
+246
+00:23:45,750 --> 00:23:50,269
+.Again I can append them in one order or the
+other order, and that is really going to this
+
+247
+00:23:50,269 --> 00:24:02,779
+side matter. So, let us choose one order first,
+which says that append new. So, this list,
+
+248
+00:24:02,779 --> 00:24:10,759
+number this is the list of node pairs, I am
+calling new, and this I went to a generate
+
+249
+00:24:10,759 --> 00:24:15,220
+this
+new, when I have inspecting the state, found
+
+250
+00:24:15,220 --> 00:24:18,019
+that it is not the goal state generated it
+is
+
+251
+00:24:18,019 --> 00:24:24,690
+successors calling the move gen function,
+moved duplicates from there, made pairs and
+
+252
+00:24:24,690 --> 00:24:28,650
+call this a new, so this is new. So, it is
+in the form which can be added to open, so
+
+253
+00:24:28,650 --> 00:24:33,370
+that is
+new, and I will just use rest, all you can
+
+254
+00:24:33,369 --> 00:24:44,779
+use, tail assuming a not removed in that step
+from open, because this only which return
+
+255
+00:24:44,779 --> 00:24:47,569
+the head, here I will take the tail of open.
+
+256
+00:24:47,569 --> 00:24:54,000
+So now, I have a completely deterministic
+algorithm, there is no .
+
+257
+00:24:54,000 --> 00:24:58,940
+statements about pick some node or add this
+node to open and so on. We have specified
+
+258
+00:24:58,940 --> 00:25:07,620
+everything completely; we have said that the
+new nodes will come at the head of the
+
+259
+00:25:07,619 --> 00:25:14,729
+open list, which means they will be inspected
+first. And I will always pick the head of
+
+260
+00:25:14,730 --> 00:25:24,250
+the
+open list. So, we want to now, look at these
+
+261
+00:25:24,250 --> 00:25:28,799
+two options that we had, what is the other
+option? Other option was the opposite, was
+
+262
+00:25:28,799 --> 00:25:54,169
+to change the order. So, I have to choose
+between this, either this or this, which option
+
+263
+00:25:54,170 --> 00:26:01,900
+is better. Now, what do we get from what
+rather how to be analyses choice, so this
+
+264
+00:26:01,900 --> 00:26:06,040
+is the choice that we have to make in our
+algorithm, should be up should be put new
+
+265
+00:26:06,039 --> 00:26:07,710
+at the head of the list.
+
+266
+00:26:07,710 --> 00:26:11,690
+And keep the old elements behind or should
+we keep the whole elements first, and put
+
+267
+00:26:11,690 --> 00:26:17,690
+this in the . So, you would have recognize
+this two data structures,
+
+268
+00:26:17,690 --> 00:26:32,340
+that we have kind of simulating here, this
+is the queue and this is a stake, this like
+
+269
+00:26:32,339 --> 00:26:36,459
+a
+stake. So, we can maintain open is there as
+
+270
+00:26:36,460 --> 00:26:42,329
+a queue or as a stake, what is the repucation
+of these two choices, is what we want to,
+
+271
+00:26:42,329 --> 00:26:53,960
+inspect next. So, let us take this option
+first,
+
+272
+00:26:53,960 --> 00:26:59,890
+where we are looking at the new nodes first,
+so newest nodes first, what does that
+
+273
+00:26:59,890 --> 00:27:02,580
+meaning in terms of the search trees that
+we were talking about.
+
+274
+00:27:02,579 --> 00:27:03,579
+..
+
+275
+00:27:03,579 --> 00:27:25,730
+Let us draw the search tree. So, when I draw
+the search tree, I will not draw the node
+
+276
+00:27:25,730 --> 00:27:35,670
+pairs and everything, all let us any you can
+draw it does not matter. So, let say S nil
+
+277
+00:27:35,670 --> 00:27:47,240
+and
+A S, B S, C S in some graph now this is an
+
+278
+00:27:47,240 --> 00:27:50,690
+ordered, this I am depending on the order
+and
+
+279
+00:27:50,690 --> 00:27:54,600
+which may move gen function gives me this
+A B and C, they will go in some particular
+
+280
+00:27:54,599 --> 00:27:59,889
+order that is not worry about that. So, I
+always choose the left most first, so I think
+
+281
+00:27:59,890 --> 00:28:15,690
+this
+and add let us call it D A, so the next one
+
+282
+00:28:15,690 --> 00:28:26,580
+will be this one and so on.
+
+283
+00:28:26,579 --> 00:28:37,240
+You can see what is happening, this algorithm
+in which open is treated like a stake, as
+
+284
+00:28:37,240 --> 00:28:47,859
+this greedy like behavior, in the sense that,
+the latest nodes that have been generated
+
+285
+00:28:47,859 --> 00:28:51,219
+are
+explode first. So, these are old, so these
+
+286
+00:28:51,220 --> 00:28:57,120
+are the latest, out of them one we have chosen
+randomly, and officially without loss of generality
+
+287
+00:28:57,119 --> 00:29:01,319
+we always chosen the left one, it does
+not matter really. Because they were generated
+
+288
+00:29:01,319 --> 00:29:05,039
+where move gen function, and we have
+not specified them order there essentially.
+
+289
+00:29:05,039 --> 00:29:08,379
+So, we officially a chosen the left most,
+these
+
+290
+00:29:08,380 --> 00:29:12,490
+are the newest; these are little older; these
+are the oldest.
+
+291
+00:29:12,490 --> 00:29:33,759
+The algorithm always picks the newest node
+first. In terms of the search space the states
+
+292
+00:29:33,759 --> 00:29:40,058
+space, what is this algorithm doing? It will
+take go from the start node, it will generate
+
+293
+00:29:40,058 --> 00:29:48,389
+some successors, it will choose one, it will
+generate the successors, it will go there
+
+294
+00:29:48,390 --> 00:29:59,290
+and so
+on. It will dive into the states space, you
+
+295
+00:29:59,289 --> 00:30:01,710
+know headlong without looking left or right.
+
+296
+00:30:01,710 --> 00:30:06,308
+.Till of course, it heads a dead end, what
+do you mean by dead end here? When there are
+
+297
+00:30:06,308 --> 00:30:12,359
+no new successors along this path essentially.
+In which case, for example here, if this
+
+298
+00:30:12,359 --> 00:30:16,589
+was to be a dead end, that they were no successors
+of this G.
+
+299
+00:30:16,589 --> 00:30:20,019
+Then automatically this would be inspected
+next, because that is that would be next in
+
+300
+00:30:20,019 --> 00:30:25,700
+line and open, if this was also a dead end,
+then automatically this would be inspecting
+
+301
+00:30:25,700 --> 00:30:30,009
+next essentially. And if this for a dead end
+then automatically this would be ((Refer
+
+302
+00:30:30,009 --> 00:30:35,609
+Time.). So, the you can see the path going
+like this, and like this, and like this,
+
+303
+00:30:35,609 --> 00:30:43,349
+and like this, it dives into the search piece,
+there is a danger of course, that if the state
+
+304
+00:30:43,349 --> 00:30:54,579
+space is infinite. If I say you know, find
+me two numbers or three numbers, whose
+
+305
+00:30:54,579 --> 00:31:00,379
+powered to three A is to three plus B is to
+three is equal to C is to three.
+
+306
+00:31:00,380 --> 00:31:04,540
+You will just try generating newer and newer
+combinations, and you will keep diving
+
+307
+00:31:04,539 --> 00:31:10,250
+into thus search pairs. So, if the states,
+search space is infinite, there is the danger
+
+308
+00:31:10,250 --> 00:31:14,829
+that
+this algorithm will get lost essentially.
+
+309
+00:31:14,829 --> 00:31:18,548
+If we look at this search tree, we can also
+called it
+
+310
+00:31:18,548 --> 00:31:30,798
+as the deepest 
+node first, going down this direction of all
+
+311
+00:31:30,798 --> 00:31:34,160
+the open list, who was the
+candidates in open all these single circle
+
+312
+00:31:34,160 --> 00:31:36,529
+nodes, this is in open; this is in open; this
+is in
+
+313
+00:31:36,529 --> 00:31:40,970
+open; this is in open, these two I will open.
+It always picks that deepest node first
+
+314
+00:31:40,970 --> 00:31:41,970
+essentially.
+
+315
+00:31:41,970 --> 00:31:42,970
+.
+
+316
+00:31:42,970 --> 00:31:57,200
+.So, you should not be surprised at this algorithm
+is called depth first search, this
+
+317
+00:31:57,200 --> 00:32:07,720
+algorithm . 
+
+318
+00:32:07,720 --> 00:32:12,759
+as oppose to that. The other choice we had,
+was to
+
+319
+00:32:12,759 --> 00:32:19,618
+maintain open as a queue, and as you can imagine,
+what will happen with a queue is that.
+
+320
+00:32:19,618 --> 00:32:20,618
+.
+
+321
+00:32:20,618 --> 00:32:29,428
+I will write the order here, this is one first
+node to be inspected; always the start node
+
+322
+00:32:29,429 --> 00:32:31,480
+is
+the first node to be inspected. This will
+
+323
+00:32:31,480 --> 00:32:35,140
+be the second one, they will be generated,
+but
+
+324
+00:32:35,140 --> 00:32:40,020
+now it is a queue, which means these two will
+go behind these two. So, this should be the
+
+325
+00:32:40,019 --> 00:32:48,589
+third node; this should be the forth node;
+then this would be the fifth node; and this
+
+326
+00:32:48,589 --> 00:32:52,409
+would be the sixth node; then this would be
+the seventh node; the eighth from would be
+
+327
+00:32:52,410 --> 00:32:57,970
+this child here; then nineth . child and so
+on.
+
+328
+00:32:57,970 --> 00:33:07,360
+It has a exactly the opposite effect, depth
+first search dives into the state space, this
+
+329
+00:33:07,359 --> 00:33:20,879
+algorithm chooses the shallowest nodes first.
+Even a choice of nodes, in this search tree,
+
+330
+00:33:20,880 --> 00:33:30,130
+it always pick the one which is closest to
+the start node essentially. And you know the
+
+331
+00:33:30,130 --> 00:33:42,840
+name for this algorithm, breadth first search,
+breadth first in the sense, first this layer
+
+332
+00:33:42,839 --> 00:33:47,428
+completely; then the second layer completely;
+then the third layer completely and so on
+
+333
+00:33:47,429 --> 00:33:56,100
+and so forth. In terms of the states space,
+what is this algorithm is doing, it will come
+
+334
+00:33:56,099 --> 00:34:04,219
+here; then it will go here; then it will go
+here and here and here, in this particular
+
+335
+00:34:04,220 --> 00:34:09,809
+order, it
+will clever the states space.
+
+336
+00:34:09,809 --> 00:34:15,780
+.Now, notice that both these algorithms are
+totally oblivious of the goal state, goal
+
+337
+00:34:15,780 --> 00:34:20,970
+state is
+somewhere here, they do not cares, only place
+
+338
+00:34:20,969 --> 00:34:25,658
+where the goals set plays a role, is in a
+goal test function. If you have reach the
+
+339
+00:34:25,659 --> 00:34:29,539
+goal state, we has the algorithm can consume
+whether you reached or not, but given the
+
+340
+00:34:29,539 --> 00:34:32,070
+set of choices, it has no sense of direction
+that.
+
+341
+00:34:32,070 --> 00:34:36,210
+I should go in this direction or I should
+choose this successors, that will come to,
+
+342
+00:34:36,210 --> 00:34:38,260
+when
+you look at heuristic searches, but these
+
+343
+00:34:38,260 --> 00:34:42,510
+two algorithms are blind. So, we call them
+blind
+
+344
+00:34:42,510 --> 00:34:46,399
+search algorithms or uninformed search algorithms.
+
+345
+00:34:46,398 --> 00:34:52,539
+One of the . to stick as close to the sources
+possible, the other has
+
+346
+00:34:52,539 --> 00:34:58,329
+opposite tendency a going as far away as possible
+is essentially. So, let us do a
+
+347
+00:34:58,329 --> 00:35:04,650
+comparison of these two algorithms, that depth
+first search and breadth first search. So,
+
+348
+00:35:04,650 --> 00:35:11,579
+I
+can remove this, what are the parameters on
+
+349
+00:35:11,579 --> 00:35:38,759
+which we should compare? We will look at
+four criteria, what is the most common criteria
+
+350
+00:35:38,760 --> 00:35:43,130
+for comparing algorithms.
+
+351
+00:35:43,130 --> 00:35:44,130
+.
+
+352
+00:35:44,130 --> 00:36:05,980
+So, D F S verses B F S, the most commonly
+use criteria is time complexity. So, let us
+
+353
+00:36:05,980 --> 00:36:12,909
+assume the simple search piece. So, let us
+take the N queens problem, in the N queens
+
+354
+00:36:12,909 --> 00:36:19,789
+problem, let say that the way that you will
+proceed is, you will place the first queen,
+
+355
+00:36:19,789 --> 00:36:22,130
+let
+say in the first row, then the second queen
+
+356
+00:36:22,130 --> 00:36:26,519
+in the second row and so on, up to the n th
+queen essentially. So, the search space would
+
+357
+00:36:26,519 --> 00:36:29,610
+be, end steps the solution will always be
+
+358
+00:36:29,610 --> 00:36:32,500
+.end steps along.
+
+359
+00:36:32,500 --> 00:36:47,510
+And the branching factor is constant. So,
+if we have a search tree like this, why do
+
+360
+00:36:47,510 --> 00:36:56,520
+I
+provide like this, because the number of nodes
+
+361
+00:36:56,519 --> 00:37:04,750
+are going to increase exponentially. So, if
+I branching factor is five let us say, I will
+
+362
+00:37:04,750 --> 00:37:07,349
+have 1 node at this first level; 5 nodes at
+the
+
+363
+00:37:07,349 --> 00:37:15,699
+second level; 25 nodes at the third; they
+will for second level whatever you want to
+
+364
+00:37:15,699 --> 00:37:21,710
+. 125 in this level and so on. It is going
+to multiply by the factor of
+
+365
+00:37:21,710 --> 00:37:27,079
+branching factor every time, and any and in
+such situations where you multiply at a
+
+366
+00:37:27,079 --> 00:37:29,730
+every stage the think tense to go exponentially.
+
+367
+00:37:29,730 --> 00:37:38,809
+So, this is how search space nodes the search
+trees looks like, so let us forget about that
+
+368
+00:37:38,809 --> 00:37:47,349
+five thing. So in general, we have given a
+branching factor of b, and let say the solution
+
+369
+00:37:47,349 --> 00:37:51,539
+is a depth d. So, it is let us say is a d
+queens problem, you place d queens and then
+
+370
+00:37:51,539 --> 00:38:09,329
+you
+are done essentially. Let say for argument
+
+371
+00:38:09,329 --> 00:38:14,980
+sake that there is only one goal node, in
+practice of course, for example, to the N
+
+372
+00:38:14,981 --> 00:38:17,240
+queens problem, there are many solutions.
+So,
+
+373
+00:38:17,239 --> 00:38:21,339
+they would be many nodes which are the goal
+states, let us assume that there is only one
+
+374
+00:38:21,340 --> 00:38:26,411
+goal node, in some problem which is similar
+to N queens, what would be the time
+
+375
+00:38:26,411 --> 00:38:28,920
+complexity of depth first search.
+
+376
+00:38:28,920 --> 00:38:47,570
+So, before we do that, in the last layer,
+there are b is should be d nodes, and all
+
+377
+00:38:47,570 --> 00:38:52,640
+the
+internal layers nodes, how many are inside,
+
+378
+00:38:52,639 --> 00:38:57,699
+up to one layer less, up to one layer less,
+how
+
+379
+00:38:57,699 --> 00:39:10,289
+many are the total internal nodes b is to
+d minus 1 these are the internal nodes. Now,
+
+380
+00:39:10,289 --> 00:39:17,690
+the
+first into observe, there is if we ignore
+
+381
+00:39:17,690 --> 00:39:21,710
+that minus 1, for large b and large d you
+can
+
+382
+00:39:21,710 --> 00:39:27,090
+ignore that minus 1 on the top of site. So,
+you can say this is roughly b is to d divided
+
+383
+00:39:27,090 --> 00:39:29,860
+by
+b minus 1, even this minus 1 you can ignore
+
+384
+00:39:29,860 --> 00:39:38,740
+for large b, but let us we are not bother
+about that. The first thing to observe, is
+
+385
+00:39:38,739 --> 00:39:46,519
+that is d th layer contains more nodes then
+all the
+
+386
+00:39:46,519 --> 00:39:48,909
+previous layers combined.
+
+387
+00:39:48,909 --> 00:39:55,219
+So, this is the nature of exponential growth
+that every time you go one level, further
+
+388
+00:39:55,219 --> 00:39:59,690
+away. The amount of work which do a that level,
+and by amount of work will mean
+
+389
+00:39:59,690 --> 00:40:04,089
+inspecting that many number of nodes, is greater
+than all the work that I have done
+
+390
+00:40:04,090 --> 00:40:11,930
+before that essentially, that is a feature
+we will use. I think it will have to be in
+
+391
+00:40:11,929 --> 00:40:13,879
+the next
+class, but we will see that. Now, what is
+
+392
+00:40:13,880 --> 00:40:20,289
+the time complexity of this, so will next
+some
+
+393
+00:40:20,289 --> 00:40:27,570
+.simplifying assumptions that the goal not
+can be anywhere from here to here. So, in
+
+394
+00:40:27,570 --> 00:40:30,359
+the
+case of depth first search, if it is here,
+
+395
+00:40:30,358 --> 00:40:33,429
+it will just inspected after d plus 1 inspections.
+
+396
+00:40:33,429 --> 00:41:01,940
+So, let us say d plus 1, plus seeing the entire
+list, which is the entire tree, the ((Refer
+
+397
+00:41:01,940 --> 00:41:06,990
+Time.) it and let say divided by 2 search
+some . proximation
+
+398
+00:41:06,989 --> 00:41:16,409
+essentially, which if you work out, will turn
+out to be roughly b is to d essentially, of
+
+399
+00:41:16,409 --> 00:41:22,719
+the
+order of b is to d, of b is to d by 2 essentially.
+
+400
+00:41:22,719 --> 00:41:32,969
+For this one, either it has to inspect the
+entire sub tree, up to this point, see noticed
+
+401
+00:41:32,969 --> 00:41:38,059
+that depth first search, were it finds a left
+most goal, it just only inspect these nodes,
+
+402
+00:41:38,059 --> 00:41:40,799
+just goals on this path and finds a goal node.
+
+403
+00:41:40,800 --> 00:41:47,370
+So, it only inspects a d number of nodes on
+the way, but when breadth first search comes
+
+404
+00:41:47,369 --> 00:41:51,219
+to this, it has to go through like this, and
+like this and plot through this whole thing
+
+405
+00:41:51,219 --> 00:41:54,049
+one
+slowly, slowly. It has to inspect the entire
+
+406
+00:41:54,050 --> 00:41:57,710
+sub internal sub tree, internal tree before
+it
+
+407
+00:41:57,710 --> 00:42:03,059
+comes to this node, and for the right most
+of course, both of them I inspect the entire
+
+408
+00:42:03,059 --> 00:42:10,480
+tree. But surprisingly, I will leave that
+for you to work out, so this is the internal
+
+409
+00:42:10,480 --> 00:42:13,490
+tree plus
+the full tree and on the divided by two average,
+
+410
+00:42:13,489 --> 00:42:17,209
+and then you can makes simplifying
+assumptions, assuming that b and d are large.
+
+411
+00:42:17,210 --> 00:42:26,159
+So, you can simplifying the expression, but
+the time complexity for B F S divided by the
+
+412
+00:42:26,159 --> 00:42:31,960
+time complexity of D F S, after we make the
+simplifying assumptions is roughly b plus
+
+413
+00:42:31,960 --> 00:42:37,340
+1
+divided by D. Death first search takes a little
+
+414
+00:42:37,340 --> 00:42:42,320
+bit more time, but not significantly much
+more, you b is large for example, if b is
+
+415
+00:42:42,320 --> 00:42:45,920
+10, then it is 11 by ten times essentially.
+So, if
+
+416
+00:42:45,920 --> 00:42:51,990
+not too much, it is kind of equals in some
+way, for both of them, as for as time
+
+417
+00:42:51,989 --> 00:43:16,789
+complexity goes, what are the other factors
+we can compare them on, completeness 
+
+418
+00:43:16,789 --> 00:43:19,550
+and
+what do we mean by completeness, the question
+
+419
+00:43:19,550 --> 00:43:20,740
+we asking is.
+
+420
+00:43:20,739 --> 00:43:24,949
+If there is the solution, which means, if
+there is the path from the start state to
+
+421
+00:43:24,949 --> 00:43:28,710
+the goal
+state, thus algorithm always fine it, if it
+
+422
+00:43:28,710 --> 00:43:33,150
+is, if he does than will see the algorithm
+is
+
+423
+00:43:33,150 --> 00:43:39,690
+complete. Now, breath first search is; obviously,
+going to be complete, because as you
+
+424
+00:43:39,690 --> 00:43:46,929
+can see, is going to go slowly in circles
+and if there is the path, knew little find
+
+425
+00:43:46,929 --> 00:43:51,039
+it,
+whatever death first search, if the search
+
+426
+00:43:51,039 --> 00:43:58,989
+face going to be infinite, which means this
+boundary was not there, and even number theoretic
+
+427
+00:43:58,989 --> 00:44:05,159
+problems are an example of that,
+then it will just go of in some direction.
+
+428
+00:44:05,159 --> 00:44:08,029
+And the goal may be here, it may just go of
+some
+
+429
+00:44:08,030 --> 00:44:16,640
+.directions and the danger always exists essentially.
+So, completeness for death first
+
+430
+00:44:16,639 --> 00:44:21,539
+searches, if the search pair is infinite,
+it is not completely you can get lost.
+
+431
+00:44:21,539 --> 00:44:27,570
+Breath first search will still find the solution,
+because it is not going to go off in any
+
+432
+00:44:27,570 --> 00:44:32,809
+direction, it is going to just gradually expand
+it is, sort of set of nodes it has inspected,
+
+433
+00:44:32,809 --> 00:44:35,840
+till
+it eventually it will hit this, and then it
+
+434
+00:44:35,840 --> 00:44:37,980
+will find the solution. So, breath first search
+will
+
+435
+00:44:37,980 --> 00:44:46,090
+become will work, even for infinite graph.
+For finite graphs, both are complete, because
+
+436
+00:44:46,090 --> 00:44:53,750
+eventually both will inspect all part essentially.
+So, completeness, breath fast search is a
+
+437
+00:44:53,750 --> 00:45:01,880
+slight advantage that if the graph is infinite,
+it will still weak complete essentially.
+
+438
+00:45:01,880 --> 00:45:14,010
+Quality of solution, the only . we can talk
+of at this movement is the
+
+439
+00:45:14,010 --> 00:45:20,850
+number of the length of the path or number
+of nodes in the solution path essentially.
+
+440
+00:45:20,849 --> 00:45:28,819
+And
+we assumed that shorter paths are better,
+
+441
+00:45:28,820 --> 00:45:42,059
+what do you think about these two algorithms?
+In terms of quality, is any of these algorithms
+
+442
+00:45:42,059 --> 00:45:59,750
+guarantee to give you an optimal solution,
+you should speak a little bit louder.
+
+443
+00:45:59,750 --> 00:46:00,750
+. .
+
+444
+00:46:00,750 --> 00:46:05,900
+B F S now we have to say, what do you mean
+a might . even B F S
+
+445
+00:46:05,900 --> 00:46:09,639
+might give up to essentially. It depends on
+the order and which you done it moves
+
+446
+00:46:09,639 --> 00:46:38,259
+essentially. Let us take a graph start A,
+B, C, D, let say we take a graph like this,
+
+447
+00:46:38,260 --> 00:46:43,260
+you
+have to go from S to G, what will and let
+
+448
+00:46:43,260 --> 00:46:44,920
+us assumed that, the particular order and
+we
+
+449
+00:46:44,920 --> 00:46:49,181
+choose the left most on the board first, what
+will depth first search to, it will go from
+
+450
+00:46:49,181 --> 00:46:53,199
+S to
+C, C to D, D to F, F to G. And let it will
+
+451
+00:46:53,199 --> 00:46:54,679
+say I found the path, but the path I could
+have
+
+452
+00:46:54,679 --> 00:47:01,719
+found this one, what we breath first search
+do, it will go from H to C; then it will go
+
+453
+00:47:01,719 --> 00:47:03,679
+to B;
+then it will go to A; then it will go to D;
+
+454
+00:47:03,679 --> 00:47:07,489
+then it will go to E; then it will go to G.
+
+455
+00:47:07,489 --> 00:47:11,389
+G would be generated as the child of B, and
+you should work this out as an example
+
+456
+00:47:11,389 --> 00:47:16,909
+yourself. And the parent of G would be B,
+and the parent of B would be C, breath first
+
+457
+00:47:16,909 --> 00:47:21,609
+search will always find the shortest path.
+So, I want to you to change this example and
+
+458
+00:47:21,610 --> 00:47:23,880
+un
+simulated, to see that depth first search
+
+459
+00:47:23,880 --> 00:47:26,559
+and breath first search. Depth first search
+always
+
+460
+00:47:26,559 --> 00:47:29,980
+guarantees . in terms of this you can see,
+there is gradually moving
+
+461
+00:47:29,980 --> 00:47:35,588
+away from the source, and when it hits the
+goal, it will always find the shortest path
+
+462
+00:47:35,588 --> 00:47:36,588
+to
+
+463
+00:47:36,588 --> 00:47:40,659
+.the goal. But, we have to sort of reason,
+it out to a little bit, quality of solution
+
+464
+00:47:40,659 --> 00:47:47,289
+B F S
+scores high heavily, it always current is
+
+465
+00:47:47,289 --> 00:47:51,059
+a shortest path essentially.
+
+466
+00:47:51,059 --> 00:48:06,009
+Let us look at the last criteria, which is
+size of open, now we can see that, this time
+
+467
+00:48:06,010 --> 00:48:13,490
+complexity the way we are measuring it is
+in some sense, measure of the size of closed,
+
+468
+00:48:13,489 --> 00:48:17,019
+because the number of nodes that you have
+seen, will be the size of closed essentially.
+
+469
+00:48:17,019 --> 00:48:21,429
+And we are assuming, for the timing that it
+takes you constant time to inspect get nodes
+
+470
+00:48:21,429 --> 00:48:25,690
+out of close, and all that kinds of that.
+So, it is roughly call response the size of
+
+471
+00:48:25,690 --> 00:48:31,519
+closed,
+what about the size of open, what is the length,
+
+472
+00:48:31,519 --> 00:48:35,820
+what is the size of the open for the breath
+first search first. So, we have to visualize
+
+473
+00:48:35,820 --> 00:48:39,580
+what the algorithm is doing.
+
+474
+00:48:39,579 --> 00:48:40,579
+.
+
+475
+00:48:40,579 --> 00:48:59,049
+This is my search space and for breath first
+search, what with the open list look like,
+
+476
+00:48:59,050 --> 00:49:09,220
+open would, so you will inspect this; inspect
+this; inspect this and so on. So, let say
+
+477
+00:49:09,219 --> 00:49:15,389
+this
+is, let say this is a closed list, we have
+
+478
+00:49:15,389 --> 00:49:22,599
+inspected so far. So, open would be all these
+nodes, and all these nodes here, which are
+
+479
+00:49:22,599 --> 00:49:26,639
+the children of these nodes essentially. This
+is
+
+480
+00:49:26,639 --> 00:49:33,589
+the open would list look for, depth first
+search, and what is the size, how is it growing
+
+481
+00:49:33,590 --> 00:49:39,510
+in
+terms of depth, it is growing, remember that,
+
+482
+00:49:39,510 --> 00:49:45,430
+then b is to d nodes here and b is to d plus
+1
+
+483
+00:49:45,429 --> 00:49:51,659
+if you want to say. So, it has got some from
+b is to d know and some from b is to d plus
+
+484
+00:49:51,659 --> 00:49:52,659
+1
+row.
+
+485
+00:49:52,659 --> 00:49:58,690
+.In general it is growing exponential with
+depth the deeper you go, the size of open
+
+486
+00:49:58,690 --> 00:50:05,858
+explodes, it becomes exponentially . what
+about depth first search,
+
+487
+00:50:05,858 --> 00:50:13,179
+depth first search would come here. So, let
+us let we draw separate this thing here, let
+
+488
+00:50:13,179 --> 00:50:17,949
+us
+say it is three children here, this is gone
+
+489
+00:50:17,949 --> 00:50:26,230
+into closed; this is gone into closed and
+so on,
+
+490
+00:50:26,230 --> 00:50:33,980
+what is happening with depth first search?
+As I go deeper into the search piece, it is
+
+491
+00:50:33,980 --> 00:50:40,780
+going linearly, how is it going linearly,
+because as I go deeper, I am adding a constant
+
+492
+00:50:40,780 --> 00:50:47,170
+number of nodes to open. I am adding basically
+two extra nodes, at this level they were 3
+
+493
+00:50:47,170 --> 00:50:53,800
+plus 1 I am going to inspect, so this thing
+then two extra here; two extra here; two extra
+
+494
+00:50:53,800 --> 00:50:54,800
+here.
+
+495
+00:50:54,800 --> 00:50:59,670
+In breath first search, I am multiplying by
+a branching factor every time that is it is
+
+496
+00:50:59,670 --> 00:51:01,950
+why
+growing exponentially. So, you should satisfy
+
+497
+00:51:01,949 --> 00:51:14,480
+yourself that the size of open, for depth
+first search is b minus 1 into d plus 1, because
+
+498
+00:51:14,480 --> 00:51:19,179
+that every level I am going to keep b
+minus 1 nodes into I am going to add b minus
+
+499
+00:51:19,179 --> 00:51:24,710
+1 nodes into open, one nodes I will inspect
+this thing. So, b minus 1 that d plus one
+
+500
+00:51:24,710 --> 00:51:27,679
+extra node, because at the last layer, I will
+have
+
+501
+00:51:27,679 --> 00:51:38,210
+one extra node essentially, so size of open
+D F S means hands down, grows only linearly
+
+502
+00:51:38,210 --> 00:51:43,630
+as oppose to breadth first search for which
+open grows exponentially.
+
+503
+00:51:43,630 --> 00:51:53,280
+So, we have seen this two algorithms, for
+finite graphs, goals are complete, goals are
+
+504
+00:51:53,280 --> 00:51:58,359
+roughly the same time complexity, but one
+of them wins on the quality of the solution,
+
+505
+00:51:58,358 --> 00:52:03,239
+which may be important. If you have planning,
+let us say trips from here to the moon or
+
+506
+00:52:03,239 --> 00:52:08,741
+to mars, then thus smaller number of trips
+is going to save your lot of money. Let us
+
+507
+00:52:08,742 --> 00:52:13,070
+say
+from here to Bangalore the same thing, almost
+
+508
+00:52:13,070 --> 00:52:20,140
+the same thing, quality of solution,
+breadth first search guarantee is you an optimal
+
+509
+00:52:20,139 --> 00:52:25,679
+solution. And you must have survey this
+in other context, open requires only linear
+
+510
+00:52:25,679 --> 00:52:30,399
+space for, I mean depth first search requires
+only linear space problem and that is a big,
+
+511
+00:52:30,400 --> 00:52:35,108
+big plus.
+
+512
+00:52:35,108 --> 00:52:39,838
+Time complexity is bad, we will addressed
+that using heuristic methods, try to force
+
+513
+00:52:39,838 --> 00:52:44,219
+a
+search to go towards the goal as we have seen.
+
+514
+00:52:44,219 --> 00:52:48,639
+This one is the .
+close to home, this one is going off in some
+
+515
+00:52:48,639 --> 00:52:53,099
+random direction; know none of there is sort
+of looking towards the goals essentially.
+
+516
+00:52:53,099 --> 00:52:58,559
+We will see that, then the complete heuristic
+search, but even a blind search algorithm
+
+517
+00:52:58,559 --> 00:53:06,559
+or in from search, can I combine, can I device
+an algorithm, which will combined these two
+
+518
+00:53:06,559 --> 00:53:09,221
+plus points of this, guarantee that it is
+an
+
+519
+00:53:09,221 --> 00:53:14,519
+.optimal solution, yet require linear space
+for open.
+
+520
+00:53:14,519 --> 00:53:22,400
+So, I will leave this as a small thinking
+exercise for you, when we meet next on
+
+521
+00:53:22,400 --> 00:53:27,329
+Wednesday, we will look at an algorithm, which
+does this. So, it should be nice, if one of
+
+522
+00:53:27,329 --> 00:53:34,329
+you can think of it without reading it from
+somewhere else. After we discuss it here,
+
+523
+00:53:34,329 --> 00:53:37,029
+you
+can go and read it out, but there is an nice
+
+524
+00:53:37,030 --> 00:53:43,050
+algorithm, which will combine these two
+things, and it is a blind algorithm, so see
+
+525
+00:53:43,050 --> 00:53:44,050
+you on Wednesday.
+
+526
+00:53:44,050 --> 00:53:54,050
+.
+

@@ -1,0 +1,2475 @@
+﻿1
+00:00:10,300 --> 00:00:20,690
+So let us begin, we are looking at the A star
+algorithm, and if you remember what A star
+
+2
+00:00:20,690 --> 00:00:40,530
+does is that it uses a function f n is equal
+to g n plus h of n, where g n is the known
+
+3
+00:00:40,530 --> 00:00:47,000
+cost
+up to node n from the start node, because
+
+4
+00:00:47,000 --> 00:00:50,530
+it has explode part of the space and h n is
+the
+
+5
+00:00:50,530 --> 00:00:56,308
+estimated cost from node n to the goal node
+essentially. So, it uses the combination of
+
+6
+00:00:56,308 --> 00:01:12,629
+these two functions; and basically picks node
+with lowest f of n at every point of time
+
+7
+00:01:12,629 --> 00:01:17,509
+from the open list essentially. So, if you
+remember g n was the function which we sort
+
+8
+00:01:17,510 --> 00:01:20,030
+of
+inherited from branch and bound which tries
+
+9
+00:01:20,030 --> 00:01:22,780
+to keep it as close to the goal as to the
+start
+
+10
+00:01:22,780 --> 00:01:27,219
+at possible, and h n is the function we have
+inherited from best first search which tries
+
+11
+00:01:27,219 --> 00:01:29,420
+to
+pull it towards the goal node essentially.
+
+12
+00:01:29,420 --> 00:01:37,109
+So, with the combination of these two functions,
+the idea is that the algorithm will find optimal
+
+13
+00:01:37,109 --> 00:01:42,950
+paths from start to the goal essentially and
+today we will show formally that this is how
+
+14
+00:01:42,950 --> 00:01:45,950
+this is done; but before we do that, just
+a
+
+15
+00:01:45,950 --> 00:01:48,780
+quick recap.
+
+16
+00:01:48,780 --> 00:01:49,780
+..
+
+17
+00:01:49,780 --> 00:01:57,710
+Any time it generates a new node n, it gets
+different kinds of children - three different
+
+18
+00:01:57,709 --> 00:01:59,039
+kinds of children.
+
+19
+00:01:59,040 --> 00:02:00,040
+.
+
+20
+00:02:00,040 --> 00:02:14,959
+So, we had said, so, when we say moveGen it
+gives new nodes, it gives nodes on open
+
+21
+00:02:14,959 --> 00:02:21,400
+and it gives nodes which are already on closed.
+So, when you generate, when you expand
+
+22
+00:02:21,400 --> 00:02:25,129
+.the new node which means you call the move
+gen function with this node n. It can
+
+23
+00:02:25,129 --> 00:02:29,939
+generate three different kinds of nodes either
+they are completely new or they are already
+
+24
+00:02:29,939 --> 00:02:33,280
+on opened or they are on closed essentially.
+
+25
+00:02:33,280 --> 00:02:34,280
+.
+
+26
+00:02:34,280 --> 00:02:42,340
+So, completely know new nodes are like this,
+and what we do is essentially compute the
+
+27
+00:02:42,340 --> 00:02:47,370
+g values for these nodes, which is the g value
+of this node plus the cost of this arc
+
+28
+00:02:47,370 --> 00:02:54,370
+essentially and put it into open; and we markup
+parent pointer from these nodes to this
+
+29
+00:02:54,370 --> 00:03:03,400
+node n; so, these steps we do. For nodes which
+are on open and on closed we need to
+
+30
+00:03:03,400 --> 00:03:15,009
+revise g of m where m is a child, because
+we make might have found the cheaper path
+
+31
+00:03:15,009 --> 00:03:16,009
+to
+a node.
+
+32
+00:03:16,009 --> 00:03:17,009
+..
+
+33
+00:03:17,009 --> 00:03:23,909
+So, for example, if this is a node on open,
+these two nodes are on open, there is possible.
+
+34
+00:03:23,909 --> 00:03:32,530
+So, since they are on open it means that they
+already had some parent in the closed of it
+
+35
+00:03:32,530 --> 00:03:36,780
+is, it was a child. So, this could have been
+this one this could have been this one;
+
+36
+00:03:36,780 --> 00:03:42,860
+remember that this double cycle we will use
+for closed nodes. So, they already have
+
+37
+00:03:42,860 --> 00:03:47,220
+some parent, but we have found a new path
+to these nodes on open; it is possible that
+
+38
+00:03:47,219 --> 00:03:49,830
+we
+might have found the cheaper path and we want
+
+39
+00:03:49,830 --> 00:03:57,170
+to update the cheaper path. So,
+essentially we revise g values of node essentially
+
+40
+00:03:57,169 --> 00:04:04,039
+and lastly you may get nodes which are
+on closed. So, for example, these two nodes,
+
+41
+00:04:04,039 --> 00:04:09,169
+in which case not only you have to update
+the g values of those two nodes which are
+
+42
+00:04:09,169 --> 00:04:12,669
+on closed, but also any nodes which might
+be
+
+43
+00:04:12,669 --> 00:04:15,129
+pointing to this essentially.
+
+44
+00:04:15,129 --> 00:04:26,389
+So, for example, if the cost if the g value
+of this is let us say 50, and the edge this
+
+45
+00:04:26,389 --> 00:04:32,269
+edge is
+let us say 10 and if this g value was 70,
+
+46
+00:04:32,269 --> 00:04:38,549
+some for some reason then we need to update
+that g value for that node, because now we
+
+47
+00:04:38,550 --> 00:04:42,169
+have a cost of 50 plus 10 – 60, so we want
+to
+
+48
+00:04:42,168 --> 00:04:48,508
+make this 60. And we have gained an value
+amount of 10 which must be passed on to
+
+49
+00:04:48,509 --> 00:04:52,629
+this, so this become must become minus 10
+whatever it is value was it must become
+
+50
+00:04:52,629 --> 00:04:56,410
+minus 10 and any children it might have and
+thinks like that. So, you need to propagate
+
+51
+00:04:56,410 --> 00:04:57,740
+that.
+
+52
+00:04:57,740 --> 00:05:05,800
+.Now why do we need to do this updation? open
+and closed list why do we bothered to
+
+53
+00:05:05,800 --> 00:05:11,299
+update this g values in finding optimal solutions
+or the shortest paths essentially.
+
+54
+00:05:11,298 --> 00:05:12,298
+.
+
+55
+00:05:12,298 --> 00:05:18,609
+So, by as and when, so let us take this example
+that we have been looking at if this is a
+
+56
+00:05:18,610 --> 00:05:24,210
+river, and you are at this place, which is
+the start node and your goal is somewhere
+
+57
+00:05:24,209 --> 00:05:28,799
+here
+on the other side of the river, we have looked
+
+58
+00:05:28,800 --> 00:05:32,770
+at this example before when you look
+looking at best first search. So, you may
+
+59
+00:05:32,769 --> 00:05:38,680
+generate some children and you may follow
+some path because the heuristic function is
+
+60
+00:05:38,680 --> 00:05:44,050
+driving it in this direction; or at that point
+you
+
+61
+00:05:44,050 --> 00:05:48,668
+can see that there is the, the river on the
+way and let us assume that the bridges
+
+62
+00:05:48,668 --> 00:05:53,418
+somewhere here or there is another bridge
+somewhere here, then the search will drive
+
+63
+00:05:53,418 --> 00:05:57,649
+it
+towards that path essentially. So, it may
+
+64
+00:05:57,649 --> 00:06:00,959
+go from here to here, and then it may go from
+here to here.
+
+65
+00:06:00,959 --> 00:06:07,288
+Now best first search what have done the same
+thing, but it would have remember this as
+
+66
+00:06:07,288 --> 00:06:14,408
+the path which takes you to the goal node,
+and that is why we said that best first search
+
+67
+00:06:14,408 --> 00:06:21,788
+does not guarantee the optimal paths. Where
+as so this was the this is the path that you
+
+68
+00:06:21,788 --> 00:06:28,899
+have you have just found for this node, this
+is the new parent that you have just found
+
+69
+00:06:28,899 --> 00:06:31,299
+it
+is possible that as search progresses you
+
+70
+00:06:31,300 --> 00:06:35,788
+may generate a node here, and you will find
+that
+
+71
+00:06:35,788 --> 00:06:40,538
+the shorter paths to this node is via here
+and not like this. So, this is the kind of
+
+72
+00:06:40,538 --> 00:06:41,538
+situation
+
+73
+00:06:41,538 --> 00:06:45,968
+.we are trying to depict here; that you may
+want to revise you may want to say this is
+
+74
+00:06:45,968 --> 00:06:48,709
+not
+the parent, but this is the parent and because
+
+75
+00:06:48,709 --> 00:06:52,318
+there is a shorter path here. So, may be you
+found a path like this.
+
+76
+00:06:52,319 --> 00:06:57,189
+So, the paths that you are looking for may
+be something like this; go like this; instead
+
+77
+00:06:57,189 --> 00:07:00,059
+of
+the search would have generated first gone
+
+78
+00:07:00,059 --> 00:07:04,659
+in this direction, because that is what the
+heuristic function is saying the goal is here
+
+79
+00:07:04,658 --> 00:07:10,519
+go towards the goal, and then it will away
+from that path essentially. But a star does
+
+80
+00:07:10,519 --> 00:07:13,258
+is that when you does something like this
+it
+
+81
+00:07:13,259 --> 00:07:19,598
+reallocates parents too shorter paths to any
+node on the way. So, which is why we say
+
+82
+00:07:19,598 --> 00:07:26,478
+that whenever we expand this node n for nodes
+on open like these 2 or for children on
+
+83
+00:07:26,478 --> 00:07:33,079
+closed like these 2; if you have found the
+shorter path, we must update that essentially
+
+84
+00:07:33,079 --> 00:07:38,858
+and that is 1 reason why it ends of finding
+the shortest paths essentially.
+
+85
+00:07:38,858 --> 00:07:39,858
+.
+
+86
+00:07:39,858 --> 00:07:56,718
+So, today we want to prove that A star is
+admissible 
+
+87
+00:07:56,718 --> 00:08:02,610
+and by this we mean that it will
+guarantee an optimal solution or or shortest
+
+88
+00:08:02,610 --> 00:08:04,158
+path if you trying to think of it as a path
+in
+
+89
+00:08:04,158 --> 00:08:08,699
+the graph, the graph may be an abstraction
+for some other problem where the cost could
+
+90
+00:08:08,699 --> 00:08:17,369
+be something else, but basically every edge
+this is the cost associated with it. So, under
+
+91
+00:08:17,369 --> 00:08:20,909
+what conditions will this algorithm...? Now
+just think of this purely has an algorithm
+
+92
+00:08:20,908 --> 00:08:24,050
+and
+what is the algorithm the algorithm says that
+
+93
+00:08:24,050 --> 00:08:30,439
+pick the node with the lowest f value from
+
+94
+00:08:30,439 --> 00:08:37,360
+.open, expanded, this is what we are doing
+here, and treat these three different kinds
+
+95
+00:08:37,360 --> 00:08:41,729
+of
+nodes new, open and closed separately. For
+
+96
+00:08:41,729 --> 00:08:44,660
+new nodes just set up the graph for nodes
+are
+
+97
+00:08:44,659 --> 00:08:50,419
+opened check if you have found the cheaper
+path; for nodes on closed also check
+
+98
+00:08:50,419 --> 00:08:54,240
+whether you have find found cheaper paths,
+but also propagate the cheaper path like that
+
+99
+00:08:54,240 --> 00:08:58,709
+example to it is the children of the closed
+node, because the node is on closed it will
+
+100
+00:08:58,708 --> 00:09:02,128
+have
+some children.
+
+101
+00:09:02,129 --> 00:09:03,129
+.
+
+102
+00:09:03,129 --> 00:09:09,899
+So, under what conditions would a star guarantee
+an optimal path we have stated one
+
+103
+00:09:09,899 --> 00:09:40,470
+condition earlier. So, let me write this conditions
+for optimality, the first condition is
+
+104
+00:09:40,470 --> 00:09:51,720
+finite branching factor 
+
+105
+00:09:51,720 --> 00:09:55,551
+every node will have a finite number of children
+essentially. Now
+
+106
+00:09:55,551 --> 00:10:00,480
+obviously you can imagine some continuous
+problems, where there may be infinite
+
+107
+00:10:00,480 --> 00:10:06,220
+neighbours; now, if there are infinite neighbours
+then we cannot use this algorithm we
+
+108
+00:10:06,220 --> 00:10:10,639
+will assume that every node has the finite
+number of children. So, the branching factor
+
+109
+00:10:10,639 --> 00:10:14,149
+is
+finite essentially that is one condition.
+
+110
+00:10:14,149 --> 00:10:19,789
+We will allow infinite graph which means that
+we will allow for infinite number of nodes
+
+111
+00:10:19,789 --> 00:10:23,879
+to be presented in the graph, but branching
+factor cannot be infinite which mean that
+
+112
+00:10:23,879 --> 00:10:26,169
+you
+can always move away from some node; if the
+
+113
+00:10:26,169 --> 00:10:30,659
+branching factor was infinite then you
+know you will spend all your time infinite
+
+114
+00:10:30,659 --> 00:10:32,730
+amount of time generating the children of
+that
+
+115
+00:10:32,730 --> 00:10:48,050
+.node essentially; so obviously, it would
+not work. There is a condition on the cost;
+
+116
+00:10:48,049 --> 00:10:52,490
+so we
+will use k for cost function. So, k m n stands
+
+117
+00:10:52,490 --> 00:11:00,440
+for cost of edge going from node n to node
+n, we will assume this is the symmetric cost,
+
+118
+00:11:00,440 --> 00:11:05,079
+what condition should look cost function
+satisfy, for the a alba for the algorithm
+
+119
+00:11:05,078 --> 00:11:09,088
+to guarantee optimal solutions.
+
+120
+00:11:09,089 --> 00:11:22,629
+So, can I allow negative cost? Why?
+
+121
+00:11:22,629 --> 00:11:26,370
+Sorry
+
+122
+00:11:26,370 --> 00:11:34,778
+If there are cycle with some of it is say
+just negative, then the algorithm will just
+
+123
+00:11:34,778 --> 00:11:38,318
+keep
+repeating the cycle and it is total cost will
+
+124
+00:11:38,318 --> 00:11:43,338
+keep going down essentially, which is also
+conditions with the algorithm demands algorithm
+
+125
+00:11:43,339 --> 00:11:48,050
+works only for positive cost there are
+other algorithms which handle negative cost,
+
+126
+00:11:48,049 --> 00:11:57,019
+but we are not looking those kind of thing.
+So, for the moment, we will assume that this
+
+127
+00:11:57,019 --> 00:12:04,659
+should be greater than 0, where we will not
+even allow 0 cost essentially. So, that is
+
+128
+00:12:04,659 --> 00:12:07,379
+for the moment know but will come back to
+that
+
+129
+00:12:07,379 --> 00:12:08,649
+little bit later.
+
+130
+00:12:08,649 --> 00:12:09,649
+.
+
+131
+00:12:09,649 --> 00:12:14,039
+A third condition that i have already mentioned
+and we have seen as example what it
+
+132
+00:12:14,039 --> 00:12:21,370
+which say that h of n should be less than
+or equal to h star of n, which means that
+
+133
+00:12:21,370 --> 00:12:22,370
+the
+
+134
+00:12:22,370 --> 00:12:25,759
+.heuristic function must be an under estimating
+function, it must only always under
+
+135
+00:12:25,759 --> 00:12:29,899
+estimate the distance to the goal, never over
+estimate the distance to goal. And the
+
+136
+00:12:29,899 --> 00:12:34,379
+intension behind that is if you over at estimates
+the distance of some node from the goal
+
+137
+00:12:34,379 --> 00:12:38,220
+then you will never explode that node further,
+because you will think it is too far from
+
+138
+00:12:38,220 --> 00:12:41,470
+the goal essentially. So, in generally if
+you think it is closer to the goal where it
+
+139
+00:12:41,470 --> 00:12:44,310
+actually
+is then you are liked to explore that node
+
+140
+00:12:44,309 --> 00:12:49,528
+and that is a key factor for A star being
+admissible.
+
+141
+00:12:49,528 --> 00:12:53,860
+So, we if you remember we saw an example in
+betweens of 2 heuristic functions h 1 and
+
+142
+00:12:53,860 --> 00:12:58,519
+h 2, one of them underestimating the distance,
+other was the overestimating the distance
+
+143
+00:12:58,519 --> 00:13:03,060
+and both of them had a wrong notion of which
+of those two candidates was closer to the
+
+144
+00:13:03,059 --> 00:13:07,349
+goal, but the underestimating function did
+find that optimal path and the other one did
+
+145
+00:13:07,350 --> 00:13:14,699
+not; today we show this little bit formally.
+So, if these three conditions are true then
+
+146
+00:13:14,698 --> 00:13:18,059
+a
+star is admissible and admissible we mean
+
+147
+00:13:18,059 --> 00:13:20,979
+it always finds a optimal path if there is
+if
+
+148
+00:13:20,980 --> 00:13:25,319
+there is a path from start to the goal, then
+it will find the optimal path from start to
+
+149
+00:13:25,318 --> 00:13:28,528
+the
+goal and it will terminate to the goal. So,
+
+150
+00:13:28,528 --> 00:13:32,539
+we will do this through a series of small
+lamas
+
+151
+00:13:32,539 --> 00:13:36,870
+through a series of statements then eventually
+conclude with this property of
+
+152
+00:13:36,870 --> 00:13:42,278
+admissibility and the couple of properties
+we will compare heuristic functions to see
+
+153
+00:13:42,278 --> 00:13:45,649
+if
+how can we say that one heuristic function
+
+154
+00:13:45,649 --> 00:13:48,009
+is better than another heuristic function.
+
+155
+00:13:48,009 --> 00:13:49,009
+.
+
+156
+00:13:49,009 --> 00:14:00,700
+.So, we will have a series of lemmas, so L
+1 simply says that it terminates for finite
+
+157
+00:14:00,700 --> 00:14:14,019
+graphs; the algorithm will terminate for finite
+graphs; that is the only statement we want
+
+158
+00:14:14,019 --> 00:14:20,028
+to assert at this movement. What is the justification
+or what is the reasoning to say that it
+
+159
+00:14:20,028 --> 00:14:27,480
+will always terminate for finite graph?
+
+160
+00:14:27,480 --> 00:14:28,480
+()
+
+161
+00:14:28,480 --> 00:14:43,620
+Yes, but that is not to the justification
+that we are looking for. You should at a algorithm
+
+162
+00:14:43,620 --> 00:14:53,558
+look at a algorithm and comment on what the
+algorithm is doing.
+
+163
+00:14:53,558 --> 00:14:54,558
+()
+
+164
+00:14:54,558 --> 00:15:05,019
+If the graph is finite then the algorithm
+in every cycle moves one node from open to
+
+165
+00:15:05,019 --> 00:15:11,600
+closed it starts by putting the start node
+on open list and closes empty and in every
+
+166
+00:15:11,600 --> 00:15:14,580
+cycle
+it inspects one node from open the one, which
+
+167
+00:15:14,580 --> 00:15:20,839
+has the lowest f value and if it is not the
+goal it puts that into closed and generates
+
+168
+00:15:20,839 --> 00:15:23,790
+it is children and puts those children into
+open,
+
+169
+00:15:23,789 --> 00:15:30,588
+which is the priority cubes on f. So, if the
+number of nodes are finite in the graph, if
+
+170
+00:15:30,589 --> 00:15:33,350
+the
+graph is finite then this it can do this only
+
+171
+00:15:33,350 --> 00:15:36,490
+a finite number of times. So, it will exhaust
+the
+
+172
+00:15:36,490 --> 00:15:47,269
+whole graph. Now supposing the supposing in
+this problem that we have here, which is
+
+173
+00:15:47,269 --> 00:15:53,149
+this problem how this city travel supposing
+this bridges were not there essentially, and
+
+174
+00:15:53,149 --> 00:15:59,429
+you know there was a small hamlet here, which
+you could only explore that essentially
+
+175
+00:15:59,429 --> 00:16:03,909
+then the graph then A star would end of exploring
+all those nodes and say i have nothing
+
+176
+00:16:03,909 --> 00:16:06,419
+else explore because open has become empty.
+
+177
+00:16:06,419 --> 00:16:07,419
+..
+
+178
+00:16:07,419 --> 00:16:11,208
+So, remember there are two conditions for
+exit; one is when open is empty exit and
+
+179
+00:16:11,208 --> 00:16:17,719
+report failure, other condition is if the
+node that you have picked is the goal node,
+
+180
+00:16:17,720 --> 00:16:19,980
+then
+we construct the path turn it on the path.
+
+181
+00:16:19,980 --> 00:16:22,670
+So, in this case, if these bridges are not
+there
+
+182
+00:16:22,669 --> 00:16:26,289
+and the goal was there it would never a find
+the path, but it would terminate that is all
+
+183
+00:16:26,289 --> 00:16:28,009
+we
+are talking about here essentially; the graph
+
+184
+00:16:28,009 --> 00:16:30,709
+is finite, it will terminate.
+
+185
+00:16:30,708 --> 00:16:31,708
+.
+
+186
+00:16:31,708 --> 00:16:43,419
+.Then the second lemmas you want to says that
+at all times 
+
+187
+00:16:43,419 --> 00:16:54,958
+before termination 
+there exist
+
+188
+00:16:54,958 --> 00:17:13,938
+a node we call this node n prime; and this
+node is on open and which is on the optimal
+
+189
+00:17:13,939 --> 00:17:23,570
+path. So, I will just say an optimal path,
+because a could be more than one optimal paths.
+
+190
+00:17:23,569 --> 00:17:33,839
+So, the next statement that we are making
+is in that before the algorithm terminates,
+
+191
+00:17:33,839 --> 00:17:36,959
+it
+will always have in it is open list one node,
+
+192
+00:17:36,960 --> 00:17:48,069
+which we will call n prime which is on the
+optimal path from start to goal essentially.
+
+193
+00:17:48,069 --> 00:17:49,069
+.
+
+194
+00:17:49,069 --> 00:17:58,250
+And the argument for that is the following
+that initially we put s on to open. So, let
+
+195
+00:17:58,250 --> 00:17:59,750
+us
+say this is the optimal path, this is the
+
+196
+00:17:59,750 --> 00:18:01,769
+optimal path, let us say there is only One
+optimal
+
+197
+00:18:01,769 --> 00:18:14,049
+path to start with n 1, n 2, n 3, let us say
+this is the optimal path. What we are claiming
+
+198
+00:18:14,049 --> 00:18:22,289
+now that from this path before the algorithm
+terminates, they would always be one node
+
+199
+00:18:22,289 --> 00:18:28,639
+in the open list, which means the optimal
+path will always be in the sites of this
+
+200
+00:18:28,640 --> 00:18:35,240
+algorithm in some sense. Now when we start
+the algorithm we put s on to open list. So,
+
+201
+00:18:35,240 --> 00:18:43,519
+at the beginning s is in the open if the algorithm
+is terminated by finding the path then it
+
+202
+00:18:43,519 --> 00:18:48,049
+is terminated we are not talking of that condition
+essentially. So, we as talking about it
+
+203
+00:18:48,049 --> 00:18:53,149
+condition before termination which means there
+is a paths to the goal we assuming there
+
+204
+00:18:53,150 --> 00:19:00,380
+is a path to the goal and it has not yet found
+a path or the path whatever you want to say
+
+205
+00:19:00,380 --> 00:19:01,380
+we will show.
+
+206
+00:19:01,380 --> 00:19:09,030
+.That when it finds the path it will always
+finds an optimal path. So, initially we put
+
+207
+00:19:09,029 --> 00:19:12,160
+s on
+to open. So, the condition is true in the
+
+208
+00:19:12,160 --> 00:19:17,259
+initial situation when we remove s from open
+we
+
+209
+00:19:17,259 --> 00:19:24,049
+put it into closed and then we end of putting
+n 1 on to open essentially if we remove n
+
+210
+00:19:24,049 --> 00:19:29,049
+1
+from open then you put this into close and
+
+211
+00:19:29,049 --> 00:19:31,559
+this process will continue essentially if
+we
+
+212
+00:19:31,559 --> 00:19:36,369
+remove g from open which is the last in this
+line; that means, algorithm is terminated
+
+213
+00:19:36,369 --> 00:19:40,500
+by
+founding a finding a path essentially. So,
+
+214
+00:19:40,500 --> 00:19:44,569
+this condition says that at any time 1 of
+these
+
+215
+00:19:44,569 --> 00:19:50,990
+nodes is always in the open which is available
+to a star to inspect next.
+
+216
+00:19:50,990 --> 00:19:51,990
+.
+
+217
+00:19:51,990 --> 00:20:02,910
+Further we say 
+the f value of this node is always less to
+
+218
+00:20:02,910 --> 00:20:12,290
+or equal to the optimal cost from.
+So, s is the start node, and remembers, s
+
+219
+00:20:12,289 --> 00:20:15,579
+star is a optimal cost of going from start
+to the
+
+220
+00:20:15,579 --> 00:20:19,689
+goal node essentially. So, this is this is
+part of the statement, we are saying that
+
+221
+00:20:19,690 --> 00:20:23,059
+not only
+the such a nodes node exist it will always
+
+222
+00:20:23,059 --> 00:20:27,220
+have f value which is lower than or equal
+to the
+
+223
+00:20:27,220 --> 00:20:30,190
+optimal cost.
+
+224
+00:20:30,190 --> 00:20:31,190
+..
+
+225
+00:20:31,190 --> 00:20:40,860
+So, what is the argument behind this you can
+say that f of n prime is equal to g of n
+
+226
+00:20:40,859 --> 00:20:49,500
+prime plus h of n prime it is by definition
+of what the f value is now, because it is
+
+227
+00:20:49,500 --> 00:20:53,109
+the
+known optimal path we know that this is g
+
+228
+00:20:53,109 --> 00:21:06,750
+star of n prime plus h of n prime. Remember
+that we are talking of optimal path. This
+
+229
+00:21:06,750 --> 00:21:12,769
+will be less than equal to g star of n prime
+plus h
+
+230
+00:21:12,769 --> 00:21:17,279
+star of n prime, because of the condition,
+condition number 3 which we are said that
+
+231
+00:21:17,279 --> 00:21:19,259
+the
+heuristic values always less than or equal
+
+232
+00:21:19,259 --> 00:21:23,039
+to the optimal value, which means this is
+equal
+
+233
+00:21:23,039 --> 00:21:37,210
+to less than or equal to f star of n prime,
+where f star of n prime is the cost of the
+
+234
+00:21:37,210 --> 00:21:40,640
+optimal
+path which passes through n prime; not necessarily
+
+235
+00:21:40,640 --> 00:21:44,780
+the globally optimal path to the
+optimal path passes through n prime. But these
+
+236
+00:21:44,779 --> 00:21:48,670
+n prime that we have chosen is on the
+optimal path itself; so this must be equal
+
+237
+00:21:48,670 --> 00:21:53,070
+to f star of s because after all it is it
+is the same
+
+238
+00:21:53,069 --> 00:21:54,569
+paths that we are talking about.
+
+239
+00:21:54,569 --> 00:21:58,869
+So, whether we say it is a passing through
+n prime or a. So, whether we say it is passing
+
+240
+00:21:58,869 --> 00:22:04,519
+through s or n 1 or n 2 or n 3 or g it does
+not matter the cost is in the same. So, this
+
+241
+00:22:04,519 --> 00:22:06,400
+is the
+condition that we are looking for; and this
+
+242
+00:22:06,400 --> 00:22:13,340
+is less than or equal to this f star of s
+that is
+
+243
+00:22:13,339 --> 00:22:18,720
+what we have written.
+
+244
+00:22:18,720 --> 00:22:19,720
+..
+
+245
+00:22:19,720 --> 00:22:29,779
+Then the third thing we want to say is that
+algorithm terminates if there is 
+
+246
+00:22:29,779 --> 00:22:54,139
+a path, and it
+should had even for infinite graphs remember
+
+247
+00:22:54,140 --> 00:23:02,380
+that an infinite graph is only be that which
+has an infinite number of nodes factor. So,
+
+248
+00:23:02,380 --> 00:23:22,030
+this the third statement we have making is
+that the algorithm terminates with a path;
+
+249
+00:23:22,029 --> 00:23:24,139
+that if there is a path from the starts to
+the goal
+
+250
+00:23:24,140 --> 00:23:30,280
+state, the algorithm will always terminate
+with the path from the start to the goal state
+
+251
+00:23:30,279 --> 00:23:32,970
+we
+are not yet talked about optimal path, we
+
+252
+00:23:32,970 --> 00:23:35,360
+are saying the it will find the path; and
+we are
+
+253
+00:23:35,359 --> 00:23:38,789
+saying making this claim that even of the
+graph is infinite when you say that infinite
+
+254
+00:23:38,789 --> 00:23:46,779
+number of nodes, then algorithm will find
+a paths to the goal. What would be an
+
+255
+00:23:46,779 --> 00:23:55,460
+argument for this? In other words we are saying
+that the algorithm will terminate that
+
+256
+00:23:55,460 --> 00:24:01,360
+picking the goal node of the two termination
+criteria that we have one is the open is
+
+257
+00:24:01,359 --> 00:24:06,839
+empty in this for infinite graphs open can
+never be empty. So, for infinite graphs it
+
+258
+00:24:06,839 --> 00:24:08,819
+can
+only terminate by picking a goal nodes essentially.
+
+259
+00:24:08,819 --> 00:24:12,509
+So, we are saying you want to argue that it
+will necessarily pick the goal node at some
+
+260
+00:24:12,509 --> 00:24:21,369
+point of time just you to imagine this graph
+just imagine it doing a search in a city or
+
+261
+00:24:21,369 --> 00:24:40,329
+something like that, how the open front yard
+will move essentially. You remember that it
+
+262
+00:24:40,329 --> 00:24:48,169
+always picks the node with the lowest f value
+essentially for a goal node the f value is
+
+263
+00:24:48,170 --> 00:24:56,140
+equal to the g value of that node, because
+h is 0 you already at the goal. So, we want
+
+264
+00:24:56,140 --> 00:25:00,150
+to
+argue that this node is the goal, which is
+
+265
+00:25:00,150 --> 00:25:02,200
+the goal node will the at some point come
+to the
+
+266
+00:25:02,200 --> 00:25:10,259
+.head of this sorted list or at the at the
+root of the way of maintaining the priority
+
+267
+00:25:10,259 --> 00:25:11,829
+queue.
+
+268
+00:25:11,829 --> 00:25:15,879
+In other words we are saying that all other
+nodes on open will at some point become
+
+269
+00:25:15,880 --> 00:25:24,030
+more expensive then this node g. And why is
+that?
+
+270
+00:25:24,029 --> 00:25:25,029
+.
+
+271
+00:25:25,029 --> 00:25:36,200
+No no no . So, what I am saying I am saying
+that let us say this is my start node, and
+
+272
+00:25:36,200 --> 00:25:43,130
+this
+is my paths to the goal it has some cost essentially.
+
+273
+00:25:43,130 --> 00:25:49,970
+What I am saying is that this search
+cannot ignore this whole node that eventually
+
+274
+00:25:49,970 --> 00:25:52,650
+it may have it may end of looking at a
+node here.
+
+275
+00:25:52,650 --> 00:25:53,650
+.
+
+276
+00:25:53,650 --> 00:25:57,150
+It may end of looking at a node there in this
+direction or that direction, but it cannot
+
+277
+00:25:57,150 --> 00:26:06,130
+go
+indefinitely in any direction. And the reason
+
+278
+00:26:06,130 --> 00:26:14,070
+for that is that whichever direction it goes,
+the g values, think of the g values supposing
+
+279
+00:26:14,069 --> 00:26:23,389
+there is a node here let us call it n 1 or
+something if that is on the open list. So,
+
+280
+00:26:23,390 --> 00:26:27,980
+let us say the open is looking something like
+this, you know refusing to go towards the
+
+281
+00:26:27,980 --> 00:26:34,009
+goal node, but there is a node n 1 g value?
+What is going to be this g value of this node
+
+282
+00:26:34,009 --> 00:26:38,890
+is going to be the length of the path from
+here to here, let us say it picks this node
+
+283
+00:26:38,890 --> 00:26:43,700
+n 1 it will have some other node let us collate
+n
+
+284
+00:26:43,700 --> 00:26:49,960
+.2, and then it let us say picks n 3, can
+it keep doing in can it keep going in indefinitely
+
+285
+00:26:49,960 --> 00:26:56,990
+in
+along some other direction, because the g,
+
+286
+00:26:56,990 --> 00:27:00,900
+because the paths are becoming longer and
+longer in those other direction; g value remember
+
+287
+00:27:00,900 --> 00:27:09,130
+is an is an length of the path found up
+to that point. And at some point this f value
+
+288
+00:27:09,130 --> 00:27:16,600
+will become the smallest that is say
+condition that we have that the paths are
+
+289
+00:27:16,599 --> 00:27:23,629
+edges are positive in cost essentially. So,
+if you
+
+290
+00:27:23,630 --> 00:27:27,260
+go in some direction and some point your cost
+will becomes. So, what is the value of this
+
+291
+00:27:27,259 --> 00:27:34,579
+sum g of g the some value at some point all
+other nodes that you have in open will have
+
+292
+00:27:34,579 --> 00:27:41,130
+paths which are longer than this; or to think
+of it in another manner, there are only a
+
+293
+00:27:41,131 --> 00:27:47,720
+finite number of paths which are shorter than
+this lengths g of g; and even if the
+
+294
+00:27:47,720 --> 00:27:59,269
+algorithm will explore all those paths and
+then it will take of g of g. Is this they
+
+295
+00:27:59,269 --> 00:28:05,970
+seems to
+be a gently silence about this essentially.
+
+296
+00:28:05,970 --> 00:28:12,850
+All we are saying is that if you go of in
+some other direction your path cost will become
+
+297
+00:28:12,849 --> 00:28:17,199
+more than the cost of this g value and remember
+that the heuristic function
+
+298
+00:28:17,200 --> 00:28:22,380
+underestimate. So, you can never over estimate
+the cost to in any case g will come at
+
+299
+00:28:22,380 --> 00:28:26,250
+some point and the some point this will become
+the smaller. So, it will have to pick the
+
+300
+00:28:26,250 --> 00:28:42,579
+node. So, as it turns out this was many years
+ago, when I was teaching the same very
+
+301
+00:28:42,579 --> 00:28:51,220
+point in the class 1 of the students in the
+class, he is now professor in Princeton raises
+
+302
+00:28:51,220 --> 00:28:59,259
+hand, and said this is not correct; and it
+something you do with this condition that
+
+303
+00:28:59,259 --> 00:29:01,809
+is why
+i said for the moment let us assume this this
+
+304
+00:29:01,809 --> 00:29:07,369
+condition is the paths the edge of e, the
+cost
+
+305
+00:29:07,369 --> 00:29:12,139
+of each edge is greater than 0.
+
+306
+00:29:12,140 --> 00:29:23,940
+So, it is possible to assign edges, edge cost
+for example, I will assign 1 to the first
+
+307
+00:29:23,940 --> 00:29:27,650
+edge,
+half to the second edge, one-fourth to the
+
+308
+00:29:27,650 --> 00:29:34,230
+third edge 1 8 to the fourth edge and keep
+dividing by 2. What will happen, I will have
+
+309
+00:29:34,230 --> 00:29:40,180
+an infinite path whose total path length will
+be finite essentially, and that finite could
+
+310
+00:29:40,180 --> 00:29:43,289
+be less than this g value, which means that
+it
+
+311
+00:29:43,289 --> 00:29:48,149
+could get actually trapped in that infinite
+path essentially, which has the finite total
+
+312
+00:29:48,150 --> 00:29:55,550
+cost.
+So, this is like you know that paradox is
+
+313
+00:29:55,549 --> 00:30:07,940
+that . in the hair paradox that epidemics
+paradox. That you say that the diabet, the
+
+314
+00:30:07,940 --> 00:30:13,720
+tortoise tells the rabbit that i if you give
+me a
+
+315
+00:30:13,720 --> 00:30:18,670
+lead of let us 100 meters then you can never
+beat me in the race and this argument is the
+
+316
+00:30:18,670 --> 00:30:19,670
+following.
+
+317
+00:30:19,670 --> 00:30:27,180
+So, let us say rabbit is at starting point
+and the tortoise is 100 meters away, the tortoise
+
+318
+00:30:27,180 --> 00:30:31,150
+.say that by the time you come to this 100
+meters point, I would have to move to some
+
+319
+00:30:31,150 --> 00:30:36,090
+point let us call it x 1 essentially and by
+the time you come to x 1, I would have to
+
+320
+00:30:36,089 --> 00:30:38,179
+move
+to x 2 and by the time you come to x 2, I
+
+321
+00:30:38,180 --> 00:30:42,740
+would have to move to x x 3 and this will
+ofcourse keep happening infinitely and so
+
+322
+00:30:42,740 --> 00:30:45,849
+you can never over take me essentially. So,
+is
+
+323
+00:30:45,849 --> 00:30:50,639
+1 of the paradoxes which comes into picture
+and something similar would happen if you
+
+324
+00:30:50,640 --> 00:30:57,110
+go to allow arbitral small edge cost essentially.
+So, if you cannot allow arbitral small
+
+325
+00:30:57,109 --> 00:30:58,109
+edge cost then this will not happen.
+
+326
+00:30:58,109 --> 00:30:59,109
+.
+
+327
+00:30:59,109 --> 00:31:06,529
+So, which is where the correct condition is
+not greater than 0, but greater than some
+
+328
+00:31:06,529 --> 00:31:13,410
+value some positive value and as long as that
+is the case, it cannot be infinite especially
+
+329
+00:31:13,410 --> 00:31:20,410
+small then every path fill at some point become
+longer than this path to g, and then g will
+
+330
+00:31:20,410 --> 00:31:38,160
+come into. So, i will take it that this point
+has been accepted.
+
+331
+00:31:38,160 --> 00:31:39,160
+..
+
+332
+00:31:39,160 --> 00:31:46,060
+So what have we done so far? So far we have
+said between statements 1 and 3 1 means
+
+333
+00:31:46,059 --> 00:31:50,190
+said that the algorithm always terminate;
+in 3 means said if there is a path to the
+
+334
+00:31:50,190 --> 00:31:53,721
+goal it
+will always find the path to the goal. Now
+
+335
+00:31:53,721 --> 00:32:02,920
+we are saying that it will always find the
+optimal paths to the goal essentially. And
+
+336
+00:32:02,920 --> 00:32:05,289
+it has very simple argument, the argument
+is as
+
+337
+00:32:05,289 --> 00:32:11,279
+follows that so the proof for this I will
+write here.
+
+338
+00:32:11,279 --> 00:32:12,279
+.
+
+339
+00:32:12,279 --> 00:32:19,139
+.Let A star terminate with a non optimal path,
+which means it is found some paths to the
+
+340
+00:32:19,140 --> 00:32:28,290
+goal where the g value of that path. So, let
+me just call a g 1 is greater than f star
+
+341
+00:32:28,289 --> 00:32:33,839
+of s,
+remember f star of s is the optimal path;
+
+342
+00:32:33,839 --> 00:32:36,089
+whenever you use the star it is an optimal
+path,
+
+343
+00:32:36,089 --> 00:32:42,179
+whether we know in the value or not essentially.
+So, we are saying that let proof a
+
+344
+00:32:42,180 --> 00:32:51,760
+contradiction that a star terminate with a
+by picking a goal node g 1, whose g value
+
+345
+00:32:51,760 --> 00:32:55,659
+is
+more than the optimal cost, and now I want
+
+346
+00:32:55,660 --> 00:33:06,340
+to make a statement that this cannot happen
+let me ask you, why can this happen, why can
+
+347
+00:33:06,339 --> 00:33:11,939
+it not terminate by a finding a non optimal
+path.
+
+348
+00:33:11,940 --> 00:33:15,980
+So, if it is picked goal node it will terminate
+that is the algorithm; that you must
+
+349
+00:33:15,980 --> 00:33:21,569
+remember like the algorithm. If it picks the
+goal node for open; that means, it will
+
+350
+00:33:21,569 --> 00:33:29,720
+terminate; it will say I found the goal and
+so on. Now we are saying that let it terminate
+
+351
+00:33:29,720 --> 00:33:36,260
+by picking the goal node g 1 such that it
+is cost is more than the optimal cost; remember
+
+352
+00:33:36,260 --> 00:33:42,230
+f
+star of f star of s is equal to f star of
+
+353
+00:33:42,230 --> 00:33:46,190
+g, and in fact, it f star of any value on
+this node
+
+354
+00:33:46,190 --> 00:33:51,140
+essentially, all of them the values are the
+same, it is cost of the optimal it is a cost
+
+355
+00:33:51,140 --> 00:33:58,750
+of this
+optimal path. So, we are saying that assume
+
+356
+00:33:58,750 --> 00:34:02,589
+that a star terminates by picking a value
+which is more than the optimal.
+
+357
+00:34:02,589 --> 00:34:06,299
+Now what I am trying to say that we cannot
+make this assumption, I mean it is not the
+
+358
+00:34:06,299 --> 00:34:12,380
+long proof or something it just 1 statement
+it say that it can never pick this such a
+
+359
+00:34:12,380 --> 00:34:20,010
+node
+and terminate. So, if you look at the statement
+
+360
+00:34:20,010 --> 00:34:28,460
+number 2 that we have written here; there
+is reason for every statement. That statement
+
+361
+00:34:28,460 --> 00:34:36,820
+says that at all point before termination
+there exist a node n prime, which is on the
+
+362
+00:34:36,820 --> 00:34:40,000
+optimal path, and whose f value is less than
+f
+
+363
+00:34:40,000 --> 00:34:55,190
+star of s. So, so simple answer is it cannot.
+Why because, it would pick n prime as simple
+
+364
+00:34:55,190 --> 00:34:59,909
+as that the algorithm simply says pick the
+one of the lowest f value.
+
+365
+00:34:59,909 --> 00:35:06,480
+So, just imagine there it is about to terminate
+by picking this goal g 1, and this goal g
+
+366
+00:35:06,480 --> 00:35:10,880
+1
+has it is cost more than the f f f. So, it
+
+367
+00:35:10,880 --> 00:35:13,099
+will never be at the head of the priority
+queue
+
+368
+00:35:13,099 --> 00:35:17,780
+essentially, because we have said that at
+all points before termination, there is always
+
+369
+00:35:17,780 --> 00:35:20,721
+a
+node n prime which is on the optimal path
+
+370
+00:35:20,721 --> 00:35:23,409
+and which is on open. So, f this n prime is
+on
+
+371
+00:35:23,409 --> 00:35:25,869
+open and it is value is less than f star s.
+
+372
+00:35:25,869 --> 00:35:26,869
+..
+
+373
+00:35:26,869 --> 00:35:31,010
+So, we it has if a star also choose between
+these 2 nodes 1 whose value is less than or
+
+374
+00:35:31,010 --> 00:35:37,329
+equal to f star s and one whose value is definitely
+greater than f star s. Remember I have
+
+375
+00:35:37,329 --> 00:35:47,799
+written g of g i could have written f of g
+is a same thing, because f of g is equal to
+
+376
+00:35:47,800 --> 00:35:51,390
+g of g
+plus 0, because h is 0. So, you can write
+
+377
+00:35:51,389 --> 00:35:53,920
+f of g or g of g does not matter, it is a
+same
+
+378
+00:35:53,920 --> 00:35:54,920
+thing.
+
+379
+00:35:54,920 --> 00:35:55,920
+.
+
+380
+00:35:55,920 --> 00:35:59,190
+.So, if a star at to pick between these 2
+nodes n prime and g 1, it would pick n prime
+
+381
+00:35:59,190 --> 00:36:03,320
+which mean it cannot terminate by picking
+g 1 like this essentially. So, the only time
+
+382
+00:36:03,320 --> 00:36:08,190
+it
+can pick a goal node is that if it is at least
+
+383
+00:36:08,190 --> 00:36:13,550
+as good as the optimal cost node essentially.
+So, it will always terminate only with an
+
+384
+00:36:13,550 --> 00:36:25,070
+optimal path; is it okay? So, now we want
+to
+
+385
+00:36:25,070 --> 00:36:30,690
+look at 1 more property and this is as for.
+
+386
+00:36:30,690 --> 00:36:31,690
+.
+
+387
+00:36:31,690 --> 00:36:34,829
+So, one more statement before that property
+that I am talking about is that for every
+
+388
+00:36:34,829 --> 00:36:47,199
+node
+N that a star picks f of n is always less
+
+389
+00:36:47,199 --> 00:36:52,889
+than equal to the optimal cost. So, we are
+saying
+
+390
+00:36:52,889 --> 00:36:58,039
+that a star will only pick nodes whose f value
+is less than the optimal, all this is coming
+
+391
+00:36:58,039 --> 00:37:02,000
+from fact that the heuristic function is under
+estimating, because the heuristic function
+
+392
+00:37:02,000 --> 00:37:06,840
+under estimates we are shown that you know
+nodes like this will always be less an
+
+393
+00:37:06,840 --> 00:37:11,110
+optimal cost or they will always be such a
+node less an optimal cost.
+
+394
+00:37:11,110 --> 00:37:15,980
+And now we are saying the same argument as
+we as we did for this case 4 that if f star
+
+395
+00:37:15,980 --> 00:37:20,900
+is
+going to pick this node n, it must be better
+
+396
+00:37:20,900 --> 00:37:23,960
+than n prime, because it has picked n and
+if it
+
+397
+00:37:23,960 --> 00:37:29,081
+is better than n prime it must be less than
+or equal to f star of s essentially. So, it
+
+398
+00:37:29,081 --> 00:37:31,789
+only
+pick nodes which the better than equal to
+
+399
+00:37:31,789 --> 00:37:37,369
+optimal cost node. L 6 is the question; so,
+let
+
+400
+00:37:37,369 --> 00:38:00,960
+there be 2 functions. So, we say h 2 is more
+informed than h 1 if for all nodes h 2 n is
+
+401
+00:38:00,960 --> 00:38:16,199
+greater than h 1 n. So, if the heuristic value
+h 2 is greater than h 1 n, then we say that
+
+402
+00:38:16,199 --> 00:38:17,199
+h 2
+
+403
+00:38:17,199 --> 00:38:39,089
+.is more informed. Just a definition, we say
+then if this is the case then every node seen
+
+404
+00:38:39,090 --> 00:38:53,250
+by a 2 and a 2 is 1 version of a star, which
+is using this h 2 function is also seen by
+
+405
+00:38:53,250 --> 00:38:58,210
+A 1
+star.
+
+406
+00:38:58,210 --> 00:39:04,920
+So, let us say we have this two versions of
+a star algorithm 1 uses this h 2 function
+
+407
+00:39:04,920 --> 00:39:09,889
+heuristic function the other uses the h 1
+heuristic function and h 2 is always greater
+
+408
+00:39:09,889 --> 00:39:13,690
+than
+h 1 of n we say that the h 2 is more inform
+
+409
+00:39:13,690 --> 00:39:19,000
+than. So, take the extreme case when h 1 is
+equal to 0 h 1 is equal to 0 it always thinks
+
+410
+00:39:19,000 --> 00:39:21,780
+that the cost goal is 0 essentially which
+is
+
+411
+00:39:21,780 --> 00:39:27,210
+what does where as the h 2 thinks that it
+is at least some value. So, such a function
+
+412
+00:39:27,210 --> 00:39:32,500
+is
+called and we are making a claim that if h
+
+413
+00:39:32,500 --> 00:39:35,880
+2 is more inform than h 1 so I should write
+if
+
+414
+00:39:35,880 --> 00:39:43,849
+here if h 2 is more informed than h 1, then
+every node seen by a 2 star is also seen by
+
+415
+00:39:43,849 --> 00:39:50,739
+a 1
+star, which means a 2 star will see in general
+
+416
+00:39:50,739 --> 00:39:57,149
+a smaller number of nodes, of which means
+it will explore a smaller part of the search
+
+417
+00:39:57,150 --> 00:40:00,460
+space essentially, it will be more focused
+towards the search.
+
+418
+00:40:00,460 --> 00:40:15,260
+So, we will do this proof by induction, and
+you can see that for the start node does
+
+419
+00:40:15,260 --> 00:40:24,030
+properties true. So, what is the property
+we are trying to prove that if even if A 2
+
+420
+00:40:24,030 --> 00:40:26,369
+see
+some node then A 1 also sees that node we
+
+421
+00:40:26,369 --> 00:40:31,710
+want to prove that let us call this property
+p
+
+422
+00:40:31,710 --> 00:40:38,030
+that if A 2 sees the node A 2 star why star,
+because both are admissible. So, what is the
+
+423
+00:40:38,030 --> 00:40:46,710
+situation? Situation is like this for any
+given node n, there is a band starting from
+
+424
+00:40:46,710 --> 00:40:52,010
+0 to h
+star of n.
+
+425
+00:40:52,010 --> 00:40:53,010
+..
+
+426
+00:40:53,010 --> 00:40:58,820
+What we are saying is that h 2 is somewhere
+here and h 1 is somewhere here this is what
+
+427
+00:40:58,820 --> 00:41:05,809
+we mean by more informed closer to h the optimal
+value. And we want to make a claim
+
+428
+00:41:05,809 --> 00:41:10,840
+that if this is the situation, then the search
+space explore by the algorithm using h 2 will
+
+429
+00:41:10,840 --> 00:41:16,410
+be smaller than the search space by algorithm
+using h 1. And we will this proof by
+
+430
+00:41:16,409 --> 00:41:26,829
+induction. So, you can see that for s. So,
+we call the statement p; so p is true for
+
+431
+00:41:26,829 --> 00:41:31,840
+s which
+is a start node. So, we are just saying that
+
+432
+00:41:31,840 --> 00:41:35,650
+if if a 1 sees if a 2 sees the start node
+and even
+
+433
+00:41:35,650 --> 00:41:41,010
+will also see start which is really true,
+because both the algorithms are the A star
+
+434
+00:41:41,010 --> 00:41:43,770
+always
+starts were picking the star node essentially.
+
+435
+00:41:43,769 --> 00:41:52,579
+So, the second part is the hypothesis, which
+says that let so I will just use this for
+
+436
+00:41:52,579 --> 00:41:54,880
+this whole statement.
+
+437
+00:41:54,880 --> 00:41:55,880
+..
+
+438
+00:41:55,880 --> 00:42:04,070
+So, instead of every let me say any node which
+is the same thing essentially. So, let p be
+
+439
+00:42:04,070 --> 00:42:19,780
+true for depth k 1 or depth k. Now we want
+show that this is also true for depth k plus
+
+440
+00:42:19,780 --> 00:42:37,390
+how much is the induction step, and this you
+will do by contradiction. So, let n be a node
+
+441
+00:42:37,389 --> 00:42:59,690
+at depth k plus 1, which is picked by A 2
+star and let A 1 star terminate without picking
+
+442
+00:42:59,690 --> 00:43:10,829
+n. So, the induction step, you will do by
+contradiction. So, we are making an assumption
+
+443
+00:43:10,829 --> 00:43:16,190
+that there is some node we have call this
+capital N at depth k plus 1 and we are saying
+
+444
+00:43:16,190 --> 00:43:19,679
+a 2
+star has pick that node, but a 1 star terminated
+
+445
+00:43:19,679 --> 00:43:23,440
+without ever picking that node essentially,
+which means a 1 star found a paths to the
+
+446
+00:43:23,440 --> 00:43:36,480
+goal. Now if you look at this value h f 2
+of n,
+
+447
+00:43:36,480 --> 00:43:53,269
+so f 2 is further second algorithm which is
+using h 2 is g 2 of n plus h 2 of n.
+
+448
+00:43:53,269 --> 00:44:25,250
+So, we can rewrite this as H 2 of n and this
+is less than f star of s; remember that any
+
+449
+00:44:25,250 --> 00:44:29,599
+node that you take the statement 5 that view
+it that will have this value less than f star
+
+450
+00:44:29,599 --> 00:44:30,630
+of
+s. So, we are just writing f star it has does
+
+451
+00:44:30,630 --> 00:44:34,880
+not matter f 1 or f 2 it is a optimal cost
+f star is
+
+452
+00:44:34,880 --> 00:44:44,340
+starts for the optimal cost. So, we can write
+this as h 2 of n is less than equal to less
+
+453
+00:44:44,340 --> 00:44:57,650
+than
+equal to f star of s minus g 2 of n.
+
+454
+00:44:57,650 --> 00:45:15,910
+Now even star has terminated without picking
+this node n, which means that f 1 of n is
+
+455
+00:45:15,909 --> 00:45:28,250
+greater than or equal to f star of s. It cannot
+be less than f star of s, because is a a 1
+
+456
+00:45:28,250 --> 00:45:31,489
+star
+has terminated and it will terminate by picking
+
+457
+00:45:31,489 --> 00:45:33,989
+a node with the optimal cost value, and it
+
+458
+00:45:33,989 --> 00:45:40,399
+.has not picked n. So, if this equal inequality
+must hold; that it must be at best equal to
+
+459
+00:45:40,400 --> 00:45:50,920
+that, but it cannot be less in that essentially.
+So, this we can write rewrite as following
+
+460
+00:45:50,920 --> 00:45:59,450
+f
+star of s is less than equal to g 1 of n plus
+
+461
+00:45:59,449 --> 00:46:08,569
+h 1 of n, I am just rewriting this I am replacing
+f 1 of n by g 1 of n plus h 1 of n, and I
+
+462
+00:46:08,570 --> 00:46:09,570
+just inverted the sign in equality sign essentially
+
+463
+00:46:09,570 --> 00:46:10,570
+.
+
+464
+00:46:10,570 --> 00:46:20,320
+Now the question I want to ask is what is
+the relation between g 1 of n and g 2 of n
+
+465
+00:46:20,320 --> 00:46:25,190
+this g
+1 this g 2 of n and g 1 of n; if I have if
+
+466
+00:46:25,190 --> 00:46:28,099
+I have to put a in equality what would I put
+or
+
+467
+00:46:28,099 --> 00:46:39,509
+equal to what is relation between this. What
+should I put, what symbol should I put in
+
+468
+00:46:39,510 --> 00:47:01,660
+between here g 2 is greater than equal to,
+you are the only one who are saying that.
+
+469
+00:47:01,659 --> 00:47:06,429
+why is other case?
+
+470
+00:47:06,429 --> 00:47:19,000
+.Need be optimal there only the path found
+so far path found so far by A 2 need not
+
+471
+00:47:19,000 --> 00:47:24,250
+be the optimal you are not getting the exactly,
+but you must remember this statement we
+
+472
+00:47:24,250 --> 00:47:30,260
+made let this condition be true up to depth
+k the induction hypothesis, which means that
+
+473
+00:47:30,260 --> 00:47:35,870
+every node that is been seen by A 2 up to
+depth k has also been seen by a 1. So,
+
+474
+00:47:35,869 --> 00:47:42,239
+whichever path A 2 found a 1 would have also
+seen that path, but may it had seen some
+
+475
+00:47:42,239 --> 00:47:44,490
+other path as well be equal, but we are saying
+it does not have to be equal.
+
+476
+00:47:44,490 --> 00:47:45,490
+..
+
+477
+00:47:45,490 --> 00:47:53,710
+So, if this will be greater than so, is possible
+that A 1 might find a shorter paths to n
+
+478
+00:47:53,710 --> 00:48:02,329
+because it is explore more nodes on the way
+to n essentially.
+
+479
+00:48:02,329 --> 00:48:03,329
+.
+
+480
+00:48:03,329 --> 00:48:08,809
+It could always so the point of this whole
+exercise is that we can replace this by g
+
+481
+00:48:08,809 --> 00:48:20,639
+2 of n,
+we can rewrite this as we can replace it by
+
+482
+00:48:20,639 --> 00:48:29,699
+g 2 of n plus h 1 of n, which means we can
+
+483
+00:48:29,699 --> 00:48:43,149
+.write this as f star of s minus g 2 of n
+less than equal to h 1 of n. So, I just wrote
+
+484
+00:48:43,150 --> 00:48:46,639
+g 2 on to
+the left hand side and rewritten the statement
+
+485
+00:48:46,639 --> 00:48:51,639
+here. So, I have this f star of s minus g
+2 of
+
+486
+00:48:51,639 --> 00:48:56,471
+n is less than equal to h 1 of n, n is that
+node, which even did not pick and that is
+
+487
+00:48:56,471 --> 00:48:58,360
+why we
+could write this in equality.
+
+488
+00:48:58,360 --> 00:48:59,360
+.
+
+489
+00:48:59,360 --> 00:49:13,670
+Here we have said the same thing that this
+is less than this and therefore 
+
+490
+00:49:13,670 --> 00:49:16,960
+simply by a
+transitivity here h 2 of n is less than equal
+
+491
+00:49:16,960 --> 00:49:27,280
+to h 1 of n which is the contradiction, because
+we assumed this that is h 2 of n is greater
+
+492
+00:49:27,280 --> 00:49:32,500
+is always greater than h 1 of n and here we
+have said that if this and this is only assumption
+
+493
+00:49:32,500 --> 00:49:38,300
+we have made that let a 1 star terminate
+without picking n and that was select to this
+
+494
+00:49:38,300 --> 00:49:42,900
+statement with contradicts over original
+statement essentially. So, this cannot be
+
+495
+00:49:42,900 --> 00:49:45,250
+the case.
+
+496
+00:49:45,250 --> 00:49:46,250
+..
+
+497
+00:49:46,250 --> 00:49:51,719
+And therefore, it cannot terminate without
+picking n, which means that if a 2 has pick
+
+498
+00:49:51,719 --> 00:49:56,358
+this node n, A 1 also must pick this node
+n and which is the statement we are making
+
+499
+00:49:56,358 --> 00:49:59,650
+that
+every node seen by A 2 will also be seen by
+
+500
+00:49:59,650 --> 00:50:00,860
+A 1.
+
+501
+00:50:00,860 --> 00:50:01,860
+.
+
+502
+00:50:01,860 --> 00:50:09,690
+So, the effect of this is that the space explored
+by a 2 is contained not necessarily strictly
+
+503
+00:50:09,690 --> 00:50:15,079
+.contained, but contained in the space explored
+by A 1 essentially. So, it always space to
+
+504
+00:50:15,079 --> 00:50:28,449
+have a better heuristic function; the higher
+the h 1 h 2, the better .. Any questions
+
+505
+00:50:28,449 --> 00:50:41,739
+here? So, there is one more property which
+needs to be looked at, but we will do that
+
+506
+00:50:41,739 --> 00:50:46,169
+in
+next class. So, I will stop here, and will
+
+507
+00:50:46,170 --> 00:50:51,369
+sort of come back to this A star and it is
+behavior
+
+508
+00:50:51,369 --> 00:50:56,470
+will do a quick recap in the next class, and
+then will start again. So, I will stop here.
+
+509
+00:50:56,469 --> 00:51:06,469
+.
+

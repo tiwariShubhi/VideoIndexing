@@ -1,0 +1,2491 @@
+﻿1
+00:00:11,080 --> 00:00:15,800
+We have been looking at algorithm A star,
+which is a very well known algorithm for
+
+2
+00:00:15,800 --> 00:00:20,789
+finding optimal solutions in a state space.
+
+3
+00:00:20,789 --> 00:00:21,789
+.
+
+4
+00:00:21,789 --> 00:00:35,820
+And at this movement, we are trying to look
+at variations of A star which are space
+
+5
+00:00:35,820 --> 00:00:49,039
+savings. So, before I start the algorithms,
+let means ask you one small or status small
+
+6
+00:00:49,039 --> 00:00:50,880
+problem.
+
+7
+00:00:50,880 --> 00:00:51,880
+..
+
+8
+00:00:51,880 --> 00:01:00,859
+Let say you are in a . like city and there
+are a set of so, it is a grade
+
+9
+00:01:00,859 --> 00:01:33,629
+like this. And you have to come to this last
+city here. Let us say, this cities are numbered
+
+10
+00:01:33,629 --> 00:01:47,419
+0, 1, 2 up to m and 0, 1, 2 up to n. So, it
+is on m by n grade and by this I mean m adjusts
+
+11
+00:01:47,420 --> 00:01:53,049
+in this direction and n adjust in this direction.
+There are m plus 1 cities in horizontally
+
+12
+00:01:53,049 --> 00:01:57,950
+and n plus 1 cities vertically essentially.
+It is a complete grid, I am not drawn the
+
+13
+00:01:57,950 --> 00:02:04,689
+complete grid. The question I want to ask
+is how many paths are there, if you want to
+
+14
+00:02:04,689 --> 00:02:09,929
+go
+from this city 0, 0 to the city m, n there.
+
+15
+00:02:09,929 --> 00:02:15,000
+And we are assuming that you can only travel
+either to the right or down essentially. So,
+
+16
+00:02:15,000 --> 00:02:20,539
+it is not, it is a directed graph, you can
+only move either to the right or down. But,
+
+17
+00:02:20,539 --> 00:02:29,699
+the
+question is how many paths are there, m and
+
+18
+00:02:29,699 --> 00:02:36,199
+n you have to use two parameters m and n
+essentially, whether I m adjust here and n
+
+19
+00:02:36,199 --> 00:02:38,619
+adjust in this direction. So, if you if there
+only
+
+20
+00:02:38,620 --> 00:02:43,310
+one city, there is only one path. If there
+are four cities then you can see there are
+
+21
+00:02:43,310 --> 00:02:45,881
+two
+paths. As the number of cities increased,
+
+22
+00:02:45,881 --> 00:02:51,939
+the number of paths increases quite
+dramatically. Thus, anyone know of the korf
+
+23
+00:02:51,939 --> 00:02:52,939
+how many.
+
+24
+00:02:52,939 --> 00:02:55,729
+.x plus y c x.
+
+25
+00:02:55,729 --> 00:02:57,549
+x plus y…
+
+26
+00:02:57,550 --> 00:03:06,590
+..C x, I mean total number of either we can
+go in as an if one direction is fix than
+
+27
+00:03:06,590 --> 00:03:14,409
+the other direction could be fixed, suppose
+from all the paths you choose after fixing
+
+28
+00:03:14,409 --> 00:03:18,430
+one
+direction on to the limited numbers left.
+
+29
+00:03:18,430 --> 00:03:25,490
+Well, you can think of this as a sequence
+of right moves, we have to always make m
+
+30
+00:03:25,490 --> 00:03:33,340
+right moves and you have to put in n down
+moves, soumiya.
+
+31
+00:03:33,340 --> 00:03:44,840
+.n plus n factorial . divided by n factorial.
+
+32
+00:03:44,840 --> 00:03:53,241
+Divided by n factorial, that is a correct
+answer, you can think of it has saying that
+
+33
+00:03:53,241 --> 00:03:56,660
+you
+have to make m right moves and somewhere along
+
+34
+00:03:56,659 --> 00:04:01,459
+those m right moves, you have to put
+those n down moves and the number of ways
+
+35
+00:04:01,459 --> 00:04:10,340
+we can do that is given by this essentially.
+So, I will come back to this problem; let
+
+36
+00:04:10,340 --> 00:04:18,769
+me increase the complexity of this problem,
+what if I allowed diagonal moves as well.
+
+37
+00:04:18,769 --> 00:04:22,439
+Now, that is a little bit harder, it does
+not have
+
+38
+00:04:22,439 --> 00:04:31,829
+a nice closed form solution, it is the summation
+of many things, but I would like it to
+
+39
+00:04:31,829 --> 00:04:34,180
+think about that.
+
+40
+00:04:34,180 --> 00:04:44,588
+So, you can think of this new problem as follows
+that one diagonal move replaces one
+
+41
+00:04:44,588 --> 00:04:51,038
+horizontal move and one vertical move. And
+out of the m plus n horizontal and vertical
+
+42
+00:04:51,038 --> 00:04:55,598
+moves that you are making, whichever is smaller
+m or n, you can replace it with that
+
+43
+00:04:55,598 --> 00:04:59,870
+many diagonal moves optionally, you do not
+have to, but you can replace it with that
+
+44
+00:04:59,870 --> 00:05:04,389
+many diagonals moves. So, that many horizontal
+and vertical moves become less and
+
+45
+00:05:04,389 --> 00:05:09,290
+diagonal moves will become more essentially.
+So, this a little bit more difficult to
+
+46
+00:05:09,290 --> 00:05:12,110
+analyze, but it is a good exercise.
+
+47
+00:05:12,110 --> 00:05:13,110
+..
+
+48
+00:05:13,110 --> 00:05:17,778
+So, let us first continue with our variations
+that we were looking at. In the last class
+
+49
+00:05:17,778 --> 00:05:22,848
+we
+saw I D A star and if you recall, what I D
+
+50
+00:05:22,848 --> 00:05:27,418
+A star does is that, essentially from the
+start
+
+51
+00:05:27,418 --> 00:05:38,639
+node, it creates a boundary, this is the goal.
+And this boundary is the heuristic value of
+
+52
+00:05:38,639 --> 00:05:44,460
+the start node or in other words how far it
+things, the algorithm thinks the goal is from
+
+53
+00:05:44,459 --> 00:05:52,709
+the start node. And it draws at boundary and
+does that depth first search on this. It rate
+
+54
+00:05:52,709 --> 00:05:57,519
+a
+. comes on the fact that after it is fail
+
+55
+00:05:57,519 --> 00:06:02,959
+to find a goal here. It would
+have some nodes open just around the boundary,
+
+56
+00:06:02,959 --> 00:06:05,098
+which it has not expanded.
+
+57
+00:06:05,098 --> 00:06:12,199
+It looks at those nodes and fix the minimum
+f value from there, and extends a boundary
+
+58
+00:06:12,199 --> 00:06:19,098
+by that much amount essentially. And it keeps
+doing that, till it has found the goal node
+
+59
+00:06:19,098 --> 00:06:25,139
+essentially. So, I think we are started discussing
+the properties of this algorithm, but let
+
+60
+00:06:25,139 --> 00:06:31,240
+us recap. So, maybe I will ask you to tell
+me, what do you think of the I D A star
+
+61
+00:06:31,240 --> 00:06:46,379
+algorithm. It was formed by Korf, Richard
+Korf 1980’s something, I do not remember
+
+62
+00:06:46,379 --> 00:06:57,449
+exact date. So, what is good about this algorithm
+and what is not good about this
+
+63
+00:06:57,449 --> 00:07:05,038
+algorithm. So, the first question we want
+to ask is does it survive the substitute for
+
+64
+00:07:05,038 --> 00:07:11,579
+A star,
+which means does it guarantee and optimal
+
+65
+00:07:11,579 --> 00:07:18,218
+path or not. So, what is the argument you
+would give?
+
+66
+00:07:18,218 --> 00:07:19,218
+..
+
+67
+00:07:19,218 --> 00:07:20,478
+.Why, how can you say the .
+
+68
+00:07:20,478 --> 00:07:25,068
+.If I do not the optimal path at a certain
+value of that then what I am doing is I
+
+69
+00:07:25,069 --> 00:07:33,179
+am finding the node with the value of f just
+higher than that. So, I would not miss out
+
+70
+00:07:33,178 --> 00:07:38,868
+anymore. So, the movement I the value of f,
+which is the . goal I
+
+71
+00:07:38,869 --> 00:07:40,300
+will find ..
+
+72
+00:07:40,300 --> 00:07:45,520
+So, that is one criteria it satisfies for
+us, it is that it finds the optimal path,
+
+73
+00:07:45,519 --> 00:07:53,038
+why is it better
+than A star, why would you prefer it to A
+
+74
+00:07:53,038 --> 00:07:55,998
+star or when would be prefer it to A star.
+
+75
+00:07:55,999 --> 00:08:01,699
+.Open lays does not go too large.
+
+76
+00:08:01,699 --> 00:08:06,098
+Open lays does not go too large in fact, it
+goes linearly only and especially, if you
+
+77
+00:08:06,098 --> 00:08:10,709
+are
+looking at problems, in which thus search
+
+78
+00:08:10,709 --> 00:08:14,269
+space is very huge. You can imagine if you
+are
+
+79
+00:08:14,269 --> 00:08:18,598
+generating something like hundred thousand
+nodes a second in the search space. Then
+
+80
+00:08:18,598 --> 00:08:25,128
+how quickly well I am will get fill up with,
+you remember that each state, each node is
+
+81
+00:08:25,129 --> 00:08:27,119
+a
+representation of a state which means that,
+
+82
+00:08:27,119 --> 00:08:30,539
+whatever you have described about the state
+would be there. And then you have applied
+
+83
+00:08:30,538 --> 00:08:33,968
+a move gen function and you generate a new
+state and you put all those things into some
+
+84
+00:08:33,969 --> 00:08:35,360
+kind of a data structure essentially.
+
+85
+00:08:35,360 --> 00:08:40,908
+So, the advantages of I D A star is that it
+needs less space and this is the theme that
+
+86
+00:08:40,908 --> 00:08:44,080
+we
+are going to follow today, how can we look
+
+87
+00:08:44,080 --> 00:08:52,310
+at space saving algorithms, but what is a
+disadvantage that you can think of.
+
+88
+00:08:52,309 --> 00:09:00,139
+.. time complexities.
+
+89
+00:09:00,139 --> 00:09:07,899
+So, what do you mean by saying better pass
+may be left unexplored. We have already
+
+90
+00:09:07,899 --> 00:09:13,870
+argued and he said that, we guarantee that
+it will give you the optimal solution. So,
+
+91
+00:09:13,870 --> 00:09:17,830
+that
+is what we want essentially. Time complexity
+
+92
+00:09:17,830 --> 00:09:25,810
+is like it was in the case of D F I D time
+complexity is an issue, but unlike D F I D.
+
+93
+00:09:25,809 --> 00:09:35,320
+In D F I D we assume that the cost was
+uniform of each edge which meant that, as
+
+94
+00:09:35,321 --> 00:09:42,769
+you get went deeper, the number of nodes in
+the next layer was increasing exponentially
+
+95
+00:09:42,769 --> 00:09:44,509
+or it was multiplied by the branching factor
+
+96
+00:09:44,509 --> 00:09:45,529
+.b.
+
+97
+00:09:45,529 --> 00:09:50,100
+And therefore, every time we increase the
+depths by one, you encountered many more
+
+98
+00:09:50,100 --> 00:09:55,430
+new nodes in fact, more you nodes then the
+old nodes that you had seen so far.
+
+99
+00:09:55,429 --> 00:10:01,029
+Unfortunately for ideas are that is not the
+case, because now we have edge cause involve
+
+100
+00:10:01,029 --> 00:10:08,209
+and as we discuss, we increase the bound only
+to the next lowest f value, which means
+
+101
+00:10:08,210 --> 00:10:14,560
+that it may do a significantly large number
+of searches before it actually converges to
+
+102
+00:10:14,559 --> 00:10:20,239
+this, which is why we observed in the last,
+towards the end of the last class that instead
+
+103
+00:10:20,240 --> 00:10:25,389
+of incrementing it to the next lowest step
+value. You increment it by some amount, we
+
+104
+00:10:25,389 --> 00:10:30,610
+determined amount delta, which is a loss of
+optimality or willing to bare essentially.
+
+105
+00:10:30,610 --> 00:10:40,370
+So, if you increase further by a value delta,
+this is delta. Then the next time it searches,
+
+106
+00:10:40,370 --> 00:10:43,460
+it
+may find a node somewhere here, which is a
+
+107
+00:10:43,460 --> 00:10:49,951
+goal node. So, I have drawn only one goal
+node, but in practice, search problems may
+
+108
+00:10:49,951 --> 00:10:51,769
+have more than one goal node essentially.
+So,
+
+109
+00:10:51,769 --> 00:10:56,699
+for example, if you are looking for a Chinese
+restaurant in a city, they may be many
+
+110
+00:10:56,700 --> 00:11:00,500
+Chinese restaurants, if you are looking for
+a particular film, which is showing in some
+
+111
+00:11:00,500 --> 00:11:04,669
+theater, you may have more than one solution
+essentially. So, depends on what your
+
+112
+00:11:04,669 --> 00:11:06,069
+search algorithm finds.
+
+113
+00:11:06,070 --> 00:11:12,410
+So, it might find a goal node here, as oppose
+to a goal node here, this is close to the
+
+114
+00:11:12,409 --> 00:11:20,439
+previous bound that we had, but this is far
+there from the previous one. So, it has an
+
+115
+00:11:20,440 --> 00:11:22,990
+error
+of our delta. So, if you are willing to tolerate
+
+116
+00:11:22,990 --> 00:11:27,250
+an error of delta, then you can increment
+this delta and you can control how much you
+
+117
+00:11:27,250 --> 00:11:33,700
+have willing to tolerate by essentially. So,
+that is one problem with ideas are that it
+
+118
+00:11:33,700 --> 00:11:40,440
+may do too many iterations essentially. Another
+problem with I d A star is that, it is sort
+
+119
+00:11:40,440 --> 00:11:46,310
+of does not cater to our ascetic sense if
+you want
+
+120
+00:11:46,309 --> 00:11:51,039
+to call it, in the sense that, it does not
+have a sense of direction.
+
+121
+00:11:51,039 --> 00:11:55,529
+We started search with line search algorithm
+and then say, then we said we are
+
+122
+00:11:55,529 --> 00:11:59,889
+introducing heuristic functions to guide search
+towards the goal. The only role the
+
+123
+00:11:59,889 --> 00:12:03,990
+heuristic function is playing is in defining
+this boundary here. Of course, the boundary
+
+124
+00:12:03,990 --> 00:12:05,940
+as
+you can see is . sided, it is towards the
+
+125
+00:12:05,940 --> 00:12:10,850
+goal by that is about all it
+does essentially. So, the next algorithm that
+
+126
+00:12:10,850 --> 00:12:31,870
+we want to look at, which is also by Richard
+Korf is called recursive best first search,
+
+127
+00:12:31,870 --> 00:12:32,870
+popularly known as RBFS.
+
+128
+00:12:32,870 --> 00:12:43,480
+.So, R B F S is a little different from I
+D A star and no doubt korf devises algorithm,
+
+129
+00:12:43,480 --> 00:12:48,370
+because he saw the drawbacks of I D A star,
+which is that, it was doing too many
+
+130
+00:12:48,370 --> 00:13:03,649
+iterations. In particular, if you do not maintain
+a close list and you just let, D F S in some
+
+131
+00:13:03,649 --> 00:13:14,879
+sense run wild is that was good idea or bad
+idea to do. Let us say, D F I D or I D S are
+
+132
+00:13:14,879 --> 00:13:31,960
+without maintaining a close list. With it
+get, the question is one of the things at
+
+133
+00:13:31,960 --> 00:13:34,220
+closed,
+thus for us is there it is stops as from going
+
+134
+00:13:34,220 --> 00:13:35,639
+to an infinite loop essentially.
+
+135
+00:13:35,639 --> 00:13:39,569
+So, if you have for example, search after
+this is, this I told you was a directed graph,
+
+136
+00:13:39,570 --> 00:13:41,810
+but
+if this one not a directed graph, then you
+
+137
+00:13:41,809 --> 00:13:43,899
+could have gone into a loop keep going in
+a
+
+138
+00:13:43,899 --> 00:13:50,439
+loop like this essentially. And close allows
+us to avoid such a possibility, but given
+
+139
+00:13:50,440 --> 00:13:57,400
+the
+fact that we have working with bounds on the
+
+140
+00:13:57,399 --> 00:14:07,000
+distance from the source that you have
+willing to go, can I work without closed?
+
+141
+00:14:07,000 --> 00:14:08,860
+In other words, if you go back to the D F
+I D
+
+142
+00:14:08,860 --> 00:14:14,549
+algorithm, which is basically a simpler version
+of I D A star that it does not have edge
+
+143
+00:14:14,549 --> 00:14:22,879
+cause will D F I D work, if I do not, if I
+implement the D F S without a close list.
+
+144
+00:14:22,879 --> 00:14:31,210
+So, I will leave that the small topic experiments
+for you to do. Let us forget this
+
+145
+00:14:31,210 --> 00:14:40,920
+algorithm RBFS. So, what R B F S does is that,
+it maintains a linear amount of memory
+
+146
+00:14:40,919 --> 00:14:45,309
+exactly like I D A star, but it does not.
+So, what I D A star is doing, it is doing
+
+147
+00:14:45,309 --> 00:14:47,559
+blind
+search, wherever the goal is it will go of
+
+148
+00:14:47,559 --> 00:14:49,639
+in one direction, back track, try something
+else,
+
+149
+00:14:49,639 --> 00:14:54,278
+back track, try something else, back track,
+try something else and so on. So, it is will
+
+150
+00:14:54,278 --> 00:15:00,730
+basically a depth first traversal of the space
+with no sense of direction. Now, let us try
+
+151
+00:15:00,730 --> 00:15:03,029
+to
+stimulate, what R B F S could do.
+
+152
+00:15:03,029 --> 00:15:11,819
+So, let us say we start with this node start,
+and let us say we have these four children,
+
+153
+00:15:11,820 --> 00:15:18,850
+and
+their heuristic values for the sake of argument,
+
+154
+00:15:18,850 --> 00:15:36,570
+let us say, this is 40 and 70 and 71. So,
+initially recursive best first search behaves
+
+155
+00:15:36,570 --> 00:15:39,440
+like best first search, that it fix the one
+with
+
+156
+00:15:39,440 --> 00:15:46,190
+the lowest f value and expands that, which
+means in this example this know. But, what
+
+157
+00:15:46,190 --> 00:15:52,940
+it
+also does is that, it keeps a pointer to the
+
+158
+00:15:52,940 --> 00:15:57,529
+next best node that is in the open list. So,
+in this
+
+159
+00:15:57,528 --> 00:16:03,259
+example, this is an express node and then
+it does the search essentially.
+
+160
+00:16:03,259 --> 00:16:07,551
+So, this is second best node and that is it
+node .. So, let us say it
+
+161
+00:16:07,551 --> 00:16:14,460
+generates this and if you remember the monotone
+criteria are consistency conditions that
+
+162
+00:16:14,460 --> 00:16:18,940
+we said, that they in generally you expect
+the heuristic values to become more accurate.
+
+163
+00:16:18,940 --> 00:16:25,089
+.As you go closer to the goal and a consequence
+of monotone criteria was that f values
+
+164
+00:16:25,089 --> 00:16:29,230
+increase as you go forward, as you go towards
+the goal essentially. So, he would
+
+165
+00:16:29,230 --> 00:16:35,000
+generally expect f values to increase in a
+search space, which is consistent. So, let
+
+166
+00:16:35,000 --> 00:16:46,970
+us say,
+this is become 45, this becomes 50 and this
+
+167
+00:16:46,970 --> 00:16:50,750
+become 61 for arguments sake.
+
+168
+00:16:50,750 --> 00:16:56,049
+So, what immediately R B F S will do is, it
+first removes this pointer from here, and
+
+169
+00:16:56,049 --> 00:16:59,599
+put
+it to this. Because, now that is a, to this,
+
+170
+00:16:59,600 --> 00:17:03,610
+this is the best node and this is the next
+best
+
+171
+00:17:03,610 --> 00:17:10,338
+node in the open list, and it keeps a pointer
+to the next best nodes essentially. Then it
+
+172
+00:17:10,338 --> 00:17:27,688
+goes like this and let us says this is what
+is happening, let say this becomes 48 and
+
+173
+00:17:27,689 --> 00:17:34,090
+this
+becomes 70 just for arguments 60. Then, it
+
+174
+00:17:34,089 --> 00:17:44,269
+expands this one, remains 48 let us say and
+just for argument sake, let say these are
+
+175
+00:17:44,269 --> 00:17:50,028
+all 70 and it expands this. So, it is diving
+into the
+
+176
+00:17:50,028 --> 00:17:57,019
+search space, using the heuristic function
+as a guiding whose.
+
+177
+00:17:57,019 --> 00:18:04,558
+Let us say some point, these nodes start looking
+and little bit worst than that node. So,
+
+178
+00:18:04,558 --> 00:18:19,319
+this becomes 55, this becomes 53 and this
+becomes 57 or something like that. So, so
+
+179
+00:18:19,319 --> 00:18:22,819
+far
+it is behavior and the best for search behavior
+
+180
+00:18:22,819 --> 00:18:27,359
+is identical. But, at this point well, it
+has to
+
+181
+00:18:27,359 --> 00:18:30,219
+what best first search would have done is
+simply, it would have pick this node as the
+
+182
+00:18:30,220 --> 00:18:33,420
+next
+one from the open list and started exploring
+
+183
+00:18:33,420 --> 00:18:38,308
+the tree from there essentially, what
+recursive best first search, which is trying
+
+184
+00:18:38,308 --> 00:18:42,839
+to save one space, thus is that it rolls back
+this
+
+185
+00:18:42,839 --> 00:18:47,019
+search all the way. So, that it can move to
+the next siblings essentially.
+
+186
+00:18:47,019 --> 00:18:53,730
+So, it is basically deletes all these nodes
+from open, close whatever it is maintaining.
+
+187
+00:18:53,730 --> 00:19:02,019
+So,
+it rolls back you know, there is to say about
+
+188
+00:19:02,019 --> 00:19:04,288
+the Indian government at one point, it is
+a
+
+189
+00:19:04,288 --> 00:19:08,069
+roll back government. So, they would increase
+the petrol prices and after two days roll
+
+190
+00:19:08,069 --> 00:19:11,829
+it
+back or something, little bit like that. But,
+
+191
+00:19:11,829 --> 00:19:23,548
+it has a rule which it follows and which is
+called as a backup rule, which determines
+
+192
+00:19:23,548 --> 00:19:31,398
+the f value of a node, f of n is equal to
+all let us
+
+193
+00:19:31,398 --> 00:19:43,498
+call it some other value. Let us call it f
+prime value is equal to f of n, if n is a
+
+194
+00:19:43,499 --> 00:19:59,929
+leaf which
+means n is on open is equal to max no min
+
+195
+00:19:59,929 --> 00:20:06,110
+f prime, I just use this short form.
+
+196
+00:20:06,109 --> 00:20:13,678
+So, either it is a f value or it is a minimum
+of the f values of it is children essentially.
+
+197
+00:20:13,679 --> 00:20:16,278
+So,
+what really it does is that it maintains this
+
+198
+00:20:16,278 --> 00:20:21,720
+f prime value. So, for all these nodes 70,
+70,
+
+199
+00:20:21,720 --> 00:20:27,759
+70, 60, 57, 53, 55, the f prime value is the
+same as the f value, because it is a leaf
+
+200
+00:20:27,759 --> 00:20:30,409
+node.
+But, when I it rolls back, it applies back
+
+201
+00:20:30,409 --> 00:20:33,549
+up rule to back up the values. So, for example,
+
+202
+00:20:33,548 --> 00:20:39,009
+.from these three nodes it will back up the
+value 53 here.
+
+203
+00:20:39,009 --> 00:20:40,009
+.
+
+204
+00:20:40,009 --> 00:20:48,919
+So, let we use a different chalk to illustrate
+that. So, it backs up this value 53 to this
+
+205
+00:20:48,919 --> 00:20:52,210
+node.
+So, now this becomes 53 and there it deletes
+
+206
+00:20:52,210 --> 00:20:59,680
+this essentially everything. So, this is 53,
+70, 70, so again it backs up 53 here; this
+
+207
+00:20:59,680 --> 00:21:03,590
+is 53, 70, 60. So, it backs up this thing
+here,
+
+208
+00:21:03,589 --> 00:21:11,189
+changes this to 53, which is the backed up
+value and then to seats along this direction.
+
+209
+00:21:11,190 --> 00:21:16,889
+So, you can see that, once it has devises
+value to 53, if you just look at the snap
+
+210
+00:21:16,888 --> 00:21:18,888
+shot of
+the search at that point, all these nodes
+
+211
+00:21:18,888 --> 00:21:22,658
+are not there, all these has been deleted,
+only that
+
+212
+00:21:22,659 --> 00:21:28,440
+much of the tree remains. And this is on open,
+this is put back on to open with a new
+
+213
+00:21:28,440 --> 00:21:32,649
+value of 53, this is 50, this is 61, this
+is 70.
+
+214
+00:21:32,648 --> 00:21:40,398
+So, it basically naturally goes off on that
+direction. So, you can see that at any given
+
+215
+00:21:40,398 --> 00:21:45,118
+point, recursive best first search maintains
+only one paths down the search tree, which
+
+216
+00:21:45,118 --> 00:21:51,230
+means it is space requirement is going to
+be linear, because that is what the depth
+
+217
+00:21:51,230 --> 00:21:55,389
+first
+search also does. And yet, it mimics the behavior
+
+218
+00:21:55,388 --> 00:22:00,459
+of A star algorithm, in the sense that it
+is best first, it always goes down the best
+
+219
+00:22:00,460 --> 00:22:02,950
+looking path. It just that on the way, it
+has
+
+220
+00:22:02,950 --> 00:22:06,558
+revise the value of this node, the heuristic
+value has measure by the heuristic function
+
+221
+00:22:06,558 --> 00:22:12,579
+was 45, but after is done this search, it
+realizes that it is not 45, it is 53.
+
+222
+00:22:12,579 --> 00:22:17,569
+.So, it leaves it to the open value of 53
+and goes down this path essentially. So, it
+
+223
+00:22:17,569 --> 00:22:20,329
+will
+generate these children now, and depending
+
+224
+00:22:20,329 --> 00:22:26,480
+on whether they are. So, when this is 50,
+this
+
+225
+00:22:26,480 --> 00:22:34,720
+will become the next best node essentially.
+So, if I going down this path, there is no
+
+226
+00:22:34,720 --> 00:22:37,919
+node
+better than 53 in this path, it will roll
+
+227
+00:22:37,919 --> 00:22:41,590
+back from here, and go down this path again.
+So,
+
+228
+00:22:41,589 --> 00:22:52,750
+you can sense a similar problem as 
+in that it may do this many time, it may go
+
+229
+00:22:52,750 --> 00:22:56,519
+down this
+path, it may go down this path, it may come
+
+230
+00:22:56,519 --> 00:23:00,620
+back here, eventually it may finish this and
+it may go down this path.
+
+231
+00:23:00,619 --> 00:23:04,439
+And then maybe, this will become worst and
+then it will go down this path. So, R B F
+
+232
+00:23:04,440 --> 00:23:08,070
+S
+is a danger that it opposes it, depicts the
+
+233
+00:23:08,069 --> 00:23:21,819
+behavior of what we call is thrashing, that
+is a
+
+234
+00:23:21,819 --> 00:23:27,798
+danger with R B F S, you read that it may
+thrash something like this. So, I do not know
+
+235
+00:23:27,798 --> 00:23:32,940
+whether we discuss thrashing, when we were
+looking at hill climbing, but if you imagine
+
+236
+00:23:32,940 --> 00:23:36,850
+a hill, which is like a ridge.
+
+237
+00:23:36,849 --> 00:23:37,849
+.
+
+238
+00:23:37,849 --> 00:23:46,969
+So, which looks a bit like this cross section
+if you can visualize this, like this? So,
+
+239
+00:23:46,970 --> 00:23:48,788
+it is
+like a ridge essentially, which is slowly
+
+240
+00:23:48,788 --> 00:23:55,730
+increasing in one direction. Then hill climbing
+would have a tendency to go in this direction
+
+241
+00:23:55,730 --> 00:24:01,749
+which is, because that is a steepest gradient
+direction essentially. And if you are search
+
+242
+00:24:01,749 --> 00:24:07,019
+problems is the granularity of your move gen
+function is search, that once it makes a step
+
+243
+00:24:07,019 --> 00:24:09,778
+in this direction, it may over shoot at some
+
+244
+00:24:09,778 --> 00:24:15,089
+.point then it make, it may come back that
+may go like. So, hill climbing can also behave
+
+245
+00:24:15,089 --> 00:24:16,509
+a similar fashion behavior essentially.
+
+246
+00:24:16,509 --> 00:24:21,409
+So, this is the one problem with search algorithms,
+which are local in some sense
+
+247
+00:24:21,409 --> 00:24:29,429
+essentially. This is local in the sense, it
+is always going down one path, but it is not
+
+248
+00:24:29,429 --> 00:24:34,929
+completely local in the sense are it is keeping
+updated values, backed up values, for
+
+249
+00:24:34,929 --> 00:24:42,519
+known essentially. So, R B F S is came around
+1990 also was an improvement on I D A
+
+250
+00:24:42,519 --> 00:24:46,538
+star, because it had a sense of direction,
+but it has this problem there, it could do
+
+251
+00:24:46,538 --> 00:24:49,239
+((Refer
+Time.). And actually we have students, we
+
+252
+00:24:49,239 --> 00:24:52,139
+have implemented these algorithms
+for the course here, I have observed this
+
+253
+00:24:52,138 --> 00:24:57,269
+behavior that you know these algorithms just
+keep spends, what they say as infinite amount
+
+254
+00:24:57,269 --> 00:25:01,829
+of time, you will just touching between a
+few loads essentially.
+
+255
+00:25:01,829 --> 00:25:07,749
+So, what you would be really interested in
+is space saving algorithms, which behave
+
+256
+00:25:07,749 --> 00:25:12,629
+more like A star in terms of the nodes that
+they are picking for expansion as well.
+
+257
+00:25:12,628 --> 00:25:18,428
+Whereas, these two algorithms behave like
+A star in terms of the solutions they produce,
+
+258
+00:25:18,429 --> 00:25:25,350
+the way they pick nodes is different. And
+consequently both this algorithms have a of
+
+259
+00:25:25,349 --> 00:25:30,939
+course, much larger time complexity in A star,
+because they will explore the same space
+
+260
+00:25:30,940 --> 00:25:36,440
+again and again many times essentially.
+
+261
+00:25:36,440 --> 00:25:45,239
+Now, so let me now ask a question has to,
+if you were designing on a search algorithm
+
+262
+00:25:45,239 --> 00:25:52,150
+and you are add to look at different options
+of whether you can save on the close list
+
+263
+00:25:52,150 --> 00:25:55,450
+or
+whether you can save on the open list, what
+
+264
+00:25:55,450 --> 00:26:03,470
+would be your choice. If somebody says that
+you can, I will give an algorithm in which,
+
+265
+00:26:03,470 --> 00:26:09,269
+the open list sizes is minimize, made constant
+or something like that or made linear like,
+
+266
+00:26:09,269 --> 00:26:12,401
+I D A star or it somebody says that, I will
+give
+
+267
+00:26:12,401 --> 00:26:15,759
+you an algorithm, in which the close list
+side is . reduced, which
+
+268
+00:26:15,759 --> 00:26:23,308
+one would you choose. Would you rather proven
+the open list or would you rather
+
+269
+00:26:23,308 --> 00:26:26,528
+proven the close list?
+
+270
+00:26:26,528 --> 00:26:35,038
+.. size of depends on the size of the grid
+the number of
+
+271
+00:26:35,038 --> 00:26:36,038
+nodes.
+
+272
+00:26:36,038 --> 00:26:40,859
+Well, I take your answer to mean it depends
+on the topology of the problem essentially.
+
+273
+00:26:40,859 --> 00:26:47,508
+.But, if you look at a general case, were
+every node has b successors, you know branching
+
+274
+00:26:47,509 --> 00:26:55,220
+factor is b, every node as b successors. So,
+very often the community tends to even if
+
+275
+00:26:55,220 --> 00:26:58,870
+you
+have a graphs from which you are searching,
+
+276
+00:26:58,869 --> 00:27:02,918
+then you know, if you remember the branch
+and bound, we started off with, in which the
+
+277
+00:27:02,919 --> 00:27:08,049
+duplicates were not remove and the same
+node would appear and different parts of the
+
+278
+00:27:08,048 --> 00:27:14,589
+tree. Many people tends to think of that is
+space, as a space of searching over paths,
+
+279
+00:27:14,589 --> 00:27:16,418
+because each node in a different part of the
+tree
+
+280
+00:27:16,419 --> 00:27:22,109
+depict the different path, because you know
+from route it as a different path. Then of
+
+281
+00:27:22,108 --> 00:27:25,548
+course, it tends to go very highly.
+
+282
+00:27:25,548 --> 00:27:36,569
+So, when we studied D F I D, we had argued
+that the number of nodes in the last layer
+
+283
+00:27:36,569 --> 00:27:40,960
+of
+breadth first search by itself was must larger
+
+284
+00:27:40,960 --> 00:27:44,819
+than all the internal nodes seen. And then
+we argued that, because if that is only the
+
+285
+00:27:44,819 --> 00:27:56,528
+extra work it we are doing and you are getting
+linear space in D F I D are oppose to exponential
+
+286
+00:27:56,528 --> 00:28:00,339
+space of breadth first search. Then you
+are saving on the open list largely, that
+
+287
+00:28:00,339 --> 00:28:02,829
+is what D F I D was doing saving on the open
+list
+
+288
+00:28:02,829 --> 00:28:08,878
+essentially. But, there are problem sometimes,
+when you want to save on the close list,
+
+289
+00:28:08,878 --> 00:28:13,558
+when the close list can become a greater problem
+than an open list.
+
+290
+00:28:13,558 --> 00:28:14,558
+.
+
+291
+00:28:14,558 --> 00:28:19,319
+And this problem that we are looking at, this
+city route finding problem is such a
+
+292
+00:28:19,319 --> 00:28:29,628
+problem essentially. Now, if you visualize,
+how search will progress in this space. This
+
+293
+00:28:29,628 --> 00:28:34,069
+.will be the start node, it has three successes,
+it would generate those three successors;
+
+294
+00:28:34,069 --> 00:28:36,058
+it
+will take one of them, generate its three
+
+295
+00:28:36,058 --> 00:28:38,279
+successors and so on and so forth, that is
+how
+
+296
+00:28:38,279 --> 00:28:44,418
+search will progress. How will the search
+frontier look like or the boundary of the
+
+297
+00:28:44,419 --> 00:28:51,639
+search
+look like? It would be some of which look
+
+298
+00:28:51,638 --> 00:28:57,589
+like this. At some level, the search frontier
+would look like; it would have gone some steps
+
+299
+00:28:57,589 --> 00:29:02,869
+to this thing and some steps down at
+different parts of the space and search frontier
+
+300
+00:29:02,869 --> 00:29:03,869
+look like.
+
+301
+00:29:03,869 --> 00:29:11,979
+So, for such a problem how in terms of m and
+n, how is this open list, search frontier
+
+302
+00:29:11,980 --> 00:29:15,858
+is
+equal to the open list. So, this is the open
+
+303
+00:29:15,858 --> 00:29:26,858
+list, how the open going in terms of m and
+n,
+
+304
+00:29:26,858 --> 00:29:33,739
+the father you go away from the… So, the
+distance from the source is m plus n or i
+
+305
+00:29:33,739 --> 00:29:36,259
+plus j
+if you want to say, if you have a gone i steps
+
+306
+00:29:36,259 --> 00:29:42,919
+down and j steps to the right, it is a i plus
+j.
+
+307
+00:29:42,919 --> 00:29:48,220
+The open list is only growing linearly, as
+you go further and further away. In the worst
+
+308
+00:29:48,220 --> 00:29:53,558
+case, when you are just about to pick the
+last node, open list would be m nodes there,
+
+309
+00:29:53,558 --> 00:29:56,460
+and
+n nodes here essentially, m plus n essentially.
+
+310
+00:29:56,460 --> 00:30:01,669
+Whereas, the close list, which is all the
+nodes that we have traverse inside this area
+
+311
+00:30:01,669 --> 00:30:03,240
+is growing quadratically essentially.
+
+312
+00:30:03,240 --> 00:30:08,720
+Because, it is kind of is like an area is
+suppose through line that you are drawing
+
+313
+00:30:08,720 --> 00:30:11,829
+like
+that. So here, is one problem with the close
+
+314
+00:30:11,829 --> 00:30:17,569
+list is growing faster than the open list,
+the
+
+315
+00:30:17,569 --> 00:30:21,029
+difficulty in solving this problem comes when
+the combinations which you have, there if
+
+316
+00:30:21,029 --> 00:30:24,629
+you want to go from this node to some node
+here, there are you can go like this; or you
+
+317
+00:30:24,630 --> 00:30:28,899
+can go like this; or you can go like this;
+or you can go like this. So, there are many
+
+318
+00:30:28,898 --> 00:30:33,548
+different combinations and that is what gives
+rise to the exploding search spaces. So,
+
+319
+00:30:33,548 --> 00:30:39,519
+there is some . trying to save on the close
+list essentially.
+
+320
+00:30:39,519 --> 00:30:40,519
+..
+
+321
+00:30:40,519 --> 00:30:50,408
+So, let me introduce to a problem which has
+in the last 10 or years or maybe 15, 20 years
+
+322
+00:30:50,409 --> 00:31:04,679
+has become very important, and that is a problem
+of sequence alignment. And it is a
+
+323
+00:31:04,679 --> 00:31:11,450
+problem, which has spade work in search, search
+had become a kind of dormant area in a
+
+324
+00:31:11,450 --> 00:31:16,298
+research, but because of this new problems,
+which are coming out. People were set of
+
+325
+00:31:16,298 --> 00:31:23,230
+motivated into devising better algorithms
+essentially. So, if you look at for example,
+
+326
+00:31:23,230 --> 00:31:28,009
+D N
+A sequence alignment, and that is a problem
+
+327
+00:31:28,009 --> 00:31:33,479
+with in bio informatics, for example, you
+want to do very often essentially.
+
+328
+00:31:33,479 --> 00:31:38,499
+So you do, if you want to do for example,
+genome sequencing and thinks like that, the
+
+329
+00:31:38,499 --> 00:31:42,999
+way the sequence genome is that they get bits
+and pieces of the sequence from different
+
+330
+00:31:42,999 --> 00:31:47,529
+parts. And then they have to assemble the
+whole genome sequence by aligning, you
+
+331
+00:31:47,529 --> 00:31:51,808
+know, if there are two sequences which have
+a partial overlap. Then if they can align
+
+332
+00:31:51,808 --> 00:31:56,898
+that, then they can reconstruct .. So, will
+take a simpler version of
+
+333
+00:31:56,898 --> 00:32:05,369
+this problem, so the alphabet of this is let
+us see C A G T, which are this four chemicals,
+
+334
+00:32:05,369 --> 00:32:10,748
+which make a pure D N A, and you have sequences
+of these characters.
+
+335
+00:32:10,749 --> 00:32:26,058
+So, let us say, there is one sequence which
+is like this, A C G T C 
+
+336
+00:32:26,058 --> 00:32:30,138
+some arbitrary
+sequence I have written here. And let us say
+
+337
+00:32:30,138 --> 00:32:49,898
+there is another sequence, if you look at
+it
+
+338
+00:32:49,898 --> 00:32:54,199
+carefully, they are not identical, I made
+some small changes in the two sequences, if
+
+339
+00:32:54,200 --> 00:32:55,200
+they
+
+340
+00:32:55,200 --> 00:32:58,830
+.were identical then the problem of alignment
+is straight forward, you just put once, you
+
+341
+00:32:58,829 --> 00:33:08,298
+can against the other sequence. If they are
+not identical, the two sequences and that
+
+342
+00:33:08,298 --> 00:33:13,378
+includes the possibility that they are of
+different lens also, I may you this sequence,
+
+343
+00:33:13,378 --> 00:33:16,548
+I
+may give you some another sequence like, T
+
+344
+00:33:16,548 --> 00:33:23,028
+A C G then if I say, can you align this
+sequence with this sequence, you might say
+
+345
+00:33:23,028 --> 00:33:28,058
+that yes, I can take this part here, and
+alignment this part here and have an alignment
+
+346
+00:33:28,058 --> 00:33:29,099
+essentially.
+
+347
+00:33:29,099 --> 00:33:37,699
+But, what about sequences like this, you can
+see that, I can match A with A; C with C;
+
+348
+00:33:37,700 --> 00:33:42,848
+G
+with G; but now I have T here and a C here
+
+349
+00:33:42,848 --> 00:33:47,689
+essentially, what do I do essentially. So,
+in
+
+350
+00:33:47,690 --> 00:34:02,509
+sequence alignment, you are allowed to insert
+gaps, if inserting the gap improves, the rest
+
+351
+00:34:02,509 --> 00:34:06,398
+of the sequence alignment, then you allowed
+to insert the gap. So, you can see that, that
+
+352
+00:34:06,398 --> 00:34:13,138
+once I align A C G with A C G here, then if
+I insert the gap here, which means, I will
+
+353
+00:34:13,139 --> 00:34:18,950
+align this T with a gap. So, let us say this
+transfers that then I can again align C A
+
+354
+00:34:18,949 --> 00:34:22,819
+G
+here, with C A G here, T C G, T C G everything
+
+355
+00:34:22,820 --> 00:34:30,579
+is getting aligned, up to this T A.
+
+356
+00:34:30,579 --> 00:34:34,160
+And then suddenly, I have to insert another
+gap, so I insert one gap here, and then I
+
+357
+00:34:34,159 --> 00:34:38,730
+can
+.. So, if you can make out this diagram, I
+
+358
+00:34:38,731 --> 00:34:43,090
+am inserting a gap here, in
+this sequence and I am inserting a gap here
+
+359
+00:34:43,090 --> 00:34:51,590
+in this sequence and by doing so, I am
+improving the alignment essentially. So, the
+
+360
+00:34:51,590 --> 00:35:00,590
+problem of sequence alignment is to find,
+some alignment, which is optimal according
+
+361
+00:35:00,590 --> 00:35:06,000
+to some criteria will define that in the
+moment, which is the best essentially. Observe
+
+362
+00:35:06,000 --> 00:35:11,329
+that, I could have simplify said like this,
+that take this whole sequence, and the place
+
+363
+00:35:11,329 --> 00:35:14,190
+it with gaps all the way, and then start this
+sequence.
+
+364
+00:35:14,190 --> 00:35:21,679
+So, I could have then something like this,
+A C G T C A up to C G here, and then started
+
+365
+00:35:21,679 --> 00:35:33,589
+the next sequence from here, A C G C A and
+so on, and these are all gaps. That is of
+
+366
+00:35:33,590 --> 00:35:38,809
+course, a simple algorithm, take the first
+sequence, align it with gaps, then take the
+
+367
+00:35:38,809 --> 00:35:42,719
+second sequence and insert gaps in the first
+sequence in that place; obviously, that is
+
+368
+00:35:42,719 --> 00:35:46,609
+not
+a good alignment essentially. So, how do we
+
+369
+00:35:46,610 --> 00:35:53,289
+differentiate between good and bad, we
+give some cost to every operation, and let
+
+370
+00:35:53,289 --> 00:36:03,440
+us say we do the following in practice, people
+follow probably more discriminative cost function,
+
+371
+00:36:03,440 --> 00:36:08,170
+but will follow simple cost function,
+which says that matching.
+
+372
+00:36:08,170 --> 00:36:21,559
+.So, if there is a match, then cost is 0,
+so if I am aligning in A with an A, I am paying
+
+373
+00:36:21,559 --> 00:36:31,509
+a 0
+cost, mismatch cost 1. So, if I am aligning
+
+374
+00:36:31,510 --> 00:36:43,670
+a T with a C for example here, then I am
+paying a cost of 1 and a gap, I have to pay
+
+375
+00:36:43,670 --> 00:36:48,579
+a cost of 2. So, let us say that, for example
+if
+
+376
+00:36:48,579 --> 00:36:57,250
+there is only one character, which is different,
+if let us say only this T and this, instead
+
+377
+00:36:57,250 --> 00:36:59,260
+of
+this C there was a... let us say another C
+
+378
+00:36:59,260 --> 00:37:01,930
+here or something like that or a A or a G,
+which
+
+379
+00:37:01,929 --> 00:37:08,269
+is not T, and the rest was the same. Then
+I could get away by paying a cost of mismatch,
+
+380
+00:37:08,269 --> 00:37:14,610
+which is 1, rather than insert two gaps to
+you know, take care of those things essentially.
+
+381
+00:37:14,610 --> 00:37:20,620
+But, in a situation like this, where you can
+see that, inserting one gap here produces
+
+382
+00:37:20,619 --> 00:37:25,960
+a
+match for so many more characters, simply
+
+383
+00:37:25,960 --> 00:37:28,949
+by inserting one gap here. So, I am the cost
+I
+
+384
+00:37:28,949 --> 00:37:34,279
+am paying by inserting this gap, I am regaining
+by getting 0 costs for all the rest
+
+385
+00:37:34,280 --> 00:37:38,260
+essentially. So, obviously there is a notion
+of optimality here and we want to find a
+
+386
+00:37:38,260 --> 00:37:43,470
+sequence alignment, which has optimal cost
+based on these three, this. In practice of
+
+387
+00:37:43,469 --> 00:37:49,839
+course, you may have a cost matrices which
+would say that, aligning a C with A has a
+
+388
+00:37:49,840 --> 00:37:53,870
+certain cost, aligning a C with a G has a
+certain cost and so on and so forth or
+
+389
+00:37:53,869 --> 00:37:55,829
+mismatches may have you know different cost.
+
+390
+00:37:55,829 --> 00:38:04,119
+We are just assuming that all mismatches have
+1 cost and gap filling has 2 costs. So, how
+
+391
+00:38:04,119 --> 00:38:12,799
+does one solve this problem, what would be
+a good algorithm to do sequence alignment?
+
+392
+00:38:12,800 --> 00:38:14,550
+.dynamic program
+
+393
+00:38:14,550 --> 00:38:27,670
+Dynamic programming. So, they say they if
+to use the animal programming, till this bio
+
+394
+00:38:27,670 --> 00:38:33,680
+informatics people came in and then suddenly,
+we have sequences of hundreds of
+
+395
+00:38:33,679 --> 00:38:39,039
+thousands of characters and those algorithms,
+so good is essentially failed essentially.
+
+396
+00:38:39,039 --> 00:38:42,360
+So,
+if you do some kind of an analogy, if you
+
+397
+00:38:42,360 --> 00:38:45,530
+would see the dynamic programming is like
+branch and bound that we would, that we were
+
+398
+00:38:45,530 --> 00:38:53,110
+studying essentially in some sense
+essentially. So, you are looking at this graph
+
+399
+00:38:53,110 --> 00:39:00,010
+.you can use the word as the rows and column
+and if cost will diagonal ((Refer
+
+400
+00:39:00,010 --> 00:39:04,050
+Time.) so if you move long diagonal . and
+machining it.
+
+401
+00:39:04,050 --> 00:39:05,050
+..
+
+402
+00:39:05,050 --> 00:39:10,920
+So, let us try that, this is by first sequence
+here A C G T C. So, I will just use the few
+
+403
+00:39:10,920 --> 00:39:23,320
+characters A C G T C. So, I will draw this
+here, and I will draw this here. And let me
+
+404
+00:39:23,320 --> 00:39:41,559
+take five characters from here, A C G C A,
+A C G C A or maybe I should, I have started
+
+405
+00:39:41,559 --> 00:39:47,900
+labeling from the second listing, any way
+let us assume that, we are working here. So,
+
+406
+00:39:47,900 --> 00:39:56,329
+now you can see that a diagonal move in this.
+So, if this I look at this alignment,
+
+407
+00:39:56,329 --> 00:40:00,309
+matching A with A, C with C, G with G and
+T with C.
+
+408
+00:40:00,309 --> 00:40:04,320
+So, let us forget the first ones, I should
+have really drawn this like that, but this
+
+409
+00:40:04,320 --> 00:40:07,390
+move
+amounts to saying that I am matching C with
+
+410
+00:40:07,389 --> 00:40:19,369
+this C, then I am matching this G with this
+G, but then I run with T with ... So, I want
+
+411
+00:40:19,369 --> 00:40:23,019
+to insert a gap here, in the second this,
+which
+
+412
+00:40:23,019 --> 00:40:26,599
+means I am not going to traverse a character,
+which means I am not going to traverse
+
+413
+00:40:26,599 --> 00:40:35,029
+down .. So, the next move would be like this
+and then I would be in
+
+414
+00:40:35,030 --> 00:40:37,330
+this node, and then I would continue like
+this.
+
+415
+00:40:37,329 --> 00:40:46,630
+So, can you see that, the first move aligns
+C with C this move, the second move aligns
+
+416
+00:40:46,630 --> 00:40:50,460
+G,
+it going from here; I am going from C to G
+
+417
+00:40:50,460 --> 00:40:54,869
+and C to G here, so it aligns that. The third
+move I am going from G to C, I am not going
+
+418
+00:40:54,869 --> 00:40:59,619
+from G to C, I am staying in G, but I am
+going from G to T here, which is like inserting
+
+419
+00:40:59,619 --> 00:41:05,679
+a gap in this essentially. Of course, I am
+not shown mismatches here, but you can see
+
+420
+00:41:05,679 --> 00:41:08,899
+that the cause of diagonals would be either
+
+421
+00:41:08,900 --> 00:41:15,400
+.0 or 1, depending on whether the two characters
+that you are moving on are same or
+
+422
+00:41:15,400 --> 00:41:16,400
+different.
+
+423
+00:41:16,400 --> 00:41:23,000
+So, if I move with A to A cost is 0, if I
+move with C to C cost is 0, from move with
+
+424
+00:41:23,000 --> 00:41:25,400
+G
+with G, the cost is 0, if I would align T
+
+425
+00:41:25,400 --> 00:41:31,050
+with C and moved diagonally, then the cost
+would be if 1. But, instead I am saying, I
+
+426
+00:41:31,050 --> 00:41:32,760
+am going to insert a blank here, which is
+the
+
+427
+00:41:32,760 --> 00:41:39,030
+horizontal move here and the cost is 2. So,
+essentially you can actually forget about
+
+428
+00:41:39,030 --> 00:41:45,700
+alignment at this point and remember that
+the cost of every horizontal, a vertical move
+
+429
+00:41:45,699 --> 00:41:49,169
+is
+2. And the cost of a diagonal move is either
+
+430
+00:41:49,170 --> 00:41:52,639
+0 or 1, depending on whether a moving on a
+same character.
+
+431
+00:41:52,639 --> 00:41:57,639
+So, remember that moving down means, moving
+in this string; moving horizontally
+
+432
+00:41:57,639 --> 00:42:01,889
+means moving in the other string and moving
+diagonally means moving on both strings
+
+433
+00:42:01,889 --> 00:42:05,569
+and if you are moving on the same character
+then cost is 0, if you are moving on a
+
+434
+00:42:05,570 --> 00:42:11,740
+different character, cost is 1. So, we are
+transforming this problem of sequence alignment
+
+435
+00:42:11,739 --> 00:42:17,539
+into a graph search problem, where you have
+to go from this corner of the graph to the
+
+436
+00:42:17,539 --> 00:42:23,429
+other corner of the graph with a optimal solution
+cost essentially. So, any question about
+
+437
+00:42:23,429 --> 00:42:24,429
+this.
+
+438
+00:42:24,429 --> 00:42:31,629
+So, this has been, this has been a motivating
+problem for A I search community to look
+
+439
+00:42:31,630 --> 00:42:37,360
+for newer and better problem, better ways
+of solving search problems. And why do we
+
+440
+00:42:37,360 --> 00:42:42,710
+need, what do we mean by newer and better
+ways? We should be able to handle such
+
+441
+00:42:42,710 --> 00:42:49,940
+graphs which have, let us say hundred thousand
+nodes in this direction and hundred
+
+442
+00:42:49,940 --> 00:42:57,570
+thousand nodes in the vertical direction.
+And then you can imagine that and A star like
+
+443
+00:42:57,570 --> 00:43:05,019
+algorithm will quickly run out of space essentially.
+So, the motivation here is to say one
+
+444
+00:43:05,019 --> 00:43:09,199
+space essentially.
+
+445
+00:43:09,199 --> 00:43:13,509
+And here, I have just shown two strings, you
+can extend this to multiple strings
+
+446
+00:43:13,510 --> 00:43:17,640
+assignments, alignments and you can imagine
+a third dimension coming here and then a
+
+447
+00:43:17,639 --> 00:43:21,129
+four dimension and then a fifth dimension
+, you can align multiple strings. So, the
+
+448
+00:43:21,130 --> 00:43:23,980
+graph
+would become multidimensional in nature and
+
+449
+00:43:23,980 --> 00:43:29,760
+then you would have to find from one
+corner to the opposite corner essentially.
+
+450
+00:43:29,760 --> 00:43:34,140
+So, the problem is have been transformed into
+a
+
+451
+00:43:34,139 --> 00:43:38,839
+graph search problem and the goal is to save
+one space essentially.
+
+452
+00:43:38,840 --> 00:43:45,920
+.So, we will begin with talking about saving
+on close list and again, the motivation is
+
+453
+00:43:45,920 --> 00:43:48,570
+the
+same graph. Because, as you can imagine, if
+
+454
+00:43:48,570 --> 00:43:56,361
+this was to be my search frontier which
+means, this is on open, this is on open, this
+
+455
+00:43:56,360 --> 00:43:58,329
+is on open, this is on open or whatever, this
+is
+
+456
+00:43:58,329 --> 00:44:02,699
+on open, this is on open, this is on open.
+If this was the nodes which are an open then
+
+457
+00:44:02,699 --> 00:44:06,489
+the
+size of search can be utmost m plus n. So,
+
+458
+00:44:06,489 --> 00:44:11,079
+it is going to grow linearly, at least it
+will be
+
+459
+00:44:11,079 --> 00:44:13,349
+the smaller of m and n, as it goes down.
+
+460
+00:44:13,349 --> 00:44:19,380
+Initially of course, it will be very small,
+but the size of closed is going quadractically,
+
+461
+00:44:19,380 --> 00:44:24,269
+because that is would like the area, which
+is enclosed in this korf, which is m into
+
+462
+00:44:24,269 --> 00:44:28,039
+n in
+the worst case at that point, when you reach
+
+463
+00:44:28,039 --> 00:44:33,159
+there. If you have see explode the entire
+graph and we want to see. So, this is the
+
+464
+00:44:33,159 --> 00:44:37,980
+motivating problem where, we would be happy
+to say one closely essentially. So, let us
+
+465
+00:44:37,980 --> 00:44:40,780
+just ask the question, what is close doing
+for us
+
+466
+00:44:40,780 --> 00:44:51,670
+in search, before we move on to the algorithms
+which. So, this question, no closed,
+
+467
+00:44:51,670 --> 00:45:00,358
+supposing, I am did not have closed, what
+would happen to my problem.
+
+468
+00:45:00,358 --> 00:45:01,358
+.
+
+469
+00:45:01,358 --> 00:45:13,009
+So, what is the purpose, what is the function
+that a functionality of close list in a search
+
+470
+00:45:13,010 --> 00:45:31,700
+algorithm one is avoid looping. Now, this
+motivating example may not allow for
+
+471
+00:45:31,699 --> 00:45:35,739
+looping, because we have said the edges are
+directed, but in general of course, looping
+
+472
+00:45:35,739 --> 00:45:41,469
+is
+possible. So, we will take a more general
+
+473
+00:45:41,469 --> 00:45:47,639
+view, two is find better path. So, for example,
+
+474
+00:45:47,639 --> 00:45:54,969
+.in . star algorithm or in A star algorithm,
+you keep the nodes in the
+
+475
+00:45:54,969 --> 00:45:59,669
+closed and you may find a better path them
+in which case, you update that path and that
+
+476
+00:45:59,670 --> 00:46:01,500
+kind of a thing.
+
+477
+00:46:01,500 --> 00:46:15,800
+And the third thing, one more things closed
+as for us. In general, if you look at search
+
+478
+00:46:15,800 --> 00:46:28,100
+in
+a planning problem, what do you do, if goal
+
+479
+00:46:28,099 --> 00:46:33,159
+test is true?
+
+480
+00:46:33,159 --> 00:46:34,159
+..
+
+481
+00:46:34,159 --> 00:46:38,000
+Closed has all the information about parent
+pointers, which allows us to reconstruct the
+
+482
+00:46:38,000 --> 00:46:45,099
+path essentially. So, the third thing it does
+is, it allows us to reconstruct the path.
+
+483
+00:46:45,099 --> 00:46:50,690
+So, if
+we are going to think of having an algorithm
+
+484
+00:46:50,690 --> 00:46:57,720
+without closed, then we would have to
+worry about, these three issues or these three
+
+485
+00:46:57,719 --> 00:47:04,219
+things that closes doing for us essentially.
+So, let me first begin with the second one,
+
+486
+00:47:04,219 --> 00:47:11,989
+how can we get around this problem that, I
+do
+
+487
+00:47:11,989 --> 00:47:21,809
+not need to maintain close with one path and
+then find a better path later and I do not
+
+488
+00:47:21,809 --> 00:47:24,840
+want to do all this.
+
+489
+00:47:24,840 --> 00:47:30,809
+. star algorithm maintains a value, but in
+the closed or in the colored
+
+490
+00:47:30,809 --> 00:47:38,130
+node as they call it, but it may find a better
+path, no it may not find a better path. In
+
+491
+00:47:38,130 --> 00:47:41,750
+. star algorithm, when once it colors a path
+or once it puts it in close
+
+492
+00:47:41,750 --> 00:47:47,630
+either always found the best path essentially.
+But, in A star also we can do that and the
+
+493
+00:47:47,630 --> 00:47:57,680
+we had discussed that, when in A star can
+you say, that if you have put a node in closed,
+
+494
+00:47:57,679 --> 00:48:00,699
+you have already found the best path to the
+node.
+
+495
+00:48:00,699 --> 00:48:07,710
+And you would not find a better path later,
+when does that happen, come on we just did
+
+496
+00:48:07,710 --> 00:48:18,119
+it. I mean not just now, but in the recent
+past, when the monotone condition, when the
+
+497
+00:48:18,119 --> 00:48:24,569
+heuristic function satisfies the monotone
+condition, we proved that, whenever node is
+
+498
+00:48:24,570 --> 00:48:30,059
+picked for inspection, which means it is put
+in to close. A star has already find, found
+
+499
+00:48:30,059 --> 00:48:31,860
+the
+optimal cost of that node essentially. So,
+
+500
+00:48:31,860 --> 00:48:36,070
+this updating of past we do not have to worry
+about that, what we do have to worry about
+
+501
+00:48:36,070 --> 00:48:39,690
+is avoid looping and reconstruct path.
+
+502
+00:48:39,690 --> 00:48:46,420
+.So, we will do that in the next class, we
+will look at some algorithms for which
+
+503
+00:48:46,420 --> 00:48:53,039
+drastically proven the close list. After that,
+we will look at some algorithms, which
+
+504
+00:48:53,039 --> 00:48:56,090
+proven the open list of course, we have seen
+I D A star is one such a example, which
+
+505
+00:48:56,090 --> 00:49:02,210
+proves a open list, but we will look at a
+other variations. And then we will try to
+
+506
+00:49:02,210 --> 00:49:03,840
+see
+whether, we can have an algorithm which proven
+
+507
+00:49:03,840 --> 00:49:11,950
+both the list essentially. We shall take
+us to the state of art till about 2005, when
+
+508
+00:49:11,949 --> 00:49:16,019
+that last paper was published I think. So,
+I will
+
+509
+00:49:16,019 --> 00:49:19,068
+stop here and then we will take those algorithms
+of in the next class essentially.
+
+510
+00:49:19,068 --> 00:49:29,068
+.
+

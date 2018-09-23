@@ -1,0 +1,2496 @@
+﻿1
+00:00:10,900 --> 00:00:19,390
+So, you were looking at optimization. And
+remember that we came to optimization from
+
+2
+00:00:19,390 --> 00:00:35,870
+state space search.
+
+3
+00:00:35,869 --> 00:00:36,869
+.
+
+4
+00:00:36,869 --> 00:00:41,738
+And the way with this was that, we looked
+at the heuristic function. That was used in
+
+5
+00:00:41,738 --> 00:00:58,030
+best for search. And said that this, defines
+at again over which we use an algorithm
+
+6
+00:00:58,030 --> 00:01:08,599
+called hill climbing, which is a local search
+algorithm. As the first, a global algorithm
+
+7
+00:01:08,599 --> 00:01:13,250
+which best first search was, which means at
+the algorithm looks only at it is
+
+8
+00:01:13,250 --> 00:01:18,829
+neighborhood. Immediate neighborhood in the
+state, or in the solutions space and moves
+
+9
+00:01:18,829 --> 00:01:21,219
+to one of them especially.
+
+10
+00:01:21,219 --> 00:01:29,750
+And then, we saw that local search algorithms
+can get stuck in local maxima, or local
+
+11
+00:01:29,750 --> 00:01:36,560
+minimize is the case may be. And so the theme
+for our said this movement, is escaping
+
+12
+00:01:36,560 --> 00:01:55,620
+from those minima. That, how can we improve
+upon hill climbing. So, what does hill
+
+13
+00:01:55,620 --> 00:02:06,380
+.climbing do? Hill climbing does, what we
+will call as exploitation. And exploitation
+
+14
+00:02:06,379 --> 00:02:09,590
+of
+the heuristic function essentially, that it
+
+15
+00:02:09,590 --> 00:02:11,400
+basically follows the heuristic function.
+
+16
+00:02:11,400 --> 00:02:15,980
+It looks in around it is neighborhood. And
+wherever the heuristic function is getting,
+
+17
+00:02:15,979 --> 00:02:20,548
+a
+maximum increase. Or in other words, in the
+
+18
+00:02:20,549 --> 00:02:24,920
+direction of the steepest gradient, it makes
+one move. And then, repeats it process still
+
+19
+00:02:24,919 --> 00:02:36,688
+it cannot find the better neighbor. And in
+escaping local maxima, we said that one of
+
+20
+00:02:36,688 --> 00:02:39,009
+the first algorithm that we looked at; or
+in
+
+21
+00:02:39,009 --> 00:02:54,139
+fact, the only algorithm that we have seen
+is variable neighborhood descent.
+
+22
+00:02:54,139 --> 00:03:04,108
+And what this algorithm did was that, it tried
+out a variety of neighborhood functions.
+
+23
+00:03:04,109 --> 00:03:13,730
+So, for us the neighborhood functions is given
+by the MoveGen function. And we also
+
+24
+00:03:13,729 --> 00:03:19,968
+said that, we are moving from state space
+to solution space search, which means that
+
+25
+00:03:19,968 --> 00:03:23,870
+we
+are perturbing candidate solutions to generate
+
+26
+00:03:23,870 --> 00:03:28,419
+new solutions. And we saw the example
+with said, that you can flip 1 bit or you
+
+27
+00:03:28,419 --> 00:03:32,159
+can flip 2 bits or up to 2 bits or 3 bits
+and so on.
+
+28
+00:03:32,158 --> 00:03:37,188
+You can generate a variety of neighborhood
+functions. And what neighbor, variable
+
+29
+00:03:37,188 --> 00:03:43,218
+neighborhood descent is that when it get stuck,
+it does a series of hill climbing's. And
+
+30
+00:03:43,218 --> 00:03:48,840
+when it get stuck, at a local maxima or at
+a maxima it does not know, that is local or
+
+31
+00:03:48,840 --> 00:03:52,049
+not.
+It increases the density of the neighborhood
+
+32
+00:03:52,049 --> 00:03:57,819
+function and tries hill climbing, all over
+again essentially. So, we want to move, we
+
+33
+00:03:57,818 --> 00:04:04,259
+want to look at different other approaches
+which will help us get around local maxima.
+
+34
+00:04:04,259 --> 00:04:11,340
+So, in the process when we are talking of
+optimization, we will use the notion evaluation.
+
+35
+00:04:11,340 --> 00:04:20,000
+So, this is just particular to the optimization
+community. So, but you must keep in mind
+
+36
+00:04:20,000 --> 00:04:24,300
+that, we are talking about the same function;
+whether it is h of n or evolve of n. It is
+
+37
+00:04:24,300 --> 00:04:31,210
+basically a value that you get, for a given
+candidate. And the task is to maximize, to
+
+38
+00:04:31,209 --> 00:04:32,630
+find
+the candidate which has the maximum, this
+
+39
+00:04:32,630 --> 00:04:38,369
+value. So, when heuristic functions, if you
+are thinking of heuristic as a distance, then
+
+40
+00:04:38,370 --> 00:04:41,120
+you want to find them.
+
+41
+00:04:41,120 --> 00:04:46,329
+State with the smallest distance, which is
+the goal state or if you have pause it, like
+
+42
+00:04:46,329 --> 00:04:50,788
+within the block problem. That some heuristic
+function, which has the maximum value at
+
+43
+00:04:50,788 --> 00:04:54,490
+the goal state, then you are maximizing essentially.
+So, instead of calling it heuristic
+
+44
+00:04:54,490 --> 00:04:58,579
+function, we call it evolve function. But,
+the process is still the same that, we all
+
+45
+00:04:58,579 --> 00:04:59,579
+want to
+
+46
+00:04:59,579 --> 00:05:04,680
+.find the note with the maximum value or the
+minimum value, the case may be. So, today
+
+47
+00:05:04,680 --> 00:05:14,288
+let me introduce this. One of the most talked
+about problems in computer science, which
+
+48
+00:05:14,288 --> 00:05:15,849
+is the tabling salesman problem.
+
+49
+00:05:15,850 --> 00:05:16,850
+.
+
+50
+00:05:16,850 --> 00:05:21,780
+I am sure, you are all familiar with it. So,
+I will just write the acrolein here. TSP stands
+
+51
+00:05:21,779 --> 00:05:29,089
+for Travelling Salesman Problem. And it is
+one of the simplest problems to state and
+
+52
+00:05:29,089 --> 00:05:33,489
+one
+of the hardest problems to solve this easily.
+
+53
+00:05:33,490 --> 00:05:41,699
+So, a travelling salesman problem is
+basically, the motivation is set to be to
+
+54
+00:05:41,699 --> 00:05:46,020
+help a travelling salesman, who has to visit
+many
+
+55
+00:05:46,019 --> 00:05:52,349
+cities. Let us in one day or something like
+that. And come to his home city. And do the
+
+56
+00:05:52,350 --> 00:05:54,800
+whole thing with some minimum cost, in some
+manner essentially.
+
+57
+00:05:54,800 --> 00:06:05,710
+So, I suppose everyone is familiar with the
+TSP problem. We will say that, we have city
+
+58
+00:06:05,709 --> 00:06:19,638
+1 to city n, n cities which we will also denote
+by 1 to n. Just has a short hand. Easier to
+
+59
+00:06:19,639 --> 00:06:25,100
+refer to is essentially. So, there is n cities,
+1 to n. And you have to go from one place
+
+60
+00:06:25,100 --> 00:06:29,699
+to
+another essentially. one city to another,
+
+61
+00:06:29,699 --> 00:06:33,579
+without visiting the same cities twice. Now,
+in
+
+62
+00:06:33,579 --> 00:06:38,978
+practice off course, in some problems it may
+be necessary for you to visit the same city
+
+63
+00:06:38,978 --> 00:06:39,978
+twice essentially.
+
+64
+00:06:39,978 --> 00:06:48,360
+So, for example, if there is a small Ireland
+near the coastline, to go you go to that Ireland
+
+65
+00:06:48,360 --> 00:06:53,479
+.from one city. Let us say Chennai for example.
+And you come back to Chennai and then,
+
+66
+00:06:53,478 --> 00:06:58,250
+go somewhere else, essentially. But, we will
+ignore all those problems. And we will
+
+67
+00:06:58,250 --> 00:07:04,918
+assume that, the classical problem of visiting
+each city exactly once. Essentially is what
+
+68
+00:07:04,918 --> 00:07:14,599
+we want to solve. Now, in practice a city
+network may not be completely connected.
+
+69
+00:07:14,600 --> 00:07:18,770
+In the sense that, if it is a road network,
+you may have roads from some cities to other
+
+70
+00:07:18,769 --> 00:07:25,729
+cities and so on and so forth. But, not for
+example a direct road from, let say here to
+
+71
+00:07:25,730 --> 00:07:31,800
+Nagpur or something like that. But, we have
+indirect roads, in the sense. That may be,
+
+72
+00:07:31,800 --> 00:07:35,680
+you go from here to Vijayawada. And from Vijayawada,
+you go Nagpur or something
+
+73
+00:07:35,680 --> 00:07:45,689
+like that. But, in general it has been found
+that, it is easier to solve TSP when the graph,
+
+74
+00:07:45,689 --> 00:07:47,718
+underline graph is completely connected.
+
+75
+00:07:47,718 --> 00:08:02,478
+So, we will assume that, this is completely
+connected. And we can always convert a nonconnected
+
+76
+00:08:02,478 --> 00:08:07,620
+graph to a completely connected graph. I adding
+new edges. And making sure
+
+77
+00:08:07,620 --> 00:08:12,060
+those edges have very high weight. So, that
+they never figure in the solution actually.
+
+78
+00:08:12,060 --> 00:08:21,220
+But, the solving process becomes easier. Now,
+TSP occurs in many practical problem.
+
+79
+00:08:21,220 --> 00:08:40,870
+So, for example drilling circuit boards, if
+you want to manufacture circuit boards then,
+
+80
+00:08:40,870 --> 00:08:47,789
+you have to drill many holes on that board.
+
+81
+00:08:47,789 --> 00:08:52,870
+And if you think of each hole as a city then,
+you have to visit all these locations keep
+
+82
+00:08:52,870 --> 00:08:58,019
+drilling holes, essentially. So, we have something
+like a TSP to solve them. And such
+
+83
+00:08:58,019 --> 00:09:20,879
+problems have something like thousands of.
+So, it is not uncommon to have a problem
+
+84
+00:09:20,879 --> 00:09:26,889
+with eight thousand holes to be drilled and
+think like that. And then, you can see that
+
+85
+00:09:26,889 --> 00:09:32,870
+the
+complexity of the problems grows very quickly.
+
+86
+00:09:32,870 --> 00:09:39,560
+So, what is the number of tours that we
+have. For, if you number of n cities, how
+
+87
+00:09:39,559 --> 00:09:46,539
+many tours can we have for the n cities.
+
+88
+00:09:46,539 --> 00:09:58,879
+So, we can have n factorial tours. And one
+of the notations that we will use for tour
+
+89
+00:09:58,879 --> 00:10:01,480
+is,
+something like this. So, for example, if you
+
+90
+00:10:01,480 --> 00:10:18,409
+have nine cities then, a tour could be
+something like 2 7 1 6 4 3 8 5 9. So, list
+
+91
+00:10:18,409 --> 00:10:21,620
+city names or in this case city indexes or
+city
+
+92
+00:10:21,620 --> 00:10:27,370
+numbers, gives you a candidate tour, essentially.
+So, this is a tour says that, you started
+
+93
+00:10:27,370 --> 00:10:33,279
+cities 2 then, go to city 7, then go to city
+1 then, go to city 6 and so on essentially.
+
+94
+00:10:33,279 --> 00:10:38,120
+We can represent a tour in this session. And
+we can see that, we can honest choose the
+
+95
+00:10:38,120 --> 00:10:44,429
+.first number is n ways, the second one in
+and so on. And that is, how we get that number
+
+96
+00:10:44,429 --> 00:10:54,370
+factorial n. But, many of these tours are
+duplicates of each other. In particular, if
+
+97
+00:10:54,370 --> 00:10:57,610
+I rotate
+this number, if you think of this is a number,
+
+98
+00:10:57,610 --> 00:11:03,060
+I start with 7 and 2 comes at this end. Then,
+it is a same tour essentially. Because, remember
+
+99
+00:11:03,059 --> 00:11:07,189
+that in the travelling salesman problem,
+you have to come back to the same cities.
+
+100
+00:11:07,190 --> 00:11:11,740
+So, after 9 we are going to come back with
+2. So, I could started with 7 and return to
+
+101
+00:11:11,740 --> 00:11:16,299
+here. I could start with 1 and return 27 here
+and that would be the same essentially. So,
+
+102
+00:11:16,299 --> 00:11:26,390
+you should device this way n, because there
+are these n rotations that are possible. And
+
+103
+00:11:26,390 --> 00:11:36,789
+in the addition, if I write it in the reverse
+order 9 5 8 3 4 6 1 7 2, then also we will
+
+104
+00:11:36,789 --> 00:11:44,370
+assume it is the same tour. So, we will assume
+that the cost of going from city a to b is
+
+105
+00:11:44,370 --> 00:11:47,139
+the same as the cost of going from city b
+to a.
+
+106
+00:11:47,139 --> 00:11:53,620
+So, you have to divide further by 2. So, you
+have divide by 2 n. So, what we get is, n
+
+107
+00:11:53,620 --> 00:12:05,500
+minus 1 factorial divided by 2. So, this is
+a number of distinct tours, which means say
+
+108
+00:12:05,500 --> 00:12:08,720
+no
+2 tours are identical. Of course, in factors
+
+109
+00:12:08,720 --> 00:12:12,100
+it may not be easy to recognize the tours,
+the
+
+110
+00:12:12,100 --> 00:12:18,570
+distinct tours. So, we can say that we have
+about n factorial. The size of the space is
+
+111
+00:12:18,570 --> 00:12:22,170
+end
+factorial, essentially. How bad is the factorial
+
+112
+00:12:22,169 --> 00:12:25,000
+function?
+
+113
+00:12:25,000 --> 00:12:34,620
+So, remember that we has said when we have
+talking about sat, we had said that a 100
+
+114
+00:12:34,620 --> 00:12:41,310
+variable SAT problem has to raised to 100,
+the size of the space is 2. So, 100 variable
+
+115
+00:12:41,309 --> 00:12:53,359
+SAT has 2 raised n, which we said was about
+10 raised to 30. And we have in sought of
+
+116
+00:12:53,360 --> 00:13:00,649
+talking about this large numbers, and say
+how big these numbers. We try to imagine how
+
+117
+00:13:00,649 --> 00:13:08,500
+big these numbers, really or essentially.
+So, you must whenever you get time, look at
+
+118
+00:13:08,500 --> 00:13:11,070
+this
+book call mathematical themes.
+
+119
+00:13:11,070 --> 00:13:19,879
+A mathematical theme, which is by I keep talking
+about quite often. And one of the
+
+120
+00:13:19,879 --> 00:13:24,509
+articles in that book is or one of the chapters
+in this book is, about how we cannot
+
+121
+00:13:24,509 --> 00:13:30,789
+distinguish between large numbers. So, we
+cannot if I say 25 billion or if I say 25
+
+122
+00:13:30,789 --> 00:13:34,319
+million, they basically appears same to you
+essentially. I mean in the sense, you do not
+
+123
+00:13:34,320 --> 00:13:42,320
+have a sense for large number. Essentially,
+if I say that, it takes 10 is to 27 let say
+
+124
+00:13:42,320 --> 00:13:50,610
+seconds. And if I say it takes 10 to 29 seconds,
+it sounds almost the same to us.
+
+125
+00:13:50,610 --> 00:13:55,550
+.But in fact, is of course, 10 is to 29 is
+100 times 10 is to 27 and we sort of 10 to
+
+126
+00:13:55,549 --> 00:13:57,779
+lose
+sense, of in essentially. So, we have seen
+
+127
+00:13:57,779 --> 00:14:02,799
+the 10 raised to 30, extremely large numbers.
+And if you have to explore all of them, it
+
+128
+00:14:02,799 --> 00:14:10,059
+would be billions of years essentially. But,
+100
+
+129
+00:14:10,059 --> 00:14:22,729
+variable TSP is about 10 raised to 157. So,
+TSP is much, the factorial function is much
+
+130
+00:14:22,730 --> 00:14:30,560
+much much verse in terms of how fast it grows,
+has compare to the explanation function.
+
+131
+00:14:30,559 --> 00:14:35,809
+So, the SAT problem is exponentially hard.
+In fact, it known to be n p completes. It
+
+132
+00:14:35,809 --> 00:14:37,260
+for
+the first problem, for that was shown to be
+
+133
+00:14:37,260 --> 00:14:42,519
+n p complete. TSP is verse an exponentially,
+it is factorial and factorial tends to go
+
+134
+00:14:42,519 --> 00:14:44,990
+much much faster. And we can see that, the
+100
+
+135
+00:14:44,990 --> 00:14:51,879
+variable TSP has about 10 is to 157 possible
+different, possible to us. And that is the
+
+136
+00:14:51,879 --> 00:14:56,730
+number, that we cannot even began to imagine
+essentially. So, as something to compare
+
+137
+00:14:56,730 --> 00:15:01,779
+with, we can say how many fundamental particles.
+
+138
+00:15:01,779 --> 00:15:11,350
+Let say as some level electrons for example,
+are there in this entire universe. Does
+
+139
+00:15:11,350 --> 00:15:20,370
+anyone have an idea? How many particles are
+there in the universe, at some level of
+
+140
+00:15:20,370 --> 00:15:22,039
+detail, essentially?
+
+141
+00:15:22,039 --> 00:15:23,039
+..
+
+142
+00:15:23,039 --> 00:15:30,250
+Yes. It is in similar, that somewhere 10 raise
+to 75, 10 raise to 80 depending on what
+
+143
+00:15:30,250 --> 00:15:34,769
+level you looking at. So, the total number
+of particles in the universe is about 10 raise
+
+144
+00:15:34,769 --> 00:15:38,679
+to
+80. See each of them was a super computer,
+
+145
+00:15:38,679 --> 00:15:43,159
+examining billions of states per second. We
+would still need billions and billions of
+
+146
+00:15:43,159 --> 00:15:45,129
+years. So, these are the very large numbers
+that,
+
+147
+00:15:45,129 --> 00:15:52,090
+you have to tackle. And that is why, you cannot
+even hope to solve this completely.
+
+148
+00:15:52,090 --> 00:15:57,170
+You cannot even hope to find them optimal
+solutions for something like, TSP. And in
+
+149
+00:15:57,169 --> 00:16:02,479
+that sense, many people call TSP has the holy
+grail of computer science that, how to find
+
+150
+00:16:02,480 --> 00:16:15,560
+good algorithms to solve TSP is a great motivator,
+essentially. Now, one thing that we
+
+151
+00:16:15,559 --> 00:16:21,599
+have talking about so what is the problem?
+The problem is that we have to find the tours,
+
+152
+00:16:21,600 --> 00:16:25,670
+the cost of the tour is minimal, essentially.
+That is the problem essentially.
+
+153
+00:16:25,669 --> 00:16:33,469
+Now, the cost of course depends on the individual
+distances between. So, distance city
+
+154
+00:16:33,470 --> 00:16:38,820
+distance from i to j, what kind of a function
+are we using for distance function, much
+
+155
+00:16:38,820 --> 00:16:43,860
+.depends upon that as well. If we assume that,
+the distance function is arbitrary then, of
+
+156
+00:16:43,860 --> 00:16:48,560
+course the problem is completely hard to solve
+essentially. Then, we have to go back this
+
+157
+00:16:48,559 --> 00:16:55,609
+thing. But, sometimes the problems are not
+so arbitrary. In the sense, distances are
+
+158
+00:16:55,610 --> 00:16:56,990
+not
+necessarily arbitrarily.
+
+159
+00:16:56,990 --> 00:17:08,910
+So, one of course example is, simple example
+is the Euclidean distance. So, if the
+
+160
+00:17:08,910 --> 00:17:12,839
+distance is the Euclidean distance. So, for
+example, if you have manufacturing a circuit
+
+161
+00:17:12,838 --> 00:17:18,838
+board then, you can think of the distances
+of the Euclidean distance. And then, at least
+
+162
+00:17:18,838 --> 00:17:22,318
+indubitably you can imagine that, you will
+be able to find an optimal solution. So,
+
+163
+00:17:22,318 --> 00:17:27,500
+supposing it was the great, and you have to
+drill many holes in the grid.
+
+164
+00:17:27,500 --> 00:17:32,059
+Then, you can at least hope to say that, I
+will find a good solution, if not necessarily
+
+165
+00:17:32,059 --> 00:17:36,619
+an
+optimal solutions. Now, in terms of that for,
+
+166
+00:17:36,619 --> 00:17:49,729
+so Euclidean distance we will call it as
+Euclidean TSP. If this is the Euclidean distance,
+
+167
+00:17:49,730 --> 00:17:57,190
+as the distance measure it turns out.
+That if the problem is the Euclidean TSP then,
+
+168
+00:17:57,190 --> 00:18:05,940
+you can solve it in polynomial time, not
+optimally but, the community calls approximate
+
+169
+00:18:05,940 --> 00:18:06,940
+solutions.
+
+170
+00:18:06,940 --> 00:18:12,390
+So, we can find approximate solutions, in
+polynomial time and you can specify it, what
+
+171
+00:18:12,390 --> 00:18:20,470
+degree it is approximate. So, it is something
+like 1 plus 1, 1 upon c or something like
+
+172
+00:18:20,470 --> 00:18:23,980
+that
+times optimal cost. So, in polynomial time
+
+173
+00:18:23,980 --> 00:18:28,460
+you can find very good solutions and you can
+put a bound on, how bad they can be essentially
+
+174
+00:18:28,460 --> 00:18:37,819
+apart. From Euclidean distance, we can
+say that the distance should satisfy, what
+
+175
+00:18:37,819 --> 00:18:47,710
+we call as a triangular inequality 
+which is the
+
+176
+00:18:47,710 --> 00:18:48,710
+weaker condition.
+
+177
+00:18:48,710 --> 00:18:53,750
+Then, Euclidean distance also satisfies triangle
+inequality. But, what triangle inequality
+
+178
+00:18:53,750 --> 00:18:58,520
+says that, if you want to imagine a triangle
+between three cities. Then, the distance
+
+179
+00:18:58,520 --> 00:19:03,849
+between of the length of one side is smaller
+than the sum of the lengths of the other two
+
+180
+00:19:03,849 --> 00:19:07,689
+sides. So, that is the, this is known as the
+triangular inequality. And if the distance
+
+181
+00:19:07,690 --> 00:19:12,570
+function satisfies the triangular inequality
+then, also it is relatively easier to solve.
+
+182
+00:19:12,569 --> 00:19:17,419
+Easier to solve meaning, you can find good
+solutions faster. You cannot solve it
+
+183
+00:19:17,420 --> 00:19:30,940
+optimally, essentially. Then, we have something
+call the geographic TSP. So, imagine
+
+184
+00:19:30,940 --> 00:19:38,039
+that you are one of those globe floating executives,
+who flies from here to Delhi and
+
+185
+00:19:38,039 --> 00:19:42,960
+.from Delhi to Tehran and Tehran to Budapest
+and so on and so far. Going all over the
+
+186
+00:19:42,960 --> 00:19:51,550
+world then, your domain is a spherical domain.
+The earth is the sphere as we all know.
+
+187
+00:19:51,550 --> 00:19:56,460
+Now, at least and distance is do not necessarily,
+we are not necessarily we cannot talk of
+
+188
+00:19:56,460 --> 00:19:57,460
+Euclidean distance.
+
+189
+00:19:57,460 --> 00:20:01,009
+So, we have to talk about distance on the
+curved surface. So, that is the slightly different
+
+190
+00:20:01,009 --> 00:20:07,980
+problem. People have try to solve these kind
+of problems. Now, interestingly you must
+
+191
+00:20:07,980 --> 00:20:19,120
+look up for this website, it is called TSP
+LIB. So, I do not remember the address but,
+
+192
+00:20:19,119 --> 00:20:22,459
+you
+must look up for TSP LIB website. It is a
+
+193
+00:20:22,460 --> 00:20:27,059
+website, maintained in one of the German
+universities. And it is a collection of very
+
+194
+00:20:27,059 --> 00:20:29,009
+interesting TSP problems.
+
+195
+00:20:29,009 --> 00:20:33,990
+So, you know there is a problem of all European
+cities. For example, and some circuit
+
+196
+00:20:33,990 --> 00:20:41,509
+board problems and things like that. And more
+interestingly, it has got problems in which
+
+197
+00:20:41,509 --> 00:20:47,349
+somebody has taken the travel to find the
+optimal solution. If you have a problem of
+
+198
+00:20:47,349 --> 00:20:53,719
+15000 cities for with the optimal solution
+is known then, you can write some algorithm
+
+199
+00:20:53,720 --> 00:20:56,970
+that will be used to calculate them when it
+exploring.
+
+200
+00:20:56,970 --> 00:21:03,650
+And compare your algorithm with one of those
+with the actual optimal solution. So, this
+
+201
+00:21:03,650 --> 00:21:14,610
+has the optimal solutions. So, there are examples
+big examples, which their optimal
+
+202
+00:21:14,609 --> 00:21:18,289
+solutions given. And so you could use that
+as a benchmark, to see how good your
+
+203
+00:21:18,289 --> 00:21:23,349
+algorithm is essentially. And we probably
+give you one exercise, along those lines
+
+204
+00:21:23,349 --> 00:21:28,230
+essentially. Some of those optimal solutions,
+see the only way we can guarantee an
+
+205
+00:21:28,230 --> 00:21:32,069
+optimal solution and we will study optimal
+solutions, sub it later.
+
+206
+00:21:32,069 --> 00:21:37,029
+Is to say that, I mean this sound like a circular
+argument but, to say that there is no better
+
+207
+00:21:37,029 --> 00:21:40,940
+solution, which is possible essentially. And
+if you then, guarantee that there is no better
+
+208
+00:21:40,940 --> 00:21:45,910
+solution then, you will have an optimal solution.
+And it is taken them, if you look at
+
+209
+00:21:45,910 --> 00:21:50,820
+some of the references. For example, this
+book . Something,
+
+210
+00:21:50,819 --> 00:21:55,649
+like thousands of computing years of computing
+time.
+
+211
+00:21:55,650 --> 00:21:59,190
+So, as they are many machines working in parallel.
+And then, they compute this
+
+212
+00:21:59,190 --> 00:22:04,660
+exhaustibly anumulating all TSP and finding
+optimal solutions. So, you must go and look
+
+213
+00:22:04,660 --> 00:22:14,240
+at this site, which will give you optimal
+solutions essentially. So, today let us spent
+
+214
+00:22:14,240 --> 00:22:15,240
+a
+
+215
+00:22:15,240 --> 00:22:19,140
+.little bit of time. So, I am brought TSP
+here, because one of the things you want to
+
+216
+00:22:19,140 --> 00:22:20,970
+do is
+look at this variable neighborhood descent
+
+217
+00:22:20,970 --> 00:22:22,470
+again.
+
+218
+00:22:22,470 --> 00:22:26,240
+From and see how TSP can be solved using this
+essentially. So, basically the idea being
+
+219
+00:22:26,240 --> 00:22:32,240
+that, what are the different neighborhood
+functions that we can construct? But, before
+
+220
+00:22:32,240 --> 00:22:34,058
+we
+come to that, so remember that we had said
+
+221
+00:22:34,058 --> 00:22:36,928
+that, there are two ways of solving problems.
+
+222
+00:22:36,929 --> 00:22:37,929
+.
+
+223
+00:22:37,929 --> 00:22:52,170
+One is constructive and the other is perturbative.
+So, in constructive method we construct
+
+224
+00:22:52,170 --> 00:22:57,380
+a solution, bit by bit. And that is the whole
+state space search that we started with. In
+
+225
+00:22:57,380 --> 00:23:01,760
+perturbative methods, we take a candidate
+solution and perturbative to look at another
+
+226
+00:23:01,759 --> 00:23:05,730
+candidate solution. So, we did this for SAT.
+For example, we said that any bits string
+
+227
+00:23:05,730 --> 00:23:08,120
+is a
+candidate solution. Then, you can change some
+
+228
+00:23:08,119 --> 00:23:11,219
+number of bits, which is the perturbation
+you have doing.
+
+229
+00:23:11,220 --> 00:23:20,130
+And look at another solution but, it also
+constructs a solution edge by edge, if you
+
+230
+00:23:20,130 --> 00:23:22,780
+want
+to say. So, let us first look at some algorithm.
+
+231
+00:23:22,779 --> 00:23:27,569
+So, constructive solving the TSP with
+constructive methods and then, we will come
+
+232
+00:23:27,569 --> 00:23:31,769
+to Perturbative methods in which case. We
+will look at variable neighborhood descent.
+
+233
+00:23:31,769 --> 00:23:40,819
+And whatever other algorithm, that we are
+going to look at after that. So, for example
+
+234
+00:23:40,819 --> 00:23:49,769
+given a set of cities. So, let us assume that
+we
+
+235
+00:23:49,769 --> 00:23:51,970
+.have working in this Euclidean space.
+
+236
+00:23:51,970 --> 00:24:01,240
+So, there are actual distance is the distance,
+what kind of algorithm can you think of. You
+
+237
+00:24:01,240 --> 00:24:12,539
+must have tried something some time. So, let
+simplest constructive method is to start.
+
+238
+00:24:12,539 --> 00:24:17,649
+Try to stimulate what you would do, if you
+are doing this in the real world, so to speak.
+
+239
+00:24:17,650 --> 00:24:25,060
+So, you start the some city, let say this
+one. And then, look at it is neighborhood.
+
+240
+00:24:25,059 --> 00:24:28,049
+Now,
+remember this entire set is a neighborhood
+
+241
+00:24:28,049 --> 00:24:32,539
+because, assume that our graph is completely
+connected it, essentially in this case.
+
+242
+00:24:32,539 --> 00:24:40,359
+But, when we come to perturbative methods,
+we will look at smaller neighborhoods
+
+243
+00:24:40,359 --> 00:24:45,380
+where you know, all those in this the neighborhood
+is different. In sense that, it is not a
+
+244
+00:24:45,381 --> 00:24:50,370
+candidate solution but, it is a neighboring
+city. So, you will go to the city which is
+
+245
+00:24:50,369 --> 00:24:56,399
+nearest to you it. So, let us say you go from
+here to here. And then, you repeat this
+
+246
+00:24:56,400 --> 00:25:01,761
+process. You go to the nearest city, you go
+from here to here, when you go I mean, it
+
+247
+00:25:01,760 --> 00:25:05,659
+looks like this is the nearest and you will
+get some solution and solve.
+
+248
+00:25:05,660 --> 00:25:13,808
+So, this is one simple heuristic algorithm.
+It is a greedy algorithm. It says, started
+
+249
+00:25:13,808 --> 00:25:16,009
+some
+city and go to the nearest neighbor. Then,
+
+250
+00:25:16,009 --> 00:25:17,599
+from there go to the nearest neighbor and
+so on
+
+251
+00:25:17,599 --> 00:25:25,029
+and so far, essentially. Now, obviously in
+some situations it will give you a very good
+
+252
+00:25:25,029 --> 00:25:31,970
+solution, if not the optimal solution. But,
+you can imagine that what will happen with
+
+253
+00:25:31,970 --> 00:25:41,110
+situations, where I have a city somewhere
+here. If I have a city somewhere there, what
+
+254
+00:25:41,109 --> 00:25:44,049
+will my algorithm do, ideally what should
+it do?
+
+255
+00:25:44,049 --> 00:25:48,058
+It should go from here to that and come back
+here and then resume its thing. But, it will
+
+256
+00:25:48,058 --> 00:25:52,089
+not do that because, my algorithm says go
+to nearest neighbor. So, I will go from here
+
+257
+00:25:52,089 --> 00:25:53,480
+to
+then, I will go from here to here, go from
+
+258
+00:25:53,480 --> 00:25:58,849
+here to here then here, here, here to here,
+here
+
+259
+00:25:58,849 --> 00:26:04,049
+to here. Then I will go there and then I will
+come back here. So, obviously you can this
+
+260
+00:26:04,049 --> 00:26:06,889
+is
+just to illustrate, that this algorithm will
+
+261
+00:26:06,890 --> 00:26:09,110
+not always give you a optimal solution.
+
+262
+00:26:09,109 --> 00:26:15,439
+But, it will give you depending on what kind
+of problem it is, it will give you reasonably
+
+263
+00:26:15,440 --> 00:26:23,480
+a good solution, essentially. Now, a simple
+variation to this is, that instead of thinking
+
+264
+00:26:23,480 --> 00:26:28,089
+going like this, you can think of extending
+you towards. So, at the any given time you
+
+265
+00:26:28,089 --> 00:26:47,470
+have a partial toward it. So, let say we have
+done only, till this much. And instead of
+
+266
+00:26:47,470 --> 00:26:55,269
+.saying that, this is a one directional thing
+you can say that, you can think of it is going
+
+267
+00:26:55,269 --> 00:26:56,970
+in
+both directions.
+
+268
+00:26:56,970 --> 00:27:01,289
+And then, you can say you can extend at either
+end of the tour. Instead of saying that,
+
+269
+00:27:01,289 --> 00:27:06,740
+only extend that where you verse trying to
+stimulate a physical person moving around.
+
+270
+00:27:06,740 --> 00:27:14,079
+You can say which ever end of the tour has
+a closer city extend, that towards end. That
+
+271
+00:27:14,079 --> 00:27:16,159
+is
+as a simple extension of that essentially.
+
+272
+00:27:16,160 --> 00:27:23,350
+So, I am now how do you talk about cities
+like
+
+273
+00:27:23,349 --> 00:27:29,599
+this, which are far away from the rest essentially.
+So, one algorithm, so I am not writing
+
+274
+00:27:29,599 --> 00:27:34,529
+these things but, any of you look at any text
+book on TSP, they will talk about these
+
+275
+00:27:34,529 --> 00:27:35,529
+algorithm.
+
+276
+00:27:35,529 --> 00:27:42,769
+You could say that, I splice this. So, in
+the science that supposing I have already
+
+277
+00:27:42,769 --> 00:27:46,721
+constructive this toward, which is not a very
+good toward but, I have constructed this and
+
+278
+00:27:46,721 --> 00:27:50,789
+I only left with that city. Instead of going
+from this place to this place but, I will
+
+279
+00:27:50,789 --> 00:27:52,980
+do is
+that, I will find out which point in the tour
+
+280
+00:27:52,980 --> 00:27:56,029
+is closes to this city. And connects that
+with
+
+281
+00:27:56,029 --> 00:28:00,660
+this and then break the stage and connect
+this with this. So, this will give you some
+
+282
+00:28:00,660 --> 00:28:01,660
+improvement essentially.
+
+283
+00:28:01,660 --> 00:28:06,430
+So, that is but obviously, every time we do
+that, the complexity increases. Because,
+
+284
+00:28:06,430 --> 00:28:12,440
+notice now that if you write a general algorithm
+for that, you will say that for every new
+
+285
+00:28:12,440 --> 00:28:16,929
+point in the city, which is the closes point
+in the tour. So, you have to inspect in the
+
+286
+00:28:16,929 --> 00:28:29,730
+whole toward. So, complexity will go by a
+factor of n in that case. So, this is one
+
+287
+00:28:29,730 --> 00:28:33,970
+set of
+constructive algorithms for solving the TSP.
+
+288
+00:28:33,970 --> 00:28:54,259
+Another popular thing, which is known a
+greedy heuristic says that, you sort the edges.
+
+289
+00:28:54,259 --> 00:29:00,429
+Maintain a sorted set of edges and work with
+edges instead of working with cities
+
+290
+00:29:00,429 --> 00:29:06,720
+essentially. So, you can now imagine what
+the algorithm is. It says that, you have all
+
+291
+00:29:06,720 --> 00:29:08,679
+the
+edges that are available to you in this thing.
+
+292
+00:29:08,679 --> 00:29:13,870
+So, pick the shortest edge that is available
+to
+
+293
+00:29:13,869 --> 00:29:18,449
+you and add that. So, in this example for
+example, it could be this one. So, this could
+
+294
+00:29:18,450 --> 00:29:22,170
+be
+my first says that I add, because that is
+
+295
+00:29:22,170 --> 00:29:24,440
+the shortest edge. Then, the next shorted
+could be
+
+296
+00:29:24,440 --> 00:29:28,450
+this one. Then, it could be this one and so
+on and so far.
+
+297
+00:29:28,450 --> 00:29:34,179
+So, this is a different algorithm. It is shorting
+the edges. So, you short them once and
+
+298
+00:29:34,179 --> 00:29:39,320
+.then pick the shortest edges. The hope is
+that, you will pick all the small edges because,
+
+299
+00:29:39,319 --> 00:29:43,730
+for the optimal solution the more the number
+of shorter edges, the more likely it is
+
+300
+00:29:43,730 --> 00:29:49,150
+optimal essentially. Obviously, when you are
+doing this greedy heuristic, you have to be
+
+301
+00:29:49,150 --> 00:29:53,190
+careful that. You do not have a loop on the
+way essentially.
+
+302
+00:29:53,190 --> 00:29:59,090
+So, if you have connect a some number of cities
+and if the next shortest edge is forming a
+
+303
+00:29:59,089 --> 00:30:03,970
+shorter loop then, you should not take the
+edges essentially. Used that one thing you
+
+304
+00:30:03,970 --> 00:30:15,110
+should know. Then, there is another heuristic,
+call the savings heuristic. And all these
+
+305
+00:30:15,109 --> 00:30:23,340
+have you know, available in many books. The
+savings heuristic says that, first construct
+
+306
+00:30:23,340 --> 00:30:57,329
+n minus 1 tours of length 2. So, let me illustrate
+this with this example.
+
+307
+00:30:57,329 --> 00:30:58,329
+.
+
+308
+00:30:58,329 --> 00:31:05,129
+You take some arbitrary city and you construct
+tours with every other city. So, I will just
+
+309
+00:31:05,130 --> 00:31:19,050
+take a smaller example. So, there is some
+city and from there you constructing this.
+
+310
+00:31:19,049 --> 00:31:21,960
+So,
+there are, in this example there are five
+
+311
+00:31:21,960 --> 00:31:24,808
+cities. So, I have constructed four tours
+of length
+
+312
+00:31:24,808 --> 00:31:42,349
+two. And then, you merge to tours. So, how
+can you merge two tours? So, for example,
+
+313
+00:31:42,349 --> 00:31:48,789
+I
+can say that, I will merge this two let most
+
+314
+00:31:48,789 --> 00:31:52,379
+two tours. So, I will take this one from here.
+
+315
+00:31:52,380 --> 00:31:58,540
+I will take this one from here. And I will
+delete this edge and I will delete this edge
+
+316
+00:31:58,539 --> 00:32:11,610
+and I
+will add in a edge, here new edge. So, the
+
+317
+00:32:11,611 --> 00:32:15,020
+only question is which two tours should I
+
+318
+00:32:15,019 --> 00:32:18,940
+.merge and that is where the name comes from
+savings heuristic. It says, select that pair
+
+319
+00:32:18,940 --> 00:32:24,880
+of tours in which you get the maximum savings.
+What is the savings? That, your length
+
+320
+00:32:24,880 --> 00:32:30,270
+you had four edges in this to start with.
+So, you add at the lengths. So, l 1 l 2 l
+
+321
+00:32:30,269 --> 00:32:34,980
+3 l 4 and
+now after merging, you have l 1 l 4 and a
+
+322
+00:32:34,980 --> 00:32:36,789
+new one, that is call it l 5.
+
+323
+00:32:36,789 --> 00:32:44,960
+How much is the saving, how much is l 1 l
+4 l 5 better than l 1 l 2 l 3 l 4. Choose
+
+324
+00:32:44,960 --> 00:32:46,669
+that
+combination, which gives you the maximum savings
+
+325
+00:32:46,669 --> 00:32:54,280
+essentially. So, now that you have
+merge these two. Then, you could merge this
+
+326
+00:32:54,279 --> 00:33:00,259
+larger tour, with this third one. For
+example, so you could delete this edge and
+
+327
+00:33:00,259 --> 00:33:02,450
+add this edge. And add this one and so on
+and
+
+328
+00:33:02,450 --> 00:33:10,970
+so far. We keep merging. So, in the n minus
+2 merge operations you will finally, get the
+
+329
+00:33:10,970 --> 00:33:11,990
+tour essentially.
+
+330
+00:33:11,990 --> 00:33:16,329
+Again, it is heuristic algorithm. Not guarantee
+to give you an optimal solution but, in
+
+331
+00:33:16,329 --> 00:33:21,240
+general all these algorithms give you a reasonably
+good solution for Euclidean TSP, at
+
+332
+00:33:21,240 --> 00:33:33,058
+least essentially. So, let us now go to the
+perturbative approach. What does perturbative
+
+333
+00:33:33,058 --> 00:33:37,470
+approach says? That it, you take some candidate
+and generate it is neighborhood
+
+334
+00:33:37,470 --> 00:33:47,480
+essentially. The which is, kind of different
+from this. Here you are constructing the tours
+
+335
+00:33:47,480 --> 00:33:48,480
+gradually.
+
+336
+00:33:48,480 --> 00:33:54,980
+Here you are saying, I have one tour given
+to be and I am going to produce a set up
+
+337
+00:33:54,980 --> 00:33:59,919
+neighborhood tours and choose one of the essentially.
+Exactly like, what we did in SAT.
+
+338
+00:33:59,919 --> 00:34:04,370
+I have a candidate solution. I will perturb
+it by changing some number of bits, to get
+
+339
+00:34:04,369 --> 00:34:06,659
+new
+solutions and move to that new solution. This
+
+340
+00:34:06,660 --> 00:34:11,220
+was like hill climbing like algorithm, we
+are approaching now. In this, the question
+
+341
+00:34:11,219 --> 00:34:15,648
+is what are the neighborhood functions at
+we
+
+342
+00:34:15,648 --> 00:34:18,168
+can talk about here.
+
+343
+00:34:18,168 --> 00:34:27,628
+Can we think of that? So, given that tour
+for example, 2 7 1 6 4 3 8 5 9. How can I
+
+344
+00:34:27,628 --> 00:34:42,318
+generate a neighborhood around? What is the
+property that a tour by satisfy? And if
+
+345
+00:34:42,318 --> 00:34:47,068
+basically should be a permutation of those
+n numbers essentially. So, essentially you
+
+346
+00:34:47,068 --> 00:35:00,058
+want to generate some new permutations and
+explore one of them essentially.
+
+347
+00:35:00,059 --> 00:35:01,059
+..
+
+348
+00:35:01,059 --> 00:35:13,548
+.Swapping adjacent numbers, would give you
+a new tours. So, instead of saying this I,
+
+349
+00:35:13,548 --> 00:35:17,190
+so
+I can pick two, any place and swap two numbers.
+
+350
+00:35:17,190 --> 00:35:24,079
+So, for example, I can replace 1 6 by 6
+1, that is what you have saying. So, that
+
+351
+00:35:24,079 --> 00:35:30,109
+is one. So, you can imagine how many such
+moves are possible. You can make n minus 1
+
+352
+00:35:30,108 --> 00:35:34,739
+swaps here. So, this will have n minus 1
+neighbors essentially. So, either the first
+
+353
+00:35:34,739 --> 00:35:36,909
+two are the second two are the third like
+in line
+
+354
+00:35:36,909 --> 00:35:37,909
+it.
+
+355
+00:35:37,909 --> 00:35:47,469
+So, you can journalize that to something which
+we call as a 2 city exchange. And what
+
+356
+00:35:47,469 --> 00:35:55,108
+that says is that, take any two cities in
+the tour and exchange their positions. So,
+
+357
+00:35:55,108 --> 00:35:57,728
+this is a
+particular case of that, it says that take
+
+358
+00:35:57,728 --> 00:36:00,848
+two adjacent numbers and exchange that. This
+is
+
+359
+00:36:00,849 --> 00:36:07,778
+the operator says, the take any two cities
+and generate essentially. So, how many
+
+360
+00:36:07,778 --> 00:36:24,338
+neighbors will this have. I can take n c 2.
+Two cities in n c 2 ways and for each way
+
+361
+00:36:24,338 --> 00:36:26,469
+that
+I pick, there is only one neighbor I would
+
+362
+00:36:26,469 --> 00:36:29,419
+be generate because, I can only exchange their
+positions essentially.
+
+363
+00:36:29,420 --> 00:36:40,119
+So, I will have n c 2 neighbors essentially.
+Or I can have 3 city exchange, what this says
+
+364
+00:36:40,119 --> 00:36:46,470
+is that, takeout any three cities from the
+tours. And put them back in some different
+
+365
+00:36:46,469 --> 00:36:52,978
+order
+essentially. So, I can pick them in n c 3
+
+366
+00:36:52,978 --> 00:37:01,029
+ways and then I can put them back in 3 factorial
+minus 1 because, 1 I do not want to put it
+
+367
+00:37:01,030 --> 00:37:03,420
+back in the same order. So, 3 factorial minus
+1
+
+368
+00:37:03,420 --> 00:37:08,119
+order. So, I will generate that many these
+things. So, what is this two city exchange
+
+369
+00:37:08,119 --> 00:37:09,119
+is
+doing?
+
+370
+00:37:09,119 --> 00:37:24,910
+If I have a tour like this then, if I am going
+to exchange this one 
+
+371
+00:37:24,909 --> 00:37:31,149
+with this one for
+example. Now, what it means is that, I was
+
+372
+00:37:31,150 --> 00:37:36,880
+going in this order. But, now I am going to
+go, instead of this I am going to come here.
+
+373
+00:37:36,880 --> 00:37:41,680
+And from here, I am going to go there. So,
+this will go away. Then, instead of coming
+
+374
+00:37:41,679 --> 00:37:49,588
+here I will go like this. If you must visualize
+this, this what happening when I am exchanging
+
+375
+00:37:49,588 --> 00:37:50,588
+this city with this city.
+
+376
+00:37:50,588 --> 00:37:54,949
+Originally, it was a circular looking tour.
+Now, because I will exchange the position
+
+377
+00:37:54,949 --> 00:37:57,568
+of
+this two cities from here, I am going to go
+
+378
+00:37:57,568 --> 00:38:03,048
+here, from here I am going to go there. And
+then, continue here. And then, this something
+
+379
+00:38:03,048 --> 00:38:08,159
+finger will have essentially. Now, it turns
+out that city exchanges are not the best way
+
+380
+00:38:08,159 --> 00:38:15,799
+of thinking about things. But, edge
+exchanges are end of the easier to think about
+
+381
+00:38:15,800 --> 00:38:16,800
+essentially.
+
+382
+00:38:16,800 --> 00:38:31,390
+.So, for example, I have two edge exchanges.
+It says that, remove some two edges from
+
+383
+00:38:31,389 --> 00:38:38,248
+here tour and insert two new edges, instead
+of that. So, let us this see, what this means?
+
+384
+00:38:38,248 --> 00:38:53,909
+Supposing, I have tour like this or let us
+see I have I am just trying them in the circle
+
+385
+00:38:53,909 --> 00:39:02,838
+because, this easier to this in factors. Of
+course, it is going to be sought of distributed
+
+386
+00:39:02,838 --> 00:39:07,920
+over some space. I mean cities are never arrange
+in nice circle edges but, it is easier from
+
+387
+00:39:07,920 --> 00:39:08,920
+me essentially.
+
+388
+00:39:08,920 --> 00:39:12,909
+So, one of the thing that we would want to
+do is that, you know this Euclidean TSP is
+
+389
+00:39:12,909 --> 00:39:16,879
+to
+generate random problems, which means take
+
+390
+00:39:16,880 --> 00:39:21,980
+a two dimensional space. Let us say a
+computers, monitors screen and randomly place
+
+391
+00:39:21,980 --> 00:39:28,880
+it there. And then, say find the optimal
+tour for that essentially. Now, if I have
+
+392
+00:39:28,880 --> 00:39:32,079
+a tour like this. So, ideally if I have a
+tour which
+
+393
+00:39:32,079 --> 00:39:46,278
+is something like this, you can see that I
+have two very long edges in this tour essentially.
+
+394
+00:39:46,278 --> 00:39:51,998
+If I could somehow remove them and replace
+them, into two shorter edges, keeping it as
+
+395
+00:39:51,998 --> 00:40:01,518
+a complete tour, I can transform this problem
+in to another problem in which, instead of
+
+396
+00:40:01,518 --> 00:40:10,368
+these edge and instead of this edge, I add
+this edge. I add this edge and I add this
+
+397
+00:40:10,369 --> 00:40:17,719
+edge.
+So, whatever them, I have deleted two edges
+
+398
+00:40:17,719 --> 00:40:27,641
+from my tour. And replaced it with two
+more edges and there is only one way I can
+
+399
+00:40:27,641 --> 00:40:30,510
+do that essentially.
+
+400
+00:40:30,510 --> 00:40:35,460
+If I delete any two edges, I have only one
+new tour that I can create, in this example.
+
+401
+00:40:35,460 --> 00:40:40,789
+How will I do this, two city exchange? So,
+let us say we have that tour. So, something
+
+402
+00:40:40,789 --> 00:41:02,950
+like that, 2 7 6 5. Supposing, I have representation
+like this, how can I implement two
+
+403
+00:41:02,949 --> 00:41:07,960
+edge exchange? So, anyways, so it is not comes.
+So, once you know the answer, it is
+
+404
+00:41:07,960 --> 00:41:17,619
+simple. Essentially, you take a sub slink
+here and reverse the sub slink.
+
+405
+00:41:17,619 --> 00:41:29,430
+So, 2 7 4 5 6 1 3 9 8, so let us see whether
+it is really doing, what we are saying it
+
+406
+00:41:29,429 --> 00:41:36,368
+is
+doing. So, which other two edges that I have
+
+407
+00:41:36,369 --> 00:41:44,660
+removed here? The edge that I have
+removed is 1 from 7 to 6 and 4 to 1. The other
+
+408
+00:41:44,659 --> 00:41:51,578
+edges remain the same because, from. So,
+here instead of going from 7 to 6, I am going
+
+409
+00:41:51,579 --> 00:42:15,640
+from 7 to 4 and 4 is still connect to 5. So,
+maybe I should draw this. This 
+
+410
+00:42:15,639 --> 00:42:25,578
+is called as cities. So, I go from 2 to 7,
+7 to 6, 6 to 5, 5 to
+
+411
+00:42:25,579 --> 00:42:37,798
+4, 4 to 1, 1 to 3, 3 to 9, 9 to 8 and 8 back
+to 2.
+
+412
+00:42:37,798 --> 00:42:46,630
+That is the last step. This is the tour that
+I started with. Now, I am saying just rotate
+
+413
+00:42:46,630 --> 00:42:47,630
+this
+
+414
+00:42:47,630 --> 00:42:57,400
+.sub slink, 6 5 4 and that gives me, this
+tour 2 7 4. So, let us follow that tour from
+
+415
+00:42:57,400 --> 00:43:02,650
+2, I am
+going to 7, again from 7 I am going to 4,
+
+416
+00:43:02,650 --> 00:43:09,950
+4 I am going to 5 is part of the same tour,
+notice. From 5 I am going to 6, from 6 I am
+
+417
+00:43:09,949 --> 00:43:15,889
+going to 1, from 1 I am going to 3, which
+is
+
+418
+00:43:15,889 --> 00:43:21,009
+also part of the whole 2. Then, from 3 I am
+going to 9, 9 I am going to 8 essentially.
+
+419
+00:43:21,009 --> 00:43:30,838
+So, everything all the edges except for this
+1 to 4 edge and 7 to 6 has been replaced.
+
+420
+00:43:30,838 --> 00:43:34,449
+So, I
+have taken up this edge 7 to 6 and 1 to 4.
+
+421
+00:43:34,449 --> 00:43:39,929
+And replace them with this edges, which goes
+from 7 to 4, which is this edge and which
+
+422
+00:43:39,929 --> 00:43:46,429
+goes from 1 to 6, 6 to 1 in this new edge.
+So,
+
+423
+00:43:46,429 --> 00:43:54,469
+this is this one and this one is new edges,
+that I will introduced. So, rotating a sub
+
+424
+00:43:54,469 --> 00:43:57,879
+slink
+will effectively do a two edge exchange for
+
+425
+00:43:57,880 --> 00:43:58,900
+use essentially.
+
+426
+00:43:58,900 --> 00:44:10,608
+Why this intuitively more appealing than city
+exchange? I hope it is intuitively more
+
+427
+00:44:10,608 --> 00:44:21,108
+appealing than the city exchange because,
+it is the edges it is the edge cost, bit adds
+
+428
+00:44:21,108 --> 00:44:24,278
+up to
+the total cost of the solution. So, what would
+
+429
+00:44:24,278 --> 00:44:29,548
+you ideally want to do is, to inspect your
+solution. And off course, between every two
+
+430
+00:44:29,548 --> 00:44:35,949
+cities there is an edge cost. Pick those
+edges, which seem to be very high cost. And
+
+431
+00:44:35,949 --> 00:44:36,949
+replace them essentially.
+
+432
+00:44:36,949 --> 00:44:42,419
+So, the original example that I have drawn,
+which was like you go some tour like this.
+
+433
+00:44:42,420 --> 00:44:47,750
+So, if you have some tour like this, where
+you are going like this then, these two are
+
+434
+00:44:47,750 --> 00:44:50,199
+very
+long edges. If I remove them and replace them
+
+435
+00:44:50,199 --> 00:44:53,108
+with this, I will get a shorter tour. So,
+in
+
+436
+00:44:53,108 --> 00:44:58,690
+that sense manipulating edges is more appealing
+because, you can at least apply the slink
+
+437
+00:44:58,690 --> 00:45:07,490
+of removing very long edges essentially. So,
+2 edge exchanges just one example. You
+
+438
+00:45:07,489 --> 00:45:09,139
+can look at 3 edge exchange.
+
+439
+00:45:09,139 --> 00:45:10,139
+..
+
+440
+00:45:10,139 --> 00:45:20,048
+So, 3 edge exchange shows, you must compute
+how many neighbors are there are and so
+
+441
+00:45:20,048 --> 00:45:28,068
+on. So, you can pick two edges in n minus
+1 c 2 ways and then you will get n minus 1
+
+442
+00:45:28,068 --> 00:45:32,068
+c 2
+successes. In 3 edge exchange let say, this
+
+443
+00:45:32,068 --> 00:45:38,969
+is the problem. This is the original tour
+given
+
+444
+00:45:38,969 --> 00:45:47,189
+to me and I am removing this three edges.
+So, one is this one, one is this one and one
+
+445
+00:45:47,190 --> 00:45:50,039
+is
+this one. And now, we can see that we can
+
+446
+00:45:50,039 --> 00:45:52,460
+put them back in different ways.
+
+447
+00:45:52,460 --> 00:46:06,068
+So, one way you can put them back is, that
+you can connect this to this, from here. So,
+
+448
+00:46:06,068 --> 00:46:10,920
+you must be careful not to form a cycle. So,
+from here I cannot go to this. So, that not
+
+449
+00:46:10,920 --> 00:46:24,639
+allowed. So, from here I can go to, let us
+it is this. And here I can to this. No, something
+
+450
+00:46:24,639 --> 00:46:35,690
+is wrong. Now, here there are 3. So, I cannot
+do this. So, I can put this here. Then, from
+
+451
+00:46:35,690 --> 00:46:44,920
+here I can go to this. And from there, I can
+go to this because, I have a new tours
+
+452
+00:46:44,920 --> 00:46:45,920
+essentially.
+
+453
+00:46:45,920 --> 00:46:53,088
+So, it turns out that there are four different
+ways to put them back. So, let us try one
+
+454
+00:46:53,088 --> 00:46:54,578
+more
+and I will leave the other two is an exercise
+
+455
+00:46:54,579 --> 00:47:00,778
+for you. So, you understand this notation.
+It
+
+456
+00:47:00,778 --> 00:47:06,139
+is a kind of shorthand. This is some tour
+with some n cities but, we have drawn only
+
+457
+00:47:06,139 --> 00:47:08,969
+six
+cities, representing those six, three edges
+
+458
+00:47:08,969 --> 00:47:10,278
+that we are going to remove. So, this edge
+we
+
+459
+00:47:10,278 --> 00:47:12,659
+are removing, this edge we are removing and
+this edge we are removing.
+
+460
+00:47:12,659 --> 00:47:18,009
+.Less of the tour remains the same but, we
+have puttng back three edges in slightly
+
+461
+00:47:18,009 --> 00:47:22,228
+different place. So, instead of bliss now
+I can instead of going from here to here,
+
+462
+00:47:22,228 --> 00:47:26,259
+I can
+say go from here to here. Then, from here
+
+463
+00:47:26,259 --> 00:47:33,989
+you go like this. Then, from here you go like
+this. And there are two more different ways
+
+464
+00:47:33,989 --> 00:47:42,239
+of doing it. So, I will leave that as a small
+exercise for you. So, three edge exchange
+
+465
+00:47:42,239 --> 00:47:44,769
+if you take of three cities three edges, you
+can
+
+466
+00:47:44,768 --> 00:47:46,618
+put them back in four different ways.
+
+467
+00:47:46,619 --> 00:47:56,088
+And you can take of three edges in n minus
+1 c 3 ways, so into 4. These many neighbors
+
+468
+00:47:56,088 --> 00:48:02,929
+you get essentially. So, what I am trying
+to illustrate here is that, when you treat
+
+469
+00:48:02,929 --> 00:48:06,759
+the TSP
+perturbative problem, you take any candidates
+
+470
+00:48:06,759 --> 00:48:10,778
+solution. And you can generate a
+neighborhood of candidate solution surround
+
+471
+00:48:10,778 --> 00:48:16,719
+it, using two some number of city
+exchanges or some number of edge exchanges.
+
+472
+00:48:16,719 --> 00:48:23,509
+And they are neighborhood functions of
+different density essentially, which means
+
+473
+00:48:23,509 --> 00:48:39,400
+that you can apply the variable neighborhood
+descent functions essentially.
+
+474
+00:48:39,400 --> 00:48:45,170
+I am not writing this algorithm again. This
+variable neighborhood descent basically says
+
+475
+00:48:45,170 --> 00:48:51,730
+that, if you have a set of neighborhood functions
+are raised in a order of increasing
+
+476
+00:48:51,730 --> 00:48:59,019
+density. So, by density means how many neighbors
+thus, a given candidate have? So, if a
+
+477
+00:48:59,018 --> 00:49:09,348
+candidate has let us say 5 neighbors or if
+a candidate has let us say 12 or 15 neighbors.
+
+478
+00:49:09,349 --> 00:49:18,559
+Then, this neighborhood functions would more
+dense and this one essentially. And why
+
+479
+00:49:18,559 --> 00:49:26,890
+did we want denser neighborhood functions
+because, it is likely that the best amongst
+
+480
+00:49:26,889 --> 00:49:29,778
+them is the local maxima essentially.
+
+481
+00:49:29,778 --> 00:49:38,849
+Or rather, it just likely that the given no
+reason local maxima, which means it does not
+
+482
+00:49:38,849 --> 00:49:43,630
+have a better note surrounding it. So, there
+have the more note surrounding a note, the
+
+483
+00:49:43,630 --> 00:49:47,259
+more the likelihood of a better note existing,
+if there are better notes in the spaces
+
+484
+00:49:47,259 --> 00:49:52,289
+essentially. So, the idea of variable neighborhood
+descent is that, to start with the
+
+485
+00:49:52,289 --> 00:49:57,170
+simplest neighborhood function. Why are you
+do not we want to work with the most
+
+486
+00:49:57,170 --> 00:49:59,349
+dense function first?
+
+487
+00:49:59,349 --> 00:50:06,519
+Because the cost of making a move is proportional
+to the number of neighbors, that we
+
+488
+00:50:06,518 --> 00:50:13,689
+have because, we have to inspect all the neighbors
+and then pick the best amongst them.
+
+489
+00:50:13,690 --> 00:50:21,719
+So, I like in SAT if every, if we can change
+any number of bits then, it amongst to doing
+
+490
+00:50:21,719 --> 00:50:26,450
+.the complete beautiful search. We do not
+want to do that, we want to starts with
+
+491
+00:50:26,449 --> 00:50:30,879
+neighborhood functions move on to dense a
+function and so on and so far.
+
+492
+00:50:30,880 --> 00:50:37,858
+So, in today's class basically what we have
+done is, looked at the TSP problem. And we
+
+493
+00:50:37,858 --> 00:50:42,358
+are not really looked at the new method for
+escaping local maxima, which you will do in
+
+494
+00:50:42,358 --> 00:50:46,308
+the next towards see classes. But, when we
+are doing that, we will keep in mind how to
+
+495
+00:50:46,309 --> 00:50:53,499
+solve the TSP. So, remember that this kind
+of this thing. Just a quite comment about
+
+496
+00:50:53,498 --> 00:51:00,539
+these two city exchange, remember this was
+the two city exchange, I exchange this city
+
+497
+00:51:00,539 --> 00:51:01,539
+and this city.
+
+498
+00:51:01,539 --> 00:51:07,460
+And as the result, I added this four new edges.
+Remove the four edges because, the
+
+499
+00:51:07,460 --> 00:51:10,670
+neighboring edges from here and I added for.
+So, you can see that this is the particular
+
+500
+00:51:10,670 --> 00:51:14,849
+case of four edge exchange essentially. In
+practice, off course if you remove those four
+
+501
+00:51:14,849 --> 00:51:19,010
+edges, you can put them back in many different
+ways. So, two city exchange is just a
+
+502
+00:51:19,010 --> 00:51:24,319
+special, one of the cases of those four city
+exchange. Four edge exchange, which is going
+
+503
+00:51:24,318 --> 00:51:26,679
+to give us a denser functions essentially.
+
+504
+00:51:26,679 --> 00:51:33,129
+So, the more the cities of the edges we remove,
+the more the ways you can put them back
+
+505
+00:51:33,130 --> 00:51:37,539
+in and more the ways you can remove them in.
+And they give you denser functions
+
+506
+00:51:37,539 --> 00:51:42,859
+essentially. So, that is one mechanism for
+doing that this. I will just stop here. We
+
+507
+00:51:42,858 --> 00:51:47,348
+will,
+when you comeback we will look at a new algorithm,
+
+508
+00:51:47,349 --> 00:51:52,729
+for try to escape local maxima.
+How can we escape this local maximize? That
+
+509
+00:51:52,728 --> 00:52:02,318
+is going to be our objective in the next
+few lectures essentially.
+
+510
+00:52:02,318 --> 00:52:12,318
+.
+

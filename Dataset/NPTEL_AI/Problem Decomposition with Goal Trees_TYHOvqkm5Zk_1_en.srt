@@ -1,0 +1,1930 @@
+﻿1
+00:00:10,929 --> 00:00:20,789
+Today, we take a slightly different approach
+to problem solving. So far, our approach has
+
+2
+00:00:20,789 --> 00:00:29,270
+been that we are in some given state, and
+we want to find a path to the goal state or
+
+3
+00:00:29,269 --> 00:00:33,621
+something like that, or we are given a description
+of the goal state and we want to search
+
+4
+00:00:33,621 --> 00:00:40,890
+for a state, which satisfies that description.
+So, today, we want look at a slightly different
+
+5
+00:00:40,890 --> 00:00:50,820
+approach, which is kind of, has a flavor of
+backward reasoning, in the sense, you reason
+
+6
+00:00:50,820 --> 00:01:00,090
+from the goal that you want to achieve, and
+try to break down the problem into smaller
+
+7
+00:01:00,090 --> 00:01:03,269
+problems and so on, essentially.
+
+8
+00:01:03,268 --> 00:01:04,269
+.
+
+9
+00:01:04,269 --> 00:01:23,219
+So, the idea that you want to explore is called
+problem decomposition. To motivate, why
+
+10
+00:01:23,219 --> 00:01:31,920
+we should use this approach, let me try and
+take up a problem and solve it in the
+
+11
+00:01:31,920 --> 00:01:44,790
+approaches that we have seen so far, and let
+us say that you have a friend, whose
+
+12
+00:01:44,790 --> 00:01:56,730
+birthday it is. You have all decided to go
+out and let us say, give a treat to your friend.
+
+13
+00:01:56,730 --> 00:01:59,640
+I
+know that is not the normal thing, but let
+
+14
+00:01:59,640 --> 00:02:05,609
+us say that is what you are doing, essentially.
+Anyhow, decided that you will go in sometime,
+
+15
+00:02:05,609 --> 00:02:07,000
+somewhere, in the evening. Then,
+
+16
+00:02:07,000 --> 00:02:10,618
+.maybe, you will go to a movie or a music
+show or something, and then, you will have
+
+17
+00:02:10,618 --> 00:02:17,019
+dinner somewhere, essentially. So, that is
+the idea of planning in evening, and let us
+
+18
+00:02:17,019 --> 00:02:21,299
+say,
+it is friend, whose birthday it is, who is
+
+19
+00:02:21,299 --> 00:02:23,310
+yet, to decide what is acceptable. So, you
+start
+
+20
+00:02:23,310 --> 00:02:24,310
+querying, essentially.
+
+21
+00:02:24,310 --> 00:02:25,310
+.
+
+22
+00:02:25,310 --> 00:02:30,718
+So, let us try to visualize this as a search,
+in a simple search space where, you give
+
+23
+00:02:30,718 --> 00:02:44,318
+different options to your friend. Let us call
+this problem as designing an outing, and the
+
+24
+00:02:44,318 --> 00:02:47,421
+goal state is, when you have decided upon
+the three things, that you will do; what will
+
+25
+00:02:47,421 --> 00:02:53,729
+you do first; what will you do next; and what
+will you do after that. So, let us say that
+
+26
+00:02:53,729 --> 00:03:04,188
+you start up, by saying that you will go to
+a mall; very popular thing, nowadays. Then,
+
+27
+00:03:04,188 --> 00:03:16,138
+maybe, you will go and see a movie. Let us
+say, I will use HP for Harry Potter, one of
+
+28
+00:03:16,139 --> 00:03:27,319
+the Harry Potter films. Then, you will go
+and eat somewhere. Let us say, pizza hut.
+
+29
+00:03:27,318 --> 00:03:33,598
+So, I
+will use PH for pizza hut. So, you present
+
+30
+00:03:33,598 --> 00:03:36,899
+this option to your friend, and he or she
+says,
+
+31
+00:03:36,900 --> 00:03:43,158
+no. That is not acceptable. So, let us say
+that you are working in a depth first fashion,
+
+32
+00:03:43,158 --> 00:03:48,739
+essentially, or something similar to depth
+first where, this may be, heuristically guided
+
+33
+00:03:48,739 --> 00:03:52,579
+or
+something, like that. So, you try something
+
+34
+00:03:52,579 --> 00:04:02,590
+else, and let us say, you give another dinner
+option.
+
+35
+00:04:02,590 --> 00:04:15,419
+Let us say this well known restaurant in Chennai;
+Saravana Bhavan, and your friend
+
+36
+00:04:15,419 --> 00:04:38,129
+.again, says no, essentially. Can you think
+of another restaurant name? Let us say Coffee
+
+37
+00:04:38,129 --> 00:04:44,629
+Cafe Day; you can go and eat there, which
+I will use CC here. Your friend says no,
+
+38
+00:04:44,629 --> 00:04:49,250
+again, essentially. Let us say you are run
+out of your budget and your restaurants and
+
+39
+00:04:49,250 --> 00:04:55,180
+so
+on. So, you go back and say, let us try another
+
+40
+00:04:55,180 --> 00:05:05,930
+option. So, just to clarify, this is the
+evening level, so, to speak. This is a movie
+
+41
+00:05:05,930 --> 00:05:12,418
+or entertainment, and this is a eating out.
+So,
+
+42
+00:05:12,418 --> 00:05:22,649
+there are three decisions, you have to make.
+Let us say, you offer to Bhuvan’s Home,
+
+43
+00:05:22,649 --> 00:05:31,318
+which is a very nice movie, as most of you
+might know, but and then, of course you
+
+44
+00:05:31,319 --> 00:05:40,389
+cannot ask at this level, yes. So, in the
+approach that we have followed so far, we
+
+45
+00:05:40,389 --> 00:05:42,250
+will
+consider every node and ask, whether this
+
+46
+00:05:42,250 --> 00:05:47,860
+node is a goal node or not, essentially. This
+cannot be a goal node, because it has only
+
+47
+00:05:47,860 --> 00:05:52,830
+two things; the third thing is not there,
+essentially, but there are other approaches.
+
+48
+00:05:52,829 --> 00:05:57,109
+For example, when you do constrain
+satisfaction, then at each stage of the partial
+
+49
+00:05:57,110 --> 00:06:01,098
+solution, you can inspect the partial solution
+and say, is this consistent with what I am
+
+50
+00:06:01,098 --> 00:06:03,779
+looking for or not; but we will not get into
+that
+
+51
+00:06:03,779 --> 00:06:17,638
+at this moment. So, again, you give these
+offers. So, pizza hut; answer is no, Saravanaa
+
+52
+00:06:17,639 --> 00:06:29,490
+Bhavan; the answer is no, Cafe Coffee Day;
+the answer is no, essentially; then, you try
+
+53
+00:06:29,490 --> 00:06:38,519
+one more movie. Let us say, A I, the movie.
+So, you must be knowing, there was a film
+
+54
+00:06:38,519 --> 00:06:48,829
+called A I, the movie. Then, you try these
+three options, again. I will not write them,
+
+55
+00:06:48,829 --> 00:06:51,099
+but
+these are the same three options; what you
+
+56
+00:06:51,100 --> 00:06:56,270
+are trying, and your friend again, says, no,
+essentially.
+
+57
+00:06:56,269 --> 00:07:03,408
+Let us say at this stage, you have run out
+of movie options as well. So, you back track
+
+58
+00:07:03,408 --> 00:07:12,860
+from here, and you say, shall we go to the
+beach. Then, you try all these same things
+
+59
+00:07:12,860 --> 00:07:21,038
+again. This entire tree that is below mall;
+you are going to explore below beach, again,
+
+60
+00:07:21,038 --> 00:07:31,629
+essentially. So, let us say, go to the beach
+and then, go and see harry porter; and then,
+
+61
+00:07:31,629 --> 00:07:36,490
+go
+to pizza hut; then, go to Saravana Bhavan;
+
+62
+00:07:36,490 --> 00:07:49,598
+then, go to Cafe Coffee Day; then, go to
+Bhuvan’s Home; then go to let us say, pizza
+
+63
+00:07:49,598 --> 00:07:58,028
+hut; and suddenly, your friend says, yes.
+You have found the solution; your friend is
+
+64
+00:07:58,028 --> 00:08:02,408
+agreeable to the idea of going to the beach;
+then, going and watching Bhuvan’s Home,
+
+65
+00:08:02,408 --> 00:08:09,069
+and then, going to the pizza hut for dinner,
+essentially. Now, if you look at this search
+
+66
+00:08:09,069 --> 00:08:15,920
+tree, I want you to look at this, and make
+some observations; is it a good way of searching,
+
+67
+00:08:15,920 --> 00:08:19,930
+or what is happening in this tree?
+
+68
+00:08:19,930 --> 00:08:33,060
+.Many nodes are replicated, or let me ask
+a more specific question; what is wrong in
+
+69
+00:08:33,059 --> 00:08:36,079
+the
+left side of the tree? What is it that is
+
+70
+00:08:36,080 --> 00:08:45,200
+not working in the left side of the tree?
+Where is
+
+71
+00:08:45,200 --> 00:08:51,840
+.the fault in the solution that you constructing,
+or what is wrong with the solution that the
+
+72
+00:08:51,840 --> 00:08:58,278
+left side of the tree is trying to construct?
+What is, or which part of the solution is
+
+73
+00:08:58,278 --> 00:09:06,399
+not
+working? Can you look, inspect the tree?
+
+74
+00:09:06,399 --> 00:09:10,289
+Because you explored the entire tree below
+mall, and I have drawn three movies and
+
+75
+00:09:10,289 --> 00:09:14,379
+three restaurants; they could have been many
+more, essentially. There could be a greater
+
+76
+00:09:14,379 --> 00:09:20,338
+depth, because we have explored the entire
+tree below mall, and it did not work. If mall
+
+77
+00:09:20,339 --> 00:09:26,180
+was the problem, then you can see that if
+in the first solution that you considered,
+
+78
+00:09:26,179 --> 00:09:32,049
+which
+is mall, Harry Potter and Pizza hut; if somehow,
+
+79
+00:09:32,049 --> 00:09:36,278
+you could figure out that mall is the
+problem, then you would not do all these wasteful
+
+80
+00:09:36,278 --> 00:09:40,769
+work, here; trying to see if not pizza
+hut; then, Saravanaa Bhavan, if not Saravanaa
+
+81
+00:09:40,769 --> 00:09:44,089
+Bhavan, of course, then, Cafe Coffee Day;
+and if not Harry Potter; then, Bhuvan’s
+
+82
+00:09:44,089 --> 00:09:51,603
+Home, if not Bhuvan’s Home; then, A I, the
+movie; all these work is wasted work, essentially,
+
+83
+00:09:51,602 --> 00:10:02,729
+and the reason is, because the culprit is
+here, and keeping that choice fixed, and search
+
+84
+00:10:02,730 --> 00:10:06,889
+it below the tree, is not going to help, any
+longer. Anything you try below this is not
+
+85
+00:10:06,889 --> 00:10:10,610
+going to work. If you figure out that mall
+is
+
+86
+00:10:10,610 --> 00:10:15,480
+creating a problem, essentially. It turns
+out that you go this side, and then, you get
+
+87
+00:10:15,480 --> 00:10:24,879
+a
+solution, essentially. So, how does one solve
+
+88
+00:10:24,879 --> 00:10:31,360
+this problem of doing, what is the issue that
+we want to address is that; you tried one
+
+89
+00:10:31,360 --> 00:10:34,430
+thing and then, you are doing this useless
+work,
+
+90
+00:10:34,429 --> 00:10:39,289
+exploring this part of the tree, which will
+loss and not going to work. Only, when you
+
+91
+00:10:39,289 --> 00:10:47,539
+change this, it is going to work, essentially.
+So, there are basically two approaches to
+
+92
+00:10:47,539 --> 00:11:05,389
+addressing this difficulty. One is called
+Dependency Directed Back Tracking.
+
+93
+00:11:05,389 --> 00:11:14,610
+Now, the backtracking that we are doing here,
+in most of the algorithm that we have
+
+94
+00:11:14,610 --> 00:11:19,570
+seen, is chronological in nature; that you
+undo the last choice that you make. So, you
+
+95
+00:11:19,570 --> 00:11:25,000
+tried this solution. It did not work so, you
+undo this last choice, which is pizza hut
+
+96
+00:11:25,000 --> 00:11:27,350
+and
+try the next one, at this level, which is
+
+97
+00:11:27,350 --> 00:11:29,543
+Saravanaa Bhavan; undo this and try this.
+When
+
+98
+00:11:29,543 --> 00:11:33,209
+all these three fail, then you undo this and
+try this. This form of backtracking is called
+
+99
+00:11:33,208 --> 00:11:38,109
+chronological, which mean that you undoing
+the last choice that you are making. What
+
+100
+00:11:38,110 --> 00:11:43,940
+we try to do is dependency directed backtracking,
+is to identify the culprit of what is
+
+101
+00:11:43,940 --> 00:11:54,130
+wrong with the solution, or in other words,
+without changing that attribute, you are not
+
+102
+00:11:54,129 --> 00:11:58,078
+going to get the solution. If you can identify,
+after coming here, or after coming
+
+103
+00:11:58,078 --> 00:12:03,528
+somewhere that the culprit is the choice of
+evening twist, went in the mall. Then, the
+
+104
+00:12:03,528 --> 00:12:09,610
+algorithm should actually, directly jump back
+to this, and try the next choice, essentially.
+
+105
+00:12:09,610 --> 00:12:18,060
+.So, we will not really, explore this option,
+here, unless we get time later on, but it
+
+106
+00:12:18,059 --> 00:12:20,189
+is
+something that we study, when you look at
+
+107
+00:12:20,190 --> 00:12:22,490
+constrain satisfaction method, essentially.
+But
+
+108
+00:12:22,490 --> 00:12:26,740
+we are not going to do too much of constraint
+processing, here. Constrain processing is
+
+109
+00:12:26,740 --> 00:12:33,730
+just a different formulation of solving such
+problems in which, you formulate the entire
+
+110
+00:12:33,730 --> 00:12:50,420
+problem in terms of variables, and values,
+that variable can take, essentially. The other
+
+111
+00:12:50,419 --> 00:13:00,009
+approach that you want to consider, today,
+is to construct what I call AND OR graphs
+
+112
+00:13:00,009 --> 00:13:10,620
+or
+trees. We could have converted this into a
+
+113
+00:13:10,620 --> 00:13:13,269
+graph by, instead of generating these three,
+I
+
+114
+00:13:13,269 --> 00:13:16,588
+could have connected them to these three,
+and then, it would have been a graph. So,
+
+115
+00:13:16,589 --> 00:13:19,279
+there
+is not really, too much of difference, whether
+
+116
+00:13:19,278 --> 00:13:21,259
+it is a graph or tree; just a way of looking
+at
+
+117
+00:13:21,259 --> 00:13:32,110
+it. These are also known as goal trees.
+
+118
+00:13:32,110 --> 00:13:33,110
+.
+
+119
+00:13:33,110 --> 00:13:42,750
+We all want to look at problem decomposition
+with goal trees. The idea of problem
+
+120
+00:13:42,750 --> 00:13:48,958
+decomposition is something, like using a mechanism
+to break up a problem into smaller
+
+121
+00:13:48,958 --> 00:13:55,099
+parts. In this example, it is a little bit,
+like using a context free grammar, to say,
+
+122
+00:13:55,100 --> 00:13:58,449
+that an
+outing is made up of an evening out, and the
+
+123
+00:13:58,448 --> 00:14:03,779
+movie and dinner, and then, so on and so
+forth; but it does not have to be context
+
+124
+00:14:03,779 --> 00:14:15,629
+free. In this case, it could be context dependent.
+So, how do we do this? This approach is to
+
+125
+00:14:15,629 --> 00:14:19,220
+view the problem differently, which is to
+say
+
+126
+00:14:19,220 --> 00:14:27,629
+that you have outing as a; this is the goal
+that you trying to solve. Now, you are going
+
+127
+00:14:27,629 --> 00:14:29,629
+to
+break it up into three separate sub goals.
+
+128
+00:14:29,629 --> 00:14:37,560
+So, one is evening out, or evening plan. Then,
+
+129
+00:14:37,559 --> 00:14:53,289
+.movie, and then, eating on dinner. So, this
+is the different representation. To distinguish
+
+130
+00:14:53,289 --> 00:15:04,120
+between this sort of tree and that sort of
+a tree, we put an arc here, for our benefit.
+
+131
+00:15:04,120 --> 00:15:17,589
+Such an arc is called as AND arc, and such
+a node is called an AND node. So, an AND
+
+132
+00:15:17,589 --> 00:15:26,029
+node is a node from which, the choices, all
+the nodes that it points to; it is a directive
+
+133
+00:15:26,028 --> 00:15:31,480
+graph. Every one of them has to be solved,
+as opposed to such a node; this is called
+
+134
+00:15:31,480 --> 00:15:35,149
+an
+OR arc. This view is called an OR arc, or
+
+135
+00:15:35,149 --> 00:15:44,730
+this, would be called as an OR node. So, an
+OR
+
+136
+00:15:44,730 --> 00:15:53,560
+node has all OR arcs below it. The meaning
+of an OR node and OR arc is that you have
+
+137
+00:15:53,559 --> 00:15:57,588
+to do one of the things below that. For example,
+you have to either, go to the mall or you
+
+138
+00:15:57,589 --> 00:16:02,519
+have to go to the beach, or if you had decided
+upon the mall, then you have to either,
+
+139
+00:16:02,519 --> 00:16:07,120
+choose Harry Potter or Bhuvan’s Home or
+A I, the movie, essentially. That is the node.
+
+140
+00:16:07,120 --> 00:16:21,310
+So, we have those all choices here, as well.
+So, let us say, mall and beech, and may be,
+
+141
+00:16:21,309 --> 00:16:26,979
+some other choices; does not matter. Then,
+we have the three choices for the movie,
+
+142
+00:16:26,980 --> 00:16:48,870
+Harry Potter, Bhuvan’s Home and A I, the
+movie. Then, we have the three choices for
+
+143
+00:16:48,870 --> 00:17:02,570
+the restaurant. So, such a tree is called
+an AND OR tree, because it has AND nodes as
+
+144
+00:17:02,570 --> 00:17:09,860
+well as OR nodes in that. The AND node is
+at top level. OR node is below that, and a
+
+145
+00:17:09,859 --> 00:17:14,109
+solution in the OR graph like this, the kind
+that we have been studying so far, is the
+
+146
+00:17:14,109 --> 00:17:20,149
+path.
+The solution in an AND OR tree is a sub tree.
+
+147
+00:17:20,150 --> 00:17:32,550
+So, a solution will have, for example, this
+and this and 
+
+148
+00:17:32,549 --> 00:17:40,399
+this and this. So, the solution for this same
+problem is a sub tree here. The
+
+149
+00:17:40,400 --> 00:17:47,170
+solution in that combination was a path. The
+important thing is that you have broken the
+
+150
+00:17:47,170 --> 00:17:51,269
+problem down into three smaller problems,
+and solve them independently, of each other.
+
+151
+00:17:51,269 --> 00:17:55,369
+This means that when you know that you have
+to choose between mall and beach, you do
+
+152
+00:17:55,369 --> 00:18:00,000
+this independent of the other things. Whereas
+here, one should choose the mall, then you
+
+153
+00:18:00,000 --> 00:18:03,930
+are saying, even the mall; what else should
+I search for?
+
+154
+00:18:03,930 --> 00:18:08,058
+Now, that does not really make sense, because
+mall is independent of what you are going
+
+155
+00:18:08,058 --> 00:18:13,539
+to do after that, and this formulation of
+AND OR tree, allows you to break up the
+
+156
+00:18:13,539 --> 00:18:20,909
+problems into smaller parts, and solve it,
+essentially. So, we want to study approaches
+
+157
+00:18:20,910 --> 00:18:23,540
+to
+solving algorithms that we will work on such
+
+158
+00:18:23,539 --> 00:18:29,079
+formulations, and solve problems, like that,
+essentially, but first I want to give some
+
+159
+00:18:29,079 --> 00:18:32,429
+motivation about, where it has been used and
+so
+
+160
+00:18:32,430 --> 00:18:42,840
+on. Now, obviously, there would be cost, if
+you going to do some kind of optimal
+
+161
+00:18:42,839 --> 00:18:48,649
+solution, finding there, would be some kind
+of cost associated with it. In this example,
+
+162
+00:18:48,650 --> 00:18:58,700
+cost could be, for example, mall may have
+some cost associated with it; may be, the
+
+163
+00:18:58,700 --> 00:19:05,600
+.distant you have to travel, or sometimes,
+some malls now; they charge some fees to some
+
+164
+00:19:05,599 --> 00:19:11,939
+people, but I do not know. Obviously, movies
+also will have charges; eating out will
+
+165
+00:19:11,940 --> 00:19:17,080
+have some costs, and you may have some criteria;
+you want to those, find the solution
+
+166
+00:19:17,079 --> 00:19:21,960
+within this cost, or within this budget, or
+of optimal budget and things like that. So,
+
+167
+00:19:21,960 --> 00:19:24,730
+we
+will worry about cost as we see this later.
+
+168
+00:19:24,730 --> 00:19:25,730
+.
+
+169
+00:19:25,730 --> 00:19:33,680
+Let me take another example. Suppose, you
+want to construct a house, you can see this
+
+170
+00:19:33,680 --> 00:19:38,640
+also, you can pose this problem also, as an
+AND OR problem. So, just to take some
+
+171
+00:19:38,640 --> 00:19:51,330
+simple variations, you might say something,
+like single storey or a duplex; these might
+
+172
+00:19:51,329 --> 00:20:03,990
+be choices. In a single storey house, may
+say that you have to make a kitchen, followed
+
+173
+00:20:03,990 --> 00:20:10,690
+by, let us say, room one. So, I will just
+say, R1 followed by, let us say R2 and so
+
+174
+00:20:10,690 --> 00:20:19,320
+on, and
+let us say, balcony. Now, this, of course,
+
+175
+00:20:19,319 --> 00:20:26,519
+would be an AND node here, and I could have
+edges coming from here. For example, duplex
+
+176
+00:20:26,519 --> 00:20:30,490
+house also will have a kitchen and so on,
+which I can always, draw it as a graph or
+
+177
+00:20:30,490 --> 00:20:34,289
+I can draw it as a tree; it does not really
+matter.
+
+178
+00:20:34,289 --> 00:20:44,309
+Then, may be, room 1, would say, wall 1, up
+to, let say, we have 4 rooms; we have
+
+179
+00:20:44,309 --> 00:20:52,779
+rectangular rooms. So, from wall 1 to wall
+4 and then, may be door; let say, we have
+
+180
+00:20:52,779 --> 00:21:01,490
+only 1 door in this, and let say, we have
+a window.
+
+181
+00:21:01,490 --> 00:21:06,579
+This would be an AND node, and if you look
+at a wall, for example, you may have
+
+182
+00:21:06,579 --> 00:21:22,019
+.choices, like stone or brick or mud. In this
+manner, the choices that available to you
+
+183
+00:21:22,019 --> 00:21:24,799
+to
+construct a house, can be organized into an
+
+184
+00:21:24,799 --> 00:21:29,309
+AND OR tree where, the top level, you have
+the high level goal, which is to construct
+
+185
+00:21:29,309 --> 00:21:32,549
+a house. Then these, at lower levels; this
+is just
+
+186
+00:21:32,549 --> 00:21:47,029
+as choices here. At lower levels, these are
+sub goals. Then, you keep breaking down. Till
+
+187
+00:21:47,029 --> 00:21:52,750
+what extent you break down a problem? You
+break it down, till the problem is so simple
+
+188
+00:21:52,750 --> 00:21:58,900
+that you have a solution, already available,
+essentially. So, I will illustrate that with
+
+189
+00:21:58,900 --> 00:22:01,280
+the
+next example that we see, which is from one
+
+190
+00:22:01,279 --> 00:22:09,589
+of the first systems that were to use AND
+OR graphs, essentially.
+
+191
+00:22:09,589 --> 00:22:19,510
+Now, keep in mind that they are two kinds
+of cost that are going to be involved. One
+
+192
+00:22:19,510 --> 00:22:22,659
+is
+cost of transforming a problem. Let say, we
+
+193
+00:22:22,660 --> 00:22:29,430
+assumed, there is a cost of doing that into
+sub problems. The second is the cost of solving
+
+194
+00:22:29,430 --> 00:22:37,529
+the sub problems and so on. So, at the
+end of this, these nodes are called leaf nodes,
+
+195
+00:22:37,529 --> 00:22:50,129
+I mean, the leaf nodes are actually, called
+solved nodes. So, the leaf nodes in the tree
+
+196
+00:22:50,130 --> 00:22:54,010
+would be solved nodes. Solved nodes, of
+course, would have an associated cost with
+
+197
+00:22:54,009 --> 00:22:59,379
+it. Depending on the domain, we will see a
+domain; we will start with looking at symbolic
+
+198
+00:22:59,380 --> 00:23:02,510
+integration, for example, which was one
+of the first applications, which used AND
+
+199
+00:23:02,509 --> 00:23:05,990
+OR graphs. The solved nodes may not have
+any cost associated with it. For example,
+
+200
+00:23:05,990 --> 00:23:11,101
+you know that integral of XDX is something
+that you can just pick up the solution, or
+
+201
+00:23:11,101 --> 00:23:15,710
+X square DX, you can just pick up the solution
+and things like that, but if you look at the
+
+202
+00:23:15,710 --> 00:23:21,029
+problem, like building a house, then if you
+going to build 4 walls, then each of those
+
+203
+00:23:21,029 --> 00:23:23,639
+four walls, when you build it; it will have
+an
+
+204
+00:23:23,640 --> 00:23:30,160
+associated cost, and then, you will have to
+aggregate all that cost into the cost of building
+
+205
+00:23:30,160 --> 00:23:35,740
+that house, essentially. So, solved nodes
+may or may not have cost, depending on what
+
+206
+00:23:35,740 --> 00:23:38,029
+is
+the nature of the problem, but transformations
+
+207
+00:23:38,029 --> 00:23:42,710
+will always, have some costs associated
+with it. That is the way we will look at the
+
+208
+00:23:42,710 --> 00:23:48,430
+problem, essentially, because you want to
+control the amount of search that you do.
+
+209
+00:23:48,430 --> 00:23:49,900
+(Refer Slid Time.
+
+210
+00:23:49,900 --> 00:23:58,400
+.One of the first programs to look at that
+AND OR trees, was the program called SAINT,
+
+211
+00:23:58,400 --> 00:24:11,009
+which was implemented by a guy called Slagle
+in 1961. When you are looking at the
+
+212
+00:24:11,009 --> 00:24:16,109
+introductory lectures and we are saying, what
+are the achievements that A I has done
+
+213
+00:24:16,109 --> 00:24:21,259
+over the years; we had mentioned symbolic
+integration, at that time, in 1961. I think
+
+214
+00:24:21,259 --> 00:24:24,029
+in
+MIT, he wrote this. This was his PHD thesis
+
+215
+00:24:24,029 --> 00:24:28,609
+on how to do symbolic integration. So, what
+do you mean by symbolic integration? That
+
+216
+00:24:28,609 --> 00:24:34,719
+you are given some expression, and you
+want to integrate that expression, in definite
+
+217
+00:24:34,720 --> 00:24:41,130
+integral and you want to convert, you want
+to produce a expression, which is the integral
+
+218
+00:24:41,130 --> 00:24:49,090
+of this expression, essentially. So, my
+mathematics is a bit week. So, let me, yes,
+
+219
+00:24:49,089 --> 00:25:03,639
+use this break up, which, as strong as thesis.
+So, let us say that you want to integrate
+
+220
+00:25:03,640 --> 00:25:10,040
+X raise to 4 divided by 1 minus X square raise
+to
+
+221
+00:25:10,039 --> 00:25:19,659
+5 by 2 d x. I am sure that you people are
+more familiar with integration than I am.
+
+222
+00:25:19,660 --> 00:25:26,460
+You know how to solve such problems is that
+basically, you apply some transformations
+
+223
+00:25:26,460 --> 00:25:30,039
+and may be, you break up the problem into
+smaller parts, something that would fit very
+
+224
+00:25:30,039 --> 00:25:34,389
+nicely into the AND OR situations, because
+you have a choice of transformations to
+
+225
+00:25:34,390 --> 00:25:40,750
+make. So, first let us look at what the solution,
+look like. So, this is the node, when you
+
+226
+00:25:40,750 --> 00:25:58,369
+can transform it into sin raise to 4 Y Y;
+do not ask me how, but think for it, which
+
+227
+00:25:58,369 --> 00:26:04,889
+we
+can. So, the transformation is X equal to
+
+228
+00:26:04,890 --> 00:26:12,640
+sin Y. So, eventually, when you break it down
+into something, which is simple, which is
+
+229
+00:26:12,640 --> 00:26:18,830
+accessible to you; you will have a sort of,
+invert this transformation as you construct
+
+230
+00:26:18,829 --> 00:26:47,639
+the solution for this, essentially, I am in
+a risk
+
+231
+00:26:47,640 --> 00:27:27,930
+of converting this into a Maths class; let
+me try one or two more steps.
+
+232
+00:27:27,930 --> 00:28:07,799
+.You do not have to really write this. Notice
+that here, we have replaced something like
+
+233
+00:28:07,799 --> 00:28:15,549
+Z
+equal to tan W, let me write it here, and
+
+234
+00:28:15,549 --> 00:28:18,720
+transformed into this, and likewise, this
+can get
+
+235
+00:28:18,720 --> 00:28:34,730
+transformed into d w. So, now, we are assuming
+that this node is a solved node, in the
+
+236
+00:28:34,730 --> 00:28:41,490
+sense, that you can do this without any difficulty.
+This node is a solved node, and this
+
+237
+00:28:41,490 --> 00:28:52,049
+node is a solved node. So, you have the solution
+now. So, this is an AND node, of
+
+238
+00:28:52,049 --> 00:29:07,779
+course, and this so. The solution to this
+integration problem is a series of transformations
+
+239
+00:29:07,779 --> 00:29:13,289
+that you do, followed by, breaking up the
+problem into smaller parts, because we have
+
+240
+00:29:13,289 --> 00:29:18,750
+this addition here; these smaller parts, and
+then, we can solve this integral DW integral
+
+241
+00:29:18,750 --> 00:29:21,769
+Z
+square and integral DW, very trivially. So,
+
+242
+00:29:21,769 --> 00:29:24,400
+we will treat those nodes as solve nodes.
+So,
+
+243
+00:29:24,400 --> 00:29:27,790
+that is what I mean by saying that the cost
+of finding such nodes, the cost of this solution
+
+244
+00:29:27,789 --> 00:29:32,500
+is; you can consider it to be small, but that
+cost of transformation can be counted
+
+245
+00:29:32,500 --> 00:29:33,500
+essentially.
+
+246
+00:29:33,500 --> 00:29:37,730
+Of course, this is not the only way of doing
+this, essentially, and there could have been
+
+247
+00:29:37,730 --> 00:29:46,819
+other choices. So, for example, you could
+have said that transform this to cost minus
+
+248
+00:29:46,819 --> 00:30:01,939
+4
+YDY, and transform this into something else,
+
+249
+00:30:01,940 --> 00:30:10,190
+DX, and may be, it does not look so
+promising or something of even, worst you
+
+250
+00:30:10,190 --> 00:30:28,980
+could try something like this. So, to solve
+a
+
+251
+00:30:28,980 --> 00:30:37,360
+problem like this, there are many options.
+Those of you, who remember doing your
+
+252
+00:30:37,359 --> 00:30:41,559
+Maths or some entrance exam or the other,
+you would remember that you have to break
+
+253
+00:30:41,559 --> 00:30:44,720
+your head; try to remember, what are those
+transformations and so on. That is why, this
+
+254
+00:30:44,720 --> 00:30:52,279
+needs a lot of practice, but what this program
+SAINT; SAINT stands for Symbolic
+
+255
+00:30:52,279 --> 00:30:56,329
+Automatic Integration.
+
+256
+00:30:56,329 --> 00:31:08,079
+Later, a guy called Moses developed a program,
+which he called as SIN, because this
+
+257
+00:31:08,079 --> 00:31:14,809
+was called SAINT; which stands for Symbolic
+Integration. This SIN was eventually,
+
+258
+00:31:14,809 --> 00:31:20,389
+transformed into a product called MACSYMA.
+Nowadays, of course, you must be
+
+259
+00:31:20,390 --> 00:31:25,050
+familiar that we have these mathematical packages,
+which can do symbolic mathematics
+
+260
+00:31:25,049 --> 00:31:32,220
+for you. These are all the descendants of
+this SIN and SAINT, essentially. Some
+
+261
+00:31:32,220 --> 00:31:39,759
+MATLAB, for example, will also allow you to
+do symbolic mathematics. So, what you
+
+262
+00:31:39,759 --> 00:31:47,599
+want to show here, is that symbolic integration
+can be seen, as solving a problem in this
+
+263
+00:31:47,599 --> 00:31:52,819
+manner where, you reason from your large level,
+higher level problem to break it down
+
+264
+00:31:52,819 --> 00:31:57,810
+into sub goals, till sub goals are simple
+enough, to be solved trivially, and then,
+
+265
+00:31:57,810 --> 00:32:00,129
+you have
+a solution for solving this problem. Of course,
+
+266
+00:32:00,130 --> 00:32:02,720
+actual answer to this, you have to undo all
+
+267
+00:32:02,720 --> 00:32:13,410
+.the transformations that you have done, which
+I have not written here. So, let me give
+
+268
+00:32:13,410 --> 00:32:27,100
+another example where, this idea was used
+effectively. We had mentioned that in the
+
+269
+00:32:27,099 --> 00:32:46,799
+70s,
+was the area of what we call as expert systems.
+
+270
+00:32:46,799 --> 00:32:47,799
+.
+
+271
+00:32:47,799 --> 00:33:03,730
+One of the first expert systems 
+
+272
+00:33:03,730 --> 00:33:21,160
+was this program called DENDRAL. This DENDRAL,
+basically, also can be, some people say you
+
+273
+00:33:21,160 --> 00:33:26,470
+can extend it to a dentritec tree X algorithm
+or something like that, because it generated
+
+274
+00:33:26,470 --> 00:33:33,529
+also, an AND OR graph, which look like
+that, but the idea of DENDRAL was that it
+
+275
+00:33:33,529 --> 00:33:50,539
+was the assistant; it was originally developed
+or programmed it as an assistant to a chemist,
+
+276
+00:33:50,539 --> 00:33:55,539
+and the task that the chemist was doing
+was to determining the structural formula
+
+277
+00:33:55,539 --> 00:34:08,329
+of an compound, essentially. Now, you know
+that again, I presume your chemistry is better
+
+278
+00:34:08,329 --> 00:34:15,990
+than mine. So, you know that if you are
+given a molecular formula for a compound,
+
+279
+00:34:15,989 --> 00:34:26,750
+for example, C6 H6; how was it C6 H12;
+whatever, benzene; what is the formula for
+
+280
+00:34:26,750 --> 00:34:33,398
+benzene? C 6 H 6, and you must have heard
+the story of Kekule, and you know how people
+
+281
+00:34:33,398 --> 00:34:36,469
+were trying to figure out, what is the
+structure of benzene.
+
+282
+00:34:36,469 --> 00:34:42,888
+So, at a molecular level, of course, it has
+6 carbon atoms and 6 hydrogen atoms, but the
+
+283
+00:34:42,889 --> 00:34:49,889
+question to ask is; how are these atoms arranged,
+in a structure? That is a very important
+
+284
+00:34:49,889 --> 00:34:56,840
+question, because the physical and chemical
+properties of the substance, depends on the
+
+285
+00:34:56,840 --> 00:35:00,940
+.structural formula, that it is behind, essentially,
+and to find the structural formula, is not
+
+286
+00:35:00,940 --> 00:35:05,179
+such a straight forward task, and apparently,
+Kekule was dreaming, or day dreaming or
+
+287
+00:35:05,179 --> 00:35:10,750
+sleeping, or something, and he saw this snake,
+which was biting his own tail, and then, it
+
+288
+00:35:10,750 --> 00:35:19,889
+is benzene ring and so on, essentially. So,
+the idea behind DENDRAL was to help a
+
+289
+00:35:19,889 --> 00:35:27,098
+chemist, find structural formulas and apparently,
+people who have done PHD in
+
+290
+00:35:27,099 --> 00:35:32,650
+chemistry, spend their considerable amount
+of time, trying to find the structural formulas
+
+291
+00:35:32,650 --> 00:35:46,000
+of this thing. The problem is not so simple,
+because a given molecular formula may have
+
+292
+00:35:46,000 --> 00:35:51,619
+millions of different structural formula,
+associated with it, essentially, for larger
+
+293
+00:35:51,619 --> 00:35:53,028
+compounds, obviously.
+
+294
+00:35:53,028 --> 00:35:57,739
+At a must lower level, you know, the structure
+plays an important role in materials,
+
+295
+00:35:57,739 --> 00:36:03,959
+because whether you are holding a diamond
+in your hand, or a lump of coal; is just a
+
+296
+00:36:03,960 --> 00:36:08,369
+matter of structure. You, basically, holding
+carbon in your hand, but it is really the
+
+297
+00:36:08,369 --> 00:36:13,430
+structure of it, which gives it the properties
+that you looking for.
+
+298
+00:36:13,429 --> 00:36:14,429
+.
+
+299
+00:36:14,429 --> 00:36:25,798
+So, the way that is DENDRAL was implemented,
+the idea was, it will explore the space
+
+300
+00:36:25,798 --> 00:36:32,159
+of possible structures, and this can be done
+by breaking down a molecular formula into
+
+301
+00:36:32,159 --> 00:36:36,308
+smaller parts, and exploring the structure
+of the smaller parts. We will see a small
+
+302
+00:36:36,309 --> 00:36:46,420
+sample
+example, but this was aided by a process of
+
+303
+00:36:46,420 --> 00:36:50,451
+generating a synthetic spectrogram. So, there
+
+304
+00:36:50,451 --> 00:36:56,730
+.was an algorithm that given a structural
+formula, what will be the spectrogram of that
+
+305
+00:36:56,730 --> 00:36:57,730
+material look like, essentially.
+
+306
+00:36:57,730 --> 00:37:04,369
+Once you can do that, you can compare it with
+a real spectrogram of the material, and if
+
+307
+00:37:04,369 --> 00:37:07,869
+the spectrogram matches, then you can say
+that you have found the structural formula
+
+308
+00:37:07,869 --> 00:37:12,890
+for
+that material. That is the approach with chemist
+
+309
+00:37:12,889 --> 00:37:19,750
+for doing it laboriously. DENDRAL was
+a program; it was developed by Stanford in
+
+310
+00:37:19,750 --> 00:37:28,309
+1971 or something like that, came a bit after
+SAINT. It was touted as the first expert system,
+
+311
+00:37:28,309 --> 00:37:35,000
+which was built, and 70s and 80s was
+the era of expert systems where, people said
+
+312
+00:37:35,000 --> 00:37:39,750
+that we will build expert systems, and by
+this, they meant that they will elicit the
+
+313
+00:37:39,750 --> 00:37:44,579
+knowledge of experts, put it into a program,
+and
+
+314
+00:37:44,579 --> 00:37:51,789
+the program will then, perform at the level
+of an expert. So, apart from DENDRAL, in
+
+315
+00:37:51,789 --> 00:37:57,700
+the introduction, we might have mentioned
+things like prospector, which was an expert
+
+316
+00:37:57,699 --> 00:38:02,358
+system to find a prospect for oils or minerals,
+and so on.
+
+317
+00:38:02,358 --> 00:38:16,298
+There was a program called R 1, which was
+also at Stanford I think, which was used to
+
+318
+00:38:16,298 --> 00:38:21,298
+configure wax systems. In those years, of
+course, buying a machine, a computer was not
+
+319
+00:38:21,298 --> 00:38:27,239
+such a straight forward task as saying that
+I want Apple, Mac book or something like
+
+320
+00:38:27,239 --> 00:38:35,588
+that. You had to actually configure various
+components together, and R 1 was an expert
+
+321
+00:38:35,588 --> 00:38:42,369
+system, which helped people, configure computer
+systems. We will look at this; how this
+
+322
+00:38:42,369 --> 00:38:48,130
+R 1 and things like this; such programs have
+built, a little bit later in the course, but
+
+323
+00:38:48,130 --> 00:38:54,940
+today, we want to focus on this A 0 star,
+kind of an algorithm, or AND OR tree
+
+324
+00:38:54,940 --> 00:39:00,200
+algorithms, and which basically, search over
+AND OR trees. So, where did the expertise
+
+325
+00:39:00,199 --> 00:39:01,199
+come in?
+
+326
+00:39:01,199 --> 00:39:08,210
+Expertise came in that there was first a program
+called CONGEN. So, DENDRAL was
+
+327
+00:39:08,210 --> 00:39:21,909
+made up of a program called CONGEN, and this
+stands for Constraint Generator. This
+
+328
+00:39:21,909 --> 00:39:35,429
+had expert knowledge inside it. So, of the
+many possible ways that you could conjure
+
+329
+00:39:35,429 --> 00:39:42,139
+a
+structure for a given molecular formula, CONGEN
+
+330
+00:39:42,139 --> 00:39:47,900
+was guided by knowledge gleamed
+from chemist, as to what structures are feasible
+
+331
+00:39:47,900 --> 00:40:05,048
+and what are not feasible, essentially. For
+example, given a simple thing like C 2 H 12
+
+332
+00:40:05,048 --> 00:40:28,548
+NO 2, this CONGEN would produce a
+structure like this, or it would produce another
+
+333
+00:40:28,548 --> 00:40:54,139
+structure. So, this is one, and this is
+another one, and there are more examples,
+
+334
+00:40:54,139 --> 00:40:58,400
+which I am not drawing here.
+
+335
+00:40:58,400 --> 00:41:05,230
+.Essentially, again since, you are better
+at chemistry than I am. You know that this
+
+336
+00:41:05,230 --> 00:41:07,079
+is
+double bond and this is single bond, and so
+
+337
+00:41:07,079 --> 00:41:11,070
+on; we have not drawn the hydrogen atoms
+and you can fill in the hydrogen atoms, based
+
+338
+00:41:11,070 --> 00:41:15,559
+on the valance here, remaining. So, 3 here,
+for example, and 2 here, in that, but these
+
+339
+00:41:15,559 --> 00:41:19,859
+are different structures that CONGEN
+generates and what was interesting about CONGEN
+
+340
+00:41:19,858 --> 00:41:24,699
+was, it generated only feasible
+structures. That is why, expert knowledge
+
+341
+00:41:24,699 --> 00:41:25,899
+came into that.
+
+342
+00:41:25,900 --> 00:41:39,760
+So, after CONGEN, you produce a synthetic
+spectrogram, compared with real and then,
+
+343
+00:41:39,760 --> 00:41:44,460
+you can decide, whether you have found the
+structure of the material or not. What
+
+344
+00:41:44,460 --> 00:41:49,970
+DENDRAL would do is that it would expose this
+huge space of all possible structures,
+
+345
+00:41:49,969 --> 00:41:57,559
+generates this synthetic spectrograms, and
+compare it with the one of the original
+
+346
+00:41:57,559 --> 00:42:02,909
+material, and eventually, do the job for the
+chemist, and it turns out that this was
+
+347
+00:42:02,909 --> 00:42:09,190
+working, of course, much faster than real
+chemist, as you can imagine; and doing
+
+348
+00:42:09,190 --> 00:42:15,619
+equally, well or almost, equally well and
+when you say real chemist means people, who
+
+349
+00:42:15,619 --> 00:42:23,170
+have PHDs essentially. So, let me just end
+with a small example of the kind of space
+
+350
+00:42:23,170 --> 00:42:27,280
+that
+DENDRAL generated, and in the next class,
+
+351
+00:42:27,280 --> 00:42:33,559
+we will see the algorithms, which I used to
+explore this space.
+
+352
+00:42:33,559 --> 00:42:34,559
+.
+
+353
+00:42:34,559 --> 00:42:42,579
+Let us say that we are looking at C5 H12.
+This is a molecular formula, and any box,
+
+354
+00:42:42,579 --> 00:42:47,740
+.which has a molecular formula, is an unsolved
+node or which, may be partially solved, as
+
+355
+00:42:47,739 --> 00:42:53,338
+we will see. A solved node is where; this
+structure is entirely given to you, essentially.
+
+356
+00:42:53,338 --> 00:43:05,019
+So, for example, it could be like this; C,
+C, C, C, C; and then, the hydrogen items.
+
+357
+00:43:05,019 --> 00:43:12,778
+So,
+this would be a solved node. A simple way
+
+358
+00:43:12,778 --> 00:43:18,298
+of organizing this 5 carbon atoms and 12
+hydrogen atoms, but there could be other options,
+
+359
+00:43:18,298 --> 00:43:23,460
+essentially. For example, these are
+directed graphs. You could say that it is
+
+360
+00:43:23,460 --> 00:44:00,778
+C. So, a partially elicited structure where,
+part of
+
+361
+00:44:00,778 --> 00:44:05,670
+the structure is known, and part is not known.
+So, 3 carbon atoms are here; 2, I buy it
+
+362
+00:44:05,670 --> 00:44:30,940
+inside here. This is another partially elicited
+structure, and this itself, would have now,
+
+363
+00:44:30,940 --> 00:44:45,338
+three children, which this part, this part
+and this part. So, you solved for C2 H5 with
+
+364
+00:44:45,338 --> 00:44:55,259
+a
+bond. Then, you have another C2 H5; it is
+
+365
+00:44:55,259 --> 00:45:08,690
+a bond and then, you have C, H, H, H, H, H,
+with two bonds, and this is solved; and this
+
+366
+00:45:08,690 --> 00:45:25,809
+can be solved by, and this also, can be solved
+by this, and this will have, for example,
+
+367
+00:45:25,809 --> 00:45:29,499
+two components. One of them will be the C2
+H5
+
+368
+00:45:29,498 --> 00:45:34,879
+with a bond, which will be solved by this;
+and the remaining will be that; whatever
+
+369
+00:45:34,880 --> 00:45:40,460
+remains here; C, C, C, and so on.
+
+370
+00:45:40,460 --> 00:45:52,380
+So, in this very quick chemistry lesson, you
+can see that three possible structures for
+
+371
+00:45:52,380 --> 00:45:56,510
+C2
+H5; one is this structure; one is a structure
+
+372
+00:45:56,510 --> 00:46:01,769
+where, you have the middle part where, you
+have C and 2 hydrogen atoms, and the two edges
+
+373
+00:46:01,768 --> 00:46:09,069
+contain this structure like this, and
+likewise, this is another structure where,
+
+374
+00:46:09,070 --> 00:46:17,440
+the middle part has the C2 H5 component. Here,
+the two edges have the C2 H5 components; obviously,
+
+375
+00:46:17,440 --> 00:46:29,509
+that matters. So, you have either,
+one solution is this one. This is an AND node.
+
+376
+00:46:29,509 --> 00:46:34,798
+Another solution is here, and the third
+solution is that side, essentially. Now, what
+
+377
+00:46:34,798 --> 00:46:41,809
+DENDRAL did is that it navigates this space
+intelligently, in the sense, that this CONGEN,
+
+378
+00:46:41,809 --> 00:46:47,500
+component of DENDRAL, only generates
+those nodes, which are feasible in practice.
+
+379
+00:46:47,500 --> 00:46:53,608
+How does it do that? It has got a lot of expert
+knowledge built into it, and that is why,
+
+380
+00:46:53,608 --> 00:46:55,920
+this system is called the first expert system
+that
+
+381
+00:46:55,920 --> 00:46:58,500
+was built, essentially.
+
+382
+00:46:58,500 --> 00:47:03,768
+Then, of course, it generates the synthetic
+spectrogram of the, for example, you take
+
+383
+00:47:03,768 --> 00:47:06,548
+this
+generate the spectrogram and compare it with
+
+384
+00:47:06,548 --> 00:47:10,699
+your real material spectrogram, and if this
+matches, then you know that it is the structural
+
+385
+00:47:10,699 --> 00:47:19,338
+formula and so on, essentially. Today, we
+have just introduced the idea of AND OR trees
+
+386
+00:47:19,338 --> 00:47:24,420
+or AND OR graphs. So, we will not
+distinguish too much between them. We have
+
+387
+00:47:24,420 --> 00:47:29,250
+just very briefly, talked about the cost
+associated with solved nodes and which, have
+
+388
+00:47:29,250 --> 00:47:33,170
+to be aggregated into the root node. So, in
+
+389
+00:47:33,170 --> 00:47:39,990
+.the next class we will look at an algorithm,
+which explores an AND OR tree or a goal
+
+390
+00:47:39,989 --> 00:47:42,689
+tree, to find an optimal solution, essentially.
+
+391
+00:47:42,690 --> 00:47:44,369
+So, we will stop here, now.
+
+392
+00:47:44,369 --> 00:47:54,369
+.
+

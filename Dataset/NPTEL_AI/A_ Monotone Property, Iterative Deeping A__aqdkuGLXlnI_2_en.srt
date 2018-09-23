@@ -1,0 +1,2125 @@
+﻿1
+00:00:14,289 --> 00:00:23,640
+We are looking at the A star algorithm. In
+the last class, we saw that the algorithm
+
+2
+00:00:23,640 --> 00:00:28,589
+is admissible,
+provided the heuristic function underestimates
+
+3
+00:00:28,589 --> 00:00:32,219
+the distance with the goal, and provided,
+every
+
+4
+00:00:32,219 --> 00:00:40,649
+edge has the cost, which is greater than the
+some small value, epsilon, and there is finite
+
+5
+00:00:40,649 --> 00:00:48,250
+branching. We also saw that if two nodes,
+if their two heuristic functions, one of them
+
+6
+00:00:48,250 --> 00:01:02,950
+is more
+informed than the other, which means h 2 of
+
+7
+00:01:02,950 --> 00:01:14,719
+n is greater than h 1 of n, for every n. Then,
+we said
+
+8
+00:01:14,719 --> 00:01:23,500
+that algorithm a 2, which uses h 2 or a 2
+star, which uses h 2, will explore a smaller
+
+9
+00:01:23,500 --> 00:01:27,239
+search space.
+If you can depict as follows; this is the
+
+10
+00:01:27,239 --> 00:01:34,339
+start node and this is the goal node. Then,
+one algorithm
+
+11
+00:01:34,340 --> 00:01:42,400
+will search something like this, and the other
+algorithm will search something like this.
+
+12
+00:01:42,400 --> 00:01:46,140
+So, this
+would be h 2 and this would be h 1; this is
+
+13
+00:01:46,140 --> 00:01:51,840
+what we expect, that the more informed heuristic
+function will be more focused towards the
+
+14
+00:01:51,840 --> 00:01:58,140
+goal. So, it will search less away from the
+goal,
+
+15
+00:01:58,140 --> 00:02:01,459
+whereas, what branch and bound would search,
+would have been full circle around of that
+
+16
+00:02:01,459 --> 00:02:04,589
+length.
+So, the fact that using a heuristic function
+
+17
+00:02:04,590 --> 00:02:08,840
+actually, focuses a search towards the goal
+and more
+
+18
+00:02:08,840 --> 00:02:13,830
+informed heuristic function is, the more it
+focuses towards a goal; which means, search
+
+19
+00:02:13,830 --> 00:02:14,830
+becomes
+
+20
+00:02:14,830 --> 00:02:18,540
+.narrow and narrow. With a perfect heuristic
+function, the search would be just one pass
+
+21
+00:02:18,539 --> 00:02:19,959
+that
+would take place, essentially. Unfortunately,
+
+22
+00:02:19,959 --> 00:02:22,889
+we do not have perfect heuristic functions.
+So, we
+
+23
+00:02:22,889 --> 00:02:32,340
+try to look for as good functions as possible,
+which means, that the heuristic value must
+
+24
+00:02:32,340 --> 00:02:36,090
+be as
+high as possible, but it should not cross
+
+25
+00:02:36,090 --> 00:02:43,908
+the level of the optimal value, especially.
+For example, in
+
+26
+00:02:43,908 --> 00:02:58,528
+the 8th puzzle, it has been observed, that
+if there two tiles, let us say, 8 and 5; and
+
+27
+00:02:58,528 --> 00:03:01,280
+they should be
+reversed, let us say, in the whole situation;
+
+28
+00:03:01,280 --> 00:03:07,590
+5 and 8 are here, but they should be 5 and
+8, instead
+
+29
+00:03:07,590 --> 00:03:15,158
+of 8 and 5. Then, one way, one of the functions
+that we saw was; simply count how many tiles
+
+30
+00:03:15,158 --> 00:03:21,198
+are out of place, in which case, two tiles
+are out of place; both 8 and 5 are out of
+
+31
+00:03:21,199 --> 00:03:25,689
+place. The other
+function that we saw was the Manhatten distance
+
+32
+00:03:25,689 --> 00:03:29,278
+function, which said that you need one step
+to
+
+33
+00:03:29,278 --> 00:03:35,930
+take 8 to this position, and you will take
+one step to get 5 to this position. So, the
+
+34
+00:03:35,930 --> 00:03:38,409
+cost would be
+2, essentially, or the contravention of these
+
+35
+00:03:38,408 --> 00:03:44,388
+two tiles would be two, essentially. Now,
+if you have
+
+36
+00:03:44,389 --> 00:03:47,939
+solved this 8 puzzle kind of thing, you know
+that you cannot exchange them, essentially.
+
+37
+00:03:47,938 --> 00:03:51,778
+If you want to interchange the position of
+two tiles, you have to do some round about
+
+38
+00:03:51,778 --> 00:03:54,259
+movement.
+So, you will need to add a certain value to
+
+39
+00:03:54,259 --> 00:03:57,558
+that, essentially. About 7 to 8 years ago,
+somebody
+
+40
+00:03:57,558 --> 00:04:01,718
+enhanced the heuristic function to count for
+such things, that they are in the correct
+
+41
+00:04:01,718 --> 00:04:05,248
+row, but in
+the wrong order. Then, you add a certain amount,
+
+42
+00:04:05,248 --> 00:04:11,150
+and that search was able to find optimal
+solution such faster for bigger problem, which
+
+43
+00:04:11,150 --> 00:04:16,810
+means for the 15 puzzle and the 24 puzzle
+as well,
+
+44
+00:04:16,810 --> 00:04:26,329
+essentially. Now, today we want look at the
+other property, which is that; consider two
+
+45
+00:04:26,329 --> 00:04:30,719
+nodes, we
+consider some path to the goal node, and two
+
+46
+00:04:30,720 --> 00:04:37,060
+nodes m and n, on the path will (Refer Time:
+04:48).
+
+47
+00:04:37,060 --> 00:04:38,060
+..
+
+48
+00:04:38,060 --> 00:04:46,540
+If you take any such two nodes in the search
+place, and if they satisfy this property,
+
+49
+00:04:46,540 --> 00:04:59,300
+that h of m
+minus h of n, is less than equal to k of m
+
+50
+00:04:59,300 --> 00:05:08,300
+n, in a sense, you can think of this, saying
+that it under
+
+51
+00:05:08,300 --> 00:05:15,340
+estimates the cost of every edge, which is
+on the path to the goal, essentially. So,
+
+52
+00:05:15,339 --> 00:05:20,779
+h of m says that
+it is an estimate to the, from m to goal;
+
+53
+00:05:20,779 --> 00:05:24,969
+h of n says the estimate from n to goal, and
+h of m minus
+
+54
+00:05:24,970 --> 00:05:30,010
+h of n in some sense, is the estimate of the
+edge cost from m to n. If this is less than
+
+55
+00:05:30,009 --> 00:05:32,259
+the actual h
+cost, in some sense, we are saying that it
+
+56
+00:05:32,259 --> 00:05:43,719
+is underestimating the edge, every edge cost,
+essentially. This condition is called monotone
+
+57
+00:05:43,720 --> 00:05:59,020
+of consistency condition, and what we want
+to
+
+58
+00:05:59,019 --> 00:06:03,279
+show is that if this condition is satisfied,
+which means that it is the property of the
+
+59
+00:06:03,279 --> 00:06:06,919
+heuristic
+function; a heuristic function is such, that
+
+60
+00:06:06,920 --> 00:06:10,030
+this property is satisfied for any two nodes,
+which
+
+61
+00:06:10,029 --> 00:06:30,829
+connected like this. Whenever, A star picks
+some node n, because already found 
+
+62
+00:06:30,829 --> 00:06:44,099
+an optimal path
+to n. You want to show that, you will do that
+
+63
+00:06:44,100 --> 00:06:47,320
+in a moment, First, let us look at that what
+this is
+
+64
+00:06:47,319 --> 00:06:53,649
+saying; what is the implication of this, essentially?
+We are saying that, under certain condition,
+
+65
+00:06:53,649 --> 00:06:58,029
+which is this fact that heuristic function
+satisfies this condition which is called monotone
+
+66
+00:06:58,029 --> 00:07:00,649
+or
+consistency condition.
+
+67
+00:07:00,649 --> 00:07:05,959
+If this is satisfied, if the heuristic function
+said that it satisfies this property, then
+
+68
+00:07:05,959 --> 00:07:08,199
+the algorithm
+which is using that A star, which is using
+
+69
+00:07:08,199 --> 00:07:10,979
+that heuristic function; whenever, it picks
+a node, any
+
+70
+00:07:10,980 --> 00:07:17,740
+node n; picks meaning, it picks some open,
+right; it has already found an optimal path
+
+71
+00:07:17,740 --> 00:07:29,460
+to n. What
+is the implication of this on our algorithm?
+
+72
+00:07:29,459 --> 00:07:37,519
+If you look at, if you think about the A star
+algorithm,
+
+73
+00:07:37,519 --> 00:07:41,909
+.what does it do after it picks a node and
+it takes for, whether it is a goal or not;
+
+74
+00:07:41,910 --> 00:07:46,370
+if it is not a goal,
+it generates its children, and the children
+
+75
+00:07:46,370 --> 00:07:50,970
+are of three kinds, either new nodes or nodes
+on open or
+
+76
+00:07:50,970 --> 00:07:55,620
+nodes on closed. For nodes on whichever, is
+open and closed, it checks for, and found
+
+77
+00:07:55,620 --> 00:08:02,530
+a better
+path. For nodes on closed, if it is found
+
+78
+00:08:02,529 --> 00:08:05,429
+a better path, has propagated that improvement
+to its
+
+79
+00:08:05,430 --> 00:08:12,240
+children, essentially. So, the application
+of this statement, if this statement were
+
+80
+00:08:12,240 --> 00:08:17,090
+to be true, it
+means that it, the moment it puts a node into
+
+81
+00:08:17,089 --> 00:08:19,869
+closed, it has already found a better path,
+best path
+
+82
+00:08:19,870 --> 00:08:24,930
+to it; optimal path to it, which means you
+have to revise that path, so that, the third
+
+83
+00:08:24,930 --> 00:08:33,408
+stage of that
+revision process, we can do away with, essentially.
+
+84
+00:08:33,408 --> 00:08:40,929
+You can be showed that if node is in closed,
+you already have the optimal cost to it, essentially,
+
+85
+00:08:40,929 --> 00:08:49,248
+which of course saves a lot, in terms of a
+this propagation that you have to do, and
+
+86
+00:08:49,249 --> 00:08:51,409
+in later
+classes, which is in next class, you will
+
+87
+00:08:51,409 --> 00:08:53,799
+see that this allows us to design some algorithm,
+which
+
+88
+00:08:53,799 --> 00:09:00,990
+can save on spaces, but that we will do in
+the next class. Now, let us try to prove this
+
+89
+00:09:00,990 --> 00:09:09,698
+property,
+essentially. What are we saying? We are saying
+
+90
+00:09:09,698 --> 00:09:13,248
+that when it picks node n from the open list,
+at
+
+91
+00:09:13,249 --> 00:09:22,199
+that point, g of n equal to g star of n; this
+is the optimal value. We can rewrite this
+
+92
+00:09:22,198 --> 00:09:40,919
+condition as
+follows; h of n is less than equal to, plus
+
+93
+00:09:40,919 --> 00:09:52,360
+h of n; I will take just h of n to that side
+and then, I can
+
+94
+00:09:52,360 --> 00:10:06,430
+add g values; plus g of m. So, I can add this
+g of m to both sides; same value I am adding
+
+95
+00:10:06,429 --> 00:10:17,139
+to both
+sides, so that does not change things. But
+
+96
+00:10:17,139 --> 00:10:23,480
+this one, g of m, if you look at the figure;
+g of m and k
+
+97
+00:10:23,480 --> 00:10:44,129
+of m equal to g of n. Let me rewrite this
+in this order. In other words, f of m is equal
+
+98
+00:10:44,129 --> 00:11:00,769
+to f of n;
+that is a first observation we make.
+
+99
+00:11:00,769 --> 00:11:05,600
+What are these values saying here? When we
+are looking at this criterion, we are saying;
+
+100
+00:11:05,600 --> 00:11:09,249
+is that
+the farther we have from the goal; the less
+
+101
+00:11:09,249 --> 00:11:13,308
+accurate our estimate is, and the closer we
+go towards
+
+102
+00:11:13,308 --> 00:11:23,249
+the goal, the more accurate our estimate becomes.
+As we move from node m to node n, our f
+
+103
+00:11:23,249 --> 00:11:28,269
+value actually increases, essentially. Now,
+remember the f value is an estimate of the
+
+104
+00:11:28,269 --> 00:11:33,730
+cost of the
+path, going through the node. Since, the path
+
+105
+00:11:33,730 --> 00:11:37,028
+is going through both f, and both m and n,
+the
+
+106
+00:11:37,028 --> 00:11:42,490
+estimate should be ideally the same. But when
+you see from m’s perspective, it is actually
+
+107
+00:11:42,490 --> 00:11:45,100
+less
+and when you see it from n’s perspective.
+
+108
+00:11:45,100 --> 00:11:47,139
+What is the difference; that you have n is
+little bit
+
+109
+00:11:47,139 --> 00:11:54,129
+closer to the goal. So, that is one of the
+reasons for, this is called a monotone criteria.
+
+110
+00:11:54,129 --> 00:11:57,000
+A
+monotone condition is that, as you move closer
+
+111
+00:11:57,000 --> 00:12:04,188
+to the goal, the f value monotonically increases.
+Since, this is, this goal, as go closer to
+
+112
+00:12:04,188 --> 00:12:11,719
+the goal, the f value monotonically increases.
+That is one
+
+113
+00:12:11,720 --> 00:12:16,939
+observation, which holds for any, by transitivity,
+this will hold for any two nodes on a path
+
+114
+00:12:16,938 --> 00:12:17,938
+from
+
+115
+00:12:17,938 --> 00:12:45,469
+.to the goal, essentially. Now, let us assume
+that there is a node n which, let us remove
+
+116
+00:12:45,470 --> 00:12:51,730
+this, that
+depicts a search space that we are exploring.
+
+117
+00:12:51,730 --> 00:12:56,938
+There is node n which A star is about to pick,
+which
+
+118
+00:12:56,938 --> 00:13:01,868
+means, it must be on open; this is open at
+that stage of time, or that stage of the algorithm,
+
+119
+00:13:01,869 --> 00:13:05,649
+and n
+is about to pick node n. We want to make this
+
+120
+00:13:05,649 --> 00:13:08,940
+clean that if A star is about to pick that
+node n, it
+
+121
+00:13:08,940 --> 00:13:15,339
+must have found that optimal path to n. So,
+we will do this proof by contradiction. We
+
+122
+00:13:15,339 --> 00:13:22,869
+will say
+that assume, that when it picks this node
+
+123
+00:13:22,869 --> 00:13:35,040
+n, it has not found optimal path. So, assume
+that g of n
+
+124
+00:13:35,039 --> 00:13:44,759
+is greater than g star of n. At the point,
+where it is about to pick n and we will show
+
+125
+00:13:44,759 --> 00:13:50,428
+that this
+leads to a contradiction.
+
+126
+00:13:50,428 --> 00:13:51,428
+.
+
+127
+00:13:51,428 --> 00:14:13,909
+Let this be the optimal path. Let this be
+the optimal path to the node n, and let us
+
+128
+00:14:13,909 --> 00:14:19,009
+say that this is
+in closed; this is in closed. Let us say that
+
+129
+00:14:19,009 --> 00:14:34,399
+A star has found some other path so, this
+is open. And
+
+130
+00:14:34,399 --> 00:14:41,649
+let us say that A star is about to pick this
+node n, and let us assume that at point, g
+
+131
+00:14:41,649 --> 00:14:49,549
+of n is more
+than the optimal cost, and let n l be the;
+
+132
+00:14:49,549 --> 00:14:55,849
+so, this optimal path to n, let us say it
+is this, and n l is
+
+133
+00:14:55,850 --> 00:15:02,800
+the last node, A star has inspected on that
+optimal path, and n l plus one is the node
+
+134
+00:15:02,799 --> 00:15:07,919
+which is on
+open, which is child of this node. But A star
+
+135
+00:15:07,919 --> 00:15:11,599
+has not expected. So, what we are saying that
+A star
+
+136
+00:15:11,600 --> 00:15:16,159
+has not found this path, which is the optimal
+path, but A star has found this path, which
+
+137
+00:15:16,159 --> 00:15:20,519
+may not
+be an optimal path; we are trying to say.
+
+138
+00:15:20,519 --> 00:15:37,389
+So, n of l, last node on optimal path to n,
+last node seen,
+
+139
+00:15:37,389 --> 00:16:01,458
+and n of l plus one is the first node on optimal
+path, which is not seen. So, I am saying that
+
+140
+00:16:01,458 --> 00:16:02,458
+this is
+
+141
+00:16:02,458 --> 00:16:08,919
+.the optimal path. This of course, is one
+edge and then, they added some more; that
+
+142
+00:16:08,919 --> 00:16:11,099
+is the optimal
+path to n.
+
+143
+00:16:11,100 --> 00:16:20,070
+We are assuming A star has found some other
+path to n, which is not the optimal path.
+
+144
+00:16:20,070 --> 00:17:01,199
+Now, we
+can apply this criteria here, f of m, sorry.
+
+145
+00:17:01,198 --> 00:17:03,458
+This monotone criteria that we observed, assuming
+that
+
+146
+00:17:03,458 --> 00:17:09,169
+heuristic function satisfies this property
+from any path to the goal, this property holds
+
+147
+00:17:09,170 --> 00:17:13,650
+that, as you
+go closer towards the goal, the f value increases.
+
+148
+00:17:13,650 --> 00:17:20,420
+As we move from f of this last node n l to
+n l
+
+149
+00:17:20,420 --> 00:17:37,060
+plus one, and so on to n, the f value will
+increase, or at least not decrease. In particular,
+
+150
+00:17:37,059 --> 00:17:47,579
+we can
+write that g of n l plus one, plus h of n
+
+151
+00:17:47,579 --> 00:18:10,740
+l plus one, is less than equal to g of n plus
+h of n. I am just
+
+152
+00:18:10,740 --> 00:18:17,569
+expanding this one here, and that one there,
+and I am skipping the transitive steps, and
+
+153
+00:18:17,569 --> 00:18:33,359
+because
+they are in optimal path, we can replace g
+
+154
+00:18:33,359 --> 00:18:41,449
+with g star. So, we can write g star of n
+l plus one plus
+
+155
+00:18:41,450 --> 00:18:57,730
+h of n l plus one less than equal to; so,
+we can put this star, because we are assuming
+
+156
+00:18:57,730 --> 00:19:00,620
+that these
+nodes, these three nodes that we are talking
+
+157
+00:19:00,619 --> 00:19:03,329
+about. These two nodes, n l and n l plus one,
+are on
+
+158
+00:19:03,329 --> 00:19:10,369
+the optimal paths to n. So, on this path,
+these properties will hold, essentially. Now,
+
+159
+00:19:10,369 --> 00:19:17,119
+if this is the
+case 
+
+160
+00:19:17,119 --> 00:19:57,119
+we can write this as, I am just adding plus
+h of n to both sides, essentially. So, g of
+
+161
+00:19:57,119 --> 00:20:03,169
+n plus h
+of n greater than g star of n plus h of n.
+
+162
+00:20:03,170 --> 00:20:18,850
+Anyway, that is not so important. What is
+really
+
+163
+00:20:18,849 --> 00:20:33,929
+important is that f of n is less than equal
+to f of n l plus 1, why because we are said
+
+164
+00:20:33,930 --> 00:20:38,160
+that A star is
+about to expand this node n. This whole property,
+
+165
+00:20:38,160 --> 00:20:40,940
+we want to say that when is about to expand
+n,
+
+166
+00:20:40,940 --> 00:20:47,980
+it must have found an optimal path to that,
+essentially. So, this we can write as g of
+
+167
+00:20:47,980 --> 00:21:00,170
+n plus h of n
+less than equal to g of n l plus one plus
+
+168
+00:21:00,170 --> 00:21:16,120
+h of n l plus one. So, I want to look at this
+one, and this
+
+169
+00:21:16,119 --> 00:21:32,259
+one, see I want basically, this g of n is
+less than equal to g star of n using these
+
+170
+00:21:32,259 --> 00:21:44,319
+two, but I have a
+star sitting there.
+
+171
+00:21:44,319 --> 00:21:53,789
+So basically, I have to put this star here,
+because we have assumed that in this graph,
+
+172
+00:21:53,789 --> 00:22:02,250
+this is
+optimal path. So, this g of n l plus 1 is
+
+173
+00:22:02,250 --> 00:22:06,180
+equal to g star of l plus one; this is what
+I did here. I said I
+
+174
+00:22:06,180 --> 00:22:12,029
+could replace this by the optimal path. I
+can do it here as well. Now, of course, this
+
+175
+00:22:12,029 --> 00:22:19,250
+becomes the
+same, which becomes the same as this. So,
+
+176
+00:22:19,250 --> 00:22:22,750
+this is less than this, and if you remove
+h of n, you get
+
+177
+00:22:22,750 --> 00:22:30,960
+this is less than this. What is this saying?
+This saying that g of n less than the optimal
+
+178
+00:22:30,960 --> 00:22:34,680
+cost, less
+than equal to the optimal cost, but that can
+
+179
+00:22:34,680 --> 00:22:43,600
+only be the case, if g of n equal to g star
+of n. By
+
+180
+00:22:43,599 --> 00:22:51,559
+definition, it cannot be less than optimal
+cost; it must be the optimal cost.
+
+181
+00:22:51,559 --> 00:23:16,529
+So, what we are said? There is a contradiction
+between this and this, and this and this.
+
+182
+00:23:16,529 --> 00:23:19,349
+If you do
+not even assume this, you can simply show
+
+183
+00:23:19,349 --> 00:23:22,909
+that g of n is less than equal to g star of
+n, which you
+
+184
+00:23:22,910 --> 00:23:26,870
+.can interpret the same; g of n equal to g
+star of n, which is the statement we are making
+
+185
+00:23:26,869 --> 00:23:31,159
+here.
+Whenever, it picks this node n, it has found
+
+186
+00:23:31,160 --> 00:23:33,970
+optimal path to that node, which means g of
+n is
+
+187
+00:23:33,970 --> 00:23:45,410
+equal to g star of n. The implication of this,
+as I said is that you do not have to revise
+
+188
+00:23:45,410 --> 00:23:49,330
+the cost of
+those nodes, which have been put into closed.
+
+189
+00:23:49,329 --> 00:23:51,250
+Once you put a node into closed, you know
+that
+
+190
+00:23:51,250 --> 00:23:56,910
+you have the optimal cost, essentially. We
+have shown a serious of properties about this
+
+191
+00:23:56,910 --> 00:24:02,660
+A star
+algorithm. The conditions are that the heuristic
+
+192
+00:24:02,660 --> 00:24:05,500
+function must under estimate the cost to the
+goal
+
+193
+00:24:05,500 --> 00:24:17,210
+h cost, must be more than some specified amount,
+some small amount, then A star will always
+
+194
+00:24:17,210 --> 00:24:26,329
+find optimal paths to the goal node; that
+is what we showed in lemmas 1 to 6, I think,
+
+195
+00:24:26,329 --> 00:24:30,399
+and this is
+actually in lemma 7; the last of the statements
+
+196
+00:24:30,400 --> 00:24:36,280
+that you want to make. In addition of this
+condition is satisfied, then you do not have
+
+197
+00:24:36,279 --> 00:24:40,369
+to keep revising cost to the nodes in close;
+the
+
+198
+00:24:40,369 --> 00:24:45,369
+moment you pick a node from open and put in
+close, at that moment, you found the optimal
+
+199
+00:24:45,369 --> 00:24:47,669
+cost
+to the node.
+
+200
+00:24:47,670 --> 00:24:51,930
+If you go, take this figure seriously, then
+essentially, what you are saying is that both
+
+201
+00:24:51,930 --> 00:24:55,620
+these costs
+are initially of the same, this thing, whether
+
+202
+00:24:55,619 --> 00:24:58,899
+this path or this path, it is the same cost;
+g value
+
+203
+00:24:58,900 --> 00:25:09,570
+must equal to the optimal g value. So, let
+us compare this with the earlier algorithm
+
+204
+00:25:09,569 --> 00:25:18,210
+we have
+seen. In terms of the four parameters, we
+
+205
+00:25:18,210 --> 00:25:24,980
+talked about time complexity, space complexity,
+quality of solution and completeness. As far
+
+206
+00:25:24,980 --> 00:25:27,610
+as the last two of these are concerned, the
+quality of
+
+207
+00:25:27,609 --> 00:25:36,459
+solution and completeness, we have proved
+today, that A star will find a path to the
+
+208
+00:25:36,460 --> 00:25:41,029
+goal, if there
+is a little, find an optimal path, always.
+
+209
+00:25:41,029 --> 00:25:44,149
+That leaves the question of time and space
+complexity.
+
+210
+00:25:44,150 --> 00:25:51,220
+Again, like we said in case of best for search,
+time and space complexity, both depend upon
+
+211
+00:25:51,220 --> 00:25:54,220
+the
+quality of the heuristic function. The better
+
+212
+00:25:54,220 --> 00:25:59,529
+the heuristic function is, lesser the amount
+of space,
+
+213
+00:25:59,529 --> 00:26:05,000
+that your algorithm will explore, and that
+is what we said here.
+
+214
+00:26:05,000 --> 00:26:17,089
+Now, sometimes what people do is now, unfortunately,
+both space and time requirements have
+
+215
+00:26:17,089 --> 00:26:24,769
+been observed to be large in nature, essentially.
+We will look at the examples where, space
+
+216
+00:26:24,769 --> 00:26:30,869
+is
+cognatic in nature, for example, city, if
+
+217
+00:26:30,869 --> 00:26:35,389
+you imagine a 2-dimensional city, then the
+farther you
+
+218
+00:26:35,390 --> 00:26:40,680
+are go away, you can see the area that you
+have to explore grows as a square, essentially.
+
+219
+00:26:40,680 --> 00:26:47,680
+But the
+combinations make low exponential, essentially,
+
+220
+00:26:47,680 --> 00:26:52,640
+and we have seen this property, that the higher
+the heuristic value, the heuristic function
+
+221
+00:26:52,640 --> 00:26:56,630
+that we are using, the better for you. But
+if you want to
+
+222
+00:26:56,630 --> 00:27:02,730
+guarantee admissibility, the heuristic function
+must be less than the optimal heuristic value,
+
+223
+00:27:02,730 --> 00:27:03,980
+essentially.
+
+224
+00:27:03,980 --> 00:27:04,980
+..
+
+225
+00:27:04,980 --> 00:27:10,559
+So, what people have often done is that, they
+have tend to use a function like this; f of
+
+226
+00:27:10,559 --> 00:27:22,980
+n equal to
+g of n plus k times h of n; this is known
+
+227
+00:27:22,980 --> 00:27:32,460
+as weighted A star, essentially. So, you use
+a parameter
+
+228
+00:27:32,460 --> 00:27:40,650
+k to decide, how much influence the heuristic
+function has. Now, notice that there are two
+
+229
+00:27:40,650 --> 00:27:47,060
+influences on A star algorithm; g of n is
+trying to keep it, because we always going
+
+230
+00:27:47,059 --> 00:27:50,129
+to pick one
+with a lowest f value. So, low g means, it
+
+231
+00:27:50,130 --> 00:27:53,680
+is close to the goal; low h means, it is close
+to the;
+
+232
+00:27:53,680 --> 00:27:59,890
+sorry, low g means it is close to the source;
+low h means, it is close to the, at least,
+
+233
+00:27:59,890 --> 00:28:07,490
+thinks it is
+close to the goal. The effect of g is that
+
+234
+00:28:07,490 --> 00:28:10,910
+tries to keep the algorithm like branch and
+bound, as
+
+235
+00:28:10,910 --> 00:28:16,870
+close to source as possible. The effect of
+h is like, best for search to pull it towards
+
+236
+00:28:16,869 --> 00:28:21,809
+a goal,
+without any regard to what was the time spent
+
+237
+00:28:21,809 --> 00:28:28,309
+in reaching that node n. If you use a parameter
+like k, you can actually control the effect
+
+238
+00:28:28,309 --> 00:28:33,599
+of heuristic function versus g of n. If you
+put k equal to
+
+239
+00:28:33,599 --> 00:28:40,049
+1, then we have the A star algorithm to just
+describe, if you put k equal to 0, for example,
+
+240
+00:28:40,049 --> 00:28:43,380
+then
+you have, simply, branch and bound. You do
+
+241
+00:28:43,381 --> 00:28:47,040
+not even look at the effect of h. If you put
+k as very
+
+242
+00:28:47,039 --> 00:28:53,960
+high, which I am also saying, that j is 0,
+there is like best for search. It only looks
+
+243
+00:28:53,960 --> 00:28:58,079
+forward; it
+does not look behind. But if you put a value
+
+244
+00:28:58,079 --> 00:29:04,019
+of k greater than 1, then you are giving more
+emphasis to the heuristic function, which
+
+245
+00:29:04,019 --> 00:29:06,720
+means the search will become narrower and
+narrower,
+
+246
+00:29:06,720 --> 00:29:10,610
+essentially. It will be given more by the
+heuristic function and less by the tendency
+
+247
+00:29:10,609 --> 00:29:13,259
+to keep track
+of, whether you are finding optimal paths
+
+248
+00:29:13,259 --> 00:29:14,500
+or not.
+
+249
+00:29:14,500 --> 00:29:22,190
+.So, obviously, the moment you put k greater
+than 1, you are losing admissibility, but
+
+250
+00:29:22,190 --> 00:29:26,180
+you can
+expect that your solution would be close to
+
+251
+00:29:26,180 --> 00:29:29,670
+optimal solution, and depending on some trade
+off
+
+252
+00:29:29,670 --> 00:29:33,200
+that you may have to make, you can choose
+the value of k higher than 1, essentially.
+
+253
+00:29:33,200 --> 00:29:38,240
+Very often,
+people tried 4, 5, 6, values of k and seeing,
+
+254
+00:29:38,240 --> 00:29:41,099
+that their algorithm runs much faster. This
+is simply
+
+255
+00:29:41,099 --> 00:29:57,519
+to guarantee faster running time. So, what
+I want to do is to, now, focus on saving space.
+
+256
+00:29:57,519 --> 00:30:00,779
+This is
+what people have done. After A star was discovered,
+
+257
+00:30:00,779 --> 00:30:08,119
+it is quite a well-known algorithm. We
+want to look at how we can save on spaces.
+
+258
+00:30:08,119 --> 00:30:22,000
+One of the first ideas that was explored,
+is an
+
+259
+00:30:22,000 --> 00:30:30,829
+extension of an idea that we have seen earlier,
+which is; let us do depth first search. Instead
+
+260
+00:30:30,829 --> 00:30:34,139
+of
+best first search, do depth first search.
+
+261
+00:30:34,140 --> 00:30:38,660
+Now, if you remember the algorithm DFID, what
+DFID
+
+262
+00:30:38,660 --> 00:30:43,800
+does is that it does the sequence of depth
+first search, with increasing that bound,
+
+263
+00:30:43,799 --> 00:30:47,519
+but there, we
+have the motion of level, because we had no
+
+264
+00:30:47,519 --> 00:30:51,639
+cost associated with edges. So, all edges
+were
+
+265
+00:30:51,640 --> 00:30:57,550
+supposed to be of equal cost. Since, we have
+graduated to h cost and we looked that algorithm
+
+266
+00:30:57,549 --> 00:31:04,069
+like, branch and bound, and so on; we need
+a variation of that and that variation is
+
+267
+00:31:04,069 --> 00:31:11,079
+called IDA
+star. It was given by a guy called Richard
+
+268
+00:31:11,079 --> 00:31:17,769
+Korf. I do not remember, whether we have discussed
+cost work earlier, but he has done a lot of
+
+269
+00:31:17,769 --> 00:31:23,869
+work in search, essentially. His PHD thesis,
+which was
+
+270
+00:31:23,869 --> 00:31:42,339
+in the earlier 80s, was finding macros, operators.
+In fact, his PHD thesis is also available
+
+271
+00:31:42,339 --> 00:31:47,808
+as a
+book at some point of time. If you remember
+
+272
+00:31:47,808 --> 00:31:58,109
+the puzzle like Rubics cube, in fact, he was
+working on Rubics cube and the eight puzzles.
+
+273
+00:31:58,109 --> 00:32:00,629
+We have seen that it is very difficult to
+devise
+
+274
+00:32:00,630 --> 00:32:07,630
+heuristic function, which will drive actually,
+climbing like, algorithms to solutions. So,
+
+275
+00:32:07,630 --> 00:32:10,490
+what we
+tend to do is that we have the set of macro
+
+276
+00:32:10,490 --> 00:32:13,380
+moves, which says, if you have done the top
+layer,
+
+277
+00:32:13,380 --> 00:32:17,580
+then if you want to; let us say the next objective,
+which is to get; Let us say one cube, let
+
+278
+00:32:17,579 --> 00:32:20,419
+into
+place in the middle layer; you say do this
+
+279
+00:32:20,420 --> 00:32:23,650
+sequence of moves; left, right, left up down,
+whatever,
+
+280
+00:32:23,650 --> 00:32:27,509
+we have some notation for that. That is the
+macro move.
+
+281
+00:32:27,509 --> 00:32:35,349
+A macro move is a sequence of moves, packaged
+into one abstract move. The question is; how
+
+282
+00:32:35,349 --> 00:32:40,449
+do you get macro move? Of course, most of
+us learned from friends, at what cost rate
+
+283
+00:32:40,450 --> 00:32:43,980
+for this
+PHD work was that he wrote an algorithm, which
+
+284
+00:32:43,980 --> 00:32:46,440
+will search in the Rubics cube problem and
+the
+
+285
+00:32:46,440 --> 00:32:51,870
+eight puzzles problem, and tried to learn
+macro move, essentially. His algorithm actually,
+
+286
+00:32:51,869 --> 00:32:54,209
+built a
+macro table, which of course, once you have
+
+287
+00:32:54,210 --> 00:32:57,960
+a macro table like, we saw all the Rubic cubes
+and
+
+288
+00:32:57,960 --> 00:33:01,558
+we do not do any search; we say, ok, I will
+do the top layer first; then, I do the second
+
+289
+00:33:01,558 --> 00:33:04,980
+layer and
+then, I will do the third layer. Korf’s
+
+290
+00:33:04,980 --> 00:33:11,089
+PHD thesis was to build that table, which
+listed all the
+
+291
+00:33:11,089 --> 00:33:17,579
+macro moves, essentially, But this IDA stuff
+is also by Richard Korf, and we see a bit
+
+292
+00:33:17,579 --> 00:33:18,579
+more of
+
+293
+00:33:18,579 --> 00:33:25,240
+.him, as we go along. This was in 1985 also.
+And IDA stands, IDA star stands for iterative
+
+294
+00:33:25,240 --> 00:33:31,950
+datening A stars. It still, A star in the
+sense, guarantee the optimal solution, but
+
+295
+00:33:31,950 --> 00:33:35,610
+is iterative
+datening like, DFID essentially.
+
+296
+00:33:35,609 --> 00:33:36,609
+.
+
+297
+00:33:36,609 --> 00:33:45,349
+The algorithm idea is very simple. What it
+says is that if we were the start node, you
+
+298
+00:33:45,349 --> 00:33:53,829
+create a
+boundary. Now, first, let us see, what DFID
+
+299
+00:33:53,829 --> 00:33:58,109
+would do. Ignore, because it does not say
+cost of the
+
+300
+00:33:58,109 --> 00:34:05,069
+edges; it basically, sees it as level by level.
+So, it would first do depth first search up
+
+301
+00:34:05,069 --> 00:34:09,519
+to some
+level, then up to some next level, then up
+
+302
+00:34:09,519 --> 00:34:13,579
+to next level; so we are assuming that edges
+are sort of
+
+303
+00:34:13,579 --> 00:34:21,280
+roughly similar in cost in source.
+Even if we have these edges of equal cost,
+
+304
+00:34:21,280 --> 00:34:25,030
+IDA star has some value. So, they finally,
+would have
+
+305
+00:34:25,030 --> 00:34:32,200
+basically expanded it search space gradually,
+and if this is the goal node here, it would
+
+306
+00:34:32,199 --> 00:34:37,569
+have
+found eventually, at one of the expansions,
+
+307
+00:34:37,570 --> 00:34:40,440
+it would have found a path to goal and since,
+it did
+
+308
+00:34:40,440 --> 00:34:46,090
+not find it in previous round; it means, its
+new path must be the shortest path, because
+
+309
+00:34:46,090 --> 00:34:51,309
+it is only
+in this last situation, that you extended
+
+310
+00:34:51,309 --> 00:34:56,539
+this step by 1, but it uses linear space,
+because it does the
+
+311
+00:34:56,539 --> 00:35:03,150
+first search, essentially. IDAs are basically
+variation of this. It says that you draw a
+
+312
+00:35:03,150 --> 00:35:09,050
+boundary,
+which you use for controlling a search, and
+
+313
+00:35:09,050 --> 00:35:17,560
+the boundary is essentially, those nodes.
+Well, it
+
+314
+00:35:17,559 --> 00:35:29,079
+should not come here. It falls short of this,
+actually, something like this; just would
+
+315
+00:35:29,079 --> 00:35:31,889
+depict this,
+essentially. This is the curve which is defined
+
+316
+00:35:31,889 --> 00:35:44,619
+by f 
+star of s. This is the locals of f star of
+
+317
+00:35:44,619 --> 00:35:45,869
+s, which
+
+318
+00:35:45,869 --> 00:35:51,789
+.means, all the nodes on this boundary have
+value equal to f; f value equal to optimal
+
+319
+00:35:51,789 --> 00:36:00,940
+cost,
+essentially. Sorry, not f star of s; f of
+
+320
+00:36:00,940 --> 00:36:05,659
+s. The estimated, because you do not know
+f star of s; you
+
+321
+00:36:05,659 --> 00:36:15,129
+know f of s. That is the estimated cost from
+start to goal, as which is equal to h of s,
+
+322
+00:36:15,130 --> 00:36:21,650
+because g of
+s is 0. So, these are the nodes whose f value
+
+323
+00:36:21,650 --> 00:36:27,130
+is equal to that value h of s, and nodes inside
+will
+
+324
+00:36:27,130 --> 00:36:33,809
+have lesser value, and the nodes outside have
+greater value. Now, one of the things that
+
+325
+00:36:33,809 --> 00:36:37,929
+you
+should observe is, that is boundary is ellipse
+
+326
+00:36:37,929 --> 00:36:40,449
+towards the goal and that is, because it is
+using the
+
+327
+00:36:40,449 --> 00:36:45,289
+heuristic function, essentially. Nodes which
+are closer to the goal will have lower heuristic
+
+328
+00:36:45,289 --> 00:36:49,230
+value,
+whereas, nodes which are away will higher
+
+329
+00:36:49,230 --> 00:36:54,719
+heuristic value, essentially. So, what IDA
+star is, that
+
+330
+00:36:54,719 --> 00:37:03,329
+in the first situation, you said that bound,
+well, depth is not the value.
+
+331
+00:37:03,329 --> 00:37:04,329
+.
+
+332
+00:37:04,329 --> 00:37:35,719
+Let us say a bound, its starts with saying,
+bound equal to h of s, and it does DFS, as
+
+333
+00:37:35,719 --> 00:37:40,849
+long as h
+value is, f value is less than the bound.
+
+334
+00:37:40,849 --> 00:37:44,139
+So, it is like a boundary it is drawn for
+edges, and it is
+
+335
+00:37:44,139 --> 00:37:57,429
+saying that within this boundary, I will do
+the depth first search. So, let us say, it
+
+336
+00:37:57,429 --> 00:38:01,810
+explores a node
+here; we have some children here; another
+
+337
+00:38:01,811 --> 00:38:04,960
+node, it explores here, somewhere here, let
+us see. It
+
+338
+00:38:04,960 --> 00:38:10,480
+may have some child here. Another node is
+here, which may have some child and so on.
+
+339
+00:38:10,480 --> 00:38:12,559
+All of
+them will have their f values that you would
+
+340
+00:38:12,559 --> 00:38:18,489
+have completed. If it does not find goal in
+this depth
+
+341
+00:38:18,489 --> 00:38:25,000
+first search, now, this is depth first search
+with a bound; that it cannot go of in this
+
+342
+00:38:25,000 --> 00:38:27,139
+direction, and
+it cannot go from this direction; only has
+
+343
+00:38:27,139 --> 00:38:30,170
+save within this boundary. It augments this
+boundary
+
+344
+00:38:30,170 --> 00:39:01,010
+by another boundary, which is little bit bigger
+than this; so, increment. For the lowest f
+
+345
+00:39:01,010 --> 00:39:02,010
+value of a
+
+346
+00:39:02,010 --> 00:39:07,220
+.node, which it is not picked, which means,
+it beyond the boundary, it increments a bound
+
+347
+00:39:07,219 --> 00:39:12,730
+to that
+and then, puts a simpler loop, essentially.
+
+348
+00:39:12,730 --> 00:39:18,139
+So, you can see this similarity with DFID.
+The DFID, if you did not find a path to the
+
+349
+00:39:18,139 --> 00:39:21,489
+goal, you
+would increment the level by one and then,
+
+350
+00:39:21,489 --> 00:39:24,739
+try the DFS again. What this is doing is it
+increments
+
+351
+00:39:24,739 --> 00:39:33,809
+the bound to the next. So, with all these
+nodes, which it has; this is explored; this
+
+352
+00:39:33,809 --> 00:39:38,340
+is explored, but
+all these nodes, which is not explored, generated
+
+353
+00:39:38,340 --> 00:39:40,170
+but not explored; it keeps track of a what
+is the
+
+354
+00:39:40,170 --> 00:39:45,490
+lowest f value and increments the bound to
+that in the next round, and does another depth
+
+355
+00:39:45,489 --> 00:39:49,259
+first
+search. It repeats its process till it finds
+
+356
+00:39:49,260 --> 00:39:56,720
+a goal. What do you have to say about this
+algorithm?
+
+357
+00:39:56,719 --> 00:40:07,809
+First, we should convince ourselves that it
+is admissible. It is worthy of that star on
+
+358
+00:40:07,809 --> 00:40:13,059
+top of that
+name, that it will guarantee an optimal solution.
+
+359
+00:40:13,059 --> 00:40:31,190
+Can you argue for that? Well, when it starts,
+it
+
+360
+00:40:31,190 --> 00:40:38,358
+starts with a bound which is equal to h of
+s, and given that h of s is an underestimating
+
+361
+00:40:38,358 --> 00:40:44,539
+function;
+it is not possible that a path of length greater
+
+362
+00:40:44,539 --> 00:40:47,329
+than optimal path, will exist within h of
+s, because h
+
+363
+00:40:47,329 --> 00:40:52,840
+of s is an under estimative function.
+If the actual cost of going to the goal is
+
+364
+00:40:52,840 --> 00:40:58,858
+h star of s, h of s is less than h star of
+s. So, this boundary
+
+365
+00:40:58,858 --> 00:41:06,179
+will never take you to a node, which is more
+expensive than the optimal cost. If it does
+
+366
+00:41:06,179 --> 00:41:09,539
+not find
+the value, if h of s was perfect, then within
+
+367
+00:41:09,539 --> 00:41:11,719
+the first situation itself, it would have
+found a path to
+
+368
+00:41:11,719 --> 00:41:17,239
+the goal. But if h of s is not perfect, it
+would just be short of goal little bit and
+
+369
+00:41:17,239 --> 00:41:21,059
+then, you are going
+to increment the bound. Looking so, I have
+
+370
+00:41:21,059 --> 00:41:23,570
+not written the word incremented, but it is
+the lowest
+
+371
+00:41:23,570 --> 00:41:31,420
+unexplored, if you can read this word; this
+word must be unexplored. The node unexplored,
+
+372
+00:41:31,420 --> 00:41:34,630
+f of
+n prime where, n prime are all these nodes,
+
+373
+00:41:34,630 --> 00:41:37,099
+which have not been taken, essentially. So,
+because it
+
+374
+00:41:37,099 --> 00:41:45,819
+is only incrementing the boundary to the lowest
+unseen f value, if it finds a goal of f that
+
+375
+00:41:45,820 --> 00:41:49,269
+value,
+then it will be an optimal cost. Because that
+
+376
+00:41:49,269 --> 00:41:54,090
+is only making very conservative increments;
+it is
+
+377
+00:41:54,090 --> 00:42:00,380
+guaranteed to find the optimal cost. But you
+can imagine that in the search space like
+
+378
+00:42:00,380 --> 00:42:03,730
+this, the
+number of iterations that, it will have to
+
+379
+00:42:03,730 --> 00:42:08,170
+do is going to be very many, essentially.
+So, it is going to be optimal; it is going
+
+380
+00:42:08,170 --> 00:42:13,700
+to save on space; why? Because it is a depth
+first search;
+
+381
+00:42:13,699 --> 00:42:18,159
+it is a sequence of depth first searches,
+which only requires linear space, but its
+
+382
+00:42:18,159 --> 00:42:21,039
+time complexity
+is going to go up, by many times, because
+
+383
+00:42:21,039 --> 00:42:25,701
+it will do many iterations, essentially. So,
+some
+
+384
+00:42:25,701 --> 00:42:31,909
+variations that people have tried is that;
+instead of incrementing it by to the next
+
+385
+00:42:31,909 --> 00:42:35,589
+lowest unseen
+value, increment it by a fixed cost, that
+
+386
+00:42:35,590 --> 00:42:40,269
+you are willing to bear, essentially; some
+delta. So,
+
+387
+00:42:40,269 --> 00:42:54,079
+instead of this, if I write bound, it means
+that I am making a bigger jump in this, essentially.
+
+388
+00:42:54,079 --> 00:42:55,079
+That
+
+389
+00:42:55,079 --> 00:43:06,829
+.means, let us say, this is my next value.
+So, let us say this is plus delta. So this
+
+390
+00:43:06,829 --> 00:43:09,869
+was the original
+bound, and this was a bound plus delta. What
+
+391
+00:43:09,869 --> 00:43:14,630
+is the danger here? The danger here is that
+there
+
+392
+00:43:14,630 --> 00:43:21,400
+may be a goal node, just beyond this, but
+there may be a goal node, here. Because it
+
+393
+00:43:21,400 --> 00:43:25,289
+is doing
+depth first search sweeping the space like
+
+394
+00:43:25,289 --> 00:43:28,670
+this, it will find this goal node; but it
+will not find this
+
+395
+00:43:28,670 --> 00:43:33,269
+goal node. This goal node is cheaper, I mean,
+if you just assume that this is kind of two
+
+396
+00:43:33,269 --> 00:43:38,530
+scale, in
+some sense. This node is cheaper than that
+
+397
+00:43:38,530 --> 00:43:40,970
+node, because it being depth first search,
+sweeping
+
+398
+00:43:40,969 --> 00:43:46,230
+the space like this, it will find this node.
+But this, of course, this delta allows you
+
+399
+00:43:46,230 --> 00:43:53,900
+to control; how
+much sub optimal you are willing to go essentially?
+
+400
+00:43:53,900 --> 00:43:57,880
+So, this distance, this is delta that you
+have
+
+401
+00:43:57,880 --> 00:44:04,780
+increased the boundary by. Basically, says
+that in the worst case, you may have optimal
+
+402
+00:44:04,780 --> 00:44:12,140
+cost plus
+delta, but in this big jump, you would cover
+
+403
+00:44:12,139 --> 00:44:14,769
+many nodes, so the number of iterations that
+you do
+
+404
+00:44:14,769 --> 00:44:31,539
+would drop, essentially. So, it is nice in
+the sense, that it takes linear space, and
+
+405
+00:44:31,539 --> 00:44:34,969
+it gives currently,
+optimal cost so, it is an extension of DFID,
+
+406
+00:44:34,969 --> 00:44:38,291
+in that sense, which uses this fact that there
+are edge
+
+407
+00:44:38,291 --> 00:44:46,779
+cost and there is heuristic function and things
+like that. What is not nice about this algorithm
+
+408
+00:44:46,780 --> 00:44:49,080
+is
+what was not nice about the original algorithm;
+
+409
+00:44:49,079 --> 00:44:52,239
+it is a blind algorithm, now essentially.
+Except of
+
+410
+00:44:52,239 --> 00:44:56,229
+course, it retains a boundary that it draws,
+which is determined by the heuristic function,
+
+411
+00:44:56,230 --> 00:44:59,210
+it is
+uninformed; it does not move towards a goal,
+
+412
+00:44:59,210 --> 00:45:00,920
+which is why, we started with best first search
+in
+
+413
+00:45:00,920 --> 00:45:05,430
+the first list. This is why, we used the heuristic
+function in the first list, but this is not
+
+414
+00:45:05,429 --> 00:45:07,449
+exploiting
+the heuristic function; it uses the heuristic
+
+415
+00:45:07,449 --> 00:45:16,309
+function only to determine this boundary.
+In the next class, we will look at another
+
+416
+00:45:16,309 --> 00:45:20,219
+variation, which exploits the heuristic function,
+and
+
+417
+00:45:20,219 --> 00:45:26,469
+which is also linear space algorithm. That
+algorithm was also given by Richard Korf,
+
+418
+00:45:26,469 --> 00:45:31,159
+may be, if
+you want to think about that little bit, essentially,
+
+419
+00:45:31,159 --> 00:45:34,599
+it is a little bit like saying, that it is
+hill
+
+420
+00:45:34,599 --> 00:45:39,679
+climbing with back tracking, if we can think
+of it along those lines. The algorithm is
+
+421
+00:45:39,679 --> 00:45:42,349
+like hill
+climbing, but allowed to back track, essentially,
+
+422
+00:45:42,349 --> 00:45:46,309
+and then, try another path; which means, it
+will
+
+423
+00:45:46,309 --> 00:45:52,559
+not have exponential space; it will have only
+one path always in the main way. We will look
+
+424
+00:45:52,559 --> 00:45:54,210
+at
+that algorithm in the next class and then,
+
+425
+00:45:54,210 --> 00:45:56,659
+we will look at some more recent algorithms,
+which
+
+426
+00:45:56,659 --> 00:46:02,618
+have come in this century, I should say, which
+are space saving algorithms, which are quite
+
+427
+00:46:02,619 --> 00:46:05,329
+interesting, essentially.
+So, I will stop here for today.
+
+428
+00:46:05,329 --> 00:46:15,329
+.
+

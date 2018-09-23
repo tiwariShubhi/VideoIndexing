@@ -1,0 +1,2168 @@
+﻿1
+00:00:10,558 --> 00:00:19,799
+So, let us for the last time this in this
+course look at planning and so as I said in
+
+2
+00:00:19,800 --> 00:00:24,330
+the mid
+nineties, there were a series of approaches
+
+3
+00:00:24,329 --> 00:00:30,788
+to planning which produce much longer plan,
+which means, they were much faster algorithms
+
+4
+00:00:30,789 --> 00:00:34,160
+and could the solve larger problems.
+
+5
+00:00:34,159 --> 00:00:35,159
+.
+
+6
+00:00:35,159 --> 00:00:49,569
+All these approaches were 2 stage approaches
+which means you have at we have a
+
+7
+00:00:49,570 --> 00:00:58,859
+planning problem, you converted into something
+else and solve that problem essentially.
+
+8
+00:00:58,859 --> 00:01:05,129
+So, one thing that was very successful was
+that if you converted into a S A T problem
+
+9
+00:01:05,129 --> 00:01:13,079
+and we already familiar with S A T and then
+you could use some solver. In fact, there
+
+10
+00:01:13,079 --> 00:01:21,478
+was an algorithm called S A T plan which was
+very successful in the mid nineties and
+
+11
+00:01:21,478 --> 00:01:29,828
+early part of this century. So, how do we
+know it was a good algorithm?
+
+12
+00:01:29,828 --> 00:01:30,828
+..
+
+13
+00:01:30,828 --> 00:01:37,998
+They used to be, there is every 2 years a
+competition call I P C international planning
+
+14
+00:01:37,998 --> 00:01:45,420
+competition, in which people submit their
+programs. So, just like you had this travelling
+
+15
+00:01:45,420 --> 00:01:50,200
+salesman problem competition, in this you
+submit your planner and they try it out to
+
+16
+00:01:50,200 --> 00:01:53,039
+set
+up problem and then the planner which was
+
+17
+00:01:53,039 --> 00:01:54,868
+best is does the to be the winner.
+
+18
+00:01:54,868 --> 00:02:01,099
+So, S A T plan was one of those planners which
+did very well for the period of time, and
+
+19
+00:02:01,099 --> 00:02:07,118
+what they did was to convert a planning problem
+into a satisfiability problem and then
+
+20
+00:02:07,118 --> 00:02:15,039
+solved it using it so on algorithm because,
+but you could solver first, that is
+
+21
+00:02:15,039 --> 00:02:20,469
+Another approach was to convert a planning
+problem into a C S P
+
+22
+00:02:20,469 --> 00:02:29,019
+problem, which as a name suggests converts
+is into a C S P and, by C S P mean constant
+
+23
+00:02:29,019 --> 00:02:35,430
+satisfaction problem we look at a, at them
+briefly in the next 2 lectures and then solve
+
+24
+00:02:35,430 --> 00:02:36,430
+the
+C S P.
+
+25
+00:02:36,430 --> 00:02:40,150
+So, here posing it has a different problem
+and then using some solver, to solve this
+
+26
+00:02:40,150 --> 00:02:46,099
+is
+recurring team in many problem solving situations.
+
+27
+00:02:46,098 --> 00:02:54,068
+What graph plan does is to convert it
+into structure called a planning graph? This
+
+28
+00:02:54,068 --> 00:03:01,119
+is algorithm we want to look at today and
+it
+
+29
+00:03:01,120 --> 00:03:10,688
+is called graph plan, it was given in 1995
+by two researchers called Blum who is now
+
+30
+00:03:10,688 --> 00:03:18,310
+as
+C M U I think in first. So, failed recent
+
+31
+00:03:18,310 --> 00:03:24,229
+by in contrast to the other algorithm that
+you
+
+32
+00:03:24,229 --> 00:03:29,049
+have seen all those algorithms were quite
+old.
+
+33
+00:03:29,050 --> 00:03:37,530
+.So, as a name, as I, as I said what these
+types is it construct a structure called a
+
+34
+00:03:37,530 --> 00:03:43,829
+planning
+graph and then searches in the structure for
+
+35
+00:03:43,829 --> 00:03:51,939
+a plan. All these 3 algorithms have one thing
+in common is that the conversion that they
+
+36
+00:03:51,939 --> 00:04:01,158
+do in the case of either S A T or C S P or
+planning is incremental in nature. So, they
+
+37
+00:04:01,158 --> 00:04:03,459
+construct a structure of certain size and
+then
+
+38
+00:04:03,459 --> 00:04:08,438
+see if there is a plan there little bit like
+D F I D you might say. Keep exploring longer
+
+39
+00:04:08,438 --> 00:04:11,669
+and
+longer plans to see when you can find the
+
+40
+00:04:11,669 --> 00:04:20,209
+plan and because of that all these algorithms,
+end of finding the optimum solutions as well
+
+41
+00:04:20,209 --> 00:04:22,100
+because they incrementally search for
+longer plans.
+
+42
+00:04:22,100 --> 00:04:26,780
+So, you can imagine that whatever the mechanism
+for convert, take it into a S A T
+
+43
+00:04:26,779 --> 00:04:35,899
+problem, it is a relation between action and
+states and new states and new action so on
+
+44
+00:04:35,899 --> 00:04:41,219
+and you express this as a satisfiability problem.
+Things like re condition of this must be
+
+45
+00:04:41,220 --> 00:04:47,370
+satisfied by the action, by something you
+know that kind of some and they always find
+
+46
+00:04:47,370 --> 00:04:59,000
+shortest answers. So, let us start where looking
+at the panning graph structure, the
+
+47
+00:04:59,000 --> 00:05:11,990
+panning graph is a layered graph with alternate
+layers of prepositions and actions
+
+48
+00:05:11,990 --> 00:05:12,990
+essentially.
+
+49
+00:05:12,990 --> 00:05:25,460
+So, there is a layer P 0 which is, which contains
+all the star prepositions, then there are,
+
+50
+00:05:25,459 --> 00:05:32,079
+there is a layer A 1, which is a layer of
+all possible actions, which can be done at
+
+51
+00:05:32,079 --> 00:05:37,579
+the first
+time instance. But, followed by layer P 1,
+
+52
+00:05:37,579 --> 00:05:42,288
+which consists of all the prepositions, which
+could possibly which you at the, at the end
+
+53
+00:05:42,288 --> 00:05:50,779
+of the first layer essentially. Now, the
+difference between the other algorithms heuristic
+
+54
+00:05:50,779 --> 00:05:55,500
+search, we just briefly mentioned in the
+passing that we know. We could have powers
+
+55
+00:05:55,500 --> 00:06:02,019
+express search or backward express search
+with the heuristic function which was computed
+
+56
+00:06:02,019 --> 00:06:10,439
+by solving a relax planning problem a to
+decide which successor is best.
+
+57
+00:06:10,439 --> 00:06:15,480
+That search heuristic search or set space
+search searches in this set of states plan
+
+58
+00:06:15,480 --> 00:06:17,849
+space
+search that we saw in the last class searches
+
+59
+00:06:17,848 --> 00:06:22,629
+in the space of plans. Here, we searched in
+a
+
+60
+00:06:22,629 --> 00:06:27,990
+structure called a planning graph which is
+some sense are union of all possible states
+
+61
+00:06:27,990 --> 00:06:33,560
+that
+can happen essentially. So, if I have, for
+
+62
+00:06:33,560 --> 00:06:39,569
+example a start state and I can do action
+A 1 to
+
+63
+00:06:39,569 --> 00:06:47,019
+go to sate S 1 and I can do action A 2, do
+to the state S 2, that is what heuristic search
+
+64
+00:06:47,019 --> 00:06:51,299
+would do, powers express search would do,
+it is a should, I go to S 1 or should I go
+
+65
+00:06:51,300 --> 00:06:57,038
+to S
+2, in graph plan what you do is.
+
+66
+00:06:57,038 --> 00:06:58,038
+..
+
+67
+00:06:58,038 --> 00:07:02,908
+You have this layer start layer, then you
+have first action layer which includes both
+
+68
+00:07:02,908 --> 00:07:08,029
+this
+actions A 1 and A 2 and, then you have layer
+
+69
+00:07:08,029 --> 00:07:23,019
+which is basically the union or will be S,
+right S 1 union S 2. We put together all the
+
+70
+00:07:23,019 --> 00:07:27,500
+possible predicates into one set which is
+in
+
+71
+00:07:27,500 --> 00:07:36,360
+this next layer or the, so we have this proportion
+layers and action layer essentially. So,
+
+72
+00:07:36,360 --> 00:07:42,300
+one thing with all these algorithms do is
+to first convert this problem into a proportional
+
+73
+00:07:42,300 --> 00:07:48,009
+problem which means, then if I will operator
+like a pick up a put down. So, on you look
+
+74
+00:07:48,009 --> 00:07:53,650
+at what the starting state is what the objects
+in the domain are, so that let say I have
+
+75
+00:07:53,649 --> 00:07:57,698
+5
+blocks A, B, C, D, E, then it will produce
+
+76
+00:07:57,699 --> 00:07:58,699
+all possible actions.
+
+77
+00:07:58,699 --> 00:08:04,439
+So, with this 5 blocks pick up a stack A 1
+to B, stack A 1 to C, all possible actions
+
+78
+00:08:04,439 --> 00:08:11,099
+that
+produce and work A goes actions. So, I want
+
+79
+00:08:11,098 --> 00:08:17,250
+to give you a flavor of this, so let us search
+work with this, with this same example that
+
+80
+00:08:17,250 --> 00:08:18,968
+we are looking at the Sussman’s anomaly.
+
+81
+00:08:18,968 --> 00:08:19,968
+..
+
+82
+00:08:19,968 --> 00:08:30,620
+Which means we are starting with the state
+A C is on A and B is on the table and they
+
+83
+00:08:30,620 --> 00:08:36,779
+are
+on the table, so in the initial layer, in
+
+84
+00:08:36,779 --> 00:08:44,571
+layer P 0, we would have all these things,
+so let say
+
+85
+00:08:44,571 --> 00:09:14,810
+arm empty then on table B, clear B on table
+A on C, A clear C these act these. So, this
+
+86
+00:09:14,809 --> 00:09:21,799
+is
+P 0 while layer P 0, now there are 4 kinds
+
+87
+00:09:21,799 --> 00:09:37,609
+of edges in the planning of the, first is
+preconditions edges which go from an action
+
+88
+00:09:37,610 --> 00:09:47,360
+to some precondition in the previous layer.
+Then effects positive edges, it takes minus
+
+89
+00:09:47,360 --> 00:09:56,509
+edges and one more set of edges, which is
+called Mutex Ulatian.
+
+90
+00:09:56,509 --> 00:10:03,639
+Now, already familiar with the precondition
+edges, the positive effects and the negative
+
+91
+00:10:03,639 --> 00:10:13,240
+effects we look at work Mutex is in the movement.
+So, in the, in the initial layer, we
+
+92
+00:10:13,240 --> 00:10:22,778
+have this proportion, so it is a proportion
+layer 0, P 0 then we have action layer 1 in
+
+93
+00:10:22,778 --> 00:10:30,078
+which we want to insert all actions which
+are possible in this propositions.
+
+94
+00:10:30,078 --> 00:10:40,559
+We want to put a slight additional constant
+that the preconditions of those actions must
+
+95
+00:10:40,559 --> 00:10:49,629
+be possibly true at the same time if they
+are possibly true, at the same time we will
+
+96
+00:10:49,629 --> 00:10:56,639
+consider such an action. Let us, why this
+notion of Mutex relations will come? So, as
+
+97
+00:10:56,639 --> 00:11:00,009
+he
+told with, now this is an often use term some
+
+98
+00:11:00,009 --> 00:11:06,350
+mutual exclusion essentially, so we will
+have this notion of. So, this Mutex relation
+
+99
+00:11:06,350 --> 00:11:10,100
+is going to be a, these edges are going to
+be
+
+100
+00:11:10,100 --> 00:11:14,310
+inside east layers essentially, so this layer
+will have it is own Mutex relations.
+
+101
+00:11:14,309 --> 00:11:18,319
+.This layer will have Mutex relation, they
+are from one action to another, in an action
+
+102
+00:11:18,320 --> 00:11:25,230
+layer or from one proportion to another in
+a, in a proportion layer. If they might exists
+
+103
+00:11:25,230 --> 00:11:30,470
+between two entities, either two actions of
+the propositions it means at, though A cannot
+
+104
+00:11:30,470 --> 00:11:35,629
+be true at the same time. So, it if there
+is a Mutex between A 1 and A 2, it means they
+
+105
+00:11:35,629 --> 00:11:40,740
+both cannot be done at the same time. So,
+as you can see in this example, we have 2
+
+106
+00:11:40,740 --> 00:11:47,440
+actions unstacks A from A or pick up B and,
+we can see that they cannot be done in the
+
+107
+00:11:47,440 --> 00:11:52,270
+same time because they both required the arm
+to be empty and only one can use the arm
+
+108
+00:11:52,269 --> 00:11:53,269
+essentially.
+
+109
+00:11:53,269 --> 00:11:56,110
+So, you would have a Mutex relation between
+them, likewise they are Mutex relation
+
+110
+00:11:56,110 --> 00:12:09,951
+between proportions which say that those things
+cannot be true at the same time one
+
+111
+00:12:09,951 --> 00:12:13,278
+thing which happens constantly as we construct
+planning. So, we construct the planning
+
+112
+00:12:13,278 --> 00:12:17,049
+graph from left to right, we keep inserting
+actions, then proportion and actions then
+
+113
+00:12:17,049 --> 00:12:23,429
+proportion and actions then proportion. Till
+what time do we do that? Till the time when
+
+114
+00:12:23,429 --> 00:12:31,778
+the goal propositions appear in a propositions
+layer and they are not mutually exclusive.
+
+115
+00:12:31,778 --> 00:12:35,578
+So, what are the goal propositions that we
+are interested in? In our case, we are interested
+
+116
+00:12:35,578 --> 00:12:49,229
+in on A B and on B C, if these 2 occur in
+a proportion layer. In fact, the first time
+
+117
+00:12:49,230 --> 00:12:51,289
+they
+occur in the proportion layer and they are
+
+118
+00:12:51,289 --> 00:12:58,569
+not Mutex, which means they are not mutually
+exclusive as per the planning graph. Then
+
+119
+00:12:58,570 --> 00:13:00,050
+there is a possibility that we have solved
+the
+
+120
+00:13:00,049 --> 00:13:07,889
+problem so that at that point, the first stage
+of the algorithm which is a powered space
+
+121
+00:13:07,889 --> 00:13:11,838
+and the second stage begin. So, that says,
+that this is that actually a plan which will
+
+122
+00:13:11,839 --> 00:13:16,850
+achieve a both those put goal conditions for
+me or not essentially. So, it is a 2 states
+
+123
+00:13:16,850 --> 00:13:21,709
+problem, you construct a planning a search
+for solution, if you cannot extend the
+
+124
+00:13:21,708 --> 00:13:28,439
+planning graph by more search for a solution
+and you keep doing that.
+
+125
+00:13:28,440 --> 00:13:46,860
+Now, one action which is a uniform action
+which we always insert is called a no op and
+
+126
+00:13:46,860 --> 00:13:52,750
+a
+no op has any predicate P as an input and
+
+127
+00:13:52,750 --> 00:13:55,629
+the same predicate P as an output. So, as
+a
+
+128
+00:13:55,629 --> 00:14:01,799
+name suggest, it says that no operation we
+are doing on this predicate. So, we will depict
+
+129
+00:14:01,799 --> 00:14:09,708
+no ops by these lines like this initially,
+but we will not draw them after that because
+
+130
+00:14:09,708 --> 00:14:19,699
+they
+really take up to a space. So, as a effect
+
+131
+00:14:19,700 --> 00:14:24,690
+of this, in P 1 we will have the same actions
+clear
+
+132
+00:14:24,690 --> 00:14:41,949
+B on table, B arm empty on C A clear C, this
+we will do all the type in every layer, we
+
+133
+00:14:41,948 --> 00:14:43,909
+would always insert no op actions.
+
+134
+00:14:43,909 --> 00:14:48,419
+.You can see the effect of this no op actions
+is going to be that the planning graph is
+
+135
+00:14:48,419 --> 00:14:52,899
+going to grow monotonically. The sets of propositions
+in the proposition layer is going to
+
+136
+00:14:52,899 --> 00:14:57,149
+grow monotonically because whatever is present
+in previous layer will always, we
+
+137
+00:14:57,149 --> 00:15:01,690
+carried forward to the next layer plus of
+course new things may be added essentially.
+
+138
+00:15:01,690 --> 00:15:04,930
+So,
+what are the new things which can be added
+
+139
+00:15:04,929 --> 00:15:23,299
+in our example? We have the action unstack
+no, so it be write here pick up B, so that
+
+140
+00:15:23,299 --> 00:15:25,669
+I can add to this. Why can I, why can I add
+to
+
+141
+00:15:25,669 --> 00:15:32,250
+this? Because it is preconditions that B is
+clear, that B is on the table and arm empty
+
+142
+00:15:32,250 --> 00:15:39,208
+is
+true 
+
+143
+00:15:39,208 --> 00:15:44,149
+maybe I should have written this a little
+bit that side we will manage then.
+
+144
+00:15:44,149 --> 00:15:48,379
+So, this is a first kind of links we have
+been edges, we have maintained the precondition
+
+145
+00:15:48,379 --> 00:15:53,458
+edges then the second kind of edges are positive
+effects. So, the effect of pick of B is
+
+146
+00:15:53,458 --> 00:16:04,039
+holding B, so I have a positive edge from
+this to holding B and I have negative edges
+
+147
+00:16:04,039 --> 00:16:12,649
+to
+it is negative effects which is on table B.
+
+148
+00:16:12,649 --> 00:16:15,559
+So, I have negative edge going from here,
+so we
+
+149
+00:16:15,559 --> 00:16:21,018
+will defect to net, let say we can defect
+net negative edge leg this, and for argument
+
+150
+00:16:21,019 --> 00:16:24,549
+sake
+we will urgent that this also becomes falls
+
+151
+00:16:24,549 --> 00:16:31,519
+at the end of A and arm empty.
+
+152
+00:16:31,519 --> 00:16:38,259
+So, that is a third kind of edge, so first
+kind is precondition edges which go from a
+
+153
+00:16:38,259 --> 00:16:45,470
+propositions to an action layer and they basically
+capture the preconditions that A is
+
+154
+00:16:45,470 --> 00:16:51,269
+necessary, thus action to be applicable. The
+second kind is the positive effects which
+
+155
+00:16:51,269 --> 00:16:53,860
+are
+what would be true in the next layer of proposition,
+
+156
+00:16:53,860 --> 00:16:58,659
+if there action word to be executed
+and in that sense. You can see that no op,
+
+157
+00:16:58,659 --> 00:17:00,620
+basically say where if the no op action word
+to
+
+158
+00:17:00,620 --> 00:17:17,680
+be executed then on table layer would continue
+to be true a. So, this we have been here
+
+159
+00:17:17,680 --> 00:17:22,250
+on table A was true here and if I do a no
+op then on table A will be true in the next
+
+160
+00:17:22,250 --> 00:17:26,079
+layer
+essentially.
+
+161
+00:17:26,079 --> 00:17:35,460
+That is one more action and one more action
+we can add is unstack C from A and you
+
+162
+00:17:35,460 --> 00:17:41,110
+can see that the preconditions for that is
+that arm must be empty, that A must be on
+
+163
+00:17:41,109 --> 00:17:44,929
+the
+table A and C must be clear. So, all these
+
+164
+00:17:44,930 --> 00:17:47,180
+4 conditions of preconditions for that the
+effect
+
+165
+00:17:47,180 --> 00:18:03,360
+of that is holding C and clear A and the negative
+effect is that we have assume that we
+
+166
+00:18:03,359 --> 00:18:17,819
+will mark this like this. But, that C is no
+longer clear C is no longer on A and arm is
+
+167
+00:18:17,819 --> 00:18:33,750
+no
+longer empty, so when do we have Mutex solutions?
+
+168
+00:18:33,750 --> 00:18:41,819
+That is A. How do we define that
+two entries in a layer are Mutex essentially?
+
+169
+00:18:41,819 --> 00:18:45,319
+So, let us talk of actions first.
+
+170
+00:18:45,319 --> 00:18:46,319
+..
+
+171
+00:18:46,319 --> 00:19:04,259
+There are 4 conditions under which action
+are Mutex, so we say a 1 and a 2 are Mutex
+
+172
+00:19:04,259 --> 00:19:08,000
+if
+one of these conditions holds. The first is
+
+173
+00:19:08,000 --> 00:19:22,660
+that P 1 belongs to precondition of a 1 and
+p 2
+
+174
+00:19:22,660 --> 00:19:38,230
+belongs to precondition of a 2 and Mutex P
+1, P 2, Mutex P 1, P 2, I mean there is an
+
+175
+00:19:38,230 --> 00:19:47,029
+edge between P 1 and P 2 which says that they
+are Mutex. So, if a 1 requires P 1 as
+
+176
+00:19:47,029 --> 00:19:51,009
+precondition and a 2 requires P 2 as a precondition,
+and the previous layer, thus to mark
+
+177
+00:19:51,009 --> 00:20:01,869
+as Mutex then those actions convert be done
+together. Essentially, 2 effects P belongs
+
+178
+00:20:01,869 --> 00:20:14,569
+to
+effects plus of a 1 and P belongs to effects
+
+179
+00:20:14,569 --> 00:20:24,289
+minus of a 2, the second condition for two
+actions to be Mutex is that there is some
+
+180
+00:20:24,289 --> 00:20:28,119
+predicate P which is a positive effect of.
+
+181
+00:20:28,119 --> 00:20:33,259
+So, that is in the layer, remember that this
+effect links go from the action layer to the
+
+182
+00:20:33,259 --> 00:20:35,579
+next
+layer and we are trying to decide whether
+
+183
+00:20:35,579 --> 00:20:38,839
+any 2 actions in the action layer or Mutex
+or
+
+184
+00:20:38,839 --> 00:20:48,809
+not. So, if action a 1 produces P and if action
+a 2 deletes P, so that means it is a negative
+
+185
+00:20:48,809 --> 00:20:53,470
+effects of a 2 then a 1, a 2 are Mutex. They
+can never happen the same time because the
+
+186
+00:20:53,470 --> 00:21:00,059
+semantics of these 2 actions happening in
+parallel is not defined essentially. So, graph
+
+187
+00:21:00,059 --> 00:21:05,799
+line in general, will allow us to develop
+parallel plan which means if we are the 2
+
+188
+00:21:05,799 --> 00:21:08,450
+arms
+robot, for example. Then the 2 arms robot
+
+189
+00:21:08,450 --> 00:21:14,650
+could have simultaneously picked up C from
+and picked up B from the table and then something
+
+190
+00:21:14,650 --> 00:21:17,300
+with them essentially.
+
+191
+00:21:17,299 --> 00:21:26,169
+.So, parallel actions are in general allowed,
+of course we have put both is actions in our
+
+192
+00:21:26,170 --> 00:21:32,420
+action layer, but we know that, now familiar
+with this one arm robot. How it can
+
+193
+00:21:32,420 --> 00:21:36,670
+operate? That only one of those actions can
+happen which means that these actions must
+
+194
+00:21:36,670 --> 00:21:42,410
+be mark as Mutex somehow essentially. So,
+we will see this is not a condition for that,
+
+195
+00:21:42,410 --> 00:21:47,721
+but one condition is that the one action is
+producing something P and the other action
+
+196
+00:21:47,721 --> 00:21:50,150
+is
+deleting P. So, we do not know it both were
+
+197
+00:21:50,150 --> 00:21:55,180
+to happen together whether P would be true
+or P would be false and, if you go to linearise
+
+198
+00:21:55,180 --> 00:22:00,810
+them then the final effect of those
+sequential actions would change depending
+
+199
+00:22:00,809 --> 00:22:02,059
+on the order essentially.
+
+200
+00:22:02,059 --> 00:22:13,849
+So, we cannot do that, one condition the third
+condition is the P belongs to effects minus
+
+201
+00:22:13,849 --> 00:22:33,250
+of a 1 and P belongs to precondition a 2.
+So, if a, if a predicate P is required by
+
+202
+00:22:33,250 --> 00:22:37,079
+action a 2
+and predicate P is being deleted by action
+
+203
+00:22:37,079 --> 00:22:46,139
+a 1, then we say that a 1 and a 2 cannot be
+parallel. Again, the reason for this is, that
+
+204
+00:22:46,140 --> 00:22:52,440
+if you got to linearise them then the 2 orders
+will not produce the same effects essentially,
+
+205
+00:22:52,440 --> 00:23:00,009
+for example if you going to do a 1 first then
+it would delete P and then it convert to a
+
+206
+00:23:00,009 --> 00:23:02,650
+2 after that you could do a 2 first and a
+1
+
+207
+00:23:02,650 --> 00:23:03,650
+afterwards.
+
+208
+00:23:03,650 --> 00:23:07,810
+But, then you can see that the effect of these
+2 out actions is different, we want our
+
+209
+00:23:07,809 --> 00:23:13,009
+parallel pans to web search that they can
+always be linearise to give us a solution
+
+210
+00:23:13,009 --> 00:23:18,750
+plan.
+So, that is one more condition and the fourth
+
+211
+00:23:18,750 --> 00:23:27,430
+condition is that, so it as draw it like this
+is
+
+212
+00:23:27,430 --> 00:23:41,281
+a 1 produces P and deletes P and if a 2 also
+does that, it consumes P and deletes P if
+
+213
+00:23:41,280 --> 00:23:43,971
+both
+of them are consuming something. So, this
+
+214
+00:23:43,971 --> 00:23:47,650
+remember this dot stands for deleting P, it
+is a
+
+215
+00:23:47,650 --> 00:23:56,200
+negative edge, it saying that P is a condition
+for a 1 and not P is a effect of a 1, this
+
+216
+00:23:56,200 --> 00:23:57,920
+is
+also saying that P is condition of a 2 and
+
+217
+00:23:57,920 --> 00:23:59,019
+not P is an effect for.
+
+218
+00:23:59,019 --> 00:24:05,099
+So, if both the actions, so it have something,
+you have consuming I mean there only 1
+
+219
+00:24:05,099 --> 00:24:11,039
+cake and there are 2 people, so only one of
+them eat essentially. So, both cannot be put
+
+220
+00:24:11,039 --> 00:24:17,180
+into the running after saying a is eating
+the cake and b is eating the cake. In our
+
+221
+00:24:17,180 --> 00:24:21,580
+example
+you can see that there is a negative edge
+
+222
+00:24:21,579 --> 00:24:24,889
+from to arm empty from pick up b that this
+is
+
+223
+00:24:24,890 --> 00:24:28,630
+going to delete arm empty and this is also
+going to delete arm empty both are consuming
+
+224
+00:24:28,630 --> 00:24:35,370
+arm empty. So, this fourth case applies to
+this and we mark Mutex edge between this and
+
+225
+00:24:35,369 --> 00:24:50,289
+this we can also say it that this no op is
+Mutex would pick up b because it no op is
+
+226
+00:24:50,289 --> 00:24:56,009
+producing clear b and this pick up b is deleting
+clear b.
+
+227
+00:24:56,009 --> 00:25:02,829
+.So, the a, second clouds which say that one
+of them is producing it and other one is
+
+228
+00:25:02,829 --> 00:25:07,659
+deleting it and these 2 actions cannot happen
+in parallels. So, we have to, so as you can
+
+229
+00:25:07,660 --> 00:25:13,029
+imagine there would be many Mutex suggest
+between a actions a, that we will have to.
+
+230
+00:25:13,029 --> 00:25:17,490
+So, one Mutex edge that we have is between
+this and this, another Mutex edge is
+
+231
+00:25:17,490 --> 00:25:27,490
+between these two, and there are others, of
+course that you can find, so that takes care
+
+232
+00:25:27,490 --> 00:25:29,609
+of
+the action layer.
+
+233
+00:25:29,609 --> 00:25:30,609
+.
+
+234
+00:25:30,609 --> 00:25:47,009
+Then Mutex relation between proposition P
+and P 2 are Mutex, so P 1 and P 2 are
+
+235
+00:25:47,009 --> 00:25:50,950
+proportions in the same layer. Obviously,
+Mutex relations are always within the layer
+
+236
+00:25:50,950 --> 00:26:03,240
+if
+there is, I will just write a wrong explanation
+
+237
+00:26:03,240 --> 00:26:10,299
+that we see what to write, what we want to
+say is that P 1 and P 2 are Mutex. If all
+
+238
+00:26:10,299 --> 00:26:16,990
+ways that P 1 can be produce and all way is
+Mutex with all ways that P 2 can be produce,
+
+239
+00:26:16,990 --> 00:26:21,490
+and by this mean any action with produces
+P 2, if Mutex with every other action with
+
+240
+00:26:21,490 --> 00:26:26,759
+produces P 2 essentially.
+
+241
+00:26:26,759 --> 00:26:52,730
+If there is a no actions a 1 and a 2 in the
+presiding layer such that P 1 belongs to effects
+
+242
+00:26:52,730 --> 00:27:03,360
+a
+P 2 belongs to 
+
+243
+00:27:03,359 --> 00:27:30,859
+of a with 2 and, in other words if we can
+find 2 actions a 1 and a 2 which
+
+244
+00:27:30,859 --> 00:27:36,689
+are not Mutex and a 1 is producing P 1 and
+a 2 producing P 2. Then we can say P 1 P 2
+
+245
+00:27:36,690 --> 00:27:41,559
+are not Mutex essentially, but if you cannot
+find, so in there are no actions, a 1 and
+
+246
+00:27:41,559 --> 00:27:43,951
+a 2 is
+satisfy this condition then we say that they
+
+247
+00:27:43,951 --> 00:27:45,410
+are Mutex essentially.
+
+248
+00:27:45,410 --> 00:27:54,620
+.So, let us solve, try to construct this example
+from here, so the first thing you will
+
+249
+00:27:54,619 --> 00:28:10,569
+observe is that in this layer a 2. So, a 2
+is a superset of a 1 everything which is there
+
+250
+00:28:10,569 --> 00:28:14,119
+in a
+1 will always be there in a 2, why because
+
+251
+00:28:14,119 --> 00:28:19,179
+we are just no op operations which a carrying
+forward everything which was here, which made
+
+252
+00:28:19,180 --> 00:28:23,220
+this, all these action possible. We are
+being carried forward here and, therefore
+
+253
+00:28:23,220 --> 00:28:27,019
+there will be possible, so apart from this
+pick
+
+254
+00:28:27,019 --> 00:28:37,720
+up b unstack c from a and so on. So, for example
+it is always possible for me to say that
+
+255
+00:28:37,720 --> 00:28:43,370
+my first action is to do nothing, for some
+strange reason that I will do a no op.
+
+256
+00:28:43,369 --> 00:28:47,250
+If I do a no op then I can always do a pick
+up b after that essentially or I can always
+
+257
+00:28:47,250 --> 00:28:51,079
+do a
+unstack c a, after that which means these
+
+258
+00:28:51,079 --> 00:28:58,879
+2 actions must come in my layer, so everything
+which is there in a 1 plus something new.
+
+259
+00:28:58,880 --> 00:29:04,300
+What are the new things we can have? So, we
+can see, so I am not going to write all these
+
+260
+00:29:04,299 --> 00:29:11,379
+again here ideally you should copy it here,
+but now it is a bit of work. So, I will just
+
+261
+00:29:11,380 --> 00:29:14,990
+write this as a 1 plus the following that
+you
+
+262
+00:29:14,990 --> 00:29:16,679
+have holding b, you can do something with
+b.
+
+263
+00:29:16,679 --> 00:29:17,679
+.
+
+264
+00:29:17,679 --> 00:29:29,690
+You can stack B on to C, why because you know
+all the conditions are there if you are
+
+265
+00:29:29,690 --> 00:29:39,070
+picked up B, then you are holding B and then
+C is clear because no op, we will make it
+
+266
+00:29:39,069 --> 00:29:41,720
+clear in that, is that is about what you need.
+
+267
+00:29:41,720 --> 00:29:58,329
+.So, we can stack B on to C, or you can stack
+B on to, no you can put down B these are
+
+268
+00:29:58,329 --> 00:30:06,869
+two extra actions that I will add to my, likewise
+for this one holding see I will add stack
+
+269
+00:30:06,869 --> 00:30:22,459
+C on to A, stack C on to B putdown C. So,
+I have the same A 1 set of actions and
+
+270
+00:30:22,460 --> 00:30:27,289
+remember all these no ops are always there
+for every predicate in my act proposition
+
+271
+00:30:27,289 --> 00:30:31,240
+layer any proposition that proposition layer
+there is a no op action which takes it power
+
+272
+00:30:31,240 --> 00:30:32,329
+to the next layer.
+
+273
+00:30:32,329 --> 00:30:37,750
+So, that is always part of the graph plus
+anything new that I can add essentially the
+
+274
+00:30:37,750 --> 00:30:40,640
+only
+condition, I need for adding an action is
+
+275
+00:30:40,640 --> 00:30:46,780
+that it is preconditions must be available
+in a
+
+276
+00:30:46,779 --> 00:30:51,700
+non Mutex fashion essentially. So, again to
+repeat you want stack, you want to see what
+
+277
+00:30:51,700 --> 00:31:02,340
+do I need, I need holding B, of course I need
+clear C and that is what it is. So, of course
+
+278
+00:31:02,339 --> 00:31:07,309
+it
+will have its effects, it will say arm empty
+
+279
+00:31:07,309 --> 00:31:21,759
+not clear C and not holding B and so on
+essentially. So, in this process, I construct
+
+280
+00:31:21,759 --> 00:31:27,619
+the planning a layer by layer, at every layer
+I
+
+281
+00:31:27,619 --> 00:31:32,009
+have to find what are the Mutex and put them
+in.
+
+282
+00:31:32,009 --> 00:31:40,809
+As you can observe the planning op is going
+monotonically essentially it is start with
+
+283
+00:31:40,809 --> 00:31:45,359
+these propositions then it expands and because
+whenever a proportion gets into the
+
+284
+00:31:45,359 --> 00:31:50,319
+planning of a no op will take it to the next
+layer, only new ones will be added. So, for
+
+285
+00:31:50,319 --> 00:32:02,450
+example A on a stack B on C, one thing that
+gets on B C plus of course all these P, so
+
+286
+00:32:02,450 --> 00:32:05,180
+it
+is growing monotonically, it is also. Can
+
+287
+00:32:05,180 --> 00:32:08,330
+we show in? It is going as a polynomial of
+the
+
+288
+00:32:08,329 --> 00:32:16,379
+original problem size and general, the size
+of the planning of grows increases polynomial
+
+289
+00:32:16,380 --> 00:32:18,590
+essentially.
+
+290
+00:32:18,589 --> 00:32:26,019
+So, that is a first space of graph land you
+construct the panning graph. So, till what
+
+291
+00:32:26,019 --> 00:32:42,420
+stage? The stage 1, they are 2 possibilities
+that either you have reach the stage in which
+
+292
+00:32:42,420 --> 00:32:46,111
+a
+plan may exists. So, let say we have 2 arm
+
+293
+00:32:46,111 --> 00:32:51,640
+robot for arguments, say we can pick up C
+in
+
+294
+00:32:51,640 --> 00:33:00,000
+and pick and pick up and pick up the unstack
+C A and pick up B in as action 1, then at
+
+295
+00:33:00,000 --> 00:33:08,660
+the second layer we can put down C and also
+no.
+
+296
+00:33:08,660 --> 00:33:15,790
+So, let say in the first layer, you unstack
+C A and in the second layer you put down C
+
+297
+00:33:15,789 --> 00:33:20,509
+and
+pick up A at the same time. In the third layer,
+
+298
+00:33:20,509 --> 00:33:24,720
+you pick up B and the fourth layer, you
+stack B on to C and fifth layer you stack
+
+299
+00:33:24,720 --> 00:33:29,259
+A on to B. So, you can get a 5 step solution
+if
+
+300
+00:33:29,259 --> 00:33:30,629
+you had A 2 arm robot.
+
+301
+00:33:30,630 --> 00:33:37,870
+.We know that for A 1 arm robot, as you on
+a last class there is a 6 steps solution,
+
+302
+00:33:37,869 --> 00:33:47,349
+so the
+stage when ends if one all goal predicates
+
+303
+00:33:47,349 --> 00:34:06,780
+of propositions exists in a layer non Mutex
+if
+
+304
+00:34:06,780 --> 00:34:09,809
+you can find all the goal proposition. What
+were the goal proportions to interest in on
+
+305
+00:34:09,809 --> 00:34:13,710
+B
+on A B and on B C? If they happen be in A,
+
+306
+00:34:13,710 --> 00:34:19,010
+in a proposition layer and they are non
+Mutex, then we stop this forward planning
+
+307
+00:34:19,010 --> 00:34:26,200
+graph construction exercise and we go to a
+backward search.
+
+308
+00:34:26,199 --> 00:34:37,889
+So, typically you could do something like
+depths first here remember that the problem
+
+309
+00:34:37,889 --> 00:34:42,900
+is
+still in hard, but you could use other method,
+
+310
+00:34:42,900 --> 00:34:47,909
+so for example people have try to
+understand satisfaction methods and so on.
+
+311
+00:34:47,909 --> 00:34:53,250
+What are we looking for? We are looking for,
+so at some stage, so let me write that, those
+
+312
+00:34:53,250 --> 00:35:11,409
+things here on B A and, I can write them here
+on B A and, sorry on A B and on B C, I am
+
+313
+00:35:11,409 --> 00:35:16,019
+looking for these propositions. So, if they
+occur in some layer and they are not some
+
+314
+00:35:16,019 --> 00:35:19,519
+let us say P n and they are not Mutex then
+I
+
+315
+00:35:19,519 --> 00:35:25,139
+start a backward search face and say. Can
+I find all the sub goals of this, in the previous
+
+316
+00:35:25,139 --> 00:35:28,559
+layer in the non Mutex fact fashion?
+
+317
+00:35:28,559 --> 00:35:33,619
+Now, hobbies these have positive links coming
+from actions and those positive links
+
+318
+00:35:33,619 --> 00:35:41,289
+could be in the final solution that we have
+going to construct. What are these positive
+
+319
+00:35:41,289 --> 00:35:58,340
+links going to be? What are the two actions
+will produce this stack? But, are they non
+
+320
+00:35:58,340 --> 00:36:06,570
+Mutex? I am looking for non Mutex actually,
+so I need to do this backward search
+
+321
+00:36:06,570 --> 00:36:13,390
+looking for non Mutex actions with non Mutex
+preconditions. So, as you can guess this
+
+322
+00:36:13,389 --> 00:36:19,039
+is a no op action essentially, so in a previous
+layer if I have stack, and I am I am saying
+
+323
+00:36:19,039 --> 00:36:22,949
+that because I know where the solution is
+a last action must be stack A on B.
+
+324
+00:36:22,949 --> 00:36:28,559
+But, essentially what they, I will go to them
+in neat will lead to do is to search, so from
+
+325
+00:36:28,559 --> 00:36:37,699
+this goal set find an action set which assumes
+goal sets which is non Mutex. So, stack A
+
+326
+00:36:37,699 --> 00:36:48,759
+on B and stack B on C will be Mutex because
+both are them, so stack A on B makes B, A
+
+327
+00:36:48,760 --> 00:36:54,620
+makes B not clear and this needs or something
+like that. So, something will come and
+
+328
+00:36:54,619 --> 00:37:02,299
+they will be Mutex essentially, I need a goal
+set here and then an action set here. Then
+
+329
+00:37:02,300 --> 00:37:10,600
+a
+goal set come, A here sub goals and then actions
+
+330
+00:37:10,599 --> 00:37:15,579
+and then sub goals and then actions till I
+come to the initial layer and nowhere do a
+
+331
+00:37:15,579 --> 00:37:18,079
+encounter a Mutex solution.
+
+332
+00:37:18,079 --> 00:37:23,789
+.If that is a case, then found up line, imagine
+as you can imagine this will be found only
+
+333
+00:37:23,789 --> 00:37:26,590
+in
+the 6 layer, for this particular problem because
+
+334
+00:37:26,590 --> 00:37:31,980
+A we know by now that it need 6 actions.
+But, in the sixth layer, we will find this
+
+335
+00:37:31,980 --> 00:37:39,789
+stack A B Mutex with nothing and its condition
+will be Mutex, will be not Mutex, A envelop
+
+336
+00:37:39,789 --> 00:37:47,079
+them will be holding A and clear B and on
+B C already the here and, so essentially will
+
+337
+00:37:47,079 --> 00:37:54,319
+be able to find a path back. So, this
+backward space is a search space which will
+
+338
+00:37:54,320 --> 00:37:59,880
+try to solve every goal set with sub goal
+set
+
+339
+00:37:59,880 --> 00:38:05,099
+with another sub goal set right up to the
+start set in a non Mutex fashion.
+
+340
+00:38:05,099 --> 00:38:10,739
+So, do this, of course it, let it do some
+it try this sub goal set another sub goal
+
+341
+00:38:10,739 --> 00:38:16,389
+set could
+be just 2 actions, for example you can see
+
+342
+00:38:16,389 --> 00:38:20,869
+that that it may try. But, of course it will
+not
+
+343
+00:38:20,869 --> 00:38:26,329
+find a solutions because for 2 no op action
+to be happen in parallel this must need 7
+
+344
+00:38:26,329 --> 00:38:30,880
+steps, we know we need this 6 steps anywhere.
+But, it could try this it could try this
+
+345
+00:38:30,880 --> 00:38:35,500
+combinations or it could try this combinations
+or it could try com third combination we
+
+346
+00:38:35,500 --> 00:38:39,039
+will do some kind of the search and typically
+the original graph and algorithm which in
+
+347
+00:38:39,039 --> 00:38:44,969
+the albumin first backward space was depth
+first search.
+
+348
+00:38:44,969 --> 00:38:51,559
+So, in the forward space, you go all goal
+proportions like this in the layer non Mutex,
+
+349
+00:38:51,559 --> 00:38:57,239
+you do backward search, if it fails then you
+extend the graph by one more layer and do
+
+350
+00:38:57,239 --> 00:39:01,399
+the same thing again. Now, notice that when
+you extend the graph by one more layer,
+
+351
+00:39:01,400 --> 00:39:06,400
+you will still get those things non Mutex
+or you mean, you need to convinced about this
+
+352
+00:39:06,400 --> 00:39:11,780
+that once a goal set is non Mutex, it will
+remain non Mutex in the next layer also. But,
+
+353
+00:39:11,780 --> 00:39:17,760
+it
+is possible that some sub goal may not the
+
+354
+00:39:17,760 --> 00:39:23,430
+Mutex some sub goal may be Mutex which is
+why we need to extend the planning a further
+
+355
+00:39:23,429 --> 00:39:24,429
+and further essentially.
+
+356
+00:39:24,429 --> 00:39:33,299
+So, there are 2 cases, one is that a pan exists
+in which case stage 1 ends when all goal
+
+357
+00:39:33,300 --> 00:39:39,000
+proportions are found then the backward space
+begins else. So, I will just, else meaning
+
+358
+00:39:39,000 --> 00:39:52,900
+we are not found the plan extend panning graph
+and you keep doing this extend planning
+
+359
+00:39:52,900 --> 00:39:56,110
+graph search for a plan, extend the planning
+graph, search for a plan. So, you can
+
+360
+00:39:56,110 --> 00:40:00,829
+imagine that because we are doing that, if
+you find the plan it will be shortest possible
+
+361
+00:40:00,829 --> 00:40:17,150
+plan essentially, the other situation is no
+plan exists or this is the little bit trickles
+
+362
+00:40:17,150 --> 00:40:19,579
+see. So,
+I do not think we will have the time to go
+
+363
+00:40:19,579 --> 00:40:23,269
+into details to stretch out the conditions
+when
+
+364
+00:40:23,269 --> 00:40:33,250
+the algorithm should say that no plan exists,
+but the general idea is as follows.
+
+365
+00:40:33,250 --> 00:40:40,650
+.So, what is happening in this in this planning
+graph extension stage that more
+
+366
+00:40:40,650 --> 00:40:46,960
+proportions a being added, so more and more
+things will come in to play as non Mutex.
+
+367
+00:40:46,960 --> 00:40:54,280
+So, initially for example you might say pick
+up B is possible, unstack C from a possible
+
+368
+00:40:54,280 --> 00:41:02,690
+and then because we all, we already have clear
+C somewhere. You can say after B you
+
+369
+00:41:02,690 --> 00:41:09,950
+can stack C on stack B on to C and because
+we have unstack C from we can pick up A in
+
+370
+00:41:09,949 --> 00:41:11,460
+the next you can and so on.
+
+371
+00:41:11,460 --> 00:41:18,289
+So, it might be that you might see the proportions
+appear in the proportion layer, but they
+
+372
+00:41:18,289 --> 00:41:22,529
+may not be Mutex, at some point they will
+be Mutex and then you will search for in a
+
+373
+00:41:22,530 --> 00:41:29,200
+backward space. You will find that at some
+layer some preceding layer they become
+
+374
+00:41:29,199 --> 00:41:35,339
+Mutex and then you cannot complete backward
+space search all way all the way to the
+
+375
+00:41:35,340 --> 00:41:39,250
+start set. So, you find that their Mutex for
+you, if you have tried all possible
+
+376
+00:41:39,250 --> 00:41:43,739
+combinations and at some layer and they are
+Mutex, then we extend the planning graph
+
+377
+00:41:43,739 --> 00:41:51,229
+to let say it was that layer T, and then extend
+it to layer T plus one and then we come
+
+378
+00:41:51,230 --> 00:41:52,230
+back and search.
+
+379
+00:41:52,230 --> 00:42:00,840
+So, what Blamen first showed was this condition,
+if the sub goal set that you are trying to
+
+380
+00:42:00,840 --> 00:42:14,840
+solve the main constant when you extend from
+planning. What is the sub goal set? Sub
+
+381
+00:42:14,840 --> 00:42:20,650
+goal set is the set of sub goals where each
+sub goal is the set that you want, so for
+
+382
+00:42:20,650 --> 00:42:28,470
+example for on A B on B C, they will have
+the sub goals as we want to do stack on B
+
+383
+00:42:28,469 --> 00:42:35,719
+holding A clear B and on B C. These three
+actions would be in the sub goal set, this
+
+384
+00:42:35,719 --> 00:42:38,969
+action will have different actions at the
+sub goal set, some other actions will have
+
+385
+00:42:38,969 --> 00:42:40,699
+different actions in the sub goal set.
+
+386
+00:42:40,699 --> 00:42:47,279
+So, we have a set sub goals set of sub goal
+sets, if the set of sub goal sets does not
+
+387
+00:42:47,280 --> 00:42:51,970
+change
+as you go from layer T layer, T plus 1 as
+
+388
+00:42:51,969 --> 00:42:53,429
+you extend the planning graph from layer T
+to
+
+389
+00:42:53,429 --> 00:43:03,009
+layer T plus 1 then we can terminate best
+in it. There is no plan or to get some intuitive
+
+390
+00:43:03,010 --> 00:43:09,480
+feeling behind this, what happens is that
+as we construct the planning graph first the
+
+391
+00:43:09,480 --> 00:43:11,900
+set
+of propositions stabilize that no more propositions
+
+392
+00:43:11,900 --> 00:43:16,829
+added to the set. We added everything
+possible essentially and then the set of Mutex
+
+393
+00:43:16,829 --> 00:43:20,069
+relations stabilize, it means at no more
+Mutex relations are added.
+
+394
+00:43:20,070 --> 00:43:25,840
+But, even then you have to be a bit careful
+that you can extend it by one more layer and
+
+395
+00:43:25,840 --> 00:43:32,180
+.you might still find and what Blamen, first
+this is straightly complete condition which
+
+396
+00:43:32,179 --> 00:43:38,049
+says that if extend the planning graph from
+layer T to T plus 1. The sub goal set at some
+
+397
+00:43:38,050 --> 00:43:43,400
+intermediate layer n remains constant, then
+n you can be sure that you will never because
+
+398
+00:43:43,400 --> 00:43:49,260
+if you are not be. If B able to add a new
+sub goals, at when you move from T to T plus
+
+399
+00:43:49,260 --> 00:43:52,460
+1
+you can never add anymore because a set rule
+
+400
+00:43:52,460 --> 00:43:55,289
+set up propositions as stabilized set up set
+up Mutex is stabilized.
+
+401
+00:43:55,289 --> 00:44:01,070
+So, there is nothing more you can do after
+that it takes a bit of a time to figure this,
+
+402
+00:44:01,070 --> 00:44:06,970
+so 
+it
+
+403
+00:44:06,969 --> 00:44:14,750
+is summarize a graph plan algorithm works
+in 2 stages. In the power stage construct
+
+404
+00:44:14,750 --> 00:44:20,199
+a
+planning graph which contains is 4 kinds of
+
+405
+00:44:20,199 --> 00:44:27,879
+edges A, the precondition edges, the positive
+effects negative effects and Mutex relations.
+
+406
+00:44:27,880 --> 00:44:30,980
+Once it finds all the goal properties, it
+exists
+
+407
+00:44:30,980 --> 00:44:36,969
+in a non Mutex form in a layer it goes to
+the backward space tries to search for a non
+
+408
+00:44:36,969 --> 00:44:42,319
+Mutex substructure in the planning graph where
+they are no Mutex relations which
+
+409
+00:44:42,320 --> 00:44:48,250
+means that those actions are possible even
+if they are in parallel.
+
+410
+00:44:48,250 --> 00:44:52,750
+If it cannot find, it goes back and extends
+the planning graph by one more layer, again
+
+411
+00:44:52,750 --> 00:44:58,420
+goes it will the backward space and keep doing
+that. So, still at some point either it finds
+
+412
+00:44:58,420 --> 00:45:06,059
+a solution or this criteria which we described
+somewhat briefly is met where it says that
+
+413
+00:45:06,059 --> 00:45:11,989
+no plan can be found essentially. So, the
+planning graph gives as a optimal plan in
+
+414
+00:45:11,989 --> 00:45:19,599
+terms
+of the most the shortest times span or the
+
+415
+00:45:19,599 --> 00:45:24,449
+shortest number of the steps in which parallel
+solutions can be found if there is a parallels
+
+416
+00:45:24,449 --> 00:45:25,449
+solution.
+
+417
+00:45:25,449 --> 00:45:28,699
+So, of course keep in mind that domain that
+we are talking about has no parallel solutions
+
+418
+00:45:28,699 --> 00:45:33,179
+because it has single arm robot. But, many
+domains may have parallel solutions and what
+
+419
+00:45:33,179 --> 00:45:38,399
+graph plan does give us is the shortest time
+in which a parallel solution can be found
+
+420
+00:45:38,400 --> 00:45:40,070
+and
+we can of course always linearise that by
+
+421
+00:45:40,070 --> 00:45:46,380
+putting all the actions in any layer can be
+linearise in any. What it gives us is the
+
+422
+00:45:46,380 --> 00:45:49,460
+set of actions at layer 1, set of actions
+in layer 2,
+
+423
+00:45:49,460 --> 00:45:54,039
+set of actions in layer 3 which is the parallel
+shortest possible planning. So, it is an
+
+424
+00:45:54,039 --> 00:45:59,809
+optimal algorithm and it gives to the shortest
+plan and it can solve must larger problems
+
+425
+00:45:59,809 --> 00:46:01,809
+than the earlier I will go to essentially.
+
+426
+00:46:01,809 --> 00:46:11,570
+So, I think I will stop here with planning
+we do not have time to go into the other
+
+427
+00:46:11,570 --> 00:46:16,480
+algorithms. So, what you will do in the next
+couple of lecture is get a flavor of constant
+
+428
+00:46:16,480 --> 00:46:21,679
+.satisfaction problems which is actually a
+very big area in computer science in a that
+
+429
+00:46:21,679 --> 00:46:23,929
+there
+are people who work, try to pose everything
+
+430
+00:46:23,929 --> 00:46:30,819
+as a C S P and there is a huge amount of
+activity writing solve us for constraint satisfaction.
+
+431
+00:46:30,820 --> 00:46:36,120
+So, what we will do is, we will just
+get a flavor of how to pose a problem as a
+
+432
+00:46:36,119 --> 00:46:40,009
+constraint satisfaction problem. What is the
+constant satisfaction problem? What are the
+
+433
+00:46:40,010 --> 00:46:43,890
+basic ideas of? What are the algorithms at
+we use for solving it?
+
+434
+00:46:43,889 --> 00:46:48,920
+The interesting thing about studying C S P
+constraint satisfaction problems is that it
+
+435
+00:46:48,920 --> 00:46:55,750
+gives us a opportunity to combine search with
+reasoning essentially know that you can
+
+436
+00:46:55,750 --> 00:46:59,340
+do some amount of search. But, you can contain
+the search while doing some amount of
+
+437
+00:46:59,340 --> 00:47:05,390
+reasoning and constant satisfaction problems
+give us a national way of doing that
+
+438
+00:47:05,389 --> 00:47:09,699
+essentially. We will try to get a flavor of
+that in the next few lecturers essentially,
+
+439
+00:47:09,699 --> 00:47:15,139
+and
+then we will move on to representation proper
+
+440
+00:47:15,139 --> 00:47:26,839
+with login essentially. We will stop here.
+
+441
+00:47:26,840 --> 00:47:36,840
+.
+

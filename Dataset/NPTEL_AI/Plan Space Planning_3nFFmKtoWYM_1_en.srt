@@ -1,0 +1,2187 @@
+﻿1
+00:00:10,589 --> 00:00:26,420
+So, we are looking at plan space planning
+and its known as we discuss in the last class
+
+2
+00:00:26,420 --> 00:00:29,230
+by
+various names partial out of planning, lease
+
+3
+00:00:29,230 --> 00:00:36,500
+commitment planning. And the different
+between plan spaces planning, state space
+
+4
+00:00:36,500 --> 00:00:42,730
+planning is plan space planning purchase in
+the space of all possible plans.
+
+5
+00:00:42,729 --> 00:00:43,729
+.
+
+6
+00:00:43,729 --> 00:00:53,369
+And a plan in represented as a 4 topple where
+the first one is actions as they could be
+
+7
+00:00:53,369 --> 00:01:02,890
+operators with variables inside them then
+ordering links 
+
+8
+00:01:02,890 --> 00:01:18,060
+the causal links and then binding
+constants. So, a plan is basically made of
+
+9
+00:01:18,060 --> 00:01:25,980
+this 4 topple and we have observed that pi
+0 is
+
+10
+00:01:25,980 --> 00:01:43,129
+always with a 2 actions A 0 and A infinity.
+And it as 1 ordering links if says that A
+
+11
+00:01:43,129 --> 00:01:47,899
+0
+happens before A infinity it as know binding
+
+12
+00:01:47,899 --> 00:01:57,209
+constants no causal links. And that is
+always the starting position for such in plans
+
+13
+00:01:57,209 --> 00:02:10,020
+space planning where A 0 if remember is an
+action whose pre conditions are nil and post
+
+14
+00:02:10,020 --> 00:02:18,860
+condition are others started. Whatever the
+dedicates in the start state of everything
+
+15
+00:02:18,860 --> 00:02:25,380
+is a effect of the A 0 actions. And A infinity
+you
+
+16
+00:02:25,379 --> 00:02:37,259
+.in the action which consumes the goal predicates
+and has no effect. So the starting node
+
+17
+00:02:37,259 --> 00:02:51,539
+in such space is this pare of 2 actions and
+the ordinary constrain between them. So, let
+
+18
+00:02:51,539 --> 00:02:53,048
+us
+first write down on the algorithms and then
+
+19
+00:02:53,049 --> 00:03:01,010
+will discuss for those constants. So, high
+level algorithms for plan space planning so
+
+20
+00:03:01,009 --> 00:03:14,829
+begins with pi 0 which is a initial plan.
+And
+
+21
+00:03:14,830 --> 00:03:46,769
+we will use pi to stands of plans in general
+we initialize pi to pi 0 and then while we
+
+22
+00:03:46,769 --> 00:04:19,230
+discuss flaws that will pi them again and
+a moment.
+
+23
+00:04:19,230 --> 00:04:33,330
+So, the basic strategy in plan space planning
+is to inspect the plan for flaws and try to
+
+24
+00:04:33,329 --> 00:04:40,008
+resolve those flaws one by one essentially.
+And you have using here what we will call
+
+25
+00:04:40,009 --> 00:04:42,470
+as
+nondeterministic operator which we choose
+
+26
+00:04:42,470 --> 00:04:50,270
+some flaw from the set of flaw that in the
+plan is will define flaw the again in moment.
+
+27
+00:04:50,269 --> 00:04:54,519
+And it looks for resolvers as will assume
+that we have mechanism for fine in of what
+
+28
+00:04:54,519 --> 00:05:10,659
+are the resolvers for those flaws? They may
+be more than 1 and then again we say choose.
+
+29
+00:05:10,660 --> 00:05:25,560
+If the set of resolvers empty then you
+cannot you find of plan else choose resolver
+
+30
+00:05:25,560 --> 00:05:35,399
+R belong to set. Again we assume that
+nondeterministic will make the right choice
+
+31
+00:05:35,399 --> 00:05:43,649
+which is by at this stage we can return empty
+in practice. Off course, I am sure your know
+
+32
+00:05:43,649 --> 00:05:49,149
+conversion with this idea now, that we talk
+about nondetermisum algorithms like this.
+
+33
+00:05:49,149 --> 00:05:52,818
+It basically implies at the background the
+deter mist calculation there search happening
+
+34
+00:05:52,819 --> 00:06:00,610
+essentially. So, you would try 1 flaw from
+this set try to resolve it and then if will
+
+35
+00:06:00,610 --> 00:06:03,129
+each at then you will back track and try the
+next
+
+36
+00:06:03,129 --> 00:06:05,569
+flaw and resolve it.
+
+37
+00:06:05,569 --> 00:06:10,259
+Likewise you would choose one resolver to
+use of flaw and carry forward. And if you
+
+38
+00:06:10,259 --> 00:06:15,500
+each at then your backtrack and try the next
+resolver. So, essentially in currently there
+
+39
+00:06:15,500 --> 00:06:19,418
+is
+a search embedded behind this nondetermisum
+
+40
+00:06:19,418 --> 00:06:24,959
+choose operators which we and a familiar
+with that here we will assume that somehow
+
+41
+00:06:24,959 --> 00:06:34,739
+a choosing the collect clause of this
+algorithms is nondeterministic in nature.
+
+42
+00:06:34,740 --> 00:06:46,280
+Then let us a pi 1 or pi gets lets in a apply
+is a
+
+43
+00:06:46,279 --> 00:06:57,739
+choose is applies operator to pi essentially.
+So, this so here we have looking for the set
+
+44
+00:06:57,740 --> 00:07:01,280
+of
+is the dissolvers the flaw then we are picking
+
+45
+00:07:01,279 --> 00:07:05,619
+1 resolver and applying that 2 pi which
+means little do something to the plan remove
+
+46
+00:07:05,620 --> 00:07:16,310
+that flaw in some way. And then update the
+plan essentially and will keep doing that
+
+47
+00:07:16,310 --> 00:07:19,149
+is longest the plan has a flaw essentially.
+Only
+
+48
+00:07:19,149 --> 00:07:24,769
+place we will exist which failure so of after
+we exist from this off course we just return
+
+49
+00:07:24,769 --> 00:07:32,918
+on pi. But the other place so exist is when
+we cannot find the resolver for flaw between
+
+50
+00:07:32,918 --> 00:07:41,829
+is
+exploding all possible resolver in missing.
+
+51
+00:07:41,829 --> 00:07:44,038
+And then we are discussing that they are 2
+
+52
+00:07:44,038 --> 00:07:59,649
+.kinds of flaws one is open goal and the other
+is threat. So, let us discuss this suspense
+
+53
+00:07:59,649 --> 00:08:06,339
+that we at seen earlier remember that we a
+shown that a algorithms like goals type
+
+54
+00:08:06,339 --> 00:08:10,348
+planning, which does linier planning in the
+sense at it breaks of the goals one by one
+
+55
+00:08:10,348 --> 00:08:13,829
+trails all the first goal and then trails
+all the second goal.
+
+56
+00:08:13,829 --> 00:08:14,829
+.
+
+57
+00:08:14,829 --> 00:08:26,639
+And we are shown that with the problem like
+this with the goal like on A B and on B C.
+
+58
+00:08:26,639 --> 00:08:41,158
+If this is the goal set which in our system
+would be represented by A infinity having
+
+59
+00:08:41,158 --> 00:08:47,620
+2
+goals on just you short forms on B C if it
+
+60
+00:08:47,620 --> 00:08:52,580
+is nothing. So if you remember this was the
+suspense annually the start the goals state
+
+61
+00:08:52,580 --> 00:09:00,350
+was at a s on B and B s on C and the starting
+state was that C is on A.
+
+62
+00:09:00,350 --> 00:09:01,350
+..
+
+63
+00:09:01,350 --> 00:09:08,230
+And B is on the table A is on the table which
+again you will recall you can represent by
+
+64
+00:09:08,230 --> 00:09:19,310
+A 0 with no input and anything that is here
+which is let us say norms empty global be
+
+65
+00:09:19,309 --> 00:09:24,769
+we
+a having a dealing with A 1 norms. So, what
+
+66
+00:09:24,769 --> 00:09:46,819
+on take this for this ants for A 1 table B
+clear B on table A on C A clear A that. So
+
+67
+00:09:46,820 --> 00:09:48,830
+start action an that is end action that is
+so
+
+68
+00:09:48,830 --> 00:09:53,590
+suspense monopoly problem way wave we have
+way simple problem of 3 blocks. And
+
+69
+00:09:53,590 --> 00:10:01,950
+what we so earlier was that if you try to
+say that of the 2 goals that I have on A B
+
+70
+00:10:01,950 --> 00:10:05,140
+on B C
+I will try to solve them 1 by 1. The first
+
+71
+00:10:05,139 --> 00:10:11,330
+I will completely solve on A B then I will
+completely solve on B C or in the other order
+
+72
+00:10:11,330 --> 00:10:15,980
+that you cannot do essentially when you do
+the second goal it enviably disc rubs the
+
+73
+00:10:15,980 --> 00:10:18,370
+first goal that you had achieve earlier. So,
+these
+
+74
+00:10:18,370 --> 00:10:23,061
+goals are what we set was nonsingular lisable.
+And what you want see the plans space
+
+75
+00:10:23,061 --> 00:10:29,230
+planning offers the possibility of solving
+such problems and finding optimal solution.
+
+76
+00:10:29,230 --> 00:10:34,060
+So, if you work out the solution in your mind
+for this problem where this is the start state
+
+77
+00:10:34,059 --> 00:10:42,479
+an that is a goal state. The optimal solution
+is the 6 step solution was you first untaxed
+
+78
+00:10:42,480 --> 00:10:48,700
+from A put it on the table then put B on to
+C that is 2 more action. Then put A on to
+
+79
+00:10:48,700 --> 00:10:51,840
+C
+that is 2 more action goals at planning would
+
+80
+00:10:51,840 --> 00:10:57,182
+never find this 6 step plan and plan space
+planning can find influence that why interest
+
+81
+00:10:57,182 --> 00:11:05,879
+in that. Now, they are 2 kind in flaws as
+you set in a plan, one is opens of goal or
+
+82
+00:11:05,879 --> 00:11:10,480
+open goals we will use a 2 terms synthetic
+ignobly. Another is a threat so as of now,
+
+83
+00:11:10,480 --> 00:11:13,820
+this partial plan which as only 2 actions
+A 0
+
+84
+00:11:13,820 --> 00:11:20,050
+.and A infinity as 2 flaws. And they are 2
+open goals which say that there is nothing
+
+85
+00:11:20,049 --> 00:11:27,089
+supplying this predicate what we need is some
+action which will supply this predicate.
+
+86
+00:11:27,090 --> 00:11:34,940
+While in other words every open goal must
+have a supporting causal link which means
+
+87
+00:11:34,940 --> 00:11:41,440
+we must have some action here which produces
+this predicate which is consumed were
+
+88
+00:11:41,440 --> 00:11:50,770
+this actually 
+so threats. So, let us what is the look looked
+
+89
+00:11:50,769 --> 00:11:51,769
+at threats.
+
+90
+00:11:51,769 --> 00:11:52,769
+.
+
+91
+00:11:52,769 --> 00:12:08,600
+So, let us say some point us on to pick up.
+Let say pickup M is a block. So I am drawing
+
+92
+00:12:08,600 --> 00:12:17,960
+in this top to down as is open a practice
+is many books M city some way here. And I
+
+93
+00:12:17,960 --> 00:12:24,420
+have on ordering from top to down which have
+will not draw. Because we have only few
+
+94
+00:12:24,419 --> 00:12:33,599
+actions with discuss here. And then some way
+we have the action let say stack n on to y
+
+95
+00:12:33,600 --> 00:12:38,680
+so I will you this question mark to distinguish
+constants from variables as you also open
+
+96
+00:12:38,679 --> 00:12:43,209
+practice. So, n is a constants with means
+the block name is n and this question mark
+
+97
+00:12:43,210 --> 00:12:45,790
+y
+means it is a variable. So, we do not know
+
+98
+00:12:45,789 --> 00:12:50,860
+which block you n stack n 1 to some for some
+reason you have got this action have an this
+
+99
+00:12:50,860 --> 00:12:55,220
+happy this is the ordering an this is the
+order.
+
+100
+00:12:55,220 --> 00:13:06,310
+And let us say one of the B condition for
+this is clear M of course there other B
+
+101
+00:13:06,309 --> 00:13:10,539
+condition. It will remember the strict action
+that A must B M T and M must b on the
+
+102
+00:13:10,539 --> 00:13:17,010
+table and 1 of this clear M. So, let us so
+let say this is opens goal that is flaws b
+
+103
+00:13:17,010 --> 00:13:23,730
+addressing so how do you how do you address
+how do you resolve this open goal flaw?
+
+104
+00:13:23,730 --> 00:13:32,139
+They are 2 possibilities, one is that an existing
+action in the plan can supply the predicate
+
+105
+00:13:32,139 --> 00:13:38,069
+.which means as already action some way and
+you can just establish causal link from that
+
+106
+00:13:38,070 --> 00:13:40,660
+action to this action provide it.
+
+107
+00:13:40,659 --> 00:13:45,610
+It is consistent and by this we mean the ordering
+links a consistent by and by that we
+
+108
+00:13:45,610 --> 00:13:50,730
+mean that there are no cycles in that essentially.
+The other option the other way of is
+
+109
+00:13:50,730 --> 00:13:55,100
+ordering open goal list to add an new action.
+So, for example, in this situation there is
+
+110
+00:13:55,100 --> 00:13:58,200
+no
+action which can supply on A B or on B C so
+
+111
+00:13:58,200 --> 00:14:09,690
+we are comparing to add a new action. So,
+for example, we might say stacks A B as on
+
+112
+00:14:09,690 --> 00:14:16,160
+action and this provide this causal link to
+on
+
+113
+00:14:16,159 --> 00:14:21,389
+A B. That the second way of in solving the
+open goal which is to add an new action to
+
+114
+00:14:21,389 --> 00:14:26,230
+the plan how do we add an action to the plan?
+We add the action to this set of actions
+
+115
+00:14:26,230 --> 00:14:33,060
+then we add a causal link from this new action
+to the predicate that we a try to support.
+
+116
+00:14:33,059 --> 00:14:38,289
+And means certain ordering link here and if
+there any constant and we for example, you
+
+117
+00:14:38,289 --> 00:14:44,610
+make want to say add stack x y an x equal
+to A and Y full B. But will skip that part
+
+118
+00:14:44,610 --> 00:14:57,940
+essentially likewise you could say this is
+achieved by stack B C. So, because of the
+
+119
+00:14:57,940 --> 00:14:59,810
+stack
+that one other things we are doing in plans
+
+120
+00:14:59,809 --> 00:15:02,289
+space planning is resolve open goals. It still
+as
+
+121
+00:15:02,289 --> 00:15:08,000
+a flavor of backward is in, because open goals
+are only in the goals state and the new
+
+122
+00:15:08,000 --> 00:15:09,000
+keep building.
+
+123
+00:15:09,000 --> 00:15:14,029
+But it split possible that you end of first
+satisfying some open goals then jump here.
+
+124
+00:15:14,029 --> 00:15:23,220
+So,
+there is no fixed order of such essentially.
+
+125
+00:15:23,220 --> 00:15:28,830
+The other in case in thing about plans space
+planning with here observed was that in state
+
+126
+00:15:28,830 --> 00:15:33,790
+place planning both the selection of the
+action and position in the action was them
+
+127
+00:15:33,789 --> 00:15:38,669
+simultaneously in 1 move. So, for example,
+forward space place would say this is the
+
+128
+00:15:38,669 --> 00:15:43,599
+next action. So which means the select the
+action an also set the next position is the
+
+129
+00:15:43,600 --> 00:15:45,560
+next in the plan. Because they are plan is
+a
+
+130
+00:15:45,559 --> 00:15:49,829
+sequence actions likewise in the backward
+stage space search you sack construct in the
+
+131
+00:15:49,830 --> 00:15:59,560
+plan from n steps. In plan space planning
+we are selected this action stack A on B and
+
+132
+00:15:59,559 --> 00:16:04,289
+stack Bon C, but we are not say anything about
+what is you pending the relating already
+
+133
+00:16:04,289 --> 00:16:13,360
+in between them essentially. So, we separate
+the task of selecting in action and infusing
+
+134
+00:16:13,360 --> 00:16:20,060
+an ordering on the action essentially so that
+is then independently. So, in principle off
+
+135
+00:16:20,059 --> 00:16:23,259
+course this allows to first select some action
+in between. For example, if they have
+
+136
+00:16:23,259 --> 00:16:28,509
+something with as very practical to the plan
+and we knew it was practical then we could
+
+137
+00:16:28,509 --> 00:16:34,360
+select it in between. And we a choose in select
+of example of going from place a to place
+
+138
+00:16:34,360 --> 00:16:35,360
+b.
+
+139
+00:16:35,360 --> 00:16:39,690
+.So, if at to go from here to there on for
+example, I would to say I need to flight to
+
+140
+00:16:39,690 --> 00:16:42,740
+Delhi
+first and I put that action in between. So
+
+141
+00:16:42,740 --> 00:16:45,590
+plans space planning allows you to do that
+but,
+
+142
+00:16:45,590 --> 00:16:53,320
+this kind of listing which is more up stack
+requires still more structure in the plan.
+
+143
+00:16:53,320 --> 00:16:55,490
+And
+structure is difficultly hypothetical in nature.
+
+144
+00:16:55,490 --> 00:17:00,759
+So your to top of high level actions and the
+define in to low lower actions which you are
+
+145
+00:17:00,759 --> 00:17:04,039
+not going to considered. Here so we a
+working as the at the action level which the
+
+146
+00:17:04,039 --> 00:17:07,430
+at 1 plat level essentially which is the I
+this
+
+147
+00:17:07,430 --> 00:17:15,769
+as the flavor of backward search to some extent.
+So, we have this clear M here and let us
+
+148
+00:17:15,769 --> 00:17:24,828
+say do make clear M B say up stack something
+let say it do not give. Now, what that is
+
+149
+00:17:24,828 --> 00:17:31,700
+from x from m and that will produce this.
+So I will use the dotted line to represented
+
+150
+00:17:31,700 --> 00:17:38,190
+causal link which means this is producing
+this and this consumedly that essentially.
+
+151
+00:17:38,190 --> 00:17:41,970
+So,
+this was off course happen before this essentially.
+
+152
+00:17:41,970 --> 00:17:46,299
+So the moment in set this action in to
+my plan. So, what we that do in this? Already
+
+153
+00:17:46,299 --> 00:17:55,138
+they in my plan this 4 actions the 2 start
+actions and the this 2 actions at for they
+
+154
+00:17:55,138 --> 00:17:56,138
+in plan.
+
+155
+00:17:56,138 --> 00:17:59,949
+And then I have added this action up stack
+something from M and added that. Because I
+
+156
+00:17:59,950 --> 00:18:13,850
+want to resolve this goal of clear M, but
+the moment I have this plan structure. It
+
+157
+00:18:13,849 --> 00:18:17,709
+has a
+flaw which is of the type threat essentially
+
+158
+00:18:17,710 --> 00:18:23,159
+and what is the threat? In the threat is that
+here on the casual link so basically threat
+
+159
+00:18:23,159 --> 00:18:25,840
+is to a casual link. Always that something
+is
+
+160
+00:18:25,839 --> 00:18:30,168
+trying to disturb to casual link what is the
+casual link doing? Casual link says this action
+
+161
+00:18:30,169 --> 00:18:35,020
+is producing clear m which is consumed by
+this pickup M action. So, I which established
+
+162
+00:18:35,019 --> 00:18:38,950
+casual link in my plan essentially. Now, because
+there are variables involved here,
+
+163
+00:18:38,950 --> 00:18:42,659
+because of fact that we do not know what is
+ordering of these 3 actions. Off course, we
+
+164
+00:18:42,659 --> 00:18:46,039
+not this once come before this, but we do
+not my anything about how this is place
+
+165
+00:18:46,038 --> 00:18:51,019
+between take to these to. Then the put essential
+rate what is the put essential rate that this
+
+166
+00:18:51,019 --> 00:19:02,480
+action will come in between these 2 actions.
+And this y will be in to M which would
+
+167
+00:19:02,480 --> 00:19:13,169
+mean 
+that for pickup M I needed clear M to be true,
+
+168
+00:19:13,169 --> 00:19:17,120
+but if this stack n on to M happens
+before that which means it happen between
+
+169
+00:19:17,119 --> 00:19:18,138
+these 2 actions.
+
+170
+00:19:18,138 --> 00:19:22,819
+So, let us a this is the threat data an considering
+that this happens first this happens next
+
+171
+00:19:22,819 --> 00:19:31,210
+in this happens third. So, this action happens
+after this action an before this action and
+
+172
+00:19:31,210 --> 00:19:37,170
+there is the possibility that this y I can
+we made equal to M or bond to M then you can
+
+173
+00:19:37,170 --> 00:19:45,409
+see the details destroying this casual link.
+Because for pickup m needed clear m by
+
+174
+00:19:45,409 --> 00:19:51,950
+putting n on to M that clears M is been lost.
+So, this action is the threat to this casual
+
+175
+00:19:51,950 --> 00:19:52,950
+link
+
+176
+00:19:52,950 --> 00:20:03,639
+.so as we I think discuss in the last class.
+And action is threat and when you say threat
+
+177
+00:20:03,638 --> 00:20:07,399
+it
+algorithms potential threat to a casual link.
+
+178
+00:20:07,400 --> 00:20:12,500
+If it can produce so what can it produce?
+It
+
+179
+00:20:12,500 --> 00:20:21,288
+can produce not clear y as an effect so effects
+are below and the p condition are that it
+
+180
+00:20:21,288 --> 00:20:30,999
+can produce an effect. Lets us call it not
+p which can the infinite with a condition
+
+181
+00:20:30,999 --> 00:20:34,700
+p
+needed by the this action which means is pointed
+
+182
+00:20:34,700 --> 00:20:42,750
+destroyed this condition. If can so in
+other wards is y can be infinite with M and
+
+183
+00:20:42,750 --> 00:20:49,628
+many say infinite we mean by could M is
+possible and this action happens after this
+
+184
+00:20:49,628 --> 00:20:58,869
+action and this action happens before this
+action. So this 3 conditions were to become
+
+185
+00:20:58,869 --> 00:21:07,679
+too at that y equal to M and there as on
+wonderingly between this and this and on wonderingly
+
+186
+00:21:07,680 --> 00:21:11,160
+between this and this then the
+threat would materialize.
+
+187
+00:21:11,160 --> 00:21:15,570
+And my plan with a longer is a valid plan,
+because is would know this would come on
+
+188
+00:21:15,569 --> 00:21:19,700
+open goal which on a longer be satisfied.
+Because a casual link was satisfying this,
+
+189
+00:21:19,700 --> 00:21:22,630
+but in
+certain this action in between destroyed at
+
+190
+00:21:22,630 --> 00:21:26,909
+casual link. So, threat is the other kind
+of flaw
+
+191
+00:21:26,909 --> 00:21:32,850
+in the plan 1 of 1 is A simply kind that open
+goal as those support the other kind is that
+
+192
+00:21:32,849 --> 00:21:39,709
+there is a threat to how to be resolve the
+threat? So, there are 3 west of resolver threat
+
+193
+00:21:39,710 --> 00:21:46,730
+1 is
+separation which in this example. So, basically
+
+194
+00:21:46,730 --> 00:21:52,610
+say add of binding constants. And make
+sure that this cannot unify with is which
+
+195
+00:21:52,609 --> 00:22:04,839
+means add this to might set up binding constants
+essentially. One side does that they can know
+
+196
+00:22:04,839 --> 00:22:06,589
+that I am not going to stack this n on to
+M.
+
+197
+00:22:06,589 --> 00:22:12,119
+I will stack known to something else which
+means M is free for whatever that x is to
+
+198
+00:22:12,119 --> 00:22:16,128
+be
+stack known to that. That is one way of resolving
+
+199
+00:22:16,128 --> 00:22:33,058
+a threat another way is to demote is
+called demotion So, let us say in general
+
+200
+00:22:33,058 --> 00:22:42,138
+terms let us say action A is a threat to a
+link call
+
+201
+00:22:42,138 --> 00:22:49,330
+A one some predicate p in action A 2. So,
+this is A 1 this is A 2 and this is action
+
+202
+00:22:49,330 --> 00:22:54,248
+A one
+way so say that p is different which is separation
+
+203
+00:22:54,249 --> 00:23:04,409
+the other 1 is demotion which says that
+that action A happen after this pickup M which
+
+204
+00:23:04,409 --> 00:23:14,379
+means add the link A 2 happening before
+A.
+
+205
+00:23:14,378 --> 00:23:19,849
+So, when I say add added to the relevant place
+when I binding ordering link I must added
+
+206
+00:23:19,849 --> 00:23:27,109
+to this set when I binding constants I must
+added to that is set an so on. So, I can pushes
+
+207
+00:23:27,109 --> 00:23:33,428
+action down and so we say it is been demoted
+it happens later. That were also resolve the
+
+208
+00:23:33,429 --> 00:23:37,090
+threat, because then nothing is disputing
+this clear M. Because they all this happens
+
+209
+00:23:37,089 --> 00:23:40,769
+some
+were later another third is as we can a imagine
+
+210
+00:23:40,769 --> 00:23:52,690
+promotion which is you add A 1 to
+happen before A again to the set of ordering
+
+211
+00:23:52,690 --> 00:24:01,259
+links. So, we have basically 5 resolvers for
+
+212
+00:24:01,259 --> 00:24:08,839
+.open goal we have 2 resolver’s goal I just
+say old action. By this I mean an existing
+
+213
+00:24:08,839 --> 00:24:24,259
+action so may be just right existing actions
+order new action. To resolver open goal
+
+214
+00:24:24,259 --> 00:24:30,058
+either fines some existing action which can
+supply the predicate all if you cannot then
+
+215
+00:24:30,058 --> 00:24:34,730
+add a new action. Because taking an old action
+existing action may actually violated the
+
+216
+00:24:34,730 --> 00:24:42,740
+constant that the should be no cycle in the
+action. So, this is all the open goal and
+
+217
+00:24:42,740 --> 00:24:47,079
+this for
+the threat essentially and algorithm essentially
+
+218
+00:24:47,079 --> 00:24:55,808
+goals. So, this cycle of choosing of flaw
+how a initial plan as 2 flaws those 2 open
+
+219
+00:24:55,808 --> 00:25:02,678
+goals choosing a resolver. So, both of those
+flaws we are chosen to resolver who is to
+
+220
+00:25:02,679 --> 00:25:09,259
+add the new action. And a keep doing that
+till
+
+221
+00:25:09,259 --> 00:25:17,038
+there are no more flaws left in the action.
+So, this is the less a this is the flaw an
+
+222
+00:25:17,038 --> 00:25:24,960
+underline 1 and if have cycle it then it is
+been resolved. But off course, these actions
+
+223
+00:25:24,960 --> 00:25:27,499
+have their own requirements.
+
+224
+00:25:27,499 --> 00:25:52,960
+So, stack B C requires holding B it requires
+clear c it requires on no in that is all and
+
+225
+00:25:52,960 --> 00:25:59,909
+it
+produces a from on b c produces a empty an
+
+226
+00:25:59,909 --> 00:26:10,778
+produces clear B. So, let us assume that
+clear B is an effect of stack in B on to C
+
+227
+00:26:10,778 --> 00:26:15,128
+which means 1 unstack something of where if
+you are to under stack of B from something
+
+228
+00:26:15,128 --> 00:26:19,719
+then B would be your longer clear. So, when
+you are holding it B is not clear only when
+
+229
+00:26:19,720 --> 00:26:38,419
+it predict down it is clear essentially.
+Likewise this needs clear B holding A and
+
+230
+00:26:38,419 --> 00:26:49,259
+it produces arm empty and its produces clear
+A. So, everything A 
+
+231
+00:26:49,259 --> 00:26:54,028
+is an open goal every time we added new action
+all is B conditions
+
+232
+00:26:54,028 --> 00:27:02,609
+are open goal essentially then we look for
+of flaw and resolve it is essentially. So,
+
+233
+00:27:02,609 --> 00:27:11,048
+let us
+say we look for this flaw clear B and you
+
+234
+00:27:11,048 --> 00:27:15,200
+say this action is producing clear B. So,
+I have
+
+235
+00:27:15,200 --> 00:27:21,519
+an existing action which is supplying clear
+B so I had an ordering link which so I say
+
+236
+00:27:21,519 --> 00:27:26,079
+that
+that this action or this clear B is consumed
+
+237
+00:27:26,079 --> 00:27:30,470
+by this. So, I anode ordering link which is
+at
+
+238
+00:27:30,470 --> 00:27:39,278
+their link is between the actions that this
+action was happen. So, first an must stack
+
+239
+00:27:39,278 --> 00:27:42,849
+B on
+C which will produce this clear B and then
+
+240
+00:27:42,849 --> 00:27:46,618
+I will consume clear we when I stack A on
+to
+
+241
+00:27:46,618 --> 00:27:53,220
+B known A B C.
+
+242
+00:27:53,220 --> 00:27:59,288
+So, you can see that slow logical in some
+sense that you know you can see that you must
+
+243
+00:27:59,288 --> 00:28:06,308
+first stack B on to c and then A on to B an
+at least 6 doing in this part correctly
+
+244
+00:28:06,308 --> 00:28:14,339
+essentially. Now, let us at this 1 it to this
+is an action so an action that we can fine
+
+245
+00:28:14,339 --> 00:28:25,859
+is
+unstack no holding A. So, action that we can
+
+246
+00:28:25,859 --> 00:28:36,288
+kind is pick up A and the action for this
+also we can fine is so this here picking care
+
+247
+00:28:36,288 --> 00:28:46,929
+of pickup B. Lets a we are doing this in this
+order so pickup we will also produce other
+
+248
+00:28:46,929 --> 00:28:53,919
+things likes no arm empty. In that is sense
+A
+
+249
+00:28:53,919 --> 00:29:00,379
+.little delete A empty it needs arm empty
+as a predicate A empty is predicate will
+
+250
+00:29:00,378 --> 00:29:13,019
+producing not A empty it needs on table A
+this needs on table B. So, let us right it
+
+251
+00:29:13,019 --> 00:29:20,460
+here
+on table B on table A it needs clear A it
+
+252
+00:29:20,460 --> 00:29:34,829
+needs clear B 
+
+253
+00:29:34,829 --> 00:29:39,148
+observe that we have and open
+goal clear B here which could I will supplied
+
+254
+00:29:39,148 --> 00:29:46,289
+by that action stack B on to C. But we
+cannot choose that, because then we would
+
+255
+00:29:46,289 --> 00:29:49,470
+have to say that that happens before this
+and
+
+256
+00:29:49,470 --> 00:29:55,899
+you already setup this happen before that.
+So, something which is a kind of goal with
+
+257
+00:29:55,898 --> 00:29:57,769
+is
+that the moment you added a causal link this
+
+258
+00:29:57,769 --> 00:30:01,940
+a causal link we are added. Pickup B
+produces holding B which is consumed by stack
+
+259
+00:30:01,940 --> 00:30:05,879
+B on to C. The moment we add this link
+we also added ordering link essentially.
+
+260
+00:30:05,878 --> 00:30:10,709
+So, once you have added an ordering link is
+this selection we cannot add on ordering link
+
+261
+00:30:10,710 --> 00:30:26,909
+in this selection. So, we cannot choose this
+that for this essentially. So, let us say
+
+262
+00:30:26,909 --> 00:30:35,549
+that we
+choose this as an open goal and we say unstack
+
+263
+00:30:35,548 --> 00:30:45,579
+something x from A and that will make it
+clear. So, become an effect of this action
+
+264
+00:30:45,579 --> 00:30:58,939
+and it also produce holding x and another
+things and unstack x on A needs x to be on
+
+265
+00:30:58,940 --> 00:31:08,259
+A. So, we can produce it like this that this
+start action has an effect call on C A and
+
+266
+00:31:08,259 --> 00:31:14,230
+we can say if you say that x equal to C then
+we
+
+267
+00:31:14,230 --> 00:31:24,169
+can establish this casual link here. So, this
+is taken care of the which am not drawn here
+
+268
+00:31:24,169 --> 00:31:29,020
+the C condition for this is on C A that is
+taken care of, because it is will produce
+
+269
+00:31:29,019 --> 00:31:33,279
+by A 0
+another C condition is arm empty which is
+
+270
+00:31:33,279 --> 00:31:42,450
+also produce by this. And the third a
+condition is clear C which must be there somebody
+
+271
+00:31:42,450 --> 00:31:48,120
+should of point is these are this we
+clear C and that is solving. So, the c conditions
+
+272
+00:31:48,119 --> 00:31:52,689
+need for unshackling c from we which is
+clear C is true in the initial state, on C
+
+273
+00:31:52,690 --> 00:31:55,119
+A true in the initial state. And arm empty
+is true in
+
+274
+00:31:55,118 --> 00:32:00,898
+the initial state and they are produce for
+this so we establish this 3 casual links which
+
+275
+00:32:00,898 --> 00:32:04,729
+will
+do that essentially.
+
+276
+00:32:04,730 --> 00:32:19,368
+Now, we can see there if will look at this
+casual link here that A 0 is producing A empty
+
+277
+00:32:19,368 --> 00:32:27,699
+which is being consume by unstack C from A
+is being threat arm by this action here
+
+278
+00:32:27,700 --> 00:32:40,629
+pickup B. Because if pickup B we have not
+set when pickup B is always set is that A
+
+279
+00:32:40,628 --> 00:32:43,819
+0
+happens then we some stack C from A happens.
+
+280
+00:32:43,819 --> 00:32:48,240
+Then pick up A happens notice also that
+this cannot happen immediately afterwards
+
+281
+00:32:48,240 --> 00:32:58,028
+and once you unstacks C from A we are
+holding C and it would produce something call
+
+282
+00:32:58,028 --> 00:33:12,720
+mark arm empty and holding C. So,
+which means we obviously cannot do unstack
+
+283
+00:33:12,720 --> 00:33:18,589
+C from A followed by pick up A, because
+pick up A also needs arm to be empty. But
+
+284
+00:33:18,589 --> 00:33:21,459
+our plan an as only set that this must happen
+
+285
+00:33:21,460 --> 00:33:26,659
+.before that an nothing else we are not set
+that no action can be in certain between an
+
+286
+00:33:26,659 --> 00:33:28,249
+as
+way will see that can be done essentially.
+
+287
+00:33:28,249 --> 00:33:34,909
+So, the only thing set is 1 line is at you
+unstack
+
+288
+00:33:34,909 --> 00:33:40,770
+C from A and there at some point you pick
+up A an stack an to B. But before you stack
+
+289
+00:33:40,769 --> 00:33:45,690
+an to B some time you stack B on to C and
+before you stack B on to C you must pick up
+
+290
+00:33:45,690 --> 00:33:55,200
+B essentially so that is all we have so of
+essentially. But now, we have a threat this
+
+291
+00:33:55,200 --> 00:33:57,970
+is
+being is a threat in this is threat in to
+
+292
+00:33:57,970 --> 00:33:59,470
+disturb this casual link here.
+
+293
+00:33:59,470 --> 00:34:04,788
+So, we have these 3 option available separation
+is not possible, because there no
+
+294
+00:34:04,788 --> 00:34:13,050
+variables safe. Promotion is not possible,
+because A 0 is the first action which always
+
+295
+00:34:13,050 --> 00:34:14,789
+the
+first action an nothing can happen before
+
+296
+00:34:14,789 --> 00:34:21,579
+A 0. The only thing remains is demotion which
+means we say the this must happen after this.
+
+297
+00:34:21,579 --> 00:34:49,050
+It means we in introduce the casual an
+ordering link between this and that. Then
+
+298
+00:34:49,050 --> 00:35:06,659
+let us say that so let us say that we address
+one
+
+299
+00:35:06,659 --> 00:35:23,619
+of these issues they lets a we looking at
+this arm empty. And we are pushed it be on
+
+300
+00:35:23,619 --> 00:35:25,859
+this
+so we cannot connect it to the start in action.
+
+301
+00:35:25,860 --> 00:35:49,920
+So, we must produce some action calls
+pickup our put on something. This put on by
+
+302
+00:35:49,920 --> 00:36:21,030
+will need holding y and this open goal can
+be might by this goal holding C by seen y
+
+303
+00:36:21,030 --> 00:36:30,360
+could to C essentially. So, what are the actions
+we have so far? We have what is action unstack
+
+304
+00:36:30,360 --> 00:36:41,980
+C from a pickup A put down so this will
+become C here put down c is someway so 1 2
+
+305
+00:36:41,980 --> 00:36:49,099
+3 4 5 6 if got all the 6 actions that we need.
+And I will set up leave this is the small
+
+306
+00:36:49,099 --> 00:36:58,259
+exercise so you to see that now, you can resolve
+all the flaws in this by either introducing
+
+307
+00:36:58,260 --> 00:37:02,980
+in ordering constant to remove a threat. All
+connecting so for example, we can connect
+
+308
+00:37:02,980 --> 00:37:10,210
+this to this which means this must happen
+after that.
+
+309
+00:37:10,210 --> 00:37:19,889
+So, the first action that we can C is unstacking
+C from A and sometime after that you
+
+310
+00:37:19,889 --> 00:37:32,839
+must have pick up A. And sometime after that
+you must have put down C we do not
+
+311
+00:37:32,840 --> 00:37:37,910
+know we just know that this happens after
+that. Then we know that after putdown C we
+
+312
+00:37:37,909 --> 00:37:49,429
+must have pick up B from A. After pickup B
+we have stack B C an sometime after stack
+
+313
+00:37:49,429 --> 00:37:59,099
+B C we have stack A B off course it is not
+at proper plan, because as you can C you can
+
+314
+00:37:59,099 --> 00:38:01,469
+a
+do this to action stack B C and stack A B
+
+315
+00:38:01,469 --> 00:38:12,730
+immediately afterwards. It needs A pre
+condition which is destroyed by this which
+
+316
+00:38:12,730 --> 00:38:22,219
+is should be holding A. So, you can see that
+this needs holding A and that is provided
+
+317
+00:38:22,219 --> 00:38:26,799
+by this. So, this is a pre condition an some
+we
+
+318
+00:38:26,800 --> 00:38:37,539
+out to figure out that the sequence of fraction
+is that you unstack C from A when you
+
+319
+00:38:37,539 --> 00:38:48,059
+putdown C when you pick up B stack B on to
+C and then this needs to be added. That
+
+320
+00:38:48,059 --> 00:38:52,219
+.this pickup we must be happen after stack
+B C so why it happens? I will owe it as a
+
+321
+00:38:52,219 --> 00:38:58,659
+small, because it happens. Because some flaw
+is to be resolved and the flaw could be for
+
+322
+00:38:58,659 --> 00:39:03,029
+example, that arm empty you are something
+like that is needed for pickup A and stack
+
+323
+00:39:03,030 --> 00:39:05,590
+B
+on the c producing arm empty so we with that
+
+324
+00:39:05,590 --> 00:39:06,750
+will right the stack.
+
+325
+00:39:06,750 --> 00:39:15,260
+So, in the end will have one order go from
+here to here on here to here sorry go from
+
+326
+00:39:15,260 --> 00:39:23,750
+here to here when go from here to here? And
+we expect earlier plan in this particular
+
+327
+00:39:23,750 --> 00:39:32,889
+example, because of the fact that we a dealing
+with a one arm brought. And you can do
+
+328
+00:39:32,889 --> 00:39:40,989
+only one thing at the time as oppose to other
+kind of domains. For example, this shoe tie
+
+329
+00:39:40,989 --> 00:39:48,849
+domain that we discuss earlier to were lefts
+out were life rights of were left shoe were
+
+330
+00:39:48,849 --> 00:39:55,139
+right shoe there the final plan may not have
+a leave your order essentially. It will have
+
+331
+00:39:55,139 --> 00:39:57,509
+a
+parlor order that you first were the 2 socks
+
+332
+00:39:57,510 --> 00:40:01,810
+and then you were the 2 shoes and then you
+are done essentially. And then you could do
+
+333
+00:40:01,809 --> 00:40:08,059
+between them in any order essentially. So,
+any linearization of a partial order or any
+
+334
+00:40:08,059 --> 00:40:11,360
+to topological out of a partial order should
+be a
+
+335
+00:40:11,360 --> 00:40:17,110
+valid plan. That is a original condition is
+started with, but in set of having to check
+
+336
+00:40:17,110 --> 00:40:21,371
+all
+linearization we have change this too is condition
+
+337
+00:40:21,371 --> 00:40:25,360
+that which should have known flaws.
+And the flaw as define is they must be known
+
+338
+00:40:25,360 --> 00:40:30,410
+open goals. It means every open goal or
+every goal every sub goal must have a supporting
+
+339
+00:40:30,409 --> 00:40:32,369
+casual link.
+
+340
+00:40:32,369 --> 00:40:36,971
+And they must be no threats that no action
+must be threat in to dispute casual link
+
+341
+00:40:36,971 --> 00:40:42,280
+essentially. And as on is that condition is
+satisfied the plan that we produce is going
+
+342
+00:40:42,280 --> 00:40:45,730
+to be
+a valued plan. In this case it terms out to
+
+343
+00:40:45,730 --> 00:40:52,539
+be linear plan which you are also the optimal
+plan essentially. The off course we would
+
+344
+00:40:52,539 --> 00:40:55,050
+possibly observe that they little bit of a
+right of
+
+345
+00:40:55,050 --> 00:41:02,060
+a hand here that as some of chosen the right
+actions and the right things. In a put some
+
+346
+00:41:02,059 --> 00:41:06,369
+away chosen the right things for this choose
+a flaw on choose in action. So, notice at
+
+347
+00:41:06,369 --> 00:41:08,969
+this
+a symmetric situation we want to pick up B
+
+348
+00:41:08,969 --> 00:41:15,509
+on we want to pick up A. And I choose pick
+up A which let us to the plan if have chosen
+
+349
+00:41:15,510 --> 00:41:21,100
+pickup B then you can see that there know
+way you could have produce the optimal plan
+
+350
+00:41:21,099 --> 00:41:29,380
+we the produce longer plan. Because if
+you are going to do pickup B as a action which
+
+351
+00:41:29,380 --> 00:41:35,920
+is the after this then you will have to put
+it down again. And then pickup C put it down
+
+352
+00:41:35,920 --> 00:41:46,139
+and then pick up A so although extraction
+would keep in a essentially. So, this is the
+
+353
+00:41:46,139 --> 00:41:49,579
+basic idea of plans space planning this is
+the
+
+354
+00:41:49,579 --> 00:41:52,119
+algorithms there are variation would be algorithms
+which people have essentially.
+
+355
+00:41:52,119 --> 00:41:58,049
+.Some people only maintain and is in the,
+of to be solve and the keep is ordering threat
+
+356
+00:41:58,050 --> 00:42:03,050
+along the way is in the open goals to be solve.
+This is the more generate algorithms an
+
+357
+00:42:03,050 --> 00:42:07,670
+you can off course right variations this you
+can put in some heuristic and so on
+
+358
+00:42:07,670 --> 00:42:15,940
+essentially. So I will just like to end with
+((refer tim.) about something which and
+
+359
+00:42:15,940 --> 00:42:24,000
+mention on the way which is this notion of
+so if you have observe what was happening
+
+360
+00:42:24,000 --> 00:42:29,860
+here? We started such resolving open goals
+from the end essentially. Because x y the
+
+361
+00:42:29,860 --> 00:42:34,490
+open goals for an this produce more open goals
+and we had this flavor of backward
+
+362
+00:42:34,489 --> 00:42:37,789
+reasoning happening essentially. And that,
+because we are working as the ground level
+
+363
+00:42:37,789 --> 00:42:43,050
+we are only considering action which are applicable
+in the do mine but, if you at high
+
+364
+00:42:43,050 --> 00:42:49,440
+level actions like know go from here to Delhi.
+Now, that is not an which is the ground
+
+365
+00:42:49,440 --> 00:42:52,869
+level action the ground level action would
+have many other steps that you go from here
+
+366
+00:42:52,869 --> 00:42:59,130
+to the station you go the tree in an all this.
+If you have this notion of hypothetical actions
+
+367
+00:42:59,130 --> 00:43:04,220
+which means action which can decomposition
+in to smaller actions then we can talk
+
+368
+00:43:04,219 --> 00:43:09,149
+about high level plan and then refining it
+in to lower level plan.
+
+369
+00:43:09,150 --> 00:43:26,760
+And then this strategy that we at spoken about
+earlier means ends analysis. If it member
+
+370
+00:43:26,760 --> 00:43:36,300
+Simon a Newell the means an analysis strategy
+problem solving was the another first
+
+371
+00:43:36,300 --> 00:43:43,340
+strategy proposed by in a in the 60’s in
+the last century. It was based on the way
+
+372
+00:43:43,340 --> 00:43:46,320
+thought
+human beings solve problem. And the basic
+
+373
+00:43:46,320 --> 00:43:55,460
+idea behind means an analysis is that just
+like we have flaws and we have resolvers of
+
+374
+00:43:55,460 --> 00:44:03,470
+flaws. A more general think is that you have
+different is and you have resolvers for defenses
+
+375
+00:44:03,469 --> 00:44:09,009
+so what you mean by differences? So, in
+this travel do mine I would say there are
+
+376
+00:44:09,010 --> 00:44:11,560
+many different is my plan to go from here
+to
+
+377
+00:44:11,559 --> 00:44:18,039
+deradun. One is at the highest difference
+is that I am here I am not in deradun so in
+
+378
+00:44:18,039 --> 00:44:21,340
+that is
+in sense it is like of flaw. But then decompose
+
+379
+00:44:21,340 --> 00:44:28,730
+it in lower level actions the, and then I
+decide that you know I need these steps I
+
+380
+00:44:28,730 --> 00:44:33,940
+need go from here to station all. Let us say
+even lower level there I to go from here to
+
+381
+00:44:33,940 --> 00:44:37,659
+the gate and then gate to the station and
+then
+
+382
+00:44:37,659 --> 00:44:43,929
+getting to a train and then go to Delhi. And
+so I if realize that and if a can recognize
+
+383
+00:44:43,929 --> 00:44:49,341
+the,
+these are the difference is that I and it
+
+384
+00:44:49,342 --> 00:44:50,342
+to resolves.
+
+385
+00:44:50,342 --> 00:44:55,400
+So difference one difference is that I am
+in Chennai not in Dehradun. And so the largest
+
+386
+00:44:55,400 --> 00:45:01,700
+difference I me have a difference operator
+table which would say if distance is more
+
+387
+00:45:01,699 --> 00:45:05,119
+than
+500 kilometer you must take a train or of
+
+388
+00:45:05,119 --> 00:45:07,839
+flight. If distance is less than between 100
+and
+
+389
+00:45:07,840 --> 00:45:11,539
+500 you can take up bus or something like
+that we have a operator difference stable
+
+390
+00:45:11,539 --> 00:45:12,539
+like
+
+391
+00:45:12,539 --> 00:45:17,809
+.that. And then the key thing about means
+and analysis is at if you have difference
+
+392
+00:45:17,809 --> 00:45:20,409
+is and
+if you a operators you must choose a largest
+
+393
+00:45:20,409 --> 00:45:26,199
+differences first. The largest differences
+would be that I am in Chennai I am not in
+
+394
+00:45:26,199 --> 00:45:32,439
+Delhi and once says say that I have to resolve
+that differences first I would first selection
+
+395
+00:45:32,440 --> 00:45:35,400
+action or the plan for doing that. And that
+let
+
+396
+00:45:35,400 --> 00:45:39,150
+us say that action is taking a train from
+Chennai central to Delhi. And then I have
+
+397
+00:45:39,150 --> 00:45:42,170
+smaller
+difference is left am here not in the station
+
+398
+00:45:42,170 --> 00:45:46,780
+that is 1 difference then I will Delhi station.
+But I am not in lets I am taking to a bus
+
+399
+00:45:46,780 --> 00:45:51,390
+there as soon I am not the bus station on
+anything likes that essentially. So, you address
+
+400
+00:45:51,389 --> 00:45:58,039
+higher difference is first and the lower
+difference is later. So differences are the
+
+401
+00:45:58,039 --> 00:46:02,779
+ends and operators are the means to a cheap
+bus
+
+402
+00:46:02,780 --> 00:46:07,410
+ends essentially. And means at the analysis
+says that you must analyze the do mine. And
+
+403
+00:46:07,409 --> 00:46:12,699
+look at the larger more important things for
+first an less them and then look at the less
+
+404
+00:46:12,699 --> 00:46:14,079
+important things essentially.
+
+405
+00:46:14,079 --> 00:46:19,710
+So, 1 interesting example of this is this
+tours of ((refer time.) which we must be
+
+406
+00:46:19,710 --> 00:46:29,220
+familiar with. So, if you want lets a move
+5 dist from location A to location C then
+
+407
+00:46:29,219 --> 00:46:31,909
+there
+are 5 differences. In that smallest this see
+
+408
+00:46:31,909 --> 00:46:37,129
+that a not at C second smallest dist this
+at A not
+
+409
+00:46:37,130 --> 00:46:43,440
+in C you are 5. And if we can now, order this
+difference say the larger the dist the more
+
+410
+00:46:43,440 --> 00:46:49,670
+the difference then the here means. And analysis
+strategy says that first whatever moving
+
+411
+00:46:49,670 --> 00:46:55,420
+the biggest disk to the definition then many
+about moving the other this essentially. And
+
+412
+00:46:55,420 --> 00:46:58,909
+then off course, you know the familiar ((refer
+tim.) algorithms will come
+
+413
+00:46:58,909 --> 00:47:06,239
+automatically out of this that you move n
+minus those to B then move this largest this
+
+414
+00:47:06,239 --> 00:47:09,639
+to
+C and so on essentially. So, all those can
+
+415
+00:47:09,639 --> 00:47:17,279
+be seen as specific case is of means analysis
+and that was propose fight long time in their
+
+416
+00:47:17,280 --> 00:47:26,540
+book for human problem solving. So, all
+this algorithms that we are have seen of planning
+
+417
+00:47:26,539 --> 00:47:34,849
+so far. These are in some sense ancient
+they are all developed in the last century
+
+418
+00:47:34,849 --> 00:47:44,480
+sometime. It terms out that whatever however
+tries to right this algorithms. The problem
+
+419
+00:47:44,480 --> 00:47:50,849
+is hard member we said that even the split
+domain the simplest planning domain is piece
+
+420
+00:47:50,849 --> 00:47:51,980
+space complete essentially.
+
+421
+00:47:51,980 --> 00:48:00,260
+So, we terms of that even in simple domains
+the only kind of plans we can find were of
+
+422
+00:48:00,260 --> 00:48:04,230
+lengths something like 5 to 10 essentially.
+So, if you are the problem in which the
+
+423
+00:48:04,230 --> 00:48:08,179
+solutions of 5 steps longer 10 steps long
+then we could use is algorithms for solving
+
+424
+00:48:08,179 --> 00:48:20,129
+them. Then in 1995 of pare of researches care
+of with a new idea and with an algorithms
+
+425
+00:48:20,130 --> 00:48:26,450
+which look at this whole thing in very different
+way. In algorithms call graph plan an
+
+426
+00:48:26,449 --> 00:48:32,629
+.there was the variation which came long along
+that time which increase the length of the
+
+427
+00:48:32,630 --> 00:48:36,940
+plans could be found by an order of magnet
+to essentially. It means it we could find
+
+428
+00:48:36,940 --> 00:48:41,389
+plans
+of lengths 10 we these algorithms goes stack
+
+429
+00:48:41,389 --> 00:48:48,619
+planning or any of these algorithms we
+could find plans of lengths of 100 using these
+
+430
+00:48:48,619 --> 00:48:53,480
+new algorithms essentially. Off course, we
+would not have time to study those algorithms
+
+431
+00:48:53,480 --> 00:48:59,909
+in details in this course, but in the next
+class I will just give a games of this algorithms
+
+432
+00:48:59,909 --> 00:49:06,309
+Graph plan which is kind of a land mark
+algorithms in the world of planning essentially.
+
+433
+00:49:06,309 --> 00:49:17,769
+And will end with planning in this course
+with that essentially so I will stop here.
+
+434
+00:49:17,769 --> 00:49:29,079
+Student: This shows A 2 should happen before
+this shows that A 1 happens before A.
+
+435
+00:49:29,079 --> 00:49:49,659
+Promotion here promoting so A should happen
+before A 1 that is right holding is not part
+
+436
+00:49:49,659 --> 00:49:50,719
+of length. Sorry.
+
+437
+00:49:50,719 --> 00:50:05,659
+Student: Here holding is not part of length
+here this is we are going to pick up A to
+
+438
+00:50:05,659 --> 00:50:09,069
+after
+stacking B on C we are pick up in A.
+
+439
+00:50:09,070 --> 00:50:13,730
+Then you have this holding A not an action
+it is a predicate that is a I drawn a circle
+
+440
+00:50:13,730 --> 00:50:16,210
+on
+that for an action. After that after pick
+
+441
+00:50:16,210 --> 00:50:18,550
+in up a stack A on to B in that is a last
+step in the
+
+442
+00:50:18,550 --> 00:50:23,828
+plan essentially. So, we will stop here.
+
+443
+00:50:23,829 --> 00:50:33,829
+.
+

@@ -1,0 +1,2143 @@
+﻿1
+00:00:09,839 --> 00:00:23,969
+So, today we want to look at this well known
+A star algorithm and this was devised by
+
+2
+00:00:23,969 --> 00:00:41,140
+Hart, Nelson and Raphael essentially.
+.
+
+3
+00:00:41,140 --> 00:00:49,789
+So, out of these Nelson is, we have met these
+characters very briefly in the introduction.
+
+4
+00:00:49,789 --> 00:00:57,280
+Nelson is one of the founding fathers of a
+i along with Simon and Noel and Minsky and
+
+5
+00:00:57,280 --> 00:01:04,960
+McCarthy. In fact, the first text book on
+a i written around nineteen seventy two also
+
+6
+00:01:04,959 --> 00:01:08,929
+was
+written by Nelson essentially. Problem solving
+
+7
+00:01:08,930 --> 00:01:13,590
+methods in a i and it discusses most of
+the search algorithm that we have seen accept
+
+8
+00:01:13,590 --> 00:01:18,649
+the randomize algorithm and things like
+that. The best first search and heuristic
+
+9
+00:01:18,649 --> 00:01:20,899
+functions and effective branching factor and
+all
+
+10
+00:01:20,899 --> 00:01:24,060
+this kind of stuff was written in that book
+essentially.
+
+11
+00:01:24,060 --> 00:01:29,500
+Nelson was teaching at Stanford, Hart some
+of you may know because Doodah and Hart,
+
+12
+00:01:29,500 --> 00:01:35,549
+they wrote a very well known book on pattern
+recognition. And Raphael, we had
+
+13
+00:01:35,549 --> 00:01:39,640
+mentioned very briefly in passing, he was
+one of the first people to write a program
+
+14
+00:01:39,640 --> 00:01:42,810
+to do
+automated theorem proving essentially. Anyway,
+
+15
+00:01:42,810 --> 00:01:45,259
+today we are interested of course, in
+
+16
+00:01:45,259 --> 00:01:50,359
+.this algorithm A star, but further moment
+we will just first call it A and then we will
+
+17
+00:01:50,359 --> 00:01:52,539
+see
+in what condition we can call it A star.
+
+18
+00:01:52,539 --> 00:01:59,969
+Generally, when we look at some of these algorithms,
+that star implies that, it is
+
+19
+00:01:59,969 --> 00:02:04,599
+admissible essentially, and by admissible,
+we mean that it is guaranteed to final optimal
+
+20
+00:02:04,599 --> 00:02:14,590
+solution. So, branch and bound in that sense
+is admissible essentially. So, before I move
+
+21
+00:02:14,590 --> 00:02:20,150
+on our librarian informs me that, my book
+which I do not know how many of you have
+
+22
+00:02:20,150 --> 00:02:27,140
+seen is now available in the department library.
+There are about 5 copies and we are in
+
+23
+00:02:27,139 --> 00:02:34,679
+chapter 5 of this books at this moment, so
+you should catch up with that essentially.
+
+24
+00:02:34,680 --> 00:02:35,680
+.
+
+25
+00:02:35,680 --> 00:02:45,280
+So, let us first get the motivation into place
+which we have just discussed is that you are
+
+26
+00:02:45,280 --> 00:02:52,560
+at some start node S, and you want to go to
+some goal node g, assuming this is a city
+
+27
+00:02:52,560 --> 00:03:05,500
+map or something like that. And you have some
+kind of a open list, and there are nodes
+
+28
+00:03:05,500 --> 00:03:18,939
+on this open list which you have to pick a
+node from for expansion.
+
+29
+00:03:18,939 --> 00:03:24,590
+This is a old style algorithm that we wrote
+depth first search, breath first search, heuristic
+
+30
+00:03:24,590 --> 00:03:28,680
+best first search and so on. We dint use this
+terminology in branch and bound, but you
+
+31
+00:03:28,680 --> 00:03:33,040
+can see that branch and bound also always
+picks the lowest nodes in lowest leaf in the
+
+32
+00:03:33,039 --> 00:03:39,568
+tree that we were drawing which is like you
+know open list that you can maintain.
+
+33
+00:03:39,568 --> 00:03:54,439
+Now, we saw that what best first search use
+was a function which kind of estimated the
+
+34
+00:03:54,439 --> 00:04:06,050
+distance of every node to the goal node. And
+we call that function h of n and best first
+
+35
+00:04:06,050 --> 00:04:10,249
+.search basically maintain a priority queue
+on the heuristic value and always pick the
+
+36
+00:04:10,248 --> 00:04:15,609
+lower which appears to be closest to the goal
+and in the hope of finding the solution
+
+37
+00:04:15,609 --> 00:04:22,100
+faster essentially.
+Branch and bound on the other hand keeps track
+
+38
+00:04:22,100 --> 00:04:28,150
+of the parcel cost found so far, which
+are these cost. So, these are actual cost
+
+39
+00:04:28,149 --> 00:04:33,310
+in the sense these are cost of actual partial
+solutions found. They may not necessarily
+
+40
+00:04:33,310 --> 00:04:39,970
+be optimal though for diastral algorithm one
+can argue and prove that every time it picks
+
+41
+00:04:39,970 --> 00:04:45,240
+a node it has found an optimal cost for that,
+but we will come back to that argument a little
+
+42
+00:04:45,240 --> 00:04:49,910
+bit later. So, this is a actual cost that
+we
+
+43
+00:04:49,910 --> 00:04:55,430
+have found to a given node so far essentially.
+So, if you try to visualize this as some sort
+
+44
+00:04:55,430 --> 00:05:06,038
+of a physical system, you can see that branch
+and bound like breath first search which was
+
+45
+00:05:06,038 --> 00:05:11,788
+a simpler case of branch and bound tries to
+stick as close to the source as possible always
+
+46
+00:05:11,788 --> 00:05:16,449
+picks a node which is as which has a
+lowest known cost essentially. So, it tries
+
+47
+00:05:16,449 --> 00:05:18,819
+to stick as close to the source as possible.
+So, it
+
+48
+00:05:18,819 --> 00:05:25,169
+is like a pull on this thing which is pulling
+it back essentially. Best first search on
+
+49
+00:05:25,168 --> 00:05:27,990
+the
+other hand always tries to go as close to
+
+50
+00:05:27,990 --> 00:05:31,848
+the goal as possible essentially.
+Because, it is using the heuristic function
+
+51
+00:05:31,848 --> 00:05:34,348
+which is an estimate of given note to the
+goal
+
+52
+00:05:34,348 --> 00:05:39,769
+essentially. So, in some science that is a
+pull in that direction essentially. What we
+
+53
+00:05:39,769 --> 00:05:43,209
+want
+to do in this algorithm A star is to use a
+
+54
+00:05:43,209 --> 00:05:46,859
+combination of these two pulls and that is
+as it is
+
+55
+00:05:46,860 --> 00:05:52,199
+as simple as that we just need to fill in
+the details essentially.
+
+56
+00:05:52,199 --> 00:06:10,668
+So, in A star terminology this value is called
+g of n and it is a actual cost of actual known
+
+57
+00:06:10,668 --> 00:06:25,299
+cost of a path which is from S to n. So, this
+actual cost for this path is to n the kind
+
+58
+00:06:25,300 --> 00:06:28,419
+of
+path that we were drawing in branch and bound
+
+59
+00:06:28,418 --> 00:06:33,198
+we will call g of n the cost that we were
+using in branch. And bound we will that label
+
+60
+00:06:33,199 --> 00:06:50,960
+we will call g of n, h of n is an estimated
+cost of the segment from n to g, that we have
+
+61
+00:06:50,959 --> 00:06:53,560
+used in best first search that the h of n
+tells
+
+62
+00:06:53,560 --> 00:06:57,418
+you how far this goal is from this from the
+goal node essentially.
+
+63
+00:06:57,418 --> 00:06:58,418
+..
+
+64
+00:06:58,418 --> 00:07:04,918
+So, in this algorithm A, we use a function
+called f of n which is basically the sum of
+
+65
+00:07:04,918 --> 00:07:12,240
+g of
+n plus h of n. And essentially we keep the
+
+66
+00:07:12,240 --> 00:07:15,139
+priority queue sorted on this value of f of
+n
+
+67
+00:07:15,139 --> 00:07:21,370
+essentially. Now, notice that what is happening
+in this search algorithm we are starting
+
+68
+00:07:21,370 --> 00:07:29,699
+with the source node of the start state and
+we are gradually making this implicit graph
+
+69
+00:07:29,699 --> 00:07:36,240
+explicit essentially by a kind of a search
+tree that we are generating and whatever we
+
+70
+00:07:36,240 --> 00:07:40,918
+have made explicit is divided into two parts.
+One is called the closed set or closed list
+
+71
+00:07:40,918 --> 00:07:47,719
+which is the internal nodes and the other
+is the leaves which we call as a open set.
+
+72
+00:07:47,720 --> 00:07:53,189
+As we build this explicit graph this g value
+are computed, as we find partial pots paths
+
+73
+00:07:53,189 --> 00:07:57,970
+we can compute their values and that is the
+g value. H value is independent of what we
+
+74
+00:07:57,970 --> 00:08:02,680
+are doing, H value is simply a property of
+a given node. So, it is like saying how far
+
+75
+00:08:02,680 --> 00:08:10,360
+Mailapur from Chennai central. We are just
+asking that question we has no question of
+
+76
+00:08:10,360 --> 00:08:14,038
+paths here or some measure we said ((Refer
+Time.) distance we can use or
+
+77
+00:08:14,038 --> 00:08:18,128
+Manhattan distance we can use.
+A heuristic function is just a property of
+
+78
+00:08:18,129 --> 00:08:25,229
+the node. So, the algorithm that we will dip
+implement this A star every time we generate
+
+79
+00:08:25,228 --> 00:08:32,870
+a node you can simply compute its h value
+which is this heuristic value once for all
+
+80
+00:08:32,870 --> 00:08:35,288
+and you are done essentially. Whereas, this
+g
+
+81
+00:08:35,288 --> 00:08:42,720
+value may change, why because you as we saw
+in the example first you may find the
+
+82
+00:08:42,720 --> 00:08:47,610
+cost of length 15 to a node and then you may
+find another paths of cost 14 to that node.
+
+83
+00:08:47,610 --> 00:08:50,321
+So, g of that node may change from 15 to 14.
+
+84
+00:08:50,321 --> 00:08:58,070
+.So, it is a quantity which keeps changing.
+So, it is a actual known cost or actual known
+
+85
+00:08:58,070 --> 00:09:02,190
+cost of a known path I should say because,
+there is some path that you have not yet
+
+86
+00:09:02,190 --> 00:09:14,110
+explored and which could be cheaper. Now,
+we use this term f star of n is equal to g
+
+87
+00:09:14,110 --> 00:09:19,909
+star
+of n plus h star of n and these are optimal
+
+88
+00:09:19,909 --> 00:09:29,230
+cost. So, whenever we use the term star, they
+just denotes the optimal cost, we may or may
+
+89
+00:09:29,230 --> 00:09:33,779
+not know them essentially. In fact, we do
+not know them most of the time essentially.
+
+90
+00:09:33,779 --> 00:09:40,409
+Even if we have found the path from some node
+to some intermediate node, we do not
+
+91
+00:09:40,409 --> 00:09:57,839
+know what the actual cost, what is a relation
+between g of n and g star of n, is it equal
+
+92
+00:09:57,840 --> 00:10:06,840
+lesser than or greater than? Greater than
+how many people, feels it greater than only
+
+93
+00:10:06,840 --> 00:10:13,889
+one.
+You said greater than right? Greater than
+
+94
+00:10:13,889 --> 00:10:24,259
+equal to, why greater than equal to? So, g
+of n
+
+95
+00:10:24,259 --> 00:10:31,580
+is a path that you have found to that node
+n so far, it may be not the best path. So,
+
+96
+00:10:31,580 --> 00:10:37,100
+it
+could be cost greater than g star of n.
+
+97
+00:10:37,100 --> 00:10:53,480
+So, this f of n is basically or S star of
+n is the optimal the cost of optimal path
+
+98
+00:10:53,480 --> 00:10:57,779
+that starts
+with the start node goes to node n and then
+
+99
+00:10:57,779 --> 00:11:05,429
+goes to the node g. So, for any node n, f
+star
+
+100
+00:11:05,429 --> 00:11:18,370
+of n is optimal cost optimal path cost which
+passes through the node n essentially. And
+
+101
+00:11:18,370 --> 00:11:31,549
+if
+that path is an optimal path, so if, so there
+
+102
+00:11:31,549 --> 00:11:33,849
+is a distinction between these two. Here we
+are
+
+103
+00:11:33,850 --> 00:11:38,210
+saying that for any node n what is the optimal
+cost going through that node n. Here we
+
+104
+00:11:38,210 --> 00:11:55,639
+are talking about an optimal path from S to
+G. We can assume that, if this is equal to
+
+105
+00:11:55,639 --> 00:12:08,629
+S n
+1 n 2 n k G, then we can write f star of S
+
+106
+00:12:08,629 --> 00:12:18,129
+is equal to f star of n 1.
+And, so on f star of g because, it is a same
+
+107
+00:12:18,129 --> 00:12:25,389
+path remember. When we say this is optimal
+path then whether we say f star of n any node
+
+108
+00:12:25,389 --> 00:12:29,110
+on that path or f star of start or f star
+of
+
+109
+00:12:29,110 --> 00:12:33,039
+goal they have the same cost because this
+is only one path that we are talking about.
+
+110
+00:12:33,039 --> 00:12:35,579
+So,
+for an optimal path these two this sources
+
+111
+00:12:35,580 --> 00:12:37,180
+this we will use as some later point.
+
+112
+00:12:37,179 --> 00:12:38,179
+..
+
+113
+00:12:38,179 --> 00:12:52,449
+A star is admissible if now, we come to the
+same question again the relation between h
+
+114
+00:12:52,450 --> 00:13:12,450
+of n and h star of n what should be the relation.
+So, I am giving you two options here
+
+115
+00:13:12,450 --> 00:13:18,270
+include some we do not have equality. So,
+we have included an equality in both the sides
+
+116
+00:13:18,269 --> 00:13:25,730
+which one is better. A first option or the
+second option? What should my heuristic
+
+117
+00:13:25,730 --> 00:13:38,889
+function do? Should it what is this one doing.
+This is this underestimates, and this
+
+118
+00:13:38,889 --> 00:13:46,659
+overestimates. And I making a claim and this
+claim we will show more formally
+
+119
+00:13:46,659 --> 00:14:00,990
+probably in the next class. That if I choose
+a right condition here, then the algorithm
+
+120
+00:14:00,990 --> 00:14:03,330
+A
+star becomes admissible and by admissible
+
+121
+00:14:03,330 --> 00:14:10,700
+we mean it will find you the optimal cost
+path essentially.
+
+122
+00:14:10,700 --> 00:14:16,540
+So, should my h of n be an underestimating
+function which means h of n should be less
+
+123
+00:14:16,539 --> 00:14:21,969
+than h star of n. Remember h star of n is
+the optimal cost of going from n to the goal
+
+124
+00:14:21,970 --> 00:14:23,889
+or
+should it overestimate the cost of going from
+
+125
+00:14:23,889 --> 00:14:44,580
+n to the goal, which one will make my
+algorithm admissible. Should I take a vote
+
+126
+00:14:44,580 --> 00:14:47,629
+on this or somebody going to volunteer in
+answer?
+
+127
+00:14:47,629 --> 00:15:07,809
+So, let us take a vote, how many people feel
+it should overestimate the cost? Only one,
+
+128
+00:15:07,809 --> 00:15:19,959
+two can I use negation by failure, no. How
+many people feel it underestimates a cost?
+
+129
+00:15:19,960 --> 00:15:24,450
+A
+very small number essentially. So, let me
+
+130
+00:15:24,450 --> 00:15:27,450
+we will come back to this. So, let me, let
+me
+
+131
+00:15:27,450 --> 00:15:33,470
+take an example to illustrate this whole point
+essentially, and then you will see or let
+
+132
+00:15:33,470 --> 00:15:36,139
+it
+let me put it this way.
+
+133
+00:15:36,139 --> 00:15:44,159
+.It is an analogy that, I often tend to use
+that supposing you are buying a new, you want
+
+134
+00:15:44,159 --> 00:15:49,100
+to
+buy a new, mobile phone the most popular object
+
+135
+00:15:49,100 --> 00:15:55,870
+now a days and you want to get a, you
+have decided what phone you want to buy and
+
+136
+00:15:55,870 --> 00:16:02,980
+but there are three or four shops which are
+selling it. So, you go to the first shop and
+
+137
+00:16:02,980 --> 00:16:06,759
+let say I do not know what is the good price
+for
+
+138
+00:16:06,759 --> 00:16:13,429
+you people. So, let us say it is 10000 rupees,
+this fellow says I am giving you this phone
+
+139
+00:16:13,429 --> 00:16:19,659
+for 10000 rupees.
+Now, there you have some estimate of how much
+
+140
+00:16:19,659 --> 00:16:25,600
+the other people will charge, will they
+will you go to them if you think they charge
+
+141
+00:16:25,600 --> 00:16:34,389
+less or will you go to them if you think they
+charge more than 10000. Charge less essentially
+
+142
+00:16:34,389 --> 00:16:41,929
+which means that you think that they are
+that value of that node is underestimating
+
+143
+00:16:41,929 --> 00:16:44,839
+the cost essentially. So, let us then look
+at this
+
+144
+00:16:44,840 --> 00:16:46,519
+example.
+.
+
+145
+00:16:46,519 --> 00:17:02,139
+Let us say I have only two nodes in open let
+us call them A and let us call them B and
+
+146
+00:17:02,139 --> 00:17:07,220
+let
+say this is the actual path found to them
+
+147
+00:17:07,220 --> 00:17:08,910
+and let us say that they are just one step
+away
+
+148
+00:17:08,910 --> 00:17:16,470
+from the goal this just to illustrate the
+idea. So, that is the edge that they are just
+
+149
+00:17:16,470 --> 00:17:26,699
+likely to
+explode let us say that this cost is 100 just
+
+150
+00:17:26,699 --> 00:17:29,410
+to simplify a maters let say this cost is
+also
+
+151
+00:17:29,410 --> 00:17:35,190
+100 and let us say that this cost is 40 and
+this cost is 50 that is the edge cost A G
+
+152
+00:17:35,190 --> 00:17:39,009
+is the
+cost of edge A G is 40 and the cost of edge
+
+153
+00:17:39,009 --> 00:17:46,940
+B G is 50.
+So, what do we have, we have this 100 is equal
+
+154
+00:17:46,940 --> 00:17:57,610
+to g of B this is also equal to g of A and
+that is a actual cost we do not that is you
+
+155
+00:17:57,609 --> 00:18:07,918
+might say the h star of A is 40 and h star
+of B is
+
+156
+00:18:07,919 --> 00:18:13,140
+.50 in this case of course, if there is only
+one edge it is basically a falls on to the
+
+157
+00:18:13,140 --> 00:18:18,200
+edge cost
+essentially where it could be more than one
+
+158
+00:18:18,200 --> 00:18:25,169
+I think. So, let us look at examples of both
+this functions.
+
+159
+00:18:25,169 --> 00:18:26,169
+.
+
+160
+00:18:26,169 --> 00:18:40,350
+So, let us say h 1 underestimates the cost
+and h 2 overestimates the cost. And let us
+
+161
+00:18:40,349 --> 00:18:42,929
+pick
+functions which are not very good in the sense
+
+162
+00:18:42,930 --> 00:18:46,308
+that both of them are giving you wrong
+information, both of them are telling you
+
+163
+00:18:46,308 --> 00:18:51,619
+is that B is actually closer to the goal then
+A is
+
+164
+00:18:51,619 --> 00:19:05,719
+closer to the goal, so let us work with this.
+So, h 2 let us say h 2 of B equal to it is
+
+165
+00:19:05,720 --> 00:19:14,990
+actually 50. So, let us say this is 70 and
+h 2 of A
+
+166
+00:19:14,990 --> 00:19:22,149
+is actually 40, but let us say it is 80. So,
+what does it means that this function h 2
+
+167
+00:19:22,148 --> 00:19:24,939
+which
+is a heuristic function. So, remember we did
+
+168
+00:19:24,940 --> 00:19:28,830
+this example with this blocks world where
+we tried to define its functions when we saw
+
+169
+00:19:28,829 --> 00:19:32,769
+that one of them was better than the other.
+This is looking at another aspect of heuristic
+
+170
+00:19:32,769 --> 00:19:36,609
+functions which is one of them is
+underestimating and the other one is overestimating.
+
+171
+00:19:36,609 --> 00:19:40,740
+So, first we are looking at a function which
+over overestimates the costs which means
+
+172
+00:19:40,740 --> 00:19:45,950
+that this actual cost for this is 50, but
+this function thing it is 70, actual cost
+
+173
+00:19:45,950 --> 00:19:49,808
+for this is 40,
+but this function thing it is 80. So, in actual
+
+174
+00:19:49,808 --> 00:19:55,700
+practice A is closer to the goal which means
+this part should have been better, but this
+
+175
+00:19:55,700 --> 00:19:58,190
+function will think that B is closer to the
+goal
+
+176
+00:19:58,190 --> 00:20:03,950
+because of the estimate it has h 2 of B is
+70 which is less than 80.
+
+177
+00:20:03,950 --> 00:20:15,440
+.So, f 2 of B will be g of A which is g of
+B which is the same is equal to 100 plus 70
+
+178
+00:20:15,440 --> 00:20:28,798
+equal to 170 and f 2 of A is equal to 100
+plus 80 equal to 180. So, remember that we
+
+179
+00:20:28,798 --> 00:20:31,308
+said
+that basically what this algorithm A star
+
+180
+00:20:31,308 --> 00:20:35,778
+does is it maintains a priority queue of on
+f
+
+181
+00:20:35,778 --> 00:20:41,470
+value essentially. So, in this small example
+there are only two nodes in the open list,
+
+182
+00:20:41,470 --> 00:20:44,028
+one
+is A one is B and it has to decide which one
+
+183
+00:20:44,028 --> 00:20:48,480
+to pick it uses is f values f 2 is 180 f 2
+of A
+
+184
+00:20:48,480 --> 00:20:56,159
+is 180 and f 2 of B is 170.
+So, it will pick this node which means it
+
+185
+00:20:56,159 --> 00:21:02,570
+will now what disaster would have said relax
+the edge here which means it will compute
+
+186
+00:21:02,569 --> 00:21:24,700
+g of g. So, g 2 of g is equal to g 2 of B
+plus
+
+187
+00:21:24,700 --> 00:21:35,038
+the actual cost which is sorry which one have
+we picked we have pick B which is 50,
+
+188
+00:21:35,038 --> 00:21:45,480
+correct? The actual cost was or let me write
+which is 50 which is the actual edge cost
+
+189
+00:21:45,480 --> 00:21:56,038
+which is equal to 100 plus 50 is 150 and h
+2 of g is equal to 0. We assume that our
+
+190
+00:21:56,038 --> 00:22:00,528
+heuristic function can at least tell us if
+we have reached the goal. So, the heuristic
+
+191
+00:22:00,528 --> 00:22:07,909
+value
+at the goal is 0 which means f 2 of g is equal
+
+192
+00:22:07,909 --> 00:22:17,429
+to 0 plus 150 is 150. So, what is happened
+in our search space?
+
+193
+00:22:17,429 --> 00:22:18,429
+.
+
+194
+00:22:18,429 --> 00:22:26,519
+We started with S, then we had this two paths,
+this is A, this is B, then our algorithm h
+
+195
+00:22:26,519 --> 00:22:32,158
+2
+has pick B and found a path to g, then we
+
+196
+00:22:32,159 --> 00:22:38,990
+have this two node on open A and G. A has
+estimated cost now, estimated cost we mean
+
+197
+00:22:38,990 --> 00:22:49,839
+the complete cost of going to the goal via
+this node A is estimated to be 180 because,
+
+198
+00:22:49,839 --> 00:22:53,939
+the heuristic estimate from A is 80 and the
+
+199
+00:22:53,940 --> 00:23:01,288
+.cost up to A is 100. So, 100 plus 80 is estimated
+to be 180. The estimated cost of g is the
+
+200
+00:23:01,288 --> 00:23:07,069
+cost found, so far which is the g value which
+is 150.
+
+201
+00:23:07,069 --> 00:23:13,220
+So, here we have this node sitting with 150
+and this node sitting with 180. So, the
+
+202
+00:23:13,220 --> 00:23:18,420
+algorithm will pick g and terminate, the same
+algorithm that we talked about in the last
+
+203
+00:23:18,420 --> 00:23:24,400
+class when the completely refined solution
+is becomes a cheapest. It will automatically
+
+204
+00:23:24,400 --> 00:23:28,480
+get picked in this priority queue and then
+the algorithm will terminate. So, it will,
+
+205
+00:23:28,480 --> 00:23:30,150
+it will
+find this path essentially.
+
+206
+00:23:30,150 --> 00:23:31,150
+.
+
+207
+00:23:31,150 --> 00:23:41,499
+Let us try the other option which is h 1 of
+A. It underestimate, so let us say h 1 of
+
+208
+00:23:41,499 --> 00:23:47,769
+B
+equal to it is actually 50, but now we are
+
+209
+00:23:47,769 --> 00:23:51,399
+underestimating. So, let us say it is 30 and
+h 1
+
+210
+00:23:51,398 --> 00:23:59,048
+of A is actually 40.
+So, let me say this is 20 it is actually 40,
+
+211
+00:23:59,048 --> 00:24:02,249
+but let us say this function thing it is 30.
+So, in
+
+212
+00:24:02,249 --> 00:24:09,798
+the manner h 2 and h 1 are similar the both
+of them think that B is closer to the goal,
+
+213
+00:24:09,798 --> 00:24:15,970
+the
+only difference is h 2 overestimates the cost
+
+214
+00:24:15,970 --> 00:24:24,548
+and h 1 underestimates the cost essentially.
+So, in which case as you can see f 1 of B
+
+215
+00:24:24,548 --> 00:24:35,349
+equal to 20 plus 100 120 and f 1 of A is equal
+to 130.
+
+216
+00:24:35,349 --> 00:24:36,349
+..
+
+217
+00:24:36,349 --> 00:24:42,778
+Again this is a very similar situation, this
+algorithm, so originally this was 180, this
+
+218
+00:24:42,778 --> 00:24:48,679
+was
+170 and this became 150 with this new algorithm
+
+219
+00:24:48,679 --> 00:25:00,850
+f 1 this is 130 and this is 120. So, again
+this algorithm will explode B first, but what
+
+220
+00:25:00,849 --> 00:25:10,449
+will happen now after picking B it will relax
+this edge from B to g which actual cost is
+
+221
+00:25:10,450 --> 00:25:25,330
+50. So, g to g or g 1, g is equal to 150 which
+means f1 G is equal to 150.
+
+222
+00:25:25,329 --> 00:25:30,249
+See after they have found the path going from
+S to B to g both of them know the actual
+
+223
+00:25:30,249 --> 00:25:35,960
+cost there is no longer this estimation done
+by h because, h is 0. So, the actual cost,
+
+224
+00:25:35,960 --> 00:25:41,429
+so f 1
+G is 150 as well as f 2 G was 150, but now
+
+225
+00:25:41,429 --> 00:25:50,140
+you can see that this is with the same cost
+150 and this algorithm let us call it A 1
+
+226
+00:25:50,140 --> 00:25:55,840
+star has to choose between g and A. It terms
+out
+
+227
+00:25:55,839 --> 00:26:05,349
+that A is lower estimated cost 130. So, this
+algorithm will pick A, and when it picks A
+
+228
+00:26:05,349 --> 00:26:09,798
+it
+will find a cheaper cost to g exactly like
+
+229
+00:26:09,798 --> 00:26:17,759
+diastral algorithm would have done, and this
+cheaper cost is the cost of 100 plus 40 which
+
+230
+00:26:17,759 --> 00:26:24,599
+is 140.
+So, this will revise this cost to 140. Originally
+
+231
+00:26:24,599 --> 00:26:31,240
+the estimated cost was 170 and it got
+revised to 150 here, it was 180 it never got
+
+232
+00:26:31,240 --> 00:26:40,028
+revised to 150. Here it was 120 it got revised
+to 150, but when this expanded this it got
+
+233
+00:26:40,028 --> 00:26:50,148
+again revised to 140 essentially. And at that
+time this is the only goal only door left
+
+234
+00:26:50,148 --> 00:26:53,819
+in our open list because we have finished
+with A,
+
+235
+00:26:53,819 --> 00:26:57,878
+we have finished with B both and only g is
+left and g will be picked with the cost of
+
+236
+00:26:57,878 --> 00:27:02,230
+140
+which is the optimal solution.
+
+237
+00:27:02,230 --> 00:27:09,128
+.So, you can see that using h 1 of h 1 we
+could find the optimal solution using h 2
+
+238
+00:27:09,128 --> 00:27:10,878
+we
+could not find the optimal solution, even
+
+239
+00:27:10,878 --> 00:27:19,509
+though both of them thought that B was the
+better choice using h 2 we picked B and then
+
+240
+00:27:19,509 --> 00:27:25,038
+we picked the goal using h 1 we picked B,
+but then we were forced to pick A and then
+
+241
+00:27:25,038 --> 00:27:29,338
+we were forced to pick the goal essentially.
+So, we found the optimal cost.
+
+242
+00:27:29,338 --> 00:27:30,338
+.
+
+243
+00:27:30,338 --> 00:27:41,879
+So, this is the criteria we are looking for.
+If h of n is less then equal to h star of
+
+244
+00:27:41,880 --> 00:27:47,820
+n. So, the
+algorithm is admissible if the heuristic function
+
+245
+00:27:47,819 --> 00:27:57,678
+underestimates the cost of the goal
+essentially. So, let us quickly describe the
+
+246
+00:27:57,679 --> 00:27:58,950
+algorithm completely because there are one
+or
+
+247
+00:27:58,950 --> 00:28:05,850
+two things which were not there in the best
+first search algorithm. So, I will do a quick
+
+248
+00:28:05,849 --> 00:28:15,798
+description and then we will do it we will
+take it up again in the next call essentially.
+
+249
+00:28:15,798 --> 00:28:23,028
+So,
+the algorithm is very similar, except that
+
+250
+00:28:23,028 --> 00:28:29,288
+we keep track of this cost explicitly g of
+a node
+
+251
+00:28:29,288 --> 00:28:36,288
+n, h of a node n, so on.
+
+252
+00:28:36,288 --> 00:28:37,288
+..
+
+253
+00:28:37,288 --> 00:28:45,829
+So, the steps are very similar at. So, I will
+just write the outline here and you can fill
+
+254
+00:28:45,829 --> 00:28:49,798
+in
+the details. So, I will just very briefly
+
+255
+00:28:49,798 --> 00:28:56,470
+write open gets S which means open gets the
+start
+
+256
+00:28:56,470 --> 00:29:00,970
+node, but we want to keep track of parents
+and so on and so for.
+
+257
+00:29:00,970 --> 00:29:15,720
+So, let us just write here parent of S is
+nil and h of S is computed we always we can
+
+258
+00:29:15,720 --> 00:29:19,419
+always compute the heuristic value of a node.
+So, in as a matter of principle we compute
+
+259
+00:29:19,419 --> 00:29:30,830
+the heuristic value and we initialize close
+to nil as before accept that here we have
+
+260
+00:29:30,829 --> 00:29:34,460
+talked
+of this parent point of, rather than having
+
+261
+00:29:34,460 --> 00:29:36,808
+this node pair that we had earlier you can
+use
+
+262
+00:29:36,808 --> 00:29:45,418
+that it does not really matter, this is simply
+easier to describe. So, as before if open
+
+263
+00:29:45,419 --> 00:29:57,460
+is not
+equal to nil, pick best node 
+
+264
+00:29:57,460 --> 00:30:03,399
+n and add it to closed. I will just write
+it as an outline I want
+
+265
+00:30:03,398 --> 00:30:09,949
+to focus on the part of what do you do with
+this node n essentially
+
+266
+00:30:09,950 --> 00:30:33,009
+So, if n, so if I use the older terminology
+if gore test n than the reconstruct n. So,
+
+267
+00:30:33,009 --> 00:30:35,349
+we
+assume that we can trace back the path and
+
+268
+00:30:35,349 --> 00:30:37,230
+reconstruct the path and then. So, all that
+it is
+
+269
+00:30:37,230 --> 00:30:53,538
+very similar to what we did in earlier search
+algorithm, else successors is 
+
+270
+00:30:53,538 --> 00:30:58,339
+the move gen
+of n. So, we I am using the same function
+
+271
+00:30:58,339 --> 00:31:08,668
+that we have defined earlier and for each
+m in
+
+272
+00:31:08,669 --> 00:31:21,009
+successors we do the following essentially.
+So, let me also draw the situation at the
+
+273
+00:31:21,009 --> 00:31:25,149
+point
+where this algorithm is doing working.
+
+274
+00:31:25,148 --> 00:31:26,148
+..
+
+275
+00:31:26,148 --> 00:31:34,388
+So, this is S and then somewhere we have this
+open list, this is the set of open node and
+
+276
+00:31:34,388 --> 00:31:42,738
+let us say this node n is here essentially.
+So, this line that I have drawn represents
+
+277
+00:31:42,739 --> 00:31:47,480
+open
+list and we picked some nod, nodes with the
+
+278
+00:31:47,480 --> 00:31:55,819
+lowest f value have I said that here, ok I
+have said best node n and by best I mean the
+
+279
+00:31:55,819 --> 00:32:05,398
+lowest f value and f is g plus h and we it
+was not the goal nod. So, we generate successors.
+
+280
+00:32:05,398 --> 00:32:18,069
+So, let us say these are the successors of
+n. All neighbors if you want to say or what
+
+281
+00:32:18,069 --> 00:32:21,499
+are
+reachable from there. Now you can see that
+
+282
+00:32:21,499 --> 00:32:24,759
+there are three kinds of nodes here one is
+one
+
+283
+00:32:24,759 --> 00:32:29,730
+kind which is on the open list already. So,
+these two I mean to draw is that they are
+
+284
+00:32:29,730 --> 00:32:35,339
+already on open there are some which are already
+in closed and there is some which are
+
+285
+00:32:35,339 --> 00:32:39,878
+new nodes essentially. So, this one represents
+that new nodes essentially.
+
+286
+00:32:39,878 --> 00:32:40,878
+..
+
+287
+00:32:40,878 --> 00:32:58,759
+So, for each M, so case one m does not belongs
+to open and m does not belong to close
+
+288
+00:32:58,759 --> 00:33:04,149
+which means it is this node here that I am
+talking about, it is a new node that has not
+
+289
+00:33:04,148 --> 00:33:10,819
+been seen earlier essentially. Basically we
+want to add it to our search space. So, what
+
+290
+00:33:10,819 --> 00:33:23,509
+do
+we do we say add compute h of m then.
+
+291
+00:33:23,509 --> 00:33:48,200
+So, we have some heuristic function that we
+use. Then we say parent m is n and g of m
+
+292
+00:33:48,200 --> 00:33:57,038
+is
+equal g of n plus I will use k as a cost function.
+
+293
+00:33:57,038 --> 00:34:05,308
+So, that k of n m is the cost of that edge
+going from n to m. So, we update the value
+
+294
+00:34:05,308 --> 00:34:07,999
+of or the compute value of g m is equal to
+g
+
+295
+00:34:07,999 --> 00:34:12,599
+of n. The g value of the parent exactly as
+we were doing in this branch and bound kind
+
+296
+00:34:12,599 --> 00:34:26,469
+of
+a thing and then we compute f of n 
+
+297
+00:34:26,469 --> 00:34:36,699
+and we say add n to open.
+So, there are three cases the first case is
+
+298
+00:34:36,699 --> 00:34:42,600
+when m is a new nod. So, we compute its edge
+value we compute its g value which means we
+
+299
+00:34:42,601 --> 00:34:47,760
+can compute its f value, we mark the
+pointer of m as its parent that it came from
+
+300
+00:34:47,760 --> 00:34:54,820
+and add it to open essentially. The next case
+that we want to look at is when it is already
+
+301
+00:34:54,820 --> 00:35:04,570
+on open.
+
+302
+00:35:04,570 --> 00:35:05,570
+..
+
+303
+00:35:05,570 --> 00:35:26,730
+So, case 2, m belongs to open which means
+what, that we have found this edge here. So,
+
+304
+00:35:26,730 --> 00:35:33,980
+we are dealt with this these two cases. So,
+now, if this one of these two was m, it means
+
+305
+00:35:33,980 --> 00:35:41,360
+it is on already in open which means it is
+already has a g value and h value and a parent
+
+306
+00:35:41,360 --> 00:35:47,539
+point. So, this n has just been expanded.
+So, before that, this was pointing to let
+
+307
+00:35:47,539 --> 00:35:51,050
+us say
+this one for argument sake, let us say this
+
+308
+00:35:51,050 --> 00:35:52,570
+was pointing to this and this was pointing
+to
+
+309
+00:35:52,570 --> 00:36:01,320
+this. So, they already had this parent pointer,
+what do we do for such nods, or what do
+
+310
+00:36:01,320 --> 00:36:08,950
+we want to do?
+We want to see if we have found the cheaper
+
+311
+00:36:08,949 --> 00:36:15,549
+path to that node or not, correct? We
+already have a path to this node m it is coming
+
+312
+00:36:15,550 --> 00:36:21,430
+through some sequence of nodes n always
+remember is a parent point. So, it already
+
+313
+00:36:21,429 --> 00:36:28,469
+has a g value and an h value as well. So,
+if m
+
+314
+00:36:28,469 --> 00:36:43,679
+belongs to open, then we do a check if g of
+n plus this value A of n m. What is this
+
+315
+00:36:43,679 --> 00:36:47,519
+value?
+This value is a new cost that we have found
+
+316
+00:36:47,519 --> 00:36:55,809
+to this node m, this node m was already on
+open. If this is less than the cost that was
+
+317
+00:36:55,809 --> 00:37:02,389
+already stored for m, remember it is all open.
+So, it is must be having a g value, but if
+
+318
+00:37:02,389 --> 00:37:05,569
+this new cost that we have found is better
+than
+
+319
+00:37:05,570 --> 00:37:18,289
+the old cost, then we have to do some readjusting
+of pointer which is that parent of m
+
+320
+00:37:18,289 --> 00:37:40,619
+becomes n and g of m becomes this value. And
+f of course, becomes in all these h of m is
+
+321
+00:37:40,619 --> 00:37:44,380
+not changing at all because, it is just a
+property of that node, it is not the property
+
+322
+00:37:44,380 --> 00:37:48,119
+of that
+what path we have found to this node.
+
+323
+00:37:48,119 --> 00:37:55,609
+.So, these are the two cases. One case for
+new nodes, we simply add them to the graph,
+
+324
+00:37:55,610 --> 00:38:01,210
+and create the parent pointer, compute the
+g value, compute the h value, compute the
+
+325
+00:38:01,210 --> 00:38:03,679
+f
+value and we are done. If we have found a
+
+326
+00:38:03,679 --> 00:38:10,239
+new path to a node in open then we need to
+check whether this path is better which is
+
+327
+00:38:10,239 --> 00:38:13,049
+what we are doing here, if it is better than
+we
+
+328
+00:38:13,050 --> 00:38:19,810
+readjust the parent pointer and readjust the
+g value essentially. So, this is where we
+
+329
+00:38:19,809 --> 00:38:21,799
+are
+readjusting the g value, this is where we
+
+330
+00:38:21,800 --> 00:38:23,360
+are readjusting the parent pointer and then
+this
+
+331
+00:38:23,360 --> 00:38:26,880
+of course, taking into account the new g value.
+.
+
+332
+00:38:26,880 --> 00:38:40,019
+Case 3, m belongs to closed. Which means we
+had already visited m and expanded m
+
+333
+00:38:40,019 --> 00:38:45,809
+and generated children of m n, so on and so
+for, so let us take this as a case.
+
+334
+00:38:45,809 --> 00:38:46,809
+..
+
+335
+00:38:46,809 --> 00:38:57,659
+So, let us say now this is m, which means
+it was already generated before which means
+
+336
+00:38:57,659 --> 00:39:01,719
+it
+could have other children. So, let me use
+
+337
+00:39:01,719 --> 00:39:04,019
+a different color here. So, this node could
+have
+
+338
+00:39:04,019 --> 00:39:10,960
+been a child of m and maybe this node could
+have been a child of m which could have its
+
+339
+00:39:10,960 --> 00:39:19,059
+own children child here anything is possible
+essentially. The difference between the node
+
+340
+00:39:19,059 --> 00:39:24,320
+on open and a node on close is that a node
+on close may have children of its own
+
+341
+00:39:24,320 --> 00:39:34,940
+essentially. So, these purple nodes represent
+children of m essentially. So, if m is on
+
+342
+00:39:34,940 --> 00:39:39,030
+close first of course, we have to do what
+we did for case 2.
+
+343
+00:39:39,030 --> 00:39:40,030
+.
+
+344
+00:39:40,030 --> 00:40:00,140
+.So, first I will say do like in case 2, which
+means that this node m we have found a better
+
+345
+00:40:00,139 --> 00:40:02,059
+path to this node m.
+.
+
+346
+00:40:02,059 --> 00:40:07,309
+Originally this m had some other pointer let
+us say this pointer. So, remember this are
+
+347
+00:40:07,309 --> 00:40:12,279
+pointed to parent nodes. So, m was pointing
+to its parent here and if we find a better
+
+348
+00:40:12,280 --> 00:40:16,930
+path
+to m, we must shift this pointer here and
+
+349
+00:40:16,929 --> 00:40:21,139
+say that this is the new parent, exactly like
+what
+
+350
+00:40:21,139 --> 00:40:26,489
+we did for n. Originally this node first pointing
+to this, but now we have removed this
+
+351
+00:40:26,489 --> 00:40:31,409
+and we have said this is a new pointer if
+we have found a better path likewise for close
+
+352
+00:40:31,409 --> 00:40:38,099
+nodes essentially. So, do like in case 2.
+
+353
+00:40:38,099 --> 00:40:39,099
+..
+
+354
+00:40:39,099 --> 00:40:55,449
+So, if let me use this if better path found
+which basically means this condition g of
+
+355
+00:40:55,449 --> 00:40:59,549
+n plus
+k of n m is better is less than g of the old
+
+356
+00:40:59,550 --> 00:41:09,880
+value of m then. So, actually I should do
+like
+
+357
+00:41:09,880 --> 00:41:22,490
+this then like case 2 which means readjust
+the pointer, parent pointer readjust g value,
+
+358
+00:41:22,489 --> 00:41:26,739
+but
+now the g value has changed essentially.
+
+359
+00:41:26,739 --> 00:41:27,739
+.
+
+360
+00:41:27,739 --> 00:41:41,509
+So, we need to, so just to take an example,
+if the old g of m let me say old is equal
+
+361
+00:41:41,510 --> 00:41:50,640
+to 50.
+And if g of m gets a new value which is let
+
+362
+00:41:50,639 --> 00:41:55,469
+us say g of n plus 10, and let us say g of
+n is
+
+363
+00:41:55,469 --> 00:42:03,429
+20 equal to 20 plus 10 equal to 30.
+
+364
+00:42:03,429 --> 00:42:08,849
+.So, if the old value was 50 and the new value
+was 30, then we have found a new path to
+
+365
+00:42:08,849 --> 00:42:16,360
+this m which is 20 unit cheaper than the old
+path which means that all path going from
+
+366
+00:42:16,360 --> 00:42:20,930
+m
+to other nodes we must pass on this improvement
+
+367
+00:42:20,929 --> 00:42:25,240
+to them essentially. So, you must
+reduce the cost of this by 20 reduce the cost
+
+368
+00:42:25,240 --> 00:42:27,809
+of this by 20 and then reduce the cost of
+this
+
+369
+00:42:27,809 --> 00:42:29,779
+by 20 and so on and so for.
+.
+
+370
+00:42:29,780 --> 00:42:51,870
+So, I will just write this and propagate improve
+cost 
+
+371
+00:42:51,869 --> 00:43:04,069
+to sub tree below m. How can we do
+this propagation? You can just do a depth
+
+372
+00:43:04,070 --> 00:43:05,760
+first traversal or something like…
+.
+
+373
+00:43:05,760 --> 00:43:13,260
+.that of this purple tree which is rooted
+at this m, which means this part of the tree
+
+374
+00:43:13,260 --> 00:43:18,290
+to this
+node to this node to this node that improve
+
+375
+00:43:18,289 --> 00:43:25,000
+cost must be preoperative to them.
+So, that is a third case, if you have found
+
+376
+00:43:25,000 --> 00:43:33,219
+a new path to a node in the closed. A better
+path to a node in the closed, then that improvement
+
+377
+00:43:33,219 --> 00:43:38,019
+has to be passed on to children of
+that node essentially, which was not the case
+
+378
+00:43:38,019 --> 00:43:42,289
+in disaster. I mentioned, when we were
+talking about disaster algorithm, that if
+
+379
+00:43:42,289 --> 00:43:46,730
+you have found the path to a node in disasters
+algorithm you have already found optimal path
+
+380
+00:43:46,730 --> 00:43:52,849
+to there. But in A star that is not the case
+essentially, like we saw in the example that
+
+381
+00:43:52,849 --> 00:44:00,339
+we saw, if you have found a path to g which
+was through the node B which was a more expensive
+
+382
+00:44:00,340 --> 00:44:04,650
+path you can find a new path from
+that node essentially.
+
+383
+00:44:04,650 --> 00:44:10,210
+And it is also possible for nodes and close
+you can easily construct an example. So, we
+
+384
+00:44:10,210 --> 00:44:14,369
+need this extra step that if we have found
+better path, so node that we have already
+
+385
+00:44:14,369 --> 00:44:18,089
+expanded earlier we need to propagate this
+improvement to their children essentially.
+
+386
+00:44:18,090 --> 00:44:27,120
+So,
+which is a little bit more work then case
+
+387
+00:44:27,119 --> 00:44:41,769
+2. Where? This one? And here, no that is all
+and
+
+388
+00:44:41,769 --> 00:44:56,079
+add m to correct. So, under the conditions
+when heuristic function underestimates a cost
+
+389
+00:44:56,079 --> 00:45:04,789
+to the goal this algorithm is called A star
+and it is admissible essentially.
+
+390
+00:45:04,789 --> 00:45:12,480
+In the next class, when we meet we will prove
+that it is admissible. So, this is one of
+
+391
+00:45:12,480 --> 00:45:15,280
+the
+few cases where we will give a formal proof
+
+392
+00:45:15,280 --> 00:45:26,080
+of admissibility because, A star is a very
+well known and often used algorithm, but this
+
+393
+00:45:26,079 --> 00:45:28,949
+is not the only condition for admissibility
+I
+
+394
+00:45:28,949 --> 00:45:32,750
+mean this was the condition only with respect
+to the heuristic function.
+
+395
+00:45:32,750 --> 00:45:39,800
+So, what we have shown with an example today,
+that if a heuristic function
+
+396
+00:45:39,800 --> 00:45:45,940
+underestimates the cost of the goal then the
+algorithm is admissible. And you can see
+
+397
+00:45:45,940 --> 00:45:52,389
+branch and bound is a special case of A star
+where h of n is always 0. That is why we
+
+398
+00:45:52,389 --> 00:45:57,799
+said that you can think of this as an estimated
+cost, if you just assume h of n is 0 for
+
+399
+00:45:57,800 --> 00:46:03,570
+every node then this algorithm becomes branch
+and bound essentially, but this is not the
+
+400
+00:46:03,570 --> 00:46:07,580
+only condition.
+So, what I want you to do is, to think just
+
+401
+00:46:07,579 --> 00:46:10,380
+imagine that. So, A star is actually some
+people
+
+402
+00:46:10,380 --> 00:46:21,500
+just call it graph search. It is a weighted
+graph and you have to find the least cost
+
+403
+00:46:21,500 --> 00:46:24,889
+path
+from one node to another nod. We make some
+
+404
+00:46:24,889 --> 00:46:34,150
+simplifying assumptions, but it is different
+from disasters algorithm in one respect and
+
+405
+00:46:34,150 --> 00:46:36,349
+disasters algorithm assumes that the
+
+406
+00:46:36,349 --> 00:46:43,650
+.complete graph is available to you and it
+is a kind of an old in the sense that, it
+
+407
+00:46:43,650 --> 00:46:46,240
+finds the
+shortest path to every other node from a single
+
+408
+00:46:46,239 --> 00:46:49,939
+source essentially.
+We are not interested in to every other nod,
+
+409
+00:46:49,940 --> 00:46:53,271
+we are only interested in finding a path to
+a
+
+410
+00:46:53,271 --> 00:47:03,769
+given goal node and we do not have the graph
+available to us, the graph is generated on
+
+411
+00:47:03,769 --> 00:47:12,280
+the fly as we go along essentially for some
+were we have this function, move gen
+
+412
+00:47:12,280 --> 00:47:17,410
+function. The graph is generated as we go
+along using the move gen function. So, we
+
+413
+00:47:17,409 --> 00:47:21,960
+start with some node we keep adding more nodes
+to the graph and then we work with
+
+414
+00:47:21,960 --> 00:47:25,920
+that under these conditions A star is a little
+bit different from disasters algorithm.
+
+415
+00:47:25,920 --> 00:47:34,650
+It also uses this idea of a heuristic function
+diastral algorithm did not need to do this
+
+416
+00:47:34,650 --> 00:47:37,920
+because it was anyway going to find shorter
+path to all nodes in the graph essentially.
+
+417
+00:47:37,920 --> 00:47:40,510
+It
+did not have a goal in mind, A star has a
+
+418
+00:47:40,510 --> 00:47:44,100
+goal in mind. If you want to say it has a
+goal in
+
+419
+00:47:44,099 --> 00:47:50,059
+mind and therefore, it benefits from the use
+of a heuristic function, and if the heuristic
+
+420
+00:47:50,059 --> 00:47:56,329
+function is underestimating function then
+that is one of the conditions for admissibility.
+
+421
+00:47:56,329 --> 00:48:02,400
+So, I wanted to think of what other conditions
+you can might require for admissibility,
+
+422
+00:48:02,400 --> 00:48:08,440
+just imagine that this is some obituary graphs
+such problem some graph is given to you
+
+423
+00:48:08,440 --> 00:48:22,019
+and under what conditions will you, will this
+algorithm find an optimal path. And we will
+
+424
+00:48:22,019 --> 00:48:25,980
+take this up in the next class we will do
+a formal proof of this essentially after we
+
+425
+00:48:25,980 --> 00:48:32,250
+do that
+we will compare heuristic functions again
+
+426
+00:48:32,250 --> 00:48:35,269
+formally and show that heuristic functions
+are
+
+427
+00:48:35,269 --> 00:48:40,960
+which are more informed they do lesser search.
+So, remember that when we were talking about
+
+428
+00:48:40,960 --> 00:48:44,809
+branch and bound we say that this
+estimate must be as high as possible, it must
+
+429
+00:48:44,809 --> 00:48:50,690
+be a lower bound even this is a lower
+bound, but it must be as high as possible,
+
+430
+00:48:50,690 --> 00:48:53,849
+and we will formally show that the higher
+the
+
+431
+00:48:53,849 --> 00:49:00,529
+estimate the lesser the number of nodes that
+this algorithm will search before termination
+
+432
+00:49:00,530 --> 00:49:04,000
+essentially, we will do that these two formal
+things in the next class.
+
+433
+00:49:04,000 --> 00:49:06,119
+So, we will stop here.
+
+434
+00:49:06,119 --> 00:49:16,119
+.
+

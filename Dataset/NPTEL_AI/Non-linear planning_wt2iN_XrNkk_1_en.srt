@@ -1,0 +1,2082 @@
+﻿1
+00:00:10,699 --> 00:00:17,199
+So, in the last class we looked at goal stack
+planning and one of the observations we
+
+2
+00:00:17,199 --> 00:00:26,019
+made was that, it essentially does backward
+listening, and it takes a set of goals to
+
+3
+00:00:26,019 --> 00:00:28,730
+solve,
+serializes them and tries to solve them one
+
+4
+00:00:28,730 --> 00:00:35,230
+by one essentially. And then we saw that like
+suspense showed that there are certain problems
+
+5
+00:00:35,229 --> 00:00:38,909
+where you cannot serialize the sub goals
+and solve them independently and arrive at
+
+6
+00:00:38,909 --> 00:00:43,549
+the final solution; you may have to do extra
+work to, finally, come to this thing.
+
+7
+00:00:43,549 --> 00:00:44,549
+.
+
+8
+00:00:44,549 --> 00:00:56,939
+So, today we want to look at an approach which
+is called nonlinear planning 
+
+9
+00:00:56,939 --> 00:00:59,320
+and it is
+named and it is known by many other names.
+
+10
+00:00:59,320 --> 00:01:13,500
+So, lot of people have looked at it also
+known as partial order planning which kind
+
+11
+00:01:13,500 --> 00:01:19,379
+of stands for the fact that the plan may be
+a
+
+12
+00:01:19,379 --> 00:01:23,739
+partial order of actions not necessarily a
+sequence of actions. So, far we have said
+
+13
+00:01:23,739 --> 00:01:26,259
+in the
+simplified world that a plan is a sequence
+
+14
+00:01:26,259 --> 00:01:31,090
+of actions; we do action a 1, then we do action
+a 2 and then we do action a 3 and so on. But
+
+15
+00:01:31,090 --> 00:01:34,600
+this allows us to have actions, plans or
+
+16
+00:01:34,599 --> 00:01:41,489
+.recognized plans as a structure which is
+a partial order, which means that you are
+
+17
+00:01:41,489 --> 00:01:44,589
+not
+committing to the order of actions essentially.
+
+18
+00:01:44,590 --> 00:01:54,520
+So, to take an example, supposing you have
+to wear shoes for going out or something,
+
+19
+00:01:54,519 --> 00:02:01,138
+then you have four actions to be done which
+is, for example, wear left sock, wear right
+
+20
+00:02:01,138 --> 00:02:07,078
+sock, wear left shoe and wear right shoe essentially.
+Now it is not necessary that you
+
+21
+00:02:07,078 --> 00:02:12,489
+choose a particular sequence of these four
+actions. The only thing that you have to do
+
+22
+00:02:12,490 --> 00:02:15,290
+is
+to wear the left sock before you wear the
+
+23
+00:02:15,289 --> 00:02:21,280
+left shoe and wear the right sock before you
+wear the right shoes. So, as long as you satisfy
+
+24
+00:02:21,280 --> 00:02:28,568
+this constraint of this order, then the rest
+can be done in any order. So, in that sense,
+
+25
+00:02:28,568 --> 00:02:41,348
+this kind of planning is also known as least
+commitment planning.
+
+26
+00:02:41,348 --> 00:02:45,530
+And by this we mean that in the process of
+planning, you do not commit too much
+
+27
+00:02:45,530 --> 00:02:49,219
+essentially; you only commit and we will see
+what are the kind of commitments you
+
+28
+00:02:49,219 --> 00:02:55,568
+have to make as little as possible as little
+as necessary to solve the current whatever
+
+29
+00:02:55,568 --> 00:03:09,679
+subproblem that you are solving. This is also
+known as plan space planning, and again we
+
+30
+00:03:09,680 --> 00:03:14,379
+are familiar with this notion. We have talked
+about solution space planning; we saw, for
+
+31
+00:03:14,379 --> 00:03:19,359
+example, that when you want to solve SAT like
+problems or TSP like problems, you
+
+32
+00:03:19,359 --> 00:03:24,360
+construct candidate solutions and do some
+perturbation in them or we also saw that when
+
+33
+00:03:24,360 --> 00:03:30,980
+we are doing branch and bound with TSP that
+you work with partial solutions.
+
+34
+00:03:30,979 --> 00:03:35,899
+That you initially start with a set of all
+possible to us and then gradually partition
+
+35
+00:03:35,900 --> 00:03:40,908
+them
+into subsets eventually homing on to towards
+
+36
+00:03:40,908 --> 00:03:51,680
+you are looking at. So, this is in that flavor;
+it is in the space of possible solutions essentially.
+
+37
+00:03:51,680 --> 00:04:05,599
+So, plan space planning basically
+works with partially specified plans, and
+
+38
+00:04:05,598 --> 00:04:27,019
+there is a refinement operator step. And there
+is
+
+39
+00:04:27,019 --> 00:04:33,199
+a refinement step which refines plans in the
+sense that you specify them more and more
+
+40
+00:04:33,199 --> 00:04:47,199
+essentially. Now a partially specified plan
+or the partial plan is denoted as a four topple
+
+41
+00:04:47,199 --> 00:04:58,009
+which is a set of actions or operators A which
+are part of the plan.
+
+42
+00:04:58,009 --> 00:05:02,839
+So, we are not saying anything about where
+they lie in the plan; all you are saying is
+
+43
+00:05:02,839 --> 00:05:05,629
+that
+these are actions as part of the plan. And
+
+44
+00:05:05,629 --> 00:05:11,529
+these actions may be partially instantiated
+which means instead of saying, for example,
+
+45
+00:05:11,529 --> 00:05:18,819
+unstake a from b, you might say something
+like unstake x from b which means that you
+
+46
+00:05:18,819 --> 00:05:20,219
+basically want to achieve clear b, for
+
+47
+00:05:20,220 --> 00:05:24,760
+.example, and if there is something on b,
+then you want to unstake it essentially or
+
+48
+00:05:24,759 --> 00:05:29,990
+you
+might also say unstake a on x, for example.
+
+49
+00:05:29,990 --> 00:05:38,590
+So, partially specified actions may be
+allowed essentially, then there is an ordering
+
+50
+00:05:38,589 --> 00:05:43,320
+relation which basically says that action
+a
+
+51
+00:05:43,321 --> 00:05:47,490
+happen before action b.
+
+52
+00:05:47,490 --> 00:05:57,129
+So, we will specify order explicitly as supposed
+to implicitly in the planning that we
+
+53
+00:05:57,129 --> 00:06:01,319
+have been doing so far. So, the planning that
+we have been doing so far can be seen as a
+
+54
+00:06:01,319 --> 00:06:18,379
+state space planning. And so if you remember
+states space planning, so you combined
+
+55
+00:06:18,379 --> 00:06:29,769
+selection and placement of actions; of course,
+this is more true of power state space
+
+56
+00:06:29,769 --> 00:06:32,810
+planning and backward state space planning
+and little bit lets true for goal stack
+
+57
+00:06:32,810 --> 00:06:39,720
+planning. But in forward state space planning
+and in backward state space planning, a
+
+58
+00:06:39,720 --> 00:06:46,360
+forward state space planning you says this
+is s; this is by a 1. I go to some explain
+
+59
+00:06:46,360 --> 00:06:50,300
+and
+then I choose a 2 and I will go to s double
+
+60
+00:06:50,300 --> 00:06:51,420
+prime and so on.
+
+61
+00:06:51,420 --> 00:06:58,560
+In forward state space planning, the twin
+task of choosing actions and placing actions
+
+62
+00:06:58,560 --> 00:07:00,620
+in
+the plan are done simultaneously. They are
+
+63
+00:07:00,620 --> 00:07:05,310
+sort of so closely coupled that you cannot
+distinguish between the fact of choosing and
+
+64
+00:07:05,310 --> 00:07:10,930
+scheduling them, because the process of
+looking for action says that I am looking
+
+65
+00:07:10,930 --> 00:07:12,870
+for the first action, then I am looking for
+the
+
+66
+00:07:12,870 --> 00:07:17,340
+second action, then I am looking for the third
+action. So, both the things go together.
+
+67
+00:07:17,339 --> 00:07:21,739
+Likewise in backward state space planning
+essentially; you are choosing the last action,
+
+68
+00:07:21,740 --> 00:07:26,189
+then the second last action then the third
+last action and so on essentially.
+
+69
+00:07:26,189 --> 00:07:35,519
+In nonlinear planning or partial order planning,
+we do these two things separately. We
+
+70
+00:07:35,519 --> 00:07:44,750
+sort of distinguish between the fact that
+an action is necessary for 
+
+71
+00:07:44,750 --> 00:07:48,800
+necessary part of the
+plan, but we do not necessarily say where
+
+72
+00:07:48,800 --> 00:07:51,141
+the action should be, okay. So, for example,
+if
+
+73
+00:07:51,141 --> 00:07:58,920
+you are planning a trip from here to Mandy,
+then you might say, okay, our necessary part
+
+74
+00:07:58,920 --> 00:08:04,600
+of the plan is to somehow get from let us
+say Chennai station to Delhi station; let
+
+75
+00:08:04,600 --> 00:08:09,450
+us say
+you are going by train. So, you have decided
+
+76
+00:08:09,449 --> 00:08:17,810
+what the action is, but you have not stated
+when that action will take place in your plan
+
+77
+00:08:17,810 --> 00:08:19,019
+in a sequence of actions that.
+
+78
+00:08:19,019 --> 00:08:23,919
+You will say that somewhere in my plan, there
+must be this action of catching a train
+
+79
+00:08:23,920 --> 00:08:32,969
+from Chennai to Delhi. So, this is the flavor
+of partial order planning or plan space
+
+80
+00:08:32,969 --> 00:08:36,740
+planning or least commitment planning is that
+you have said that, okay, I need to take a
+
+81
+00:08:36,740 --> 00:08:44,120
+.train from Chennai to Delhi, but I have not
+said at which point if because eventually
+
+82
+00:08:44,120 --> 00:08:47,620
+my
+actions will be sequences of actions at which
+
+83
+00:08:47,620 --> 00:08:51,879
+point will I actually be taking this train
+essentially. Likewise, another action might
+
+84
+00:08:51,879 --> 00:08:54,049
+be booking a train ticket essentially. Now
+I
+
+85
+00:08:54,049 --> 00:09:00,639
+could do it at any time before the journey;
+assuming, of course, that we get tickets,
+
+86
+00:09:00,639 --> 00:09:04,899
+but
+this is not always the case but still.
+
+87
+00:09:04,899 --> 00:09:12,259
+So, this thing about combining the selection
+and the placement of action is forced in state
+
+88
+00:09:12,259 --> 00:09:17,179
+space planning. Because you are working with
+states in plan space planning, we are
+
+89
+00:09:17,179 --> 00:09:22,419
+working with the notion of these partial plans.
+And we can say that these two things are
+
+90
+00:09:22,419 --> 00:09:26,589
+dependent of each other. Of course, eventually
+we will have to impose certain order on
+
+91
+00:09:26,590 --> 00:09:31,330
+the actions, but when we are talking about
+plans, we say these are the actions in the
+
+92
+00:09:31,330 --> 00:09:34,520
+plan
+and some actions may have certain ordering
+
+93
+00:09:34,519 --> 00:09:41,079
+which you will state in the ordering relation.
+And this basically says that a happen before
+
+94
+00:09:41,080 --> 00:09:43,520
+b and so on and so forth.
+
+95
+00:09:43,519 --> 00:09:54,319
+Then we have a casual relation; let me just
+use the terms c here which I will come to
+
+96
+00:09:54,320 --> 00:10:03,870
+in a
+moment and then we have a set of binding constraints.
+
+97
+00:10:03,870 --> 00:10:20,120
+So, what do I mean by this? I
+might say at some point that an action stack
+
+98
+00:10:20,120 --> 00:10:25,039
+a on to x. So, I will use this lower case
+for a
+
+99
+00:10:25,039 --> 00:10:32,870
+variable just for a moment is part of my plan.
+I might even say that this action comes
+
+100
+00:10:32,870 --> 00:10:36,480
+before something and happens after something
+and so on and so forth which I will say
+
+101
+00:10:36,480 --> 00:10:46,009
+here, but at some point I might say that x
+equal to b here. If I add this extra bit of
+
+102
+00:10:46,009 --> 00:10:51,399
+information, then I have added something more
+to the plan which says that this action
+
+103
+00:10:51,399 --> 00:10:58,340
+must put a on to b essentially or I could
+even say x not equal to b.
+
+104
+00:10:58,340 --> 00:11:04,259
+I could add any kind of a constraint binding
+constraint to variable essentially or I could
+
+105
+00:11:04,259 --> 00:11:12,941
+say that x belongs to some domain of let us
+say block set I have; let say blue block set
+
+106
+00:11:12,941 --> 00:11:17,560
+or
+something like that. I could do all this sort
+
+107
+00:11:17,559 --> 00:11:25,399
+of things; I could add extra constraints which
+tell you how the variables are bound essentially.
+
+108
+00:11:25,399 --> 00:11:36,230
+Here we are talking about casual links,
+and the general idea is that this is a triple
+
+109
+00:11:36,230 --> 00:11:44,360
+where you have an action a; you have a
+predicate p, and you have an action b. And
+
+110
+00:11:44,360 --> 00:11:47,960
+what you are saying here is that a produces
+a
+
+111
+00:11:47,960 --> 00:11:55,920
+predicate p and b consumes a predicate b predicate
+p essentially.
+
+112
+00:11:55,919 --> 00:12:10,659
+So, for example, p could be holding a, and
+what is there action which might do that?
+
+113
+00:12:10,659 --> 00:12:25,959
+It
+could be something like unstack a from y,
+
+114
+00:12:25,960 --> 00:12:28,820
+and there might be another action like put
+
+115
+00:12:28,820 --> 00:12:45,100
+.down a. This forms a triple and we see this
+as a causal link between two actions a and
+
+116
+00:12:45,100 --> 00:12:48,320
+b;
+in this case unstack a from something and
+
+117
+00:12:48,320 --> 00:12:54,920
+put down a. And we say that unstack a from
+something is providing a predicate or producing
+
+118
+00:12:54,919 --> 00:13:05,209
+a predicate holding a because that is a
+effect. So, p is a P belongs to effects of
+
+119
+00:13:05,210 --> 00:13:15,910
+a and p belongs to the pre conditions of b.
+So,
+
+120
+00:13:15,909 --> 00:13:19,769
+there is a predicate like this if you have
+expressed the predicate like this as such.
+
+121
+00:13:19,769 --> 00:13:25,740
+So, all these are sets, sets of actions, sets
+of ordering links, set of causal links and
+
+122
+00:13:25,740 --> 00:13:29,500
+sets of
+binding constraints, and this partial plan
+
+123
+00:13:29,500 --> 00:13:32,559
+is represented by a portable like this. And
+if you
+
+124
+00:13:32,559 --> 00:13:40,429
+have asserted a triple here which says that
+a p b, we are saying that in our plan a
+
+125
+00:13:40,429 --> 00:13:47,919
+produces a predicate p and that p is consumed
+by b essentially. So, obviously, the
+
+126
+00:13:47,919 --> 00:13:55,620
+moment I add such a causal link, I must also
+add an action that a happen before b and
+
+127
+00:13:55,620 --> 00:14:01,460
+you can say that this either happens implicitly
+or you must do it explicitly. So, this is
+
+128
+00:14:01,460 --> 00:14:05,170
+a
+structure of a partial plan; as you can see
+
+129
+00:14:05,169 --> 00:14:10,579
+in this partial plan structure, I may specify
+something; I may not specify other things.
+
+130
+00:14:10,580 --> 00:14:16,028
+So, I may have let us say six actions and
+I may have ordering relations only between
+
+131
+00:14:16,028 --> 00:14:18,759
+a
+few of them and causal links between a few
+
+132
+00:14:18,759 --> 00:14:25,700
+of them and binding constraints for some of
+them essentially. This is in keeping with
+
+133
+00:14:25,700 --> 00:14:30,089
+this notion of least commitment planning,
+and
+
+134
+00:14:30,089 --> 00:14:35,170
+what we are saying here is that we will add
+only as much to the plan as it is necessary
+
+135
+00:14:35,169 --> 00:14:37,409
+for
+solving the sub problem we are trying to solve.
+
+136
+00:14:37,409 --> 00:14:44,709
+So, if you go back to suspense anomaly,
+in goal stack planning, you are committing
+
+137
+00:14:44,710 --> 00:14:49,379
+to solving one sub goal first and then the
+second sub goal. And then you are committing
+
+138
+00:14:49,379 --> 00:14:53,580
+to ordering them in the particular way
+that you are doing; we do not want to do that.
+
+139
+00:14:53,580 --> 00:14:59,770
+We will try to do add constraints only
+when necessary. So, in that sense its least
+
+140
+00:14:59,769 --> 00:15:01,629
+commitment.
+
+141
+00:15:01,629 --> 00:15:12,689
+A word about plan space planning; so we are
+not working in the space of states anymore.
+
+142
+00:15:12,690 --> 00:15:19,970
+We will start with some initial plan and we
+will apply the refinement step to get new
+
+143
+00:15:19,970 --> 00:15:28,290
+plans out of that. The search space contains
+only plans or partial plans and partial plans
+
+144
+00:15:28,289 --> 00:15:35,409
+are described by this portable essentially.
+So, eventually what we want to do is look
+
+145
+00:15:35,409 --> 00:15:39,059
+at a
+partial plan, choose a refinement step and
+
+146
+00:15:39,059 --> 00:15:44,028
+there may be more than one refinement step.
+So, some of you have to select one; come up
+
+147
+00:15:44,028 --> 00:15:49,240
+with a new partial plan and do this
+repeatedly. Choose the refinement step; come
+
+148
+00:15:49,240 --> 00:15:57,070
+up with the new plan and so on. So, one
+question that one might ask is when will one
+
+149
+00:15:57,070 --> 00:15:58,610
+terminate this.
+
+150
+00:15:58,610 --> 00:16:04,339
+.Now one thing that I would like it to sort
+of ponder over and think about is the following
+
+151
+00:16:04,339 --> 00:16:08,000
+that even if I have a small state space; let
+us say I have these three blocks like in
+
+152
+00:16:08,000 --> 00:16:15,610
+suspense anomaly a b and c. There is only
+a finite number of ways in which you can
+
+153
+00:16:15,610 --> 00:16:21,159
+arrange this c blocks. So, the set of states
+is finite essentially, but even for such a
+
+154
+00:16:21,159 --> 00:16:32,429
+domain,
+the set of possible plans is infinite; maybe
+
+155
+00:16:32,429 --> 00:16:40,760
+we will come to that, but I want you to think
+about this a little bit, okay. So, what is
+
+156
+00:16:40,760 --> 00:16:46,449
+the initial plan? The initial plan this we
+will call
+
+157
+00:16:46,450 --> 00:16:57,970
+as pie zero; we will always have an initial
+plan. And the initial plan has two actions
+
+158
+00:16:57,970 --> 00:17:14,360
+a 0
+and a infinity.
+
+159
+00:17:14,359 --> 00:17:22,179
+It has one ordering constraint which says
+that a 0 happens before a infinity, and it
+
+160
+00:17:22,180 --> 00:17:27,959
+has
+nothing else. This will always be our initial
+
+161
+00:17:27,959 --> 00:17:34,659
+plan. Remember, keep in mind that states do
+not exist as far as this planning algorithm
+
+162
+00:17:34,659 --> 00:17:45,009
+is considered; we are only looking at 
+plans or
+
+163
+00:17:45,009 --> 00:17:49,009
+partial plans essentially. So, now the objects
+that we are manipulating are only plans
+
+164
+00:17:49,009 --> 00:17:56,849
+essentially. So, of course, one question will
+arise us to when do we terminate because we
+
+165
+00:17:56,849 --> 00:18:01,278
+can no longer say that apply a goal test function
+to a state, because we do not have state
+
+166
+00:18:01,278 --> 00:18:06,319
+anymore in our this thing. We will have only
+plans essentially.
+
+167
+00:18:06,319 --> 00:18:26,259
+Now what are these actions? A 0 has no preconditions
+and its effects is equal to I just use
+
+168
+00:18:26,259 --> 00:18:34,819
+this notation to start it. So, of course,
+every planning problem will have a different
+
+169
+00:18:34,819 --> 00:18:41,259
+a 0
+action and a 0 action simply produces the
+
+170
+00:18:41,259 --> 00:18:44,528
+start state essentially its effect. When I
+say
+
+171
+00:18:44,528 --> 00:18:47,240
+this, it is basically a set of predicates,
+okay.
+
+172
+00:18:47,240 --> 00:18:48,240
+..
+
+173
+00:18:48,240 --> 00:19:01,509
+For example, in the suspense anomaly, we said
+this is C A B; this is the start stage. So,
+
+174
+00:19:01,509 --> 00:19:13,759
+we have an action; let me draw it here, whose
+preconditions is the empty set and whose
+
+175
+00:19:13,759 --> 00:19:38,339
+effects are these things on C A on table A
+on table B, clear B, clear C and A. So, this
+
+176
+00:19:38,339 --> 00:19:53,599
+is a
+0 action. As you can see every time you define
+
+177
+00:19:53,599 --> 00:19:59,219
+the planning problem. So, what is the
+planning problem? A planning problem is a
+
+178
+00:19:59,220 --> 00:20:02,100
+given set of actions. If you are looking at
+the
+
+179
+00:20:02,099 --> 00:20:08,209
+state space project then the set of states
+in a start state and a goal state and a set
+
+180
+00:20:08,210 --> 00:20:11,900
+of action
+that you can use to generate the moves essentially.
+
+181
+00:20:11,900 --> 00:20:18,810
+So, now, we have said that we are doing away
+with the notion of states at all. So, instead
+
+182
+00:20:18,809 --> 00:20:23,908
+of the start state, we have a start action
+and what the start action says is there is
+
+183
+00:20:23,909 --> 00:20:27,330
+an action
+whose effects are these precondition this
+
+184
+00:20:27,329 --> 00:20:31,118
+start space predicates essentially that somehow
+produces that.
+
+185
+00:20:31,118 --> 00:20:32,118
+..
+
+186
+00:20:32,118 --> 00:20:43,079
+And if our goal is to have A on B on C, then
+my a infinity is an action which has no
+
+187
+00:20:43,079 --> 00:20:56,730
+effects but whose preconditions are what I
+want to achieve. So, on AB and BC; this is
+
+188
+00:20:56,730 --> 00:21:12,950
+a
+infinity. So, this is my starting node in
+
+189
+00:21:12,950 --> 00:21:17,308
+the search space of partial plans, and this
+is a
+
+190
+00:21:17,308 --> 00:21:22,329
+partial plan which has two actions. One action
+which produces the start state, other
+
+191
+00:21:22,329 --> 00:21:27,319
+action which consumes the goal state and I
+have specified anything else except that the
+
+192
+00:21:27,319 --> 00:21:32,288
+start stage happens before the goal stage
+which we have said here. The start action
+
+193
+00:21:32,288 --> 00:21:37,369
+happens before the goal action or a 0 happens
+before a infinity.
+
+194
+00:21:37,369 --> 00:21:44,298
+So, if you now try to remember, when we are
+talking of TSP and we say that we partially
+
+195
+00:21:44,298 --> 00:21:47,231
+specify we say that we have only one edge
+specified which will go from Chennai to
+
+196
+00:21:47,231 --> 00:21:52,210
+Bangalore. Then we say that everything else
+could be anything. So, it was a set of
+
+197
+00:21:52,210 --> 00:22:00,288
+solutions. Likewise, this partial plan pi
+0 can be seen to stand for a set of plans
+
+198
+00:22:00,288 --> 00:22:05,569
+in which
+this is the first action and that are the
+
+199
+00:22:05,569 --> 00:22:09,798
+last action. Now intuitively we can see that
+we will
+
+200
+00:22:09,798 --> 00:22:13,720
+have to somehow make the connections between
+these and the kind of connections that
+
+201
+00:22:13,720 --> 00:22:19,620
+we will need to make is that how do we generate
+the. So, I must have some action.
+
+202
+00:22:19,619 --> 00:22:29,339
+So, a little bit like backward state space
+search; some action I must have stack a on
+
+203
+00:22:29,339 --> 00:22:40,470
+b
+which will have an effect on a b which I will
+
+204
+00:22:40,470 --> 00:22:50,019
+link to this essentially. So, this is like
+saying that I have specified now one more
+
+205
+00:22:50,019 --> 00:22:53,720
+action in my plan that I must have the stack
+a
+
+206
+00:22:53,720 --> 00:23:00,429
+.b action, and along with specifying this,
+I am going to specify the few more things.
+
+207
+00:23:00,429 --> 00:23:02,320
+For
+example, I would say that there is a causal
+
+208
+00:23:02,319 --> 00:23:08,700
+link between stack a b and a infinity and
+stack
+
+209
+00:23:08,700 --> 00:23:13,000
+a b is producing this predicate on a b which
+is being consumed by infinity. So, I must
+
+210
+00:23:13,000 --> 00:23:15,179
+establish a causal link.
+
+211
+00:23:15,179 --> 00:23:19,460
+And one of the things that we would want to
+do in partial order planning is to somehow
+
+212
+00:23:19,460 --> 00:23:27,329
+add causal links and see that they are not
+disturbed later essentially and various people
+
+213
+00:23:27,329 --> 00:23:31,418
+have tried various approaches to that essentially.
+So, this is the causal links which is
+
+214
+00:23:31,419 --> 00:23:38,339
+doing that essentially. So, let me say this.
+
+215
+00:23:38,338 --> 00:23:39,338
+.
+
+216
+00:23:39,338 --> 00:23:53,278
+So, let say you unstack a from let us call
+this b here in the different planning problem
+
+217
+00:23:53,278 --> 00:23:59,419
+and
+then you want to generate this holding a and
+
+218
+00:23:59,419 --> 00:24:06,909
+you want to link it to put down b put down
+a
+
+219
+00:24:06,909 --> 00:24:12,619
+essentially or instead of putdown a, let me
+choose a different action which is to stack;
+
+220
+00:24:12,618 --> 00:24:17,869
+let
+us say a on c. I want to illustrate what I
+
+221
+00:24:17,869 --> 00:24:22,319
+mean by this disruption of causal links
+essentially. So, what am I doing here? I am
+
+222
+00:24:22,319 --> 00:24:41,460
+saying that I have an action unstack a; it
+produces holding a which is consumed by stack
+
+223
+00:24:41,460 --> 00:24:57,558
+a onto c or instead of c, you can use a
+variable x or something like that, it does
+
+224
+00:24:57,558 --> 00:24:59,700
+not matter.
+
+225
+00:24:59,700 --> 00:25:05,130
+And let us say this arrow stands for a causal
+link essentially and implicitly we assume
+
+226
+00:25:05,130 --> 00:25:10,429
+.that wherever causal link goes and other
+link follows that this much happen before
+
+227
+00:25:10,429 --> 00:25:14,950
+this.
+So, it implicitly captures it essentially.
+
+228
+00:25:14,950 --> 00:25:17,590
+Now I have said that my plan is a partial
+plan.
+
+229
+00:25:17,589 --> 00:25:23,308
+Now supposing I have some other action floating
+around in my plan which says that
+
+230
+00:25:23,308 --> 00:25:50,418
+stack let us say d 1 to y. So, let me change
+my example a little bit. Let us say this is
+
+231
+00:25:50,419 --> 00:26:03,879
+producing it is producing holding a, but it
+is also producing clear b and then I am saying
+
+232
+00:26:03,878 --> 00:26:07,028
+unstack stack x on to b.
+
+233
+00:26:07,028 --> 00:26:13,859
+So, this also illustrates a fact that when
+I am considering two actions, they do not
+
+234
+00:26:13,859 --> 00:26:17,048
+necessarily have to be continuous essentially.
+So, I am not saying that this action
+
+235
+00:26:17,048 --> 00:26:23,650
+happens immediately after this. I am saying
+this happens after this sometimes, but this
+
+236
+00:26:23,650 --> 00:26:34,259
+action unstack a b; one of the things it produces
+is clear b and for the stack action x on b,
+
+237
+00:26:34,259 --> 00:26:41,368
+I need to consume this clear b action. Because
+I can only put something on into b if b is
+
+238
+00:26:41,368 --> 00:26:48,099
+clear. So, I want to emphasize the fact that
+that they are not contiguous; this could
+
+239
+00:26:48,099 --> 00:26:53,808
+happen at supposing it is eventually you produce
+a linear plan because it is a one arm
+
+240
+00:26:53,808 --> 00:26:57,450
+robot and it can only do things in a linear
+fashion.
+
+241
+00:26:57,450 --> 00:27:02,028
+So, let us say this is the fifth action, and
+this is the twelfth action. So, I am not saying
+
+242
+00:27:02,028 --> 00:27:06,558
+anything about that; all I am saying is that
+there is a causal link from this action to
+
+243
+00:27:06,558 --> 00:27:08,269
+this
+action which means it is producing something
+
+244
+00:27:08,269 --> 00:27:12,108
+which this is consuming. And there is an
+ordering link which says that this was happened
+
+245
+00:27:12,108 --> 00:27:16,339
+and sometime only later this must have
+happened. And now somewhere in my partial
+
+246
+00:27:16,339 --> 00:27:26,019
+plan, there is a action floating around
+called stack d onto y which says that you
+
+247
+00:27:26,019 --> 00:27:28,638
+stack this object d onto some variable y.
+Now
+
+248
+00:27:28,638 --> 00:27:33,278
+we can see as I say that let us assume this
+is the fifth action and this is the twelfth
+
+249
+00:27:33,278 --> 00:27:34,278
+action.
+
+250
+00:27:34,278 --> 00:27:38,038
+What if this was the seventh action sometime
+in between and what time this y became
+
+251
+00:27:38,038 --> 00:27:43,739
+equal to b; remember we can do these binding
+constraints. So, some point I might say
+
+252
+00:27:43,739 --> 00:27:55,871
+stack for some reason that stack d onto b.
+So, there is a danger that this causal link
+
+253
+00:27:55,871 --> 00:27:58,860
+that I
+am interested in is going to get disrupted
+
+254
+00:27:58,859 --> 00:28:06,709
+by this action. And my planning process must
+somehow take this into cognizance and try
+
+255
+00:28:06,710 --> 00:28:09,919
+to do something about it; we will come to
+that
+
+256
+00:28:09,919 --> 00:28:19,859
+in a moment. So, some of the older planning
+algorithms, there was an algorithm called
+
+257
+00:28:19,858 --> 00:28:33,658
+tweak one of the first nonlinear planning
+algorithms. This was written by a guy called
+
+258
+00:28:33,659 --> 00:28:37,299
+Ariston Tate.
+
+259
+00:28:37,298 --> 00:28:44,141
+.So, if you look of Tate and tweak, you will
+find get some information on the web. They
+
+260
+00:28:44,141 --> 00:28:56,788
+use the term clobbering which modern planning
+people do not use, and they also use the
+
+261
+00:28:56,788 --> 00:29:06,769
+term declobbering. And I was told that Ariston
+Tate has one of these online courses on
+
+262
+00:29:06,769 --> 00:29:13,329
+planning which one of my acquaintances was
+telling me about. So, I am sure if you
+
+263
+00:29:13,329 --> 00:29:17,628
+search for this online course, you will hear
+lot about tweak and this process essentially.
+
+264
+00:29:17,628 --> 00:29:23,308
+So, what do I mean by clobbering? I mean I
+am clobbering the casual link. This action
+
+265
+00:29:23,308 --> 00:29:26,460
+threatens to clobber this causal link.
+
+266
+00:29:26,460 --> 00:29:33,659
+And if it clobbers it, another action might
+declobber it essentially which means that
+
+267
+00:29:33,659 --> 00:29:37,649
+even
+if I let say stack d on to b at some later
+
+268
+00:29:37,648 --> 00:29:43,258
+point I might say unstack d from y because
+eventually I want to stack b on to y. So,
+
+269
+00:29:43,259 --> 00:29:46,329
+I am just trying to give you a flavor of the
+nature
+
+270
+00:29:46,329 --> 00:29:51,528
+of partial order planning that you keep throwing
+actions into your partial plan, because
+
+271
+00:29:51,528 --> 00:29:57,378
+you somehow discover that those actions are
+necessary. Like, for example, deciding that
+
+272
+00:29:57,378 --> 00:30:02,798
+you have to take a train from Chennai to Delhi
+and then you keep adding more actions.
+
+273
+00:30:02,798 --> 00:30:06,200
+When you add more actions you have to be careful
+about things like this essentially.
+
+274
+00:30:06,200 --> 00:30:21,519
+That casual links are not disrupted essentially,
+then when we talk of links like ordering
+
+275
+00:30:21,519 --> 00:30:35,138
+links; one is to talk about consistency. The
+ordering links should be consistent, and what
+
+276
+00:30:35,138 --> 00:30:40,418
+do I mean by this? You cannot say that a happen
+before b and b happens before c and c
+
+277
+00:30:40,419 --> 00:30:46,259
+happens before a, then you have a cycle and
+then that is not consistent essentially. So,
+
+278
+00:30:46,259 --> 00:30:50,079
+another thing that the planning algorithm
+will have to do is to know what is the planning
+
+279
+00:30:50,079 --> 00:30:51,079
+algorithm we are talking about.
+
+280
+00:30:51,079 --> 00:30:52,079
+..
+
+281
+00:30:52,079 --> 00:30:57,298
+We are talking about a set of refinement steps
+and the refinement steps are of four kind,
+
+282
+00:30:57,298 --> 00:31:17,989
+add an action to the set a, add ordering link
+to this set of ordering links, add the casual
+
+283
+00:31:17,989 --> 00:31:26,700
+link to see. Anyway it says whenever you add
+this, you have to also add one here or add
+
+284
+00:31:26,700 --> 00:31:42,069
+a constraint. So, what we are saying is that
+we will start with a partial plan; we will
+
+285
+00:31:42,069 --> 00:31:46,089
+start
+with this partial plan always an action a
+
+286
+00:31:46,089 --> 00:31:48,888
+0 which produces the start state as it is
+showed
+
+287
+00:31:48,888 --> 00:31:54,869
+here and an action a infinity which consumes
+the goal state as we have shown there. And
+
+288
+00:31:54,869 --> 00:31:59,848
+then we want to fill in more and more stuff;
+how do we fill in? We have a series of
+
+289
+00:31:59,848 --> 00:32:00,848
+refinements steps.
+
+290
+00:32:00,848 --> 00:32:04,939
+What do refinement steps do? They may add
+an action; for example, I said here that you
+
+291
+00:32:04,940 --> 00:32:09,528
+must add this action stack a and b, then I
+must add a causal link between this and a
+
+292
+00:32:09,528 --> 00:32:17,558
+infinity and an ordering link between this
+and a infinity. So, I could choose any one
+
+293
+00:32:17,558 --> 00:32:20,480
+of
+these refinement operators, and that is where
+
+294
+00:32:20,480 --> 00:32:25,110
+the search will come into play. And
+eventually, I need to refine the plan more
+
+295
+00:32:25,109 --> 00:32:33,509
+and more which means specify the plan more
+and more. Initially, when I have only a 0
+
+296
+00:32:33,509 --> 00:32:42,858
+and a infinity, I could have an infinite number
+of plans which would fit into this and which
+
+297
+00:32:42,858 --> 00:32:44,439
+would still be a solution.
+
+298
+00:32:44,440 --> 00:32:45,440
+..
+
+299
+00:32:45,440 --> 00:32:57,048
+So, what is a solution? When do we terminate?
+One way to say it is that, okay, if you
+
+300
+00:32:57,048 --> 00:33:08,038
+want to decide whether a partial plan is a
+solution, then you could at look at it from
+
+301
+00:33:08,038 --> 00:33:19,329
+the
+state space perspective, which means you completely
+
+302
+00:33:19,329 --> 00:33:28,339
+specify it. Complete; that means a
+slight b here; they do not any variables in
+
+303
+00:33:28,339 --> 00:33:39,569
+the plan. Insensate all variables to something,
+produce a linear order or in other words do
+
+304
+00:33:39,569 --> 00:33:52,788
+a topological sort, because given a partial
+order, you can always convert it to a consistent
+
+305
+00:33:52,788 --> 00:33:58,819
+linear order. And that process as I am
+sure you know is called topological sorting
+
+306
+00:33:58,819 --> 00:34:01,398
+and this topological sort of pie will give
+me
+
+307
+00:34:01,398 --> 00:34:03,699
+some pie prime.
+
+308
+00:34:03,700 --> 00:34:09,119
+And then I will just use the old mechanism
+of progressing from the start state, applying
+
+309
+00:34:09,119 --> 00:34:14,119
+the actions one by one, because now I have
+sequence of actions. I will apply the first
+
+310
+00:34:14,119 --> 00:34:21,118
+action, then the second action, then the third
+action and so on and check whether the last
+
+311
+00:34:21,119 --> 00:34:27,470
+state that I get is the goal state or not.
+Of course, I could do that; the travel is
+
+312
+00:34:27,469 --> 00:34:31,588
+the
+topological sorts could be many. So, do I
+
+313
+00:34:31,588 --> 00:34:34,849
+check for one sort or do I do for all. So,
+if you
+
+314
+00:34:34,849 --> 00:34:38,659
+go back to this shoe wearing problem which
+no doubt you have encountered at some
+
+315
+00:34:38,659 --> 00:34:40,519
+point.
+
+316
+00:34:40,519 --> 00:34:47,079
+You could first wear both the socks and then
+the two shoes, then both the sox could wear
+
+317
+00:34:47,079 --> 00:34:51,359
+in any order and then the two socks two shoes
+in any order or you could first wear the
+
+318
+00:34:51,358 --> 00:34:56,759
+.left socks, then the left shoe, then the
+right socks, then the right shoe; all these
+
+319
+00:34:56,760 --> 00:35:03,109
+minimizations of the partial plan that we
+talked about but we did not draw are valid
+
+320
+00:35:03,108 --> 00:35:07,929
+plans. They are valid ways of wearing a pair
+of shoes; do I need to look at all those socks
+
+321
+00:35:07,929 --> 00:35:19,750
+and then do that? That would be too painful.
+Instead the partial planning community has
+
+322
+00:35:19,750 --> 00:35:28,179
+come up with a different test for a solution
+plan and we say that as well plan has no
+
+323
+00:35:28,179 --> 00:35:45,788
+flaws. Of course, we need to clarify what
+do we mean by this essentially.
+
+324
+00:35:45,789 --> 00:35:58,400
+So, what are we interested in? We are interested
+in a way of looking at a partial plan 
+
+325
+00:35:58,400 --> 00:36:01,599
+and
+saying whether it is a solution plan or not,
+
+326
+00:36:01,599 --> 00:36:06,739
+it is a solution or not. And implicitly, what
+we
+
+327
+00:36:06,739 --> 00:36:15,969
+mean is this that if this was a solution,
+then I could take any ordering of the actions
+
+328
+00:36:15,969 --> 00:36:18,629
+and
+that would any consistent ordering by which
+
+329
+00:36:18,630 --> 00:36:22,309
+you mean that if there is an ordering
+relation in the partial plan, it must be respected
+
+330
+00:36:22,309 --> 00:36:27,460
+in the solution plan in the linear plan, and
+that is called topological sort. I can do
+
+331
+00:36:27,460 --> 00:36:29,699
+with any topological sort and that will be
+a valid
+
+332
+00:36:29,699 --> 00:36:35,000
+plan.
+
+333
+00:36:35,000 --> 00:36:39,280
+But I do not want to actually do this process
+of making linear orders and testing,
+
+334
+00:36:39,280 --> 00:36:43,349
+applying that, check for validity function.
+I want to look at the partial plan itself
+
+335
+00:36:43,349 --> 00:36:45,710
+and
+make it this observation essentially, okay.
+
+336
+00:36:45,710 --> 00:36:52,019
+So, it should have no flaws. So, what do we
+mean by flaws? There are two kinds of flaws;
+
+337
+00:36:52,019 --> 00:37:16,139
+one is called open goals. By open goals,
+you mean no casual links. So, if you look
+
+338
+00:37:16,139 --> 00:37:21,009
+at my partial plan of three objects which
+you
+
+339
+00:37:21,010 --> 00:37:27,940
+have to somehow figure out from this stuff
+on the board, I have one action a 0. I am
+
+340
+00:37:27,940 --> 00:37:30,329
+trying to solve those Sussman anomaly problems;
+I have one action.
+
+341
+00:37:30,329 --> 00:37:35,220
+So, this is my starting position and a 0 essentially
+produce this starting position. I have
+
+342
+00:37:35,219 --> 00:37:44,419
+one action a infinity which has these two
+preconditions; one of them has a causal link
+
+343
+00:37:44,420 --> 00:37:52,880
+which is stack a on b, but this instead intern
+has more casual links or more preconditions.
+
+344
+00:37:52,880 --> 00:38:10,230
+So, you must be holding a. Then b must be
+clear; I think that is all, right. So, if
+
+345
+00:38:10,230 --> 00:38:14,318
+I look at
+this partial plan of three objects a 0 stack
+
+346
+00:38:14,318 --> 00:38:19,150
+a b and a infinity, I have three open goals
+or
+
+347
+00:38:19,150 --> 00:38:29,450
+three unsatisfied goals; one is clear b, one
+is holding a and one is on b c. And I say
+
+348
+00:38:29,449 --> 00:38:33,000
+if I
+have an open goal in my partial plan which
+
+349
+00:38:33,000 --> 00:38:35,699
+means I have a unsatisfied goal or I have
+a
+
+350
+00:38:35,699 --> 00:38:45,129
+goal which does not have a causal link, then
+that is a flaw in my plan essentially.
+
+351
+00:38:45,130 --> 00:38:57,210
+So, a solution plan must not have open goals.
+If it has no open goals, then it could be
+
+352
+00:38:57,210 --> 00:38:58,740
+a
+
+353
+00:38:58,739 --> 00:39:18,139
+.solution plan. The other kind of flaw is
+called a threat, and what we saw here was
+
+354
+00:39:18,139 --> 00:39:22,568
+a
+threat essentially. What is that threat? A
+
+355
+00:39:22,568 --> 00:39:27,670
+threat and action threatens a causal link.
+So,
+
+356
+00:39:27,670 --> 00:39:36,930
+causal links can have threats from actions
+essentially. When is this situation a threatening
+
+357
+00:39:36,929 --> 00:39:44,239
+situation? It must satisfy three conditions.
+So, I will just mention them today and in
+
+358
+00:39:44,239 --> 00:39:47,528
+the
+next class we will take it up from there.
+
+359
+00:39:47,528 --> 00:39:55,960
+First thing is that it must be somehow undoing
+this predicate that the casual link is
+
+360
+00:39:55,960 --> 00:40:00,000
+supporting. Remember that every causal link
+has a predicate produced by one consumed
+
+361
+00:40:00,000 --> 00:40:06,710
+by the other. If it can somehow produce lot
+of clear b; so if this action has an effect
+
+362
+00:40:06,710 --> 00:40:19,019
+not
+clear b, then it could be a threat, why? Because
+
+363
+00:40:19,018 --> 00:40:25,159
+this action stack something onto b; it
+requires b to be clear, and this action is
+
+364
+00:40:25,159 --> 00:40:30,019
+producing that or clobbering that predicate.
+So,
+
+365
+00:40:30,019 --> 00:40:46,059
+how do we express this view? We say this that
+we cannot unify this tear by and by unify
+
+366
+00:40:46,059 --> 00:40:51,090
+for the moment, we will just assume that we
+cannot assign this value to this variable
+
+367
+00:40:51,090 --> 00:41:00,470
+which means, if y becomes equal to b, then
+this action could be a threat, but that is
+
+368
+00:41:00,469 --> 00:41:01,469
+only
+one condition.
+
+369
+00:41:01,469 --> 00:41:05,889
+There are two more conditions. The other two
+conditions are that this action happens
+
+370
+00:41:05,889 --> 00:41:16,808
+after this action and before this action.
+If all these three conditions were to be true
+
+371
+00:41:16,809 --> 00:41:25,040
+which
+means that I can put y equal to b in my plan?
+
+372
+00:41:25,039 --> 00:41:31,630
+I can add an ordering link between unstack
+a b and this like this which means it is consistent
+
+373
+00:41:31,630 --> 00:41:36,309
+to add this ordering link. And I can add
+an ordering link like this which means this
+
+374
+00:41:36,309 --> 00:41:39,859
+action happens before this action. If all
+these
+
+375
+00:41:39,858 --> 00:41:45,409
+three things happen, then we say that the
+theta is materialized essentially, and in
+
+376
+00:41:45,409 --> 00:41:48,338
+effect, it
+will no longer be a valid plan, because once
+
+377
+00:41:48,338 --> 00:41:51,308
+you have put d on to b, you cannot put this
+x
+
+378
+00:41:51,309 --> 00:41:52,309
+on to b essentially.
+
+379
+00:41:52,309 --> 00:41:57,460
+So, something has gone wrong with the plan
+essentially, but this is only a potential
+
+380
+00:41:57,460 --> 00:42:04,501
+threat. It is a potential threat, because
+my plan is a partial plan; I do not know what
+
+381
+00:42:04,501 --> 00:42:08,019
+this
+value for y is. I can force it to be not equal
+
+382
+00:42:08,018 --> 00:42:12,259
+to b; for example, I said you can do
+something like this. I can say do not stack
+
+383
+00:42:12,260 --> 00:42:15,160
+it on to b, then of course, I have removed
+the
+
+384
+00:42:15,159 --> 00:42:23,000
+threat or I can say force it to happen before
+this action. Then also I have sort of evaded
+
+385
+00:42:23,000 --> 00:42:30,099
+the threat or I can say force this action
+to happen after this action essentially; that
+
+386
+00:42:30,099 --> 00:42:34,268
+we will
+see the algorithms for resolving flaws.
+
+387
+00:42:34,268 --> 00:42:43,159
+.But we have this idea of a threat now and
+action a or let us say an action c threatens
+
+388
+00:42:43,159 --> 00:42:48,539
+a
+causal link a p b; if it is consistent that
+
+389
+00:42:48,539 --> 00:42:52,210
+it can produce lot of p if it is consistent
+that it can
+
+390
+00:42:52,210 --> 00:42:57,579
+happen after a and before b, then it is a
+potential threat essentially. And of course,
+
+391
+00:42:57,579 --> 00:42:59,410
+you
+resolve that threat we will have to see that
+
+392
+00:42:59,409 --> 00:43:09,629
+one of those three conditions does not happen
+essentially. So, we say that partial plan
+
+393
+00:43:09,630 --> 00:43:15,440
+is a solution plan if it has no flaws and
+by this we
+
+394
+00:43:15,440 --> 00:43:22,920
+mean, it has no open goals like for example,
+here we have three open goals this one this
+
+395
+00:43:22,920 --> 00:43:29,568
+one and this one. And it must have any threat
+essentially.
+
+396
+00:43:29,568 --> 00:43:36,190
+In this example, I have only three open goals.
+So, may be my step would be to put in the
+
+397
+00:43:36,190 --> 00:43:39,240
+action which will produce this or put in the
+action which will produce this or put in the
+
+398
+00:43:39,239 --> 00:43:44,989
+action which will produce this. And this is
+the general flavor that once I have flaws
+
+399
+00:43:44,989 --> 00:43:48,489
+in
+my plan and the flaw should be either open
+
+400
+00:43:48,489 --> 00:43:51,879
+goal or a threat, I must produce a solution
+for
+
+401
+00:43:51,880 --> 00:44:01,568
+the flaw which is to say somehow takes care
+of that flaw essentially. So, the high level
+
+402
+00:44:01,568 --> 00:44:06,139
+algorithm for partial order planning or plan
+space planning or least commitment planning
+
+403
+00:44:06,139 --> 00:44:15,279
+or nonlinear planning is to start with a empty
+plan a 0 n p t, which basically is telling
+
+404
+00:44:15,280 --> 00:44:17,630
+you
+what the start state is and what the goal
+
+405
+00:44:17,630 --> 00:44:22,230
+state is. Keep refining it till there are
+no flaws
+
+406
+00:44:22,230 --> 00:44:23,230
+left essentially.
+
+407
+00:44:23,230 --> 00:44:27,699
+Once you have no flaws, you must still have
+a partial order; you may not have specified
+
+408
+00:44:27,699 --> 00:44:32,338
+a complete order. Like for example, in this
+shoe wearing example, but that would still
+
+409
+00:44:32,338 --> 00:44:37,538
+be
+a plan. And by this we mean we take any consistent
+
+410
+00:44:37,539 --> 00:44:40,730
+linearization of those actions, and
+that action will be a plan in the sense of
+
+411
+00:44:40,730 --> 00:44:43,179
+those plans being a valid plan in the state
+space
+
+412
+00:44:43,179 --> 00:44:50,318
+perspective that we have seen earlier. So,
+today we have just specified what do we mean
+
+413
+00:44:50,318 --> 00:44:55,389
+by a partial plan. So, this is four topple
+made up of a set of actions which may be
+
+414
+00:44:55,389 --> 00:44:59,879
+partially instantiated the set of ordering
+links which may not be complete, a set of
+
+415
+00:44:59,880 --> 00:45:02,650
+casual
+links which may just link some actions with
+
+416
+00:45:02,650 --> 00:45:06,740
+other actions and set of binding constraints
+which says that some variables can takes some
+
+417
+00:45:06,739 --> 00:45:10,389
+values or cannot take some values and so
+on.
+
+418
+00:45:10,389 --> 00:45:14,909
+And we have defined what does it mean for
+it to be a solution plan that it should have
+
+419
+00:45:14,909 --> 00:45:19,338
+no
+flaws, no open goals and no threats, and task
+
+420
+00:45:19,338 --> 00:45:21,670
+is to keep refining a partial plan till it
+has
+
+421
+00:45:21,670 --> 00:45:26,710
+no flaws essentially. So, we look at this
+algorithm in the next class when we meet which
+
+422
+00:45:26,710 --> 00:45:27,710
+is on next Friday.
+
+423
+00:45:27,710 --> 00:45:37,710
+.
+

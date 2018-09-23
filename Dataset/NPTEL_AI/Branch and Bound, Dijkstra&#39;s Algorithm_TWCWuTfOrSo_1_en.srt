@@ -1,0 +1,2581 @@
+﻿1
+00:00:09,740 --> 00:00:20,390
+Today, we are going to shift focus, a little
+bit to see, where we are going. Let us just
+
+2
+00:00:20,390 --> 00:00:22,850
+do a
+quick recap of what we have done so far.
+
+3
+00:00:22,850 --> 00:00:23,850
+.
+
+4
+00:00:23,850 --> 00:00:39,939
+We started with state space search and then,
+we went on to heuristic search and from
+
+5
+00:00:39,939 --> 00:00:49,570
+there, we went to optimization. The idea was,
+that the idea of optimization came in,
+
+6
+00:00:49,570 --> 00:00:54,320
+because we said that instead of looking for
+the goal state, we will try to optimize the
+
+7
+00:00:54,320 --> 00:01:01,880
+heuristic value of the evaluation function,
+or the objective function, as the case maybe.
+
+8
+00:01:01,880 --> 00:01:18,329
+The idea of using heuristics was to find solutions
+faster, because we discovered that
+
+9
+00:01:18,328 --> 00:01:26,658
+search spaces tend to grow exponentially.
+We were looking for a function or some kind
+
+10
+00:01:26,659 --> 00:01:30,830
+of heuristic knowledge, which comes from the
+domain, which will guide the search
+
+11
+00:01:30,829 --> 00:01:38,909
+towards the solution, and not go off in other
+directions, in the hope that we will find
+
+12
+00:01:38,909 --> 00:01:40,879
+it
+faster, essentially, because we do not want
+
+13
+00:01:40,879 --> 00:01:53,929
+to run into exponential times.
+Today, we want to shift focus and look at
+
+14
+00:01:53,929 --> 00:01:58,340
+the other aspects. So, once you find a solution,
+let us say, you are solving problems in some
+
+15
+00:01:58,340 --> 00:02:02,289
+domain, or let us say it is a logistics domain,
+
+16
+00:02:02,289 --> 00:02:08,090
+.or you are running a courier company, and
+you have to send people all over the place
+
+17
+00:02:08,090 --> 00:02:10,840
+to
+collect parcels and deliver parcels, and things
+
+18
+00:02:10,840 --> 00:02:15,069
+like that. The solution that you find has
+to
+
+19
+00:02:15,068 --> 00:02:22,619
+be executed, and has an associated cost, essentially.
+Today, we will look, we will shift
+
+20
+00:02:22,620 --> 00:02:29,680
+focus to finding solutions, which have an
+optimal or least cost solutions, essentially.
+
+21
+00:02:29,680 --> 00:02:33,140
+That
+is critical in many domains. To take an extreme
+
+22
+00:02:33,139 --> 00:02:39,819
+example; if 10 years from now, you start
+a company in which you are setting up a colony
+
+23
+00:02:39,819 --> 00:02:47,539
+on Mars, then you can imagine, that the
+cost of each trip is going to be significant,
+
+24
+00:02:47,539 --> 00:02:51,239
+and you would like to have a solution in
+which, there are minimum number of trips,
+
+25
+00:02:51,240 --> 00:02:56,530
+essentially. So, maybe, on the way you stop
+on the Moon, or something like that, or more
+
+26
+00:02:56,530 --> 00:03:02,770
+coming down to Earth. If you are traveling
+like a traveling salesman, going through a
+
+27
+00:03:02,770 --> 00:03:12,010
+few cities; you may want to optimize the cost
+of your tour, or if you are using some vehicle,
+
+28
+00:03:12,009 --> 00:03:17,229
+let say, daily in a city, because of your
+job.
+
+29
+00:03:17,229 --> 00:03:24,189
+Unless you happen to be a politician in the
+government or a bureaucrat in the
+
+30
+00:03:24,189 --> 00:03:30,560
+government, who get apparently unlimited fuel
+supplies. You would be worried about
+
+31
+00:03:30,560 --> 00:03:35,490
+the cost of fuel, and you would want to find
+solutions, which are optimal, essentially.
+
+32
+00:03:35,490 --> 00:03:53,660
+So, our focus is going to be on finding optimal
+solutions, now. Of course, one might ask
+
+33
+00:03:53,659 --> 00:03:59,039
+as to how is this different, from the optimization
+that we have been studying so far
+
+34
+00:03:59,039 --> 00:04:03,949
+because, for example, we said that we want
+to solve the TSP, when we were looking at
+
+35
+00:04:03,949 --> 00:04:13,019
+example of optimization. So, it is not really
+different; it is a same process; it is just
+
+36
+00:04:13,020 --> 00:04:16,060
+that I
+want to be clear on the motivation. Earlier,
+
+37
+00:04:16,060 --> 00:04:23,509
+we went for this process of devising the idea
+of a heuristic function, and trying to find
+
+38
+00:04:23,509 --> 00:04:27,219
+optimal solutions for that, or trying to find
+optimum values for the heuristic function.
+
+39
+00:04:27,220 --> 00:04:31,610
+In the process, we, sort of wondered into
+optimization, which is what we interested
+
+40
+00:04:31,610 --> 00:04:37,520
+in, but we never looked at solutions, which
+guarantee optimality. We only looked at randomized
+
+41
+00:04:37,519 --> 00:04:43,029
+methods like simulated, unhealing
+and genetic algorithms, and colony optimization,
+
+42
+00:04:43,029 --> 00:04:47,329
+which are likely to work most of the
+time, but not necessarily guarantee optimal
+
+43
+00:04:47,329 --> 00:04:52,628
+solutions. So, what we want to do now is to
+look at methods, deterministic methods, which
+
+44
+00:04:52,629 --> 00:04:58,280
+will guarantee optimal solutions.
+So, these are the two different aspects of
+
+45
+00:04:58,279 --> 00:05:03,508
+problem solving; one is, how long do you take
+to solve the problem. Heuristic function is
+
+46
+00:05:03,509 --> 00:05:10,288
+devised to speed up that process. The second
+aspect is, how good a solution you find, and
+
+47
+00:05:10,288 --> 00:05:18,168
+that is the aspect that we are going to focus
+on today. How to look at optimal, how to find
+
+48
+00:05:18,168 --> 00:05:24,008
+optimal solutions? So far, we have not had
+a notion of cost, in the solution finding
+
+49
+00:05:24,009 --> 00:05:25,879
+process and whenever, we spoke about quality
+of
+
+50
+00:05:25,879 --> 00:05:32,520
+a solution, we said the number of steps or
+the length of the solution. So, now, let us
+
+51
+00:05:32,519 --> 00:05:38,288
+.introduce cost, which means we will introduce
+a weight for every edge in the search
+
+52
+00:05:38,288 --> 00:05:43,180
+space and then, we want to find solutions,
+which are optimal cost. So, it is like finding
+
+53
+00:05:43,180 --> 00:05:49,310
+the shortest path, and that is an abstraction
+of all these problems that we are looking
+
+54
+00:05:49,310 --> 00:05:52,649
+at,
+essentially; finding shortest path in a graph.
+
+55
+00:05:52,649 --> 00:06:00,899
+Let us start with a small example graph, just
+to illustrate the algorithm set that we are
+
+56
+00:06:00,899 --> 00:06:01,899
+looking at.
+.
+
+57
+00:06:01,899 --> 00:06:09,439
+So, let us say, this is a start node and then,
+you go to some node called A. The cost of
+
+58
+00:06:09,439 --> 00:06:18,910
+going to that node is 4, or you can go to
+B. The cost of going to b is 5 and the cost
+
+59
+00:06:18,910 --> 00:06:25,620
+of this
+edge is, let us say, 3. Then, you have, let
+
+60
+00:06:25,620 --> 00:06:36,759
+us say, a few more nodes; C, D, E. Let us
+give
+
+61
+00:06:36,759 --> 00:06:51,669
+some cost to these. So, let us say, this is
+6 and let us say, this is 8 and let us say,
+
+62
+00:06:51,668 --> 00:07:01,448
+this is 4
+and let us say, this is also, 4. Let us say,
+
+63
+00:07:01,449 --> 00:07:07,629
+this is an expensive edge, costing 15 and
+this is
+
+64
+00:07:07,629 --> 00:07:14,088
+2. Let us say, this is goal node that you
+want to reach, and the cost of going to goal
+
+65
+00:07:14,088 --> 00:07:19,408
+node
+from here, is 2. Let us say, there are some
+
+66
+00:07:19,408 --> 00:07:20,649
+more edges that I am not drawing, because
+we
+
+67
+00:07:20,649 --> 00:07:25,558
+do not want to have an exploding search space.
+Let us say, this is an example, you want
+
+68
+00:07:25,559 --> 00:07:30,810
+to start from S, and you want to find the
+path to G, which is of the shortest paths,
+
+69
+00:07:30,810 --> 00:07:32,108
+actually.
+
+70
+00:07:32,108 --> 00:07:33,108
+..
+
+71
+00:07:33,108 --> 00:07:43,870
+So, the general algorithm that we will follow
+can be abstracted as follows; that refines
+
+72
+00:07:43,870 --> 00:07:57,280
+or
+extends the least cost, and I must emphasize
+
+73
+00:07:57,279 --> 00:08:13,628
+least estimated cost, because we do not
+know the actual cost. So, the main problem
+
+74
+00:08:13,629 --> 00:08:21,080
+solving step, which is basically, very similar
+to what we were doing earlier. We have a move
+
+75
+00:08:21,079 --> 00:08:24,598
+gen function, which generates
+successors and you have to choose one of them,
+
+76
+00:08:24,598 --> 00:08:28,658
+and so on. But, we can view this now, a
+little bit more, abstractly, in the sense
+
+77
+00:08:28,658 --> 00:08:34,349
+that we are working in the space of possible
+solutions. We do not have all the solutions;
+
+78
+00:08:34,349 --> 00:08:41,800
+we have some of them, partially defined,
+essentially with every partial solution, we
+
+79
+00:08:41,799 --> 00:08:46,740
+have an estimated cost. When we say
+estimated cost, we mean them; estimation of
+
+80
+00:08:46,740 --> 00:08:51,870
+the cost of the total solution, if that was
+to
+
+81
+00:08:51,870 --> 00:08:57,490
+be completely refined. So, we will use a term;
+refine, to say that if we have a partial
+
+82
+00:08:57,490 --> 00:09:00,500
+solution, and we had a little bit more information
+about that solution.
+
+83
+00:09:00,500 --> 00:09:05,350
+For example, if you are solving a TSP, if
+you have put in five edges, and if you had
+
+84
+00:09:05,350 --> 00:09:07,470
+one
+more sixth edge, then that is a little bit
+
+85
+00:09:07,470 --> 00:09:12,120
+more refined. So, in the process of you keep
+refining partial solutions, till you have
+
+86
+00:09:12,120 --> 00:09:18,310
+a complete solution and then, you would stop.
+The
+
+87
+00:09:18,309 --> 00:09:26,768
+algorithm that we will use is that; extend
+the least estimated cost partial solution,
+
+88
+00:09:26,769 --> 00:09:34,789
+till such
+a solution is fully refined because, in the
+
+89
+00:09:34,789 --> 00:09:45,870
+end, we are interested in a solution, complete
+solution. So, actually, I must clarify what
+
+90
+00:09:45,870 --> 00:09:49,490
+I mean by this, till such, and we will see
+this is,
+
+91
+00:09:49,490 --> 00:09:56,149
+when the example comes out; that till the
+least cost solution is fully refined. I, instead
+
+92
+00:09:56,149 --> 00:09:58,709
+of
+writing that, I have just written; till such
+
+93
+00:09:58,710 --> 00:10:01,500
+as solution. But, you must read this such
+as; a
+
+94
+00:10:01,500 --> 00:10:06,958
+least cost solution is fully refined. Just
+imagine this situation where, you have some
+
+95
+00:10:06,958 --> 00:10:11,588
+.partial solutions and some, at least one
+fully refined solution, or more than one fully
+
+96
+00:10:11,589 --> 00:10:16,380
+refined solution, and you have estimated cost
+for them. Now, for fully refined solutions,
+
+97
+00:10:16,379 --> 00:10:20,909
+there is no notion of estimate; you actually,
+know the actual cost, whereas, only for
+
+98
+00:10:20,909 --> 00:10:31,549
+partial solution you have to estimate cost.
+Now, if one fully refined solution has a lowest
+
+99
+00:10:31,549 --> 00:10:36,359
+cost, then we will say; we can terminate.
+That is going to be the basic idea. We will
+
+100
+00:10:36,360 --> 00:10:39,800
+discuss this as to, when is this idea sound;
+or
+
+101
+00:10:39,799 --> 00:10:46,429
+when this is idea, guarantee to give you the
+shorter solution. This is the loop that in
+
+102
+00:10:46,429 --> 00:10:51,929
+which we will operate, in the next few classes.
+It is just that our notion of partial solution
+
+103
+00:10:51,929 --> 00:10:57,419
+may change, as you go along little bit. So,
+let us look at this from the state space
+
+104
+00:10:57,419 --> 00:11:11,669
+prospective, as we have done earlier. When
+I look at this algorithm, you must keep in
+
+105
+00:11:11,669 --> 00:11:17,659
+mind, that the similarity with Dijikistra’s
+algorithm, essentially. So, I take it that
+
+106
+00:11:17,659 --> 00:11:23,379
+everybody is familiar with Dijikistra’s
+shorter spark algorithm, which takes a single
+
+107
+00:11:23,379 --> 00:11:28,480
+source and finds shorter spark, to the rest
+of the graph, essentially. So, we are in some
+
+108
+00:11:28,480 --> 00:11:35,009
+sense going to mimic that algorithm, but our
+goal is not to find solutions to all the nodes;
+
+109
+00:11:35,009 --> 00:11:36,449
+but we will be doing something similar, essentially.
+.
+
+110
+00:11:36,448 --> 00:11:54,729
+The algorithm that we are looking at is called
+Branch and Bound. By branching, we
+
+111
+00:11:54,730 --> 00:12:09,089
+mean this process of refinement, or extension,
+and by bounding, we mean excluding
+
+112
+00:12:09,089 --> 00:12:24,079
+some solutions. So, remember what I said that
+at the point, which we terminate, we will
+
+113
+00:12:24,078 --> 00:12:29,579
+not bother about some solutions, which are
+not fully refined, because we would be able
+
+114
+00:12:29,580 --> 00:12:34,528
+.to exclude them, or we would be, they have
+gone beyond some bound, that we are
+
+115
+00:12:34,528 --> 00:12:38,169
+working with, and we do not need to refine
+them, any further. So, this general idea is
+
+116
+00:12:38,169 --> 00:12:52,028
+called Branch and Bound. So, let us first
+simulate this algorithm on this graph.
+
+117
+00:12:52,028 --> 00:12:53,028
+.
+
+118
+00:12:53,028 --> 00:12:57,120
+So, you start with a search node and it is
+very much like the other algorithm that we
+
+119
+00:12:57,120 --> 00:13:01,828
+have
+seen. We generate its children, in this case;
+
+120
+00:13:01,828 --> 00:13:07,500
+A and B. In this stimulation, we will assume
+that we are not going to remove duplicates,
+
+121
+00:13:07,500 --> 00:13:12,720
+essentially, because it is possible that we
+may
+
+122
+00:13:12,720 --> 00:13:16,330
+later find a shorter path, to a given node,
+essentially. So, we do not want to say if
+
+123
+00:13:16,330 --> 00:13:22,339
+you
+have seen that node, do not generate it again,
+
+124
+00:13:22,339 --> 00:13:35,300
+essentially. So, you can say this is
+searching over paths. That instead of saying,
+
+125
+00:13:35,299 --> 00:13:38,240
+that we are visiting a node, for example,
+D
+
+126
+00:13:38,240 --> 00:13:44,959
+or C, we will say, we are inspecting a path
+from source to D or source to E, and we are
+
+127
+00:13:44,958 --> 00:13:49,669
+looking at different possible paths, and we
+will. So, if there is one path S, A, D, then
+
+128
+00:13:49,669 --> 00:13:51,828
+this
+is a different candidate from another path,
+
+129
+00:13:51,828 --> 00:13:54,239
+which is S, B, D, essentially. So, we will
+treat
+
+130
+00:13:54,240 --> 00:13:58,188
+them as separate. So far, we are saying, if
+you have come to D before, do not bother.
+
+131
+00:13:58,188 --> 00:13:59,708
+You
+have already; so, do not put it into open.
+
+132
+00:13:59,708 --> 00:14:07,068
+That is what you use to say.
+Now, the cost of s is 0. The cost of this
+
+133
+00:14:07,068 --> 00:14:11,339
+path is 4, and the cost of this path is 5,
+so the cost
+
+134
+00:14:11,340 --> 00:14:19,290
+of that edges. The algorithm is simple; refine
+or extend the least estimated cost partial
+
+135
+00:14:19,289 --> 00:14:25,649
+solution. So, instead of saying that, we are
+taking the cost of the complete partial solution
+
+136
+00:14:25,649 --> 00:14:30,259
+and estimate of the complete partial solution.
+We will work with the known cost that we
+
+137
+00:14:30,259 --> 00:14:36,519
+have, which is a cost up to A, essentially.
+So, as far as we are concerned, we have two
+
+138
+00:14:36,519 --> 00:14:40,589
+.partial solutions here; one goes, say, goes
+from S to A; the other, say, goes some S to
+
+139
+00:14:40,589 --> 00:14:44,001
+B.
+This one cost 4 and this one cost 5, and we
+
+140
+00:14:44,999 --> 00:14:46,078
+will say that this is better than S. So, we
+do
+
+141
+00:14:46,078 --> 00:14:54,939
+not have any sense of direction. So, this
+is a simple process, we will follow. We say
+
+142
+00:14:54,940 --> 00:14:57,170
+that
+this has been inspected. In Dijikistra’s
+
+143
+00:14:57,169 --> 00:15:03,778
+algorithm, you would do something, very similar.
+I will just do the two algorithms in parallel.
+
+144
+00:15:03,778 --> 00:15:08,419
+In Dijikistra’s algorithm, you would
+initialize S to cost 0, and everything else
+
+145
+00:15:08,419 --> 00:15:16,679
+to cost infinity, and maybe, in some versions
+of
+
+146
+00:15:16,679 --> 00:15:20,070
+the algorithm, some description of the algorithm,
+you will color them white, and you will
+
+147
+00:15:20,071 --> 00:15:24,550
+color this; or color everything white to start
+with, which is like putting them on open,
+
+148
+00:15:24,549 --> 00:15:29,179
+or
+something like that, and pick one node from
+
+149
+00:15:29,179 --> 00:15:32,309
+there. So, there is a stage of relaxation
+in the
+
+150
+00:15:32,309 --> 00:15:38,609
+rest of the algorithm, which says that once
+you relax this node, or once you inspect this
+
+151
+00:15:38,610 --> 00:15:44,050
+node S, you relax all edges going out of that,
+which means this cost originally was
+
+152
+00:15:44,049 --> 00:15:49,818
+infinity, and now, it is reduced to 4. Because,
+we know that you can get from S to A is 4.
+
+153
+00:15:49,818 --> 00:15:54,409
+So, we revise this cost to 4 and revise this
+cost to 5; exactly, what we are doing here,
+
+154
+00:15:54,409 --> 00:16:00,399
+except that in the Dijikistra’s algorithm,
+you would do it on the graph itself. Then,
+
+155
+00:16:00,399 --> 00:16:02,208
+you
+would pick the lowest cost note. So, the Dijikistra’s
+
+156
+00:16:02,208 --> 00:16:06,179
+would also pick this and color it
+black, for example, and then relax these three
+
+157
+00:16:06,179 --> 00:16:11,278
+edges, which I am also saying, that we will
+generate these three edges. So, one simplifying
+
+158
+00:16:11,278 --> 00:16:15,230
+assumption while drawing, we will make
+is, that we are not going to go back; we are
+
+159
+00:16:15,230 --> 00:16:19,550
+not going to allow loops, because we know
+that loops are only going to increase the
+
+160
+00:16:19,549 --> 00:16:22,190
+cost. So, if I go back, go from S to A and
+A to S,
+
+161
+00:16:22,191 --> 00:16:26,920
+it is not going to help me, in any way. One
+assumption, that we are working with like,
+
+162
+00:16:26,919 --> 00:16:35,519
+the Dijikistra does, that cost are all positive
+here. So, pick the least cost node S A. So,
+
+163
+00:16:35,519 --> 00:16:37,289
+let
+us say, this also, I am coloring it black
+
+164
+00:16:37,289 --> 00:16:39,659
+here. The Dijikistra also would color it black,
+and
+
+165
+00:16:39,659 --> 00:16:44,039
+there would be a pointer pointing back to
+this. Then Dijikistra would color this one,
+
+166
+00:16:44,039 --> 00:16:52,078
+black, and try to; when you relax this edge,
+you find that 4 plus 3, 7. So, it remains
+
+167
+00:16:52,078 --> 00:16:55,708
+like
+that, whereas, this becomes 8 this, in arrow,
+
+168
+00:16:55,708 --> 00:17:01,059
+which comes here, this becomes 19 and an
+arrow comes here.
+
+169
+00:17:01,059 --> 00:17:07,568
+So, there are these costs associated with
+nodes, which I am not writing there; which
+
+170
+00:17:07,568 --> 00:17:12,700
+I am
+writing here. From A, you can go to B, or
+
+171
+00:17:12,700 --> 00:17:23,959
+you can go to D, or you can go to E, and the
+costs are, as we said, 19 for this; D is 12
+
+172
+00:17:23,959 --> 00:17:31,269
+and B is 5. So, very similar to what we were
+doing in heuristic search, always pick the
+
+173
+00:17:31,269 --> 00:17:36,038
+lowest cost node, except that when you are
+doing heuristic search, it used to be lowest
+
+174
+00:17:36,038 --> 00:17:40,869
+heuristic value, note; here, it is the lowest
+known partial solution cost. So, this is,
+
+175
+00:17:40,869 --> 00:17:48,808
+sorry, this is not 5; this is 7. From S from
+A to B,
+
+176
+00:17:48,808 --> 00:17:55,690
+.then if you come like this, it is 7, essentially.
+Then, you pick this B and from B, you can
+
+177
+00:17:55,690 --> 00:18:07,870
+go to C, or you can go to A, or you can go
+to D. If you go to C, then you have a cost
+
+178
+00:18:07,869 --> 00:18:11,899
+of 9.
+If you go to A, then you have a cost of 8.
+
+179
+00:18:11,900 --> 00:18:17,110
+If you go to D, then you have a cost of 11.
+So,
+
+180
+00:18:17,109 --> 00:18:23,629
+this process continues, the rest of the couple
+of more rounds and then, we will stop. The
+
+181
+00:18:23,630 --> 00:18:31,250
+lowest node now is B. So, we do this. As I
+said, we will not allow loops. So, we will
+
+182
+00:18:31,250 --> 00:18:34,450
+not
+allow A or B to B, because A or b is in the
+
+183
+00:18:34,450 --> 00:18:36,900
+path here. So, the only thing you can do is,
+go
+
+184
+00:18:36,900 --> 00:18:59,038
+to C or to D; C D. So, 7 plus 4; this is 11
+and 7 plus 6 is 13. So, you can see, we have
+
+185
+00:18:59,038 --> 00:19:05,140
+found two paths to D; one path costing 11,
+which goes from S to B to D, which is cost
+
+186
+00:19:05,140 --> 00:19:10,030
+11; the other is from S to A to B to D, which
+cost 13.
+
+187
+00:19:10,029 --> 00:19:16,918
+Let us say, there is another edge, which I
+have not drawn earlier; forgot to draw earlier.
+
+188
+00:19:16,919 --> 00:19:29,850
+This is costing 6, 7 units, let us say. Now,
+this is, A is the lowest node that I can expand.
+
+189
+00:19:29,849 --> 00:19:43,201
+From A, I can go to; I cannot go to S; I cannot
+go to B; I can go to D or to E, and the cost
+
+190
+00:19:43,201 --> 00:19:55,620
+of going to D is 16, here, and cost of going
+to E is 23, here. I have done away with it.
+
+191
+00:19:55,619 --> 00:19:59,939
+Now, something interesting is happening that
+I am going to expand C. C and D is
+
+192
+00:19:59,940 --> 00:20:05,519
+interesting, because they are the two nodes,
+which lead us to the goal, essentially. So,
+
+193
+00:20:05,519 --> 00:20:08,210
+at
+this point, this node D has become the lowest
+
+194
+00:20:08,210 --> 00:20:10,340
+cost node. So, this is 9, 16, 23, 11, 12,
+13,
+
+195
+00:20:10,339 --> 00:20:21,059
+and 19. I expand this C and from C, I can
+go either to D, along this path, or I can
+
+196
+00:20:21,059 --> 00:20:28,700
+go to G.
+If I go to D from here, it is going to be
+
+197
+00:20:28,700 --> 00:20:36,380
+9 plus 4, 13. If I go to G from here, it is
+going to
+
+198
+00:20:36,380 --> 00:20:46,000
+be 9 plus 7, 16.
+So, I have found one path to the goal. So,
+
+199
+00:20:46,000 --> 00:20:49,349
+let me highlight that path. I am going from
+S to
+
+200
+00:20:49,349 --> 00:21:02,690
+B, B to C and C to G, and that is the path
+represented by this node G here; S to B, B
+
+201
+00:21:02,691 --> 00:21:06,130
+to C
+and B to G. So, this is gone into closed.
+
+202
+00:21:06,130 --> 00:21:09,350
+So, should I terminate, or if you go back
+to what
+
+203
+00:21:09,349 --> 00:21:18,459
+Dijikistra would have done. What have we done?
+We have colored A, we have colored
+
+204
+00:21:18,460 --> 00:21:26,640
+B, we have colored C, and we have not yet,
+colored D, or E. Now, if you look at this
+
+205
+00:21:26,640 --> 00:21:35,470
+graph, there is a path going from S to B to
+D, which is 11 plus 2, 13. Now, that path
+
+206
+00:21:35,470 --> 00:21:37,640
+is
+better than this path, which is of length
+
+207
+00:21:37,640 --> 00:21:44,649
+16. If I want my algorithm to find the optimal
+path, I cannot stop at this stage, which is
+
+208
+00:21:44,648 --> 00:21:50,849
+why, we have this condition, till such a solution
+is fully refined, and such, I mean, the least
+
+209
+00:21:50,849 --> 00:21:56,548
+cost solution is fully refined. Now, in this
+case, the least cost solution is this D and
+
+210
+00:21:56,548 --> 00:22:07,869
+this C. So, let us say, without loss of generality,
+we pick D from here. Once we pick D from here,
+
+211
+00:22:07,869 --> 00:22:21,000
+we will add this; we have already seen
+C. So, from D, you can go to G to C and to
+
+212
+00:22:21,000 --> 00:22:29,409
+E. So, let us not worry about C and G. The
+cost from S to B is 5 and then, another 6
+
+213
+00:22:29,409 --> 00:22:33,130
+and then, 2 and we have this cost of 13. Now,
+
+214
+00:22:33,130 --> 00:22:41,200
+.we have added, in some sense to open, if
+you want to say; this path S, B, D, G to open,
+
+215
+00:22:41,200 --> 00:22:47,920
+and we also have another path S, B, C, G to
+open, but none of them is at the head of the
+
+216
+00:22:47,920 --> 00:22:50,980
+queue. Remember, that we will use something
+like a priority queue to increment this.
+
+217
+00:22:50,980 --> 00:22:56,308
+Before we come to this G, we will exhaust
+this option of C, we will exhaust this option
+
+218
+00:22:56,308 --> 00:23:03,259
+of D, and we will exhaust; yes, only these
+two options, you have to exhaust. This one,
+
+219
+00:23:03,259 --> 00:23:08,109
+because this is lower cost, and this is lower
+cost; once we expand them or refine them,
+
+220
+00:23:08,109 --> 00:23:12,298
+we will get more expensive solutions, and
+at that point, this G will become the least
+
+221
+00:23:12,298 --> 00:23:17,648
+cost
+and then, we can terminate.
+
+222
+00:23:17,648 --> 00:23:26,769
+So, this is the idea of Branch and Bound,
+essentially; that what do we mean by bound
+
+223
+00:23:26,769 --> 00:23:31,269
+here? That the moment, when we expand this
+node with 13, we are going to bound; we
+
+224
+00:23:31,269 --> 00:23:36,019
+are not going to be interested in this node
+with 19, or this node with 16, or this node
+
+225
+00:23:36,019 --> 00:23:38,770
+with
+16, or this node with 23. Even though, they
+
+226
+00:23:38,770 --> 00:23:45,819
+are not complete solutions, we know that if
+we are to refine them, there cost would be
+
+227
+00:23:45,819 --> 00:23:51,759
+more than 613 here, and we have found this
+complete solution of paths cost 13 and the
+
+228
+00:23:51,759 --> 00:23:56,028
+partial solution are of higher cost. Therefore,
+I
+
+229
+00:23:56,028 --> 00:24:03,319
+can terminate at this stage. So, at the moment,
+when you pick the goal node or the path to
+
+230
+00:24:03,319 --> 00:24:11,849
+the goal node, you can terminate.
+Let us look at another example, which is that
+
+231
+00:24:11,849 --> 00:24:17,648
+traveling salesman problem, which we are
+so interested in, but before I do that, I
+
+232
+00:24:17,648 --> 00:24:25,909
+want to ask a question, a few. I used a term
+estimated cost here, and when I say estimated
+
+233
+00:24:25,910 --> 00:24:29,929
+cost, I mean the estimated cost of the full
+solution; not the partial solution. Here,
+
+234
+00:24:29,929 --> 00:24:31,720
+we are working only with partial solution.
+So,
+
+235
+00:24:31,720 --> 00:24:38,140
+when you say the cost of this path is 12,
+we mean that to go from S to A and A to D
+
+236
+00:24:38,140 --> 00:24:42,150
+is
+12. It is not telling you how much it would
+
+237
+00:24:42,150 --> 00:24:48,940
+cost through, if you went to the goal, along
+with this path. Now, I am talking about that;
+
+238
+00:24:48,940 --> 00:24:57,048
+that instead of using this exact known cost
+of partials solutions, let us work with estimated
+
+239
+00:24:57,048 --> 00:25:11,148
+cost of full solutions.
+Let us say, the estimated cost of any solution
+
+240
+00:25:11,148 --> 00:25:26,000
+is C, and the actual cost of the same
+solution, and by actual cost, I mean, if I
+
+241
+00:25:26,000 --> 00:25:30,640
+want to refine that solution completely, let
+me
+
+242
+00:25:30,640 --> 00:25:40,140
+use the term; C star. The question that I
+want to ask is the mechanism that I used for
+
+243
+00:25:40,140 --> 00:25:51,419
+estimation; it can do three things. One is,
+it can give me a perfect estimate, in which
+
+244
+00:25:51,419 --> 00:25:54,340
+case,
+this would be; I would use an equality sign
+
+245
+00:25:54,339 --> 00:26:00,898
+C equal to C star, but that is only a wishful
+hope, that you will find an estimate, which
+
+246
+00:26:00,898 --> 00:26:03,019
+is perfect. So, let us hope that, let us say,
+that
+
+247
+00:26:03,019 --> 00:26:09,329
+we cannot find an estimate, which is perfect,
+which leaves us two choices; either greater
+
+248
+00:26:09,329 --> 00:26:18,869
+than or less than. So, we have eliminated
+that choice, because we have granted that
+
+249
+00:26:18,869 --> 00:26:19,869
+we
+
+250
+00:26:19,869 --> 00:26:25,250
+.will never find such an estimate. Now, if
+I had a choice between an estimating function,
+
+251
+00:26:25,250 --> 00:26:31,000
+which underestimates a cost, and a choice
+with a different estimation function, which
+
+252
+00:26:31,000 --> 00:26:39,950
+over estimates the cost. So, let say C 1 and
+C 2 are such functions. Let us say, C 1 is
+
+253
+00:26:39,950 --> 00:26:44,528
+less
+than C star, and C 2 is less than, is greater
+
+254
+00:26:44,528 --> 00:26:53,538
+than C star; always greater then C star; which
+one, should I use? In other words, while devising
+
+255
+00:26:53,538 --> 00:26:59,069
+an estimating function, what property
+should I take care to satisfy? Should I use
+
+256
+00:26:59,069 --> 00:27:12,500
+C 1 or should I use C 2? How many people
+here, feel it is C 2, and how many feel, it
+
+257
+00:27:12,500 --> 00:27:25,480
+is C 1? The rest are undecided or not awake.
+Anyway, just keep this in mind, I will ask
+
+258
+00:27:25,480 --> 00:27:32,730
+this question in a little while again, essentially.
+Now, let us spend a little bit of time on
+
+259
+00:27:32,730 --> 00:27:40,038
+the travelling salesman problem, again. This
+time, we are looking for an exact solution;
+
+260
+00:27:40,038 --> 00:27:47,519
+even though it is NP hard problem. We want
+to look at methods, which will give us exact
+
+261
+00:27:47,519 --> 00:27:50,730
+solutions. Maybe, we cannot solve very big
+problems, but at least, for the smaller problems,
+
+262
+00:27:50,730 --> 00:27:53,740
+we want that, essentially.
+.
+
+263
+00:27:53,740 --> 00:28:08,669
+We look at something called refinement search.
+By refinement search, I mean the
+
+264
+00:28:08,669 --> 00:28:14,429
+following; that consider the set of all possible
+tours, that will be the root node of our
+
+265
+00:28:14,429 --> 00:28:21,559
+search three, the set of all possible tours,
+and then by some operator, I will partition
+
+266
+00:28:21,558 --> 00:28:23,690
+the
+set into smaller sets, essentially. What is
+
+267
+00:28:23,690 --> 00:28:30,970
+an operator? One operator could be the
+choosing an edge, for example. Then, in the
+
+268
+00:28:30,970 --> 00:28:35,169
+process, I want to refine so, essentially.
+I
+
+269
+00:28:35,169 --> 00:28:40,540
+also want to talk about estimated cost. So,
+one thing that while I draw a small example,
+
+270
+00:28:40,539 --> 00:28:48,769
+you should think about is; given a problem,
+which means given a set of cities, and the
+
+271
+00:28:48,769 --> 00:28:58,990
+cost of edges between those cities; how can
+you estimate the cost of a tour? In other
+
+272
+00:28:58,990 --> 00:29:05,470
+.words, can you find a lower bound of a tour,
+or maybe, if you are interested, can you find
+
+273
+00:29:05,470 --> 00:29:10,660
+a upper bound of a tour; any tour? Or in other
+words, all tours are going to be greater
+
+274
+00:29:10,660 --> 00:29:17,350
+than some lower bound; can we find such a
+lower bound? So, let me write a small
+
+275
+00:29:17,349 --> 00:29:25,349
+example. Let us say, we have these five cities;
+Chennai, Bangalore, Hyderabad, Bombay
+
+276
+00:29:25,349 --> 00:29:35,079
+and Delhi and. So, Chennai, Bangalore, Hyderabad,
+Mumbai; I should say, otherwise,
+
+277
+00:29:35,079 --> 00:29:45,109
+there is always a danger; and Delhi. So, I
+need the edge cost between these cities. So,
+
+278
+00:29:45,109 --> 00:29:48,069
+I
+am just drawing the edge matrix to capture
+
+279
+00:29:48,069 --> 00:30:07,048
+those costs. So, these are 0s; the diagonal
+elements, because you are already in that
+
+280
+00:30:07,048 --> 00:30:09,398
+city. Let us take some simple values. Let
+us
+
+281
+00:30:09,398 --> 00:30:14,439
+say, between Chennai and Bangalore, the cost
+is 300 Kilometers; between Chennai and
+
+282
+00:30:14,440 --> 00:30:20,950
+Hyderabad, it is 600 Kilometers; Chennai and
+Mumbai; it is, let us say, 1000 Kilometers,
+
+283
+00:30:20,950 --> 00:30:26,909
+and Delhi is 2000 Kilometers. These are not
+correct figures, but there was a list. So,
+
+284
+00:30:26,909 --> 00:30:36,220
+given these figures, can you find an estimated
+cost? I am asking you a specific question
+
+285
+00:30:36,220 --> 00:30:41,350
+now; can you find a lower bound on the tour
+cost; which means that no tour can be
+
+286
+00:30:41,349 --> 00:30:47,719
+cheaper than that cost.
+Let us put in some more values. Let us say,
+
+287
+00:30:47,720 --> 00:31:06,769
+Bangalore and Hyderabad, let us say, 500;
+Bangalore and Mumbai is, let us say, 900;
+
+288
+00:31:06,769 --> 00:31:09,669
+and Delhi is the farthest from everything.
+So,
+
+289
+00:31:09,669 --> 00:31:32,690
+let us say, 2100 here, and 1500 here, and
+just some random, a close to random figures,
+
+290
+00:31:32,690 --> 00:31:41,500
+and that leaves me with, between Mumbai and
+Hyderabad, let us say, that is 700. So, this
+
+291
+00:31:41,500 --> 00:31:47,788
+is my matrix given to me; edge cost, and I
+want find the solution for the travelling
+
+292
+00:31:47,788 --> 00:31:59,099
+salesman. My refinement search is going to
+do the following; that my root is going to
+
+293
+00:31:59,099 --> 00:32:02,619
+be
+S; I will just call it S, and this is a set
+
+294
+00:32:02,619 --> 00:32:09,539
+of all tours. What I am asking you is that
+for this
+
+295
+00:32:09,539 --> 00:32:15,359
+node S or route S, which consist of all possible
+tours; what would be a cost that I would
+
+296
+00:32:15,359 --> 00:32:25,138
+want to associate with that, which is the
+lowest possible cost that I can think of,
+
+297
+00:32:25,138 --> 00:32:38,849
+essentially? Now obviously, you can say 0
+is a lower bound, because definitely, every
+
+298
+00:32:38,849 --> 00:32:46,149
+node, every tour will have cost greater than
+0, but I am not interested in such a trivial
+
+299
+00:32:46,150 --> 00:32:50,580
+lower bound. You can even say 300 is a lower
+bound, for example, but I am not
+
+300
+00:32:50,579 --> 00:32:57,548
+interested in that. The reason for that is
+that, if I am going to do this Branch and
+
+301
+00:32:57,548 --> 00:33:04,398
+Bound, I
+am interested in excluding candidates from
+
+302
+00:33:04,398 --> 00:33:12,609
+my search space, and I can only exclude
+candidates, if their estimated cost is higher
+
+303
+00:33:12,609 --> 00:33:19,779
+than my actual cost of some known solutions.
+To see an example here, if I want to expand
+
+304
+00:33:19,779 --> 00:33:28,740
+this known solution, is cost 13, this
+estimated cost is 19. Now, this 19 is actually,
+
+305
+00:33:28,740 --> 00:33:34,630
+the actual cost of going from S to A to E,
+but I can be overly optimistic and say, that
+
+306
+00:33:34,630 --> 00:33:36,500
+is actually, the estimated cost of going to
+G
+
+307
+00:33:36,500 --> 00:33:42,569
+from this path, essentially. The rest of the
+edges, I have cost 0; I can be overly optimistic
+
+308
+00:33:42,569 --> 00:33:47,888
+.about that. So, I can treat this actual cost
+of going to E, as estimated cost of going
+
+309
+00:33:47,888 --> 00:33:51,349
+to G,
+via this path, essentially, but even, if that
+
+310
+00:33:51,349 --> 00:33:59,089
+were to be the case, I know that the estimated
+cost is 19, and this actual cost is 13, and
+
+311
+00:33:59,089 --> 00:34:01,500
+this is only going to increase as I refine
+the
+
+312
+00:34:01,500 --> 00:34:06,278
+solution further.
+So, it can never become better than 13. So,
+
+313
+00:34:06,278 --> 00:34:08,960
+I do not really need to refine that. I am
+going
+
+314
+00:34:08,960 --> 00:34:14,280
+to; that is a bounding, I mean. I am just
+not looking at that, this thing. So, for such
+
+315
+00:34:14,280 --> 00:34:23,030
+reasons, that I should be able to exclude
+bad candidates, as quickly as possible, I
+
+316
+00:34:23,030 --> 00:34:27,470
+need
+estimated costs, which are as high as possible.
+
+317
+00:34:27,469 --> 00:34:32,638
+So, as I said, you can always give me 0 as
+an estimated cost, or 300 as an estimated
+
+318
+00:34:32,639 --> 00:34:37,120
+cost, but I am not interested in that, because
+they will not exclude solutions from a search
+
+319
+00:34:37,119 --> 00:34:42,719
+space, essentially. You were saying
+something.
+
+320
+00:34:42,719 --> 00:34:47,939
+..
+. Yes. But I am not interested in higher bounds,
+
+321
+00:34:47,940 --> 00:34:52,809
+so much. So, let us talk about lower
+bounds, essentially.
+
+322
+00:34:52,809 --> 00:35:08,849
+.Lower shortest four edges.
+. Lower shortest four edges; why not five?
+
+323
+00:35:08,849 --> 00:35:13,519
+..
+. Yes, but that would give me what; 300 plus
+
+324
+00:35:13,519 --> 00:35:18,179
+500, even assuming that I will look at
+only the diagonal matrix, I mean, triangular
+
+325
+00:35:18,179 --> 00:35:24,679
+matrix; 300 plus 500 plus 600 plus 700. That
+would, you know, something like that, essentially.
+
+326
+00:35:24,679 --> 00:35:31,489
+But, all my desire is to get as high an estimate
+as possible. So, the general idea is that
+
+327
+00:35:31,489 --> 00:35:34,680
+I
+want as high an estimate as possible, but
+
+328
+00:35:34,681 --> 00:35:37,300
+it is should be a lower bound, essentially;
+these
+
+329
+00:35:37,300 --> 00:35:42,230
+two things, remember. So, there are, of course,
+I know that there are more than one way
+
+330
+00:35:42,230 --> 00:35:45,829
+of doing it. So, we will just use one method
+here, which is that we will take the lowest
+
+331
+00:35:45,829 --> 00:35:55,549
+two elements from every row, essentially.
+So, I will take 300 plus 600 from here. I
+
+332
+00:35:55,550 --> 00:36:00,310
+will
+get 900 from this row. I will take 300 plus
+
+333
+00:36:00,309 --> 00:36:08,309
+500; I will get 800 from this row. Then, these
+two, which will give me 1100 from this row;
+
+334
+00:36:08,309 --> 00:36:20,000
+7 plus 9 is 1600 from this row, and 12 plus
+15, which is 2700 from this row. I will sum
+
+335
+00:36:20,000 --> 00:36:26,710
+them up and divide the answer by 2.
+
+336
+00:36:26,710 --> 00:36:41,108
+.What is the rationale behind this; taking
+two lowest from every row? Yes. In a tour,
+
+337
+00:36:41,108 --> 00:36:45,670
+every city will have two edges; one incoming
+and one outgoing, if you can distinguish
+
+338
+00:36:45,670 --> 00:36:52,519
+between them. We are sort of being optimistic
+here, and saying that the two edges are the
+
+339
+00:36:52,519 --> 00:36:58,619
+lowest cost to edges, because they cannot
+be better than that. So, if the lowest cost
+
+340
+00:36:58,619 --> 00:37:01,269
+two
+edges are taken from each row and we sum that
+
+341
+00:37:01,269 --> 00:37:06,318
+up, and divide by 2, because we do not
+want 10 edges; we want only 5 edges; we will
+
+342
+00:37:06,318 --> 00:37:16,960
+get an estimate of the lower bound
+essentially. So, we follow this similar, this
+
+343
+00:37:16,960 --> 00:37:26,750
+high level algorithm, we follow; refine the
+cheapest cost partial solution. In this case,
+
+344
+00:37:26,750 --> 00:37:30,989
+we have only one at this moment. So, we will
+refine that, till the solution is fully refined.
+
+345
+00:37:30,989 --> 00:37:38,179
+Let us say, we use some heuristic and we say,
+that we will add a cheap edge to the tour,
+
+346
+00:37:38,179 --> 00:37:41,929
+essentially. So, the cheap edge here is, for
+example; between Chennai and Bangalore.
+
+347
+00:37:41,929 --> 00:37:42,929
+.
+
+348
+00:37:42,929 --> 00:37:50,449
+So, I have now, I will just draw it a little
+bit this side, because I want to write things
+
+349
+00:37:50,449 --> 00:37:53,689
+here.
+I have two successors. This one, I will call
+
+350
+00:37:53,690 --> 00:38:02,280
+C B, and the other, I will call C B bar. By
+this, I mean, I have portioned the whole set
+
+351
+00:38:02,280 --> 00:38:10,800
+into two subsets; in one subset, which I call
+C B; the Chennai Bangalore segment will always
+
+352
+00:38:10,800 --> 00:38:14,410
+be present; and in the other subset, it
+will always be absent, essentially.
+
+353
+00:38:14,409 --> 00:38:21,399
+Now, I want estimated cost of these two. So,
+for every node, my search three, I need an
+
+354
+00:38:21,400 --> 00:38:30,639
+estimated cost, exactly like, what is happening
+here. Now, you can see that, let me write
+
+355
+00:38:30,639 --> 00:38:39,639
+it here; C B here, C B bar; let me write here,
+and C b here. Now, you can see that C B
+
+356
+00:38:39,639 --> 00:38:45,789
+.will not change, because I am going to include
+this lowest cost edge, I have already done
+
+357
+00:38:45,789 --> 00:38:50,360
+that in my original estimate. So, whatever
+was my original estimate, will continue there,
+
+358
+00:38:50,360 --> 00:39:03,210
+essentially. In that case, I can just copy
+these figures from here, but for C B bar,
+
+359
+00:39:03,210 --> 00:39:05,880
+I cannot
+do that; why? Because I have excluded the
+
+360
+00:39:05,880 --> 00:39:11,680
+edge C B from that set, essentially. So, I
+have
+
+361
+00:39:11,679 --> 00:39:17,960
+to find revise. I cannot choose 300, because
+in this, that node C, this thing; can
+
+362
+00:39:17,960 --> 00:39:31,639
+somebody tell me the value for this? I think
+so, we can use that. Divided by 2? 3550. So,
+
+363
+00:39:31,639 --> 00:39:39,389
+this cost is 3550, and this cost here, it
+will also be 3550. This cost is not going
+
+364
+00:39:39,389 --> 00:39:43,578
+to be that,
+because I cannot use this 300. I have to use
+
+365
+00:39:43,579 --> 00:39:49,690
+the next two edges, which means 600 and
+1000, which means, this will go up by 700.
+
+366
+00:39:49,690 --> 00:39:59,579
+So, I will write plus 700 here. I cannot use
+this here. So, I have to use this. Instead
+
+367
+00:39:59,579 --> 00:40:07,269
+of 900, it becomes 1600, which is plus 700
+here.
+
+368
+00:40:07,269 --> 00:40:19,929
+Instead of 800, this becomes 1400, which is
+plus 600. The rest will not change, because
+
+369
+00:40:19,929 --> 00:40:23,588
+I
+am not using that edge here, essentially.
+
+370
+00:40:23,588 --> 00:40:36,679
+So, that is 1300, and when I divide by 2,
+I will get 650. So, this will be plus 650.
+
+371
+00:40:36,679 --> 00:40:40,889
+So, I
+have a way of devising edges. What have I
+
+372
+00:40:40,889 --> 00:40:54,618
+done? I have said that; so, this is Chennai,
+then, this is Bangalore; this is Hyderabad;
+
+373
+00:40:54,619 --> 00:40:59,990
+on some scale, this is Mumbai; this is Delhi;
+I
+
+374
+00:40:59,989 --> 00:41:06,969
+have said I am going to add this edge, and
+that is my set C B. So, all towards in which,
+
+375
+00:41:06,969 --> 00:41:13,389
+this segment is there, I will call C B, and
+all towards in which, this segment is not
+
+376
+00:41:13,389 --> 00:41:16,058
+there, I
+will call C B prime. Out of these, C B seems
+
+377
+00:41:16,059 --> 00:41:20,619
+to be better. So, I will refine that. Let
+us
+
+378
+00:41:20,619 --> 00:41:24,160
+say, I follow this heuristic. It is not necessary
+to follow this heuristic, but let us say,
+
+379
+00:41:24,159 --> 00:41:26,319
+we
+will follow this heuristic, which means, always
+
+380
+00:41:26,320 --> 00:41:33,530
+pick the cheapest available edge. It is like
+a DD algorithm, which tries to build cheapest
+
+381
+00:41:33,530 --> 00:41:39,400
+tour, essentially. So, I look around this
+graph here, and the cheapest tour, I can find
+
+382
+00:41:39,400 --> 00:41:46,460
+next is 500, which is between Hyderabad
+and Bangalore. So, what am I doing now? I
+
+383
+00:41:46,460 --> 00:42:00,389
+am saying, add this edge, and I am refining
+this graph. So, one side will be called Hyderabad
+
+384
+00:42:00,389 --> 00:42:06,079
+and Bangalore, and the other side
+would be called its compliment. So, the way
+
+385
+00:42:06,079 --> 00:42:14,971
+to interpret this node is that, this edge
+H B
+
+386
+00:42:14,971 --> 00:42:24,130
+prime node is, that all those tours, which
+contain the Bangalore Chennai segment, but
+
+387
+00:42:24,130 --> 00:42:28,530
+exclude the Hyderabad Bangalore segment, and
+the way to interpret this node is, all
+
+388
+00:42:28,530 --> 00:42:35,000
+those tours, which contain both the Chennai
+Bangalore, and the Hyderabad Bangalore
+
+389
+00:42:35,000 --> 00:42:39,480
+segment, essentially.
+So, that is what I have drawn here. All tours,
+
+390
+00:42:39,480 --> 00:42:45,369
+which have these two edges is this. Now,
+let us find an estimate for this. How do I
+
+391
+00:42:45,369 --> 00:42:48,250
+do this? At this point, I should mention,
+before
+
+392
+00:42:48,250 --> 00:42:55,969
+we do this. This process of computing the
+estimates is computationally, intensive
+
+393
+00:42:55,969 --> 00:43:00,909
+.process, in the sense, you have to spend
+some computation time, looking at this matrix
+
+394
+00:43:00,909 --> 00:43:07,159
+and doing something. But there is also that
+you can do a certain amount of reasoning;
+
+395
+00:43:07,159 --> 00:43:15,029
+something, that we would call constraint propagation,
+in the process of doing estimates.
+
+396
+00:43:15,030 --> 00:43:27,960
+Let me illustrate that. Let us, first of all,
+because we have chosen the cheapest edge,
+
+397
+00:43:27,960 --> 00:43:31,849
+then
+for this nod H B, I am anyway going to include
+
+398
+00:43:31,849 --> 00:43:36,859
+both these. So, it is not going to affect
+my cost. So, the cost for H B is not going
+
+399
+00:43:36,858 --> 00:43:45,090
+to change. You should just convince yourself
+that is going to be 3550 also, but this cost
+
+400
+00:43:45,090 --> 00:43:48,570
+for H B prime; that is going to change. So,
+let
+
+401
+00:43:48,570 --> 00:43:57,990
+us look at the changes, essentially. So, one
+thing is, of course, that you cannot use this
+
+402
+00:43:57,989 --> 00:44:04,779
+Hyderabad Bangalore link, which is; this is
+Hyderabad; this is Bangalore. So, this link,
+
+403
+00:44:04,780 --> 00:44:12,330
+I
+cannot use, just as we did first C B prime,
+
+404
+00:44:12,329 --> 00:44:15,079
+for this nod also, we cannot use this link.
+So,
+
+405
+00:44:15,079 --> 00:44:24,130
+which means now, this will become 300 plus
+900, which is 1200. Originally, I had 800,
+
+406
+00:44:24,130 --> 00:44:33,559
+now it is 1200. So, if you compare with this
+as a basis, I get plus 400 here.
+
+407
+00:44:33,559 --> 00:44:42,089
+Likewise, here, I cannot choose this 500.
+So, it becomes 600 plus 700. Originally, it
+
+408
+00:44:42,088 --> 00:44:46,299
+was
+1100; now, it is 1300. So, it is plus 100
+
+409
+00:44:46,300 --> 00:44:51,039
+here. So, I am just adding the incremental
+cost.
+
+410
+00:44:51,039 --> 00:45:04,989
+Only these two rows will change; plus 200,
+but coming back to this, how; see, we have
+
+411
+00:45:04,989 --> 00:45:09,639
+this desire, and we will see this in the next
+class, that having an accurate estimate helps,
+
+412
+00:45:09,639 --> 00:45:15,549
+or if not in the next class, then, the next
+class after that; that the higher the estimate,
+
+413
+00:45:15,550 --> 00:45:19,510
+the
+better for us. Intuitively, it means that
+
+414
+00:45:19,510 --> 00:45:21,750
+the higher my estimate is, the more likely
+it is that
+
+415
+00:45:21,750 --> 00:45:29,969
+it will get excluded from a search space,
+essentially; if I find a cheaper solution.
+
+416
+00:45:29,969 --> 00:45:36,259
+Now, if
+you look at the estimate for this, I have
+
+417
+00:45:36,260 --> 00:45:48,210
+this Chennai Hyderabad section; Chennai
+Hyderabad is this one; this 600, and this
+
+418
+00:45:48,210 --> 00:45:54,199
+600. Now, if I do a little bit of reasoning,
+how
+
+419
+00:45:54,199 --> 00:45:58,818
+constraint propagation, and what is the constraint
+I am propagating is, that I want to find
+
+420
+00:45:58,818 --> 00:46:05,300
+the complete tour, which means that I cannot
+have a cycle, which is smaller than length
+
+421
+00:46:05,300 --> 00:46:11,000
+5, in this example. I cannot have a cycle
+of length C. So, if I am going to have that
+
+422
+00:46:11,000 --> 00:46:25,489
+set H
+B, which includes, actually, it means that
+
+423
+00:46:25,489 --> 00:46:29,319
+this estimate is not correct, even though,
+I
+
+424
+00:46:29,320 --> 00:46:41,760
+wrote it there. Why is it not correct? Because
+I cannot include in my estimate, this
+
+425
+00:46:41,760 --> 00:46:48,950
+Hyderabad Chennai sector, why, because I have
+already included C B in that path, and
+
+426
+00:46:48,949 --> 00:46:55,460
+then, in this path. So, I am talking of this
+node here, and I am saying that even, the
+
+427
+00:46:55,460 --> 00:47:00,480
+estimate of this node will go up. The reason,
+why that will go up is that having included
+
+428
+00:47:00,480 --> 00:47:07,369
+C B, and have having included H B, I am forced
+to exclude H C from there, because
+
+429
+00:47:07,369 --> 00:47:13,139
+otherwise, I would have a cycle of length
+C, which means I cannot use this value for
+
+430
+00:47:13,139 --> 00:47:20,739
+computing this; for this one; for computing
+the estimate of that node, I cannot use this
+
+431
+00:47:20,739 --> 00:47:27,109
+value, 600. Instead, I will be forced to use
+the next value, which is 300 plus 1000, which
+
+432
+00:47:27,110 --> 00:47:31,838
+.has become 1300, essentially, which is, of
+course, more reasoning than what I did so
+
+433
+00:47:31,838 --> 00:47:36,420
+far.
+What I did so far was, if I am including an
+
+434
+00:47:36,420 --> 00:47:43,260
+edge, I cannot count at, when I am using those
+bar kind of node, essentially, because they
+
+435
+00:47:43,260 --> 00:47:45,520
+are excluded, sorry, if I am excluding an
+edge,
+
+436
+00:47:45,519 --> 00:47:49,909
+then I cannot count them.
+But now, we see that there is certain propagation,
+
+437
+00:47:49,909 --> 00:47:52,739
+which takes place that if I am
+including this edge, and if I am including
+
+438
+00:47:52,739 --> 00:48:04,769
+this edge; I 
+cannot count this edge. So, let me
+
+439
+00:48:04,769 --> 00:48:10,259
+just draw a zigzag line to say, that I cannot
+count that line. Why, because then, I would
+
+440
+00:48:10,260 --> 00:48:20,880
+have a cycle. I can go to more extent to do
+more reasoning, to get better estimates, and
+
+441
+00:48:20,880 --> 00:48:26,180
+what do I mean by better estimates? Higher
+estimates, which means, if you cannot
+
+442
+00:48:26,179 --> 00:48:31,329
+include something, then do not include it.
+That something, in this example, is 600 here,
+
+443
+00:48:31,329 --> 00:48:37,048
+which is a low cost in this row, also in this
+row, but I cannot use it in my estimates.
+
+444
+00:48:37,048 --> 00:48:40,030
+So, I
+must use something else, which will give me
+
+445
+00:48:40,030 --> 00:48:42,530
+a higher estimate. Another edge here, that
+I
+
+446
+00:48:42,530 --> 00:48:48,109
+cannot include, after I have included Bangalore
+Chennai and Bangalore Hyderabad, there
+
+447
+00:48:48,108 --> 00:48:56,779
+are two more edges that I cannot add, because
+I want a tour, and the tour has this
+
+448
+00:48:56,780 --> 00:49:03,710
+property; that every city is visited, exactly
+once, which implies that every city has
+
+449
+00:49:03,710 --> 00:49:09,409
+exactly, two edges incident on it. I already
+have Bangalore, which has two edges incident
+
+450
+00:49:09,409 --> 00:49:18,858
+on it in this set. So, I cannot have this
+set. Neither, can I have this set.
+
+451
+00:49:18,858 --> 00:49:25,190
+So, you can see that problem solving is does
+not necessarily, one prompt strategy, that
+
+452
+00:49:25,190 --> 00:49:31,139
+you just do search and only search, essentially.
+Later on, we will see that it is often
+
+453
+00:49:31,139 --> 00:49:35,690
+useful to combine search with reasoning, essentially;
+some amount of reasoning and
+
+454
+00:49:35,690 --> 00:49:40,088
+some amount of search, and in the process
+you will try to cut down on the search space,
+
+455
+00:49:40,088 --> 00:49:45,539
+more and more, essentially. What do we gain
+by excluding this? We get more accurate
+
+456
+00:49:45,539 --> 00:49:52,699
+estimates. For this tour called H B, which
+is the set of all tours, which include; now,
+
+457
+00:49:52,699 --> 00:49:55,689
+we
+can describe it more specifically, saying
+
+458
+00:49:55,690 --> 00:49:58,818
+that H B stands for the set of all tours,
+which
+
+459
+00:49:58,818 --> 00:50:08,369
+include that path here, that C B H, the H
+B H and which excludes, H C D B and M C,
+
+460
+00:50:08,369 --> 00:50:14,219
+essentially. So, already we have narrowed
+down our choices and made better estimates.
+
+461
+00:50:14,219 --> 00:50:21,919
+So, this is the same thing that we were doing
+here; refining the least cost partial solution.
+
+462
+00:50:21,920 --> 00:50:29,349
+We started with 3550 and then, we got two
+solutions; one was 3550, and the other one
+
+463
+00:50:29,349 --> 00:50:33,880
+was a bit more than that. We refine this;
+we get these two solutions. We have not
+
+464
+00:50:33,880 --> 00:50:38,660
+computed the actual cost for this, but once
+we do that, we will refine them. At some
+
+465
+00:50:38,659 --> 00:50:47,539
+point, we will get a complete solution. For
+example, in this problem, if you want to add
+
+466
+00:50:47,539 --> 00:50:56,639
+one more edge, let us say, this edge; Hyderabad
+Mumbai. Then, actually, you have
+
+467
+00:50:56,639 --> 00:51:02,109
+.solved the problem, completely, because then,
+after that, you do not have any more
+
+468
+00:51:02,110 --> 00:51:05,490
+choices left. If you are going to include
+these three edges, then you have to visit
+
+469
+00:51:05,489 --> 00:51:08,909
+Delhi
+once. Once you have to visit Delhi from Mumbai,
+
+470
+00:51:08,909 --> 00:51:11,920
+and once from Chennai. So, the rest
+will be four, essentially.
+
+471
+00:51:11,920 --> 00:51:17,490
+So, after we have done the search, we have
+found a complete tour. After we added this
+
+472
+00:51:17,489 --> 00:51:33,179
+search; below H B, if we add M H, and if this
+node M H, which includes these three
+
+473
+00:51:33,179 --> 00:51:39,949
+edges, happens to be the lowest cost node
+in my search space. Then, I can terminate.
+
+474
+00:51:39,949 --> 00:51:45,919
+That is the shortest path. So, you must convince
+yourself, that this termination criterion
+
+475
+00:51:45,920 --> 00:51:49,750
+is
+sound. By that, I mean that it will guarantee
+
+476
+00:51:49,750 --> 00:51:54,780
+an optimal solution, essentially. One of the
+reasons behind that is, that I have said that
+
+477
+00:51:54,780 --> 00:52:09,559
+we are going to use lower bounding estimates
+for estimating the cost of a solution.
+
+478
+00:52:09,559 --> 00:52:15,859
+You can see that there is some similarity
+of Branch and Bound with best first search,
+
+479
+00:52:15,858 --> 00:52:20,969
+essentially. You can view best first search
+as doing Branch and Bound, with the
+
+480
+00:52:20,969 --> 00:52:28,149
+condition that all edge cost are equal, essentially.
+That will force the; if all edge cost are
+
+481
+00:52:28,150 --> 00:52:32,838
+equal, then you will just go down level by
+level, because the first level; the cost is
+
+482
+00:52:32,838 --> 00:52:34,880
+1, the
+second level; the cost is 2, third level;
+
+483
+00:52:34,880 --> 00:52:38,460
+the cost is 3, and so on and so forth. So,
+depth first
+
+484
+00:52:38,460 --> 00:52:43,889
+search is a special case of Branch and Bound
+where, all the edge cost are equal. When
+
+485
+00:52:43,889 --> 00:52:50,118
+the edge cost are not equal, then Branch and
+Bound is a specific specialization of best
+
+486
+00:52:50,119 --> 00:53:04,380
+first search, sorry, it is a generalization
+of Depth first search. So, you have to convince
+
+487
+00:53:04,380 --> 00:53:10,940
+yourself that this will give you an optimal
+solution, but it does not have this. Of course,
+
+488
+00:53:10,940 --> 00:53:12,659
+I
+said we are going to use a heuristic that
+
+489
+00:53:12,659 --> 00:53:18,699
+uses a minimum cost solution, but it does
+not
+
+490
+00:53:18,699 --> 00:53:20,149
+have a sense of direction, essentially.
+
+491
+00:53:20,150 --> 00:53:21,150
+..
+
+492
+00:53:21,150 --> 00:53:26,318
+So, let me illustrate that with a very small
+example, that if you are doing this city map
+
+493
+00:53:26,318 --> 00:53:35,619
+kind of a thing, and if this is your start
+node and this is the map that you are looking
+
+494
+00:53:35,619 --> 00:53:40,099
+at,
+and this, let us say, this is to scale, which
+
+495
+00:53:40,099 --> 00:53:49,430
+means a length of the edge, that I am drawing
+is actually, the length of the edge. So, let
+
+496
+00:53:49,429 --> 00:53:51,318
+us say, you have some such place. You add
+this
+
+497
+00:53:51,318 --> 00:53:57,179
+start node and then, of course, there is one
+node here, let us say and then, some nodes
+
+498
+00:53:57,179 --> 00:54:05,389
+here, and let us say, this happens to be a
+goal node. What will Branch and Bound do?
+
+499
+00:54:05,389 --> 00:54:15,750
+What is the behavior that Branch and Bound
+will exhibit? It will explore all this part
+
+500
+00:54:15,750 --> 00:54:21,110
+of
+the graph, because that is what its mandate
+
+501
+00:54:21,110 --> 00:54:24,980
+is; extend the cheapest partial solution.
+All
+
+502
+00:54:24,980 --> 00:54:28,280
+the cheapest solutions are on this part of
+the graph. So, it will explore this; it will
+
+503
+00:54:28,280 --> 00:54:30,440
+explore
+this; it will explore this; and all possible
+
+504
+00:54:30,440 --> 00:54:36,510
+combinations, which of course, has an
+intelligent view or you would see is not a
+
+505
+00:54:36,510 --> 00:54:41,351
+very bright thing to do, essentially.
+It will guarantee eventually, it will find
+
+506
+00:54:41,351 --> 00:54:43,608
+me the optimal solution. For example, if there
+is
+
+507
+00:54:43,608 --> 00:54:49,650
+another path from here, which goes like this,
+which is longer; it will find me the shortest
+
+508
+00:54:49,650 --> 00:54:57,420
+path, but after doing a lot of unnecessary
+and useless search, in this part of the map,
+
+509
+00:54:57,420 --> 00:55:03,440
+essentially. It does not have a sense of direction.
+We are focused on this part, finding
+
+510
+00:55:03,440 --> 00:55:08,909
+optimal solutions, and in the process, we
+have forgotten about this part; finding solutions
+
+511
+00:55:08,909 --> 00:55:16,690
+faster. So, in the next class, we will combine
+these two together. We will see that how we
+
+512
+00:55:16,690 --> 00:55:22,179
+can combine Branch and Bound with, this was
+best first, if you remember; best first
+
+513
+00:55:22,179 --> 00:55:23,179
+search.
+
+514
+00:55:23,179 --> 00:55:27,579
+.We will introduce a heuristic function back
+again, and try to use this diastase frame
+
+515
+00:55:27,579 --> 00:55:30,199
+of
+working on a graph to look at an algorithm,
+
+516
+00:55:30,199 --> 00:55:37,098
+which is a very well known algorithm called
+A star algorithm. So, I will stop here and
+
+517
+00:55:37,099 --> 00:55:39,430
+we will take this A star algorithm, up in
+the
+
+518
+00:55:39,429 --> 00:55:40,429
+next class.
+
+519
+00:55:40,429 --> 00:55:50,429
+.
+

@@ -1,0 +1,1661 @@
+﻿1
+00:00:10,800 --> 00:00:28,410
+With our objective of escaping local maxima
+or local optima. So, remember our
+
+2
+00:00:28,410 --> 00:00:42,750
+algorithm for hill climbing 
+and 
+
+3
+00:00:42,750 --> 00:00:57,149
+it basically says that, if c is a current
+node 
+
+4
+00:00:57,149 --> 00:01:01,929
+and if n is a
+next node, whether you should move from a
+
+5
+00:01:01,929 --> 00:01:23,750
+node to a next node. And algorithm
+essentially says that, if the best node that
+
+6
+00:01:23,750 --> 00:01:36,650
+you get from move gen of c, which is basically
+in. So, you look at all the neighborhood of
+
+7
+00:01:36,650 --> 00:01:42,640
+c, c is a current node and take the best
+amongst them, max or min value depending on
+
+8
+00:01:42,640 --> 00:01:56,200
+what you are doing. And if that is better
+than c then you basically move to c and you
+
+9
+00:01:56,200 --> 00:02:01,090
+put this in a loop essentially.
+So, it basically looks at the neighborhood
+
+10
+00:02:01,090 --> 00:02:06,609
+and so keeps this at problem in mind, all
+the T
+
+11
+00:02:06,609 --> 00:02:10,689
+S C problem in mind, where we are looking
+at a candidate solution and the neighboring
+
+12
+00:02:10,689 --> 00:02:18,900
+candidates solutions essentially. Now, what
+was happening with this algorithm is that,
+
+13
+00:02:18,900 --> 00:02:23,280
+it
+along some let us say one dimensional problem,
+
+14
+00:02:23,280 --> 00:02:36,819
+you would end up here and stop here,
+because all neighbors are worse in this and
+
+15
+00:02:36,819 --> 00:02:43,459
+when in practices real optimum may be here
+or some were else bit further away essentially.
+
+16
+00:02:43,460 --> 00:02:51,310
+.So, what do you want to now, look at this
+is, how do we explore this space more? So,
+
+17
+00:02:51,310 --> 00:02:59,460
+that we do not get stuck at a local optima,
+in this case a local maxima essentially. So,
+
+18
+00:02:59,460 --> 00:03:15,710
+what hill climbing does is exploitation 
+of the gradient, it basically follows the
+
+19
+00:03:15,710 --> 00:03:20,670
+gradient. If
+there is a neighbor which is better, it goes
+
+20
+00:03:20,669 --> 00:03:26,789
+to that, otherwise, it gets stuck.
+.
+
+21
+00:03:26,789 --> 00:03:47,340
+What explores, what this escape requires is
+the ability for exploration. So, the simplest,
+
+22
+00:03:47,340 --> 00:03:53,020
+so first let us look at the deterministic
+algorithm, which will allow us to explore
+
+23
+00:03:53,020 --> 00:03:55,960
+more of
+the space and what do you mean by explores,
+
+24
+00:03:55,960 --> 00:04:02,659
+that we are allowed to go against the
+heuristic function. It does not means that
+
+25
+00:04:02,659 --> 00:04:04,520
+you can only go to better states; you can
+go to
+
+26
+00:04:04,520 --> 00:04:07,630
+states which are not necessarily better. So,
+of course then we have to work out the
+
+27
+00:04:07,629 --> 00:04:09,340
+termination criteria and things like that.
+
+28
+00:04:09,340 --> 00:04:10,340
+..
+
+29
+00:04:10,340 --> 00:04:28,069
+So, let us look at the variation of this algorithm,
+which says that n, we get the best as
+
+30
+00:04:28,069 --> 00:04:57,479
+before, but we will introduce another feature,
+which is allowable or allowed 
+
+31
+00:04:57,478 --> 00:05:01,740
+and we just
+simply put this in the loop. So, we are not
+
+32
+00:05:01,740 --> 00:05:03,759
+checking whether it is better or not. Here,
+we
+
+33
+00:05:03,759 --> 00:05:11,939
+have that condition, if the best neighbor
+is better than c, then you move from n to
+
+34
+00:05:11,939 --> 00:05:14,770
+c.
+Here, we are simply saying just move to the
+
+35
+00:05:14,769 --> 00:05:20,538
+best neighbor, but not just a best neighbor,
+but something called allowed essentially,
+
+36
+00:05:20,538 --> 00:05:33,389
+which we will look at now essentially.
+So, before we come to what is allowed means,
+
+37
+00:05:33,389 --> 00:05:36,829
+it basically means that, you can move to
+the best neighbor, which means that, even
+
+38
+00:05:36,829 --> 00:05:42,959
+if you are at maxima, you can go to a
+neighbor, which is not better than that essentially.
+
+39
+00:05:42,959 --> 00:05:47,668
+So, that is the key first thing that you
+must remember essentially. Now, supposing
+
+40
+00:05:47,668 --> 00:05:54,079
+we wanted to allow this, that always go to
+the best neighbor, which the criteria that
+
+41
+00:05:54,079 --> 00:05:56,098
+you it does not have to be better than the
+current
+
+42
+00:05:56,098 --> 00:06:04,519
+node.
+Then how do we stop, that is one small problem,
+
+43
+00:06:04,519 --> 00:06:10,338
+but there is a bigger problem and the
+bigger problem pertains the fact, that if
+
+44
+00:06:10,338 --> 00:06:12,899
+I am stuck at this local maxima, how do I
+get to
+
+45
+00:06:12,899 --> 00:06:20,838
+that maxima essentially. So, the first problem
+of how do we stop, we will say that put
+
+46
+00:06:20,838 --> 00:06:35,838
+some other termination criteria. So, tell
+some, it can be simply time based or it can
+
+47
+00:06:35,838 --> 00:06:38,788
+be
+simply is that we are not finding a better
+
+48
+00:06:38,788 --> 00:06:41,079
+solution after a certain amount of time and
+so
+
+49
+00:06:41,079 --> 00:06:47,368
+on. You can always store the best.
+
+50
+00:06:47,369 --> 00:06:58,330
+.So, looking at in general in optimization
+terms, that in this process always keep track
+
+51
+00:06:58,329 --> 00:07:00,588
+of
+the best solution that you have found ever,
+
+52
+00:07:00,588 --> 00:07:04,059
+even if you have moved away from it,
+remember that, that was the best solution.
+
+53
+00:07:04,059 --> 00:07:05,499
+So, always keep track of the best solution,
+so
+
+54
+00:07:05,499 --> 00:07:10,849
+that you can always do. Given that, we are
+now exploring the states place and this
+
+55
+00:07:10,848 --> 00:07:16,709
+algorithm says that for example, in this case,
+in a one dimensional word, they are two
+
+56
+00:07:16,709 --> 00:07:24,149
+neighbors here and here. So, I am allowed
+to move to one of them essentially.
+
+57
+00:07:24,149 --> 00:07:27,300
+In a larger space of course, there are many
+neighbors, so you can move to the best
+
+58
+00:07:27,300 --> 00:07:31,788
+amongst them essentially, but to illustrate
+the point, illustrate the difficulty that
+
+59
+00:07:31,788 --> 00:07:35,168
+this
+algorithm has supposing I am allowed to, so
+
+60
+00:07:35,168 --> 00:07:40,038
+I came from here to here. Then I am allowed
+to move here that is allowed, because I am
+
+61
+00:07:40,038 --> 00:07:41,408
+no longer saying that, it should be better
+than
+
+62
+00:07:41,408 --> 00:07:50,579
+what I am in, what will happen in the next
+step. Next step, this will have these two
+
+63
+00:07:50,579 --> 00:07:57,779
+neighbors, this one and this one, what will
+the algorithm do?
+
+64
+00:07:57,779 --> 00:08:01,750
+..
+No, that we, that is the independent thing,
+
+65
+00:08:01,750 --> 00:08:04,439
+we just now talking about the behavior of
+the
+
+66
+00:08:04,439 --> 00:08:07,050
+algorithm, where will it go next.
+..
+
+67
+00:08:07,050 --> 00:08:12,418
+Unfortunately, it will go back to this place,
+even if it takes one step down, but this one
+
+68
+00:08:12,418 --> 00:08:16,299
+say that, still that best criteria is still
+there, go to the best neighbor, so that one
+
+69
+00:08:16,300 --> 00:08:18,600
+is still the
+best neighbor essentially. So, it will go
+
+70
+00:08:18,600 --> 00:08:26,080
+back there, how do we get along this that
+is
+
+71
+00:08:26,079 --> 00:08:29,678
+where this allowed thing is coming in. So,
+remember we had this idea for a close list,
+
+72
+00:08:29,678 --> 00:08:33,908
+when we started doing the states space search
+and what close list said that, do not go
+
+73
+00:08:33,908 --> 00:08:38,668
+back to the same node again that you have
+seen, so what we could do.
+
+74
+00:08:38,668 --> 00:09:01,020
+So, we are looking at this now, one way to
+do this is to maintain a circular list, maintain
+
+75
+00:09:01,020 --> 00:09:09,620
+a circular cube of some finite size. So, you
+know what is a circular cube, that you keep
+
+76
+00:09:09,620 --> 00:09:15,269
+overwriting as you go round and round the
+circle you allow to overwrite, but some k
+
+77
+00:09:15,269 --> 00:09:20,179
+number of elements will always be stored in
+the cube, where you can you are allowed to
+
+78
+00:09:20,179 --> 00:09:25,399
+overwrite. So, it is, this is like a short
+term memory. It is saying that these are the
+
+79
+00:09:25,399 --> 00:09:28,259
+last k
+nodes that I went to and I am not allowed
+
+80
+00:09:28,259 --> 00:09:32,769
+to go back to them, but I can I am allowed
+to
+
+81
+00:09:32,769 --> 00:09:35,289
+go back to any other neighbor.
+
+82
+00:09:35,289 --> 00:09:36,289
+..
+
+83
+00:09:36,289 --> 00:09:43,429
+So, what with this allowed factor, what we
+are really doing is that, given a node c that
+
+84
+00:09:43,429 --> 00:09:47,989
+we
+start with, we generate all the successors,
+
+85
+00:09:47,990 --> 00:09:59,830
+all the neighbors, from this neighbor we
+disallow some. So, we say this move is not
+
+86
+00:09:59,830 --> 00:10:05,940
+allowed, this move is not allowed and this
+move is not allowed. So, this is that allowed
+
+87
+00:10:05,940 --> 00:10:26,209
+thing that we are trying to do here, but from
+the remaining move to the best one. Another
+
+88
+00:10:26,208 --> 00:10:35,958
+way of doing, this is the following that keep
+track of what moves you made in the recent
+
+89
+00:10:35,958 --> 00:10:58,000
+past essentially. So, for example if you are
+doing S A T and let us say for simplicity
+
+90
+00:10:58,000 --> 00:10:59,950
+sake that, you are changing only one bit at
+the
+
+91
+00:10:59,950 --> 00:11:03,509
+time.
+So, essentially move says that k in the highest
+
+92
+00:11:03,509 --> 00:11:12,140
+bit where I could be any bit essentially.
+If
+
+93
+00:11:12,140 --> 00:11:43,328
+a bit is changed in the last t moves then
+disallow it. Notice that, this is slightly
+
+94
+00:11:43,328 --> 00:11:46,250
+different
+from maintaining a closed queue. In a close
+
+95
+00:11:46,250 --> 00:11:51,689
+list, we are maintaining our candidates and
+saying we will not generate the same candidate
+
+96
+00:11:51,690 --> 00:11:56,480
+again. In this example, we are saying
+that, if we are change, let us say the fifth
+
+97
+00:11:56,480 --> 00:12:03,019
+bit now, then for the next t moves, I am not
+allowed to change that fifth bit essentially.
+
+98
+00:12:03,019 --> 00:12:12,110
+So, what will happen, I can maintain for
+example, a memory and array called M, which
+
+99
+00:12:12,110 --> 00:12:17,960
+will start with 0 for everything that is one
+way of doing it.
+
+100
+00:12:17,960 --> 00:12:33,290
+Let us say, I have a 9 bit problem, 9 bit
+S A T. So, how many does this have 3, 4, 7
+
+101
+00:12:33,289 --> 00:12:37,649
+let
+me add 2 more, I have a 9 bit S A T like this.
+
+102
+00:12:37,649 --> 00:12:44,740
+I can change any one of those 9 bits and
+move to the best amongst them. Now, supposing
+
+103
+00:12:44,740 --> 00:12:48,570
+I have change the fourth bit that is the
+
+104
+00:12:48,570 --> 00:12:56,028
+.best, that I am allowing to do. So, what
+am I doing, I have a valuation function for
+
+105
+00:12:56,028 --> 00:13:01,299
+every
+node or every candidate solution, I have a
+
+106
+00:13:01,299 --> 00:13:03,588
+valuation function and we said that for S
+A T,
+
+107
+00:13:03,589 --> 00:13:07,471
+it could be the number of clauses satisfied
+or something like that essentially. So, I
+
+108
+00:13:07,471 --> 00:13:11,230
+have a
+valuation function and I generate all this
+
+109
+00:13:11,230 --> 00:13:18,389
+neighbors and just move to the best amongst
+them, does not matter, whether it is better
+
+110
+00:13:18,389 --> 00:13:21,828
+or not, but I am allowed to move to the best
+amongst them.
+
+111
+00:13:21,828 --> 00:13:45,199
+So, if I change this, now let us say, so this
+t is called the tabu tenure and this algorithm
+
+112
+00:13:45,200 --> 00:13:58,189
+is
+actually called tabu search. So, this particular
+
+113
+00:13:58,188 --> 00:14:04,399
+spelling of tabu I mean, we are more use to
+taboo t a b o o, but it the meaning is still
+
+114
+00:14:04,399 --> 00:14:12,679
+the same. This comes from some I think Fiji
+Island or Tonga or somewhere, where they use
+
+115
+00:14:12,679 --> 00:14:14,439
+this spelling of the word. And basically,
+it
+
+116
+00:14:14,440 --> 00:14:21,870
+means disallowed essentially, it is a taboo
+move that you, you are not allowed to make
+
+117
+00:14:21,870 --> 00:14:36,450
+that moves essentially. So, if I am allowed
+to, if I decide on tabu tenure of t, let us
+
+118
+00:14:36,450 --> 00:14:39,709
+say in
+this example, let say 3 or something or 4
+
+119
+00:14:39,708 --> 00:14:40,708
+or something.
+.
+
+120
+00:14:40,708 --> 00:14:46,039
+Then if I have changed this one, I could say
+that make this 4, everything else remains
+
+121
+00:14:46,039 --> 00:14:52,778
+0.
+So, this is like an array, which tells me
+
+122
+00:14:52,778 --> 00:14:56,720
+whether I am allowed to change that bit or
+not, if
+
+123
+00:14:56,720 --> 00:15:00,778
+that value is non zero, I am not allowed to
+change only. If the value is 0, I am allowed
+
+124
+00:15:00,778 --> 00:15:02,980
+to
+change. So, after the first move I am allowed
+
+125
+00:15:02,980 --> 00:15:05,149
+not allowed to change the fourth bit, but
+I
+
+126
+00:15:05,149 --> 00:15:09,269
+am allowed to change any other bit. After
+the second move, this 4 will come down to
+
+127
+00:15:09,269 --> 00:15:10,438
+3
+
+128
+00:15:10,438 --> 00:15:15,990
+.automatically and some other bit. Supposing,
+I change this bit, this will become 4
+
+129
+00:15:15,990 --> 00:15:19,649
+everything else will remain the same.
+So, you understand what I am saying that,
+
+130
+00:15:19,649 --> 00:15:25,679
+this is that t equal to 1, this is t equal
+to 2, then
+
+131
+00:15:25,679 --> 00:15:34,919
+t equal to 3 not this t, we will use a term
+t t, which is a kind of a more standard term.
+
+132
+00:15:34,919 --> 00:15:39,019
+So,
+t t stands for tabu tenure. So, my tabu tenure
+
+133
+00:15:39,019 --> 00:15:41,659
+is 4 then and that is time, this t is time,
+the
+
+134
+00:15:41,659 --> 00:15:46,429
+first cycle, the second cycle, the third cycle.
+Then in this next cycle, this will become
+
+135
+00:15:46,429 --> 00:15:49,328
+2,
+this will become 3 and some other bit will
+
+136
+00:15:49,328 --> 00:15:54,549
+become 4 and eventually, this will become
+1
+
+137
+00:15:54,549 --> 00:16:04,208
+and then become 0, which is when I am allowed
+to change it essentially.
+
+138
+00:16:04,208 --> 00:16:09,698
+So, this will go to 2 meanwhile, this will
+go to 3 and so on. So, after having change
+
+139
+00:16:09,698 --> 00:16:13,458
+this
+here, then for 1, 2, 3, 4 cycles I am not
+
+140
+00:16:13,458 --> 00:16:16,638
+allowed to change it, but now it, the value
+is
+
+141
+00:16:16,639 --> 00:16:21,789
+become 0 I am allowed to change it essentially.
+There is just one way of implementing
+
+142
+00:16:21,789 --> 00:16:29,149
+this, you can insert simply for every bit
+keep a time stamp of when it was last changed
+
+143
+00:16:29,149 --> 00:16:33,549
+and do an explicit comparison with that, and
+decide whether you know, the current time
+
+144
+00:16:33,549 --> 00:16:38,639
+is more than four units from that time when
+it was changed, you could do it in either
+
+145
+00:16:38,639 --> 00:16:42,839
+ways actually. But, this is the kind of a
+standard way of doing this essentially.
+
+146
+00:16:42,839 --> 00:16:51,589
+So, for S A T you could maintain and array
+which traditionally we called it M, which
+
+147
+00:16:51,589 --> 00:17:00,660
+stands for memory, for T S P we could maintain
+a triangular matrix. So, this is 1 to 9 and
+
+148
+00:17:00,659 --> 00:17:06,009
+this is 1 to 9 for example, if it is a nine
+city problem and you could keep track of which
+
+149
+00:17:06,009 --> 00:17:13,949
+edge that, remember that every square in this
+will correspond to an edge. So, let us say
+
+150
+00:17:13,949 --> 00:17:19,070
+the seventh and the four, so the edge between
+7 and 4 that I have removed that or
+
+151
+00:17:19,069 --> 00:17:24,069
+something like that. So, I can keep track
+of that in a T S P like problem as well
+
+152
+00:17:24,069 --> 00:17:30,490
+essentially.
+So, basic idea in tabu search is to have this
+
+153
+00:17:30,490 --> 00:17:41,089
+notion that you do not allow moves we are
+made recently. So, that you do not go back
+
+154
+00:17:41,089 --> 00:17:45,009
+to the same local maxima from which you are
+trying to escape that is the basic motivation,
+
+155
+00:17:45,009 --> 00:17:51,079
+do not go back to the same maximum that
+would. Now, obviously if you look at this
+
+156
+00:17:51,079 --> 00:17:55,250
+way of doing tabu search that you are
+controlling which bits to change, then given
+
+157
+00:17:55,250 --> 00:18:01,769
+any two bits. So, for example, I start with
+let
+
+158
+00:18:01,769 --> 00:18:13,420
+us say bits, two bits which are 1 1 to start
+with and then this gets changed to 0 1
+
+159
+00:18:13,420 --> 00:18:16,800
+essentially.
+So, that means, I have changed the first bit
+
+160
+00:18:16,799 --> 00:18:22,649
+and this is some substring here, I have
+changed this bit, I am not allowed to change
+
+161
+00:18:22,650 --> 00:18:25,140
+it for four units. Then after this let us
+say I
+
+162
+00:18:25,140 --> 00:18:36,060
+.change this other one, 0 1 0, 0 0, I change
+the other bit as well. So, if I made this
+
+163
+00:18:36,059 --> 00:18:38,269
+two
+bits, where I change this bit, this substring
+
+164
+00:18:38,269 --> 00:18:42,690
+has become 0 1, then I change the other bit,
+this is become 0 0, I have lost the ability
+
+165
+00:18:42,690 --> 00:18:46,279
+to move to one combination which is the 1
+0
+
+166
+00:18:46,279 --> 00:18:50,809
+combination, because of this tabu, that I
+am doing that I am not allowed to change either
+
+167
+00:18:50,809 --> 00:18:55,200
+of this two bits for the next four rounds.
+I cannot change this to 1 0 that will not
+
+168
+00:18:55,200 --> 00:18:58,200
+be allowed essentially. So, I am moving I
+might
+
+169
+00:18:58,200 --> 00:19:03,180
+lose out on something, but in general, experimentally
+it has been found that, this tabu
+
+170
+00:19:03,180 --> 00:19:17,990
+search works well with these kinds of problem
+essentially, right. So, we just observe that,
+
+171
+00:19:17,990 --> 00:19:23,990
+you cannot move to this 1 0 from here essentially,
+what if that 1 0 really happen to be the
+
+172
+00:19:23,990 --> 00:19:30,799
+solution or something like that. So, actually
+the more detail tabu, I will search algorithm
+
+173
+00:19:30,799 --> 00:19:42,549
+allows you to make an exception to this barring
+of certain moves essentially.
+
+174
+00:19:42,549 --> 00:19:43,549
+.
+
+175
+00:19:43,549 --> 00:20:01,200
+And the exception can be made and then what
+is called as an aspiration criteria, which
+
+176
+00:20:01,200 --> 00:20:11,940
+confusion sometimes I get into spelling. So,
+the expression criteria’s says that, if
+
+177
+00:20:11,940 --> 00:20:15,299
+all
+allowed neighbors are bad. So, I will just
+
+178
+00:20:15,299 --> 00:20:24,919
+write all are bad by bad we means worse than
+current 
+
+179
+00:20:24,920 --> 00:21:03,590
+and a tabu move leads to in which is better
+than best, then allow the move. So,
+
+180
+00:21:03,589 --> 00:21:11,500
+obviously our goal is to optimize the valuation
+function or the objective function of that
+
+181
+00:21:11,500 --> 00:21:17,009
+we are working on and if we are getting access
+to a good move then we should not lose
+
+182
+00:21:17,009 --> 00:21:18,009
+it.
+
+183
+00:21:18,009 --> 00:21:21,910
+.So, this aspiration criteria says that, if
+all this allowed neighbors, the once which
+
+184
+00:21:21,910 --> 00:21:26,290
+are not
+crossed out are worse than my current node
+
+185
+00:21:26,289 --> 00:21:34,190
+c. And if one of those barred neighbors, a
+one of the tabu neighbors is better than the
+
+186
+00:21:34,190 --> 00:21:39,441
+best, by best I mean this thing that you store
+the best solution that you have found, if
+
+187
+00:21:39,441 --> 00:21:42,180
+I can find the node, which is better than
+this also,
+
+188
+00:21:42,180 --> 00:21:52,950
+than you allow that exception. So, tabu in
+general, recent moves are tabu, but we can
+
+189
+00:21:52,950 --> 00:22:00,630
+make an exception, if one of them in a bad
+situation, when the other moves are bad,
+
+190
+00:22:00,630 --> 00:22:05,440
+gives us a much better solution.
+So, for example, if let us say value of this
+
+191
+00:22:05,440 --> 00:22:11,340
+node is 27 according to some, let us say I
+have
+
+192
+00:22:11,339 --> 00:22:19,289
+a 50 clause S A T to solve and this know this
+satisfying 27 out of those 50 clauses and
+
+193
+00:22:19,289 --> 00:22:24,482
+all
+these nodes, which are disallowed or less
+
+194
+00:22:24,482 --> 00:22:27,019
+than 27. And if these one of them happens
+to
+
+195
+00:22:27,019 --> 00:22:33,259
+be let us say 40, somehow and the best that
+I have seen is only 35 or something like that.
+
+196
+00:22:33,259 --> 00:22:42,990
+Then I will allow this move and that is an
+aspiration criteria. So, again you can see
+
+197
+00:22:42,990 --> 00:22:45,670
+that
+somehow this design of such algorithms is
+
+198
+00:22:45,670 --> 00:22:47,509
+kind of you know little bit of an art, you
+are
+
+199
+00:22:47,509 --> 00:22:51,289
+trying to device algorithm, which will work
+which will give you good solutions and so
+
+200
+00:22:51,289 --> 00:22:57,069
+on.
+And what tabu search does is that, it basically
+
+201
+00:22:57,069 --> 00:23:05,480
+gives you a deterministic mechanism to
+say that you can go past, local maxima and
+
+202
+00:23:05,480 --> 00:23:09,700
+explore the state further essentially. So,
+it
+
+203
+00:23:09,700 --> 00:23:14,319
+does this by having this tabu tenure, which
+says that for a certain period of time do
+
+204
+00:23:14,319 --> 00:23:20,250
+not
+make the same move again essentially.
+
+205
+00:23:20,250 --> 00:23:21,250
+.
+
+206
+00:23:21,250 --> 00:23:27,420
+.Another feature which has sometimes been
+used is called the frequency based method.
+
+207
+00:23:27,420 --> 00:23:36,779
+So, I have a frequency table, so all these
+line bits. So, let us say this was changed
+
+208
+00:23:36,779 --> 00:23:40,559
+18
+times, this was changed 7 times, in 6 times
+
+209
+00:23:40,559 --> 00:23:47,129
+and so on essentially, how many times did
+I
+
+210
+00:23:47,130 --> 00:23:55,031
+change that bit essentially? So, I can also
+bios the algorithm towards moves, which have
+
+211
+00:23:55,030 --> 00:23:59,200
+been made less often essentially. So, for
+example, if somewhere here, there is a bit
+
+212
+00:23:59,200 --> 00:24:02,029
+which
+has been change only twice in my whole this
+
+213
+00:24:02,029 --> 00:24:08,359
+thing and everything else is large number
+of times.
+
+214
+00:24:08,359 --> 00:24:15,219
+Then I may want to say that try and change
+this bit and see, if something good comes
+
+215
+00:24:15,220 --> 00:24:17,660
+out
+of it. Remember that, what these numbers are,
+
+216
+00:24:17,660 --> 00:24:21,200
+these are the frequency of how many
+times you have changes that bit essentially.
+
+217
+00:24:21,200 --> 00:24:24,591
+This is simply like a counter, which tells
+you
+
+218
+00:24:24,590 --> 00:24:29,979
+whether you are allowed to change that bit
+or not. If you want to bios a algorithm,
+
+219
+00:24:29,980 --> 00:24:34,650
+opposite towards those areas which the heuristic
+function is not taking it to, why did you
+
+220
+00:24:34,650 --> 00:24:39,950
+not move this bit, because whenever this bit
+was generated, it is the noted generated was
+
+221
+00:24:39,950 --> 00:24:43,180
+not the best amongst the neighbors and so,
+it never got changed essentially.
+
+222
+00:24:43,180 --> 00:24:49,900
+So, if you want to push the search into that
+direction, you can bios the tabu algorithm
+
+223
+00:24:49,900 --> 00:24:53,640
+by
+sayings that modify your valuation function.
+
+224
+00:24:53,640 --> 00:25:01,210
+So, eval of n, let us call it eval prime of
+n is
+
+225
+00:25:01,210 --> 00:25:08,029
+eval of n, which is the function that we are
+using to compute the heuristic function that
+
+226
+00:25:08,029 --> 00:25:14,170
+we were calling, but the out, but we are calling
+it evaluation function. Because it
+
+227
+00:25:14,170 --> 00:25:21,140
+optimization community calls with an eval
+function minus some constant times
+
+228
+00:25:21,140 --> 00:25:38,050
+frequency of n, this is not very good notation,
+because n is really known and here it is a
+
+229
+00:25:38,049 --> 00:25:40,149
+bit that is being saying the index of the
+bit.
+
+230
+00:25:40,150 --> 00:25:48,080
+So, let me just call it frequency of b n,
+the bit which makes leads you to this n th
+
+231
+00:25:48,079 --> 00:25:53,250
+essentially. So, as long as it is clear, we
+will use some notation here. So, essentially
+
+232
+00:25:53,250 --> 00:25:58,910
+what
+it is saying is that, you are your moving
+
+233
+00:25:58,910 --> 00:26:02,910
+from c, you are considering this move from
+c to
+
+234
+00:26:02,910 --> 00:26:12,690
+n, from a node c to node n, when you are evaluating
+this node n, take into account. How
+
+235
+00:26:12,690 --> 00:26:17,130
+frequently this particular move has been made,
+which means which bit has been changes
+
+236
+00:26:17,130 --> 00:26:23,350
+and give a penalty for those bits, which have
+been change very often.
+
+237
+00:26:23,349 --> 00:26:28,829
+So, if the frequency is very high, the valuation
+value for the resulting node will be
+
+238
+00:26:28,829 --> 00:26:52,349
+decrease more, if the frequency is less than
+this. So, this is like a penalty, in our case
+
+239
+00:26:52,349 --> 00:26:55,819
+it is
+penalty for changing a bit too often, if you
+
+240
+00:26:55,819 --> 00:27:00,769
+are changing that bit all the time then this
+valuation function kind of penalize it and
+
+241
+00:27:00,769 --> 00:27:02,079
+says that, no, no you have changed this bit
+too
+
+242
+00:27:02,079 --> 00:27:10,879
+.many times. I will reduce evaluation values
+to by this amount essentially. So, in the
+
+243
+00:27:10,880 --> 00:27:12,920
+end
+of course, you can have this basic vanilla
+
+244
+00:27:12,920 --> 00:27:18,900
+tabu search than you can add the aspiration
+criteria to say that, sometimes you do not
+
+245
+00:27:18,900 --> 00:27:23,850
+make moves tabu.
+And then you can have general increasing bios
+
+246
+00:27:23,849 --> 00:27:35,500
+towards newer areas by saying that more
+frequent moves will be penalized essentially.
+
+247
+00:27:35,500 --> 00:27:46,150
+So, this was the deterministic approach to
+trying to escape local maxima. So, let us
+
+248
+00:27:46,150 --> 00:27:55,400
+move towards stochastic methods or
+randomized methods. So, what we have seen
+
+249
+00:27:55,400 --> 00:28:01,100
+so far is the deterministic approach to
+escaping from local maxima.
+
+250
+00:28:01,099 --> 00:28:02,099
+.
+
+251
+00:28:02,099 --> 00:28:22,679
+Let us look at stochastic or randomized method.
+So, we will look at couple of them, we
+
+252
+00:28:22,680 --> 00:28:38,541
+will start with some very simple thing today.
+So, the focus is still on exploration, how
+
+253
+00:28:38,540 --> 00:28:47,169
+can we make the search go onto newer areas?
+So, you must keep in mind this two aspects
+
+254
+00:28:47,170 --> 00:28:52,590
+of search, one is exploitation of the gradient,
+which is, what hill climbing does very
+
+255
+00:28:52,589 --> 00:28:57,699
+interesting, that it just looks at the neighborhood
+and goes to the best neighbor. What
+
+256
+00:28:57,700 --> 00:29:02,490
+tabu searched it was that it modify that little
+bit and allowed it to go to the best neighbor
+
+257
+00:29:02,490 --> 00:29:14,160
+even if it was not better than that.
+Exploration simply says that somehow you must
+
+258
+00:29:14,160 --> 00:29:25,230
+allow the algorithm to go into different
+areas. And what stochastic or randomize method
+
+259
+00:29:25,230 --> 00:29:32,870
+say is that give some degree of
+randomness to the movement. So, just imagine
+
+260
+00:29:32,869 --> 00:29:37,129
+this earth, the algorithm searching
+through this earth space and exploitation
+
+261
+00:29:37,130 --> 00:29:39,240
+simple says that the just follow the gradient
+and
+
+262
+00:29:39,240 --> 00:29:44,029
+.now we are saying do not always follow the
+gradient, but do something different at
+
+263
+00:29:44,029 --> 00:29:53,250
+sometime essentially. Now, the extreme example
+of randomized movement is a random
+
+264
+00:29:53,250 --> 00:30:07,809
+walk.
+And random walk, we can simply write as saying
+
+265
+00:30:07,809 --> 00:30:23,349
+generate n is a random neighbor 
+of c
+
+266
+00:30:23,349 --> 00:30:34,629
+and put this in a loop. So, a random walk
+basically just takes says that, just take
+
+267
+00:30:34,630 --> 00:30:37,090
+one step
+in some direction essentially. Of course,
+
+268
+00:30:37,089 --> 00:30:43,209
+we can add on other stuff to this algorithm
+saying like keep track of the best node that
+
+269
+00:30:43,210 --> 00:30:48,850
+you have seen so far and that kind of thing,
+but otherwise it is purely random essentially.
+
+270
+00:30:48,849 --> 00:30:53,799
+From a given node c, it will just randomly
+choose one neighbor and go to that essentially,
+
+271
+00:30:53,799 --> 00:30:58,740
+no comparison of evaluation function
+nothing essentially. But, of course you can
+
+272
+00:30:58,740 --> 00:31:01,289
+keep track of the best one and so far and
+so
+
+273
+00:31:01,289 --> 00:31:04,750
+far essentially.
+Now, obviously a random walk is not going
+
+274
+00:31:04,750 --> 00:31:11,160
+to be a great way for solving an optimization
+problem, because first of all, it is not even
+
+275
+00:31:11,160 --> 00:31:15,509
+systematic, remember that we started out by
+saying that some searches are complete or
+
+276
+00:31:15,509 --> 00:31:22,129
+systematic, which means that they explores
+the entire space. Hill climbing, tabu search
+
+277
+00:31:22,130 --> 00:31:26,200
+they are not systematic, they do not guarantee
+that they will explore the entire space and
+
+278
+00:31:26,200 --> 00:31:28,190
+this is an extreme example, it just go of
+in
+
+279
+00:31:28,190 --> 00:31:35,600
+some random direction essentially. So, what
+we really need to find is ways which are
+
+280
+00:31:35,599 --> 00:31:47,689
+somewhere between hill climbing, hill climbing
+is an extreme of exploitation and
+
+281
+00:31:47,690 --> 00:31:53,519
+random walk is an extreme of exploration.
+So, it is there is 0 exploitation in that,
+
+282
+00:31:53,519 --> 00:32:00,410
+only exploration whereas here, in hill climbing
+there is 0 exploration, in a sense that it
+
+283
+00:32:00,410 --> 00:32:02,890
+never waivers from the path that has been
+shown
+
+284
+00:32:02,890 --> 00:32:09,930
+to it and there is complete exploitation.
+We want algorithms, which will be somewhere
+
+285
+00:32:09,930 --> 00:32:12,360
+in
+between essentially. So, today I will just
+
+286
+00:32:12,359 --> 00:32:14,769
+give you the intuition of the algorithm that
+we
+
+287
+00:32:14,769 --> 00:32:23,259
+have going to study and in the next class,
+we will look at it in more detail. The basic
+
+288
+00:32:23,259 --> 00:32:42,819
+idea
+is make a random move with a probability,
+
+289
+00:32:42,819 --> 00:33:05,769
+which is proportional to improvement 
+in eval
+
+290
+00:33:05,769 --> 00:33:15,470
+n.
+So, what I was saying here, that first of
+
+291
+00:33:15,470 --> 00:33:18,370
+all I am talking about a random move. So,
+I am
+
+292
+00:33:18,369 --> 00:33:24,519
+no longer saying that generate all the successors,
+I am just saying make a random move
+
+293
+00:33:24,519 --> 00:33:34,740
+which means, you are at some given node c
+and choose a random successor n, just
+
+294
+00:33:34,740 --> 00:33:49,220
+somehow generate one successor n. But, move
+to that with a probability, which is
+
+295
+00:33:49,220 --> 00:33:58,480
+proportional to how better that move n is
+from c, as compare to c, how better that
+
+296
+00:33:58,480 --> 00:34:05,440
+.candidate n is compare to c. So, the implication
+of this is the following that, I am not
+
+297
+00:34:05,440 --> 00:34:11,260
+saying that n should be better than c.
+I am only saying that, if n is better than
+
+298
+00:34:11,260 --> 00:34:13,800
+c then there is a greater probability of making
+the
+
+299
+00:34:13,800 --> 00:34:21,460
+move, if n is worse than c, there is lesser
+probability of making that move and secondly,
+
+300
+00:34:21,460 --> 00:34:32,679
+it depends on the magnitude. So, if I look
+at this value, eval n minus eval c. So, let
+
+301
+00:34:32,679 --> 00:34:37,000
+us say
+I am doing a maximization problem which means,
+
+302
+00:34:37,000 --> 00:34:43,800
+the more positive this is, the better for
+me. I want to build an algorithm, which will
+
+303
+00:34:43,800 --> 00:34:51,710
+say that the more positive, this is the greater
+should be the probability of making the move,
+
+304
+00:34:51,710 --> 00:34:58,059
+but allow a move even if this is negative,
+just to include the exploration feature, but
+
+305
+00:34:58,059 --> 00:35:04,360
+with lesser probability.
+So, I want to bios my search towards better
+
+306
+00:35:04,360 --> 00:35:11,099
+moves, but I do not want to stop it from
+making bad moves, bad moves meaning moves
+
+307
+00:35:11,099 --> 00:35:15,299
+which decrease the evaluation function
+values essentially, which go against the gradient
+
+308
+00:35:15,300 --> 00:35:30,220
+essentially. So, we will look at the
+details in the next class, but let me ask
+
+309
+00:35:30,219 --> 00:35:35,000
+you one question at this moment, when I say
+make a move with the probability. So, let
+
+310
+00:35:35,000 --> 00:35:37,449
+us say this probability is p and I gave you
+a
+
+311
+00:35:37,449 --> 00:35:44,809
+value p, how will you make this move probably,
+when you if you want to implement this
+
+312
+00:35:44,809 --> 00:35:51,130
+algorithm, how do you make a move probabilistically
+in an algorithm that you are
+
+313
+00:35:51,130 --> 00:35:52,950
+writing
+..
+
+314
+00:35:52,949 --> 00:35:58,460
+You 
+and
+
+315
+00:35:58,460 --> 00:36:02,250
+..
+So, you generate a random number in the range
+
+316
+00:36:02,250 --> 00:36:10,409
+0 to 1 and if that number happens to be
+greater than p, you make the move, if the
+
+317
+00:36:10,409 --> 00:36:13,889
+number happens to be less than p, you will
+do
+
+318
+00:36:13,889 --> 00:36:19,339
+not make the move. So, eventually the move
+is either made or is not made, but it is made
+
+319
+00:36:19,340 --> 00:36:33,039
+with a probability p and that, for that you
+have to generate a random number. So, what
+
+320
+00:36:33,039 --> 00:36:40,380
+are we after we are after an algorithm, which
+will have this stochastic play work, which
+
+321
+00:36:40,380 --> 00:36:46,990
+means that it will look at a neighbor and
+may or may not make a move, but it should
+
+322
+00:36:46,989 --> 00:36:50,419
+be
+bios towards better moves, but not barred
+
+323
+00:36:50,420 --> 00:36:57,010
+from making bad moves.
+So, somehow I have to devise a way of computing
+
+324
+00:36:57,010 --> 00:37:05,340
+this p as the function of this
+difference in the evaluation function, in
+
+325
+00:37:05,340 --> 00:37:07,180
+such a way that this behavior is manifested
+
+326
+00:37:07,179 --> 00:37:15,480
+.essentially. So, maybe I will ask you to
+think about this and we will write it is not
+
+327
+00:37:15,480 --> 00:37:18,460
+a very
+difficult thing to do. The only thing you
+
+328
+00:37:18,460 --> 00:37:27,650
+have to be careful is that, this being probability
+it should come in the range 0 to 1 and it
+
+329
+00:37:27,650 --> 00:37:30,710
+should satisfy this criteria that the larger
+this is.
+
+330
+00:37:30,710 --> 00:37:36,380
+So, if you want to plot this on x axis then
+the more you go to the right hand side, the
+
+331
+00:37:36,380 --> 00:37:40,170
+probability should 10 to 1 and the more you
+go to the left hand side, the probability
+
+332
+00:37:40,170 --> 00:37:45,180
+should 10 to 0 essentially. So, think about
+a function which will do that and we will
+
+333
+00:37:45,179 --> 00:37:50,359
+specify it in the next class and the algorithm
+which is based on that. So, we will stop
+
+334
+00:37:50,360 --> 00:37:55,000
+here.
+
+335
+00:37:55,000 --> 00:38:05,000
+.
+
