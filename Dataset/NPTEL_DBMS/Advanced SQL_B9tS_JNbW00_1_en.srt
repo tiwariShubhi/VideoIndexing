@@ -1,0 +1,1805 @@
+﻿1
+00:00:16,829 --> 00:00:29,129
+Welcome to module eleven of database management
+system. ah This will be on advanced SQL.
+
+2
+00:00:29,129 --> 00:00:36,979
+Before we ah start ah let me quickly recap
+what we did last ah week in the five modules.
+
+3
+00:00:36,979 --> 00:00:44,599
+ah Last week we totally spent on discussing
+first the introductory features of SQL how
+
+4
+00:00:44,600 --> 00:00:52,929
+to create data and how to write basic queries,
+and we studied about all different kinds of
+
+5
+00:00:52,929 --> 00:01:00,399
+SQL operations at theoretic operation, handling
+of null values aggregation, ah nested queries
+
+6
+00:01:00,399 --> 00:01:06,909
+and so on. And then we did an intermediate
+level of ah SQL query formation in terms of
+
+7
+00:01:06,909 --> 00:01:18,659
+joint expression, views and ah integrities
+ah different kinds of SQL data types and importantly
+
+8
+00:01:18,659 --> 00:01:23,729
+authorization.
+In the context, in this context, we now take
+
+9
+00:01:23,730 --> 00:01:31,430
+up some more of the SQL features which are
+somewhat advanced. And ah we will try to understand
+
+10
+00:01:31,430 --> 00:01:40,020
+how SQL can be used from a programming language,
+and familiarize with functions and procedures
+
+11
+00:01:40,019 --> 00:01:47,629
+in SQL. This will violate some of the basic
+premises that we started with in saying that
+
+12
+00:01:47,629 --> 00:01:53,339
+SQL is a declarative language only because
+as you understand functions procedure as procedural
+
+13
+00:01:53,340 --> 00:01:58,560
+language features we will see how to handle
+those, and we will take a look into another
+
+14
+00:01:58,560 --> 00:02:04,379
+important feature of Krieger's.
+First with accessing ah SQL. So, this is the
+
+15
+00:02:04,379 --> 00:02:12,759
+module outline accessing SQL from a programming
+language . So, this is just kind of an abstract
+
+16
+00:02:12,759 --> 00:02:20,039
+view that you can think of that what we have
+been doing so far naturally there is a database
+
+17
+00:02:20,039 --> 00:02:24,719
+which has primarily two things schema and
+tables. Of course, there are many other things
+
+18
+00:02:24,719 --> 00:02:29,120
+there are index, there is authorization that
+triggers and and all that, but there is a
+
+19
+00:02:29,120 --> 00:02:34,469
+database which stores everything.
+And so far we have been dealing with only
+
+20
+00:02:34,469 --> 00:02:42,379
+this part of ah the information that I can
+write certain SQL query to define table, using
+
+21
+00:02:42,379 --> 00:02:48,979
+table names, attributes and certain logic
+and that goes through certain query processor
+
+22
+00:02:48,979 --> 00:02:54,169
+works on the database to get me either create
+the desired effect. Either that is creating
+
+23
+00:02:54,169 --> 00:03:02,089
+table instances or creating index or extracting
+certain ah relation values, defining some
+
+24
+00:03:02,090 --> 00:03:08,610
+views and so on. So, all these have to happen
+through an SQL interface. So, this has to
+
+25
+00:03:08,610 --> 00:03:14,450
+happen through an SQL interface.
+So, whatever system we are using whether you
+
+26
+00:03:14,449 --> 00:03:24,009
+are using mySQL, Postgres, Oracle, Cybers
+SQL server whatever you using that has some
+
+27
+00:03:24,009 --> 00:03:28,489
+interface through which these SQL queries
+can be executed, so that is kind of a standalone
+
+28
+00:03:28,489 --> 00:03:36,120
+complete system. But, in general, we will
+have lot of more requirements in terms of
+
+29
+00:03:36,120 --> 00:03:39,810
+the application. For example, the application
+might require some graphics, SQL does not
+
+30
+00:03:39,810 --> 00:03:44,789
+have support for graphics; application might
+require certain numerical ah algorithms to
+
+31
+00:03:44,789 --> 00:03:50,739
+be executed might require some geometric computations
+to be done ah poly intersection of polygons
+
+32
+00:03:50,739 --> 00:03:54,289
+to be computed and so on and so forth.
+It might require some network programming
+
+33
+00:03:54,289 --> 00:04:03,310
+and so on. So, there is a need to do all these
+and certainly these are best done in terms
+
+34
+00:04:03,310 --> 00:04:09,390
+of certain native language that could be C,
+c plus plus, java, c sharp, visual basic,
+
+35
+00:04:09,389 --> 00:04:13,379
+python any of the native languages which has
+support for a variety of different tasks.
+
+36
+00:04:13,379 --> 00:04:22,370
+So, what is critical is can we make a bridge
+between these two that is can we take the
+
+37
+00:04:22,370 --> 00:04:28,370
+advantages of the SQL domain and the advantages
+of the normal imperative procedural programming
+
+38
+00:04:28,370 --> 00:04:35,759
+domain together. That is I can ah do some
+graphic representation and then certainly
+
+39
+00:04:35,759 --> 00:04:39,699
+go to the database extract some information
+and then present it in the graphics and vice
+
+40
+00:04:39,699 --> 00:04:45,249
+versa. For example, whenever we access ah
+say gmail, we get to see them in terms of
+
+41
+00:04:45,249 --> 00:04:50,569
+an html presentation which is some kind of
+a graphics rendering, but the all the mail
+
+42
+00:04:50,569 --> 00:04:56,419
+entry certainly come from some database.
+So, somewhere there is a connection ah by
+
+43
+00:04:56,418 --> 00:05:06,060
+which when I say get my inbox ah mails and
+somewhere the information ah goes over from
+
+44
+00:05:06,060 --> 00:05:12,860
+this to the SQL query up to the database and
+the result is brought back to me. I see that
+
+45
+00:05:12,860 --> 00:05:21,809
+in the html page ah here, but here there must
+be certain mail database, where all these
+
+46
+00:05:21,809 --> 00:05:29,629
+information exists . So, ah what I am trying
+to come at is it is critical that the application
+
+47
+00:05:29,629 --> 00:05:34,729
+programs ah or or you know high level programming
+normal programming languages native languages
+
+48
+00:05:34,728 --> 00:05:39,788
+should be able to interface with SQL. And
+ah what we discuss here is two different mechanisms
+
+49
+00:05:39,788 --> 00:05:45,800
+for this interfacing. The first one is using
+a connection library and this is what ah I
+
+50
+00:05:45,800 --> 00:05:51,038
+I will specifically show you .
+So, for if you are using a connection library
+
+51
+00:05:51,038 --> 00:05:55,598
+then you have a set of ah APIs application
+programming interfaces these are basically
+
+52
+00:05:55,598 --> 00:06:00,430
+functions in that library. So, that with that
+application can connect to the database because
+
+53
+00:06:00,430 --> 00:06:05,910
+certainly the database is somewhere else is
+a different server. And send an SQL command
+
+54
+00:06:05,910 --> 00:06:10,800
+to the database server so that you can say
+that this is what I want. And then a result
+
+55
+00:06:10,800 --> 00:06:18,410
+is computed the result of that computation
+the table the can be brought back those tuples
+
+56
+00:06:18,410 --> 00:06:24,949
+can be brought back to the ah application
+program. Mind you ah when we are are here
+
+57
+00:06:24,949 --> 00:06:31,288
+when you are sending the information in terms
+of the database server, we are talking SQL
+
+58
+00:06:31,288 --> 00:06:35,709
+command, we are talking about attributes tables
+of the SQL space.
+
+59
+00:06:35,709 --> 00:06:40,568
+Whereas, when I want it in the program I want
+it in terms of program variables. So, there
+
+60
+00:06:40,569 --> 00:06:46,039
+has to be certain correspondence made between
+them. There are a variety of tools available
+
+61
+00:06:46,038 --> 00:06:51,360
+which allow you to do this ah JDBC is common
+very commonly known which is specific for
+
+62
+00:06:51,360 --> 00:06:59,150
+java. We have an open database connectivity
+APIs which has ah different versions for different
+
+63
+00:06:59,149 --> 00:07:05,978
+languages these are the common languages that
+it is used with. And as we will see later
+
+64
+00:07:05,978 --> 00:07:10,949
+on that there is another ah mechanism for
+doing the same thing called the embedded SQL,
+
+65
+00:07:10,949 --> 00:07:17,468
+we will come to that later .
+So, JDBC is a java API, I will not go into
+
+66
+00:07:17,468 --> 00:07:23,498
+details here if you know java you should be
+able to quickly look up. So, it is a it communicates
+
+67
+00:07:23,499 --> 00:07:28,919
+with the database by opening a connection
+creating what java calls a statement object
+
+68
+00:07:28,918 --> 00:07:35,688
+and executes the query using the statement
+objects and ah that is used to send the query
+
+69
+00:07:35,689 --> 00:07:40,789
+as well as to get back the result. So, java
+is ah object oriented as you know so statement
+
+70
+00:07:40,788 --> 00:07:46,860
+object is used as a as an encapsulation which
+travels between the java program and the SQL
+
+71
+00:07:46,860 --> 00:07:53,129
+ah query processor. And since the query gets
+back the result since the query gets back
+
+72
+00:07:53,129 --> 00:07:57,629
+there is that kind of there is exception mechanism
+to handle errors which is common for java
+
+73
+00:07:57,629 --> 00:08:02,319
+.
+What you the see in contrast ah does a similar
+
+74
+00:08:02,319 --> 00:08:07,520
+thing, but since it is to cater for different
+languages it has got a softer model it has
+
+75
+00:08:07,519 --> 00:08:12,519
+got less powerful model. It is a standard
+application program to communicate with database
+
+76
+00:08:12,519 --> 00:08:17,359
+server. So, again it has to open a connection
+to the database, send queries and updates
+
+77
+00:08:17,360 --> 00:08:21,229
+and get back results. So, these are these
+are the three basic things, these three other
+
+78
+00:08:21,228 --> 00:08:28,610
+three basic things that certainly needs to
+be done if I want to ah easily work across
+
+79
+00:08:28,610 --> 00:08:34,100
+the application programming domain and the
+database programming domain . So, applications
+
+80
+00:08:34,100 --> 00:08:38,019
+such as GUI, spreadsheet, etcetera can use
+ODBC.
+
+81
+00:08:38,019 --> 00:08:44,000
+So, yeah I am just quickly showing you an
+example ah we will talk about application
+
+82
+00:08:44,000 --> 00:08:49,590
+programming mode in a in a later module. So,
+this is ah a python example. So, python ah
+
+83
+00:08:49,590 --> 00:08:57,920
+for this the ODBC for python is known as py
+by ODBC library. So, you need to import that.
+
+84
+00:08:57,919 --> 00:09:02,069
+And then ah using that you can connect. So,
+if you have to connect you have to say which
+
+85
+00:09:02,070 --> 00:09:07,330
+database who is the user, what is the password,
+because authentication needs to happen. So,
+
+86
+00:09:07,330 --> 00:09:12,460
+SQLS is a database here and with this ah this
+user with this password is connecting you
+
+87
+00:09:12,460 --> 00:09:18,759
+that ah is successful you get a conn object
+and on the conn object you have something
+
+88
+00:09:18,759 --> 00:09:23,700
+what is known as a cursor. Cursor is nothing
+but if you think about ah it is it is kind
+
+89
+00:09:23,700 --> 00:09:29,960
+of a pointer. So, it can be used to point
+to either a row or a whole query or a table
+
+90
+00:09:29,960 --> 00:09:33,410
+.
+So, you get back a cursor object. So, then
+
+91
+00:09:33,409 --> 00:09:39,199
+this is if you look into this part, this part
+is nothing but a pure SQL query. So, you take
+
+92
+00:09:39,200 --> 00:09:47,009
+that as a string and pass it on to the execute
+method of cursor. So, what it does is, so
+
+93
+00:09:47,009 --> 00:09:52,240
+this is this has done the first ah task which
+is connecting to the database. Now, you are
+
+94
+00:09:52,240 --> 00:09:58,070
+basically ah putting the query to the database
+in terms of doing saying that this execute
+
+95
+00:09:58,070 --> 00:10:03,830
+. Similarly, so if that will get executed,
+so the table is created naturally there is
+
+96
+00:10:03,830 --> 00:10:11,900
+no result to get if you have created a table.
+Now, you do an ah insert. So, again this particular
+
+97
+00:10:11,899 --> 00:10:17,689
+record, you can see that within this double
+quote, this whole insert ah syntax you take
+
+98
+00:10:17,690 --> 00:10:21,560
+take that as a string and just give it to
+ah execute as a parameter.
+
+99
+00:10:21,559 --> 00:10:25,649
+In the third, that you do is do a select.
+So, you have done this we have inserted a
+
+100
+00:10:25,649 --> 00:10:30,579
+record, created a table inserted a record
+in that and then now you are doing a select.
+
+101
+00:10:30,580 --> 00:10:36,590
+So, certainly we expect one record to come
+back. So, these are the SQL executions and
+
+102
+00:10:36,590 --> 00:10:42,480
+then your get back result. So, cursor has
+another method which is known as fetch one.
+
+103
+00:10:42,480 --> 00:10:49,710
+So, what it will do that if your result table
+has ah multiple entries, then the cursor ah
+
+104
+00:10:49,710 --> 00:10:58,320
+will if will be will start with the first
+row and fetch one will bring the whole of
+
+105
+00:10:58,320 --> 00:11:04,420
+this first row as a row vector.
+So, it will bring in as all the components
+
+106
+00:11:04,419 --> 00:11:12,289
+as one as a python string. And ah then you
+check whether it is empty or not, if it is
+
+107
+00:11:12,289 --> 00:11:16,750
+empty then the I mean there is nothing to
+bring back, so you are done. So, you break
+
+108
+00:11:16,750 --> 00:11:22,279
+otherwise you simply print the row, so you
+are printing there. And then you go back again
+
+109
+00:11:22,279 --> 00:11:27,709
+this is while true. So, what happens is the
+cursor will advance to the next row and get
+
+110
+00:11:27,710 --> 00:11:32,730
+you the next row. Again you do the same thing
+go back it will come back to the same, but
+
+111
+00:11:32,730 --> 00:11:38,279
+once ah you get an empty ah result, you know
+that there is nothing more to proceed and
+
+112
+00:11:38,279 --> 00:11:41,569
+you break.
+So, this is what is illustrated then there
+
+113
+00:11:41,570 --> 00:11:47,500
+are some more ah this particular record is
+deleted, then again another record is inserted.
+
+114
+00:11:47,500 --> 00:11:53,480
+And another select is done. So, this is how
+a native program here in this case python
+
+115
+00:11:53,480 --> 00:11:59,420
+can interact with the database and do any
+of the SQL tasks that we were ah doing earlier
+
+116
+00:11:59,419 --> 00:12:03,729
+with SQL interface, now we can be done from
+the python, so that is a basic ODBC mechanism
+
+117
+00:12:03,730 --> 00:12:09,259
+. I particularly chose python to just give
+you a different flavour, you can ah we will
+
+118
+00:12:09,259 --> 00:12:16,470
+have ah assignments on on doing it for C and
+using jdbc on java as well .
+
+119
+00:12:16,470 --> 00:12:23,820
+Now, I am come I will come back to the same
+interaction ah ah issue, but this time you
+
+120
+00:12:23,820 --> 00:12:28,110
+can see that I am using a different diagram.
+The database is the same; this part is the
+
+121
+00:12:28,110 --> 00:12:32,690
+same; the query processing is same, but instead
+of having a connection library, now I have
+
+122
+00:12:32,690 --> 00:12:39,720
+put the SQL query itself as a part of the
+native program, the C program. So, this is
+
+123
+00:12:39,720 --> 00:12:46,210
+what is called embedding . So, you say I embed
+I put the SQL as a part of C, but naturally
+
+124
+00:12:46,210 --> 00:12:54,740
+SQL is not C. So, we need to put certain ah
+additional syntax in C, so that I can directly
+
+125
+00:12:54,740 --> 00:13:00,889
+write SQL as a part of the C program. I am
+talking about C, again just as an example
+
+126
+00:13:00,889 --> 00:13:07,029
+if this is true for other several other languages
+which can be used as used for embedding SQL
+
+127
+00:13:07,029 --> 00:13:10,740
+within them.
+So, this is called the embedded SQL, it works
+
+128
+00:13:10,740 --> 00:13:16,180
+for C, C plus plus, java fortran etcetera.
+And the language native language in which
+
+129
+00:13:16,179 --> 00:13:22,370
+your embedding is called the is known as a
+host language. And basic form of these languages
+
+130
+00:13:22,370 --> 00:13:29,539
+allow that the are come from the System R.
+So, what is ah important is this particular
+
+131
+00:13:29,539 --> 00:13:36,879
+statement EXEC-SQL. This EXEC-SQL written
+inside the body of a C program will tell the
+
+132
+00:13:36,879 --> 00:13:44,139
+C compiler that this part is not C; this part
+is actually embedded SQL. And it will be treated
+
+133
+00:13:44,139 --> 00:13:49,929
+differently, it will be compiled by the SQL
+compiler within the C compiler, so that is
+
+134
+00:13:49,929 --> 00:13:57,429
+the basic structure, so EXEC-SQL. And then
+you put the pure SQL statement the embedded
+
+135
+00:13:57,429 --> 00:14:05,479
+SQL statement . So, let us ah go forward and
+see some of this, ah there are different syntax
+
+136
+00:14:05,480 --> 00:14:13,210
+for different native language embedding .
+So, to be able to connect you say EXEC-SQL
+
+137
+00:14:13,210 --> 00:14:21,180
+and connect to server username using password.
+So, we saw similar things in terms of ah ODBC
+
+138
+00:14:21,179 --> 00:14:26,519
+based ah connection these three information
+needs to be specified which database server,
+
+139
+00:14:26,519 --> 00:14:31,049
+who is the user, what is the password. So,
+here you say that in this form. And this particular
+
+140
+00:14:31,049 --> 00:14:37,509
+statement you can write as a part of the C
+program. Now, naturally the question ah here
+
+141
+00:14:37,509 --> 00:14:41,639
+is ah in the in the earlier case when we are
+using the connection library, your results
+
+142
+00:14:41,639 --> 00:14:49,028
+came back through the cursor which you then
+ah could deal because the cursors are necessarily
+
+143
+00:14:49,028 --> 00:14:57,620
+objects in your native language. So, in python
+the cursor was a particular ah object in the
+
+144
+00:14:57,620 --> 00:15:02,990
+pyodbc library.
+But now you have embedded the SQL in terms
+
+145
+00:15:02,990 --> 00:15:09,669
+of your c program. So, naturally the results
+or whatever you are doing in C which needs
+
+146
+00:15:09,669 --> 00:15:18,039
+to have a communication with the SQL statement
+ah need to be differentiated from the SQL
+
+147
+00:15:18,039 --> 00:15:26,610
+ah names themselves. So, any native language
+ah variable that needs to be treated ah in
+
+148
+00:15:26,610 --> 00:15:33,019
+SQL will be marked with a colon preceding
+it. So, credit amount of this a colon credit
+
+149
+00:15:33,019 --> 00:15:40,528
+amount, so it becomes a SQL variable provided
+credit amount itself is a C variable, so that
+
+150
+00:15:40,528 --> 00:15:45,710
+is the basic ah you know connection mechanics.
+There are far more details in that , but I
+
+151
+00:15:45,710 --> 00:15:50,570
+am just giving you the glimpse .
+Now, any region where you write the SQL, you
+
+152
+00:15:50,570 --> 00:15:56,790
+can write it as exact SQL begin declare section,
+and END declare section this is where you
+
+153
+00:15:56,789 --> 00:16:05,980
+specify what are the different ah what are
+the different C variables C declarations that
+
+154
+00:16:05,980 --> 00:16:11,720
+need to be used for this SQL definition. I
+will just show you an example soon so that
+
+155
+00:16:11,720 --> 00:16:17,460
+ah.
+Similar to the ODBC style, you have a you
+
+156
+00:16:17,460 --> 00:16:24,629
+will declare a cursor. So, this is ah to write
+the embedded SQL, you use declared c cursor
+
+157
+00:16:24,629 --> 00:16:33,350
+for such and such SQL queries, so then that
+C, variable C will become your handle in the
+
+158
+00:16:33,350 --> 00:16:40,470
+in the C language to be able to answer handle
+the query results . So, here is an ah example.
+
+159
+00:16:40,470 --> 00:16:49,120
+So, you can see that ah credit amount is a
+variable in the host language . So, you are
+
+160
+00:16:49,120 --> 00:16:56,509
+using it in SQL with colon credit ah amount
+which says that it is this host language variable.
+
+161
+00:16:56,509 --> 00:17:04,890
+So, that you can set a particular credit amount
+and ah go with that . And ah this is the query,
+
+162
+00:17:04,890 --> 00:17:13,339
+and you have set a cursor on that which you
+can make use of in the exact SQL. So, let
+
+163
+00:17:13,338 --> 00:17:20,538
+us this is the example continued.
+Let us look at other features. You can once
+
+164
+00:17:20,538 --> 00:17:26,859
+you have set a query you can actually execute
+that by the open statement. So, you say EXEC-SQL
+
+165
+00:17:26,859 --> 00:17:32,599
+open c, the cursor. So, that will execute
+the query that you have associated with that
+
+166
+00:17:32,599 --> 00:17:39,709
+cursor. And then once that has been done,
+then you can fetch the results ah into that
+
+167
+00:17:39,710 --> 00:17:48,829
+cursor one by one; one tuple at a time . Once
+you are done with all that then you simply
+
+168
+00:17:48,829 --> 00:17:53,599
+close.
+So, let us ah look at a example. This is a
+
+169
+00:17:53,599 --> 00:18:00,109
+program which will ah which prompts the user
+for an order number, and ah retrieves the
+
+170
+00:18:00,109 --> 00:18:05,628
+customer number I mean given an order number
+it will retrieve the customer number, salesperson,
+
+171
+00:18:05,628 --> 00:18:09,778
+status of the order and it will display that
+as the retrieved information on the screen
+
+172
+00:18:09,778 --> 00:18:17,630
+. So, here is a C program. It starts on here
+with the main. So, you can see that this says
+
+173
+00:18:17,630 --> 00:18:25,610
+that ah EXEC-SQL include, SQLCA, SQLCA is
+the communication area. So, there is a there
+
+174
+00:18:25,609 --> 00:18:31,979
+is a exchanges going on between the c program
+and SQL program. So, the area that is used
+
+175
+00:18:31,980 --> 00:18:35,548
+by both for this transaction is known as SQLCA
+.
+
+176
+00:18:35,548 --> 00:18:41,599
+Then you have the declare section. So, you
+are saying these are SQL exec declaration.
+
+177
+00:18:41,599 --> 00:18:48,178
+So, these are, but within that what you have
+are pure c declaration, but all the declarations
+
+178
+00:18:48,179 --> 00:18:53,400
+of c that are put within this can be used
+in SQL query with a colon at the beginning.
+
+179
+00:18:53,400 --> 00:19:00,830
+So, that the value can be exchanged to the
+SQLCA then in the next you are specifying
+
+180
+00:19:00,829 --> 00:19:07,368
+what will happen if you have an error. So,
+you say SQL look at this EXEC-SQL whenever
+
+181
+00:19:07,368 --> 00:19:13,699
+SQL error go to query error. So, it will go
+to this level. If it is not found that is
+
+182
+00:19:13,700 --> 00:19:17,860
+no result is there it will go to this. So,
+you by making sure that if there is some error
+
+183
+00:19:17,859 --> 00:19:23,819
+that happens in the SQL part, what will happen
+in your C program. And then subsequently you
+
+184
+00:19:23,819 --> 00:19:29,339
+have sample C program which reads the order
+number, and after having read that you are
+
+185
+00:19:29,339 --> 00:19:33,558
+doing this.
+So, what does it do, EXEC-SQL is to say that
+
+186
+00:19:33,558 --> 00:19:42,638
+this is embedded, this is the select query
+starts, the fields, the relation, the condition.
+
+187
+00:19:42,638 --> 00:19:49,748
+And then there are three attributes. So, you
+are setting an association with three variables
+
+188
+00:19:49,749 --> 00:19:58,350
+in the C program. So, if I want to the result
+of this select will be a table of three attributes
+
+189
+00:19:58,349 --> 00:20:05,668
+three columns, so we are giving a name to
+each one of these three attributes in terms
+
+190
+00:20:05,669 --> 00:20:14,590
+of our C program. So, there is a cust id.
+So, I say the cust id attribute in SQL is
+
+191
+00:20:14,589 --> 00:20:20,408
+colon cust id here which is basically cust
+id variable in the C program. Let me clean
+
+192
+00:20:20,409 --> 00:20:27,309
+up again. So, this is cust id; this is in
+SQL; this is my C program, and this is my
+
+193
+00:20:27,308 --> 00:20:34,878
+C program variable in SQL which corresponds
+to this its similarly order based. Similarly,
+
+194
+00:20:34,878 --> 00:20:42,829
+this is in SQL attribute this is a array of
+character here. And this is a correspondence;
+
+195
+00:20:42,829 --> 00:20:48,980
+this is a correspondence.
+So, now, you can easily see that once this
+
+196
+00:20:48,980 --> 00:20:54,249
+has been done I will be able to get all these
+values here, normally the program would be
+
+197
+00:20:54,249 --> 00:20:59,999
+longer the you will have to iterate over the
+cursor as you did in case in the ODBC case.
+
+198
+00:20:59,999 --> 00:21:04,579
+But ah in this case since we are using one
+order number we know that there will be only
+
+199
+00:21:04,579 --> 00:21:09,398
+one record. So, we have not shown the iteration
+on the cursor. So, once you have got this
+
+200
+00:21:09,398 --> 00:21:15,928
+you are you are using those values to print
+out the result. And in case this query has
+
+201
+00:21:15,929 --> 00:21:25,548
+got into some problem because of SQL, then
+it will automatically jump to SQL query this
+
+202
+00:21:25,548 --> 00:21:31,898
+particular level. If it has got ah a bad number
+which means that no such record was found,
+
+203
+00:21:31,898 --> 00:21:36,779
+it was a null table then it will immediately
+take you to this. So, this is how the embedded
+
+204
+00:21:36,779 --> 00:21:39,980
+SQL worked.
+So, there are these are two different styles
+
+205
+00:21:39,980 --> 00:21:46,069
+the ODBC style and the embedding style are
+two different styles. If you have if you ah
+
+206
+00:21:46,069 --> 00:21:51,939
+depending on ah the preference you use that
+earlier days people used to use more of embedding,
+
+207
+00:21:51,940 --> 00:21:58,308
+ah I believe that now the preference is more
+for the ODBC kind of connection oriented system
+
+208
+00:21:58,308 --> 00:22:05,970
+ODBC jdbc kind of because they are ah certainly
+more programmer friendly this .
+
+209
+00:22:05,970 --> 00:22:11,778
+You can do updates ah through embedded SQL
+as well. So, I will not go through the details
+
+210
+00:22:11,778 --> 00:22:20,480
+you can just go through this and understand
+that. Let me move onto the next ah advanced
+
+211
+00:22:20,480 --> 00:22:26,670
+part of SQL which is function and procedural
+construct. Now mind you again this is these
+
+212
+00:22:26,670 --> 00:22:33,808
+are the two models that we have I have already
+shown you. The two models in which ah the
+
+213
+00:22:33,808 --> 00:22:38,730
+application program the native language program
+and the query language ah can interact the
+
+214
+00:22:38,730 --> 00:22:46,440
+ODBC mechanism and the embedded mechanism.
+But what we are now empowering is so far our
+
+215
+00:22:46,440 --> 00:22:53,100
+our basic premise was that this site is a
+procedural I I discussed this at the very
+
+216
+00:22:53,099 --> 00:22:58,498
+beginning .
+And this side is declarative . So, in SQL
+
+217
+00:22:58,499 --> 00:23:04,798
+you do not say that ah how you find out a
+result, you say what you want as a result,
+
+218
+00:23:04,798 --> 00:23:11,489
+these are more like predicates. And in C program,
+you cannot specify ah what you want as a result
+
+219
+00:23:11,489 --> 00:23:15,329
+you would rather say that do step one, step
+two, step three and you will get this result.
+
+220
+00:23:15,329 --> 00:23:21,519
+So, C program is all full of functions again
+I am talking about C as a placeholder it is
+
+221
+00:23:21,519 --> 00:23:26,480
+true for most of the programming languages
+we use otherwise ah. So, there are procedural
+
+222
+00:23:26,480 --> 00:23:31,989
+languages. So, procedures in C are functions.
+Whereas, in SQL you had select from where
+
+223
+00:23:31,989 --> 00:23:37,970
+kind of conditional clause.
+Now, what we are saying that ah SQL also ah
+
+224
+00:23:37,970 --> 00:23:42,880
+in later version have allowed certain functions
+and procedures, which can be part of SQL.
+
+225
+00:23:42,880 --> 00:23:51,679
+It also has allowed certain imperative constructs
+like ah case like ah loop like ah while, repeat
+
+226
+00:23:51,679 --> 00:23:58,200
+those kind of to make certain kind of procedural
+programming easier in SQL . And naturally
+
+227
+00:23:58,200 --> 00:24:05,639
+these again can be used in in conjunction
+with the connection oriented ah applications
+
+228
+00:24:05,638 --> 00:24:11,589
+with the native or embedded oriented mechanisms.
+So, we will just take a quick look into some
+
+229
+00:24:11,589 --> 00:24:20,599
+of these function and procedural features.
+So, this started coming in ah from SQL 1999.
+
+230
+00:24:20,599 --> 00:24:25,899
+And ah you can have functions and procedure
+written in SQL itself. And function and procedures
+
+231
+00:24:25,900 --> 00:24:31,350
+written external language or the host language
+also. So, both of them are are available.
+
+232
+00:24:31,349 --> 00:24:35,959
+What is interesting is ah some database systems
+support functions which are table valued.
+
+233
+00:24:35,960 --> 00:24:42,079
+Functions, we always know functions ah written
+ah objects only , but ah in SQL you can have
+
+234
+00:24:42,079 --> 00:24:48,128
+functions which have table valued which written
+new functions . So, and certain imperative
+
+235
+00:24:48,128 --> 00:24:54,599
+ah imperative constructs have come in.
+So, there are several databases have their
+
+236
+00:24:54,599 --> 00:24:58,928
+proprietary constructs and all that also.
+So, at at this level of the course since we
+
+237
+00:24:58,929 --> 00:25:04,110
+are not focusing particularly on any specific
+database systems, we will not talk about those.
+
+238
+00:25:04,109 --> 00:25:09,008
+We can do enough in terms of the standard
+SQL itself. So, this is how you define a function
+
+239
+00:25:09,009 --> 00:25:15,368
+which looks ah very similar to the ah SQL
+definition, create function, give it a name
+
+240
+00:25:15,368 --> 00:25:20,329
+certainly here are the parameters. And here
+is a return type. So, if you are familiar
+
+241
+00:25:20,329 --> 00:25:24,879
+with C, C plus plus, Java you I mean it is
+just that the syntax is different, but the
+
+242
+00:25:24,880 --> 00:25:30,059
+elements are same .
+There is a begin end in the scope. And ah
+
+243
+00:25:30,058 --> 00:25:37,579
+this is the pure SQL that you are writing
+here. So, this is a function which is not
+
+244
+00:25:37,579 --> 00:25:42,829
+a function in C, this is a function in SQL.
+So, this you can write this function in SQL.
+
+245
+00:25:42,829 --> 00:25:50,089
+And ah once you have written that function
+then you can actually use that. So, if you
+
+246
+00:25:50,089 --> 00:25:54,898
+look at the function is department name, then
+separately I am writing a query, I am using
+
+247
+00:25:54,898 --> 00:26:02,849
+this department name as function. So, whenever
+I I whenever this query will get executed,
+
+248
+00:26:02,849 --> 00:26:08,759
+this function will be called, and the corresponding
+values will get returned. So, this is the
+
+249
+00:26:08,759 --> 00:26:17,460
+basic ah mechanism ok.
+So, so there are SQL functions have several
+
+250
+00:26:17,460 --> 00:26:23,569
+details which you can go through it has returned
+naturally. And you can have table functions
+
+251
+00:26:23,569 --> 00:26:29,939
+where it can return table. So, the syntax
+is given again its clear to see what will
+
+252
+00:26:29,940 --> 00:26:35,009
+happen if you return a table which is computed
+from the select from where query that you
+
+253
+00:26:35,009 --> 00:26:41,548
+have within the function.
+I can have SQL procedures which ah just performs
+
+254
+00:26:41,548 --> 00:26:49,819
+some action, but ah ah does not have a have
+a return value so to say. And ah you can use
+
+255
+00:26:49,819 --> 00:27:00,788
+them they can declare and call those ah procedures
+explicitly. Procedures can be functions and
+
+256
+00:27:00,788 --> 00:27:06,158
+procedures ah can be overloaded as well if
+you are on SQL 99 .
+
+257
+00:27:06,159 --> 00:27:13,380
+Now, there are several language constructs
+as I mentioned SQL does allow while repeat.
+
+258
+00:27:13,380 --> 00:27:19,880
+So, I am I am just covering them ah in in
+terms of completeness it is not that ah these
+
+259
+00:27:19,880 --> 00:27:25,809
+are ah frequently used features or I recommend
+that you do lot of them ah right here. If
+
+260
+00:27:25,808 --> 00:27:30,278
+you need to do procedural thing its always
+better to do them outside, but ah in some
+
+261
+00:27:30,278 --> 00:27:36,690
+cases it may be easier to code a query if
+you can write a while, repeat ah kind of loop.
+
+262
+00:27:36,690 --> 00:27:41,650
+You can write a for loop which iterates over
+the records of a table which is certainly
+
+263
+00:27:41,650 --> 00:27:46,559
+very convenient. So, if you want to do something
+over the records of a table compute something
+
+264
+00:27:46,558 --> 00:27:53,358
+that the for loop will become easier.
+You have a conditional ah statement case actually
+
+265
+00:27:53,358 --> 00:28:01,288
+we have seen the case already. So, which is
+very easy in terms of coding many of the features.
+
+266
+00:28:01,288 --> 00:28:08,108
+So, here are some of them ah then you have
+exceptions. So, I am not going through these,
+
+267
+00:28:08,108 --> 00:28:15,038
+these in in depth, but this is just to making
+you aware that while SQL ah continues to be
+
+268
+00:28:15,038 --> 00:28:21,048
+predominantly a declarative language, it does
+have quite a bit of procedural support which
+
+269
+00:28:21,048 --> 00:28:26,950
+ah in an appropriate time can be used if required.
+So, you can look up the manual for that. And
+
+270
+00:28:26,950 --> 00:28:30,870
+there are a whole lot of things you can do
+with the external language routines.
+
+271
+00:28:30,869 --> 00:28:37,558
+That is can write a function in C and actually
+call it from SQL, this is just doing the other
+
+272
+00:28:37,558 --> 00:28:43,489
+way round. Earlier in terms of ah embedding
+or in terms of ODBC, a C function was executing
+
+273
+00:28:43,489 --> 00:28:47,798
+a query. Now, you are doing the reverse you
+are saying that I can write a SQL query which
+
+274
+00:28:47,798 --> 00:28:54,308
+uses a C function that already exist. So,
+there are external ways of binding, I will
+
+275
+00:28:54,308 --> 00:29:00,038
+not go through these ah slides in depth, ah
+because again the you will have to come a
+
+276
+00:29:00,038 --> 00:29:05,048
+certain way before you can actually start
+using such features. But ah get to know that
+
+277
+00:29:05,048 --> 00:29:11,808
+there could be as from SQL you can use any
+external language library; and if some library
+
+278
+00:29:11,808 --> 00:29:17,960
+is good for certain computation which is needed
+for your query which is a non database kind
+
+279
+00:29:17,960 --> 00:29:21,230
+of computation then you can make use of this
+external language routines.
+
+280
+00:29:21,230 --> 00:29:27,669
+So, I have put together all the basic features
+ah that external language routines will need.
+
+281
+00:29:27,669 --> 00:29:34,028
+But again I would tell you that there are
+benefits, but there are lot of drawbacks in
+
+282
+00:29:34,028 --> 00:29:40,730
+using them. And I would not recommend that
+you frequently use these features. You should
+
+283
+00:29:40,730 --> 00:29:46,778
+primarily restrict to SQL programming, and
+then anything that you need to do in the native,
+
+284
+00:29:46,778 --> 00:29:49,369
+you should go to choose your language and
+do that.
+
+285
+00:29:49,369 --> 00:29:57,471
+There are security issues also that you will
+need to understand here . Finally, before
+
+286
+00:29:57,471 --> 00:30:04,399
+we close I will just mention a another feature
+called triggers, triggers are very important.
+
+287
+00:30:04,398 --> 00:30:11,509
+A trigger is a statement that is executed
+automatically when ah something happens in
+
+288
+00:30:11,509 --> 00:30:18,009
+the database. So, you want that well things
+are happening. And ah well ah I I want to
+
+289
+00:30:18,009 --> 00:30:24,139
+know if a particular ah value has exceeded
+a certain level or if something has become
+
+290
+00:30:24,138 --> 00:30:30,398
+null or some violatory things are happening
+and so on. So, how do you know that because
+
+291
+00:30:30,398 --> 00:30:36,019
+a database is being accessed by hundreds and
+thousands of people and with hundreds of tables
+
+292
+00:30:36,019 --> 00:30:39,898
+and millions of records.
+So, triggers are a mechanism by which you
+
+293
+00:30:39,898 --> 00:30:46,038
+can ah set that under this condition, I want
+a trigger, I want something ah specifically
+
+294
+00:30:46,038 --> 00:30:53,940
+to happen. So, again they were introduced
+in 99, but ah earlier also triggers were there,
+
+295
+00:30:53,940 --> 00:31:00,548
+but in 99 standard they became formal earlier
+they were ah somewhat you know differently
+
+296
+00:31:00,548 --> 00:31:05,369
+structured. So, you might find that the system
+that you are using for practice ah the trigger
+
+297
+00:31:05,369 --> 00:31:11,859
+in that may have a different format and semantics
+then the what we are discussing here.
+
+298
+00:31:11,859 --> 00:31:17,658
+So, the most common ah triggering events are
+insert, delete, update. So, if something ah
+
+299
+00:31:17,659 --> 00:31:25,119
+ah some update is happening, so I can say
+that ah after this update, I want such and
+
+300
+00:31:25,118 --> 00:31:33,470
+such things to happen . Or I can during the
+update I can one that well I am doing an update.
+
+301
+00:31:33,470 --> 00:31:39,269
+So, there is an old value which is typically
+referred to as ah old row, the row that is
+
+302
+00:31:39,269 --> 00:31:44,649
+getting updated. And there is a new row the
+new set of values that are getting created.
+
+303
+00:31:44,648 --> 00:31:52,928
+So, I might want between the old row and the
+new row that ah certain things happen .
+
+304
+00:31:52,929 --> 00:32:05,259
+So, I can say that ah well just ah look into
+this. So, again the syntax is all similar.
+
+305
+00:32:05,259 --> 00:32:10,979
+Create trigger, trigger there is a name of
+the trigger and ah this is the condition . Before
+
+306
+00:32:10,979 --> 00:32:20,429
+update of takes, takes is a relation ah referencing
+new row as row n row. So, this is the new
+
+307
+00:32:20,429 --> 00:32:28,269
+value that we set. Now, what are you saying,
+saying that for each row what you do when
+
+308
+00:32:28,269 --> 00:32:38,028
+n grid is blank n row dot grade is blank that
+is if this is if you are updating and you
+
+309
+00:32:38,028 --> 00:32:45,999
+have got a got you are going to update, a
+grade value which is blank then you simply
+
+310
+00:32:45,999 --> 00:32:51,429
+set it to null.
+So, it is possible that ah the grade that
+
+311
+00:32:51,429 --> 00:32:57,460
+has come in and grades are characters and
+what has come in from the input and is going
+
+312
+00:32:57,460 --> 00:33:03,038
+to get updated is a show a certain grade to
+be now because it may not have been decided.
+
+313
+00:33:03,038 --> 00:33:08,548
+Now, you do not want those blank values to
+be present. You want because blank cannot
+
+314
+00:33:08,548 --> 00:33:14,038
+be checked, we have we have checkers for null
+and so on. So, you want to set that to null.
+
+315
+00:33:14,038 --> 00:33:18,058
+So, trigger can make this thing happened because
+otherwise how will you know what value is
+
+316
+00:33:18,058 --> 00:33:24,000
+actually getting changed . So, there could
+be several ways trigger can be used.
+
+317
+00:33:24,000 --> 00:33:29,929
+For example, this is showing one that as you
+change the grades then certainly based on
+
+318
+00:33:29,929 --> 00:33:35,570
+the grades credit earned value is computed.
+So, as a greatest change if it is now once
+
+319
+00:33:35,569 --> 00:33:43,589
+grades have been entered say for ah 200 students.
+Now, after reviews grades for three of them
+
+320
+00:33:43,589 --> 00:33:49,908
+are getting changed. So, how do you know that
+for for those students, the change of the
+
+321
+00:33:49,909 --> 00:33:56,528
+grade may impact the computation of the on
+credits. So, you would like to update that
+
+322
+00:33:56,528 --> 00:34:03,378
+on credits or it may or may not be required.
+So, the trigger will tell you that ah after
+
+323
+00:34:03,378 --> 00:34:10,789
+update. So, whenever the update happens you
+take the old and the new value n row and o
+
+324
+00:34:10,789 --> 00:34:20,849
+row, and then you are putting some conditions
+that if that new row is grade is f, and is
+
+325
+00:34:20,849 --> 00:34:28,659
+not null; old row is grade or it is not null,
+then you try to do this.
+
+326
+00:34:28,659 --> 00:34:38,220
+So, if it was failure, and if it continues
+to be failure, new grade is not f; if it is
+
+327
+00:34:38,219 --> 00:34:43,219
+f then you do not have to do anything; if
+it is null it do not have to do anything.
+
+328
+00:34:43,219 --> 00:34:50,418
+But if it is if it was f or it was null, and
+now it has become a different grade then certainly
+
+329
+00:34:50,418 --> 00:34:56,619
+the computation to update the credits earned
+is required. So, and the trigger gives you
+
+330
+00:34:56,619 --> 00:35:02,230
+the right point when you can do this because
+otherwise you will not know in terms of millions
+
+331
+00:35:02,230 --> 00:35:06,990
+of updates happening when this particular
+thing is going on.
+
+332
+00:35:06,989 --> 00:35:11,639
+Triggers can be on on statements as well you
+can ah decide leave for your reading. But
+
+333
+00:35:11,639 --> 00:35:18,339
+you have to be careful that ah triggers sounds
+very interesting and and what happens particularly
+
+334
+00:35:18,340 --> 00:35:24,490
+with the ah early stage of programming ah
+people get overboard with triggers and start
+
+335
+00:35:24,489 --> 00:35:30,469
+using them ah severely, but triggers do have
+a lot of overhead. So, you should not um many
+
+336
+00:35:30,469 --> 00:35:35,589
+of the things that triggers can do, can be
+done through other means for example, by materialized,
+
+337
+00:35:35,590 --> 00:35:41,200
+views and so on. So, as we go along we will
+mention that these are the problems that need
+
+338
+00:35:41,199 --> 00:35:46,809
+to solve get solved by triggers; otherwise
+ah normally you should think twice before
+
+339
+00:35:46,809 --> 00:35:53,289
+you actually use a triggers. So, there could
+be different other ways of solving the same
+
+340
+00:35:53,289 --> 00:35:56,009
+problem.
+And because ah you have to keep in mind that
+
+341
+00:35:56,010 --> 00:36:00,700
+triggers are expensive because once you have
+triggers and actually internally database
+
+342
+00:36:00,699 --> 00:36:05,179
+for every update. If you have an update trigger
+on a field or a relation, then with every
+
+343
+00:36:05,179 --> 00:36:09,980
+transaction with every change the database
+has to check if your trigger is true or not
+
+344
+00:36:09,980 --> 00:36:14,309
+and so therefore, there is a cost to that.
+The other thing is there are triggers are
+
+345
+00:36:14,309 --> 00:36:20,900
+for the live execution. So, if you have offline
+for example, you are loading the data from
+
+346
+00:36:20,900 --> 00:36:27,170
+a backup copy or you are replicating your
+database at a remote site and so on, then
+
+347
+00:36:27,170 --> 00:36:31,159
+you have to put off the trigger; otherwise
+you know falsely the triggers will start happening
+
+348
+00:36:31,159 --> 00:36:36,389
+and that may have a catastrophic effect that
+might trigger of different alarms and all
+
+349
+00:36:36,389 --> 00:36:42,989
+that. So, you have to be careful with triggers
+in that manner. So, cascading executions and
+
+350
+00:36:42,989 --> 00:36:47,709
+all those.
+So, to summarize ah we have and this kind
+
+351
+00:36:47,710 --> 00:36:55,119
+of closes our ah direct discussion on SQL.
+So, we have introduced the use of the very
+
+352
+00:36:55,119 --> 00:37:00,089
+important aspect the use of SQL from a programming
+language, the interface between the native
+
+353
+00:37:00,090 --> 00:37:04,070
+language and query language boundary. And
+that is something which will be extremely
+
+354
+00:37:04,070 --> 00:37:10,630
+useful for application programming. And we
+are familiarized with you know the imperative
+
+355
+00:37:10,630 --> 00:37:16,260
+extensions of SQL, the procedural extensions
+of SQL in terms of functions and ah procedures
+
+356
+00:37:16,260 --> 00:37:22,269
+that you can directly write in SQL. And we
+have just ah introduced ah concept of triggers,
+
+357
+00:37:22,269 --> 00:37:26,190
+so that you can ah sniff what is going on
+in your database.
+
+358
+00:37:26,190 --> 00:37:33,380
+So, there is the quite a few other features
+of SQL as well ah majority of them are advanced
+
+359
+00:37:33,380 --> 00:37:41,160
+features dealing with ah olap and several
+others, which I chose to skip at this level
+
+360
+00:37:41,159 --> 00:37:48,719
+of the course. So, this will close our discussion
+on ah SQL. And next we will move onto ah the
+
+361
+00:37:48,719 --> 00:37:52,980
+design of the database looking into the algebra
+and the modelling.
+

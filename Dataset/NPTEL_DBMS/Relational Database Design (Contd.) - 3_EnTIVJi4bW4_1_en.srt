@@ -1,0 +1,1614 @@
+﻿1
+00:00:17,460 --> 00:00:26,829
+Welcome to module 19 of Database Management
+Systems; we have been discussing relational
+
+2
+00:00:26,829 --> 00:00:34,259
+database design and this is the fourth part;
+fourth module in that series.
+
+3
+00:00:34,259 --> 00:00:42,549
+In the last module, we have discussed about
+algorithms for functional dependencies lossless
+
+4
+00:00:42,549 --> 00:00:49,919
+joint decomposition and dependency preservation.
+So, based on this ah foundational algorithms
+
+5
+00:00:49,920 --> 00:00:56,280
+and concepts.
+We will in today's module get into understanding
+
+6
+00:00:56,280 --> 00:01:04,599
+the core design aspects of relational databases;
+that is a normal forms and how important they
+
+7
+00:01:04,599 --> 00:01:10,780
+are in terms of the relational design. We
+would specifically learn about decomposition
+
+8
+00:01:10,780 --> 00:01:17,170
+of a relational schema into the third normal
+form and into Boyce Codd BCNF form.
+
+9
+00:01:17,170 --> 00:01:27,019
+So, our ah topics ah will be the three normal
+forms decomposition of 3 NF and into BCNF.
+
+10
+00:01:27,019 --> 00:01:35,420
+So, starting with the normal forms. So, normal
+forms or normalization of a schema is a technique
+
+11
+00:01:35,420 --> 00:01:41,930
+of refinement to organize the data in the
+database. So, the question naturally arises
+
+12
+00:01:41,930 --> 00:01:49,180
+as to why do we need to do this refinement
+after we have done a design ah based on possibly
+
+13
+00:01:49,180 --> 00:01:54,150
+the E-R diagram based approach that we had
+talked of we had ah identified the entities
+
+14
+00:01:54,150 --> 00:01:59,780
+and we had identified the attributes for the
+entities their relationships; then why do
+
+15
+00:01:59,780 --> 00:02:04,439
+we need to normalize?
+The answer to this question lies in the fact
+
+16
+00:02:04,438 --> 00:02:13,650
+that ah ah a design for a relational schema
+may give rise to a variety of anomalies in
+
+17
+00:02:13,650 --> 00:02:20,019
+terms of the data. These are typically three
+anomalies which concerns us most the insertion,
+
+18
+00:02:20,019 --> 00:02:26,870
+the update and the deletion anomaly. So, the
+anomaly is happen when there is redundancy
+
+19
+00:02:26,870 --> 00:02:34,739
+in the data in terms of the schema. And whether
+there will be redundant data and how much
+
+20
+00:02:34,739 --> 00:02:43,370
+ah what kind of redundant data would be there
+depends on the design of the database schema
+
+21
+00:02:43,370 --> 00:02:48,060
+depends on the design of the normal form that
+we are using for it.
+
+22
+00:02:48,060 --> 00:02:55,019
+But if we have redundancy then there is potential
+for anomalies and therefore, we want to reduce
+
+23
+00:02:55,019 --> 00:03:01,919
+the redundancy and get rid of this anomaly.
+So, we will quickly take a look into the anomalies
+
+24
+00:03:01,919 --> 00:03:08,560
+that are ah that we are talking of first one
+is ah called an update anomaly. So, we are
+
+25
+00:03:08,560 --> 00:03:15,840
+showing you a snapshot of an instance ah of
+a database which has three attributes and
+
+26
+00:03:15,840 --> 00:03:26,639
+you can look at the row having two entries
+the last two rows for employee code 519 and
+
+27
+00:03:26,639 --> 00:03:32,919
+there are two different addresses in these
+two different rows. So, if we know that the
+
+28
+00:03:32,919 --> 00:03:40,610
+employee will have a unique address or in
+other words if employee ID would determine
+
+29
+00:03:40,610 --> 00:03:47,600
+the employee address functionally determine
+that employee address then this situation
+
+30
+00:03:47,599 --> 00:03:54,539
+is not possible.
+So, but when we try to update then it is ah
+
+31
+00:03:54,539 --> 00:03:59,888
+for example, the employees address has changed.
+And while making that change this change will
+
+32
+00:03:59,889 --> 00:04:05,510
+need to be incorporated in all the records
+having the same ID. And if because of some
+
+33
+00:04:05,509 --> 00:04:10,979
+coding error or something we miss out to update
+any of the address fields then we will have
+
+34
+00:04:10,979 --> 00:04:17,228
+a difficulty and that difficulty is having
+inconsistent address data as in this case.
+
+35
+00:04:17,228 --> 00:04:22,629
+So, this is known as update anomaly similarly
+I could have an insertion anomaly which I
+
+36
+00:04:22,629 --> 00:04:28,759
+am illustrating here in terms of another ah
+database schema which has four attributes.
+
+37
+00:04:28,759 --> 00:04:35,979
+And ah we have faculty ID name the hiring
+date and the course name naturally given the
+
+38
+00:04:35,978 --> 00:04:41,050
+faculty ID the faculty name and hire date
+should be unique. Now suppose a new faculty
+
+39
+00:04:41,050 --> 00:04:46,569
+joins and as soon as the faculty joins he
+or she may not have an assigned course.
+
+40
+00:04:46,569 --> 00:04:53,800
+So ah if we want to enter that record here
+we will not be able to do that because we
+
+41
+00:04:53,800 --> 00:04:59,819
+do not have any value for the course code.
+So, either we use a null value or we cannot
+
+42
+00:04:59,819 --> 00:05:05,830
+actually enter this value; this kind of situation
+is known as a insertion anomaly. Similarly
+
+43
+00:05:05,829 --> 00:05:13,978
+I could have a deletion anomaly in the in
+the same table ah we are showing that in the
+
+44
+00:05:13,978 --> 00:05:22,769
+table the first highlighted row; the for faculty
+ID 389 if that faculty stops taking any course
+
+45
+00:05:22,769 --> 00:05:28,589
+for the time being.
+So, the association between 389 and the corresponding
+
+46
+00:05:28,589 --> 00:05:33,968
+course code will be removed and once you remove
+that you remove this whole record in the process
+
+47
+00:05:33,968 --> 00:05:40,139
+you actually lose the whole of the faculty
+information the ID, name and hire date. So,
+
+48
+00:05:40,139 --> 00:05:47,069
+these are difficulties in these ah relational
+schemas and that lead to ah a whole lot of
+
+49
+00:05:47,069 --> 00:05:50,519
+problems.
+So, the resolution for this lie in terms of
+
+50
+00:05:50,519 --> 00:05:56,089
+decomposing the schema that instead of having
+one relation, I will decompose this set of
+
+51
+00:05:56,089 --> 00:06:01,039
+attributes into multiple different relations.
+So, for example, the update anomaly can be
+
+52
+00:06:01,040 --> 00:06:07,349
+ah removed if we have two different tables;
+one that maintains ID with address and one
+
+53
+00:06:07,348 --> 00:06:12,348
+that maintains ID with skill. So, in that
+case what will happen if the the for every
+
+54
+00:06:12,348 --> 00:06:16,899
+ID the address will not be repeated.
+So, if the address is updated; it will be
+
+55
+00:06:16,899 --> 00:06:23,878
+updated only at one place and it will not
+feature in the other table. Similarly to avoid
+
+56
+00:06:23,879 --> 00:06:30,699
+insert or delete anomaly the other table schema
+can be split into ID name and hire date as
+
+57
+00:06:30,699 --> 00:06:36,728
+one table and ID and code rows code as another
+table. And you can you can easily understand
+
+58
+00:06:36,728 --> 00:06:41,408
+that if this is split in this way then you
+cannot have an insert anomaly because you
+
+59
+00:06:41,408 --> 00:06:47,848
+can insert a new ah faculty without assigning
+a course to him because that will feature
+
+60
+00:06:47,848 --> 00:06:52,750
+in as a separate record in a different table
+similarly in the same way the deletion anomaly
+
+61
+00:06:52,750 --> 00:06:59,278
+also disappears.
+So, these anomalies are ah resultant of ah
+
+62
+00:06:59,278 --> 00:07:06,310
+the redundant data that we are having and
+can be removed by taking care of the process
+
+63
+00:07:06,310 --> 00:07:11,228
+of decomposition.
+Now, when we decompose then we would desire
+
+64
+00:07:11,228 --> 00:07:17,098
+certain properties to be hold held and we
+talked about this ah loosely earlier as well.
+
+65
+00:07:17,098 --> 00:07:21,949
+We would require the lossless join decomposition
+property that it should be possible to take
+
+66
+00:07:21,949 --> 00:07:28,960
+any instance of the two or more decomposed
+relations and join them by natural join using
+
+67
+00:07:28,959 --> 00:07:34,728
+common set of attributes and get back the
+original ah instance of the relation if that
+
+68
+00:07:34,728 --> 00:07:40,818
+does not happen then the relationship is lossy
+we have discussed it at length in the last
+
+69
+00:07:40,819 --> 00:07:48,500
+module. At the same time we would want that
+all functional dependencies that hold must
+
+70
+00:07:48,500 --> 00:07:53,718
+be; can must be testable in the decomposed
+set of relation.
+
+71
+00:07:53,718 --> 00:07:59,158
+So, all functional dependencies when they
+are projected in terms of the decomposed set
+
+72
+00:07:59,158 --> 00:08:04,188
+of relations; they must be testable within
+them. So, that to test for a dependency I
+
+73
+00:08:04,189 --> 00:08:09,028
+do not need to carry out a join this is a
+point we discussed in the last module as well.
+
+74
+00:08:09,028 --> 00:08:14,110
+So, based on that once you start with the
+original schema, you can check for what are
+
+75
+00:08:14,110 --> 00:08:19,620
+the different possibilities or sources of
+redundancy define constraints based on that
+
+76
+00:08:19,620 --> 00:08:25,860
+and step by step; you could convert a schema
+into a one normal form have more constraints
+
+77
+00:08:25,860 --> 00:08:32,060
+put onto it convert it into two normal form
+have further constraints decompose it into
+
+78
+00:08:32,059 --> 00:08:36,939
+third normal form and so, on.
+So, normalization is a process through which
+
+79
+00:08:36,940 --> 00:08:42,650
+we do this kind of decomposition and make
+sure that once a relational schema is expressed
+
+80
+00:08:42,649 --> 00:08:47,810
+in terms of a normal form; it satisfies a
+given set of properties that that normal form
+
+81
+00:08:47,811 --> 00:08:54,040
+should adhere to. And the common normal forms
+are 1 NF, 2 NF and 3 NF and loosely speaking
+
+82
+00:08:54,039 --> 00:09:00,769
+when we say if a database schema is ah is
+normalized; we normal usually mean that it
+
+83
+00:09:00,769 --> 00:09:06,730
+is in the 3 NF form a third normal form. And
+most third number form relations are free
+
+84
+00:09:06,730 --> 00:09:13,289
+of insert, delete or update anomalies. So,
+that they are a good positive in the design.
+
+85
+00:09:13,289 --> 00:09:17,500
+Ah Of course, ah these are not the only normal
+forms as you can see there is a whole lot
+
+86
+00:09:17,500 --> 00:09:23,100
+of lists of variety of normal forms; we will
+not study all of them we will study ah further
+
+87
+00:09:23,100 --> 00:09:26,149
+in the next module the other two highlighted
+ones.
+
+88
+00:09:26,149 --> 00:09:30,689
+But first let us get started with the first
+normal form which we had talked about earlier
+
+89
+00:09:30,690 --> 00:09:36,480
+as well; that first normal form is one where
+the multivalued attributes are not allowed.
+
+90
+00:09:36,480 --> 00:09:43,440
+So, if you think about a think about a relationship
+where you have a student relationship between
+
+91
+00:09:43,440 --> 00:09:48,500
+student the her name and the courses taken
+by the student then since the students take
+
+92
+00:09:48,500 --> 00:09:53,940
+multiple courses; the C name in this case
+can take multiple values. So, we do not allow
+
+93
+00:09:53,940 --> 00:10:00,280
+that we expand them into different rows and
+ah that once we have done that we say that
+
+94
+00:10:00,279 --> 00:10:06,839
+relation is in the one normal form.
+But one normal form may give rise to a variety
+
+95
+00:10:06,840 --> 00:10:13,910
+of ah different redundancies and therefore,
+anomalies. So, this is another instance; in
+
+96
+00:10:13,909 --> 00:10:20,370
+fact, the earlier instances that you saw all
+of them were ah also in one normal form, but
+
+97
+00:10:20,370 --> 00:10:25,960
+they had deletion insertion and update anomaly.
+So, here is another example where we are illustrating
+
+98
+00:10:25,960 --> 00:10:31,540
+that.
+So, it is a possible that if I have a functional
+
+99
+00:10:31,539 --> 00:10:38,799
+dependency X determining Y which is nontrivial
+ah functional dependency over the set of attributes
+
+100
+00:10:38,799 --> 00:10:44,669
+and X is not a super key; then there exists
+a redundancy between X and Y attribute set.
+
+101
+00:10:44,669 --> 00:10:51,110
+So, on the left the we have shown an instance
+of ah ah this relationship on only on the
+
+102
+00:10:51,110 --> 00:10:56,580
+X and Y attributes and you can see since X
+is not a key; I can have two rows having the
+
+103
+00:10:56,580 --> 00:11:02,120
+value one in X.
+And since the value is 1 in X; the value Y
+
+104
+00:11:02,120 --> 00:11:09,169
+will be same for these two rows and we have
+redundancy of that please all. Please remember
+
+105
+00:11:09,169 --> 00:11:14,279
+that X is not a super key; so, there are other
+attributes which actually form the super key
+
+106
+00:11:14,279 --> 00:11:18,980
+and therefore, such instances are possible.
+Whereas if you look at the right column where
+
+107
+00:11:18,980 --> 00:11:23,310
+the left hand side X is a super key then such
+instances will not happen.
+
+108
+00:11:23,309 --> 00:11:31,759
+Moving on ah the second normal form which
+ah is ah; obviously, a relation is is in second
+
+109
+00:11:31,759 --> 00:11:36,639
+normal form if it is in first normal form
+and it does not have any partial dependency.
+
+110
+00:11:36,639 --> 00:11:42,340
+So, what is the partial dependency? I have
+given the definition here partial dependency
+
+111
+00:11:42,340 --> 00:11:50,820
+why determining A if that that can hold in
+the set of functional dependency then if I
+
+112
+00:11:50,820 --> 00:11:57,560
+have that Y is a proper subset of a candidate
+key and A is a nonprime attribute in nonprime
+
+113
+00:11:57,559 --> 00:12:02,469
+attribute is one which one nonprime attribute
+we defined in the last module is an attribute
+
+114
+00:12:02,470 --> 00:12:05,700
+which does not feature in any of the candidate
+keys.
+
+115
+00:12:05,700 --> 00:12:10,629
+So, if Y is a proper subset of a candidate
+key which functionally determines a nonprime
+
+116
+00:12:10,629 --> 00:12:16,809
+attribute; then this is known as a partial
+dependency and if there is partial dependency
+
+117
+00:12:16,809 --> 00:12:21,919
+then the relationship is not in second normal
+form. So, second normal form will require
+
+118
+00:12:21,919 --> 00:12:25,610
+that the relation is in 1 NF and there is
+no partial dependency.
+
+119
+00:12:25,610 --> 00:12:31,990
+So, here I were showing an example where on
+the left you can see that ah SID and C name
+
+120
+00:12:31,990 --> 00:12:39,680
+together forms a key and SID determines S
+name. So, SID and C name together also determines
+
+121
+00:12:39,679 --> 00:12:45,599
+S name naturally SID determining S name is
+a partial dependency because the left hand
+
+122
+00:12:45,600 --> 00:12:53,930
+side SID is a proper subset of the candidate
+key SID C name. And S name is not ah featuring
+
+123
+00:12:53,929 --> 00:12:58,859
+in any candidate key. So, S name is actually
+a nonprime attribute and the result of that
+
+124
+00:12:58,860 --> 00:13:03,720
+as you can see in the first two rows or in
+the third and fourth row you can see that
+
+125
+00:13:03,720 --> 00:13:08,100
+S name is ah repeated.
+So, there is redundancy and therefore, consequently
+
+126
+00:13:08,100 --> 00:13:13,940
+we will have anomalies that we have talked
+of, but we can normalize we can decompose
+
+127
+00:13:13,940 --> 00:13:19,060
+this into two separate relations R1 and R2
+as I am showing on the right; where you associate
+
+128
+00:13:19,059 --> 00:13:26,709
+SID and S name in one table and SID and C
+name in other table. Naturally then the the
+
+129
+00:13:26,710 --> 00:13:32,440
+dependency that the partial dependency that
+you had disappears because SID determining
+
+130
+00:13:32,440 --> 00:13:39,590
+S name in R1; now becomes is not a partial
+dependency because in that table SID becomes
+
+131
+00:13:39,590 --> 00:13:43,120
+a primary key. So, it does not qualify as
+a partial dependency.
+
+132
+00:13:43,120 --> 00:13:49,039
+So, R1 and R2 both are in second normal form
+and you will get rid of the redundancy that
+
+133
+00:13:49,039 --> 00:13:55,719
+you saw and this decomposition is ah ensures
+that it has a list lossless join incidentally;
+
+134
+00:13:55,720 --> 00:14:01,910
+this is we have not guaranteed that it is
+in second ah normal form and it has also the
+
+135
+00:14:01,909 --> 00:14:07,939
+dependency preservation.
+But it is ah possible again in second normal
+
+136
+00:14:07,940 --> 00:14:12,720
+form a relation could be in second normal
+form yet it could have some possible redundancies.
+
+137
+00:14:12,720 --> 00:14:19,850
+So, there is a design instance that I am showing
+with ah the supplier ID, SID the status key
+
+138
+00:14:19,850 --> 00:14:25,019
+which are ah functionally determined by SID
+and the product and quantity values.
+
+139
+00:14:25,019 --> 00:14:32,929
+So, that in the table supplier SID and PID
+together form say key whereas, and ah as that
+
+140
+00:14:32,929 --> 00:14:39,679
+happens you can clearly see that there is
+a lot of ah redundancy that you can see in
+
+141
+00:14:39,679 --> 00:14:47,429
+terms of the status happening and which will
+cause you different anomalies to occur. So,
+
+142
+00:14:47,429 --> 00:14:52,949
+if I normalize in the second normal form on
+the right then I will have a supplier city
+
+143
+00:14:52,950 --> 00:14:59,240
+say with the three attributes SID status and
+city and another supplier quantity which has
+
+144
+00:14:59,240 --> 00:15:05,220
+SID PID and quantity naturally in this there
+is no partial dependency anymore.
+
+145
+00:15:05,220 --> 00:15:11,639
+Earlier we had SID determining status as a
+partial dependency because SID is a proper
+
+146
+00:15:11,639 --> 00:15:18,429
+was a proper subset of the primary key which
+is SID CID, but after I normalize this dependency
+
+147
+00:15:18,429 --> 00:15:27,769
+does not exist, but yet there will be redundancy
+in this ah relationship and there the status
+
+148
+00:15:27,769 --> 00:15:32,879
+will continue to be redundant.
+And for that reason we have to move on to
+
+149
+00:15:32,879 --> 00:15:38,840
+the next type of normal form. So, this I am
+just explaining here as to what are the possible
+
+150
+00:15:38,840 --> 00:15:44,120
+redundancy sources of possible redundancy
+that you can have in 2 NF.
+
+151
+00:15:44,120 --> 00:15:51,139
+In the 3 NF; third normal form what you define
+is your relation first of all has to be in
+
+152
+00:15:51,139 --> 00:15:57,990
+2 NF. So, we are looking at the the first
+definition these are there are three forms
+
+153
+00:15:57,990 --> 00:16:02,750
+of definitions given all of them are actually
+equivalent, you do not have to worry about
+
+154
+00:16:02,750 --> 00:16:06,509
+why and how they are equivalent slowly you
+will start understanding.
+
+155
+00:16:06,509 --> 00:16:10,559
+But we take it in in three different forms
+because each form of the definition allow
+
+156
+00:16:10,559 --> 00:16:14,919
+us to understand certain aspect of the three
+normal form. So, the first thing which is
+
+157
+00:16:14,919 --> 00:16:19,750
+true for everything is ah it has to be in
+the second normal form and it should not contain
+
+158
+00:16:19,750 --> 00:16:26,850
+any transitive dependency which means that
+I should not if I have X determining Y and
+
+159
+00:16:26,850 --> 00:16:33,370
+Y determining Z; then I should not have X
+determining Z which can be ah inferred transitively
+
+160
+00:16:33,370 --> 00:16:38,230
+as you know through the angstrom axiom.
+Alternatively there was an alternate definition
+
+161
+00:16:38,230 --> 00:16:46,289
+given later on ah by Zaniolo and ah I have
+stated a simpler simplified version of that
+
+162
+00:16:46,289 --> 00:16:52,299
+at the bottom. So, we will say that a relational
+schema is in 3 NF if for every functional
+
+163
+00:16:52,299 --> 00:16:59,179
+dependency X determining a that holds on this
+schema either it is a trivial dependency which
+
+164
+00:16:59,179 --> 00:17:04,159
+is X is a A is a subset of X or X is a super
+key.
+
+165
+00:17:04,160 --> 00:17:10,788
+So, this is kind of the condition also as
+you had seen earlier this also is a condition
+
+166
+00:17:10,788 --> 00:17:18,949
+to be in Boyce Codd normal form. So, you can
+easily understand the 3 NF is a ah any relation
+
+167
+00:17:18,949 --> 00:17:25,839
+which is in 3 NF is also in the Boyce Codd
+normal form, but we add a fourth third condition
+
+168
+00:17:25,838 --> 00:17:31,359
+where you say that we will say this is in
+3 NF; even if the first two conditions are
+
+169
+00:17:31,359 --> 00:17:38,369
+not satisfied, but a is a part of some key
+just note the wording is a part of some key
+
+170
+00:17:38,369 --> 00:17:44,048
+not just the super key.
+So, if A is a part of some key then and the
+
+171
+00:17:44,048 --> 00:17:50,069
+first two conditions are also not are not
+satisfied even then we will say that the relation
+
+172
+00:17:50,069 --> 00:17:54,740
+is in third normal form. So, to check for
+a relation to be in third normal form; we
+
+173
+00:17:54,740 --> 00:18:00,370
+will actually check for whether any one of
+the three conditions hold .
+
+174
+00:18:00,369 --> 00:18:06,619
+So, this is a definition of ah transitive
+dependency which I have just loosely told
+
+175
+00:18:06,619 --> 00:18:13,508
+you. So, I will skip over this ah.
+There is given another example of a very different
+
+176
+00:18:13,509 --> 00:18:19,659
+kind of a relationship book genre author and
+author nationality as you can understand.
+
+177
+00:18:19,659 --> 00:18:23,110
+Given the book you know the author there is
+a functional dependency given the author do
+
+178
+00:18:23,109 --> 00:18:28,500
+you know the author nationality and the, but
+author does not actually determine the book
+
+179
+00:18:28,500 --> 00:18:34,819
+because the author may have written multiple
+books ah. But given that book determines author
+
+180
+00:18:34,819 --> 00:18:40,418
+and author determines author nationality we
+have that book determines author nationality
+
+181
+00:18:40,419 --> 00:18:46,980
+and therefore, we have redundancy possibility
+of redundancy in here which is a transitive
+
+182
+00:18:46,980 --> 00:18:52,480
+ah redundance due to this transitive dependency
+that we have.
+
+183
+00:18:52,480 --> 00:18:59,370
+So, here is a the earlier example where you
+can as you can see see clearly in this diagram
+
+184
+00:18:59,369 --> 00:19:06,489
+you can if you note this diagram you can see
+that SID determines ah ah city and city determines
+
+185
+00:19:06,490 --> 00:19:12,308
+status. So, this is it this is the transitive
+dependency that SID determines status.
+
+186
+00:19:12,308 --> 00:19:18,819
+So, if that happens and status becomes ah
+redundant and therefore, there could be anomalies.
+
+187
+00:19:18,819 --> 00:19:27,349
+And we can easily normalize by ah making them
+into SID and city and city and status. And
+
+188
+00:19:27,349 --> 00:19:34,119
+in that naturally that that redundancy goes
+away because you have no more the transitive
+
+189
+00:19:34,119 --> 00:19:40,779
+dependency in the relationship; you only have
+ah SID determining the city which is a primary
+
+190
+00:19:40,779 --> 00:19:47,839
+key in S C and city determining status which
+is the primary key in the C S.
+
+191
+00:19:47,839 --> 00:19:57,470
+So, there are ah these are other examples
+that that you can go through where we have
+
+192
+00:19:57,470 --> 00:20:06,100
+I have taken the example of a ah student ID
+I ID and the department name and ah shown
+
+193
+00:20:06,099 --> 00:20:13,579
+that what kind of ah problems, you might get
+into in this. In this case you can see that
+
+194
+00:20:13,579 --> 00:20:21,099
+the relationship actually is in ah the ah
+there because there are two candidate keys
+
+195
+00:20:21,099 --> 00:20:28,748
+and ah. So, this SID department name is a
+super key and this relationship is in the
+
+196
+00:20:28,749 --> 00:20:34,980
+third normal form. Because IID determining
+department name is contained in a candidate
+
+197
+00:20:34,980 --> 00:20:42,230
+key. So, that is the it is a it is in 3 NF
+due to the third condition that we have had
+
+198
+00:20:42,230 --> 00:20:48,128
+shown.
+So, when you, but this is a where you can
+
+199
+00:20:48,128 --> 00:20:54,079
+ah there is some redundancy in this schema
+that you can ah observe. So, this is just
+
+200
+00:20:54,079 --> 00:20:59,349
+constructed and you have been because of this
+redundancy you have been able to we have had
+
+201
+00:20:59,349 --> 00:21:07,638
+to use null values in this case. So, in a
+third normal form there is possible ah redundancy
+
+202
+00:21:07,638 --> 00:21:13,589
+coming in and ah these are the different cases
+that we have to check through.
+
+203
+00:21:13,589 --> 00:21:21,528
+So, next what ; so, we have seen the different
+normal forms first normal form no multivalued
+
+204
+00:21:21,528 --> 00:21:27,028
+attribute then the second normal form no partial
+dependency then the third normal form where
+
+205
+00:21:27,028 --> 00:21:33,429
+you do not have any transitive dependency.
+So, all these are ah cascading ah definitions.
+
+206
+00:21:33,429 --> 00:21:38,640
+So, in third normal form you have low multivalued
+attribute, no partial dependency and no transitive
+
+207
+00:21:38,640 --> 00:21:42,389
+dependency.
+So, now what will take a look into is how
+
+208
+00:21:42,388 --> 00:21:48,648
+if I am given a relational schema and if it
+is violating any one or more of this condition.
+
+209
+00:21:48,648 --> 00:21:53,898
+So, that the schema is not in the three three
+normal form third normal form then how can
+
+210
+00:21:53,898 --> 00:22:03,479
+we decompose it into the third normal form?
+So, the question naturally is ah certainly
+
+211
+00:22:03,480 --> 00:22:10,289
+is ah is can can it always be done is the
+basic question that can I always decompose
+
+212
+00:22:10,289 --> 00:22:16,908
+a schema into third normal form the answer
+is yes you can and that is always a lossless
+
+213
+00:22:16,909 --> 00:22:21,770
+join and dependency preserving decomposition
+into third normal form which is of great value.
+
+214
+00:22:21,769 --> 00:22:27,138
+Because that is we said is that desirable
+properties of our decomposition and if you
+
+215
+00:22:27,138 --> 00:22:35,369
+recall our discussions in the earlier part
+of ah the relational design ah modulesm, then
+
+216
+00:22:35,369 --> 00:22:40,269
+you would recall that Boyce Codd normal form
+also we had discussed at the early stages.
+
+217
+00:22:40,269 --> 00:22:46,908
+And that gives you a decomposition which is
+lossless join, but it does not guarantee preservation
+
+218
+00:22:46,909 --> 00:22:49,320
+of the dependencies with third normal form
+does that .
+
+219
+00:22:49,319 --> 00:22:59,639
+So, naturally there are different ah algorithms
+first the question is can you test if a relationship
+
+220
+00:22:59,640 --> 00:23:05,899
+is in third normal form; I will not go into
+the details of that and the computer science
+
+221
+00:23:05,898 --> 00:23:11,768
+result here is testing for third normal form
+is an NP hard problem. So, there is no known
+
+222
+00:23:11,769 --> 00:23:17,149
+polynomial time algorithm for that, but the
+interesting thing is the actually that decomposition
+
+223
+00:23:17,148 --> 00:23:22,609
+can be done in very simply in polynomial time.
+So, what do you have what is the decomposition
+
+224
+00:23:22,609 --> 00:23:28,990
+algorithm very written in very simple terms
+you want to ah you have given a relation R
+
+225
+00:23:28,990 --> 00:23:33,940
+and a set of functional dependencies that
+hold on you. So, you first compute a canonical
+
+226
+00:23:33,940 --> 00:23:40,340
+cover you you know what is a canonical cover.
+So, you compute a canonical covers you eliminate
+
+227
+00:23:40,339 --> 00:23:46,808
+extraneous attributes eliminate redundant
+FDs and you have the canonical cover F c from
+
+228
+00:23:46,808 --> 00:23:53,940
+F then you create for every functional dependency
+X determining Y that exists in the canonical
+
+229
+00:23:53,940 --> 00:23:58,778
+cover.
+You compute you make a relation say the ith
+
+230
+00:23:58,778 --> 00:24:04,069
+relation taking union of X and Y. So, you
+call it the relation X Y and you do that for
+
+231
+00:24:04,069 --> 00:24:10,128
+all the functional dependencies in the cover.
+And after that if you find that the key does
+
+232
+00:24:10,128 --> 00:24:15,569
+not occur in any one of these ah decomposed
+relations as generated, then you generate
+
+233
+00:24:15,569 --> 00:24:21,619
+one separate relation to represent the key.
+That is a very simple algorithm and I I just
+
+234
+00:24:21,619 --> 00:24:27,538
+wrote it in ah simple hand. So, that you can
+understand it easily, but here is the formal
+
+235
+00:24:27,538 --> 00:24:32,599
+algorithm. So, if you are interested to ah
+rigor I mean in the in the rigor of how 3
+
+236
+00:24:32,599 --> 00:24:38,028
+NF decomposition will happen here is the algorithm,
+but I will not go through these in steps.
+
+237
+00:24:38,028 --> 00:24:45,230
+So, that ensures that each relation ah R i
+that I have decomposed and generated is actually
+
+238
+00:24:45,230 --> 00:24:52,329
+in third normal form and this decomposition
+is dependency preserving and is lossless join
+
+239
+00:24:52,329 --> 00:24:55,118
+we are not proving that but we are just using
+that result.
+
+240
+00:24:55,118 --> 00:25:00,928
+So, here is an example of a schema; so, we
+have a customer banker branch. So, these are
+
+241
+00:25:00,929 --> 00:25:08,778
+the four attributes and these are the different
+functional dependencies that exist. Now naturally
+
+242
+00:25:08,778 --> 00:25:15,740
+given this first thing you will have to do
+is first thing you have to do is to ah look
+
+243
+00:25:15,740 --> 00:25:22,730
+at the different to look at taking the canonical
+cover the minimal cover.
+
+244
+00:25:22,730 --> 00:25:28,569
+So, if you compute try to compute the minimal
+cover; you will find that branch name actually
+
+245
+00:25:28,569 --> 00:25:33,470
+is extraneous in the first dependency. So,
+you can remove that and there is nothing else.
+
+246
+00:25:33,470 --> 00:25:40,740
+So, your canonical cover turns out to be this
+set of dependencies and then you go over and
+
+247
+00:25:40,740 --> 00:25:45,649
+for each one of them. So, you you take each
+one the first one is customer ID employee
+
+248
+00:25:45,648 --> 00:25:52,038
+ID determines type. So, for that you generate
+a schema customer ID, employee ID and type
+
+249
+00:25:52,038 --> 00:25:58,249
+again you ah take the second functional dependency
+employee ID determines branch name. So, create
+
+250
+00:25:58,249 --> 00:26:02,528
+employee ID and branch name as a different
+schema and in this way you will generate three
+
+251
+00:26:02,528 --> 00:26:08,909
+decomposed schema in the third normal form.
+Now, once you have done that then you find
+
+252
+00:26:08,909 --> 00:26:16,619
+that your if you look into the original key
+it was customer ID and employee ID and you
+
+253
+00:26:16,618 --> 00:26:24,168
+find that here in the third ah second and
+the third you already have that. So, you do
+
+254
+00:26:24,169 --> 00:26:35,700
+not need to add a separate relation for ah
+accommodating the key and also ah the third
+
+255
+00:26:35,700 --> 00:26:45,788
+relation. So, we can now declare that no further
+key needs to be added and we have the final
+
+256
+00:26:45,788 --> 00:26:50,740
+3 NF decomposition.
+So, at the end of the fault detect and delete.
+
+257
+00:26:50,740 --> 00:26:57,259
+So, this is this is a stated in terms of the
+detailed algorithm, but this is ah you can
+
+258
+00:26:57,259 --> 00:27:02,319
+say that the employee ID and branch name the
+second ah relation in the decomposition is
+
+259
+00:27:02,319 --> 00:27:06,659
+actually a subset of the third relation. So,
+you can remove that as well. So, you will
+
+260
+00:27:06,660 --> 00:27:11,669
+be left with only two relations in this decompose
+schema which both of which are in third normal
+
+261
+00:27:11,669 --> 00:27:17,270
+form and this decomposition is guaranteed
+you lossless join and dependency preservation.
+
+262
+00:27:17,269 --> 00:27:23,400
+So, I have ah given some practice problems
+for you I have also given the solution, but
+
+263
+00:27:23,400 --> 00:27:28,559
+the solution is not in the current run of
+the presentation; you will get see them in
+
+264
+00:27:28,558 --> 00:27:34,519
+the presentation as hidden slides. So, you
+first try solving them and once ah you have
+
+265
+00:27:34,519 --> 00:27:36,679
+solved them then you look at the solution
+in the slide.
+
+266
+00:27:36,679 --> 00:27:42,288
+So, there are two problems; so, this is a
+second one and you can solve them in that
+
+267
+00:27:42,288 --> 00:27:46,690
+way.
+Next is the we will quickly recap on the decomposition
+
+268
+00:27:46,690 --> 00:27:50,629
+of BCNF Boyce Codd normal form which we had
+seen earlier.
+
+269
+00:27:50,628 --> 00:27:57,449
+And we know that the Boyce Codd normal form
+guarantees that there will have be every dependency
+
+270
+00:27:57,450 --> 00:28:03,139
+that exists must be either trivial or the
+left hand side must be a super key. So, using
+
+271
+00:28:03,138 --> 00:28:07,618
+the algorithms, you can test for the Boyce
+Codd normal form which is described here I
+
+272
+00:28:07,618 --> 00:28:12,628
+am not going through in in steps.
+And ah here is the more detailed formal algorithm
+
+273
+00:28:12,628 --> 00:28:20,548
+to find ah determine whether a ah Boyce Codd
+normal form is in a a decomposed form is in
+
+274
+00:28:20,548 --> 00:28:23,499
+Boyce Codd.
+So, I will just quickly recap on the algorithm
+
+275
+00:28:23,499 --> 00:28:30,278
+to do that naturally for all ah dependencies
+you first determine the super key and check
+
+276
+00:28:30,278 --> 00:28:36,128
+if A determining B is a super key or not if
+it and that you can easily do using attribute
+
+277
+00:28:36,128 --> 00:28:43,079
+cover. If it is not a super key then you choose
+a dependency A determining B which violates
+
+278
+00:28:43,079 --> 00:28:49,118
+and you form by Boyce Codd goes in in in ah
+every step it decomposes one relation into
+
+279
+00:28:49,118 --> 00:28:53,038
+two separate relation.
+So, one that you take by taking union of ah
+
+280
+00:28:53,038 --> 00:29:01,190
+the attributes of A and B and the other where
+you take out B minus A; these attributes this
+
+281
+00:29:01,190 --> 00:29:08,058
+difference attributes you take out from R
+and then you add A and make the other relationship.
+
+282
+00:29:08,058 --> 00:29:15,668
+Naturally ah in between these two A is a common
+attribute and since ah and that will ah determine
+
+283
+00:29:15,669 --> 00:29:20,288
+A B because A determines B.
+So, A will determine A B that is whole of
+
+284
+00:29:20,288 --> 00:29:26,190
+R1. So, naturally the lossless ah join is
+guaranteed and you ah repeat that ah keep
+
+285
+00:29:26,190 --> 00:29:31,860
+on doing that for the resultant relations
+that you have got. keep on decomposing them
+
+286
+00:29:31,859 --> 00:29:37,740
+till you finally, close and you have no more
+ah violating dependency and you will have
+
+287
+00:29:37,740 --> 00:29:43,319
+a decomposition into Boyce Codd normal form.
+Here is the formal algorithm again for ah
+
+288
+00:29:43,319 --> 00:29:49,908
+you to go by steps ah if you are interested.
+Otherwise you know how to do this; again I
+
+289
+00:29:49,909 --> 00:29:56,570
+have shown another example here which is ah
+showing that ah how to decompose in BCNF.
+
+290
+00:29:56,569 --> 00:30:02,569
+So, you should practice this ah that is why
+I have work them out in steps here. So, here
+
+291
+00:30:02,569 --> 00:30:09,239
+A determines B; B determine C naturally A
+is the key R is not in BCNF because B determining
+
+292
+00:30:09,239 --> 00:30:14,829
+C is ah is a functional dependency where B
+is not a super key.
+
+293
+00:30:14,829 --> 00:30:21,658
+So, you can ah decompose them in terms of
+ah. So, you can decompose in terms of ah B
+
+294
+00:30:21,659 --> 00:30:28,320
+C as one relation and A B as another relation.
+Here is ah another example a more detailed
+
+295
+00:30:28,319 --> 00:30:37,349
+one of a class relationship which has a whole
+set of attributes and these functional dependencies
+
+296
+00:30:37,349 --> 00:30:43,759
+and based on that the candidate key is course
+ID, section ID, semester and year and you
+
+297
+00:30:43,759 --> 00:30:51,739
+can proceed with the BCNF decomposition; taking
+the first functional dependency that holds,
+
+298
+00:30:51,739 --> 00:30:57,399
+but the left hand side the course ID is not
+a super key. So, you will replace it by a
+
+299
+00:30:57,398 --> 00:31:04,648
+one relation; which is say new course relation
+and a new class relation which is the remaining
+
+300
+00:31:04,648 --> 00:31:10,579
+attributes.
+And then you you get convinced that course
+
+301
+00:31:10,579 --> 00:31:16,329
+is in BCNF, but the other one the class is
+not because building and room number determines
+
+302
+00:31:16,329 --> 00:31:21,269
+capacity where building room number together
+is not a super key. So, you split it again
+
+303
+00:31:21,269 --> 00:31:30,608
+and you replace class 1 in terms of 2 new
+ah relations class room and section and both
+
+304
+00:31:30,608 --> 00:31:33,558
+of them are in BCNF and you are done with
+this.
+
+305
+00:31:33,558 --> 00:31:41,168
+But BCNF as I would again warning you BCNF
+does not preserve ah dependence it gives you
+
+306
+00:31:41,169 --> 00:31:45,830
+lossless join, but it does not preserve the
+dependencies. So, it is not always possible
+
+307
+00:31:45,829 --> 00:31:52,970
+to decompose into BCNF with dependency preservation.
+So, here is an example which we saw little
+
+308
+00:31:52,970 --> 00:31:58,889
+earlier and there are two candidate keys R
+is not in BCNF, you can clearly see and any
+
+309
+00:31:58,888 --> 00:32:05,469
+decomposition will fail JK determining L and
+that will require a join. So, this will not
+
+310
+00:32:05,470 --> 00:32:10,149
+preserve the dependencies ah in terms of ah
+the decomposition.
+
+311
+00:32:10,148 --> 00:32:16,548
+Again I have given a set of ah practice problems
+here which we you should try and get confident
+
+312
+00:32:16,548 --> 00:32:19,609
+in terms of the Boyce Codd from normal form
+normalization.
+
+313
+00:32:19,609 --> 00:32:27,528
+Now, it is ah always possible to decompose
+a relation into a set of relation in 3 NF;
+
+314
+00:32:27,528 --> 00:32:33,230
+if the decomposition is lossless and the dependencies
+are preserved. Whereas, in case of BCNF it
+
+315
+00:32:33,230 --> 00:32:40,479
+is not possible; so, here is a table which
+summarizes the relative comparison between
+
+316
+00:32:40,479 --> 00:32:44,440
+Boyce Codd and third normal form because they
+are the common once Boyce Codd naturally is
+
+317
+00:32:44,440 --> 00:32:52,288
+more strict it gives you lesser dependent
+lesser redundancies, but it cannot guarantee
+
+318
+00:32:52,288 --> 00:32:58,509
+that your dependencies will be preserved.
+So, ah more often we will accept 3 NF as an
+
+319
+00:32:58,509 --> 00:33:07,548
+acceptable normalized decomposition with some
+redundancy still existing it is possible and
+
+320
+00:33:07,548 --> 00:33:12,668
+we cannot get rid of them.
+So, we have ah studied about the normal forms
+
+321
+00:33:12,669 --> 00:33:17,799
+and their importance and how progressively
+we can increase the constraints to minimize
+
+322
+00:33:17,798 --> 00:33:23,528
+redundancy in the schema and learned how to
+decompose a schema into third normal form
+
+323
+00:33:23,528 --> 00:33:25,788
+and also in the Boyce Codd normal form.
+

@@ -1,0 +1,1799 @@
+﻿1
+00:00:16,399 --> 00:00:23,609
+Welcome to module 22 of database management
+systems, we have been discussing application,
+
+2
+00:00:23,609 --> 00:00:27,719
+design and development this is the second
+part of that discussion.
+
+3
+00:00:27,719 --> 00:00:32,170
+In the last module, we have taken a quick
+look at the application programs and the ah
+
+4
+00:00:32,170 --> 00:00:37,170
+user interfaces, looked at the fundamental
+notions of web and specifically the servlets
+
+5
+00:00:37,170 --> 00:00:41,660
+and JSP.
+In the current module, we would like to understand
+
+6
+00:00:41,659 --> 00:00:48,859
+the 3 tier architecture in little bit more
+detail, and ah explore quickly take a look
+
+7
+00:00:48,859 --> 00:00:54,338
+into the rapid application development processes
+what kind of help is available, for quickly
+
+8
+00:00:54,338 --> 00:01:00,829
+develop ah applications and then, we briefly
+we will look into the issues in terms of an
+
+9
+00:01:00,829 --> 00:01:06,849
+applications performance and it is required
+security, and ah at the end we will discuss
+
+10
+00:01:06,849 --> 00:01:14,489
+how a mobile app is similar to such web based
+ah database applications? And how they are
+
+11
+00:01:14,489 --> 00:01:19,158
+different?
+So, this is the outline the 5 ah parts. So,
+
+12
+00:01:19,159 --> 00:01:23,520
+in terms of the application architecture again
+the presentation layer, or the user interface,
+
+13
+00:01:23,519 --> 00:01:30,609
+business logic layer, and the data access
+layer, the frontend, the middle layer and
+
+14
+00:01:30,609 --> 00:01:34,659
+the backend. Now, in the presentation ah layer
+or the user interface ah it is typical that
+
+15
+00:01:34,659 --> 00:01:42,408
+ah ah applications follow, what is now known
+as MVC architecture, model view control ah
+
+16
+00:01:42,409 --> 00:01:50,969
+architecture where, ah the model is the the
+is kind of the business logic that, ah ah
+
+17
+00:01:50,969 --> 00:01:58,310
+that is implemented in terms of ah the frontend
+information. View is the actual presentation
+
+18
+00:01:58,310 --> 00:02:04,969
+of the ah data, that HTML and controller is
+one who, receives ah different events execute
+
+19
+00:02:04,969 --> 00:02:08,330
+actions and so on and then, we will go into
+the other layers.
+
+20
+00:02:08,330 --> 00:02:17,560
+So, here let us ah ah try to understand this
+ah flow. So, ah there is a request ah in the
+
+21
+00:02:17,560 --> 00:02:24,259
+web browser say, to ah to the service. So,
+this is the the sequential now, let us say
+
+22
+00:02:24,259 --> 00:02:31,748
+we are trying to log in to Gmail. So, in one
+we send a form HTML form which, has the username
+
+23
+00:02:31,748 --> 00:02:38,049
+and the password and possibly encrypted, that
+comes to the controller ah. So, which basically
+
+24
+00:02:38,049 --> 00:02:43,540
+controls ah the different events.
+So, the controller knows that, ah it has to
+
+25
+00:02:43,539 --> 00:02:50,719
+now decide ah whether, ah this ah what actions
+are required in terms of this input data.
+
+26
+00:02:50,719 --> 00:02:57,329
+So, it is sends it to the model which, is
+ah the ah business logic here. So, the business
+
+27
+00:02:57,329 --> 00:03:05,060
+logic ah model knows now well. So, at this
+there is an application which, ah deciphers
+
+28
+00:03:05,060 --> 00:03:09,829
+the business logic which says that, ah business
+logic required here is we have a password
+
+29
+00:03:09,829 --> 00:03:16,939
+and we have a user names now, we have to decide
+whether this user is a valid user and ah whether,
+
+30
+00:03:16,938 --> 00:03:23,489
+he or she can be allowed to login. So, the
+model has to check on the user data, the user
+
+31
+00:03:23,490 --> 00:03:29,819
+id and password data and therefore, it has
+to come from a database. So, it passes on
+
+32
+00:03:29,818 --> 00:03:36,658
+this ah request to the data access layer,
+the data access layer in turn access the database.
+
+33
+00:03:36,658 --> 00:03:41,929
+So, you can think of data access layer is
+something like a SQL query layer where, you
+
+34
+00:03:41,930 --> 00:03:48,278
+have formed a query select ah etc., from etc.,
+where, user id is equal to PPD, password is
+
+35
+00:03:48,278 --> 00:03:54,539
+equal to XXX, the database ah depending on
+what is found in the database is back to the
+
+36
+00:03:54,539 --> 00:04:00,870
+model, and the model then sends it to the
+control it is says ok, this is what ah I have
+
+37
+00:04:00,870 --> 00:04:07,430
+found. So, this is the result of the data,
+that ah result of the ah request that has
+
+38
+00:04:07,430 --> 00:04:12,849
+been ah prepared. So, it is says that well
+this is ah have been found and therefore,
+
+39
+00:04:12,848 --> 00:04:17,930
+we have extracted the mails in the inbox that
+existed, or it is says that the authentication
+
+40
+00:04:17,930 --> 00:04:23,730
+is not possible. So, it plugs in a error message
+and sends it to the controller, controller
+
+41
+00:04:23,730 --> 00:04:30,430
+now knows that ah a response has to be framed.
+So, the controller sends it to the view ah
+
+42
+00:04:30,430 --> 00:04:37,030
+of the MVC, the view we prepare the HTML that
+needs to go back. So, view prepares the HTML
+
+43
+00:04:37,029 --> 00:04:41,519
+and sends it back to the controller. So, controller
+now has the response which it is sends back
+
+44
+00:04:41,519 --> 00:04:47,079
+to the web browser through the internet, and
+we get to see that well now, my inbox and
+
+45
+00:04:47,079 --> 00:04:51,878
+mails are all here.
+So, this is a complete flow of starting from
+
+46
+00:04:51,879 --> 00:04:58,840
+here, going ah through this, coming back,
+going here, going back here, is the is the
+
+47
+00:04:58,839 --> 00:05:07,439
+whole rout of the ah request, response that
+goes over the HTTP in a typical web ah or
+
+48
+00:05:07,439 --> 00:05:12,509
+application scenario, that is the there is
+a way this application architecture is expected
+
+49
+00:05:12,509 --> 00:05:17,090
+to work.
+So, here I have ah created a small table,
+
+50
+00:05:17,089 --> 00:05:22,469
+showing you the the different activity is
+that happens at the presentation logic and
+
+51
+00:05:22,470 --> 00:05:28,960
+data layer of different common applications
+like, web mail like, Google. So, at the presentation
+
+52
+00:05:28,959 --> 00:05:35,239
+ah layer you will do things like, log in,
+mail list, view inbox, sent item, outbox so
+
+53
+00:05:35,240 --> 00:05:40,199
+on, mail composer. So, we can write mails
+filters of checking at different mails. So,
+
+54
+00:05:40,199 --> 00:05:42,780
+all the all these happens.
+So, for example, if you talk about ah filters
+
+55
+00:05:42,779 --> 00:05:49,279
+they they might often happen in the java script
+itself, ah that trans within ah the browser,
+
+56
+00:05:49,279 --> 00:05:54,049
+the logic the business logic will do user
+authentication, connection to mail server
+
+57
+00:05:54,050 --> 00:05:58,400
+because, a mails have to come from a different
+server, they are not they may not be setting
+
+58
+00:05:58,399 --> 00:06:05,359
+typed in terms of the of the ah database itself.
+And ah then user encryption, decryption and
+
+59
+00:06:05,360 --> 00:06:11,220
+the data side you will have different tables
+to ah ah represent the mail users, the users
+
+60
+00:06:11,220 --> 00:06:17,550
+like ah you and me all who are users of the
+Gmail, the address book of ah each for each
+
+61
+00:06:17,550 --> 00:06:22,970
+one of us the mail items and so on, and that
+will give us the functionality of send, receive
+
+62
+00:06:22,970 --> 00:06:27,630
+mails, managing address book and so on. So,
+similarly I have listed ah an application
+
+63
+00:06:27,629 --> 00:06:33,189
+for net banking which can where, we can check
+balance and do transactions ah transfer funds,
+
+64
+00:06:33,189 --> 00:06:39,030
+or a timetable where ah you can manage time
+table for multiple courses taken by multiple
+
+65
+00:06:39,029 --> 00:06:44,529
+teachers and so on. So, you can if you ah
+think about an application then, you should
+
+66
+00:06:44,529 --> 00:06:50,829
+be able to ah moderately map it is a functionality
+across the presentation logic and data layer.
+
+67
+00:06:50,829 --> 00:06:56,158
+So, that you know what you want to do at the
+clients, and ah which is which is at the presentation
+
+68
+00:06:56,158 --> 00:07:01,800
+layer, or what you want at the absolute packet
+which is on the data, what tables and ah ah
+
+69
+00:07:01,800 --> 00:07:06,658
+all all the databases that you want to maintain,
+and the business logic of how actually this
+
+70
+00:07:06,658 --> 00:07:09,978
+application will give you the result, how
+actually it will?
+
+71
+00:07:09,978 --> 00:07:15,158
+So, that that is something where, you will
+have a whole lot of complex logic that might
+
+72
+00:07:15,158 --> 00:07:19,598
+come in.
+So, coming to the business ah logic layer
+
+73
+00:07:19,598 --> 00:07:24,438
+specifically, that provides ah abstraction
+of that will provide abstraction of various
+
+74
+00:07:24,439 --> 00:07:31,599
+entities, students, instructors, courses,
+ah mails, ah ah your accounts, ah balance
+
+75
+00:07:31,598 --> 00:07:37,128
+and so on, and that will enforce business
+tools for carrying out this. So, a student
+
+76
+00:07:37,129 --> 00:07:41,439
+can enroll in a class only if she has completed
+prerequisites, you can transfer funds from
+
+77
+00:07:41,439 --> 00:07:45,999
+one account to the other, provided the you
+have the authority to transfer, provided you
+
+78
+00:07:45,999 --> 00:07:50,250
+have enough funds in the account, that is
+going to get debited and so on. So, those
+
+79
+00:07:50,250 --> 00:07:55,860
+are the different business tools, which will
+be ah employed by the business logic layer,
+
+80
+00:07:55,860 --> 00:08:00,960
+and it will support a work flow which defines
+how a task will be carried out in terms of
+
+81
+00:08:00,959 --> 00:08:05,918
+the multiple participants, and ah remember
+that all participants may not actually be
+
+82
+00:08:05,918 --> 00:08:10,399
+human beings, they could be some could be
+human being some could be other machines or
+
+83
+00:08:10,399 --> 00:08:14,589
+other applications as well.
+So, it gives you the work flow. So, you can
+
+84
+00:08:14,589 --> 00:08:19,429
+any any of the 3 application that I just mentioned,
+everywhere you can find that there is a work
+
+85
+00:08:19,430 --> 00:08:23,939
+flow, if you are want to check a mail then,
+there is a steps that you need to do go to
+
+86
+00:08:23,939 --> 00:08:29,490
+the inbox, ah chose the particular mail item,
+get the body and then if you want to reply
+
+87
+00:08:29,490 --> 00:08:36,299
+to that, ah select that, the submit that,
+you get a get a new form when you write the
+
+88
+00:08:36,299 --> 00:08:41,370
+reply, and within that form you get the original
+[cop/copy] copy of the original mail and so
+
+89
+00:08:41,370 --> 00:08:47,279
+on. So, all these kind of work flows will
+be supported by the business logic layer .
+
+90
+00:08:47,279 --> 00:08:53,569
+Now, certainly you can understand that ah
+at the frontend, ah if we if we talk about
+
+91
+00:08:53,570 --> 00:08:58,870
+what are different you know languages and
+models, that we are working with in the frontend
+
+92
+00:08:58,870 --> 00:09:05,310
+naturally our language is ah HTML tries for
+presentation, embedded with java script, at
+
+93
+00:09:05,309 --> 00:09:11,789
+the backend in the data it is the ah the database
+and the SQL query. So, it is a relational
+
+94
+00:09:11,789 --> 00:09:16,370
+model, but what happens in between? What happens
+in the business layer which connects them?
+
+95
+00:09:16,370 --> 00:09:20,440
+Now, naturally business layer you could write
+complex business tools ah.
+
+96
+00:09:20,440 --> 00:09:24,511
+For example, in the time table application
+we will have a complex algorithm, ah I know
+
+97
+00:09:24,510 --> 00:09:32,610
+to find out what ah allocation of ah ah class
+rooms and slots, are feasible for assignments
+
+98
+00:09:32,610 --> 00:09:39,230
+of ah teachers to courses availability of
+rooms and so on. So, often ah the business
+
+99
+00:09:39,230 --> 00:09:45,279
+logic layer, the this tier would be convenient
+to write in some typical common high-level
+
+100
+00:09:45,279 --> 00:09:52,179
+language like, ah C plus plus or java, and
+ah naturally you would know from your experience
+
+101
+00:09:52,179 --> 00:09:57,539
+of software engineering that, if you have
+a object based language then, that will be
+
+102
+00:09:57,539 --> 00:10:05,870
+a very convenient to do that. So, which means
+that, if you have ah say a a some ah ah entity
+
+103
+00:10:05,870 --> 00:10:13,889
+as a a student in your relational database
+then, most likely in your business logic,
+
+104
+00:10:13,889 --> 00:10:19,269
+which is a java code you will have a class
+called student. So, the relation student is
+
+105
+00:10:19,269 --> 00:10:25,210
+in the relational model, and your class student
+is in the object based model, and you will
+
+106
+00:10:25,210 --> 00:10:31,740
+need to define ah ah these ah in terms of
+certain mapping of the attributes, which we
+
+107
+00:10:31,740 --> 00:10:37,389
+had shown when we talked about embedding of
+a languages, and this is ah what is commonly
+
+108
+00:10:37,389 --> 00:10:42,860
+known as a object relational ah ah mapping.
+So, that objects can map to multiple tuples,
+
+109
+00:10:42,860 --> 00:10:47,440
+in multiple relations and can be viewed in
+a different way. So, so this mapping itself
+
+110
+00:10:47,440 --> 00:10:52,620
+we could create a virtual view in the business
+logic layer, in the business logic language
+
+111
+00:10:52,620 --> 00:10:59,320
+that you are looking at. Of course, they have
+been ah attempts to ah create a models, which
+
+112
+00:10:59,320 --> 00:11:04,140
+are relational models which are also object
+oriented those are called object relational
+
+113
+00:11:04,139 --> 00:11:11,080
+databases, ah some ah of them have been successful,
+but not really commercially successful. So,
+
+114
+00:11:11,080 --> 00:11:16,920
+we continue to ah work with ah SQL, and the
+relational database kind of things in the
+
+115
+00:11:16,919 --> 00:11:21,799
+database level, and some kind of a high-level
+language like, C plus plus, java and the object-based
+
+116
+00:11:21,799 --> 00:11:26,599
+model in the middle tarred in the in the business
+logic, and continue to do the object relational
+
+117
+00:11:26,600 --> 00:11:34,110
+mapping for solving the problems. So, you
+can here here I have given the points of what
+
+118
+00:11:34,110 --> 00:11:39,440
+happens? How the objects get created? Application
+opens a session, which connects to the database
+
+119
+00:11:39,440 --> 00:11:42,640
+because, we need to get the data from the
+database, they can be objects that can be
+
+120
+00:11:42,639 --> 00:11:48,019
+created safe to the database.
+They can be extracted from the database; new
+
+121
+00:11:48,019 --> 00:11:52,299
+objects can be created and mapping use to
+create a appropriate tuples in the database.
+
+122
+00:11:52,299 --> 00:11:57,699
+So, it is a 2-way traffic that will keep on
+happening where, the business logic layer
+
+123
+00:11:57,700 --> 00:12:03,750
+will continue to see entities as objects whereas,
+the database layer will continue to see them,
+
+124
+00:12:03,750 --> 00:12:13,129
+as tuple in the relational database .
+So, ah there are also several web services,
+
+125
+00:12:13,129 --> 00:12:17,320
+that can be used and a you may be getting
+familiar with that, we will not go deep into
+
+126
+00:12:17,320 --> 00:12:23,629
+this, but I will just mention that, ah web
+services a mechanism through which, you can
+
+127
+00:12:23,629 --> 00:12:29,830
+access a data from remote server using what
+is known as a remote procedure call, and ah
+
+128
+00:12:29,830 --> 00:12:36,550
+today very common ah approach ah for this
+is called rest representation state transfer,
+
+129
+00:12:36,549 --> 00:12:42,700
+which allow standard HTTP request to a URL
+to execute a request and return data, and
+
+130
+00:12:42,701 --> 00:12:49,050
+a several of the web services are based on
+that, and are the ah ah are big web services
+
+131
+00:12:49,049 --> 00:12:54,039
+which you must have heard of, but I just mentioned
+it at this point because it is contextual,
+
+132
+00:12:54,039 --> 00:13:01,889
+but we will not get into those in in this
+course really. Now, coming to ah how do you
+
+133
+00:13:01,889 --> 00:13:08,189
+actually ah develop applications ah.
+Now, it is not a easy process that is a lot
+
+134
+00:13:08,190 --> 00:13:15,000
+of refer require to develop web applications,
+ah you need ah to support the functionality
+
+135
+00:13:15,000 --> 00:13:20,659
+that of current day web. So, you need several
+approaches to speed up applications. So, you
+
+136
+00:13:20,659 --> 00:13:26,009
+this is in parallel to if you think of how?
+What has been done to speed up ah development
+
+137
+00:13:26,009 --> 00:13:31,509
+ah processes, development applications for
+different say C applications, or C plus plus,
+
+138
+00:13:31,509 --> 00:13:35,970
+or java applications.
+So, one approach naturally is to ah variety
+
+139
+00:13:35,970 --> 00:13:42,080
+of ah function library, ah which can help
+you easily get user interface elements like
+
+140
+00:13:42,080 --> 00:13:49,490
+buttons, checkboxes, radio drag and drop features
+in the IDE, ah IDE stands for integrated ah
+
+141
+00:13:49,490 --> 00:13:56,159
+development environment like, ah ah visual
+ah studio, ah front page these kind of which
+
+142
+00:13:56,159 --> 00:14:01,289
+can use use a, which can create user interference
+elements easily you can automatically generate
+
+143
+00:14:01,289 --> 00:14:07,069
+code for user interface, and ah these are
+all parts of rapid application development
+
+144
+00:14:07,070 --> 00:14:13,300
+tools, and ah some frameworks are ah very
+popular, this is for primarily the java server
+
+145
+00:14:13,299 --> 00:14:19,609
+faces or JSF is a framework where, you can
+rapidly develop fill in all the requirements
+
+146
+00:14:19,610 --> 00:14:25,680
+of the different layers, in in a web based
+database application in other very popular
+
+147
+00:14:25,679 --> 00:14:31,759
+is ruby on ah rails, which allows easy creation
+of simple crud create, read, update, delete.
+
+148
+00:14:31,759 --> 00:14:36,330
+So, if you look at database applications and
+common applications will all applications
+
+149
+00:14:36,330 --> 00:14:41,790
+will at least need to do this it lead to create
+data, read data, update data, delete data.
+
+150
+00:14:41,789 --> 00:14:48,159
+So, you can do that quickly with ruby on rails.
+So, if you are locating into really the ah
+
+151
+00:14:48,159 --> 00:14:52,819
+development of database applications, get
+yourself familiar with this rapid application
+
+152
+00:14:52,820 --> 00:14:56,930
+development processes.
+There are different other ah frameworks as
+
+153
+00:14:56,929 --> 00:15:03,409
+well, another very popular and ah widely used
+framework is ah Microsoft specific, this is
+
+154
+00:15:03,409 --> 00:15:08,100
+unfortunately not portable because, it is
+proprietary of Microsoft where, you can use
+
+155
+00:15:08,100 --> 00:15:14,580
+the ah the dot net ah framework of Microsoft,
+which helps you with lot of ah an a resources
+
+156
+00:15:14,580 --> 00:15:21,759
+ah and libraries which are already provided,
+and ah like ah we talked about JSP, we can
+
+157
+00:15:21,759 --> 00:15:26,819
+use ASP dot net here active server page in
+the dot net framework, which provides a whole
+
+158
+00:15:26,820 --> 00:15:32,311
+lot of ah controls and you have a very nice
+powerful id in terms of visual studio, high
+
+159
+00:15:32,311 --> 00:15:38,780
+were being ah proprietary these ah need licenses
+ah and you need to pay for that. So, many
+
+160
+00:15:38,779 --> 00:15:45,970
+a times, ah many developers may not be able
+to afford it or like it for that reason. Naturally,
+
+161
+00:15:45,970 --> 00:15:52,160
+ah as you designed applications and ah ah
+create that, you will have to be careful about
+
+162
+00:15:52,159 --> 00:15:56,779
+it is performance because, ah certainly we
+all want very fast results.
+
+163
+00:15:56,779 --> 00:16:04,039
+So, if I ah log in to my Gmail application,
+and ah I would expect that as soon as I press
+
+164
+00:16:04,039 --> 00:16:08,559
+the submit button with a couple of seconds,
+my inbox will be displayed on my browser,
+
+165
+00:16:08,559 --> 00:16:13,179
+I am not ready to wait for 2 minutes, 3 minutes,
+5 minutes for doing that.
+
+166
+00:16:13,179 --> 00:16:18,959
+So, while developing the application you will
+have to make an estimate of how often it will
+
+167
+00:16:18,960 --> 00:16:24,009
+be used? How many users will use that every
+day and so on? Ah how many, what is your ah
+
+168
+00:16:24,009 --> 00:16:29,330
+expected heat rate? That is, when the maximum
+number of users are trying to use this then,
+
+169
+00:16:29,330 --> 00:16:34,490
+what is the ah you know estimated number of
+request per second? That will come to your
+
+170
+00:16:34,490 --> 00:16:40,879
+server. And to to improve performance their
+different kinds of techniques can be used,
+
+171
+00:16:40,879 --> 00:16:47,860
+the significant of them is ah called caching,
+caching is nothing but if you expect to ah
+
+172
+00:16:47,860 --> 00:16:53,430
+request to be ah similar ah. So, that they
+are results should be similar then, after
+
+173
+00:16:53,429 --> 00:17:00,109
+the first request ah besides sending the response
+back, you actually keep a local copy of that.
+
+174
+00:17:00,110 --> 00:17:05,180
+So, that if a similar request come in future,
+you can you may not re compute it, you can
+
+175
+00:17:05,180 --> 00:17:14,038
+just send that caches copy. So, it can be
+done in terms of ah verity of ah JDBC connections
+
+176
+00:17:14,038 --> 00:17:20,420
+called connection pooling, it can be done
+in terms of database queries, caching of generated,
+
+177
+00:17:20,420 --> 00:17:23,980
+HTML and ah so on.
+It can be done at the clients network side
+
+178
+00:17:23,980 --> 00:17:30,970
+also by caching pages by web ah proxy; obviously,
+if you are using caching to improve performance,
+
+179
+00:17:30,970 --> 00:17:37,470
+you will have to understand lot more of the
+web ah dynamics in depth because, ah certainly
+
+180
+00:17:37,470 --> 00:17:43,230
+if you cache then there is a possibility,
+that somebody is asking ah is sending a request
+
+181
+00:17:43,230 --> 00:17:49,700
+for which, the response would not be the same
+as what it was, when the last time the response
+
+182
+00:17:49,700 --> 00:17:54,490
+was computed and cached. So, if you send the
+cached information back then then, you may
+
+183
+00:17:54,490 --> 00:18:00,349
+be giving a dated information. So, ah possibly
+ah say for example, if you are checking at
+
+184
+00:18:00,349 --> 00:18:06,730
+ah the ah net banking transaction, you have
+making a fund transfer and checking your account
+
+185
+00:18:06,730 --> 00:18:13,029
+ah transactions after that one transfer, you
+would not expect a cached page whereas, ah
+
+186
+00:18:13,029 --> 00:18:20,450
+if you are looking at the ah website of a
+say ah IIT Kharagpur then, ah it will be ok
+
+187
+00:18:20,450 --> 00:18:25,319
+to cache that because, it is not expected
+to change very frequently. So, these are different
+
+188
+00:18:25,319 --> 00:18:30,710
+factors. So, ah we we do not have it in the
+scope to going to different issues of, how
+
+189
+00:18:30,710 --> 00:18:33,600
+to improve performance? And what are the different
+challenges?
+
+190
+00:18:33,599 --> 00:18:39,990
+But I just want that you to be sensitive about
+these issues. Other very deep ah you know
+
+191
+00:18:39,990 --> 00:18:45,609
+concerned, deep requirement about applications
+are the security of applications, there are
+
+192
+00:18:45,609 --> 00:18:50,289
+this is a very involved topic, and there are
+several ah issues that are involved.
+
+193
+00:18:50,289 --> 00:18:56,039
+So, and ah I am ah talking about only a few
+of them because, ah the many of them require
+
+194
+00:18:56,039 --> 00:19:00,649
+knowledge about several other fields particularly,
+in the field of security and an encryption
+
+195
+00:19:00,650 --> 00:19:06,831
+and so on. So, one ah that is very common
+in terms of SQL ah query is ah known as a
+
+196
+00:19:06,830 --> 00:19:12,079
+SQL injection where, based on I mean there
+is if you are expecting some ah inputs to
+
+197
+00:19:12,079 --> 00:19:17,929
+come ah, and fill up certain parts of the
+SQL query then, you will have to be careful
+
+198
+00:19:17,930 --> 00:19:23,950
+that, ah user should not be able to give ah
+such input say such strings. So, that the
+
+199
+00:19:23,950 --> 00:19:28,870
+query actually mean something different, this
+query may be which was just a ah query to
+
+200
+00:19:28,869 --> 00:19:33,169
+read something, may update something, or give
+some different result. So, here I have just
+
+201
+00:19:33,170 --> 00:19:40,000
+briefly highlighted ah some of those issues
+, ah there are ah other security issues like,
+
+202
+00:19:40,000 --> 00:19:44,309
+leakage of password if there are important
+things which are based on a single password
+
+203
+00:19:44,309 --> 00:19:50,190
+then, use the password gets compromised because,
+it is shared or it is ah broken in a middle
+
+204
+00:19:50,190 --> 00:19:55,400
+by some hacker and so on then, you will have
+a lot of ah risks involved.
+
+205
+00:19:55,400 --> 00:20:02,530
+So, ah you should be you will need to make
+sure that, you do not store passwords you
+
+206
+00:20:02,529 --> 00:20:07,799
+just store encrypted forms of that in which
+encrypted forms, ah you have must have ah
+
+207
+00:20:07,799 --> 00:20:14,210
+observed ah for the last couple of years that,
+ah in many cases earlier you could just log
+
+208
+00:20:14,210 --> 00:20:19,870
+in. So, giving just one password was enough,
+but now in many transactions for example,
+
+209
+00:20:19,869 --> 00:20:26,219
+if you are ah logging into a net banking ah
+ah application then, often you will be asked
+
+210
+00:20:26,220 --> 00:20:33,430
+to provide some additional ah key information,
+or you will be asked to ah do a authentication
+
+211
+00:20:33,430 --> 00:20:40,779
+by OTP ah one-time password and and so on.
+So, these are ah common because, ah you know
+
+212
+00:20:40,779 --> 00:20:46,990
+it is risky to work with just a single authentication,
+and you will find that some net banking applications
+
+213
+00:20:46,990 --> 00:20:52,359
+for example, if you are doing a fund transfer,
+then they actually require 2 additional ah
+
+214
+00:20:52,359 --> 00:20:56,740
+password authentication, one is a special
+password for fund transfer, and then possibly
+
+215
+00:20:56,740 --> 00:21:02,200
+we will be asked to go through an OTP. So,
+depending on the criticality of your application
+
+216
+00:21:02,200 --> 00:21:07,069
+and the potential vulnerability of the application,
+your authentication mechanism will have to
+
+217
+00:21:07,069 --> 00:21:13,529
+be appropriately designed.
+Ah there are issues in terms of ah security,
+
+218
+00:21:13,529 --> 00:21:20,960
+in terms of the application level also for
+example, if you um ah if you are looking at
+
+219
+00:21:20,960 --> 00:21:24,990
+a at a student application where, the you
+want to say that the student, every student
+
+220
+00:21:24,990 --> 00:21:30,480
+can see his or her own grade, but they should
+not be able to see the grade of others. Now,
+
+221
+00:21:30,480 --> 00:21:38,210
+how do you implement this? Now, 2 issues are
+one is ah the database cannot implement, this
+
+222
+00:21:38,210 --> 00:21:41,920
+database cannot ah provide this as a part
+of access control because, database has no
+
+223
+00:21:41,920 --> 00:21:48,480
+idea about who the application users are,
+and the second ah if you the if you recall
+
+224
+00:21:48,480 --> 00:21:54,430
+the way, we talked about ah authorization
+in SQL, that is in terms of tables or columns
+
+225
+00:21:54,430 --> 00:22:01,009
+of the tables, but SQL has no mechanism to
+create authorization for rows of the table.
+
+226
+00:22:01,009 --> 00:22:06,259
+So, this will have to be handled, in terms
+of what is known as at the application layer.
+
+227
+00:22:06,259 --> 00:22:11,279
+So, this is ah where you are. So, what this
+is saying that you are created a view where,
+
+228
+00:22:11,279 --> 00:22:20,420
+ah you are ah ah created a view student text
+where, to do this you will have to read you
+
+229
+00:22:20,420 --> 00:22:27,009
+are saying where, text dot id is equal to
+this function called ah is sys context dot
+
+230
+00:22:27,009 --> 00:22:32,390
+user id. So, sys context is an object naturally,
+dot user I d this function called. So, what
+
+231
+00:22:32,390 --> 00:22:37,400
+this function gives you call to the function
+gives you is an information about the end
+
+232
+00:22:37,400 --> 00:22:43,809
+user identity, and that identity has to match,
+the identity that exist in the text I d for
+
+233
+00:22:43,808 --> 00:22:49,549
+the result to be computed. So, this will ensure
+that depending on who is actually the current
+
+234
+00:22:49,549 --> 00:22:54,480
+user, the same view will be evaluated for
+different results.
+
+235
+00:22:54,480 --> 00:23:01,150
+So, this is ah no not a not a very ah sound
+this is not a very comfortable ah situation
+
+236
+00:23:01,150 --> 00:23:06,269
+because, here the authorization is not being
+implemented in the database level, but is
+
+237
+00:23:06,269 --> 00:23:12,779
+being implemented at the application level,
+but ah that is way things a ah because, ah
+
+238
+00:23:12,779 --> 00:23:18,808
+most of the fine grained authorization currently,
+is done entirely in the ah application ah
+
+239
+00:23:18,808 --> 00:23:25,730
+level only a extension to SQL authorization,
+ah at for similar ah you know fine graining
+
+240
+00:23:25,730 --> 00:23:31,380
+and so on has been proposed, but ah they have
+not been ah implemented because, there are
+
+241
+00:23:31,380 --> 00:23:35,370
+several issues of implementing where there
+several issues of how do you represent? How
+
+242
+00:23:35,369 --> 00:23:40,519
+do you module? And most importantly, these
+have potentials of slowing down the database,
+
+243
+00:23:40,519 --> 00:23:44,950
+ah query process and significantly
+So, often this is not a a preferred mechanism
+
+244
+00:23:44,950 --> 00:23:56,789
+either. Another way to ah ensure security
+is to keep audit trail, trail must log actions
+
+245
+00:23:56,789 --> 00:24:02,190
+ah into it and ah.
+So, where you write down ah actions in terms
+
+246
+00:24:02,190 --> 00:24:06,539
+of who carried out and update, or who access
+some sensitive data, or who did a delete and
+
+247
+00:24:06,539 --> 00:24:13,450
+so on. So, audit trails can be used later
+on if the need arises to detect, ah if some
+
+248
+00:24:13,450 --> 00:24:18,620
+security breach that happen, or if some damage
+has been caused by the security breach, that
+
+249
+00:24:18,619 --> 00:24:24,479
+can be corrected and so on create a trace.
+So, auditing is is necessarily a very required,
+
+250
+00:24:24,480 --> 00:24:32,769
+ah in a very required activity for any data-based
+application and audit trail had a good mechanism
+
+251
+00:24:32,769 --> 00:24:38,099
+for that. So, when you develop applications
+you have to consider has to whether, you would
+
+252
+00:24:38,099 --> 00:24:42,809
+like to support audit trail of course, if
+you support audit trail then, somewhat your
+
+253
+00:24:42,809 --> 00:24:48,259
+application will get slowed down, it will
+require more ah disk to keep that trail because,
+
+254
+00:24:48,259 --> 00:24:53,069
+every transaction every details ah you will
+get logged in to the audit trail, but it is
+
+255
+00:24:53,069 --> 00:24:59,950
+very, very important for critical applications
+like, ah net banking where currently it is
+
+256
+00:24:59,950 --> 00:25:05,120
+mandated every transaction that, you do every
+action that you do on your account, through
+
+257
+00:25:05,119 --> 00:25:11,399
+the net banking is trailed in the banks end.
+So, that if later there is a there is some
+
+258
+00:25:11,400 --> 00:25:16,750
+ah dispute, there is some ah breach has found
+then, the same can be recovered and trace
+
+259
+00:25:16,750 --> 00:25:25,259
+back to the actions, that you are actually
+taken ah. At the end ah of this module let
+
+260
+00:25:25,259 --> 00:25:28,900
+me take a quick look into the mobile apps
+ah.
+
+261
+00:25:28,900 --> 00:25:35,470
+These are somewhat different, but ah it is
+very important to ah ah today to take a notion
+
+262
+00:25:35,470 --> 00:25:40,910
+of the ah mobile app. So, it is a a type of
+a application ah software, which is designed
+
+263
+00:25:40,910 --> 00:25:46,170
+to run on a mobile devise. So, it this is
+not necessarily mean that, ah it has to be
+
+264
+00:25:46,170 --> 00:25:51,700
+a smart phone, it could be a tablet or you
+know some small device, which typically is
+
+265
+00:25:51,700 --> 00:25:59,420
+handled and carried around . So, it is typically
+ah specifically for use on small wireless
+
+266
+00:25:59,420 --> 00:26:05,800
+computing devices, and ah it is designed with
+considerations for demands and coincident
+
+267
+00:26:05,799 --> 00:26:12,250
+of the device. So, how are how is a different?
+If I want to use the application or want to
+
+268
+00:26:12,250 --> 00:26:16,670
+have an application which does my task, but
+I want to do it as a mobile app, I want to
+
+269
+00:26:16,670 --> 00:26:23,519
+do it for a small wireless ah handled device.
+Certainly, there are ah if we if we since
+
+270
+00:26:23,519 --> 00:26:29,089
+the small device it has lot of constraints,
+ah there are ah lot of demands of the device,
+
+271
+00:26:29,089 --> 00:26:35,000
+compare to if we were using a aha web browser
+in a desktop or a laptop where, you have lot
+
+272
+00:26:35,000 --> 00:26:39,599
+of resources.
+And also on the this is this is on the one
+
+273
+00:26:39,599 --> 00:26:46,439
+kind of ah the restriction side and on the
+ah other side, ah these devices ah have certain
+
+274
+00:26:46,440 --> 00:26:51,789
+capabilities, which your desktop ah ah or
+laptop may not have and therefore, it may
+
+275
+00:26:51,789 --> 00:26:57,850
+be you may be able to do ah more interesting
+application using this mobile devices, and
+
+276
+00:26:57,851 --> 00:27:02,880
+there could be really interesting mobile apps,
+and as you all must be ah using today use
+
+277
+00:27:02,880 --> 00:27:08,950
+10s of ah if not 100s of mobile apps for different
+applications, many of which actually support
+
+278
+00:27:08,950 --> 00:27:15,120
+a database at the backend. So, these are in
+red are some of the negatives, ah which are
+
+279
+00:27:15,119 --> 00:27:20,879
+restrictive in terms of a mobile application
+the first thing is form factor, which is the
+
+280
+00:27:20,880 --> 00:27:26,410
+the look ah the aspect ratio the size and
+the style of the device, which influences
+
+281
+00:27:26,410 --> 00:27:31,860
+display and influences the way you navigate.
+In a, in a desk of application you will typically
+
+282
+00:27:31,859 --> 00:27:40,548
+use ah a mouse, or a ruler and keyboard to
+navigate, but that is not possible or that
+
+283
+00:27:40,548 --> 00:27:47,808
+is not easy in terms of a mobile device. So,
+you are navigation ah may happen in in a different
+
+284
+00:27:47,808 --> 00:27:50,178
+way.
+The presentation itself may happen in a different
+
+285
+00:27:50,179 --> 00:27:57,090
+way, you have a very limited display area.
+So, you might ah want to stack multiple responses
+
+286
+00:27:57,089 --> 00:28:04,048
+one after the other whereas, the in a in a
+web application running on a desktop, you
+
+287
+00:28:04,048 --> 00:28:08,039
+would probably have shown them on different
+tabs side by side, or would have just shown
+
+288
+00:28:08,039 --> 00:28:13,240
+them side by side on the display. Then, mobile
+devices typically have limited memory, they
+
+289
+00:28:13,240 --> 00:28:18,930
+have limited computing power, very importantly
+most of them run on battery and therefore,
+
+290
+00:28:18,930 --> 00:28:23,779
+they have one limited power available. So,
+you are ah applications will lead to be power
+
+291
+00:28:23,779 --> 00:28:30,079
+optimized, which is not the case with the
+normal web based application, you have a wireless
+
+292
+00:28:30,079 --> 00:28:35,439
+connection, so which ah may be limited in
+bandwidth based on your connectivity and that
+
+293
+00:28:35,440 --> 00:28:41,900
+time, and so on. So, you while developing
+a mobile app corresponding to a possible ah
+
+294
+00:28:41,900 --> 00:28:47,670
+web application, your considerations would
+be very different. So, if I say that ah ah
+
+295
+00:28:47,670 --> 00:28:53,950
+a bank say, HDFC bank ah has a net banking
+application, which runs on the browser. And
+
+296
+00:28:53,950 --> 00:29:01,900
+it is ah also having a mobile app, which ah
+runs on say the android phone then, the their
+
+297
+00:29:01,900 --> 00:29:06,759
+requirements and their style of ah solutions
+will have to be very, very different. And
+
+298
+00:29:06,759 --> 00:29:13,220
+at the same time ah if I talk about a mobile
+app then, the mobile devices often have features
+
+299
+00:29:13,220 --> 00:29:18,529
+which desktop do not have for example, you
+have a number of senses available like, ah
+
+300
+00:29:18,529 --> 00:29:24,129
+accelerometer and so on which you can make
+to advantage for example, ah we I mean in
+
+301
+00:29:24,130 --> 00:29:29,799
+in many smart phones, if we just rotate the
+screen, ah rotate that device, then the display
+
+302
+00:29:29,798 --> 00:29:35,819
+self-rotate automatically, which ah we use
+we use some some kind of an accelerometer
+
+303
+00:29:35,819 --> 00:29:41,490
+ah inputs ah for that, you have a touch screen
+which ah can allow a wide range of gesture
+
+304
+00:29:41,490 --> 00:29:46,569
+based navigation, which is typically not possible
+in desktop and most of the laptops.
+
+305
+00:29:46,569 --> 00:29:52,829
+So, ah having said that, ah naturally there
+are ah there are 2 aspects of mobile apps
+
+306
+00:29:52,829 --> 00:29:58,879
+as well. So, when we talking about mobile
+apps, we have talking about ah stand alone
+
+307
+00:29:58,880 --> 00:30:04,929
+mobile apps, ah there are other ah ways of
+[dev/developing] developing applications also
+
+308
+00:30:04,929 --> 00:30:09,679
+for example, we can do a typical web-based
+application, but we can use a website which
+
+309
+00:30:09,679 --> 00:30:16,460
+is specifically designed catering to the mobile
+devices. So, these ah send back ah pages,
+
+310
+00:30:16,460 --> 00:30:22,579
+which ah are smaller in size are stack differently
+and so on. So, in contrast to that a mobile
+
+311
+00:30:22,579 --> 00:30:28,029
+app are actually, applications that are downloaded
+and runs on the system. So, these are all
+
+312
+00:30:28,029 --> 00:30:34,349
+different possibilities and even though mobile
+website is also becoming popular, but certainly
+
+313
+00:30:34,349 --> 00:30:40,019
+mobile apps are very, very common in terms
+of a majority of critical applications of
+
+314
+00:30:40,019 --> 00:30:45,048
+data bases that we have.
+So, this is the ah typical architecture of
+
+315
+00:30:45,048 --> 00:30:50,319
+a mobile app as you can see again here, that
+you have the 3 layers presentation, business
+
+316
+00:30:50,319 --> 00:30:58,289
+and data the only difference being now, since
+ah you have ah a a a um a device, which can
+
+317
+00:30:58,289 --> 00:31:03,200
+go anywhere and ah you have a connectivity.
+So, this is this is what shows the connectivity,
+
+318
+00:31:03,200 --> 00:31:09,210
+this is the this is the device side and this
+is the pure backend or your service provider
+
+319
+00:31:09,210 --> 00:31:16,370
+side. So, since ah you you ah your connectivity
+is not may not be very strong, you try to
+
+320
+00:31:16,369 --> 00:31:23,729
+create all the layers of a presentation, business,
+as well as data on the mobile phone itself,
+
+321
+00:31:23,730 --> 00:31:28,110
+but naturally all the data you will not have
+on your device ah, you are checking mails
+
+322
+00:31:28,109 --> 00:31:31,549
+on the Gmail naturally, you will not have
+all the data on your Gmail.
+
+323
+00:31:31,549 --> 00:31:37,839
+So, what you do is you use the connection
+to connect to the remote database ah provided
+
+324
+00:31:37,839 --> 00:31:44,339
+by the service, but primarily most of this
+layer of this ah presentation, business and
+
+325
+00:31:44,339 --> 00:31:51,829
+a small part of the data layer are all realized
+within the phone itself, or within the mobile
+
+326
+00:31:51,829 --> 00:31:56,159
+device itself. So, the data layer is split
+in this case, which is very different from
+
+327
+00:31:56,160 --> 00:32:03,150
+how you do the web-based applications? And
+ah specifically, it might need ah customizations
+
+328
+00:32:03,150 --> 00:32:08,150
+based on ah the kind of ah ah platform, you
+are using whether you have using android,
+
+329
+00:32:08,150 --> 00:32:15,800
+iOS and windows, and these are all custom
+solutions ah for that and ah you could also
+
+330
+00:32:15,799 --> 00:32:22,940
+note that, ah there are different types of
+mobile apps one large class is known as native
+
+331
+00:32:22,940 --> 00:32:28,700
+application where, which is completely written
+in the native language of the platform. So,
+
+332
+00:32:28,700 --> 00:32:34,370
+for if you are doing an iOS mobile app then
+you will write it in object C, objective C
+
+333
+00:32:34,369 --> 00:32:40,359
+if you are doing an android one you will write
+it in C or C plus plus or java is platform
+
+334
+00:32:40,359 --> 00:32:45,279
+specific whereas, there is another class of
+ah mobile apps, which are known as web apps
+
+335
+00:32:45,279 --> 00:32:51,730
+which run completely inside the web browser,
+so much like the way java scripts ah work.
+
+336
+00:32:51,730 --> 00:32:58,450
+So, they feature interfaces built with ah
+HTML and the style shades, and they have powered
+
+337
+00:32:58,450 --> 00:33:04,850
+by different web programming languages like,
+ruby on rails java script to PHP and so on.
+
+338
+00:33:04,849 --> 00:33:08,689
+And certainly there is a third kind, when
+you combine the attributes of both native
+
+339
+00:33:08,690 --> 00:33:14,690
+and wave application and ah you try to you
+know. So, you can very easily understand,
+
+340
+00:33:14,690 --> 00:33:19,750
+that if your application is a native one then
+it is not portable across ah devices, this
+
+341
+00:33:19,750 --> 00:33:23,259
+is not an iOS application is not run on android
+and so on.
+
+342
+00:33:23,259 --> 00:33:29,369
+If it is a web app app, then it is portable
+because it is portable across different phone
+
+343
+00:33:29,369 --> 00:33:35,539
+tablet or computer because, you are using
+generic technologies. So, you could ah do
+
+344
+00:33:35,539 --> 00:33:40,558
+a hybrid app also where, you could use ah
+redundant or common code, which is usable
+
+345
+00:33:40,558 --> 00:33:45,879
+across platform and ah ah add some tailor
+functionality in terms of the native system.
+
+346
+00:33:45,880 --> 00:33:48,690
+So, these are the typical kinds of mobile
+apps that.
+
+347
+00:33:48,690 --> 00:33:53,390
+You might be developing and there a several
+factors to considered in the design issue,
+
+348
+00:33:53,390 --> 00:33:59,009
+you have to first decide on the ah device,
+you have to take specific note of the typical
+
+349
+00:33:59,009 --> 00:34:03,569
+resources, that you will ah your device will
+support memory, power, speed. You have to
+
+350
+00:34:03,569 --> 00:34:10,199
+consider what should be the band width should
+it be 2 g, 3 g, 4 g or wireless ah you know
+
+351
+00:34:10,199 --> 00:34:15,250
+lan, what kind of connections you would expect?
+Decide on the layers in the architecture,
+
+352
+00:34:15,250 --> 00:34:20,179
+select the technology based on the ah device
+choice and the other factors define the user
+
+353
+00:34:20,179 --> 00:34:23,849
+interface, navigation and ah maintain the
+work flow.
+
+354
+00:34:23,849 --> 00:34:27,818
+So, these are very variety I will not go into
+details of this, but just wanted to give a
+
+355
+00:34:27,818 --> 00:34:32,298
+glimpse of the fact, that in today's time
+while you are talking about database applications
+
+356
+00:34:32,298 --> 00:34:37,018
+then it is a very reality, that you will ah
+create that as a mobile app.
+
+357
+00:34:37,018 --> 00:34:43,578
+So, in this ah module to summarize your study
+aspects of ah database application architecture,
+
+358
+00:34:43,579 --> 00:34:48,818
+understood the steps of rapid development,
+and took a quick look into the issues of application
+
+359
+00:34:48,818 --> 00:34:55,509
+performance security, and what it takes to?
+Ah what are the distinctive features of a
+
+360
+00:34:55,509 --> 00:34:57,380
+mobile app for database applications?
+

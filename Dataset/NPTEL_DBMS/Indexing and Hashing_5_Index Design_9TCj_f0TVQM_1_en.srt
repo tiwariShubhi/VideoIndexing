@@ -1,0 +1,1404 @@
+﻿1
+00:00:15,980 --> 00:00:19,990
+Welcome to module 30 of Database Management
+Systems.
+
+2
+00:00:19,989 --> 00:00:24,909
+We have been discussing about ah indexing
+and hashing and this is a concluding module
+
+3
+00:00:24,910 --> 00:00:27,160
+on that.
+
+4
+00:00:27,160 --> 00:00:33,250
+We have ah in the last module discussed about
+different hashing techniques static and dynamic
+
+5
+00:00:33,250 --> 00:00:36,159
+and compare that in introduce bitmap indices.
+
+6
+00:00:36,159 --> 00:00:45,099
+Now in this module we would ah specifically
+ah look into the use ah cases, we will ah
+
+7
+00:00:45,100 --> 00:00:48,649
+check as to how indexes can be created in
+SQL first.
+
+8
+00:00:48,649 --> 00:00:53,500
+Because we will have to use it you have already
+known the theory of various different indices
+
+9
+00:00:53,500 --> 00:00:57,198
+and so, on so, how do you actually tell the
+system to index.
+
+10
+00:00:57,198 --> 00:01:01,849
+And the second is the important thing as to
+when should you index and on what.
+
+11
+00:01:01,850 --> 00:01:05,320
+So, we we talked about a few guidelines for
+indexing.
+
+12
+00:01:05,319 --> 00:01:08,359
+So, that is that is what we want to learn.
+
+13
+00:01:08,359 --> 00:01:13,060
+So, index can be defined in SQL in very similar
+syntax as you create a table.
+
+14
+00:01:13,060 --> 00:01:18,670
+So, you say create index put a name for that
+index and then you say on which relation are
+
+15
+00:01:18,670 --> 00:01:23,950
+you indexing and put the list of attributes
+on which you are indexing.
+
+16
+00:01:23,950 --> 00:01:30,030
+So, if ah branch can relation can be indexed
+on branch name and I may call that b index.
+
+17
+00:01:30,030 --> 00:01:37,179
+Now, there is a way to also express create
+unique index if you say create unique index
+
+18
+00:01:37,179 --> 00:01:43,240
+and it will expect that the search key ah
+is a candidate key because I mean in the sense
+
+19
+00:01:43,239 --> 00:01:46,849
+it all values of that will have to be distinct
+unique.
+
+20
+00:01:46,849 --> 00:01:54,719
+Now ah this used to be very common to do this
+kind of indexing earlier, but now it is more
+
+21
+00:01:54,719 --> 00:02:00,739
+preferred that ah ah you can use unique integrity
+constraint in terms of the create table which
+
+22
+00:02:00,739 --> 00:02:02,710
+we have already discussed.
+
+23
+00:02:02,709 --> 00:02:08,609
+And that will ensure that you have that kind
+of a condition satisfied and you may not create
+
+24
+00:02:08,610 --> 00:02:13,900
+unique index for that .
+If you do not want an indexes actually do
+
+25
+00:02:13,900 --> 00:02:16,180
+drop index and put the index name.
+
+26
+00:02:16,180 --> 00:02:22,489
+So, most database system allow specification
+of the type of indexing and clustering that
+
+27
+00:02:22,489 --> 00:02:23,489
+you want to do.
+
+28
+00:02:23,489 --> 00:02:30,539
+So, you can create an index for a cluster
+also and you can create index for composite
+
+29
+00:02:30,539 --> 00:02:32,189
+index for multiple columns.
+
+30
+00:02:32,189 --> 00:02:38,669
+So, let us ah run through quickly couple of
+examples create an index for a single column
+
+31
+00:02:38,669 --> 00:02:40,768
+to speed up queries the test that column.
+
+32
+00:02:40,769 --> 00:02:50,370
+So, we are saying ah employee ah emp tab is
+a is a relation which has an attribute e name
+
+33
+00:02:50,370 --> 00:02:55,349
+the employee name and we want to create an
+index on that if we do that then any search
+
+34
+00:02:55,348 --> 00:02:58,908
+that is based on the employee name will become
+really fast.
+
+35
+00:02:58,908 --> 00:03:06,209
+Now, while you create the index you could
+also use optionally various other factors
+
+36
+00:03:06,209 --> 00:03:12,370
+which relate to ah particularly the storage
+setting you can ah set what is you know what
+
+37
+00:03:12,370 --> 00:03:18,400
+is the storage you want to keep for the index
+how you would like to ah increase increment
+
+38
+00:03:18,400 --> 00:03:21,700
+that and and so, on what is the table space.
+
+39
+00:03:21,699 --> 00:03:26,628
+And very most interestingly you could say
+that compute statistics now this is something
+
+40
+00:03:26,628 --> 00:03:28,549
+which is optional, but is very useful.
+
+41
+00:03:28,550 --> 00:03:35,420
+For example, if you are not sure as to how
+your ah data is getting distributed in different
+
+42
+00:03:35,419 --> 00:03:41,649
+ah relations and how really they are queried
+ah you would not know whether an index is
+
+43
+00:03:41,650 --> 00:03:43,000
+good or it is inappropriate.
+
+44
+00:03:43,000 --> 00:03:50,870
+So, it is good to actually compute that statistics
+in terms of ah the index that you want to
+
+45
+00:03:50,870 --> 00:03:54,530
+know that by doing this index what kind of
+accesses have happened?
+
+46
+00:03:54,530 --> 00:04:00,718
+So, compute statistics will ah will tell the
+database system to keep on computing this
+
+47
+00:04:00,718 --> 00:04:04,060
+which you can subsequently refer to.
+
+48
+00:04:04,060 --> 00:04:10,180
+You can create index on ah two columns also;
+so, here we are showing one where emp tab
+
+49
+00:04:10,180 --> 00:04:14,459
+is indexed on employee name eme name and employee
+number together.
+
+50
+00:04:14,459 --> 00:04:20,509
+So, you saying that you create an index on
+both of these and compute the statistics at
+
+51
+00:04:20,509 --> 00:04:26,579
+the same time .
+Now, other ways there are ah index that can
+
+52
+00:04:26,579 --> 00:04:28,918
+be created ah on functions.
+
+53
+00:04:28,918 --> 00:04:37,879
+So, suppose if there is a query which going
+to sort ah based on the uppercase writing
+
+54
+00:04:37,879 --> 00:04:38,879
+of the e name.
+
+55
+00:04:38,879 --> 00:04:46,000
+So, if I just index the e name then that itself
+would not speed up the operation because while
+
+56
+00:04:46,000 --> 00:04:54,250
+you want to sort then the e name will have
+to be changed into the upper case by upper
+
+57
+00:04:54,250 --> 00:04:59,680
+and that is every time will have to do that
+for every record and then actually apply the
+
+58
+00:04:59,680 --> 00:05:01,569
+sorting comparisons.
+
+59
+00:05:01,569 --> 00:05:08,480
+So, that will become a slow process, but you
+can do a function based indexing where you
+
+60
+00:05:08,480 --> 00:05:12,950
+can specify as you can as you can see here
+the function based indexing where you say
+
+61
+00:05:12,949 --> 00:05:15,110
+that you index based on upper e name.
+
+62
+00:05:15,110 --> 00:05:22,850
+So, what will happen your actual values are
+are in ah impossibly lower case or mixed case,
+
+63
+00:05:22,850 --> 00:05:31,070
+but your index emp upper e name will get created
+on the in the order of the upper case of ah
+
+64
+00:05:31,069 --> 00:05:35,790
+e name and will be very useful in terms of
+the sorting later on.
+
+65
+00:05:35,790 --> 00:05:42,150
+Now, you can like the normal index you can
+also create the bitmap index.
+
+66
+00:05:42,149 --> 00:05:47,859
+So, you just say create bitmap index on the
+name and rest of the structure is similar.
+
+67
+00:05:47,860 --> 00:05:56,330
+So, if there is a student relation which has
+ah these fields I can we can create an index
+
+68
+00:05:56,329 --> 00:06:02,490
+on gender; we can create another index on
+semester these are very typical candidate
+
+69
+00:06:02,490 --> 00:06:08,250
+for bitmap index because gender can take 2
+values here male and female semester can take
+
+70
+00:06:08,250 --> 00:06:10,939
+4 values 1, 2, 3, 4.
+
+71
+00:06:10,939 --> 00:06:21,060
+So, the bitmap ah are shown here and then
+if I want to do a select where the gender
+
+72
+00:06:21,060 --> 00:06:28,620
+is F and semester is 4; then it is basically
+ending the bitmap of F which is 0 1 1 and
+
+73
+00:06:28,620 --> 00:06:33,660
+the bitmap of semester 4 which is 0 0 1.
+
+74
+00:06:33,660 --> 00:06:39,880
+So, if we if we add these two we will find
+that ah we have the result which is 0 0 0
+
+75
+00:06:39,879 --> 00:06:40,879
+1.
+
+76
+00:06:40,879 --> 00:06:46,509
+So, which tells me that student id the fourth
+record of the student ID 103 is a result.
+
+77
+00:06:46,509 --> 00:06:51,800
+So, this is how bitmap indexing can be used
+in SQL.
+
+78
+00:06:51,800 --> 00:06:59,620
+And actually this the whole thing can can
+be used subsequently in multiple key access
+
+79
+00:06:59,620 --> 00:07:06,269
+ah for example, if you are doing a query where
+it is you have department name is finance
+
+80
+00:07:06,269 --> 00:07:12,620
+and salary is 8000, then there could be several
+strategies for processing this query ah using
+
+81
+00:07:12,620 --> 00:07:19,920
+the index values for example, if you have
+single ah index ah index on single attributes.
+
+82
+00:07:19,920 --> 00:07:26,390
+So, use you can use the index on department
+name to find instructors which have department
+
+83
+00:07:26,389 --> 00:07:27,509
+and finance.
+
+84
+00:07:27,509 --> 00:07:34,649
+And then test if the salaries 80000 or you
+can use index on salary to find instructors
+
+85
+00:07:34,649 --> 00:07:39,929
+with salary 80000 and then test if department
+name is financed.
+
+86
+00:07:39,930 --> 00:07:47,240
+Or you can use department name index to find
+pointers to all records that part in to finance
+
+87
+00:07:47,240 --> 00:07:49,240
+department.
+
+88
+00:07:49,240 --> 00:07:56,090
+Index on salary to find all records that part
+in to 80000 salary and then take intersection
+
+89
+00:07:56,089 --> 00:08:00,129
+of the both sets ah to get the final result.
+
+90
+00:08:00,129 --> 00:08:07,189
+So, multiple key access could be achieved
+in terms of various ah single indexing single
+
+91
+00:08:07,189 --> 00:08:09,560
+attribute indexing also.
+
+92
+00:08:09,560 --> 00:08:15,740
+When we are doing composite search keys then
+naturally if there are 2 then ah the indexing
+
+93
+00:08:15,740 --> 00:08:19,220
+means that you will have to define a combined
+lexical order.
+
+94
+00:08:19,220 --> 00:08:27,550
+So, department name salary means that either
+department it is it is ordered to ah indexes
+
+95
+00:08:27,550 --> 00:08:30,150
+are ordered in terms of just the department
+name.
+
+96
+00:08:30,149 --> 00:08:35,199
+Or if the department name is same then they
+are ordered in terms of salary this ordering
+
+97
+00:08:35,200 --> 00:08:41,759
+in in which you write the attributes in the
+ah multi composite search key is very important
+
+98
+00:08:41,759 --> 00:08:47,009
+because you can see that for the two if if
+the department name is same then the salary
+
+99
+00:08:47,009 --> 00:08:50,409
+will be compared, but not the other way around.
+
+100
+00:08:50,409 --> 00:08:57,059
+So, when you have index on multiple attributes
+say again going back to that same example
+
+101
+00:08:57,059 --> 00:09:01,088
+of department naming finance and salary being
+ah 80000.
+
+102
+00:09:01,089 --> 00:09:09,110
+So, using separate index is less efficient
+though we saw how that can be done, but we
+
+103
+00:09:09,110 --> 00:09:15,568
+can also efficiently handle if we have this
+indexing on department name and salary.
+
+104
+00:09:15,568 --> 00:09:22,159
+Then we can also easily handle queries like
+department name is finance and salary is less
+
+105
+00:09:22,159 --> 00:09:27,389
+than 100; it is not because as as you can
+can easily figure out because if I can find
+
+106
+00:09:27,389 --> 00:09:31,419
+the equality then I also know ah what is less.
+
+107
+00:09:31,419 --> 00:09:38,458
+But note that we cannot efficiently handle
+if I say that where department name is less
+
+108
+00:09:38,458 --> 00:09:45,359
+than finance and balance I am sorry this should
+be salary ah salary is 80000.
+
+109
+00:09:45,360 --> 00:09:53,370
+The reason is that the ordering of the attributes
+in this composite key is department name salary.
+
+110
+00:09:53,370 --> 00:10:00,318
+So, if there is if department name is less
+than is there is no way to check for the equality
+
+111
+00:10:00,318 --> 00:10:06,250
+of salary, but if the department name equals
+then there is a possibility of checking on
+
+112
+00:10:06,250 --> 00:10:07,250
+the salary.
+
+113
+00:10:07,250 --> 00:10:14,110
+So, because of this ordering this will ah
+may fetch many records that satisfy the first
+
+114
+00:10:14,110 --> 00:10:17,089
+one, but not the second condition.
+
+115
+00:10:17,089 --> 00:10:26,199
+Now, ah you should also remember that you
+need a special privilege to create an index
+
+116
+00:10:26,198 --> 00:10:30,758
+because this is partly in the domain of the
+administrators job.
+
+117
+00:10:30,759 --> 00:10:35,589
+So, you need the specific privileges access
+rights to be able to do that.
+
+118
+00:10:35,589 --> 00:10:44,309
+So, to create a new index either you have
+to own ah ah or own that that those set of
+
+119
+00:10:44,308 --> 00:10:50,948
+tables on which you are creating the index
+and or have the index objective privilege
+
+120
+00:10:50,948 --> 00:10:56,359
+for those tables or ah the schema that contains
+the index might also have a quota.
+
+121
+00:10:56,360 --> 00:11:01,318
+So, that you can because creating the index
+means you are will be using the temporary
+
+122
+00:11:01,318 --> 00:11:04,549
+tablespace on a on a regular basis.
+
+123
+00:11:04,549 --> 00:11:11,128
+And ah, but with this you will not be able
+to create index in some other user schema
+
+124
+00:11:11,129 --> 00:11:17,690
+for that you need a global ah right which
+is the create any index kind of system privilege.
+
+125
+00:11:17,690 --> 00:11:22,769
+So, also check if you are not being able to
+create an index check what is your privilege
+
+126
+00:11:22,769 --> 00:11:29,399
+that exists ah function based indexes require
+other privileges; please check on that.
+
+127
+00:11:29,399 --> 00:11:30,740
+Now, let us.
+
+128
+00:11:30,740 --> 00:11:38,539
+So, we have seen how to create index how to
+use that in terms of the SQL application SQL
+
+129
+00:11:38,539 --> 00:11:40,240
+query system.
+
+130
+00:11:40,240 --> 00:11:45,329
+Now we will quickly take a look into why how
+should we index and where.
+
+131
+00:11:45,328 --> 00:11:52,028
+So, ah if you recall ah in in the modules
+16 to 20 in the week four we have studied
+
+132
+00:11:52,028 --> 00:11:59,439
+various issues of a proper design of ah relational
+database system, we focused on normalization
+
+133
+00:11:59,440 --> 00:12:08,160
+of tables that can reduce redundancy and minimize
+anomaly how can we easily adhere to ah various
+
+134
+00:12:08,159 --> 00:12:13,360
+constraints ah how to improve the efficiency
+of access and update a better normalized design
+
+135
+00:12:13,360 --> 00:12:14,839
+often gives better performance.
+
+136
+00:12:14,839 --> 00:12:21,060
+For example, we optimizing the ah minimizing
+the requirement for computing join and all
+
+137
+00:12:21,059 --> 00:12:22,059
+those.
+
+138
+00:12:22,059 --> 00:12:28,169
+So, those advantages we have saw, but the
+actual performance of a database system is
+
+139
+00:12:28,169 --> 00:12:34,899
+significantly impacted by the way the physical
+data is organized and managed which does not
+
+140
+00:12:34,899 --> 00:12:38,990
+come across in terms of the logical design
+that we have seen.
+
+141
+00:12:38,990 --> 00:12:42,948
+So, these are what are being achieved in terms
+of indexing and hashing.
+
+142
+00:12:42,948 --> 00:12:48,808
+So, this is where we we need to understand
+the actual boundary to the physical organization
+
+143
+00:12:48,808 --> 00:12:51,688
+and that is what we have been trying to do.
+
+144
+00:12:51,688 --> 00:12:55,469
+So, if you think back while you are normalizing
+at the design level.
+
+145
+00:12:55,470 --> 00:13:01,499
+So, those are the startup time activities;
+so, usually we will design and normalize and
+
+146
+00:13:01,499 --> 00:13:07,149
+you know make the create table and do all
+that at the beginning of a database system.
+
+147
+00:13:07,149 --> 00:13:12,509
+And it is really it will really be changed
+later because it will have severe implications,
+
+148
+00:13:12,509 --> 00:13:17,740
+but the performance behavior will continue
+to evolve will continue to change because
+
+149
+00:13:17,740 --> 00:13:22,649
+the design does not tell you exactly what
+the statistics of that data would be what
+
+150
+00:13:22,649 --> 00:13:24,198
+the behavior of the data would be.
+
+151
+00:13:24,198 --> 00:13:28,088
+So, it will evolve as data base is used over
+time.
+
+152
+00:13:28,089 --> 00:13:33,199
+Hence you will need to continuously collect
+statistics about the data of various tables
+
+153
+00:13:33,198 --> 00:13:39,179
+to learn of the patterns as to which table
+is getting heavier which where what are the
+
+154
+00:13:39,179 --> 00:13:45,169
+attributes on which more accesses are happening,
+where what kind of queries you are getting
+
+155
+00:13:45,169 --> 00:13:50,028
+and you have to adjust the indexes on the
+tables to optimize the performance.
+
+156
+00:13:50,028 --> 00:13:57,360
+So, that is the whole whole ah requirement
+all about unfortunately ah unlike the functional
+
+157
+00:13:57,360 --> 00:14:02,240
+dependency or multivalued dependency theories
+that we studied in the design space; there
+
+158
+00:14:02,240 --> 00:14:05,879
+is no sound theory that determines optimal
+performance.
+
+159
+00:14:05,879 --> 00:14:13,470
+So, ah all that have is is more more and expertise
+that you develop through experience.
+
+160
+00:14:13,470 --> 00:14:19,528
+So, ah what I will take you through are a
+set of few common guidelines about how to
+
+161
+00:14:19,528 --> 00:14:26,740
+keep your database ah agile ah while ah you
+are you go through the life cycle of different
+
+162
+00:14:26,740 --> 00:14:28,619
+data coming in and going out.
+
+163
+00:14:28,619 --> 00:14:35,550
+So, the first rule I say rule 0 is the indexes
+lead to access update tradeoff we have already
+
+164
+00:14:35,549 --> 00:14:40,878
+seen this at every query results in a search
+in the underlying physical data structure
+
+165
+00:14:40,879 --> 00:14:42,800
+as we have understood.
+
+166
+00:14:42,799 --> 00:14:47,528
+Having specific index on search certainly
+can improve performance, but as we have already
+
+167
+00:14:47,528 --> 00:14:52,610
+noted every update with the be it insert,
+delete or update of values will result in
+
+168
+00:14:52,610 --> 00:14:53,610
+update of the index files.
+
+169
+00:14:53,610 --> 00:14:59,188
+So, it is an overhead or penalty for quicker
+access that we are paying.
+
+170
+00:14:59,188 --> 00:15:04,379
+So, having unnecessary indexes can cause significant
+degradation of performance.
+
+171
+00:15:04,379 --> 00:15:10,980
+Index files will also occupy significant space
+on your disk and it may actually cause ah
+
+172
+00:15:10,980 --> 00:15:17,028
+to slow down your behavior due to memory limitation
+during index ah computation.
+
+173
+00:15:17,028 --> 00:15:25,308
+So, rule 0 indexes lead to this trade off
+always be watchful about that use judgment
+
+174
+00:15:25,308 --> 00:15:27,088
+to index.
+
+175
+00:15:27,089 --> 00:15:33,220
+Rule 1 index the correct tables decide which
+tables are best candidates for index to creating
+
+176
+00:15:33,220 --> 00:15:39,139
+an index if you frequently want to retrieve
+say less than 15 percent of the rows in a
+
+177
+00:15:39,139 --> 00:15:40,139
+large table.
+
+178
+00:15:40,139 --> 00:15:45,708
+Now first 15 percent is a ballpark number
+this can ah vary greatly according to the
+
+179
+00:15:45,708 --> 00:15:49,028
+relative speed of the table scan ah.
+
+180
+00:15:49,028 --> 00:15:53,850
+Fast of the table scan you can use a lower
+percentage of cut off more cluster the row
+
+181
+00:15:53,850 --> 00:15:58,589
+data you can use a higher percentage for cut
+up ah.
+
+182
+00:15:58,589 --> 00:16:06,759
+Index tables index columns used for joining
+multiple tables if you have situations or
+
+183
+00:16:06,759 --> 00:16:14,470
+multiple tables are used in joins ah on a
+on a moderately regular basis then the columns
+
+184
+00:16:14,470 --> 00:16:19,920
+are used in the join in these tables; these
+tables should be indexed based on those.
+
+185
+00:16:19,919 --> 00:16:24,599
+The primary and unique keys automatically
+have indexes, but you might want to you have
+
+186
+00:16:24,600 --> 00:16:26,439
+an index on the foreign key.
+
+187
+00:16:26,438 --> 00:16:34,349
+So, consider that ah small tables do not require
+index if a query is requiring unnecessarily
+
+188
+00:16:34,350 --> 00:16:40,870
+long time or or unexpectedly long time; it
+is time to check if the table has become really
+
+189
+00:16:40,870 --> 00:16:43,889
+big compared to small and it might be term
+to index that.
+
+190
+00:16:43,889 --> 00:16:51,369
+So, rule 1 index the correct tables and certainly
+related to that is index the correct columns.
+
+191
+00:16:51,369 --> 00:16:57,699
+The columns with some of the characteristics
+I have just noted down ah are good candidates
+
+192
+00:16:57,698 --> 00:17:02,778
+for indexing values are relatively unique
+in the column, then indexing will give you
+
+193
+00:17:02,778 --> 00:17:03,778
+a good benefit.
+
+194
+00:17:03,778 --> 00:17:08,679
+There is a wide range of values where you
+can your regular indexes will work well.
+
+195
+00:17:08,679 --> 00:17:13,090
+There is a small range of values where bitmap
+indexes will give you good results.
+
+196
+00:17:13,089 --> 00:17:20,538
+So, use those in column contains many nulls,
+but queries often select all rows having a
+
+197
+00:17:20,538 --> 00:17:21,538
+value.
+
+198
+00:17:21,538 --> 00:17:25,588
+So, there are column have lot of null values,
+but whenever you do a query then you actually
+
+199
+00:17:25,588 --> 00:17:28,289
+take out rows which have values.
+
+200
+00:17:28,289 --> 00:17:36,690
+So, in those cases you can ah you can actually
+if you involve certain I mean if you write
+
+201
+00:17:36,690 --> 00:17:43,308
+the SQL query by keeping ah the ah condition
+in a way.
+
+202
+00:17:43,308 --> 00:17:47,589
+So, that the index can be used that is for
+example, you could put a condition such that
+
+203
+00:17:47,589 --> 00:17:51,470
+only non null values will be matched.
+
+204
+00:17:51,470 --> 00:17:57,470
+Compared to that if you have just taken (Refer
+Time: 17:54) at non null check your first
+
+205
+00:17:57,470 --> 00:18:02,669
+query would run faster; if you have an index
+on the COL X because the query would be able
+
+206
+00:18:02,669 --> 00:18:04,230
+to work on that index.
+
+207
+00:18:04,230 --> 00:18:08,390
+So, these are ah things that you should do
+in terms of the column.
+
+208
+00:18:08,390 --> 00:18:13,769
+And if a column ah has the kind of characteristic
+that there are many nulls in the column and
+
+209
+00:18:13,769 --> 00:18:20,140
+you typically do not search non null values;
+then it is good it it is better not to index
+
+210
+00:18:20,140 --> 00:18:24,230
+those columns long and long row columns cannot
+be indexed anyway.
+
+211
+00:18:24,230 --> 00:18:29,000
+So, this remember the rule 2 index the correct
+columns.
+
+212
+00:18:29,000 --> 00:18:35,480
+Ah Then ah the rule 3 limit the number of
+indexes for each table the more the index
+
+213
+00:18:35,480 --> 00:18:41,220
+more over it we have already seen this ah
+as a part of rule 2 rule 0 as well.
+
+214
+00:18:41,220 --> 00:18:45,210
+When rows are inserted or deleted indexes
+of a table must be updated when columns are
+
+215
+00:18:45,210 --> 00:18:47,600
+updated all the indexes on the column must
+be updated.
+
+216
+00:18:47,599 --> 00:18:55,079
+So, there is a lot of cost; so, half as limited
+number of indices as will start with purposed.
+
+217
+00:18:55,079 --> 00:19:00,569
+So, you must regularly weigh the benefit of
+having the indexed for queries against the
+
+218
+00:19:00,569 --> 00:19:02,759
+performance overhead of the updates.
+
+219
+00:19:02,759 --> 00:19:09,599
+For example, if a table is ah primarily read
+only you might use more indexes because the
+
+220
+00:19:09,599 --> 00:19:17,629
+overhead will be less, but if a table is heavily
+updated you might use fewer number of indices.
+
+221
+00:19:17,630 --> 00:19:22,590
+Rule 4 choose the order of columns in the
+composite ah index.
+
+222
+00:19:22,589 --> 00:19:30,099
+So, you have already seen couple of slides
+back I talk to you to the impact of what is
+
+223
+00:19:30,099 --> 00:19:34,158
+the impact of ordering in other columns in
+terms of composite index.
+
+224
+00:19:34,159 --> 00:19:38,840
+So, the order of columns in the create index
+statement can affect performance.
+
+225
+00:19:38,839 --> 00:19:46,038
+So, the column that you expected to be used
+most often put that as the first index.
+
+226
+00:19:46,038 --> 00:19:52,799
+Because it is also possible that you are actually
+not doing a query which takes the whole of
+
+227
+00:19:52,799 --> 00:19:58,089
+the composite search key, but a part of it,
+but if you have a composite search key index
+
+228
+00:19:58,089 --> 00:20:06,629
+you will still benefit if the the query is
+using the attributes from the first part of
+
+229
+00:20:06,630 --> 00:20:08,429
+the index.
+
+230
+00:20:08,429 --> 00:20:16,630
+So, here I am showing some example say there
+is a vendors part table and let us say there
+
+231
+00:20:16,630 --> 00:20:18,730
+are 5 vendors and let us say.
+
+232
+00:20:18,730 --> 00:20:23,509
+So, there is vendor id part number and unit
+cost forget about unit cost for this consideration.
+
+233
+00:20:23,509 --> 00:20:27,029
+So, it is primarily ah part number and vendor
+id.
+
+234
+00:20:27,029 --> 00:20:32,240
+So, let us say there are 5 vendors and each
+vendor has about 1000 parts.
+
+235
+00:20:32,240 --> 00:20:37,798
+So, and let us say that it is ah queried like
+this that the part number in such and such
+
+236
+00:20:37,798 --> 00:20:42,759
+and vendor id is such and such you get you
+select all all that matches.
+
+237
+00:20:42,759 --> 00:20:51,579
+Now, if you create a composite index then
+it should be on part number vendor id not
+
+238
+00:20:51,579 --> 00:20:53,500
+the other way around.
+
+239
+00:20:53,500 --> 00:20:59,619
+Because ah if you if you do that then queries
+where only part number is used will also run
+
+240
+00:20:59,619 --> 00:21:07,709
+faster, but the vendor id here is not a very
+good candidate for ah indexing as a as a first
+
+241
+00:21:07,710 --> 00:21:11,590
+attribute because it has only five possible
+values very small number of value.
+
+242
+00:21:11,589 --> 00:21:15,959
+So, indexing really does not help here it
+cannot discriminate after indexing there will
+
+243
+00:21:15,960 --> 00:21:19,450
+be lot of clusters still found.
+
+244
+00:21:19,450 --> 00:21:25,788
+Rule number 5 gather statistics to make index
+usage more accurate that is a that is a very
+
+245
+00:21:25,788 --> 00:21:31,658
+very important factor the database can use
+indexes more effectively if the statistical
+
+246
+00:21:31,659 --> 00:21:32,659
+information is available.
+
+247
+00:21:32,659 --> 00:21:36,920
+So, gather statistics learn from that we have
+already discussed how to gather statistics
+
+248
+00:21:36,920 --> 00:21:39,450
+from the create index statement.
+
+249
+00:21:39,450 --> 00:21:44,899
+And then there are functions these are function
+names in oracle in your system you might want
+
+250
+00:21:44,898 --> 00:21:47,898
+to check up what these functions are called.
+
+251
+00:21:47,898 --> 00:21:53,989
+So, by that you can find out statistics about
+the tables and the schema that you have and
+
+252
+00:21:53,990 --> 00:21:58,609
+use that information to subsequently optimize
+the index.
+
+253
+00:21:58,609 --> 00:22:02,990
+The last rule ah rule 6 is drop index that
+are no longer required.
+
+254
+00:22:02,990 --> 00:22:09,079
+So, if an index might be dropped because for
+several reasons for example, it is it simply
+
+255
+00:22:09,079 --> 00:22:10,509
+does not speed up the queries.
+
+256
+00:22:10,509 --> 00:22:15,169
+So, table might have become too small there
+will be many rows in the table, but very few
+
+257
+00:22:15,169 --> 00:22:18,639
+index increase right we have seen these are
+not the ideal.
+
+258
+00:22:18,638 --> 00:22:22,449
+So, it may not have been the case earlier
+and now it may may be the case.
+
+259
+00:22:22,450 --> 00:22:27,230
+So, in that case that index should be drop
+because it is not helping you the queries
+
+260
+00:22:27,230 --> 00:22:32,159
+in your application do not use the index the
+query you have certain indexes and the queries
+
+261
+00:22:32,159 --> 00:22:35,830
+are done on other attributes or other composite
+attributes.
+
+262
+00:22:35,829 --> 00:22:42,629
+So, it is not the indexes of no value and;
+obviously, index must be dropped before being
+
+263
+00:22:42,630 --> 00:22:47,750
+rebuilt if you are rebuilding if you are creating
+ah new index in a new way then.
+
+264
+00:22:47,750 --> 00:22:52,009
+So, make a judgment and drop indexes which
+are no longer required as an when you observe
+
+265
+00:22:52,009 --> 00:22:55,519
+that in drop indexes and improve the performance.
+
+266
+00:22:55,519 --> 00:23:00,808
+When you ah drop an index all extents of the
+indexes segment are return to the tablespace.
+
+267
+00:23:00,808 --> 00:23:07,038
+So, this is basically the space management
+and SQL command for this you already know
+
+268
+00:23:07,038 --> 00:23:12,410
+now please keep in mind that if you drop a
+table then all associated indexes are automatically
+
+269
+00:23:12,410 --> 00:23:17,490
+dropped because; obviously, if the data is
+not there then how about their index.
+
+270
+00:23:17,490 --> 00:23:24,650
+So, to drop an index ah you you need the drop
+any index system privilege we talked about
+
+271
+00:23:24,650 --> 00:23:26,990
+privileges earlier too.
+
+272
+00:23:26,990 --> 00:23:33,620
+So, this summarizes our discussions on on
+ah indexing and hashing.
+
+273
+00:23:33,619 --> 00:23:39,149
+So, here in this particular module you have
+learned to create index in SQL and introduce
+
+274
+00:23:39,150 --> 00:23:41,919
+few rules for good index.
+
+275
+00:23:41,919 --> 00:23:49,840
+Overall in ah this week in all the 5 modules
+we have learnt about how to speed up ah query
+
+276
+00:23:49,839 --> 00:23:57,048
+processing, how to speed up the execution
+of access insert delete queries in your database
+
+277
+00:23:57,048 --> 00:23:58,798
+through the lifetime.
+
+278
+00:23:58,798 --> 00:24:05,579
+And we have looked at various different indexing
+schemes, we have looked at hashing and ah
+
+279
+00:24:05,579 --> 00:24:06,699
+made comparisons.
+
+280
+00:24:06,700 --> 00:24:15,149
+So, one take back that you can certainly have
+is the most important indexing scheme or ah
+
+281
+00:24:15,148 --> 00:24:23,379
+indexing structure is the B plus tree which
+can be used for ah data files as well as for
+
+282
+00:24:23,380 --> 00:24:31,679
+index files and ah several like SQL server
+uses the the B plus tree only.
+
+283
+00:24:31,679 --> 00:24:39,399
+Now, hashing options we have looked at and
+we have seen that it has a varied acceptability
+
+284
+00:24:39,398 --> 00:24:47,489
+it is a powerful technique, but not all systems
+use that equally ah strongly.
+
+285
+00:24:47,490 --> 00:24:57,769
+And we have then ah made understood that indexing
+ah a database or tables on different attributes
+
+286
+00:24:57,769 --> 00:25:03,298
+is a very delicate responsibility which has
+to be done with a lot of judgment.
+
+287
+00:25:03,298 --> 00:25:11,619
+And for that statistics must be rightly collected
+and good judgment in terms of the distribution
+
+288
+00:25:11,619 --> 00:25:16,489
+of the data, access of the data nature of
+queries all these need to be considered carefully
+
+289
+00:25:16,490 --> 00:25:21,579
+so, that you can really get good performance
+from the design that you have.
+
+290
+00:25:21,579 --> 00:25:29,069
+So, ah on top of ah the knowledge of good
+design that you acquired through the all the
+
+291
+00:25:29,069 --> 00:25:37,428
+theory of normalization and you know redundancy
+removal; your good judgment in terms of good
+
+292
+00:25:37,429 --> 00:25:43,649
+appropriate index design will take you a long
+way in terms of making a very good database
+
+293
+00:25:43,648 --> 00:25:43,859
+system engineer.
+

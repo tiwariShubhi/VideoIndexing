@@ -1,0 +1,1655 @@
+﻿1
+00:00:15,619 --> 00:00:24,778
+Welcome to Module 16 of Database Management
+Systems till the last module which closed
+
+2
+00:00:24,778 --> 00:00:27,879
+with ah the third week.
+
+3
+00:00:27,879 --> 00:00:36,100
+Specifically in the third week, ah we talked
+about certain advanced features of SQL and
+
+4
+00:00:36,100 --> 00:00:43,850
+ah the formal query language ah in terms of
+ah relational and algebra and calculi and
+
+5
+00:00:43,850 --> 00:00:50,640
+then, we talked in a depth in terms of the
+entity relationship model, the first basic
+
+6
+00:00:50,640 --> 00:00:57,878
+conceptual level representation of the real
+world that we can do in terms of designing
+
+7
+00:00:57,878 --> 00:00:58,878
+a system.
+
+8
+00:00:58,878 --> 00:01:07,719
+Now, our next task would be to take it to
+more proper complete relational database design
+
+9
+00:01:07,719 --> 00:01:14,890
+and this will have a lot of theory at different
+levels that we need to understand.
+
+10
+00:01:14,890 --> 00:01:23,159
+We will slowly develop that and this discussion
+will span 5 modules that is ah we will take
+
+11
+00:01:23,159 --> 00:01:25,140
+the whole week to complete.
+
+12
+00:01:25,140 --> 00:01:31,540
+So, the objective of ah the current module,
+the first of the Relational Design Module
+
+13
+00:01:31,540 --> 00:01:37,460
+is to identify features of good relational
+design ah having done the year module.
+
+14
+00:01:37,459 --> 00:01:42,699
+We have yeah we do the year model, we have
+the entity sets relationships, we convert
+
+15
+00:01:42,700 --> 00:01:44,170
+them to schema.
+
+16
+00:01:44,170 --> 00:01:47,990
+We have seen how to do that and immediately
+we have some design, but the question is,
+
+17
+00:01:47,990 --> 00:01:49,750
+is it a good design.
+
+18
+00:01:49,750 --> 00:01:55,959
+So, we will discuss about what are the features
+of a good design and then, we will ah introduce
+
+19
+00:01:55,959 --> 00:02:01,639
+the formal definition of what is first normal
+form and we will introduce a very critical
+
+20
+00:02:01,640 --> 00:02:07,609
+concept of ah relational database design,
+the functional dependencies.
+
+21
+00:02:07,609 --> 00:02:10,909
+These are the ah module outline for that.
+
+22
+00:02:10,909 --> 00:02:15,689
+So, to start with the features of good relational
+design, let us take an example.
+
+23
+00:02:15,689 --> 00:02:22,800
+Suppose we have seen the instructor, relation
+instructor entity set as a relation.
+
+24
+00:02:22,800 --> 00:02:24,760
+You have seen the department ah relation.
+
+25
+00:02:24,759 --> 00:02:30,989
+Now, let us consider that if these two were
+not two separate relations, if they were all
+
+26
+00:02:30,989 --> 00:02:35,299
+kept in a common relation that is all the
+attributes are kept in the common relation,
+
+27
+00:02:35,299 --> 00:02:41,379
+so earlier if you recall that your instructor
+relation was this and your department relation
+
+28
+00:02:41,378 --> 00:02:42,378
+was this much.
+
+29
+00:02:42,378 --> 00:02:47,780
+So, if we keep everything together, of course
+we are calling it inst dept, but ah please
+
+30
+00:02:47,780 --> 00:02:53,139
+keep in mind this is not the same inst dept
+that we discussed in terms of the ER model.
+
+31
+00:02:53,139 --> 00:02:55,569
+This is just putting these two together.
+
+32
+00:02:55,568 --> 00:03:00,458
+Now, the question is if you look into this
+data carefully, for example if you look into
+
+33
+00:03:00,459 --> 00:03:06,239
+ah this particular row, if you look into this
+particular row and if you look into this particular
+
+34
+00:03:06,239 --> 00:03:16,329
+row, these are rows of instructors who all
+belong to computer science . Now, earlier
+
+35
+00:03:16,329 --> 00:03:20,849
+we were representing the information of instructor
+only in this part.
+
+36
+00:03:20,848 --> 00:03:28,078
+So, we just knew that it is computer science
+and we represent the information of department
+
+37
+00:03:28,079 --> 00:03:29,370
+in this part.
+
+38
+00:03:29,370 --> 00:03:36,370
+So, given a department name say computer science,
+we knew where does it, ah where is it located,
+
+39
+00:03:36,370 --> 00:03:38,580
+the building and what budget it has.
+
+40
+00:03:38,580 --> 00:03:43,670
+Now, when we are combined, we will see that
+naturally since computer science is located
+
+41
+00:03:43,669 --> 00:03:47,778
+in the tailor building, we know that it has
+a budget of say 100,000.
+
+42
+00:03:47,778 --> 00:03:52,289
+So, all of these records will have this information
+repeated.
+
+43
+00:03:52,289 --> 00:03:55,530
+So, this is not a very good situation.
+
+44
+00:03:55,530 --> 00:04:03,979
+This is not a good situation because this
+kind of situation is typically in database
+
+45
+00:04:03,979 --> 00:04:10,009
+is known as redundancy, that is you have the
+same data in multiple places.
+
+46
+00:04:10,009 --> 00:04:12,828
+So, what is the consequence of redundancy?
+
+47
+00:04:12,829 --> 00:04:19,280
+For example, there could be ah different kinds
+of anomaly when you have redundancy.
+
+48
+00:04:19,279 --> 00:04:20,279
+What is an anomaly?
+
+49
+00:04:20,279 --> 00:04:26,638
+An anomaly is the possibility of certain data
+getting inconsistent.
+
+50
+00:04:26,639 --> 00:04:31,949
+For example, let us say computer science department
+moves from tailor building to painter building.
+
+51
+00:04:31,949 --> 00:04:35,389
+Now, what will have to happen if it moves
+to painter building?
+
+52
+00:04:35,389 --> 00:04:40,769
+Then, I will need to remove this, make it
+a painter, make this value painter.
+
+53
+00:04:40,769 --> 00:04:46,500
+I have to also do this, make this painter
+. I have to also do this, make this painter
+
+54
+00:04:46,500 --> 00:04:56,569
+. So, if I have a change, then I will have
+to make the change at multiple entries.
+
+55
+00:04:56,569 --> 00:05:03,839
+Think about the earlier situation where I
+just had these three in my department relation,
+
+56
+00:05:03,839 --> 00:05:10,799
+then naturally computer centered only one
+row and therefore, ah this ah change, this
+
+57
+00:05:10,800 --> 00:05:13,478
+update could be done at only one place.
+
+58
+00:05:13,478 --> 00:05:18,728
+So, it is not only that if while doing this
+in case of this redundancy, I have to do this
+
+59
+00:05:18,728 --> 00:05:19,849
+multiple times.
+
+60
+00:05:19,850 --> 00:05:26,389
+It also has the ah difficulty that if I forget
+to update any one of them or more of them,
+
+61
+00:05:26,389 --> 00:05:33,590
+then I have inconsistent data . Similarly,
+if I want to insert a new value, I will have
+
+62
+00:05:33,589 --> 00:05:37,409
+to do that for all this redundant information.
+
+63
+00:05:37,410 --> 00:05:44,210
+If I have to delete say ah for some reason
+let say the university decides to wind up
+
+64
+00:05:44,209 --> 00:05:51,310
+the Physics department, then I have to delete
+all these rows which have physics as an entry
+
+65
+00:05:51,310 --> 00:05:56,430
+and the consequence of that is the department
+is deleted, but as a consequence of that I
+
+66
+00:05:56,430 --> 00:06:01,509
+will delete the whole row and therefore, I
+will not only remove the department, but I
+
+67
+00:06:01,509 --> 00:06:07,598
+will also remove the corresponding instructor
+who was enrolled for that department.
+
+68
+00:06:07,598 --> 00:06:18,389
+So, these kind of redundancy can lead to different
+kinds of anomalies in a database design . On
+
+69
+00:06:18,389 --> 00:06:23,788
+the other hand, if you look at, ok well why
+I am complicating ah the whole situation?
+
+70
+00:06:23,788 --> 00:06:29,318
+We have already had a good design ah in terms
+of where these anomalies were, not their department,
+
+71
+00:06:29,319 --> 00:06:31,819
+were separate instructor was separate.
+
+72
+00:06:31,819 --> 00:06:40,478
+In that case, the situation is that to answer
+some of the queries, I may have to do a very
+
+73
+00:06:40,478 --> 00:06:42,089
+expensive joint operation.
+
+74
+00:06:42,089 --> 00:06:50,859
+For example, if I want to know if ah Einstein
+wants to know what is the budget of his department,
+
+75
+00:06:50,860 --> 00:06:56,150
+that cannot be found out from the earlier
+instructor database, instructor relation which
+
+76
+00:06:56,149 --> 00:06:57,769
+had only these fields.
+
+77
+00:06:57,769 --> 00:07:06,068
+So, I have to pick up Einstein from here,
+do a join based on the department name, depth
+
+78
+00:07:06,069 --> 00:07:11,800
+name with the department ah table department
+relation and then only, I will be able to
+
+79
+00:07:11,800 --> 00:07:15,329
+find out that an Einstein belongs to Physics.
+
+80
+00:07:15,329 --> 00:07:18,168
+Physics has a budget of 70000.
+
+81
+00:07:18,168 --> 00:07:20,818
+So, Einstein's department has a budget 70000.
+
+82
+00:07:20,819 --> 00:07:29,530
+So, there is a tradeoff between how much if
+data information you make redundant and lead
+
+83
+00:07:29,529 --> 00:07:38,329
+to different anomalous situations or how much
+data you optimize in the representation, but
+
+84
+00:07:38,329 --> 00:07:44,468
+get into the possible situation of having
+a higher cost in terms of answering your queries.
+
+85
+00:07:44,468 --> 00:07:49,668
+So, this is ah one of the core design issues
+that we will start with.
+
+86
+00:07:49,668 --> 00:07:57,688
+So, ah let us look into some more of these
+examples, let us say we look into another
+
+87
+00:07:57,689 --> 00:08:00,100
+ah combined combination of schema.
+
+88
+00:08:00,100 --> 00:08:06,379
+Suppose section is a relation which have the
+sections of a course which give the section
+
+89
+00:08:06,379 --> 00:08:13,479
+id semester year and say section class is
+another relation which tell me for a section
+
+90
+00:08:13,478 --> 00:08:17,370
+id, what is the building and room number where
+it is located.
+
+91
+00:08:17,370 --> 00:08:28,810
+So, if we have this ah kind of ah relations
+combined into a common relation, then I have
+
+92
+00:08:28,810 --> 00:08:37,668
+all of these ah coming from the section and
+this and these coming from the section class,
+
+93
+00:08:37,668 --> 00:08:44,149
+but we can see that there is no repetition
+or ah redundant information in this case.
+
+94
+00:08:44,149 --> 00:08:52,199
+So, it is note that combining schemas is necessarily
+always bad in terms of repetition or in terms
+
+95
+00:08:52,200 --> 00:08:53,200
+of redundancy.
+
+96
+00:08:53,200 --> 00:08:58,190
+So, different situations will have to be assessed.
+
+97
+00:08:58,190 --> 00:09:05,870
+So, if we want to look at the other side that
+if we just as I said that if we make the schema
+
+98
+00:09:05,870 --> 00:09:15,360
+smaller, so that we avoid redundancy and then,
+what we see that 12 hm from the combined inst
+
+99
+00:09:15,360 --> 00:09:18,980
+dept ah relationship that we saw.
+
+100
+00:09:18,980 --> 00:09:22,759
+So, let me just ah show you once more.
+
+101
+00:09:22,759 --> 00:09:32,049
+So, this is if we look at the inst dept, then
+in this we can we know that from the earlier
+
+102
+00:09:32,049 --> 00:09:40,799
+ah information about the department relationship
+that department name is a key, is a primary
+
+103
+00:09:40,799 --> 00:09:50,149
+key of the relation which has department name,
+building and budget . What is the consequence
+
+104
+00:09:50,149 --> 00:09:51,610
+of being a primary key?
+
+105
+00:09:51,610 --> 00:10:00,740
+If it is a primary key, then no two records
+can match on the department name and be different
+
+106
+00:10:00,740 --> 00:10:03,049
+in terms of the building and the budget.
+
+107
+00:10:03,049 --> 00:10:06,740
+If two records are there which have the same
+department name, they must be identical.
+
+108
+00:10:06,740 --> 00:10:10,060
+So, they are distinguishable completely by
+that.
+
+109
+00:10:10,059 --> 00:10:13,869
+So, let us see what is the consequence of
+this.
+
+110
+00:10:13,870 --> 00:10:19,049
+So, we are saying that we write it as a rule
+that if there is a schema department, name,
+
+111
+00:10:19,049 --> 00:10:25,819
+building, budget, then department name would
+be a candidate key and we write this observation
+
+112
+00:10:25,820 --> 00:10:32,680
+that if two records match on the department
+name, they must match on the building and
+
+113
+00:10:32,679 --> 00:10:36,620
+budget and very loosely, we will come to the
+formal definition.
+
+114
+00:10:36,620 --> 00:10:40,009
+Very loosely we call this the functional dependency.
+
+115
+00:10:40,009 --> 00:10:48,250
+We say that the building and budget is functionally
+dependent on the department name and that
+
+116
+00:10:48,250 --> 00:10:59,458
+is a situation where we can split this inst
+dept and ah create a smaller ah relationship
+
+117
+00:10:59,458 --> 00:11:05,399
+because department name is not a candidate
+key in the inst dept.
+
+118
+00:11:05,399 --> 00:11:11,789
+It does not decide the records of inst dept
+uniquely.
+
+119
+00:11:11,789 --> 00:11:23,049
+So, since it does not, so when the values
+of this key, ah this attribute department
+
+120
+00:11:23,049 --> 00:11:30,500
+name is duplicated or triplicated, the values
+of the building and budget are repeated and
+
+121
+00:11:30,500 --> 00:11:32,590
+we have the redundancy.
+
+122
+00:11:32,590 --> 00:11:39,050
+So, this is a situation, very common situation
+which is indicative of the fact that we need
+
+123
+00:11:39,049 --> 00:11:47,328
+a decomposition into smaller , but at the
+same time we can also observe, I mean let
+
+124
+00:11:47,328 --> 00:11:49,448
+us take a different example.
+
+125
+00:11:49,448 --> 00:11:55,689
+If we are thinking that decomposition is the
+panacea of ah solving these kind of ah redundancy
+
+126
+00:11:55,690 --> 00:12:03,340
+and related problems, then let us try to see
+a different relationship employee which has
+
+127
+00:12:03,340 --> 00:12:10,379
+id, name, street, city, salary and we want
+to make it smaller ah and want to make two
+
+128
+00:12:10,379 --> 00:12:16,439
+relations id and name and name, city street,
+salary.
+
+129
+00:12:16,440 --> 00:12:24,710
+So, if we do that, then how do we get the
+salary for a particular id?
+
+130
+00:12:24,710 --> 00:12:34,690
+We will naturally have to join these two relations
+in terms of the common attribute name.
+
+131
+00:12:34,690 --> 00:12:39,850
+We have seen that in the query and the question
+is when I do this joint, do I get back the
+
+132
+00:12:39,850 --> 00:12:44,379
+original information or I lose some information.
+
+133
+00:12:44,379 --> 00:12:45,389
+Look at an example.
+
+134
+00:12:45,389 --> 00:12:53,089
+So, here is an example of the combined ah
+instance and I have two different ids, but
+
+135
+00:12:53,089 --> 00:12:57,270
+incidentally the names are same.
+
+136
+00:12:57,269 --> 00:13:00,879
+The names of these two distinct employees
+are same.
+
+137
+00:13:00,879 --> 00:13:07,549
+So, when I decompose, I get this relation
+which shows id and name.
+
+138
+00:13:07,549 --> 00:13:13,349
+I get this relation which is against the name
+shows this, but when I try to join them by
+
+139
+00:13:13,350 --> 00:13:21,159
+national joint, I not only get the combination
+of this with this which is what I need, but
+
+140
+00:13:21,159 --> 00:13:22,500
+I also get this combination.
+
+141
+00:13:22,500 --> 00:13:32,028
+So, if I say this is what I get as well in
+terms of natural joint, this is what I get
+
+142
+00:13:32,028 --> 00:13:38,088
+as well in terms of the natural join which
+are really not there in the original relation.
+
+143
+00:13:38,089 --> 00:13:44,320
+So, you can see that in the natural join,
+I get four records, I get four rows whereas,
+
+144
+00:13:44,320 --> 00:13:46,949
+in the original one I had only two rows.
+
+145
+00:13:46,948 --> 00:13:52,569
+So, I get some entries which are actually
+erroneous.
+
+146
+00:13:52,570 --> 00:13:54,980
+These are not there in the database.
+
+147
+00:13:54,980 --> 00:13:56,539
+So, this is when this happens.
+
+148
+00:13:56,539 --> 00:14:02,620
+We say that we have loss of information and
+such joints are said to be lossy joins.
+
+149
+00:14:02,620 --> 00:14:08,740
+So, when we decompose, we need to make sure
+that our joins are lossless in nature, otherwise
+
+150
+00:14:08,740 --> 00:14:10,690
+that is not a good design.
+
+151
+00:14:10,690 --> 00:14:20,399
+So, you can see this is again a hypothetical
+example which shows three attributes in relation
+
+152
+00:14:20,399 --> 00:14:21,509
+having three attributes.
+
+153
+00:14:21,509 --> 00:14:26,740
+You have decomposed it into two relations
+having two attributes each and we have shown
+
+154
+00:14:26,740 --> 00:14:36,039
+an instance and in this case, it shows that
+ah when I take the join, the original information
+
+155
+00:14:36,039 --> 00:14:43,958
+I am sorry wait .
+When I take the join, the original information
+
+156
+00:14:43,958 --> 00:14:45,419
+is completely retrieved.
+
+157
+00:14:45,419 --> 00:14:51,219
+I get back the same table and when that happens,
+I say that the join is lossless.
+
+158
+00:14:51,220 --> 00:15:00,550
+So, what we need to understand is ah on one
+side there is ah a need to decompose relations
+
+159
+00:15:00,549 --> 00:15:08,359
+into smaller relations to reduce redundancy
+and while we do that, we will also have to
+
+160
+00:15:08,360 --> 00:15:16,629
+keep this in mind that the smaller ah relations
+must be composable through certain natural
+
+161
+00:15:16,629 --> 00:15:21,708
+join procedure to the original relation, and
+I must get back that original relation, otherwise
+
+162
+00:15:21,708 --> 00:15:25,099
+I have a lossy joint which is not acceptable.
+
+163
+00:15:25,100 --> 00:15:32,019
+Also, the decomposition will have the costs
+of ah doing natural join every time I want
+
+164
+00:15:32,019 --> 00:15:42,899
+to answer those queries .
+The next that we look at is ah the way the
+
+165
+00:15:42,899 --> 00:15:47,028
+relationships are categorized as first normal
+form ah.
+
+166
+00:15:47,028 --> 00:15:55,639
+We consider that the domains of attributes
+are atomic if they are indivisible.
+
+167
+00:15:55,639 --> 00:16:02,290
+So, anything that is a number string and so
+on is considered to be atomic and we say a
+
+168
+00:16:02,291 --> 00:16:07,839
+relational schema is in its first normal form
+if the domains of all attributes are atomic
+
+169
+00:16:07,839 --> 00:16:12,399
+and all attributes single value, there is
+no multi value attribute.
+
+170
+00:16:12,399 --> 00:16:17,559
+If these conditions are satisfied, then we
+will say that every relate that relational
+
+171
+00:16:17,559 --> 00:16:20,059
+schema is in its first normal form.
+
+172
+00:16:20,059 --> 00:16:26,599
+So, we will slowly understand the purpose
+of ah defining such normal forms, but let
+
+173
+00:16:26,600 --> 00:16:29,920
+us initially understand the definition.
+
+174
+00:16:29,919 --> 00:16:38,990
+So, if we have ah attributes which are composite
+in nature, naturally my relationship, my relational
+
+175
+00:16:38,990 --> 00:16:44,169
+schema is not in first normal form if we have
+attributes which are ah multiple valued, it
+
+176
+00:16:44,169 --> 00:16:45,708
+is not so.
+
+177
+00:16:45,708 --> 00:16:53,838
+So, if we say that we have possible values
+are like this, then if we just treat them
+
+178
+00:16:53,839 --> 00:16:59,529
+as strings, then the corresponding relational
+schema is in first normal form, but if we
+
+179
+00:16:59,528 --> 00:17:05,140
+say that from this string we can extract the
+first two characters which is CS which tells
+
+180
+00:17:05,140 --> 00:17:06,280
+me what is a department.
+
+181
+00:17:06,279 --> 00:17:12,769
+The next four characters gives me a number,
+the serial number ah of the particular student
+
+182
+00:17:12,769 --> 00:17:14,318
+in the role.
+
+183
+00:17:14,318 --> 00:17:21,379
+Then I am not actually using an atomic ah
+domain because my domain needs to be interpreted
+
+184
+00:17:21,380 --> 00:17:24,240
+separately than just being a value.
+
+185
+00:17:24,240 --> 00:17:28,630
+So, these are not parts of what can be a first
+normal form.
+
+186
+00:17:28,630 --> 00:17:34,200
+So, I have given ah some examples of ah what
+is not and what is first normal form.
+
+187
+00:17:34,200 --> 00:17:40,210
+So, this is an example where at the telephone
+number ah field exists and there can be multiple
+
+188
+00:17:40,210 --> 00:17:41,210
+telephone numbers.
+
+189
+00:17:41,210 --> 00:17:46,419
+So, this is not in first normal form because
+the telephone number itself is composite because
+
+190
+00:17:46,419 --> 00:17:50,530
+it has different components and also, you
+can have multiple telephone number.
+
+191
+00:17:50,529 --> 00:17:54,269
+So, this relation is not in the first normal
+form.
+
+192
+00:17:54,269 --> 00:17:55,980
+What you can do?
+
+193
+00:17:55,980 --> 00:18:01,440
+You can ah separate out these phone numbers
+into two different attributes; Telephone number
+
+194
+00:18:01,440 --> 00:18:02,720
+1 and 2.
+
+195
+00:18:02,720 --> 00:18:11,150
+Even ah then it is not exactly in first normal
+form because ah you do not know in which order
+
+196
+00:18:11,150 --> 00:18:13,480
+they should be handled.
+
+197
+00:18:13,480 --> 00:18:16,759
+If you have to search for a telephone number,
+then you will have to search multiple attributes
+
+198
+00:18:16,759 --> 00:18:21,869
+which are conceptually same and then, the
+question is why only two attributes.
+
+199
+00:18:21,869 --> 00:18:25,329
+Cannot anybody have ah 3 phone numbers, 7
+phone numbers and so on.
+
+200
+00:18:25,329 --> 00:18:28,439
+So, this is really not a good option.
+
+201
+00:18:28,440 --> 00:18:34,110
+So, the other way could be that for every
+telephone number, you introduce a separate
+
+202
+00:18:34,109 --> 00:18:35,109
+row.
+
+203
+00:18:35,109 --> 00:18:39,250
+Once you do that you already know you have
+redundancy and you have possibilities of varied
+
+204
+00:18:39,250 --> 00:18:41,470
+kinds of anomalies that could happen.
+
+205
+00:18:41,470 --> 00:18:48,829
+So, one way it could be achieved is ah we
+follow the principle that we had seen in ER
+
+206
+00:18:48,829 --> 00:18:55,480
+modelling that ah this multivalued dependency
+can be represented in terms of a separate
+
+207
+00:18:55,480 --> 00:18:59,558
+relation where against the customer id we
+just keep the telephone number.
+
+208
+00:18:59,558 --> 00:19:04,649
+So, we can keep multiple of them and we take
+that out from the customer name.
+
+209
+00:19:04,650 --> 00:19:11,080
+So, one to many relationship between the parent
+and the child, ah between the customer name
+
+210
+00:19:11,079 --> 00:19:16,928
+and telephone number, every customer may have
+more than one ah telephone number is possible
+
+211
+00:19:16,929 --> 00:19:25,250
+and ah that makes it 2 NF ah relation, first
+normal form relation and we will later on
+
+212
+00:19:25,250 --> 00:19:31,140
+see that it also is 2 NF and 3 NF, but that
+is a future story .
+
+213
+00:19:31,140 --> 00:19:40,710
+Now, finally we ah come to the core of what
+the mathematical formulation which dictates
+
+214
+00:19:40,710 --> 00:19:46,170
+much of the data base, relational database
+design is known as functional dependencies.
+
+215
+00:19:46,170 --> 00:19:51,860
+I just talked about little bit of ah that
+while talking about department name ah building
+
+216
+00:19:51,859 --> 00:19:53,408
+and budget.
+
+217
+00:19:53,409 --> 00:20:00,580
+Now, to decide whether a particular relation
+is good or rather a particular relational
+
+218
+00:20:00,579 --> 00:20:08,960
+scheme is good, we need to check against certain
+measures and if it is not good, we need to
+
+219
+00:20:08,960 --> 00:20:14,650
+decompose it into a set of relations such
+that these conditions satisfy that every,
+
+220
+00:20:14,650 --> 00:20:18,220
+each one of these, R 1 R 2 R n.
+
+221
+00:20:18,220 --> 00:20:26,970
+So, I mean if you have ah you know got rusted,
+then it is basically R i is a set of attributes
+
+222
+00:20:26,970 --> 00:20:28,480
+because it is a relational schema.
+
+223
+00:20:28,480 --> 00:20:32,900
+A relational schema is a set of attributes.
+
+224
+00:20:32,900 --> 00:20:38,540
+So, naturally R will be the union of all of
+these, R i the total set of attributes.
+
+225
+00:20:38,539 --> 00:20:44,240
+So, instead of keeping all the information
+into one relation in one table, we are basically
+
+226
+00:20:44,240 --> 00:20:47,490
+decomposing it into n different schemas.
+
+227
+00:20:47,490 --> 00:20:53,679
+So, what we need to guarantee is each one
+of these relation R 1, R 2, R n is in good
+
+228
+00:20:53,679 --> 00:20:54,679
+form.
+
+229
+00:20:54,679 --> 00:20:58,559
+How do I get back the original relation?
+
+230
+00:20:58,558 --> 00:21:02,970
+Original relation that was represented by
+all that attributes enough is to take a lossless
+
+231
+00:21:02,970 --> 00:21:03,970
+join.
+
+232
+00:21:03,970 --> 00:21:09,240
+This would take a join and that this decomposition
+must give me a lossless join.
+
+233
+00:21:09,240 --> 00:21:17,160
+So, to ensure that we make use of two key
+ideas more foundationally; functional dependencies
+
+234
+00:21:17,160 --> 00:21:23,080
+and then, multivalued dependencies .
+A functional dependency is a constraint on
+
+235
+00:21:23,079 --> 00:21:25,789
+the set of legal relation.
+
+236
+00:21:25,789 --> 00:21:33,769
+So, ah mind you it is a constraint on the
+schema and once that constraint is defined,
+
+237
+00:21:33,769 --> 00:21:43,288
+it must hold for all relations that the schema
+satisfied . So, here we need that the value
+
+238
+00:21:43,288 --> 00:21:48,089
+of certain set of attributes uniquely determined
+the value of another set of attributes.
+
+239
+00:21:48,089 --> 00:21:54,038
+So, I know the value of three attributes,
+I should be able to say that the values of
+
+240
+00:21:54,038 --> 00:21:58,500
+the other four attributes would be fixed.
+
+241
+00:21:58,500 --> 00:22:05,420
+So, you have already seen this notion in terms
+of ah key or super key.
+
+242
+00:22:05,420 --> 00:22:13,538
+You have seen that ah similar type of concept
+exists where we said a key is a set of attributes,
+
+243
+00:22:13,538 --> 00:22:20,850
+so that if the values of two rows are identical
+over these set of attributes, then the two
+
+244
+00:22:20,851 --> 00:22:24,039
+peoples, the two rows must be totally identical.
+
+245
+00:22:24,038 --> 00:22:30,990
+So, key is something which ah does a similar
+thing as a functional dependency, but is more
+
+246
+00:22:30,990 --> 00:22:31,990
+specific.
+
+247
+00:22:31,990 --> 00:22:34,169
+Functional dependencies are generalization.
+
+248
+00:22:34,169 --> 00:22:40,350
+So, let us formally define that let R be a
+relational schema which means that it is a
+
+249
+00:22:40,349 --> 00:22:47,201
+set of attributes and let us say alpha and
+beta are two subsets of R , then we write
+
+250
+00:22:47,201 --> 00:22:54,528
+this and ah note this notation . Alpha is
+a set of attributes ; beta is another set
+
+251
+00:22:54,528 --> 00:22:55,528
+of attributes.
+
+252
+00:22:55,528 --> 00:23:02,470
+Both are subset of the same R and we say alpha
+functionally determines beta that is if I
+
+253
+00:23:02,470 --> 00:23:13,120
+know the value of a tuple over the attributes
+of alpha, then the values of that tuple over
+
+254
+00:23:13,119 --> 00:23:20,219
+the attributes of beta would be fixed or in
+other words, they say that if I have two tuples
+
+255
+00:23:20,220 --> 00:23:30,390
+t 1 and t 2 and their values over the set
+of alpha attributes are same, then necessarily
+
+256
+00:23:30,390 --> 00:23:36,038
+their values over the set of beta attributes
+must be same and mind you this is something
+
+257
+00:23:36,038 --> 00:23:39,190
+which is a design constraint.
+
+258
+00:23:39,190 --> 00:23:42,169
+It is not just an incidental property.
+
+259
+00:23:42,169 --> 00:23:50,259
+It is not just the fact that a particular
+instance of a schema satisfies this, but when
+
+260
+00:23:50,259 --> 00:23:55,528
+you say this is a functional dependency, we
+need all possible past, present and future
+
+261
+00:23:55,528 --> 00:24:00,940
+instances of the schema must satisfy this
+.
+
+262
+00:24:00,940 --> 00:24:11,190
+So, consider this if you take a relation,
+a schema with an instance as given here between
+
+263
+00:24:11,190 --> 00:24:17,320
+two attributes a and b, then we can say at
+least given this instance not we still do
+
+264
+00:24:17,319 --> 00:24:22,519
+not know what happens in the whole schema
+for all instances, but on this instance we
+
+265
+00:24:22,519 --> 00:24:27,490
+can say that functionally determines b does
+not hold because between the first and the
+
+266
+00:24:27,490 --> 00:24:33,130
+second record, the value of a is same one,
+but the value of we are different 4 and 5,
+
+267
+00:24:33,130 --> 00:24:39,190
+but we can certainly say that on this instance
+at least we functionally determines holds
+
+268
+00:24:39,190 --> 00:24:46,690
+because whenever the value if we take any
+two tuples, their value over b does not at
+
+269
+00:24:46,690 --> 00:24:47,690
+all match.
+
+270
+00:24:47,690 --> 00:24:52,429
+If they does not match, then naturally there
+is no question of what happens to the value
+
+271
+00:24:52,429 --> 00:24:55,490
+of the tuple over the set of attributes a.
+
+272
+00:24:55,490 --> 00:25:00,278
+So, we will say that b functionally determining
+a holds in this instance .
+
+273
+00:25:00,278 --> 00:25:07,970
+So, given this definition of functional dependency,
+now we can have a formal definition of what
+
+274
+00:25:07,970 --> 00:25:09,400
+the super key is.
+
+275
+00:25:09,400 --> 00:25:17,659
+Super key is naturally a ah subset of attributes
+which functionally determines the whole set
+
+276
+00:25:17,659 --> 00:25:24,890
+and a candidate key is a super key which is
+minimal which means that k is a candidate
+
+277
+00:25:24,890 --> 00:25:25,890
+key.
+
+278
+00:25:25,890 --> 00:25:29,509
+If the two conditions have to satisfy this
+condition say there is a super key that it
+
+279
+00:25:29,509 --> 00:25:35,519
+functionally determines all the attributes
+and the other condition says minimality that
+
+280
+00:25:35,519 --> 00:25:41,759
+there is no subset alpha of k, such that alpha
+functionally determines r if there exists
+
+281
+00:25:41,759 --> 00:25:45,140
+a subset alpha of k, the proper subset alpha
+of k.
+
+282
+00:25:45,140 --> 00:25:50,299
+So, that alpha functionally determines r,
+then k would not be a candidate key.
+
+283
+00:25:50,298 --> 00:25:52,430
+We will have to check for alpha.
+
+284
+00:25:52,430 --> 00:25:59,090
+So, these two what we had stated earlier in
+qualitative terms and now mathematically established.
+
+285
+00:25:59,089 --> 00:26:03,250
+So, we can say that there are different functional
+dependencies.
+
+286
+00:26:03,250 --> 00:26:10,849
+For example, in stepped combined relation
+if we look at, then we know that department
+
+287
+00:26:10,849 --> 00:26:17,969
+name functionally determines building functionally.
+
+288
+00:26:17,970 --> 00:26:23,940
+So, these are functional dependencies that
+must hold, but certainly we would not expect
+
+289
+00:26:23,940 --> 00:26:26,529
+department name to functionally determine
+salary.
+
+290
+00:26:26,529 --> 00:26:28,379
+That would be too much, right.
+
+291
+00:26:28,380 --> 00:26:35,409
+So, ah functional dependencies are facts about
+the real world that we try to understand from
+
+292
+00:26:35,409 --> 00:26:41,210
+the real world and then, represent in terms
+of ah the functional dependency formulation
+
+293
+00:26:41,210 --> 00:26:44,710
+in the database.
+
+294
+00:26:44,710 --> 00:26:51,829
+So, we can use ah functional dependencies
+to test relations if they are valid under
+
+295
+00:26:51,829 --> 00:26:53,289
+the set of functional dependencies.
+
+296
+00:26:53,289 --> 00:27:00,750
+So, there could be multiple functional dependencies
+in the set and if a relation we are using
+
+297
+00:27:00,750 --> 00:27:06,690
+small r here just to remind you that a relation
+means that a particular instance is legal
+
+298
+00:27:06,690 --> 00:27:08,710
+under a set of functional dependencies.
+
+299
+00:27:08,710 --> 00:27:22,509
+We will say that r satisfies that and if we
+have that it holds F will be satisfied by
+
+300
+00:27:22,509 --> 00:27:28,778
+all possible instances of a relational schema
+capital R, then we say F holds on R.
+
+301
+00:27:28,778 --> 00:27:36,950
+So, a relation satisfies a functional set
+of functional dependencies and a relational
+
+302
+00:27:36,950 --> 00:27:38,860
+schema for a relational schema,.
+
+303
+00:27:38,859 --> 00:27:43,648
+The functional depend set of functional dependencies
+holds on that schema which means that for
+
+304
+00:27:43,648 --> 00:27:51,528
+all possible past, present and future instances
+relations, the relations will satisfy the
+
+305
+00:27:51,528 --> 00:28:02,400
+functional dependencies . So, we have ah for
+example id.
+
+306
+00:28:02,400 --> 00:28:06,990
+We know id functionally determines name that
+if the id is distinct, then the name has to
+
+307
+00:28:06,990 --> 00:28:12,589
+be distinct, but ah we may find that instance
+where name functionally determines id.
+
+308
+00:28:12,589 --> 00:28:19,569
+So, we can say that names functionally determines
+id is satisfied by a particular instance where
+
+309
+00:28:19,569 --> 00:28:28,470
+it so happens that there is no two ah rows
+where the name is identical, but we cannot,
+
+310
+00:28:28,470 --> 00:28:36,100
+may not be able to infer that as this dependency
+holding on the relational scheme as a whole
+
+311
+00:28:36,099 --> 00:28:43,119
+because tomorrow we can get another entry,
+so that two rows might match on the name,
+
+312
+00:28:43,119 --> 00:28:46,079
+but could still be distinct entries not matching
+on id.
+
+313
+00:28:46,079 --> 00:28:52,058
+So, that is how this will ah have to be looked
+at ah in specificity.
+
+314
+00:28:52,058 --> 00:28:59,898
+We say that a functional dependency is trivial
+if the left hand side is a superset of the
+
+315
+00:28:59,898 --> 00:29:00,898
+right hand side.
+
+316
+00:29:00,898 --> 00:29:06,609
+So, if I have a bigger set of attributes on
+the left hand side id and name, then obviously
+
+317
+00:29:06,609 --> 00:29:12,949
+id and name will functionally determine id,
+id and name will functionally determine name,
+
+318
+00:29:12,950 --> 00:29:14,380
+name will functionally determine name.
+
+319
+00:29:14,380 --> 00:29:19,720
+So, if you just think about because in a functional
+dependency the left hand side attributes that
+
+320
+00:29:19,720 --> 00:29:24,110
+tuples have to match on the left hand side
+attribute and if they do, then they must match
+
+321
+00:29:24,109 --> 00:29:25,109
+on the right hand side attribute.
+
+322
+00:29:25,109 --> 00:29:30,028
+So, if the right hand side set of attributes
+is a subset of the left hand side, then obviously
+
+323
+00:29:30,028 --> 00:29:35,369
+the functional dependency will be vacuously
+true and these are called trivial dependencies
+
+324
+00:29:35,369 --> 00:29:38,229
+.
+So, in the next couple of slides, I have shown
+
+325
+00:29:38,230 --> 00:29:42,259
+ah few examples of functional dependencies
+of different tables.
+
+326
+00:29:42,259 --> 00:29:47,960
+Here student id functionally determines semesters
+which mean that we are trying to model ah
+
+327
+00:29:47,960 --> 00:29:55,259
+that ah a student cannot be at the same time
+in two semesters, then student id and lecture
+
+328
+00:29:55,259 --> 00:30:01,589
+together functionally determines who is TA
+and so on and you can see for this ah particular
+
+329
+00:30:01,589 --> 00:30:07,230
+relation student id and lecture, pair also
+happens to be the candidate key .
+
+330
+00:30:07,230 --> 00:30:08,599
+These are ah another example.
+
+331
+00:30:08,599 --> 00:30:14,259
+So, these are just go through them, try to
+convince yourself that these functional dependencies
+
+332
+00:30:14,259 --> 00:30:21,210
+are ah very genuinely real world situations
+that can be modeled in this way .
+
+333
+00:30:21,210 --> 00:30:25,069
+Given a set of functional dependencies, we
+can ah actually compute a closure.
+
+334
+00:30:25,069 --> 00:30:31,000
+For example, if A functionally determines
+B and B functionally determines C, then we
+
+335
+00:30:31,000 --> 00:30:36,630
+can infer that A functionally determined because
+if two peoples match on, A determines b says
+
+336
+00:30:36,630 --> 00:30:43,330
+that they match on B. Now, if B functionally
+determines C also holds, then if match on
+
+337
+00:30:43,329 --> 00:30:48,058
+B, they match on C. So, if the match on A,
+then necessarily they may have to match on
+
+338
+00:30:48,058 --> 00:30:57,158
+C. So, this is called the logical implication
+of a set of functional dependencies and we
+
+339
+00:30:57,159 --> 00:31:04,100
+will see more of this ah later, but if we
+take all functional dependencies of a given
+
+340
+00:31:04,099 --> 00:31:08,089
+set F, that are logically implied from this
+set F.
+
+341
+00:31:08,089 --> 00:31:14,000
+We said that is a closure set and we represent
+that by F plus.
+
+342
+00:31:14,000 --> 00:31:20,819
+So, F plus necessarily is a superset of F.
+So, here in that above example, this is F
+
+343
+00:31:20,819 --> 00:31:22,428
+and this is F plus.
+
+344
+00:31:22,429 --> 00:31:27,919
+So, we will continue more on the theory of
+functional dependencies, but ah let us conclude
+
+345
+00:31:27,919 --> 00:31:34,720
+this module by summarizing that we have identified
+the features of good relational designs tradeoff
+
+346
+00:31:34,720 --> 00:31:41,460
+between decomposition and lossless join properties
+that we need.
+
+347
+00:31:41,460 --> 00:31:46,700
+We are familiarized with ah the first normal
+form and atomic domains and we have introduced
+
+348
+00:31:46,700 --> 00:31:53,389
+the notion of functional dependencies on which
+we will build up more and try to get 0 on
+
+349
+00:31:53,388 --> 00:31:56,648
+very concrete strategies for good results.
+

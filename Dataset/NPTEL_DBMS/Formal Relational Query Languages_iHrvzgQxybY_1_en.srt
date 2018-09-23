@@ -1,0 +1,1309 @@
+﻿1
+00:00:17,269 --> 00:00:28,269
+welcome to module twelve of ah database management
+systems, in this module we will talk about
+
+2
+00:00:28,269 --> 00:00:36,609
+the formal relational query languages. In
+the last couple of modules we have discussed
+
+3
+00:00:36,609 --> 00:00:46,409
+about sql at length introducing it dealing
+with the intermediate level of sql features,
+
+4
+00:00:46,409 --> 00:00:55,049
+and then exposing to some of the advanced
+features as well. The foundational mathematical
+
+5
+00:00:55,049 --> 00:01:04,409
+model of sql the query languages are to be
+discussed in this present module.
+
+6
+00:01:04,409 --> 00:01:14,469
+So, this is what we had done in the last module.
+In the current 1 we will work to understand
+
+7
+00:01:14,469 --> 00:01:20,299
+the formal query languages.
+Primarily through relational algebra, and
+
+8
+00:01:20,299 --> 00:01:28,899
+then we will also take a look into some of
+the calculus aspects tuple relational calculus,
+
+9
+00:01:28,900 --> 00:01:37,350
+and domain relational calculus and we will
+show by example the equivalence between the
+
+10
+00:01:37,349 --> 00:01:47,039
+algebra and the 2 calculus.
+So, formal relational query languages are
+
+11
+00:01:47,040 --> 00:01:58,360
+of 3 types 1 is known as relational algebra
+this is procedural in nature. So, we specify
+
+12
+00:01:58,359 --> 00:02:06,549
+what operations need to be done to achieve
+the result and the whole formulation is based
+
+13
+00:02:06,549 --> 00:02:17,449
+on set algebra . The second ah formal query
+language is tuple relational calculus which
+
+14
+00:02:17,449 --> 00:02:24,149
+is non procedural and is based on predicate
+calculus. The third one the domain relational
+
+15
+00:02:24,150 --> 00:02:31,890
+calculus is a minor variant of the people
+relational calculus is and is also non procedural
+
+16
+00:02:31,889 --> 00:02:41,259
+and predicate calculus based.
+So, we start with the relational algebra in
+
+17
+00:02:41,259 --> 00:02:51,069
+the relational algebra.
+It was created by Edgar F Codd at IBM in 1970.
+
+18
+00:02:51,069 --> 00:02:58,870
+So, you can see that it is ah quite an old
+formulation it is a procedural language it
+
+19
+00:02:58,870 --> 00:03:05,759
+has six operators we have taken a quick view
+of these earlier in this module we will look
+
+20
+00:03:05,759 --> 00:03:14,849
+at them at length. The select project union
+set difference Cartesian product and rename,
+
+21
+00:03:14,849 --> 00:03:21,229
+we will also look at few derived operations
+like intersection and division which can be
+
+22
+00:03:21,229 --> 00:03:28,929
+expressed in terms of these basic operators.
+And each one of these operators can take 1
+
+23
+00:03:28,930 --> 00:03:35,250
+or 2 relations as input and they produce 1
+relation as a result.
+
+24
+00:03:35,250 --> 00:03:43,039
+So, we start with the select operation which
+you know has a notation sigma subscript p
+
+25
+00:03:43,039 --> 00:03:49,120
+is a predicate it is called the selection
+predicate and within parentheses we have a
+
+26
+00:03:49,120 --> 00:04:03,349
+relation r on which this predicate applies.
+So, it is defined as a set where you collect
+
+27
+00:04:03,349 --> 00:04:12,629
+all the tuples all the rows designated by
+t and you specify that t belongs to the relation.
+
+28
+00:04:12,629 --> 00:04:21,738
+So, it already exists in that relation and
+it satisfies the particular selection predicate.
+
+29
+00:04:21,738 --> 00:04:28,448
+So, any tuple that satisfies this predicate
+is included in the result any that does not
+
+30
+00:04:28,449 --> 00:04:38,788
+satisfy is excluded from the result, p here
+particularly is a propositional calculus formula
+
+31
+00:04:38,788 --> 00:04:48,288
+or expression. Where we have different terms
+that are connected by conjunction or and disjunction
+
+32
+00:04:48,288 --> 00:04:57,889
+or or or negation or not, and each term by
+itself could be something like this it is
+
+33
+00:04:57,889 --> 00:05:03,680
+an attribute operator and an attribute where
+operators are different comparisons operators
+
+34
+00:05:03,680 --> 00:05:11,379
+1 of the any six or a term could be an attribute
+operator a constant.
+
+35
+00:05:11,379 --> 00:05:21,410
+So, given that we can write any expression,
+which is a predicate and applying that we
+
+36
+00:05:21,410 --> 00:05:34,309
+can select the tuples from the relation r
+which satisfy this predicate . So, here we
+
+37
+00:05:34,309 --> 00:05:44,529
+show an simple example instructor is a relation
+department name is an attribute within course
+
+38
+00:05:44,528 --> 00:05:53,079
+physics is a constant or literal. So, this
+selection show will select all the tuples
+
+39
+00:05:53,079 --> 00:05:59,609
+where the attribute department name is equal
+to physics and all the others will be eliminated
+
+40
+00:05:59,610 --> 00:06:08,580
+for reference I have also quoted here the
+example that we had shown at the time of introducing
+
+41
+00:06:08,579 --> 00:06:14,329
+relational algebra.
+So, you can see that here we have a more complex
+
+42
+00:06:14,329 --> 00:06:22,329
+propositional term propositional formula where
+there are 2 terms, the a should equal b and
+
+43
+00:06:22,329 --> 00:06:30,288
+d should be greater than 5. So, in the selection
+result both of these conditions must be satisfied
+
+44
+00:06:30,288 --> 00:06:37,329
+by all the tuples which feature here. So,
+this is the first operation that relational
+
+45
+00:06:37,329 --> 00:06:43,668
+algebra has the select operation .
+Next we move on to the second operation which
+
+46
+00:06:43,668 --> 00:06:51,438
+is a project operation where a relation can
+be projected in terms of a number of attributes.
+
+47
+00:06:51,439 --> 00:06:59,749
+So, pi is the notation r again is the relation
+and the subscript at A 1, A 2, A k, are key
+
+48
+00:06:59,749 --> 00:07:07,719
+attribute names k has to be at least 1 and
+these attributes will be retained in the relation
+
+49
+00:07:07,718 --> 00:07:11,389
+.
+So, the result is defined as the relation
+
+50
+00:07:11,389 --> 00:07:21,079
+of k columns by erasing all the columns of
+r which are not listed amongst this a 2 k.
+
+51
+00:07:21,079 --> 00:07:28,058
+Naturally, if you erase some columns it is
+possible that 2 rows that were distinct in
+
+52
+00:07:28,059 --> 00:07:38,490
+those columns, but are identical in A 1 to
+A k feature in the relation since every relation
+
+53
+00:07:38,490 --> 00:07:48,769
+is a set no distinct no 2 copies of the same
+people are allowed. So, the duplicate rows
+
+54
+00:07:48,769 --> 00:07:56,598
+will be removed from the result remind you
+this is in contrast to what sql does by default
+
+55
+00:07:56,598 --> 00:08:03,408
+where duplicates or multi sets are allowed
+by default here we are talking about the formal
+
+56
+00:08:03,408 --> 00:08:07,149
+relational algebra where it is purely set
+theoretic.
+
+57
+00:08:07,149 --> 00:08:14,028
+So, duplicate rows on projection will be removed
+from the result. So, we have an example from
+
+58
+00:08:14,028 --> 00:08:21,028
+the instructor relation we had seen earlier
+we are projecting id name and salary. So,
+
+59
+00:08:21,028 --> 00:08:27,968
+we are removing the department name, which
+also exists in the same relation and as a
+
+60
+00:08:27,968 --> 00:08:36,460
+reference you can see the example that we
+had seen earlier while introducing the relational
+
+61
+00:08:36,460 --> 00:08:44,180
+algebra where projection is done from 3 columns
+ABC into 2 columns A and C, and this results
+
+62
+00:08:44,179 --> 00:08:52,819
+in at least results in 2 rows which are identical
+and therefore, in the final result 1 of those
+
+63
+00:08:52,820 --> 00:09:00,720
+the duplicate 1 is removed .
+Moving on that the third operation is quite
+
+64
+00:09:00,720 --> 00:09:07,840
+simple it is set theoretic union. So, our
+union s where r and s are 2 relations our
+
+65
+00:09:07,840 --> 00:09:15,769
+set of peoples which either belong to r or
+belongs to s, or belongs to both, the condition
+
+66
+00:09:15,769 --> 00:09:23,130
+is you can take union if both these relations
+have the same additive and the order of the
+
+67
+00:09:23,130 --> 00:09:30,279
+attributes must satisfy that every corresponding
+attribute must have compatible domains. So,
+
+68
+00:09:30,279 --> 00:09:36,819
+if we I talked about the second column of
+r, and if we talk about the second column
+
+69
+00:09:36,820 --> 00:09:45,800
+of s they must be of the same type and this
+must hold for all columns that the union forms
+
+70
+00:09:45,799 --> 00:09:53,169
+that is all columns of r as well as s , otherwise
+this operation is not defined.
+
+71
+00:09:53,169 --> 00:10:01,959
+So, as an example we show that to find all
+courses taught in fall 2009 semester, this
+
+72
+00:10:01,960 --> 00:10:13,629
+is a this is the query where we do a selection
+to find all tuples which are taught, which
+
+73
+00:10:13,629 --> 00:10:21,750
+represent courses taught in fall 2009 semester,
+from the section relation we do a projection
+
+74
+00:10:21,750 --> 00:10:29,490
+to get the ids of those courses only. And
+the second row tells you the courses that
+
+75
+00:10:29,490 --> 00:10:36,190
+are taught in the spring 2010 semester, and
+we do a union to get courses that are taught
+
+76
+00:10:36,190 --> 00:10:49,210
+either in fall 2009 semester, or in spring
+2010 semester, or both . This is how the ah
+
+77
+00:10:49,210 --> 00:10:55,580
+union is performed and this is the earlier
+example repeated here.
+
+78
+00:10:55,580 --> 00:11:03,020
+set difference is again just simple difference
+of sets r minus s where a tuple belongs to
+
+79
+00:11:03,019 --> 00:11:11,870
+r and it does not belong to s. So, you remove
+all the tuples belonging to s that exist in
+
+80
+00:11:11,870 --> 00:11:18,019
+r to get r minus s again they must have the
+compatibility of having the same arity and
+
+81
+00:11:18,019 --> 00:11:24,429
+attribute corresponding attribute domains
+must be compatible , this is an example to
+
+82
+00:11:24,429 --> 00:11:31,000
+show to find all courses taught in fall 2009,
+but not in spring 2010.
+
+83
+00:11:31,000 --> 00:11:38,320
+So, as opposed to union in the last slide
+you do a set difference to get this result.
+
+84
+00:11:38,320 --> 00:11:45,260
+So, this is how you can use set theoretic
+operation to get different relational results
+
+85
+00:11:45,259 --> 00:11:50,389
+this is also the result from the earlier example
+.
+
+86
+00:11:50,389 --> 00:11:59,110
+Set intersection can be supported is supported,
+but it is not a basic operation because as
+
+87
+00:11:59,110 --> 00:12:05,830
+it is defined by all tuples which belong to
+both r and s. It can actually be computed
+
+88
+00:12:05,830 --> 00:12:14,060
+by applying set difference twice and certainly
+for set intersection also the same assumption
+
+89
+00:12:14,059 --> 00:12:21,929
+about arity and compatibility of types hold
+and this is the earlier example.
+
+90
+00:12:21,929 --> 00:12:29,299
+Next is Cartesian product, where we take 2
+relations and for the Cartesian product we
+
+91
+00:12:29,299 --> 00:12:40,419
+make we juxtapose 1 relation with the other.
+So, t is a relation from is a tuple from r
+
+92
+00:12:40,419 --> 00:12:50,169
+q is a tuple from s and we put them side by
+side to get a tq rho in the Cartesian product
+
+93
+00:12:50,169 --> 00:12:58,069
+r cross s, which basically means that you
+compute all possible combinations of pupils
+
+94
+00:12:58,070 --> 00:13:09,400
+from r and of s. It is assumed that the attributes
+of r and s are disjoint that is a schema of
+
+95
+00:13:09,399 --> 00:13:16,490
+r intersection schema of s is null.
+If the attributes are not disjoint then we
+
+96
+00:13:16,490 --> 00:13:23,379
+must use renaming which we will soon see,
+and here is an example that we had shown earlier
+
+97
+00:13:23,379 --> 00:13:31,820
+of r and s computing r process, Cartesian
+product is a very useful operation particularly
+
+98
+00:13:31,820 --> 00:13:37,629
+for computing join as we have seen in sql
+already.
+
+99
+00:13:37,629 --> 00:13:44,370
+Rename operation basically allows you to rename
+some expression attribute into another. So,
+
+100
+00:13:44,370 --> 00:13:53,060
+the operator is rho and you have an expression
+to which you give the name x and that is how
+
+101
+00:13:53,059 --> 00:13:59,639
+the renaming of you can have multiple attributes
+of x as well.
+
+102
+00:13:59,639 --> 00:14:08,919
+Division is a is another operator in relational
+algebra that ah can be applied between 2 relations,
+
+103
+00:14:08,919 --> 00:14:16,469
+but it is a derived operation. So, it says
+that ah if I have, so let me just ah show
+
+104
+00:14:16,470 --> 00:14:25,290
+you by, by a little bit of sketch that if
+I have 2 relations which are which has a set
+
+105
+00:14:25,289 --> 00:14:40,029
+of attributes z and s which is a set of attribute
+x, such that actually the set z is a superset
+
+106
+00:14:40,029 --> 00:14:45,069
+of x. So, z has more attribute the relation
+r has more attributes.
+
+107
+00:14:45,070 --> 00:14:54,260
+So, if you take the difference of attributes
+between z and x and call it y then we are
+
+108
+00:14:54,259 --> 00:14:58,939
+interested what happens on these remaining
+set of attributes y .
+
+109
+00:14:58,940 --> 00:15:09,350
+So, this is what, we have this is my x set
+of attributes this is where x occurs this
+
+110
+00:15:09,350 --> 00:15:19,159
+difference is y this whole set is z. Now in
+this what we want is we want to in the output
+
+111
+00:15:19,159 --> 00:15:29,179
+we want a relation having only the y attribute
+such that for every tuple in that relation
+
+112
+00:15:29,179 --> 00:15:37,399
+if I consider all the tuples of s then their
+cross product must be a part of r.
+
+113
+00:15:37,399 --> 00:15:46,789
+So, for every tuple here if there are say
+4 tuples here, a tuple here must have all
+
+114
+00:15:46,789 --> 00:15:53,219
+these 4 tuples along with it in the result.
+If it does not have any 1 or more of them
+
+115
+00:15:53,220 --> 00:15:56,960
+then that tuple will not feature in the final
+result .
+
+116
+00:15:56,960 --> 00:16:07,120
+So, the result of a division is a relation
+TY that include tuple t if ruples tr that
+
+117
+00:16:07,120 --> 00:16:16,789
+is the part of the tuple the tuple that appear
+in r and on that on the y part the difference
+
+118
+00:16:16,789 --> 00:16:28,319
+part it matches. So, that you have that tr
+x is equal to t s where t s actually exist
+
+119
+00:16:28,320 --> 00:16:33,750
+in s.
+This must happen for all tuples in s , so
+
+120
+00:16:33,750 --> 00:16:41,379
+division ah is is a very good ah interesting
+operator which is often ah required for coding
+
+121
+00:16:41,379 --> 00:16:49,320
+different queries. So, it is a derived operation.
+Let us take an example, let us say this is
+
+122
+00:16:49,320 --> 00:16:55,110
+this is the relation r and this is a relation
+s and I am trying to compute r divided by
+
+123
+00:16:55,110 --> 00:16:59,730
+s.
+So, what I want is over the attributes of
+
+124
+00:16:59,730 --> 00:17:09,349
+this is therefore, x this is x this attribute
+y attribute set y. So, all over x all the
+
+125
+00:17:09,349 --> 00:17:21,318
+values that I have, I must have those values
+in the relation r, if I do then the attribute
+
+126
+00:17:21,318 --> 00:17:31,740
+the particular tuple matching on the attribute
+y goes onto the result. So, alpha goes onto
+
+127
+00:17:31,740 --> 00:17:41,519
+the result because you have both alpha a alpha
+1 as well as alpha 2 in the set r, in the
+
+128
+00:17:41,519 --> 00:17:49,279
+relation r.
+Beta 1 is there and beta 2 is also there,
+
+129
+00:17:49,279 --> 00:17:56,980
+so beta also goes into the relation alpha
+goes in because 1 is there 2 is also there,
+
+130
+00:17:56,980 --> 00:18:06,490
+but gamma will not go in because I have gamma
+1, but I do not have a tuple gamma 2 in r
+
+131
+00:18:06,490 --> 00:18:09,230
+if I had gamma 2 in r that will go in the
+result.
+
+132
+00:18:09,230 --> 00:18:21,160
+So, if I can say it again the whole of the
+relation s must happen over the x attributes
+
+133
+00:18:21,160 --> 00:18:38,000
+of r, consider these 2 together . If that
+happens then the attributes on y the tuples
+
+134
+00:18:38,000 --> 00:18:45,890
+would be chosen and that is how we get the
+result having alpha and beta .
+
+135
+00:18:45,890 --> 00:18:56,470
+Let us look at 1 more example, so this is
+got r has 5 attributes this has x as 2. So,
+
+136
+00:18:56,470 --> 00:19:06,220
+this is this is 2 attributes x, these are
+3 attributes y and what I have to look for
+
+137
+00:19:06,220 --> 00:19:21,250
+is those tuples in r where the values over
+y would be same and I should be able to get
+
+138
+00:19:21,250 --> 00:19:29,440
+the whole table of x over whole table of the
+relation s over the x attributes. So, if we
+
+139
+00:19:29,440 --> 00:19:41,049
+look at here this is a 1, b 1, a 1, b 1, here
+these are identical.
+
+140
+00:19:41,049 --> 00:19:54,159
+So, this particular tuple will go into the
+result if I look in here this tuple will go
+
+141
+00:19:54,160 --> 00:20:05,529
+into the result, but if I consider this tuple
+beta a gamma which has a 1 over d, but beta
+
+142
+00:20:05,529 --> 00:20:14,369
+a gamma does not have b 1 it has b 3, so it
+will not go into the result. So, if you conceptually
+
+143
+00:20:14,369 --> 00:20:18,919
+look at that is the reason this is called
+a division. So, you get this here you get
+
+144
+00:20:18,920 --> 00:20:24,830
+this here. So, this is like the way we divide
+that this is the whole and wherever it goes
+
+145
+00:20:24,829 --> 00:20:33,678
+in if the tuples that are identical on the
+white set of attributes we will collect them
+
+146
+00:20:33,679 --> 00:20:39,840
+into the final result .
+So, this is the diffusion operation which
+
+147
+00:20:39,839 --> 00:20:46,779
+by which we can compute the students who have
+taken both a and b courses instructor 1 will
+
+148
+00:20:46,779 --> 00:20:54,921
+be found out from this division operation.
+so formally speaking a basic expression in
+
+149
+00:20:54,921 --> 00:21:02,910
+relational algebra consists either of a relation
+in the database, which is a instance or a
+
+150
+00:21:02,910 --> 00:21:11,240
+constant relation which does not change which
+is given. And then we have six operations
+
+151
+00:21:11,240 --> 00:21:19,019
+of union set difference cross product, selection
+projection, and renaming that can give us
+
+152
+00:21:19,019 --> 00:21:25,609
+all sorts of different relational algebra
+formula and also the derived operations and
+
+153
+00:21:25,609 --> 00:21:32,509
+whatever we have seen of sql can be expressed
+in terms of this relational algebra formula.
+
+154
+00:21:32,509 --> 00:21:38,940
+Now, relational algebra is not something totally
+unique the same thing can be done in terms
+
+155
+00:21:38,940 --> 00:21:44,650
+of other formulations also.
+A second formulation which is also used is
+
+156
+00:21:44,650 --> 00:21:50,580
+known as tuple relational calculus, which
+is non-procedural relational algebra was procedural
+
+157
+00:21:50,579 --> 00:21:55,678
+because you are actually doing the ah explaining
+what the operations or you are detailing out
+
+158
+00:21:55,679 --> 00:22:05,720
+what the operations are in tuple relational
+calculus you are specify what the condition
+
+159
+00:22:05,720 --> 00:22:09,019
+is you are specifying what this condition
+is.
+
+160
+00:22:09,019 --> 00:22:16,920
+So, those tuples which satisfy this condition
+form the relation, so p is a predicate. So,
+
+161
+00:22:16,920 --> 00:22:26,250
+whatever t satisfies the predicate are included
+and ah if a is an attribute then t A will
+
+162
+00:22:26,250 --> 00:22:31,279
+denote the value of the tuple on attribute
+A, A could be a single attribute it could
+
+163
+00:22:31,279 --> 00:22:41,860
+be A set of attributes also and t is a relation
+that belongs to r, ps as I said it is a its
+
+164
+00:22:41,861 --> 00:22:47,370
+a predicate calculus formula.
+So, it could be a set of attributes or constants
+
+165
+00:22:47,369 --> 00:22:55,409
+this I am just included for your help if in
+case you have become rusted with predicate
+
+166
+00:22:55,410 --> 00:23:00,410
+calculus you can refer to the a predicate
+calculus as a set of attributes and constant.
+
+167
+00:23:00,410 --> 00:23:06,370
+It has set of comparison operators the six
+of them, there are a set of connectives these
+
+168
+00:23:06,369 --> 00:23:12,299
+are all same as the propositional calculus
+ah there is implication which says if x is
+
+169
+00:23:12,299 --> 00:23:20,109
+true then y is true if x is false then the
+whole thing is true vacuously .
+
+170
+00:23:20,109 --> 00:23:27,399
+And what makes it primarily predicate calculus
+is a fact that it has existential quantifier,
+
+171
+00:23:27,400 --> 00:23:36,280
+which says that the formula there exists t
+belongs to r Qt holds if I can find at least
+
+172
+00:23:36,279 --> 00:23:41,799
+1 tuple t which satisfies Q t.
+Similarly, there is a universal quantifier
+
+173
+00:23:41,799 --> 00:23:51,990
+where I will say that for all t belongs to
+r Q t is true if for all tuples of r t satisfies
+
+174
+00:23:51,990 --> 00:24:01,099
+Q t. So, this in tuple relational calculus
+all conditions all predicates are formula
+
+175
+00:24:01,099 --> 00:24:08,269
+of this kind and with that we can represent
+any.
+
+176
+00:24:08,269 --> 00:24:15,119
+Relational set in full there is a word of
+caution because ah it is possible to write
+
+177
+00:24:15,119 --> 00:24:21,109
+tuple relational calculus expression that
+can potentially generate infinite relations.
+
+178
+00:24:21,109 --> 00:24:27,319
+Now, infinite relations are naturally not
+representable for example, if I write simply
+
+179
+00:24:27,319 --> 00:24:33,250
+this that r is a relation and I write this
+predicate that not of t belongs to r, which
+
+180
+00:24:33,250 --> 00:24:40,609
+is basically complement set of r now a complement
+set of r potentially may be infinite if the
+
+181
+00:24:40,609 --> 00:24:47,719
+domain is infinite.
+So, such expressions tuple relational expressions
+
+182
+00:24:47,720 --> 00:24:54,289
+are not acceptable as a part of the design
+. So, whenever we want to do this we would
+
+183
+00:24:54,289 --> 00:25:02,789
+like to guard this by putting some additional
+condition and we have to make sure that any
+
+184
+00:25:02,789 --> 00:25:09,119
+expression that we have in tuple relational
+calculus is a safe expression, in the sense
+
+185
+00:25:09,119 --> 00:25:17,659
+that it does give me finite number of tuples
+in the relation .
+
+186
+00:25:17,660 --> 00:25:25,600
+A third formalism that exists that is used
+is known as domain relational calculus.
+
+187
+00:25:25,599 --> 00:25:32,178
+Which is also non procedural and equivalent
+in power to tuple relational calculus again,
+
+188
+00:25:32,179 --> 00:25:36,070
+which is very similar to tuple relational
+calculus the only difference being if you
+
+189
+00:25:36,069 --> 00:25:43,809
+just recall tuple relational calculus. We
+are writing ah collection of tuples t such
+
+190
+00:25:43,809 --> 00:25:52,159
+that Pt that is the predicate P is satisfied
+by t here, instead of writing a tuple variable
+
+191
+00:25:52,160 --> 00:25:56,929
+t we write expand it out in terms of all its
+components.
+
+192
+00:25:56,929 --> 00:26:04,580
+So, we write the values of the different components
+of t over different n attributes and write
+
+193
+00:26:04,579 --> 00:26:13,659
+it as a n tuple and so here instead of having
+1 variable t we have n variable x 1 to xn
+
+194
+00:26:13,660 --> 00:26:20,298
+and therefore, the predicate is formed of
+this n variables where x 1 to xn are represent
+
+195
+00:26:20,298 --> 00:26:27,129
+the different domain values, domain variables
+and that leads to the reason for the name
+
+196
+00:26:27,130 --> 00:26:32,820
+domain relational calculus.
+Now, of the 3 formalisms that we have seen
+
+197
+00:26:32,819 --> 00:26:39,058
+we will not go into ah direct mathematical
+proofs, but in the next couple of slides,
+
+198
+00:26:39,058 --> 00:26:46,500
+I just show that they are equivalent in nature.
+What means that if I can write an expression
+
+199
+00:26:46,500 --> 00:26:51,779
+in relational algebra then it is possible
+to write an equivalent expression in tuple
+
+200
+00:26:51,779 --> 00:26:56,480
+relational calculus and in domain relational
+calculus and vice versa.
+
+201
+00:26:56,480 --> 00:27:02,890
+So, if I can write an expression in any 1
+of these formalisms then there are equivalent
+
+202
+00:27:02,890 --> 00:27:09,960
+expressions in the other 2 formalisms as well
+which is probably very easy to see between,
+
+203
+00:27:09,960 --> 00:27:15,210
+tuple relational calculus and domain relational
+calculus because 1 is just representing the
+
+204
+00:27:15,210 --> 00:27:22,079
+whole tuple as a single variable whereas,
+the other is representing it in terms of n
+
+205
+00:27:22,079 --> 00:27:25,490
+domain variables.
+So, their equivalence is pretty much very
+
+206
+00:27:25,490 --> 00:27:33,880
+similar the fact that your predicate calculus
+formula has to change, but it is not, so obvious
+
+207
+00:27:33,880 --> 00:27:39,010
+for ah the equivalence between relational
+algebra and the calculi.
+
+208
+00:27:39,009 --> 00:27:44,740
+So, we just show a few examples of the basic
+operations for example, say select operation.
+
+209
+00:27:44,740 --> 00:27:50,480
+So, I am just not showing the proof, I am
+just giving you some example cases to show
+
+210
+00:27:50,480 --> 00:27:55,690
+through a relation r has 2 attributes A, B
+this is what you wanted to write in relational
+
+211
+00:27:55,690 --> 00:28:01,789
+algebra that you want to collect all tuples
+where B is equal to 17.
+
+212
+00:28:01,789 --> 00:28:05,210
+Naturally in tuple relational calculus you
+can easily write the first condition is you
+
+213
+00:28:05,210 --> 00:28:12,350
+are doing it on r. So, t must belong to r
+and your condition is B should be 17. So,
+
+214
+00:28:12,349 --> 00:28:19,859
+this predicate will represent the same set
+or the same relation as in tuple calculus
+
+215
+00:28:19,859 --> 00:28:25,709
+in domain calculus there are 2 components
+a and b. So, you have to say component taken
+
+216
+00:28:25,710 --> 00:28:30,230
+together must belong to r and the component
+b must be equal to 17.
+
+217
+00:28:30,230 --> 00:28:36,569
+So, you can see that it is pretty straightforward
+to see the equivalence between a relational
+
+218
+00:28:36,569 --> 00:28:41,769
+algebra expression involving select and the
+corresponding tuple calculus or domain calculus
+
+219
+00:28:41,769 --> 00:28:47,970
+expressions this is ah through an example,
+but you can certainly easily generalize this
+
+220
+00:28:47,970 --> 00:28:52,620
+as a proof.
+Similarly, for projection if we do a projection
+
+221
+00:28:52,619 --> 00:29:00,149
+on a then all that we are trying to do is
+we are trying to create a new relation where
+
+222
+00:29:00,150 --> 00:29:12,380
+only the a attribute exists. So, in the tuple
+t the a attribute exists and if I have projected
+
+223
+00:29:12,380 --> 00:29:22,270
+and got this tuple t then in my original relation
+r there must be some tuple p such that on
+
+224
+00:29:22,269 --> 00:29:27,970
+the attribute a they match they are same.
+So, it is the same thing in relational algebra
+
+225
+00:29:27,970 --> 00:29:32,850
+we said that keep a and erase everything else
+here we are saying that if we have been able
+
+226
+00:29:32,849 --> 00:29:41,619
+to get a tuple t which has a value t a then
+there must be a tuple p in r, which has the
+
+227
+00:29:41,619 --> 00:29:49,679
+same value over the same attribute. So, this
+condition is equivalent representative of
+
+228
+00:29:49,680 --> 00:29:55,500
+the projection, and the same thing can be
+written in domain calculus you can go through
+
+229
+00:29:55,500 --> 00:30:02,279
+it carefully and convince yourself .
+You can combine this as in the relational
+
+230
+00:30:02,279 --> 00:30:08,808
+algebra as well as in tuple calculus. So,
+here you apply 1 relation 1 operation and
+
+231
+00:30:08,808 --> 00:30:14,629
+then the other 1 selection then projection
+here you are combining this this is part of
+
+232
+00:30:14,630 --> 00:30:20,760
+projection this is also part of projection,
+but this condition has come from the selection
+
+233
+00:30:20,759 --> 00:30:27,460
+and get a total predicate calculus predicate
+which will give you the tuple calculus expression
+
+234
+00:30:27,460 --> 00:30:32,380
+for this combined expression of relational
+algebra , domain calculus will certainly happen
+
+235
+00:30:32,380 --> 00:30:39,220
+in a similar manner .
+Union certainly straightforward, so you can
+
+236
+00:30:39,220 --> 00:30:43,480
+do it yourself.
+Set difference is again ah very straight forward
+
+237
+00:30:43,480 --> 00:30:50,779
+because that is. In fact, in set theoretically
+whatever operations we have their relational
+
+238
+00:30:50,779 --> 00:30:55,500
+algebraic definition itself is a tuple calculus
+formula you can expand them out and write
+
+239
+00:30:55,500 --> 00:31:01,058
+in the domain calculus as well .
+Intersection plays out in the same way tuples
+
+240
+00:31:01,058 --> 00:31:08,220
+that belong to both r and s.
+Cartesian product is a little bit more involved
+
+241
+00:31:08,220 --> 00:31:13,029
+because all that you are saying here is if
+I have a Cartesian product then if that product
+
+242
+00:31:13,029 --> 00:31:20,089
+has a tuple t. Then there must be a tuple
+p in the relation r the left relation there
+
+243
+00:31:20,089 --> 00:31:28,529
+must be a tuple q in the in s the right relation.
+So, that the final tuple t matches p on the
+
+244
+00:31:28,529 --> 00:31:37,829
+a attributes the b attributes that is attributes
+of relation r and the components of t matches
+
+245
+00:31:37,829 --> 00:31:47,038
+the tuple q in the attributes of s.
+If all these conditions happen together then
+
+246
+00:31:47,038 --> 00:31:53,450
+naturally this tuple t is a valid tuple for
+the Cartesian product. So, you could take
+
+247
+00:31:53,450 --> 00:32:00,200
+examples and work this out and convince yourself
+that these are really equivalent.
+
+248
+00:32:00,200 --> 00:32:06,029
+we can ah define a natural joint in a similar
+way, which I will leave it as an exercise
+
+249
+00:32:06,029 --> 00:32:13,230
+for you to convince yourself that this relational
+algebra expression for natural joint indeed
+
+250
+00:32:13,230 --> 00:32:18,349
+has similar equivalents in tuple and domain
+calculi .
+
+251
+00:32:18,349 --> 00:32:27,668
+Division we just showed as a derived operation,
+we have not showed how in relational algebra
+
+252
+00:32:27,669 --> 00:32:34,410
+you can write division using the other operations.
+I will leave that as an exercise as well,
+
+253
+00:32:34,410 --> 00:32:40,759
+but here what I show is in tuple calculus
+how you can write division using the quantifiers.
+
+254
+00:32:40,759 --> 00:32:46,548
+Here you can see that here for the first time
+we do need to use the universal quantifier
+
+255
+00:32:46,548 --> 00:32:51,990
+to make sure that while I divide that the
+whole of the table of s must be available
+
+256
+00:32:51,990 --> 00:32:58,538
+against the part of the tuple part of the
+y attributes as we said that will be collected
+
+257
+00:32:58,538 --> 00:33:08,259
+in the result .
+so, to summarize we have discussed primarily
+
+258
+00:33:08,259 --> 00:33:13,869
+the relational algebra with some examples,
+we have introduced the tuple relational and
+
+259
+00:33:13,869 --> 00:33:21,369
+domain relational calculus and through a set
+of examples. We have shown that we have illustrated
+
+260
+00:33:21,369 --> 00:33:29,699
+that the algebra and the calculi are equivalent
+and ah I would request you to work out more
+
+261
+00:33:29,700 --> 00:33:35,569
+examples to understand the equivalence, or
+if you are really enthused please try out
+
+262
+00:33:35,569 --> 00:33:38,250
+proving their equivalence formally as well.
+

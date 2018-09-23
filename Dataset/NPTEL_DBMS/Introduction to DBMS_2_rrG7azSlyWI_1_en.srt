@@ -1,0 +1,1400 @@
+﻿1
+00:00:16,778 --> 00:00:27,969
+welcome to module three of database management
+systems course we started discussions introducing
+
+2
+00:00:27,969 --> 00:00:34,140
+the database management systems in module
+two this is the second and concluding part
+
+3
+00:00:34,140 --> 00:00:41,739
+of that discussion so ah this is what these
+are the aspects that we are discussed earlier
+
+4
+00:00:41,738 --> 00:00:50,000
+starting from level of abstraction to the
+outline of database design in the current
+
+5
+00:00:50,000 --> 00:00:55,158
+module we would like to understand the modules
+of database management systems little bit
+
+6
+00:00:55,158 --> 00:01:05,609
+more and we will try to familiarize with the
+concept of major components of database engine
+
+7
+00:01:05,609 --> 00:01:13,500
+will elaborate on those and will familiarize
+so with the basic ah architecture of a database
+
+8
+00:01:13,500 --> 00:01:19,728
+management system some of the internal components
+and we will present a brief historical perspective
+
+9
+00:01:19,728 --> 00:01:27,989
+of the d b m s so this is the ah outline that
+we will follow so we have already discussed
+
+10
+00:01:27,989 --> 00:01:35,280
+about the database design i would like to
+raise a few further issues about that so we
+
+11
+00:01:35,280 --> 00:01:42,640
+have seen that there is a logical design which
+is driven by the business decisions and refined
+
+12
+00:01:42,640 --> 00:01:47,978
+by the computer science decisions there is
+a physical design as well and based on that
+
+13
+00:01:47,978 --> 00:01:57,340
+we had ah at presented this particular table
+asking whether this database is this is whether
+
+14
+00:01:57,340 --> 00:02:02,399
+this is a good design or or not
+so let us ah have a little look into this
+
+15
+00:02:02,399 --> 00:02:10,429
+for example ah we have introduced the department
+name and the building in which the department
+
+16
+00:02:10,429 --> 00:02:18,180
+is housed so if we look at there are multiple
+instructors say let us say professor einstein
+
+17
+00:02:18,180 --> 00:02:25,319
+ah who teaches in the physics department that
+is housed in the watson building and if we
+
+18
+00:02:25,318 --> 00:02:31,208
+look through there is a professor gold who
+also teaches in the physics department and
+
+19
+00:02:31,209 --> 00:02:38,400
+naturally that is housed in the watson building
+now the question is so physics department
+
+20
+00:02:38,400 --> 00:02:44,230
+if it is housed in the watson building then
+all the instructors in this in this table
+
+21
+00:02:44,229 --> 00:02:50,590
+all the instructors who are part of the physics
+department would have their department housed
+
+22
+00:02:50,590 --> 00:02:56,640
+in the watson building so there is a certain
+issue of between these two there are certain
+
+23
+00:02:56,639 --> 00:03:07,739
+issue of redundancy that is the same information
+is given more than once which is not a very
+
+24
+00:03:07,740 --> 00:03:15,939
+desirable thing the consequence of this could
+be suppose tomorrow the university decides
+
+25
+00:03:15,938 --> 00:03:25,408
+to move this ah physics department from watson
+to the taylor building this will mean that
+
+26
+00:03:25,408 --> 00:03:31,289
+once this is moved then this watson will have
+to be changed to taylor also this watson will
+
+27
+00:03:31,289 --> 00:03:39,250
+also have to be changed to taylor all instances
+of watson that correspond to the physics department
+
+28
+00:03:39,250 --> 00:03:44,509
+in this table will have to be changed to taylor
+and that is not a good scenario so it is not
+
+29
+00:03:44,509 --> 00:03:58,169
+only that we have redundancy we have potential
+for anomaly that is we might the application
+
+30
+00:03:58,169 --> 00:04:06,518
+program the application programmer might forget
+to update the building say for this entry
+
+31
+00:04:06,519 --> 00:04:14,030
+then we will be in an inconsistent database
+so to put it in simple terms that this is
+
+32
+00:04:14,030 --> 00:04:20,500
+not a good design and there are several issues
+to consider in terms of whether some design
+
+33
+00:04:20,500 --> 00:04:28,149
+is good or some design needs refinement so
+need to come up with a methodology ah to ensure
+
+34
+00:04:28,149 --> 00:04:36,370
+that each of the relations in the database
+is good so we primarily follow two approaches
+
+35
+00:04:36,370 --> 00:04:43,870
+in doing this one is using the entity relationship
+model which models the enterprise is a collection
+
+36
+00:04:43,870 --> 00:04:53,160
+of entities or concepts or if you are familiar
+with the object orientation classes and the
+
+37
+00:04:53,160 --> 00:04:58,070
+relationships that hold between these entities
+so in a university database the entities are
+
+38
+00:04:58,069 --> 00:05:07,319
+students courses teachers and the relationships
+are a teacher teaches a set of courses a student
+
+39
+00:05:07,319 --> 00:05:12,870
+attends a set of courses and so on the teachers
+supervise a set of students for projects and
+
+40
+00:05:12,870 --> 00:05:19,420
+so on and then represent them diagrammatically
+in terms of a er diagram entity relationship
+
+41
+00:05:19,420 --> 00:05:30,050
+diagram and once that has been done then we
+try to follow a certain normalization theory
+
+42
+00:05:30,050 --> 00:05:36,810
+this normalization theory tries to capture
+that what are the properties that must hold
+
+43
+00:05:36,810 --> 00:05:43,129
+in this database design that must be satisfied
+on this database design in terms of what is
+
+44
+00:05:43,129 --> 00:05:48,680
+known as database dependencies there are varied
+forms of dependencies functional dependencies
+
+45
+00:05:48,680 --> 00:05:56,509
+multi value dependencies joint dependencies
+and so on and try to formalize and evaluate
+
+46
+00:05:56,509 --> 00:06:03,000
+whether a design is good or it is bad test
+them for quality and then normalize to make
+
+47
+00:06:03,000 --> 00:06:06,819
+them better make them the best possible that
+can happen
+
+48
+00:06:06,819 --> 00:06:14,730
+so that is this is something ah that is starting
+from the entity relationship model which captures
+
+49
+00:06:14,730 --> 00:06:21,840
+the real world to the actual database schema
+there is a process of representation and then
+
+50
+00:06:21,839 --> 00:06:29,219
+ah capturing of ground truths that hold in
+the database should hold in the database system
+
+51
+00:06:29,220 --> 00:06:35,889
+and then normalize the database is a basic
+requirement of the design approach we have
+
+52
+00:06:35,889 --> 00:06:41,900
+talked about object relational data models
+for a few more points about that that in a
+
+53
+00:06:41,899 --> 00:06:47,250
+relational model everything is flat every
+value is atomic in the sense that everything
+
+54
+00:06:47,250 --> 00:06:55,889
+if you ah look back and think in terms of
+c then every field is a value which can be
+
+55
+00:06:55,889 --> 00:07:02,410
+a simple you know built in type like integer
+like ah fixed length string variable length
+
+56
+00:07:02,410 --> 00:07:08,669
+string a floating point number like that but
+i cannot have a composite you know ah object
+
+57
+00:07:08,668 --> 00:07:15,270
+kind of fields but in a relational data model
+we extend in the object relational data model
+
+58
+00:07:15,271 --> 00:07:20,550
+we extend the relational model by including
+the object orientation and the constituent
+
+59
+00:07:20,550 --> 00:07:27,860
+constructs ah to deal with added data types
+higher data types ah where attributes are
+
+60
+00:07:27,860 --> 00:07:35,520
+allowed to have complex types non atomic values
+that may allow things like nested relation
+
+61
+00:07:35,519 --> 00:07:41,370
+that is a value could itself be a relation
+could itself be a table and but we try to
+
+62
+00:07:41,370 --> 00:07:47,620
+preserve the relational foundation ah and
+we will see what those foundations mean and
+
+63
+00:07:47,620 --> 00:07:52,340
+provide upward compatibility to to existing
+relational databases
+
+64
+00:07:52,339 --> 00:07:59,038
+so this is what the basic concept of object
+relational data model saw and as i said that
+
+65
+00:07:59,038 --> 00:08:04,399
+we will just glimpse through it but this is
+not the primary ah objective that we will
+
+66
+00:08:04,399 --> 00:08:14,038
+try to cover in contrast the x m l extensible
+markup language was , defined by w three c
+
+67
+00:08:14,038 --> 00:08:19,568
+and it was originally intended for marking
+up document languages not as it is not it
+
+68
+00:08:19,569 --> 00:08:24,110
+was not designed as a database language it
+was designed for marking up so it is kind
+
+69
+00:08:24,110 --> 00:08:31,699
+of saying that this particular element ah
+should be put in capital this should be in
+
+70
+00:08:31,699 --> 00:08:36,779
+blue colour this means a verb this means a
+paragraph there should be a page break here
+
+71
+00:08:36,779 --> 00:08:45,370
+those kind of markups but subsequently it
+turned out that the way x m l deals ah with
+
+72
+00:08:45,370 --> 00:08:53,409
+different components in terms of tags and
+the ability to create nested tags makes a
+
+73
+00:08:53,409 --> 00:09:02,289
+great language for exchange of data as i explained
+in the last module also so it is become the
+
+74
+00:09:02,289 --> 00:09:09,259
+basis for all kinds of new generation data
+interchange format so as i explained that
+
+75
+00:09:09,259 --> 00:09:17,029
+any database should be able to convert the
+data instances of the tables in terms of corresponding
+
+76
+00:09:17,029 --> 00:09:23,789
+x m l format and then you take it to some
+other database where you with which you are
+
+77
+00:09:23,789 --> 00:09:30,188
+intending to interchange the data and that
+target database should be able to import from
+
+78
+00:09:30,188 --> 00:09:36,509
+that x m l structure and it becomes it is
+become widely available that you have different
+
+79
+00:09:36,509 --> 00:09:42,698
+tools for parsing browsing and querying x
+m l content document data and so on
+
+80
+00:09:42,698 --> 00:09:49,828
+so if you are ah familiar with c programming
+i hope so you are ah you can look up certain
+
+81
+00:09:49,828 --> 00:09:57,019
+x m l parsing and try out there are great
+tools to learn ah moving on let us briefly
+
+82
+00:09:57,019 --> 00:10:03,289
+look at what is the core of a database management
+system the database engine the database engine
+
+83
+00:10:03,289 --> 00:10:12,178
+primarily contains three major components
+the storage manager the query processing engine
+
+84
+00:10:12,178 --> 00:10:19,299
+sub engine and the transaction manager the
+storage manager is a is a module or a collection
+
+85
+00:10:19,299 --> 00:10:25,129
+of modules in a database management system
+that provide the interface between the low
+
+86
+00:10:25,129 --> 00:10:30,939
+level data and the application program so
+we have looked at the storage manager is the
+
+87
+00:10:30,940 --> 00:10:37,709
+one which is a bridge between the physical
+level of abstraction and the logical level
+
+88
+00:10:37,708 --> 00:10:42,549
+of abstraction then finally to the view level
+of abstraction so the storage manager has
+
+89
+00:10:42,549 --> 00:10:51,240
+to deal with interactions with the operating
+system on which the d b m s is kept the file
+
+90
+00:10:51,240 --> 00:10:57,860
+manager of the operating system it is responsible
+for efficient storage retrieval update of
+
+91
+00:10:57,860 --> 00:11:03,938
+the data it is responsible to make sure that
+if there are certain problems in the file
+
+92
+00:11:03,938 --> 00:11:07,698
+system then the data is not corrupted and
+so on
+
+93
+00:11:07,698 --> 00:11:13,799
+so the issues certainly that involve are the
+access to the storage the organization of
+
+94
+00:11:13,799 --> 00:11:20,709
+the files and very importantly indexing and
+hashing and we will talk about the concept
+
+95
+00:11:20,710 --> 00:11:26,629
+of indexing later in the course it primarily
+says that if i want to ah for example you
+
+96
+00:11:26,629 --> 00:11:34,139
+can simply understand that if you are if you
+have a large chunk of data that you want to
+
+97
+00:11:34,139 --> 00:11:41,590
+organize for efficient search then now can
+use the binary search tree in simple algorithm
+
+98
+00:11:41,590 --> 00:11:46,870
+terms the binary search tree needs to be organized
+in terms of one data component we say that
+
+99
+00:11:46,870 --> 00:11:51,879
+well there is one value based on which you
+can say that comparison is done so that at
+
+100
+00:11:51,879 --> 00:11:56,588
+every node if that value is smaller you go
+to the left sub tree if that value is larger
+
+101
+00:11:56,589 --> 00:12:02,630
+you go to the right sub tree and so on so
+in a if we want to organize the records of
+
+102
+00:12:02,629 --> 00:12:09,000
+a database system in terms of such a binary
+search tree then the question certainly is
+
+103
+00:12:09,000 --> 00:12:15,320
+which field do i use for the search tree comparison
+now whatever field i used for search tree
+
+104
+00:12:15,320 --> 00:12:20,079
+comparison on that field the searching would
+be very efficient but if i want to search
+
+105
+00:12:20,078 --> 00:12:26,318
+on a value for a different field the searching
+would not remain that efficient so indexing
+
+106
+00:12:26,318 --> 00:12:33,678
+is a mechanism by which you can actually create
+auxiliary search trees on multiple fields
+
+107
+00:12:33,678 --> 00:12:38,860
+so that the search on multiple fields can
+be made efficient and we will talk about this
+
+108
+00:12:38,860 --> 00:12:43,250
+later when that particular module comes up
+but the storage manager has to deal with such
+
+109
+00:12:43,250 --> 00:12:52,129
+issues moving on the query processing ah is
+if we have we have already talked about the
+
+110
+00:12:52,129 --> 00:12:58,360
+language the d d l the d m l the query language
+so it is some kind of like the c program it
+
+111
+00:12:58,360 --> 00:13:04,720
+is some kind of a text based programming code
+so naturally that code needs to be parsed
+
+112
+00:13:04,720 --> 00:13:12,389
+and translated as we typically do in a c compiler
+so there needs to be a query compiler so it
+
+113
+00:13:12,389 --> 00:13:20,980
+parses and analyses the code but translated
+unlike the c program which translates the
+
+114
+00:13:20,980 --> 00:13:28,420
+c program into an intermediate code and then
+into ah the binary instructions of the machine
+
+115
+00:13:28,419 --> 00:13:34,610
+the assembly binary instructions of the machine
+the query translator translates the query
+
+116
+00:13:34,610 --> 00:13:39,470
+into relational algebra expressions i said
+that there are two kinds of languages the
+
+117
+00:13:39,470 --> 00:13:45,310
+commercial query language and the pure language
+so it translated in terms of a program in
+
+118
+00:13:45,309 --> 00:13:51,889
+the pure language it which could be a relational
+algebra language and then it tries to optimize
+
+119
+00:13:51,889 --> 00:13:57,250
+so that is that is a that is a that is a critical
+term to be noted that there is an optimizer
+
+120
+00:13:57,250 --> 00:14:04,958
+so this optimizer is a critical component
+which tries to make sure that the query when
+
+121
+00:14:04,958 --> 00:14:11,438
+it is run on your data will run with the most
+you know least amount of time in an effective
+
+122
+00:14:11,438 --> 00:14:18,539
+manner so and then an execution plan needs
+to be decided we will will be able to understand
+
+123
+00:14:18,539 --> 00:14:24,339
+this when we go to the actual relational algebra
+execution plan basically says that if there
+
+124
+00:14:24,340 --> 00:14:30,240
+are multiple operations in that query to be
+performed then how those operations in which
+
+125
+00:14:30,240 --> 00:14:34,850
+order they should be performed and where should
+temporary tables be used where they should
+
+126
+00:14:34,850 --> 00:14:40,120
+be skipped and so on and then once that has
+been done then it passes on to an evaluation
+
+127
+00:14:40,120 --> 00:14:45,940
+engine which actually runs that query on the
+data that you have the instances of the data
+
+128
+00:14:45,940 --> 00:14:52,470
+that you have and that brings out the resultant
+query output which is another table of results
+
+129
+00:14:52,470 --> 00:14:59,370
+that we get so this query processing is a
+is a core part of a database engine which
+
+130
+00:14:59,370 --> 00:15:05,889
+actually allows us to write text based queries
+and relative data efficiently change update
+
+131
+00:15:05,889 --> 00:15:14,019
+data efficiently insert data efficiently and
+so on
+
+132
+00:15:14,019 --> 00:15:19,448
+so so when we do this that we need to look
+at alternative ways of evaluating a query
+
+133
+00:15:19,448 --> 00:15:23,490
+there could be different ways to write the
+same thing these are called equivalence expression
+
+134
+00:15:23,490 --> 00:15:29,178
+equivalent expressions and what are the good
+algorithms for doing each and every operation
+
+135
+00:15:29,178 --> 00:15:38,409
+there is a cost between good and bad way of
+evaluating so this has to be understood that
+
+136
+00:15:38,409 --> 00:15:44,000
+the same thing you can compute in a you have
+seen this similar concepts in in normal programming
+
+137
+00:15:44,000 --> 00:15:49,690
+language is also i mean we have seen for example
+for sorting the several ways to sort and some
+
+138
+00:15:49,690 --> 00:15:55,990
+are better some are not as efficient so ah
+if the similar things in terms of a query
+
+139
+00:15:55,990 --> 00:16:11,178
+needs to be evaluated and the cost between
+good and bad ways need to be figured out so
+
+140
+00:16:11,178 --> 00:16:17,558
+then we need to estimate the cost of every
+operation it depends on the information of
+
+141
+00:16:17,558 --> 00:16:23,168
+what has happened in the past the statistical
+information and need to estimate those statistics
+
+142
+00:16:23,168 --> 00:16:29,720
+for intermediate results these are a couple
+of things that the query processing sub engine
+
+143
+00:16:29,720 --> 00:16:35,889
+in a database will do
+so beyond the storage manager and the query
+
+144
+00:16:35,889 --> 00:16:40,379
+processor ah we have a transaction management
+system which is very very critical and core
+
+145
+00:16:40,379 --> 00:16:47,929
+of the database system it is a primarily has
+to deal with two fundamental issues of a database
+
+146
+00:16:47,929 --> 00:16:55,548
+one what if a system fails see database systems
+are unlike the programs that you have written
+
+147
+00:16:55,548 --> 00:17:02,720
+so far a program starts execution ends the
+program always deals with transient data the
+
+148
+00:17:02,720 --> 00:17:08,558
+data did not exist before your program started
+it ceases to exist after your program ends
+
+149
+00:17:08,558 --> 00:17:17,509
+so a program however complicated however important
+has a limited lifetime a database in contrast
+
+150
+00:17:17,509 --> 00:17:24,338
+has a much longer lifetime which deals with
+persistent data that is very important to
+
+151
+00:17:24,338 --> 00:17:30,369
+understand that is the each application whether
+i am doing a bank fund transfer whether i
+
+152
+00:17:30,369 --> 00:17:36,569
+am ah making a credit card payment to whether
+i am checking the balance or i am booking
+
+153
+00:17:36,569 --> 00:17:44,629
+a railway ticket whether i am purchasing a
+book from amazon each one of the applications
+
+154
+00:17:44,630 --> 00:17:49,550
+are like the normal program it has a fixed
+lifetime i start it i do certain operations
+
+155
+00:17:49,549 --> 00:17:56,149
+i am done with it but the data that is behind
+it the data of my accounts my account balance
+
+156
+00:17:56,150 --> 00:18:04,009
+my transactions my ah different bank charges
+all that need to stay on and on and on and
+
+157
+00:18:04,009 --> 00:18:13,109
+beyond every particular operation that i have
+done on the database so which means that if
+
+158
+00:18:13,109 --> 00:18:20,369
+this database system feels at some stage for
+some reason then we have an enormous impact
+
+159
+00:18:20,369 --> 00:18:28,169
+of that and that is not something that we
+can absorb that something that we can accept
+
+160
+00:18:28,170 --> 00:18:34,890
+so a database system has to come with the
+concept of recovery it must be possible if
+
+161
+00:18:34,890 --> 00:18:42,310
+the system fails it must be possible to recover
+it to a certain earlier point where it is
+
+162
+00:18:42,309 --> 00:18:49,039
+consistent so transaction management system
+is responsible to guarantee this kind of recover
+
+163
+00:18:49,039 --> 00:18:58,490
+ability of databases then the other question
+that we have discussed about earlier also
+
+164
+00:18:58,490 --> 00:19:04,069
+is a multiple users are you accessing the
+same database the same set of data at the
+
+165
+00:19:04,069 --> 00:19:11,359
+same time so what how to make sure that more
+than one user can concurrently use an update
+
+166
+00:19:11,359 --> 00:19:16,240
+without the data getting inconsistent that
+is as as i had mentioned there is only one
+
+167
+00:19:16,240 --> 00:19:23,480
+seat available one berth available on a particular
+train on a particular date and two users at
+
+168
+00:19:23,480 --> 00:19:30,099
+the same time has initiated a booking it should
+not happen that both of them get the booking
+
+169
+00:19:30,099 --> 00:19:36,740
+so one should get one should not get and that
+needs to be the complexity is high for this
+
+170
+00:19:36,740 --> 00:19:44,029
+kind of you know decisions because in a the
+databases as applications are significantly
+
+171
+00:19:44,029 --> 00:19:50,930
+distributed indian railways have no idea of
+who is going to do what booking of which berth
+
+172
+00:19:50,930 --> 00:19:57,690
+from where at which point of time so transaction
+management system is as the name suggests
+
+173
+00:19:57,690 --> 00:20:04,269
+defines something called a transaction which
+always keeps the database consistent and operable
+
+174
+00:20:04,269 --> 00:20:09,700
+so it is a collection of a transaction is
+a collection of operation that performs a
+
+175
+00:20:09,700 --> 00:20:15,720
+single logical function in a database application
+this is this is very very critical it is a
+
+176
+00:20:15,720 --> 00:20:21,509
+collection of operations and performs a single
+logical function so it does not do anything
+
+177
+00:20:21,509 --> 00:20:29,509
+and everything it just does a single particular
+logical operation and ah that is what forms
+
+178
+00:20:29,509 --> 00:20:42,009
+the transaction so a transaction management
+system is a component that ensures that with
+
+179
+00:20:42,009 --> 00:20:46,680
+all these transactions happening hundreds
+and thousands of transactions happening every
+
+180
+00:20:46,680 --> 00:20:54,519
+second in a database system in a typical database
+system the data should still remain consistent
+
+181
+00:20:54,519 --> 00:21:03,299
+in a consistent state in spite of failures
+in spite of concurrences it must make sure
+
+182
+00:21:03,299 --> 00:21:09,149
+that at no point of time it should happen
+that an amount has been debited from an account
+
+183
+00:21:09,150 --> 00:21:13,400
+and has not been credited to account or an
+amount has been credited to an account and
+
+184
+00:21:13,400 --> 00:21:18,759
+has not been debited to the corresponding
+account or the same seat same berth is booked
+
+185
+00:21:18,759 --> 00:21:25,890
+by two persons at the same time and so on
+so forth so this also includes concurrency
+
+186
+00:21:25,890 --> 00:21:30,680
+control manager which controls the interaction
+among different concurrent transactions which
+
+187
+00:21:30,680 --> 00:21:37,730
+ensures the consistency in the database and
+provides the total safety so in total we have
+
+188
+00:21:37,730 --> 00:21:44,549
+seen the different components of the database
+engine comprising the storage manager comprising
+
+189
+00:21:44,549 --> 00:21:50,769
+the query processor and the transaction manager
+now we move on to we will just have a quick
+
+190
+00:21:50,769 --> 00:21:58,639
+look in terms of who are the typical users
+of a database system so if we see the grossly
+
+191
+00:21:58,640 --> 00:22:04,040
+the users of a database system can be grouped
+into i mean you can group it in multiple different
+
+192
+00:22:04,039 --> 00:22:10,759
+ways but this is a typical way to group that
+you have the naive users those like those
+
+193
+00:22:10,759 --> 00:22:17,470
+the the the ah secretarial staff who sits
+at the teller of the bank now that person
+
+194
+00:22:17,470 --> 00:22:22,900
+just needs ah does not know database management
+system but that person just needs to know
+
+195
+00:22:22,900 --> 00:22:28,560
+the particular application he knows a few
+set of screens graphical screens what needs
+
+196
+00:22:28,559 --> 00:22:34,669
+to be filled up where which button needs to
+be clicked and so on and can use this database
+
+197
+00:22:34,670 --> 00:22:39,930
+through an application interface so this is
+a lowest level of user then you have the set
+
+198
+00:22:39,930 --> 00:22:46,850
+of application programmers about whom i talked
+about in my ah course overview ah presentation
+
+199
+00:22:46,849 --> 00:22:53,259
+that application programming is a big chunk
+of you know i t services that databases need
+
+200
+00:22:53,259 --> 00:23:00,119
+who actually write the application programs
+well the naive user is similarly using it
+
+201
+00:23:00,119 --> 00:23:04,619
+application programmers are responsible for
+writing coding this application program so
+
+202
+00:23:04,619 --> 00:23:10,259
+they need to understand the database designs
+they need to understand how to ah write the
+
+203
+00:23:10,259 --> 00:23:17,099
+query language how to fit with the application
+data input output all the systems
+
+204
+00:23:17,099 --> 00:23:26,769
+the next level are the analysts who are called
+the sophisticated users so they design different
+
+205
+00:23:26,769 --> 00:23:33,519
+kinds of query tools they are responsible
+for the design of the database that is a schema
+
+206
+00:23:33,519 --> 00:23:42,579
+the ins different ah constraints the authorizations
+and so on and manages that over a period of
+
+207
+00:23:42,579 --> 00:23:48,740
+time when the application requirements change
+they might need to redesign the schema migrate
+
+208
+00:23:48,740 --> 00:23:55,029
+the data from an old schema to a new schema
+so analysts are higher level of programmers
+
+209
+00:23:55,029 --> 00:24:01,859
+they have ah far more solid understanding
+of the database management system to be able
+
+210
+00:24:01,859 --> 00:24:09,240
+to design different kind of query tools that
+the application programmer will use and at
+
+211
+00:24:09,240 --> 00:24:16,999
+the end there are database administrators
+so database administrators are ah people with
+
+212
+00:24:16,999 --> 00:24:25,779
+specialized rights who can do a lot of privileged
+operation on the database for example ah taking
+
+213
+00:24:25,779 --> 00:24:33,099
+backups of databases for example creating
+different users ah for example if there has
+
+214
+00:24:33,099 --> 00:24:39,669
+been a failure then how to do the failure
+recovery scripts recovering the database and
+
+215
+00:24:39,670 --> 00:24:47,470
+so on so they do all kinds of administration
+tasks but not the usual day to day data maintenance
+
+216
+00:24:47,470 --> 00:24:54,400
+and you know query processing and so on so
+if we if we if you would like to know your
+
+217
+00:24:54,400 --> 00:25:00,390
+positions and i would say that by through
+this course you are going to position yourself
+
+218
+00:25:00,390 --> 00:25:05,400
+amongst the application programmers and the
+analysts and as i mentioned that the first
+
+219
+00:25:05,400 --> 00:25:11,130
+half of the course ah is focused on application
+programming aspect and the second half would
+
+220
+00:25:11,130 --> 00:25:17,110
+be more focused on the analysis and some of
+the administrative will do little bit of administration
+
+221
+00:25:17,109 --> 00:25:33,099
+but not nearly serious administration tasks
+now ah we will take a quick look into the
+
+222
+00:25:33,099 --> 00:25:38,959
+database internals and architecture so i will
+take you to this diagram i am sorry this diagram
+
+223
+00:25:38,960 --> 00:25:46,880
+is little ah small in terms of the script
+size so please refer to the actual presentation
+
+224
+00:25:46,880 --> 00:25:54,790
+so if you if you look at the top here is the
+users so is trying to show what different
+
+225
+00:25:54,789 --> 00:26:03,690
+users use this is a query processor that we
+have known so the query processor gets a query
+
+226
+00:26:03,690 --> 00:26:09,820
+and so that naturally this query comes from
+the application program so the compiler link
+
+227
+00:26:09,819 --> 00:26:16,679
+these these are the basic processing then
+the of compiler organization the evaluation
+
+228
+00:26:16,680 --> 00:26:22,799
+engine which actually takes care of the processing
+of the whole query and then it goes to the
+
+229
+00:26:22,799 --> 00:26:29,759
+storage manager which is now taking this whatever
+the evaluation engine needs to do has to go
+
+230
+00:26:29,759 --> 00:26:36,349
+through different modules in the storage manager
+which we will talk about these modules when
+
+231
+00:26:36,349 --> 00:26:41,859
+we ah we do have a discussion module on the
+storage management later in this course and
+
+232
+00:26:41,859 --> 00:26:45,839
+we will then talk about what is a file manager
+and what is authorization and so on but these
+
+233
+00:26:45,839 --> 00:26:50,619
+are the sub components these are the sub components
+of the storage management needs to do and
+
+234
+00:26:50,619 --> 00:26:55,389
+then the storage manager is the only one who
+deals with the actual data the actual disk
+
+235
+00:26:55,390 --> 00:27:00,040
+storage the different files and so on
+so as you can see that the whole system is
+
+236
+00:27:00,039 --> 00:27:07,500
+kind of ah layered ah in terms of so this
+is this is your your basic physical layer
+
+237
+00:27:07,500 --> 00:27:16,619
+that you have and this is your final view
+layer that you have and in between this is
+
+238
+00:27:16,619 --> 00:27:22,429
+a logical layer that you that you deal with
+so you can you can see that the abstractions
+
+239
+00:27:22,430 --> 00:27:28,470
+as we had talked about are also mapped in
+terms of them way the actual database system
+
+240
+00:27:28,470 --> 00:27:35,250
+architecture is managed and finally the data
+stays in the disk storage which ensures that
+
+241
+00:27:35,250 --> 00:27:40,950
+whatever data i have is actually persistent
+in nature it does not go away any data that
+
+242
+00:27:40,950 --> 00:27:47,759
+stays within here or within the application
+interfaces transient so that data these data
+
+243
+00:27:47,759 --> 00:27:56,119
+are transient they will disappear as soon
+as the application is over but these data
+
+244
+00:27:56,119 --> 00:28:04,609
+are persistent they exist beyond this and
+architectures supports that whole gamut from
+
+245
+00:28:04,609 --> 00:28:11,209
+of all applications or transiency of the applications
+based on the persistence of the data at the
+
+246
+00:28:11,210 --> 00:28:17,620
+storage so that is a basic architectural view
+of a typical database systems the actual architecture
+
+247
+00:28:17,619 --> 00:28:22,399
+we form more complex but we just want to take
+a schematic view so that we can understand
+
+248
+00:28:22,400 --> 00:28:29,110
+it better
+so it the actual architecture may again vary
+
+249
+00:28:29,109 --> 00:28:34,729
+based on the computer system that you are
+using it could be centralized we will talk
+
+250
+00:28:34,730 --> 00:28:41,610
+about some of these at later modules ah centralized
+in the sense that there could be one database
+
+251
+00:28:41,609 --> 00:28:47,459
+server or you know a group of database servers
+at the same physical location connected together
+
+252
+00:28:47,460 --> 00:28:53,049
+to which all applications all user will connect
+to it could be in terms of a client server
+
+253
+00:28:53,049 --> 00:28:57,079
+model which is a very typical client server
+model that the programming systems are so
+
+254
+00:28:57,079 --> 00:29:04,149
+that typically for for example any of the
+net based internet based database applications
+
+255
+00:29:04,150 --> 00:29:08,830
+we are looking at are necessarily client server
+in nature what you are doing in the browser
+
+256
+00:29:08,829 --> 00:29:15,539
+is a client and there is a server back far
+back there the multiple tiers in between them
+
+257
+00:29:15,539 --> 00:29:22,200
+ah databases could be single processes or
+for performance they could be in terms of
+
+258
+00:29:22,200 --> 00:29:29,730
+multiprocessor ah parallel databases the data
+sets themselves could be so large that it
+
+259
+00:29:29,730 --> 00:29:34,940
+may not be possible to search on them through
+a single processor in a reasonable time they
+
+260
+00:29:34,940 --> 00:29:40,220
+could be distributed the data itself could
+be distributed tables could get so large that
+
+261
+00:29:40,220 --> 00:29:43,759
+i may not be able to keep them at a single
+point
+
+262
+00:29:43,759 --> 00:29:50,058
+so these are different aspects of you know
+complex real life database system that exist
+
+263
+00:29:50,058 --> 00:29:56,139
+and we will deal with some of those some of
+those aspects over the course of time but
+
+264
+00:29:56,140 --> 00:30:02,670
+you have to keep in mind that a final architecture
+of a database and its associated application
+
+265
+00:30:02,670 --> 00:30:13,580
+will have some of these factors that you will
+need to know and maybe decide on ah in terms
+
+266
+00:30:13,579 --> 00:30:19,980
+of history well and i will not go through
+each and every point here this is ah more
+
+267
+00:30:19,980 --> 00:30:25,110
+for completeness and to give you an essence
+of how things have been going so database
+
+268
+00:30:25,109 --> 00:30:31,569
+system started in the fifties and early sixties
+then major developments of these relational
+
+269
+00:30:31,569 --> 00:30:40,169
+models and all that started happening in the
+seventies and in eighties really it proliferated
+
+270
+00:30:40,170 --> 00:30:44,570
+large in terms of prototypes and commercial
+systems parallel distributed systems object
+
+271
+00:30:44,569 --> 00:30:51,369
+based systems started happening in eighties
+nineties it really exploded in terms of large
+
+272
+00:30:51,369 --> 00:30:58,899
+decision support data mining applications
+ah you know applications widespread use of
+
+273
+00:30:58,900 --> 00:31:06,220
+ah internet based data applications and and
+and systems emergence of google and all that
+
+274
+00:31:06,220 --> 00:31:13,890
+from twenties early to i am in early two thousand
+it has been x m l and automated database administration
+
+275
+00:31:13,890 --> 00:31:21,020
+and now what we are facing in at the big data
+which are certainly ah aspects of other courses
+
+276
+00:31:21,019 --> 00:31:27,470
+but at the back of back of back at the last
+layer then often is a strong relational system
+
+277
+00:31:27,470 --> 00:31:34,069
+that exists so to summarize in this module
+we have introduced the models of database
+
+278
+00:31:34,069 --> 00:31:40,539
+management system the major components of
+a database engine and discussed about the
+
+279
+00:31:40,539 --> 00:31:47,740
+internals and architecture and this will conclude
+our discussion on the internals of database
+
+280
+00:31:47,740 --> 00:31:55,130
+management systems and next we will move on
+to exposing more on the relational model
+

@@ -1,0 +1,1704 @@
+﻿1
+00:00:15,660 --> 00:00:19,199
+.
+Welcome to module 27 of Database Management
+
+2
+00:00:19,199 --> 00:00:26,500
+Systems. We are discussing indexing and hashing
+mechanisms in a database and this is the second
+
+3
+00:00:26,500 --> 00:00:32,679
+in that series. In the last module, we have
+discussed the basic requirement of ah indexing
+
+4
+00:00:32,679 --> 00:00:37,939
+and we have learnt about ordered indexes using
+primary index.
+
+5
+00:00:37,939 --> 00:00:46,439
+Which can be dense or parts and the multi
+level indexes. Now, in this ah module we would
+
+6
+00:00:46,439 --> 00:00:55,759
+ah try to look for ah the basis of how ah
+indexing the index file structure can be very
+
+7
+00:00:55,759 --> 00:01:02,479
+efficiently represent it. So, we will do a
+quick recap of ah our notions in ah algorithms
+
+8
+00:01:02,479 --> 00:01:06,739
+goes.
+Where we have talked about ah earlier balanced
+
+9
+00:01:06,739 --> 00:01:12,189
+binary search trees I mean not in this ah
+ah particular course delivery, but I expect
+
+10
+00:01:12,189 --> 00:01:17,239
+that you have gone through ah algorithms course
+where you have learnt about balanced binary
+
+11
+00:01:17,239 --> 00:01:23,449
+search trees as options for optimal in memory
+search data structure and from that will try
+
+12
+00:01:23,450 --> 00:01:28,920
+to understand the issues relating to external
+search data structures for persistent data
+
+13
+00:01:28,920 --> 00:01:34,978
+and very specifically we will study two three
+four tree as a precursor to BB plus tree which
+
+14
+00:01:34,978 --> 00:01:41,760
+is an very efficient external data structure
+for databases and index tables. So, these
+
+15
+00:01:41,760 --> 00:01:47,310
+are the two topics to cover.
+So, first let me ah quickly take you around.
+
+16
+00:01:47,310 --> 00:01:53,420
+Ah with search data structure now I should
+warn you that here I am looking at we are
+
+17
+00:01:53,420 --> 00:01:58,849
+looking at a little different kind of a problem
+here we are looking at search as it is performed
+
+18
+00:01:58,849 --> 00:02:03,818
+in the algorithms course which mean that ah
+when you talk about data structures in algorithms
+
+19
+00:02:03,819 --> 00:02:09,860
+course. You typically talk of data structures
+which have two basic properties one they are
+
+20
+00:02:09,860 --> 00:02:15,459
+ah volatile data structures transient that
+is they are created when the program starts
+
+21
+00:02:15,459 --> 00:02:20,090
+and you operate on the data structure find
+queries and then as soon as your program ends
+
+22
+00:02:20,090 --> 00:02:24,539
+they disappeared. So, they are not persistent
+data in contrast when you are dealing with
+
+23
+00:02:24,539 --> 00:02:30,919
+database we are ah dealing with persistent
+data which stays even when ah no queries being
+
+24
+00:02:30,919 --> 00:02:33,919
+performed.
+And the second which is the consequence of
+
+25
+00:02:33,919 --> 00:02:39,780
+the first is ah the data structure that you
+are study in algorithms work in memory. So,
+
+26
+00:02:39,780 --> 00:02:46,960
+they work in a small limited space and they
+could be volatile whereas, the database ah
+
+27
+00:02:46,960 --> 00:02:52,790
+the data structure required for databases
+has to reside in the disk. So, we have seen
+
+28
+00:02:52,789 --> 00:02:57,530
+the tradeoff between the; ah on the storage
+hierarchy between memory and disk and other
+
+29
+00:02:57,530 --> 00:03:02,860
+layers. So, they will be brought to memory
+and then certain operations done and ah then
+
+30
+00:03:02,860 --> 00:03:07,290
+possibly written back and so, on.
+So, there is ah similarity in terms of the
+
+31
+00:03:07,289 --> 00:03:14,120
+strategies, but there is a very significant
+difference in that that because of the persistency
+
+32
+00:03:14,120 --> 00:03:20,289
+the data ah structures that are used in the
+database ah application in the persistent
+
+33
+00:03:20,289 --> 00:03:27,199
+data application has to work with a very different
+kind of cost. So, when we talk about ah ah
+
+34
+00:03:27,199 --> 00:03:32,540
+cost of an algorithm say a search algorithm
+we will say that ah a search algorithm or
+
+35
+00:03:32,540 --> 00:03:38,280
+a sort algorithm has a certain complexity
+vssr you know ah the merge sort has the complexity
+
+36
+00:03:38,280 --> 00:03:43,750
+order n login n and what it actually means.
+Is a number of comparisons you you can estimate
+
+37
+00:03:43,750 --> 00:03:51,629
+to do it in sorting n numbers is ah approximately
+n times log n, but when we talk about external
+
+38
+00:03:51,629 --> 00:03:57,318
+data structure or disk base data structure
+then your cost may often not be the operations
+
+39
+00:03:57,318 --> 00:04:02,769
+in the CPU like comparison or addition or
+assignment your cost will shift to actually
+
+40
+00:04:02,770 --> 00:04:07,610
+the number of disk access is the page access
+is that you have to do, because as you have
+
+41
+00:04:07,610 --> 00:04:15,190
+already noted that the cost of a disk access
+is ah much larger couple of orders larger
+
+42
+00:04:15,189 --> 00:04:21,430
+compared to the basic cost of ah different
+ah processor operations.
+
+43
+00:04:21,430 --> 00:04:27,280
+So, I will start with ah this in this module
+I will start talking about data structures
+
+44
+00:04:27,279 --> 00:04:32,299
+which we are found to be efficient in memory
+and then we will migrate to seeing how they
+
+45
+00:04:32,300 --> 00:04:38,770
+can be ah used in in a in a with simple extension
+in the as external data structures as well.
+
+46
+00:04:38,769 --> 00:04:44,909
+So, what we have ah if you have given a to
+search a key in a list of n data items what
+
+47
+00:04:44,910 --> 00:04:50,040
+are the different choices I could make use
+of a linear search either items could be in
+
+48
+00:04:50,040 --> 00:04:57,080
+an array ordered or ah unordered in an array
+or they could be on a list either ordered
+
+49
+00:04:57,079 --> 00:05:02,050
+or unordered I can ah search that list sequentially
+and find the data item.
+
+50
+00:05:02,050 --> 00:05:07,110
+So, I have just shown an example here there
+is a couple of data items given in that area
+
+51
+00:05:07,110 --> 00:05:12,300
+and trying to find ah 28, there are 16 comparisons
+that I need to do and we all know that we
+
+52
+00:05:12,300 --> 00:05:19,310
+can do much better if we keep the this item
+sorted in terms of ah in an increasing order
+
+53
+00:05:19,310 --> 00:05:23,910
+or say decreasing order here it is increasing
+order and then we can do a binary search divide
+
+54
+00:05:23,910 --> 00:05:26,880
+and conquer and I can find the same value
+28.
+
+55
+00:05:26,879 --> 00:05:34,750
+Now, in just four comparisons and ah from
+that we have come to the also know that this
+
+56
+00:05:34,750 --> 00:05:41,500
+whole ah binary search order can be easily
+represented in terms of a binary tree structure
+
+57
+00:05:41,500 --> 00:05:47,949
+called the binary search tree.
+So, ah if we compare worst case time here
+
+58
+00:05:47,949 --> 00:05:53,569
+again again here please ah keep in mind that
+we are talking about in memory data structure.
+
+59
+00:05:53,569 --> 00:05:59,550
+So, here the time is primarily that of comparison.
+So, if you look at the different data structure
+
+60
+00:05:59,550 --> 00:06:04,829
+like unordered array ordered array unordered
+list and ordered list and binary search tree
+
+61
+00:06:04,829 --> 00:06:10,389
+and if you check the complexity of the three
+basic operations which we will need in that
+
+62
+00:06:10,389 --> 00:06:15,810
+in a database application the research insert
+and delete you can find that ah the search.
+
+63
+00:06:15,810 --> 00:06:22,509
+Usually, is order n unless you have a un ah
+ordered array ah I mean between array and
+
+64
+00:06:22,509 --> 00:06:27,870
+list the search is order n unless you have
+an ordered array and you can do a binary search.
+
+65
+00:06:27,870 --> 00:06:34,720
+The insert ah the time that I show for insert
+or for delete is ah usually order one, because
+
+66
+00:06:34,720 --> 00:06:40,400
+ah ah when I say insert is order one what
+it means its ah that ah after I have been
+
+67
+00:06:40,399 --> 00:06:46,549
+able to search an item which I need to insert
+after I have been able to find its position,
+
+68
+00:06:46,550 --> 00:06:51,300
+what is the additional time that you need
+to actually insert that item? So, that insert
+
+69
+00:06:51,300 --> 00:06:59,160
+cost is ah often for unorder array and ah
+any kind of list is order one because you
+
+70
+00:06:59,160 --> 00:07:03,760
+can just manipulate a couple of pointers and
+insert that, but if you are using an ordered
+
+71
+00:07:03,759 --> 00:07:09,879
+array to make your search efficient then to
+insert you need a order n insertion because
+
+72
+00:07:09,879 --> 00:07:15,110
+at the right place you need to move the elements
+to the right to make the space for the new
+
+73
+00:07:15,110 --> 00:07:18,780
+element, because you need to maintain the
+ordering that the elements have.
+
+74
+00:07:18,779 --> 00:07:23,309
+So, kind of we find that between the array
+and the list there is kind of a trade off
+
+75
+00:07:23,310 --> 00:07:29,139
+in terms of ah if you want to make search
+better you have ordered array and that degrades
+
+76
+00:07:29,139 --> 00:07:35,960
+the insert delete complexity and vice versa.
+So, to take the benefit of both we the binary
+
+77
+00:07:35,959 --> 00:07:41,698
+search tree is device to a you expect that
+the search will take the worst case order
+
+78
+00:07:41,699 --> 00:07:46,810
+h cost which h is the height of the tree,
+because that is the maximum number of comparisons
+
+79
+00:07:46,810 --> 00:07:53,360
+that we will need to reach that leaf node
+and a BST ah binary search tree if it is balanced
+
+80
+00:07:53,360 --> 00:07:58,490
+then h would be of the order of log n and
+this is what we desire.
+
+81
+00:07:58,490 --> 00:08:04,329
+So, if you look at ah BST is ah is balanced
+h is of the order of log n I am not going
+
+82
+00:08:04,329 --> 00:08:11,129
+into the theory of ah proving why ah balancing
+means h is of the order of log n or how this
+
+83
+00:08:11,129 --> 00:08:15,490
+order of log n comes if you have ah doubts
+please refer to your algorithms book you will
+
+84
+00:08:15,490 --> 00:08:21,990
+find plenty of that now that naturally now
+if a in in the data structure if I am regularly
+
+85
+00:08:21,990 --> 00:08:26,160
+inserting and deleting data.
+Then it is not guaranteed that it will remain
+
+86
+00:08:26,160 --> 00:08:32,620
+balanced it might for example, if I am inserting
+the data in a in a say in increasing order
+
+87
+00:08:32,620 --> 00:08:37,610
+in a in a binary search tree then every time
+the insertion will happen on the rightmost
+
+88
+00:08:37,610 --> 00:08:42,360
+node and ah if . So, that will mean that I
+will have along the rightmost node I will
+
+89
+00:08:42,360 --> 00:08:47,550
+have a long chain and therefore, it become
+like a linear list and therefore, any search
+
+90
+00:08:47,549 --> 00:08:51,578
+in that will not remain optimally it will
+take order in time.
+
+91
+00:08:51,578 --> 00:08:55,818
+So, there as different strategies that you
+have studied in terms of ah balancing just
+
+92
+00:08:55,818 --> 00:09:01,338
+to remind you there are ah strategies which
+give you the best possible worst case time
+
+93
+00:09:01,339 --> 00:09:06,769
+of log n which is the famous AVL tree ah there
+are randomized strategies in terms of randomized
+
+94
+00:09:06,769 --> 00:09:11,169
+BST skip list there are amortized strategies
+which say that I do not really care about
+
+95
+00:09:11,169 --> 00:09:17,419
+what happens with a particular insertion search
+or deletion ah, but what I care is if I have
+
+96
+00:09:17,419 --> 00:09:23,759
+done a large number of ah insert delete search
+operations on the array then on the average
+
+97
+00:09:23,759 --> 00:09:28,149
+ah what it should be balance on the average
+it should be of ordered log n.
+
+98
+00:09:28,149 --> 00:09:33,850
+So, we have seen all of these ah different
+strategies and ah . So, in an order in an
+
+99
+00:09:33,850 --> 00:09:39,519
+attempt to ah generalize them for external
+data structure we note that these are typically
+
+100
+00:09:39,519 --> 00:09:44,438
+good for in memory operations these are good
+worked well; when you deal with a small volume
+
+101
+00:09:44,438 --> 00:09:49,149
+of data I mean you may be that may still be
+large, but is small in the sense that the
+
+102
+00:09:49,149 --> 00:09:53,828
+whole data fits into the memory and you can
+manipulate muscles the whole data in memory
+
+103
+00:09:53,828 --> 00:09:59,979
+and ah it ah of course, all these ah many
+many of these ah algorithms.
+
+104
+00:09:59,980 --> 00:10:06,629
+Particularly, the AVL tree and quite a bit
+of the randomized BST have complex rotation
+
+105
+00:10:06,629 --> 00:10:11,659
+ah operations that need to be performed the
+order different random generators need to
+
+106
+00:10:11,659 --> 00:10:16,149
+be involved in the randomized BST or skip
+list. So, there are other complexities in
+
+107
+00:10:16,149 --> 00:10:22,110
+this whole ah factor comparison cost is not
+the only cost that you have and ah in the
+
+108
+00:10:22,110 --> 00:10:28,119
+the simple thing is they do not skill, what
+external data structures they are not ah optimized
+
+109
+00:10:28,119 --> 00:10:35,899
+in terms of ah minimizing or optimizing the
+disc accesses or they do not scale to millions
+
+110
+00:10:35,899 --> 00:10:41,318
+and millions of entries and so, on.
+So, you need to look at a different ah approach
+
+111
+00:10:41,318 --> 00:10:48,159
+and ah this different approach ah in in ah
+the day in terms of database ah ah application
+
+112
+00:10:48,159 --> 00:10:53,969
+database structures is called B plus tree
+and what I am going to discuss is an in memory
+
+113
+00:10:53,970 --> 00:10:59,670
+version of that which is a 2, 3, 4 trees.
+So, that we can understand the basic principle
+
+114
+00:10:59,669 --> 00:11:06,838
+of ah such search data structure which can
+work ah with external ah data with this data,
+
+115
+00:11:06,839 --> 00:11:09,560
+but first understand them in as an in memory
+version .
+
+116
+00:11:09,559 --> 00:11:17,568
+So, what is a 2, 3, 4 tree a 2, 3, 4 tree
+in contrast to other BSTs or in contrast to
+
+117
+00:11:17,568 --> 00:11:25,878
+the typical BSTs where ah you know every operation
+needs the height of the tree to be balanced
+
+118
+00:11:25,879 --> 00:11:31,178
+because ah some leaves ah could could happen
+at a much deeper level some could be at a
+
+119
+00:11:31,178 --> 00:11:37,208
+much shallow level in a 2, 3, 4 `tree all
+leaves always are at the same level the same
+
+120
+00:11:37,208 --> 00:11:42,609
+depth the bottom level.
+So, height h is the height of all the leaf
+
+121
+00:11:42,610 --> 00:11:49,919
+nodes and that is guaranteed to be of order
+of log n, if the tree has n number of nodes
+
+122
+00:11:49,919 --> 00:11:55,889
+the complexity of search, delete and insert
+all are order h that is a consequence of a
+
+123
+00:11:55,889 --> 00:12:03,519
+constant height h or or a fixed height h that
+ah given n that is maintained all data are
+
+124
+00:12:03,519 --> 00:12:09,139
+kept in a sorted order. So, if you do a in
+order ah traversal of the tree you will get
+
+125
+00:12:09,139 --> 00:12:14,930
+the data in the sorted order, but the (Refer
+Time: 12:13) difference is in contrast to
+
+126
+00:12:14,929 --> 00:12:20,088
+the BST where every node is a binary node
+is a is a (Refer Time: 12:19) one key and
+
+127
+00:12:20,089 --> 00:12:25,379
+has two children here every node either a
+leaf node or an internal node every node is
+
+128
+00:12:25,379 --> 00:12:31,339
+one of the three types it can either be a
+2-node or a 3-node or a 4-node.
+
+129
+00:12:31,339 --> 00:12:40,639
+A 2-node holds one, ah data 3-node once holds
+2 data and 4-node holds 3 data and ah there
+
+130
+00:12:40,639 --> 00:12:45,629
+they give the name get the name 2-node 3-node
+and 4-node based on the number of children
+
+131
+00:12:45,629 --> 00:12:51,339
+that they can have the 2-node can have 2 children,
+3-node 3 children and 4-node 4 children. They
+
+132
+00:12:51,339 --> 00:12:58,949
+can generalized easily to larger nodes which
+can have ah a large number of different types
+
+133
+00:12:58,948 --> 00:13:03,078
+of nodes and it extends very naturally to
+external data structure. So, that is with
+
+134
+00:13:03,078 --> 00:13:08,149
+the basic about the 2, 3, 4 tree.
+So, let us ah just ah go through it in little
+
+135
+00:13:08,149 --> 00:13:15,190
+bit more detail it uses three kinds of node
+as I have said and ah now now let me just
+
+136
+00:13:15,190 --> 00:13:21,149
+show you. So, if you are talking about ah
+a 2-node. So, this is a 2-node . So, there
+
+137
+00:13:21,149 --> 00:13:27,808
+is one data item S and all search keys which
+are less than S around this side all search
+
+138
+00:13:27,808 --> 00:13:30,610
+keys which are on greater than S around this
+side.
+
+139
+00:13:30,610 --> 00:13:36,028
+We are just for the simplicity of discussion
+where I am assuming that all keys in this
+
+140
+00:13:36,028 --> 00:13:40,789
+data structure are unique. So, there is no
+repeated keys the repeated keys can be handled
+
+141
+00:13:40,789 --> 00:13:45,789
+in a very easy manner . So, this is one type
+of node a second type of node is a 3-node
+
+142
+00:13:45,789 --> 00:13:53,028
+which must contain two data items S we are
+calling it S and L and three links the first
+
+143
+00:13:53,028 --> 00:14:01,889
+is less than S the last is greater than L
+and the middle is greater than s, but less
+
+144
+00:14:01,889 --> 00:14:08,789
+than L which means actually what we enforce
+in terms of the two keys that exist at the
+
+145
+00:14:08,789 --> 00:14:13,230
+node S must be less than L.
+So, values less then L go on one link values
+
+146
+00:14:13,230 --> 00:14:17,980
+between S and L go on the middle link and
+values greater than n go on the third link.
+
+147
+00:14:17,980 --> 00:14:27,019
+Similarly, if I have a 4-node here I have
+three values where S is less than M is less
+
+148
+00:14:27,019 --> 00:14:33,369
+than l. So, now, you can understand why the
+acronyms S, M and L small, medium and large.
+
+149
+00:14:33,369 --> 00:14:40,050
+So, on and we have four links the first link
+gives you values less than S second is between
+
+150
+00:14:40,049 --> 00:14:46,938
+S and M third between M and L and forth greater
+than L. So, these are the or three different
+
+151
+00:14:46,938 --> 00:14:52,958
+types of ah nodes that a 2, 3, 4 tree can
+support and if if it is a leaf node then it
+
+152
+00:14:52,958 --> 00:15:00,638
+can be it can contain either 1, 2 or 3 get
+items . So, let us go forward.
+
+153
+00:15:00,639 --> 00:15:06,879
+Now, to search to search is a simple extension
+of BST you know how to search in a BST you
+
+154
+00:15:06,879 --> 00:15:12,028
+ah start with the route see whether the given
+key to search is greater than the key at the
+
+155
+00:15:12,028 --> 00:15:17,480
+route if it is greater you go to right if
+it is less you go to left and you do the same
+
+156
+00:15:17,480 --> 00:15:22,050
+thing here for a 2-node for a 3-node all that
+you will need to find out is between S and
+
+157
+00:15:22,049 --> 00:15:27,729
+L whether it is less than L then less than
+S then you take the leftmost whether it is
+
+158
+00:15:27,730 --> 00:15:31,859
+greater than L then you take the rightmost
+if it is between S and L you take the middle
+
+159
+00:15:31,859 --> 00:15:37,019
+similar strategy you do for 4-node and search
+is a simple extension of the BST algorithm.
+
+160
+00:15:37,019 --> 00:15:43,429
+So, you can suddenly work it out .
+Now, what we will need to do in terms of an
+
+161
+00:15:43,429 --> 00:15:49,599
+insert insert is very interesting. So, for
+insert first you search and find the expected
+
+162
+00:15:49,600 --> 00:15:54,509
+location where you are expecting it. So, that
+is not there. So, you will expect. So, now,
+
+163
+00:15:54,509 --> 00:15:58,639
+what are the possibility? Possibilities where
+you have found the expected location that
+
+164
+00:15:58,639 --> 00:16:04,369
+node could be a 2-node if it is a 2-node all
+that you simply need to do is change that
+
+165
+00:16:04,369 --> 00:16:09,149
+where 3-node inserts the second item if it
+is a 2-node it has only one item. So, just
+
+166
+00:16:09,149 --> 00:16:13,019
+insert this new item there and making it into
+a 3-node good.
+
+167
+00:16:13,019 --> 00:16:20,039
+In the second case if you find the the location
+if you find that it is a 3-node. So, it has
+
+168
+00:16:20,039 --> 00:16:25,519
+two items you just change it to a 4-node and
+insert this is as a third item; obviously,
+
+169
+00:16:25,519 --> 00:16:29,850
+when you insert you will have to decide has
+to whether where you should insert that depends
+
+170
+00:16:29,850 --> 00:16:34,769
+on whether you are given key is greater than
+the key that already existed or smaller than
+
+171
+00:16:34,769 --> 00:16:43,068
+that and so, on. Now, the question is what
+happens; when if you locate the place to be
+
+172
+00:16:43,068 --> 00:16:48,509
+insert itself is already a 4-node. Now, naturally
+you do not have anything bigger than a 4-node.
+
+173
+00:16:48,509 --> 00:16:54,859
+So, if it is a 4-node then all that you need
+is to split that node you have to split the
+
+174
+00:16:54,859 --> 00:16:59,929
+node. So, you have a 4-node.
+So, you have a 4-node. So, you have you have
+
+175
+00:16:59,928 --> 00:17:07,940
+a data one one here you have data 2 here,
+you have data 3 here and you are you know
+
+176
+00:17:07,940 --> 00:17:13,380
+that the your d has to get inserted in this.
+So, you cannot insert it by by changing the
+
+177
+00:17:13,380 --> 00:17:18,250
+node type because this is a maximum allowed.
+So, all that you want to do is to change that
+
+178
+00:17:18,250 --> 00:17:24,769
+into at different structure and that structure
+is called a node splitting structure. So,
+
+179
+00:17:24,769 --> 00:17:31,180
+we will we will see in the next slide as to
+how this is done and we will see how different
+
+180
+00:17:31,180 --> 00:17:38,000
+splitting ah sequence can happen and what
+will happen when a 4-node will split when
+
+181
+00:17:38,000 --> 00:17:44,269
+it was a root or or the different kinds of
+parents that it has let us just go there .
+
+182
+00:17:44,269 --> 00:17:50,879
+So, what we are saying is the suppose ah you
+have a 4-node which is a root now splitting
+
+183
+00:17:50,880 --> 00:17:58,520
+that is actually doing this. So, you have
+to convince yourself that ah enough 2, 3,
+
+184
+00:17:58,519 --> 00:18:06,170
+4 tree what we have already assumed; whether
+I represent this or I represent this are algorithmically
+
+185
+00:18:06,170 --> 00:18:17,779
+their equivalent. So, a single root 4-node
+and a such a structure of ah your ah 3, 2-nodes
+
+186
+00:18:17,779 --> 00:18:22,259
+are equivalent why is it? So, for example,
+if you are looking say if you are looking
+
+187
+00:18:22,259 --> 00:18:30,769
+for a here then it is ah it say it is less
+than s. So, you come here now if you are looking
+
+188
+00:18:30,769 --> 00:18:37,109
+for the same a here what happens a is less
+than S. So, it is it must be less than M remember
+
+189
+00:18:37,109 --> 00:18:43,240
+S is less than M is less than L.
+So, a is less than M. So, you take this part
+
+190
+00:18:43,240 --> 00:18:51,349
+it is less than S to you come here let us
+take a case of c lets say c. So, if if it
+
+191
+00:18:51,349 --> 00:18:56,819
+is c you should come here, now if you check
+here c if it is falling on this link; that
+
+192
+00:18:56,819 --> 00:19:02,750
+means, it is greater than M and it is less
+than L. So, is greater than M you come here
+
+193
+00:19:02,750 --> 00:19:07,680
+it is less than L. So, you come here. So,
+you reach the same link. So, you can see that
+
+194
+00:19:07,680 --> 00:19:13,860
+ah actually a 2, 3, 4 tree is not a unique
+representation depending on ah the requirement
+
+195
+00:19:13,859 --> 00:19:20,919
+I can replace 4-nodes in terms of other 2-nodes
+and actually create a new tree configuration.
+
+196
+00:19:20,920 --> 00:19:27,140
+So, if it is at the root I can get rid of
+a 4-node and replace it by this equivalent
+
+197
+00:19:27,140 --> 00:19:30,470
+tree .
+Now, suppose there are the 4-node is not at
+
+198
+00:19:30,470 --> 00:19:35,240
+the root it is somewhere else. So, what are
+the possibilities the; if it is not at the
+
+199
+00:19:35,240 --> 00:19:42,700
+root it must have a parent now the parent
+ah could be a 2-node. So, if it is a 2-node
+
+200
+00:19:42,700 --> 00:19:49,509
+then these are the two possibilities if it
+is a 2-node, then . So, this is a parent node
+
+201
+00:19:49,509 --> 00:19:55,009
+which is a 2-node. So, then the 4-node could
+be a left child of that or it could be a right
+
+202
+00:19:55,009 --> 00:20:05,299
+child of that if it is a left child, then
+we use split take the middle item and insert
+
+203
+00:20:05,299 --> 00:20:13,680
+it in the parent and by that process a parent
+becomes a 3-node from a 2-node and make these
+
+204
+00:20:13,680 --> 00:20:19,549
+become two different 2-nodes.
+Again the way I ah was just explaining ah
+
+205
+00:20:19,549 --> 00:20:25,309
+in the in the previous slide you can convince
+yourself that this structures are equivalent
+
+206
+00:20:25,309 --> 00:20:29,710
+for example, if I am looking for d let us
+say if I am looking for d in this tree.
+
+207
+00:20:29,710 --> 00:20:36,980
+So, if I am looking for d that is greater
+than l. So, how do I arrive here now since
+
+208
+00:20:36,980 --> 00:20:40,730
+this is a left child? So, it must be placed
+than P, otherwise it could not have occurred
+
+209
+00:20:40,730 --> 00:20:49,069
+on this side. So, it is less than P. So, d
+is less than P d is greater than l. So, given
+
+210
+00:20:49,069 --> 00:20:57,240
+that if I search for d here. So, it is less
+than P and since ah it is we I also have from
+
+211
+00:20:57,240 --> 00:21:02,009
+this the d is greater than M, otherwise it
+would not have come to the; this third link
+
+212
+00:21:02,009 --> 00:21:08,950
+this forth link it would have been ah elsewhere.
+So, I know that d is greater than M. So, and
+
+213
+00:21:08,950 --> 00:21:15,220
+it is less than P. So, if I combined this
+2, then d has to go on this middle ink, because
+
+214
+00:21:15,220 --> 00:21:19,901
+it is greater than M and less than P and then
+I have it is greater than L. So, it has to
+
+215
+00:21:19,901 --> 00:21:23,170
+be on the right. So, it comes to the right
+position.
+
+216
+00:21:23,170 --> 00:21:29,350
+So, in this way you can ah convince yourself
+in in in every search case that ah if the
+
+217
+00:21:29,349 --> 00:21:36,449
+parent is a 2-node, then you can equivalently
+split the 4-node and make an insertion in
+
+218
+00:21:36,450 --> 00:21:42,170
+the parent 2-node converted into 3-node and
+get rid of the 4-node altogether that lives
+
+219
+00:21:42,170 --> 00:21:49,160
+us with ah .
+One ah other case which is if the parent is
+
+220
+00:21:49,160 --> 00:21:53,610
+a 3-node naturally if it is the parent is
+a 3-node then there are three possibilities.
+
+221
+00:21:53,609 --> 00:21:58,799
+Now, because ah your 4-node could be a left
+child a middle child or a right child and
+
+222
+00:21:58,799 --> 00:22:03,779
+in every case you do the same thing you split
+the 4-node take the middle item put it to
+
+223
+00:22:03,779 --> 00:22:10,129
+the parents. So, parent converts from 3-node
+to 4-node. Now and your rest of the split
+
+224
+00:22:10,130 --> 00:22:13,060
+and pointed adjustments had done. So, that
+you get rid of this.
+
+225
+00:22:13,059 --> 00:22:17,889
+So, what happens in this process in and like
+the earlier ones here you do not get rid of
+
+226
+00:22:17,890 --> 00:22:25,350
+the 4-nodes altogether, ah because in in replacing
+one 4-node your creating another 4-node, but
+
+227
+00:22:25,349 --> 00:22:30,029
+in the process what is happening the 4-node
+is moving up it is it is going one level up.
+
+228
+00:22:30,029 --> 00:22:36,129
+So, again what you will do is in in recursively
+the new parent 4-node parent will again be
+
+229
+00:22:36,130 --> 00:22:43,550
+split and I just split if it is ah it is parent
+that is parent of the parent if that parent
+
+230
+00:22:43,549 --> 00:22:48,879
+is also a a 3-node, then that will become
+a 4-node this will continue till your root
+
+231
+00:22:48,880 --> 00:22:54,020
+becomes a 4-node and we know that when root
+becomes a 4-node I can always change it to
+
+232
+00:22:54,019 --> 00:23:00,960
+a configuration of 3, 2-nodes. So, in this
+process as we have shown that ah we can actually
+
+233
+00:23:00,960 --> 00:23:06,259
+get rid of the 4-nodes in the whole of the
+2, 3, 4 tree when it is required.
+
+234
+00:23:06,259 --> 00:23:14,129
+So, the basic ah strategy is very simple that
+will keep on ah constructing the 2, 3, 4 tree
+
+235
+00:23:14,130 --> 00:23:19,770
+and whenever we come across ah a 4-node for
+the first time we will split that and rearrange.
+
+236
+00:23:19,769 --> 00:23:25,480
+So, that I can get rid of it. So, here what
+I show you is a basically an insert sequence
+
+237
+00:23:25,480 --> 00:23:31,079
+over the next couple of slides where which
+is trying to insert the data in this ah following
+
+238
+00:23:31,079 --> 00:23:40,119
+order starting with an empty ah 2, 3, 4 tree.
+So, we first insert 10. So, you get this then
+
+239
+00:23:40,119 --> 00:23:45,409
+we insert 30 that is here. So, 2-node becomes.
+So, the here the convention that I am I am
+
+240
+00:23:45,410 --> 00:23:53,830
+following is blue is a 2-node green is a 3-node
+and red is a 4-node. So, then you insert ah
+
+241
+00:23:53,829 --> 00:23:58,669
+sixty it becomes a 4-node and as soon as it
+becomes a 4-node the next element to be entered
+
+242
+00:23:58,670 --> 00:24:02,269
+is 20.
+But, before that this 4-node will have to
+
+243
+00:24:02,269 --> 00:24:06,869
+be split and this is the case of splitting
+at the root, because this is this has no child
+
+244
+00:24:06,869 --> 00:24:11,799
+yet. So, you split and you get the middle
+moves to the top here as 30, then you have
+
+245
+00:24:11,799 --> 00:24:19,049
+two children 10 and 60 and after the splitting
+you move on to actually ah inserting the intended
+
+246
+00:24:19,049 --> 00:24:24,210
+20 into it.
+So, 20 gets ah inserted ah on on this side
+
+247
+00:24:24,210 --> 00:24:29,950
+20 is inserted on this side, because a smaller
+than this and comes here. So, this ah 2-node
+
+248
+00:24:29,950 --> 00:24:35,809
+becomes a 3-node then you insert ah 50 which
+goes on this side which goes on this side
+
+249
+00:24:35,809 --> 00:24:40,710
+and gets inserted here. So, your insertion
+continues your.
+
+250
+00:24:40,710 --> 00:24:48,180
+Next to insert is 40 which gets the inserted
+here it becomes a 4-node and as soon as it
+
+251
+00:24:48,180 --> 00:24:54,890
+becomes a 4-node and before the next insertion
+of 70 can happen you need to do a split. So,
+
+252
+00:24:54,890 --> 00:25:00,060
+you do a split.
+If you do a split then ah your 50 moves to
+
+253
+00:25:00,059 --> 00:25:08,809
+the to the parent this becomes a 3-node. Now
+and your 40 and 60 becomes two 2-node children
+
+254
+00:25:08,809 --> 00:25:15,179
+as this. So, it is a same ah information is
+represented, but ah now in this new ah 2,
+
+255
+00:25:15,180 --> 00:25:20,519
+3, 4 tree you do not have any 4-node. So,
+in you can go ahead and ah insert 70.
+
+256
+00:25:20,519 --> 00:25:27,579
+So, insert 70, 70 gets ah inserted here the
+2-node becomes ah 3-node the this is done.
+
+257
+00:25:27,579 --> 00:25:33,939
+So, then you insert 80, 80 gets inserted here
+is is greater than it comes here and this
+
+258
+00:25:33,940 --> 00:25:46,610
+becomes a 4-node and . So, naturally the next
+would be two 
+
+259
+00:25:46,609 --> 00:25:53,629
+insert ah 15. So, 15 ah goes in on to the
+left. So, 15 has ah come in here which becomes
+
+260
+00:25:53,630 --> 00:26:01,740
+a 4-node. And the next is to ah insert 90.
+So, which has to get inserted here it should
+
+261
+00:26:01,740 --> 00:26:05,650
+have got inserted here. So, this is already
+a 4-node. So, you need to split.
+
+262
+00:26:05,650 --> 00:26:16,890
+So, in split and as you split you get ah 40
+ah 40 was already there you get 60 and 80
+
+263
+00:26:16,890 --> 00:26:27,350
+and the 70, that existed in the middle goes
+to the root and your root becomes a 4-node.
+
+264
+00:26:27,349 --> 00:26:35,449
+So, this is ah the configuration you move
+on to your 90 gets inserted. Now, you have
+
+265
+00:26:35,450 --> 00:26:42,519
+to insert ah 100. So, you before that this
+your root has become a 4-node. So, you do
+
+266
+00:26:42,519 --> 00:26:47,910
+a split. So, as you do the split this is a
+new configuration that has happened and this
+
+267
+00:26:47,910 --> 00:26:52,900
+is what has resulted from the split of this
+ah 4-node at the root.
+
+268
+00:26:52,900 --> 00:27:02,900
+And then naturally you can go ahead and ah
+insert 100 and 100 is now inserted. Here,
+
+269
+00:27:02,900 --> 00:27:10,380
+you could do adjustments of ah changing this
+ah this 4-node into into by by splitting it
+
+270
+00:27:10,380 --> 00:27:16,000
+and moving it onwards I have not ah shown
+that, but if you ah now go back if you just
+
+271
+00:27:16,000 --> 00:27:25,329
+now now go back on on these ah this whole
+whole process and you will see that ah ah
+
+272
+00:27:25,329 --> 00:27:33,589
+specifically that we claim that all leaf nodes
+would be in ah the same level. So, you can
+
+273
+00:27:33,589 --> 00:27:39,230
+see that ah initial three trees all are at
+the same level, then leaf and their level
+
+274
+00:27:39,230 --> 00:27:44,980
+0 and then when you have had this split then
+the leaf nodes ah 10 and 60 are both at level
+
+275
+00:27:44,980 --> 00:27:47,730
+once.
+So, we can see that when actually you split
+
+276
+00:27:47,730 --> 00:27:53,890
+at the root you add one level to all the leaf
+nodes and that is the only time your height
+
+277
+00:27:53,890 --> 00:27:59,210
+changes. So, beyond that ah you look at this
+ah the level has not changed I am going to
+
+278
+00:27:59,210 --> 00:28:04,590
+the next the level has not changed instruments
+to be height 1 level does not change height
+
+279
+00:28:04,589 --> 00:28:12,839
+1 does not change does not change till the
+left here and then we have a case again of
+
+280
+00:28:12,839 --> 00:28:18,939
+splitting a 4-node at the root.
+When the one level has been added to all the;
+
+281
+00:28:18,940 --> 00:28:26,220
+so, all the ah leaf nodes where at level 1
+now all of them are at level 2. So, in a 2,
+
+282
+00:28:26,220 --> 00:28:33,710
+3, 4 tree you achieve this ah invariance of
+ah all leaf nodes being at the same level
+
+283
+00:28:33,710 --> 00:28:39,808
+by maintaining that the only time the height
+changes is when you split a 4-node at the
+
+284
+00:28:39,808 --> 00:28:43,549
+root and add one level uniformly to all of
+them.
+
+285
+00:28:43,549 --> 00:28:48,750
+And then rest of the logic is quite simple
+that ah these are here you can do actually
+
+286
+00:28:48,750 --> 00:28:56,430
+follow the same logic as of the ah binary
+search tree analysis that if there are n ah
+
+287
+00:28:56,430 --> 00:29:02,549
+n items here; then the maximum height could
+actually be order log n; because we though
+
+288
+00:29:02,549 --> 00:29:07,769
+though all nodes are not binary, but ah the
+nodes that are not binary actually have more
+
+289
+00:29:07,769 --> 00:29:12,529
+data.
+So, they will be they will ah the height will
+
+290
+00:29:12,529 --> 00:29:19,210
+always be log n or less than that of course,
+there is ah an issue of ah concluding the
+
+291
+00:29:19,210 --> 00:29:23,980
+complexity, because now you will argue that
+there are 3-nodes or 4-nodes where more than
+
+292
+00:29:23,980 --> 00:29:29,450
+one comparison is required to decide about
+the node, but the counter argument to that
+
+293
+00:29:29,450 --> 00:29:37,269
+is even if that be the case even if you have
+along the path of ah the tree from the root
+
+294
+00:29:37,269 --> 00:29:42,629
+to any leaf node.
+Even if all of the nodes are of ah are 4-node
+
+295
+00:29:42,630 --> 00:29:47,050
+that cannot happen as you have seen because
+you you will keep on splitting and distributing
+
+296
+00:29:47,049 --> 00:29:53,359
+that, but if all of them are ah or 4-node
+also then what will add is simply a factor
+
+297
+00:29:53,359 --> 00:29:59,289
+of three ah two rather additional ah with
+the log n and the overall complexity remains
+
+298
+00:29:59,289 --> 00:30:02,659
+to be log n will go.
+Now, if you have to delete you have to do
+
+299
+00:30:02,660 --> 00:30:08,370
+ah very similar operations I have not shown
+the details, but you look at the node and
+
+300
+00:30:08,369 --> 00:30:14,100
+ah then actually find the in order successor
+ah for that and swap it with the item and
+
+301
+00:30:14,101 --> 00:30:19,520
+ah then you can do the other arrangements
+of collapsing the nodes as we have done the
+
+302
+00:30:19,519 --> 00:30:24,349
+splitting of nodes. Now I have to do the collapsing
+of nodes following the same river structure
+
+303
+00:30:24,349 --> 00:30:29,279
+and leave that ah as an exercise to you just
+work it out at home.
+
+304
+00:30:29,279 --> 00:30:34,899
+So, if you look at ah if the 2, 3, 4 tree
+and there is a time to justify why we are
+
+305
+00:30:34,900 --> 00:30:39,530
+doing this all leaves are the same depth which
+is a great advantage the height is ah order
+
+306
+00:30:39,529 --> 00:30:45,299
+log n always complexity of search insert delete
+all are order log n all data kept in sorted
+
+307
+00:30:45,299 --> 00:30:51,460
+order it generalizes easily to larger nodes
+are and extends to external data structure.
+
+308
+00:30:51,460 --> 00:30:56,990
+So, what you mean by larger nodes, let us
+let us look at that a little bit before that
+
+309
+00:30:56,990 --> 00:31:02,029
+of course, 2, 3, 4 tree has a major disadvantage
+compared to binary research trees of the other
+
+310
+00:31:02,029 --> 00:31:08,430
+kinds because it uses a variety of node types.
+So, you I mean when you change from a say
+
+311
+00:31:08,430 --> 00:31:13,120
+2-node to a 3-node you actually if you think
+in programming terms you have lot of additional
+
+312
+00:31:13,119 --> 00:31:18,759
+cost, because you need to distract the 2-node
+and create ah a 3-node.
+
+313
+00:31:18,759 --> 00:31:25,619
+If you split a 4-node and create 3, 2-nodes
+as ah required, then you have to distract
+
+314
+00:31:25,619 --> 00:31:31,289
+the 4-node and create 3, 2-nodes. So, there
+are lot of over rights in terms of that.
+
+315
+00:31:31,289 --> 00:31:38,170
+So, ah what leaf if we if we just simplify
+that process and if you assume that, there
+
+316
+00:31:38,170 --> 00:31:44,140
+is only one node type which has enough space
+for three items and four links ah we do not
+
+317
+00:31:44,140 --> 00:31:49,330
+have two I mean we functionally there will
+be 2-node 3-node 4-node, but physically let
+
+318
+00:31:49,329 --> 00:31:55,970
+them with a same type of node. So, any internal
+ah node ah can have ah what is ah specification?
+
+319
+00:31:55,970 --> 00:32:01,009
+So, there the same type any internal node
+has 2 to 4 children and a leaf node has 1
+
+320
+00:32:01,009 --> 00:32:06,950
+to 3 items that is what all that we are saying.
+So, by doing this we will waste some space,
+
+321
+00:32:06,950 --> 00:32:11,600
+but we have several advantages particularly
+when you look at this for external data structure.
+
+322
+00:32:11,599 --> 00:32:18,639
+So, what will happen is if I can ah think
+about 2, 3, 4 tree in that manner then I can;
+
+323
+00:32:18,640 --> 00:32:25,460
+obviously, generalize that it is not ah necessary
+that I will have to restrict myself at 4 links,
+
+324
+00:32:25,460 --> 00:32:30,819
+4 children, I can do do more than that.
+So, in general I can say that there are a
+
+325
+00:32:30,819 --> 00:32:38,169
+node has n children and ah it is each node
+is not a leaf ah not a root or a leaf will
+
+326
+00:32:38,170 --> 00:32:44,009
+have between n by 2 and n children. So, put
+n as 4 you will find that it becomes 2, 3,
+
+327
+00:32:44,009 --> 00:32:52,369
+4 tree and a leaf node will have ah n minus
+1 by 2 which is 1 and for enough n being 4
+
+328
+00:32:52,369 --> 00:32:56,539
+and n minus 1 or 3 values which is what did
+you have.
+
+329
+00:32:56,539 --> 00:33:05,379
+So, if you just generalize from 2, 3, 4 to
+n by 2 to n and ah have a a container have
+
+330
+00:33:05,380 --> 00:33:11,380
+a node container which can have have either
+n by 2 or n by 2 plus 1 or n by 2 plus 2 or
+
+331
+00:33:11,380 --> 00:33:19,059
+maximum up to n minus 1 ah data items and
+corresponding number of children then we will
+
+332
+00:33:19,058 --> 00:33:26,329
+be very easily be able to arrange for a similar
+data structure which will have all the nodes
+
+333
+00:33:26,329 --> 00:33:33,949
+ah all the leaf nodes at the same level and.
+So, this is the structure which is ah which
+
+334
+00:33:33,950 --> 00:33:38,309
+extends very easily and this is a fundamental
+structure of what he says a B-tree or a b
+
+335
+00:33:38,309 --> 00:33:45,000
+plus tree will see the differences shortly.
+But this is a basic notion and the strategies
+
+336
+00:33:45,000 --> 00:33:52,920
+of node splitting and ah node merging in case
+of ah deletion and ah the algorithm of insertion
+
+337
+00:33:52,920 --> 00:33:57,550
+ah deletion that we have discussed here will
+simply get generalize in case of B-tree when
+
+338
+00:33:57,549 --> 00:34:03,299
+we go to the next module. So, we have recapitulate
+in on the balanced binary search tree and
+
+339
+00:34:03,299 --> 00:34:11,659
+we introduced ah a the notion of a 2, 3, 4
+tree which is a precursor to b plus tree B-tree
+
+340
+00:34:11,659 --> 00:34:15,510
+which is which are efficient external data
+structures and will be covered in the next
+
+341
+00:34:15,510 --> 00:34:15,620
+module.
+

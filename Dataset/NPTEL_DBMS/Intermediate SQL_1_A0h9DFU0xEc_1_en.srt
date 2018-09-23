@@ -1,0 +1,1405 @@
+﻿1
+00:00:16,179 --> 00:00:24,579
+Welcome to module 9 of database management
+systems. We have discussed about the introductory
+
+2
+00:00:24,579 --> 00:00:33,429
+level of SQL the structured query language
+in this module and the next we will take up
+
+3
+00:00:33,429 --> 00:00:40,789
+some more intermediate level features of SQL.
+So, these modules are called intermediate
+
+4
+00:00:40,789 --> 00:00:46,039
+SQL.
+So, in the last module this is what we have
+
+5
+00:00:46,039 --> 00:00:53,390
+done which was part of the closing part of
+the introductory SQL the nested sub queries
+
+6
+00:00:53,390 --> 00:01:02,100
+and modifications to the database. Today,
+we will, in this module learn about SQL expressions
+
+7
+00:01:02,100 --> 00:01:11,379
+for join and views and we will take a quick
+look into understanding the transaction.
+
+8
+00:01:11,379 --> 00:01:19,170
+This is the module outline as it will span.
+So, we start with the join expressions in
+
+9
+00:01:19,170 --> 00:01:31,240
+SQL join as we have already introduced. Takes
+two relations and returns a result as another
+
+10
+00:01:31,239 --> 00:01:40,819
+relation. So, it is two different instances
+of two schemas and we try to connect them
+
+11
+00:01:40,819 --> 00:01:47,658
+according to certain properties..
+So, a join operation is primarily a Cartesian
+
+12
+00:01:47,659 --> 00:01:58,090
+product, which relates tuples in two relations
+under certain conditions of match. It also
+
+13
+00:01:58,090 --> 00:02:05,299
+specifies that after the joining has been
+done, what are the tuples, which will be present
+
+14
+00:02:05,299 --> 00:02:15,450
+in the output join? So, join operation typically
+uses sub query, is used in a sub query, in
+
+15
+00:02:15,449 --> 00:02:23,789
+the from clause we will see those uses later.
+So, if we look into the different types of
+
+16
+00:02:23,789 --> 00:02:31,110
+join that SQL support, these are the different
+classifications. So, we have cross join, we
+
+17
+00:02:31,110 --> 00:02:37,560
+have inner join, which specifically could
+be equi join and even more specifically natural
+
+18
+00:02:37,560 --> 00:02:44,090
+join and we will see there are variety of
+outer join, that are possible. There could
+
+19
+00:02:44,090 --> 00:02:51,840
+be a self-join also, where one relation is
+joined with itself.
+
+20
+00:02:51,840 --> 00:03:00,129
+Cross join is just a formal join based, name
+for Cartesian product of two rows. So, you
+
+21
+00:03:00,129 --> 00:03:06,870
+could explicitly do a cross join, which you
+can see here or you can implicitly also do
+
+22
+00:03:06,870 --> 00:03:14,639
+a cross join, but by specifying two or more
+relations in from clause, and taking all the
+
+23
+00:03:14,639 --> 00:03:20,370
+attributes from there, we have seen these
+kind of Cartesian products earlier. So, cross
+
+24
+00:03:20,370 --> 00:03:26,769
+join here is more as placeholder, in the context
+of the join semantics that pure Cartesian
+
+25
+00:03:26,769 --> 00:03:33,449
+product is a cross joins, but what would be
+more interesting is, when we take different
+
+26
+00:03:33,449 --> 00:03:40,579
+kinds of inner and outer joins.
+So, let us start with a simple example to
+
+27
+00:03:40,579 --> 00:03:46,639
+understand the issues. So, there is a relation
+course, which has four attributes and in this
+
+28
+00:03:46,639 --> 00:03:54,510
+particular instance, it has three tuples,
+three rows and there is another relation prereq,
+
+29
+00:03:54,509 --> 00:03:59,048
+which specifies the prerequisite for every
+course.
+
+30
+00:03:59,049 --> 00:04:05,650
+So, it has two attributes; the course id and
+the corresponding prerequisite course id.
+
+31
+00:04:05,650 --> 00:04:14,139
+It also has three rows, three tuples here,
+and if you look at the instances carefully,
+
+32
+00:04:14,139 --> 00:04:22,060
+you will find that the three courses that
+are specified in the course relation all are
+
+33
+00:04:22,060 --> 00:04:31,089
+not specified in the prereq relation. Bio
+301 and C S 190 is present in prereq, but
+
+34
+00:04:31,089 --> 00:04:41,929
+C S 315 is not present in at the same time,
+the prereq has one particular tuple, specifying
+
+35
+00:04:41,930 --> 00:04:49,110
+the prerequisite of C S 347, which in turn
+is not present in the course relation. So,
+
+36
+00:04:49,110 --> 00:04:54,400
+with this observation, let us start trying
+to see what different joint mean.
+
+37
+00:04:54,399 --> 00:05:08,859
+So, in a join is computed, then in terms of
+the two relations that we have, there is an
+
+38
+00:05:08,860 --> 00:05:17,288
+attribute course id, which is common. So,
+once we have taken the cross product, we will
+
+39
+00:05:17,288 --> 00:05:27,279
+from the cross product, only retain those
+rows, where the course id in relation course
+
+40
+00:05:27,279 --> 00:05:39,399
+and the course id in relation prec prerequisite
+are same. So, when we do this particular record,
+
+41
+00:05:39,399 --> 00:05:47,149
+when it gets mapped with this corresponding
+record, it will generate the corresponding
+
+42
+00:05:47,149 --> 00:05:55,689
+output record. Similarly, C S 190, when it
+is mapped to the C S 190, in the prereq, it
+
+43
+00:05:55,689 --> 00:06:02,550
+will generate the second record, we have already
+understood this, the third record in the courses
+
+44
+00:06:02,550 --> 00:06:09,870
+C S 315 has no match here in prereq..
+So, that will not feature in the output. Similarly,
+
+45
+00:06:09,870 --> 00:06:16,968
+in the prereqs C S 347 that exist has no match
+in courses. So, that also will not appear
+
+46
+00:06:16,968 --> 00:06:25,620
+in the output and also in the output you find
+that the course id has actually featured twice.
+
+47
+00:06:25,620 --> 00:06:33,030
+This is the first column course id comes from
+course. So, it should more formally be called
+
+48
+00:06:33,029 --> 00:06:38,239
+course dot course id whereas, the second one
+comes from prereq. So, it should that should
+
+49
+00:06:38,240 --> 00:06:45,348
+formally be called prereq dot course id.
+Now, if in addition to saying that, this is
+
+50
+00:06:45,348 --> 00:06:53,310
+an inner join, if I also specify the word
+natural, I can say natural here, if say natural,
+
+51
+00:06:53,310 --> 00:07:03,009
+then this second duplicate attribute course
+id will be dropped from the output that becomes
+
+52
+00:07:03,009 --> 00:07:11,530
+a natural join, inner join as the name suggests,
+finds out the inner part of the two relations..
+
+53
+00:07:11,529 --> 00:07:19,549
+So, if we look at the two relations as A and
+B only those records, which are both have
+
+54
+00:07:19,550 --> 00:07:26,100
+instance in A as well as B, in terms of equality
+of this course id attribute will come in the
+
+55
+00:07:26,100 --> 00:07:34,780
+output. So, this is the basic type of join,
+inner join which is most commonly used.
+
+56
+00:07:34,779 --> 00:07:43,549
+Now, we can extend this into a different kind
+of join, known as outer join in the inner
+
+57
+00:07:43,550 --> 00:07:49,509
+join. As you have seen that courses that exist
+in the course relation, but are not there
+
+58
+00:07:49,509 --> 00:07:55,468
+in the prereq or the ones that exist in the
+prereq and is not there in the course are
+
+59
+00:07:55,468 --> 00:08:02,199
+not featuring in the final inner join output.
+So, there is some loss of information in terms
+
+60
+00:08:02,199 --> 00:08:12,559
+of this. So, why we are doing this we can
+compute and add tuples from one relation that
+
+61
+00:08:12,559 --> 00:08:21,229
+may not match with the with any tuple in the
+other relation and if we want to do that then
+
+62
+00:08:21,228 --> 00:08:28,860
+naturally for the other attributes of that
+tuple in the target relation we will not know
+
+63
+00:08:28,860 --> 00:08:33,599
+the values. So, we will use null values this
+is the basic idea of outer join..
+
+64
+00:08:33,599 --> 00:08:39,950
+So, let us see what it specifically means?
+We first talked about left outer join, left
+
+65
+00:08:39,950 --> 00:08:48,899
+in the sense that we have, this is how it
+is written. Left outer join is a sequence
+
+66
+00:08:48,899 --> 00:08:53,169
+of commands that you give, you are also saying
+it is natural, which means that the common
+
+67
+00:08:53,169 --> 00:08:58,919
+attribute will not feature twice in the output
+and this is the left relation and this is
+
+68
+00:08:58,919 --> 00:09:08,480
+the right relation. So, left outer join specifies
+that in the output all records of the left
+
+69
+00:09:08,480 --> 00:09:12,090
+relation, in this case the course relation
+must feature..
+
+70
+00:09:12,090 --> 00:09:17,589
+So, naturally when we do the join, we will
+get these two records as we have got in terms
+
+71
+00:09:17,589 --> 00:09:26,680
+of the inner join, in terms of course 315
+the C S, C S 315, the third course there is
+
+72
+00:09:26,679 --> 00:09:34,699
+no instance in the prereq, we will still have
+that in the output, but since the prereq value
+
+73
+00:09:34,700 --> 00:09:40,750
+for that, the prerequisite value is not known,
+the prerequisite id will be set to null here.
+
+74
+00:09:40,750 --> 00:09:47,389
+So, left outer join ensure that, all relations
+of the left relation, all tuples of the left
+
+75
+00:09:47,389 --> 00:09:52,750
+relation will necessarily feature in the output
+and that is a reason. If you see in the Venn
+
+76
+00:09:52,750 --> 00:10:02,299
+diagram, the whole of this set, A is shown
+whereas, this part certainly will not feature..
+
+77
+00:10:02,299 --> 00:10:11,339
+Now, similarly we can have a right outer join,
+where the concept is the same except that.
+
+78
+00:10:11,340 --> 00:10:17,839
+Now, we ensure that all records of the right
+relation, in this case the prereq relation
+
+79
+00:10:17,839 --> 00:10:27,310
+will feature and therefore, C S 2347 for which
+there is no entry in the course relation will
+
+80
+00:10:27,309 --> 00:10:33,119
+also come as a record and since we do not
+know the title department name and credits
+
+81
+00:10:33,120 --> 00:10:40,250
+for these fields, we will put them as null
+and this again is a natural one. So, course
+
+82
+00:10:40,250 --> 00:10:46,070
+id is featuring only once. So, you will understand
+that since, we have a left version and we
+
+83
+00:10:46,070 --> 00:10:50,720
+have a right version.
+We can actually have a full version as well.
+
+84
+00:10:50,720 --> 00:10:55,940
+So, if we look into the join relations in
+general, it takes two relations and returns
+
+85
+00:10:55,940 --> 00:11:04,060
+a result and those additional operations are
+used in the sub query in from and there is
+
+86
+00:11:04,059 --> 00:11:09,179
+a set of join conditions. So, these are the
+join conditions that we are specifying, whether
+
+87
+00:11:09,179 --> 00:11:17,758
+it is natural and we will soon see that we
+can actually not depend only on the attributes
+
+88
+00:11:17,759 --> 00:11:25,129
+that are common, we can actually specify that
+which attributes should be used in computing
+
+89
+00:11:25,129 --> 00:11:30,669
+the joint. So, those are on condition and
+the using clause, we will just illustrate
+
+90
+00:11:30,669 --> 00:11:43,259
+them soon and finally, there are four types
+of join that can happen, that is the inner
+
+91
+00:11:43,259 --> 00:11:48,139
+join. We have seen the left outer join, right
+outer join and we will soon see the full outer
+
+92
+00:11:48,139 --> 00:11:55,730
+join..
+So, full outer join as you must have guessed
+
+93
+00:11:55,730 --> 00:12:04,572
+will ensure that you get certainly the tuples
+from the inner join, which is here, you will
+
+94
+00:12:04,572 --> 00:12:12,649
+get the tuple from the left outer join that
+is here, that is a tuple which exists in course
+
+95
+00:12:12,649 --> 00:12:17,700
+and there is no corresponding matching tuple
+in the prereq and you will also get the tuple
+
+96
+00:12:17,700 --> 00:12:25,399
+from the right outer join, that is for tuple,
+which exists in the prereq relation, but there
+
+97
+00:12:25,399 --> 00:12:31,629
+is no corresponding tuple in the course relation
+and corresponding missing values are all set
+
+98
+00:12:31,629 --> 00:12:37,980
+to null. So, these three kinds of outer join
+are possible.
+
+99
+00:12:37,980 --> 00:12:47,139
+So, you can also specify join by saying that
+explicitly saying what attribute we want to
+
+100
+00:12:47,139 --> 00:12:53,569
+join on and if you specify that, then you
+are saying it is a course inner join prereq.
+
+101
+00:12:53,570 --> 00:12:57,709
+This part was same then you are putting an
+on clause, saying in the on clause, you will
+
+102
+00:12:57,708 --> 00:13:04,439
+have to provide a predicate that is, which
+field should equate or match with what field.
+
+103
+00:13:04,440 --> 00:13:09,560
+So, you are saying course dot course id is
+equal to prereq dot course id.
+
+104
+00:13:09,559 --> 00:13:14,639
+So, this result incidentally happens to be
+same as just doing the inner join, but we
+
+105
+00:13:14,639 --> 00:13:19,600
+are illustrating that, on clause can explicitly
+use. For example, between the two relations,
+
+106
+00:13:19,600 --> 00:13:25,540
+we have more than one common attribute, but
+we may want to actually do the inner join
+
+107
+00:13:25,539 --> 00:13:29,198
+based on only one of them or equality on two
+of them and so on..
+
+108
+00:13:29,198 --> 00:13:40,258
+So, this kind of a join, where inner join,
+where you set two fields to be equal or two
+
+109
+00:13:40,259 --> 00:13:46,230
+or more fields to be equal is also known as
+equi join and since we have not specified
+
+110
+00:13:46,230 --> 00:13:51,620
+natural, you can again observe, then the course
+id attribute has occurred twice. If it was
+
+111
+00:13:51,620 --> 00:13:57,850
+said natural then the second course id attribute
+would not have come in the result, this is
+
+112
+00:13:57,850 --> 00:14:06,970
+a showing. The left outer join in terms of
+on clause and we have seen similar results.
+
+113
+00:14:06,970 --> 00:14:13,570
+And now, this can be seen in terms of the
+on clause as well, and you can see in that
+
+114
+00:14:13,570 --> 00:14:23,329
+second course id field. This entry is null,
+because actually you do not have that in the
+
+115
+00:14:23,328 --> 00:14:34,208
+prerequisite set and; obviously, this set
+will be null, this field will be null. So,
+
+116
+00:14:34,208 --> 00:14:40,890
+this is another example, showing you the natural
+right outer join, this is you, showing you
+
+117
+00:14:40,890 --> 00:14:50,099
+full outer join and we are showing the use
+of the using clause. We can say using and
+
+118
+00:14:50,100 --> 00:14:57,230
+put a set of attributes and the meaning is
+the join will be performed, based on those
+
+119
+00:14:57,230 --> 00:15:01,870
+attributes. So, here in this case again the
+join will be based on course id.
+
+120
+00:15:01,870 --> 00:15:07,720
+So, that was about different kinds of join
+that we can do, which we going forward. We
+
+121
+00:15:07,720 --> 00:15:14,720
+will see that form, a very critical has a
+very critical place, in terms of query formulation.
+
+122
+00:15:14,720 --> 00:15:19,990
+Now, we take you to a different concept known
+as views now.
+
+123
+00:15:19,990 --> 00:15:29,560
+We have seen that. So, far we have been computing
+certain query results, based on one or more
+
+124
+00:15:29,559 --> 00:15:38,979
+relations one or more instances. Now, in some
+cases, we may want the results to be restrictive
+
+125
+00:15:38,980 --> 00:15:44,310
+in terms of based on the user or based on
+the context, in which the result should be
+
+126
+00:15:44,309 --> 00:15:52,588
+used. So, we may not want all fields of a
+result to be visible to all the users or to
+
+127
+00:15:52,589 --> 00:15:59,829
+the application. So, we may not expose the
+whole logical model and in those cases, we
+
+128
+00:15:59,828 --> 00:16:08,409
+introduce a view. So, here we are showing
+one, where, from the instructor relation,
+
+129
+00:16:08,409 --> 00:16:13,528
+we are only picking up three fields and we
+are not picking up the salary field..
+
+130
+00:16:13,528 --> 00:16:20,698
+Now, you would think that, well this is what
+we can do in terms of the normal query and
+
+131
+00:16:20,698 --> 00:16:29,729
+certainly then, what is the point of using
+this? Now, what we can do is, we can create
+
+132
+00:16:29,730 --> 00:16:36,980
+this not adjust as a query, but as a view
+one, once we create this as a view, it actually
+
+133
+00:16:36,980 --> 00:16:45,959
+this query expression is treated as what is
+known as a view expression and every time
+
+134
+00:16:45,958 --> 00:16:53,159
+you want to use that view. The actual tuples
+in that view are computed, but this is not
+
+135
+00:16:53,159 --> 00:17:00,519
+actually a relation that exists in the database.
+So, it is a kind of, can be thought of as
+
+136
+00:17:00,519 --> 00:17:09,588
+a kind of virtual relation, which exists,
+which can be seen only when you use that.
+
+137
+00:17:09,588 --> 00:17:17,480
+So, there is a subtle, but very strong difference
+between, actually computing a result, through
+
+138
+00:17:17,480 --> 00:17:25,960
+a select query and defining a view, based
+on a select query and then making use of the
+
+139
+00:17:25,960 --> 00:17:33,640
+view, as if it were actually a relation that
+existed. So, to do this, this is how we go
+
+140
+00:17:33,640 --> 00:17:38,870
+about. It is the send text, is very similar
+to the create table. So, you do a create view
+
+141
+00:17:38,869 --> 00:17:45,909
+give a name and then you specify as is the
+connective and specify the query expression,
+
+142
+00:17:45,910 --> 00:17:51,529
+which is an SQL query, which will let you
+compute the view, every time you actually
+
+143
+00:17:51,529 --> 00:17:56,559
+need it..
+So, this is a view name, once a view is defined,
+
+144
+00:17:56,559 --> 00:18:03,629
+the view name can be used as a virtual relation,
+it can be used exactly as we use any of the
+
+145
+00:18:03,630 --> 00:18:11,050
+really existing relation, the conceptual relations
+that we have created, through create table.
+
+146
+00:18:11,049 --> 00:18:17,879
+So, it is the difference, this is what needs
+to be understood very well, the view definition
+
+147
+00:18:17,880 --> 00:18:23,900
+is not the same as creating a new relation,
+once you create the new relation, the time
+
+148
+00:18:23,900 --> 00:18:29,690
+you have created it, you get the result and
+that result is explicitly available as a set
+
+149
+00:18:29,690 --> 00:18:38,450
+of tuples as a table rather a view is a definition,
+which you stored in the database as an expression.
+
+150
+00:18:38,450 --> 00:18:46,269
+So, every time you make use of that view,
+at that time the set of tuples are computed.
+
+151
+00:18:46,269 --> 00:18:52,809
+It is not existing in the database as stored
+like the real relations and based on that
+
+152
+00:18:52,809 --> 00:18:57,049
+computation, all the rest of the query will
+actually be executed.
+
+153
+00:18:57,049 --> 00:19:04,440
+So, let us take a quick look, this is a create
+view, we have created the view of a, of view
+
+154
+00:19:04,440 --> 00:19:11,080
+called faculty, from instructor relation.
+Instructor relation is the real one, I existing
+
+155
+00:19:11,079 --> 00:19:17,309
+one and faculty is a view expression being
+created and in that, what we have done? Simply,
+
+156
+00:19:17,309 --> 00:19:24,589
+we have taken a done, a projection, we have
+lived left out the salary field. Now, we can
+
+157
+00:19:24,589 --> 00:19:30,619
+make use of that view, you can see that we
+are doing from faculty..
+
+158
+00:19:30,619 --> 00:19:37,549
+So, this actually is a view, but this behaves
+as if this is varying relation. So, from faculty
+
+159
+00:19:37,549 --> 00:19:42,779
+we are trying to find out the name of all
+those faculty; who belong to the biology department.
+
+160
+00:19:42,779 --> 00:19:48,129
+So, what will happen, when they want to execute
+this query? This will refer to this view.
+
+161
+00:19:48,130 --> 00:19:54,810
+So, to execute this query, it will have to
+first execute this query, get the temporary
+
+162
+00:19:54,809 --> 00:19:59,919
+virtual instance of the virtual relation,
+created and based on that, this query will
+
+163
+00:19:59,920 --> 00:20:02,509
+be computed and the results will be given
+accordingly.
+
+164
+00:20:02,509 --> 00:20:06,980
+So, that is the basic purpose of the view
+that the whole thing, the whole view expression
+
+165
+00:20:06,980 --> 00:20:12,900
+remains as an abstraction in the database
+and computed whenever it is used. So, this
+
+166
+00:20:12,900 --> 00:20:19,259
+is showing you another view, which shows certain
+computed information. For example, we are
+
+167
+00:20:19,259 --> 00:20:25,759
+creating a view for departmental total salary,
+which will show as two fields department name
+
+168
+00:20:25,759 --> 00:20:29,049
+and total salary, which has been created by
+aggregation..
+
+169
+00:20:29,049 --> 00:20:37,529
+So, anytime we make use of this view in a
+from clause, we will get, we will feel as
+
+170
+00:20:37,529 --> 00:20:43,049
+if such a relation really exists where the
+department name and the total salary of the
+
+171
+00:20:43,049 --> 00:20:48,639
+instructors in that department are stored,
+but it really does not exist. It is computed
+
+172
+00:20:48,640 --> 00:20:56,450
+whenever it is needed, whenever it is used,
+you can actually use views to create other
+
+173
+00:20:56,450 --> 00:20:59,769
+views.
+For example, this is one view which is the
+
+174
+00:20:59,769 --> 00:21:07,400
+view of physics fall 2009, which are all courses
+that are offered in physics, from the physics
+
+175
+00:21:07,400 --> 00:21:16,400
+department in the semester fall of year 2009
+and using that we can create another view.
+
+176
+00:21:16,400 --> 00:21:21,509
+See here again, we are in the, from clause
+we are using this view. So, creating this
+
+177
+00:21:21,509 --> 00:21:27,059
+using this view, we are creating yet another
+view, which shows the courses that ran in
+
+178
+00:21:27,059 --> 00:21:33,460
+the Watson building. So, views can be used
+as I have already said as any other.
+
+179
+00:21:33,460 --> 00:21:42,380
+Actual relation, but they do not really exist.
+So, if you expand out, if you just put the
+
+180
+00:21:42,380 --> 00:21:53,800
+physics fall 2009 expression, within the view
+definition of physics for 2009 Watson, this
+
+181
+00:21:53,799 --> 00:21:59,269
+is your earlier view relation. So, this is
+known as view expansion. So, this is actually
+
+182
+00:21:59,269 --> 00:22:05,119
+the query that, you are executing and that
+has a lot of value.
+
+183
+00:22:05,119 --> 00:22:14,599
+So, as we have said views can be defined indirectly
+from one relation. So, these are called direct
+
+184
+00:22:14,599 --> 00:22:20,240
+dependence or they could be defined in terms
+of a chain of relations v one in terms of
+
+185
+00:22:20,240 --> 00:22:26,599
+v 2 v 2 in terms of v 3 and. So, on and a
+view relation can be recursive also that a
+
+186
+00:22:26,599 --> 00:22:34,799
+view could be in terms of itself.
+A lot of power view expansion is the process
+
+187
+00:22:34,799 --> 00:22:41,919
+that SQL uses to evaluate a view. So, I would
+request you to study this and understand that
+
+188
+00:22:41,920 --> 00:22:46,640
+this process works. This is pretty much like
+pseudo code C program.
+
+189
+00:22:46,640 --> 00:22:54,650
+Now, moving to recursive views, the views
+where the same relation can be used in the
+
+190
+00:22:54,650 --> 00:23:03,410
+view to define another view, we need like
+every other recursive structure. We need first
+
+191
+00:23:03,410 --> 00:23:09,390
+a non-recursive statement, which is called
+the seed statement. we need a recursive statement,
+
+192
+00:23:09,390 --> 00:23:16,210
+which can recur, we need a connection operator,
+which can connect the non-recursive and the
+
+193
+00:23:16,210 --> 00:23:22,460
+recursive results together put them together,
+the only connective that is valid is union,
+
+194
+00:23:22,460 --> 00:23:30,480
+all that is multi set union and we also need
+some kind of a terminal condition to guarantee
+
+195
+00:23:30,480 --> 00:23:36,019
+that the recursion really a terminus, it does
+not go on forever.
+
+196
+00:23:36,019 --> 00:23:42,220
+So, let us take an example. So, this is in
+context of a relation flights, where the four
+
+197
+00:23:42,220 --> 00:23:48,529
+fields are as specified and there is an instance
+shown, which show that different source destination
+
+198
+00:23:48,529 --> 00:23:54,950
+of different carriers, carrying people from
+one source to the other destination and what
+
+199
+00:23:54,950 --> 00:24:00,180
+do you want to find is all destinations that
+can be reached from Paris. Now, you can see
+
+200
+00:24:00,180 --> 00:24:07,430
+that from Paris, if I can reach Detroit and
+from Detroit I can reach San Jose, then I
+
+201
+00:24:07,430 --> 00:24:13,920
+can actually reach San Jose from Paris. So,
+that is the basic reach ability. So, that
+
+202
+00:24:13,920 --> 00:24:22,039
+will necessarily, if I want to compute that,
+then I will be able to compute this very easily
+
+203
+00:24:22,039 --> 00:24:32,829
+by doing natural join of flights with flights
+provided, I take say source..
+
+204
+00:24:32,829 --> 00:24:51,970
+Let us compute it like this, flights f 1 join,
+flights f 2 and I will have f 1 dot destination
+
+205
+00:24:51,970 --> 00:24:59,380
+equal to f 2 dot sources. So, the idea is
+if something goes from Paris to Detroit that
+
+206
+00:24:59,380 --> 00:25:06,591
+is in f 1 and if some flight goes from Detroit
+to San Jose that is in f 2, then the destination
+
+207
+00:25:06,590 --> 00:25:13,589
+in f 1 and the source in f 2 have to be equated.
+So, if we do this kind of a self equi join,
+
+208
+00:25:13,589 --> 00:25:22,209
+then we will be able to find out all flights
+that go from Paris to San Jose or all places
+
+209
+00:25:22,210 --> 00:25:31,789
+that you can reach from Paris in one hop.
+Naturally, once you reach, once you do that
+
+210
+00:25:31,789 --> 00:25:39,289
+then you may be able to go to another destination
+in two hops and once you do that then, you
+
+211
+00:25:39,289 --> 00:25:43,120
+may be able to reach another, yet another
+destination in three hops and so on. So, we
+
+212
+00:25:43,121 --> 00:25:49,259
+do not really know how many hops, maximum
+would be required to compute this reachability
+
+213
+00:25:49,259 --> 00:25:55,420
+information. So, that is the reason we need
+to make use of the recursion and so, this
+
+214
+00:25:55,420 --> 00:26:01,670
+is how we express it.
+So, if we look into this, we are specifying
+
+215
+00:26:01,670 --> 00:26:06,700
+that is a recursive view. It will happen with
+itself, this is the name and this is what
+
+216
+00:26:06,700 --> 00:26:14,620
+we want to compute source destination and
+we take another dummy attribute kind of which
+
+217
+00:26:14,619 --> 00:26:21,239
+specify the depth of recursion. So, the present
+instance of the relation is at depth 0.
+
+218
+00:26:21,240 --> 00:26:28,910
+So, which defines your non recursive seat
+part so, it says select. So, you have renamed
+
+219
+00:26:28,910 --> 00:26:36,150
+is at flights as route, you are specified
+that it has to start from Paris and you can
+
+220
+00:26:36,150 --> 00:26:43,810
+find out the source destination pair at depth
+0, then you specify the recursive part that
+
+221
+00:26:43,809 --> 00:26:49,549
+is the second hop has to be defined. So, we
+are saying that, if you had the reachability
+
+222
+00:26:49,549 --> 00:26:57,440
+then call, let us call it in one. This reachability
+maybe in one hop that is a depth 0 maybe in
+
+223
+00:26:57,440 --> 00:27:03,019
+2 hops that is a depth 1 maybe at 3 hops;
+that is a depth 2 and you take another instance
+
+224
+00:27:03,019 --> 00:27:10,200
+of flight as out 1 and what you need is the
+destination in the first in one has to be
+
+225
+00:27:10,200 --> 00:27:16,840
+same as the source in the other..
+So, that they get connected and then you output
+
+226
+00:27:16,839 --> 00:27:22,829
+the source from the first one destination
+from the second one and naturally the depth
+
+227
+00:27:22,829 --> 00:27:31,399
+has got incremented, because you have done
+added one more hop and so, this is the and
+
+228
+00:27:31,400 --> 00:27:36,420
+you add another condition saying that in one
+dot depth should be less than equal to 100.
+
+229
+00:27:36,420 --> 00:27:41,259
+This is as I mentioned is a terminal condition
+which makes sure that, you do not get into
+
+230
+00:27:41,259 --> 00:27:49,390
+infinite recursion. So, this view, recursive
+view cannot be used to compute any reachability,
+
+231
+00:27:49,390 --> 00:27:56,600
+which has more than 101 hops.
+So, that is to be noted and finally, we need
+
+232
+00:27:56,599 --> 00:28:03,879
+to connect these two results, which is the
+initial start seed and the recursive one.
+
+233
+00:28:03,880 --> 00:28:09,080
+So, this is the connection operator.
+So, this is basically the idea of the recursive
+
+234
+00:28:09,079 --> 00:28:16,720
+view, those of you who are more familiar with
+discrete structure, would have known among
+
+235
+00:28:16,720 --> 00:28:21,079
+relations in some more depth, you would know
+that, we can define a transitive closure of
+
+236
+00:28:21,079 --> 00:28:26,329
+a binary relation. So, this recursive view
+is necessarily computing the transitive closure
+
+237
+00:28:26,329 --> 00:28:33,199
+from the flights relation. So, this is the
+instance of the flights and on the final computation,
+
+238
+00:28:33,200 --> 00:28:37,910
+this is what you get. This gives you all the
+destinations that can eventually be reached
+
+239
+00:28:37,910 --> 00:28:44,840
+from the source Paris.
+So, the recursive is very powerful in the
+
+240
+00:28:44,839 --> 00:28:53,119
+sense that without recursion a non-recursive
+version can only find flights up to a certain
+
+241
+00:28:53,119 --> 00:29:01,289
+number of hops and whatever ma query you write
+it is always possible to write out a database
+
+242
+00:29:01,289 --> 00:29:06,119
+instance which will have more hops and your
+query will necessarily fail.
+
+243
+00:29:06,119 --> 00:29:15,489
+So, we make use of the recursion here to make
+sure that you can actually extend this to
+
+244
+00:29:15,490 --> 00:29:24,259
+whatever depth you want and to compute this
+we keep on computing till no changes are possible
+
+245
+00:29:24,259 --> 00:29:30,629
+and in that sense this recursive views are
+said to be monotonic in that every time you
+
+246
+00:29:30,630 --> 00:29:36,150
+compute your result necessarily becomes larger
+and that is the reason you for the purpose
+
+247
+00:29:36,150 --> 00:29:45,790
+of being monotonic you are actually making
+use of the union all. So, that makes it all
+
+248
+00:29:45,789 --> 00:29:52,569
+inclusive
+So, now, if we go and this is the instance
+
+249
+00:29:52,569 --> 00:29:56,829
+and this you can. Here, I have shown that
+how the iteration actually happens in the
+
+250
+00:29:56,829 --> 00:30:01,220
+iteration 0, in the flights itself, you had
+three destinations, then you add two more
+
+251
+00:30:01,220 --> 00:30:06,309
+in iteration 1, in iteration 2, you do not
+add anything else. So, your result henceforth
+
+252
+00:30:06,309 --> 00:30:11,769
+will not change. So, you have reached a fixed
+point and you have computations, are over.
+
+253
+00:30:11,769 --> 00:30:17,670
+You can also update a view you can insert
+a record directly into a view, but since view
+
+254
+00:30:17,670 --> 00:30:22,490
+only is partial information on the relation,
+when you insert into a view since, view is
+
+255
+00:30:22,490 --> 00:30:27,130
+virtual. There will have to be an insertion,
+in the real relation and in the real relation
+
+256
+00:30:27,130 --> 00:30:31,730
+you may not know certain fields. So, if you
+are doing this insertion into faculty, which
+
+257
+00:30:31,730 --> 00:30:36,319
+is a view of instructor, then the salary field
+is not known. So, in the actual instructor
+
+258
+00:30:36,319 --> 00:30:43,439
+a null will have to get inserted in the salary
+field. So, the salary field needs to be null
+
+259
+00:30:43,440 --> 00:30:48,519
+able kind of field so updates on views have
+certain restrictions.
+
+260
+00:30:48,519 --> 00:30:54,980
+So, there are some more instances that I have
+given, which you can study and try to understand
+
+261
+00:30:54,980 --> 00:31:00,710
+that what the difficulties of updating on
+the view are. So, it can be done, but it has
+
+262
+00:31:00,710 --> 00:31:06,730
+to be done in a restrictive sense. So, these
+are the different conditions that has to happen
+
+263
+00:31:06,730 --> 00:31:13,539
+for views to be updated. So, please go through
+these slides to understand what are there
+
+264
+00:31:13,539 --> 00:31:19,220
+in terms of the views? Finally, view is a
+virtual relation, but it can be materialized
+
+265
+00:31:19,220 --> 00:31:26,201
+also, that is materializing is basically computing
+a physical relation at the at the instance
+
+266
+00:31:26,201 --> 00:31:30,569
+of the view, but naturally if you materialized
+then there is a certain point of time, where
+
+267
+00:31:30,569 --> 00:31:35,809
+you have materialized where you have made
+it into a physical relation and hence, if
+
+268
+00:31:35,809 --> 00:31:42,029
+your original source data in the view changes
+in future the materialized view also need
+
+269
+00:31:42,029 --> 00:31:45,940
+to be updated otherwise, your data will get
+bad.
+
+270
+00:31:45,940 --> 00:31:52,920
+Finally, in this module, we mentioned that,
+there is something called transactions, which
+
+271
+00:31:52,920 --> 00:31:58,610
+we will take up at a later stage, in much
+depth. This is just to get you familiar with
+
+272
+00:31:58,609 --> 00:32:05,699
+atom a transaction is a unit of work, which
+is usually atomic, which is either fully executed
+
+273
+00:32:05,700 --> 00:32:12,890
+or if it fails, it will be rolled back as
+if it never occurred and this is required
+
+274
+00:32:12,890 --> 00:32:17,920
+for isolation in concurrent transactions.
+So, we will talk about this lot more when
+
+275
+00:32:17,920 --> 00:32:24,220
+we take up concurrency and related issues..
+So, come transactions implicitly begin and
+
+276
+00:32:24,220 --> 00:32:29,140
+they end by either committing the work that
+they have successfully finished or rolling
+
+277
+00:32:29,140 --> 00:32:39,200
+back that, this cannot be done. So, there
+are some features in the SQL for doing transactions
+
+278
+00:32:39,200 --> 00:32:46,500
+and, but usually you can transactions, commit
+by default and the only it is exceptions,
+
+279
+00:32:46,500 --> 00:32:50,150
+when the rollback is happening and we will
+see more of that later.
+
+280
+00:32:50,150 --> 00:32:57,860
+So, to summarize in this module, we have learnt
+about two important SQL features in terms
+
+281
+00:32:57,859 --> 00:33:02,490
+of join and views and we just introduced the
+basic notion of committing transactions .
+

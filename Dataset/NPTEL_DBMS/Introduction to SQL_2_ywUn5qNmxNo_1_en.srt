@@ -1,0 +1,1395 @@
+﻿1
+00:00:15,929 --> 00:00:24,679
+Welcome to module 7 of database management
+systems, this is a second part out of total
+
+2
+00:00:24,679 --> 00:00:31,359
+3 of introduction to SQL.
+In the last module, we have discussed about
+
+3
+00:00:31,359 --> 00:00:40,620
+the evolution of SQL the data definition language
+part of it and the basic structure of queries.
+
+4
+00:00:40,619 --> 00:00:46,959
+In the current module we will complete the
+understanding of the basics queries structure
+
+5
+00:00:46,960 --> 00:00:55,320
+and will see how, common set theoretic operations
+can be performed in terms of queries. We will
+
+6
+00:00:55,320 --> 00:01:02,509
+familiarize ourselves with the handling of
+null values and aggregation operation, that
+
+7
+00:01:02,509 --> 00:01:08,320
+will be frequently required for forming queries.
+So, this is a module outline these are the
+
+8
+00:01:08,320 --> 00:01:14,929
+topics, that we will discuss. So, we started
+the discussion of some more basic operations
+
+9
+00:01:14,930 --> 00:01:20,440
+in the query.
+We have already discussed this that, if we
+
+10
+00:01:20,439 --> 00:01:28,519
+do select star from 2 tables then it results
+in a Cartesian product we have seen this result
+
+11
+00:01:28,519 --> 00:01:33,269
+earlier..
+Know by itself as we had said that, by itself
+
+12
+00:01:33,269 --> 00:01:41,868
+the Cartesian product may not really make
+a lot of you may not be very useful, but suppose
+
+13
+00:01:41,868 --> 00:01:49,140
+we want to answer this kind of a query, that
+find all names of all instructors who have
+
+14
+00:01:49,140 --> 00:01:59,329
+taught some course and for those you also
+write the course_id. So, what we are interested
+
+15
+00:01:59,329 --> 00:02:04,978
+in is the name of the instructor and course_id.
+So, we put that on the select course these
+
+16
+00:02:04,978 --> 00:02:09,530
+are the 2 tables that are required because,
+the name of the instructor is there in the
+
+17
+00:02:09,530 --> 00:02:20,039
+instructor table relation and then the relationship
+between which instructor teach which course
+
+18
+00:02:20,039 --> 00:02:27,528
+is in the teachers table. So, in the instructor
+table we have the name in the teachers table,
+
+19
+00:02:27,528 --> 00:02:36,058
+we have the course_id and also this relationship
+as to which course is taught by which teacher
+
+20
+00:02:36,058 --> 00:02:44,919
+and here, we have the relationship between
+which id of the instructor has which name.
+
+21
+00:02:44,919 --> 00:02:51,568
+So, what we do is, when we do this Cartesian
+product will get something like this, as we
+
+22
+00:02:51,568 --> 00:02:57,468
+have already seen, but we want to qualify
+it by with a predicate which say that, we
+
+23
+00:02:57,468 --> 00:03:03,389
+will out of all these combinations will choose
+only those where, the instructor.ID equals
+
+24
+00:03:03,389 --> 00:03:16,138
+the teachers.ID. So, if we look at say in
+the first row the instructor.ID is this, teachers.ID
+
+25
+00:03:16,139 --> 00:03:23,480
+is this, which is id of the teachers table
+they are same. So, which says the this instructors
+
+26
+00:03:23,479 --> 00:03:34,058
+Srinivasan actually teaches the course CS-101
+whereas, if you look into this row it says
+
+27
+00:03:34,058 --> 00:03:39,669
+that instructor.ID is this and teaches.ID
+is this and we are really not interested in
+
+28
+00:03:39,669 --> 00:03:45,728
+this combination, because this combination
+does not convey anything meaningful. So, by
+
+29
+00:03:45,729 --> 00:03:51,620
+the use of this where clause, we will try
+to choose only those records where, these
+
+30
+00:03:51,620 --> 00:03:56,860
+2 ids are same which will tell us that, this
+particular instructor actually teaches that
+
+31
+00:03:56,860 --> 00:04:06,809
+particular course.
+So, if we do that, then you will find that
+
+32
+00:04:06,808 --> 00:04:16,079
+majority of the records that, actually came
+about in the Cartesian product are eliminated
+
+33
+00:04:16,079 --> 00:04:21,799
+from this result. So, I have struck them out.
+So, you can currently see in this part you
+
+34
+00:04:21,798 --> 00:04:29,519
+can see only 4 records the 3 courses taught
+by Srinivasan. So, and the one course taught
+
+35
+00:04:29,519 --> 00:04:51,399
+by you. So, in the output you will have 
+this name, this name part and this course_id
+
+36
+00:04:51,399 --> 00:04:57,008
+part because, you are projecting on these
+2. So, this will be the output table which
+
+37
+00:04:57,009 --> 00:05:04,310
+will get generated and just to remind you,
+this is the notion of natural join that, we
+
+38
+00:05:04,310 --> 00:05:10,098
+had discussed in relational algebra in this
+case we will actually call it equi join because,
+
+39
+00:05:10,098 --> 00:05:17,199
+we are using a equality condition after the
+Cartesian product to join these 2 relationship.
+
+40
+00:05:17,199 --> 00:05:25,509
+So, this is a very critical operation in many
+of cases in our database query system.
+
+41
+00:05:25,509 --> 00:05:33,509
+There is and this is another extension of
+this similar example. So, here we have added
+
+42
+00:05:33,509 --> 00:05:41,210
+another predicate in the where clause, specifying
+that instructed or department name is art..
+
+43
+00:05:41,209 --> 00:05:48,519
+So, which means this will now, give the names
+of all instructors in the art department only
+
+44
+00:05:48,519 --> 00:05:53,649
+who have taught some course and specify their
+course_id. So, in different such ways, you
+
+45
+00:05:53,649 --> 00:05:59,839
+can manipulate and create queries.
+It is possible to read them, we have already
+
+46
+00:05:59,839 --> 00:06:05,459
+seen examples you can rename a relation you
+can rename an attribute and the style is to
+
+47
+00:06:05,459 --> 00:06:12,489
+use as. So, here you can see that, in the
+select query we have said from instructor
+
+48
+00:06:12,490 --> 00:06:20,780
+as T. So, the name of this relation can be
+treated as T and we again see that as instructor
+
+49
+00:06:20,779 --> 00:06:31,218
+as S. So, actually what we are doing a join
+between the same relation instructor and instructor.
+
+50
+00:06:31,218 --> 00:06:37,668
+So, and we are trying to find out all instructor.
+So, you have higher salary than some instructor
+
+51
+00:06:37,668 --> 00:06:43,019
+in computer science. So, the some instructor
+in computer science is specified by this condition,
+
+52
+00:06:43,019 --> 00:06:48,899
+because department has to be computer science
+and the fact that salary is higher. So, as
+
+53
+00:06:48,899 --> 00:06:57,870
+if you treat that, though it is actually a
+join between a product between instructor
+
+54
+00:06:57,870 --> 00:07:05,430
+and instructor the same relation, but by renaming
+you treat them as if they are 2 different
+
+55
+00:07:05,430 --> 00:07:11,189
+tables having name T and S, and then it becomes
+easier to write this kind of query. So, otherwise
+
+56
+00:07:11,189 --> 00:07:17,169
+it is it is quite difficult to write this
+query to find out, because you need to actually
+
+57
+00:07:17,168 --> 00:07:24,899
+create a product of one relation with itself.
+Keyword as is optional you can just write
+
+58
+00:07:24,899 --> 00:07:30,258
+instructor, and then the name the new name
+that you want to give and that itself field
+
+59
+00:07:30,259 --> 00:07:37,141
+work here. Is another Cartesian product example,
+here given a relation which is which lists
+
+60
+00:07:37,141 --> 00:07:46,699
+a person and his or her supervisor, we want
+to find out all supervisors direct or indirect
+
+61
+00:07:46,699 --> 00:07:50,800
+of that person.
+So, I leave this as an exercise to you to
+
+62
+00:07:50,800 --> 00:07:56,300
+think over as to how we can actually compute
+this query?
+
+63
+00:07:56,300 --> 00:08:05,520
+SQL supports several string operations and
+of particular interest at 2 specific symbols,
+
+64
+00:08:05,519 --> 00:08:12,688
+characters which allow us doing certain match,
+percentage is used to match any substring
+
+65
+00:08:12,689 --> 00:08:20,330
+and underscore is used to match any particular
+character and we use a keyword like, to find
+
+66
+00:08:20,329 --> 00:08:26,668
+out different string patterns that can be
+matched. So, here we want to find the names
+
+67
+00:08:26,668 --> 00:08:35,528
+of all instructors, whose name includes the
+substring d a r and by writing this so saying
+
+68
+00:08:35,528 --> 00:08:41,559
+the predicate is formed is named like this.
+So, what is there is a percentage before there
+
+69
+00:08:41,559 --> 00:08:47,819
+is a percentage after. So, anywhere d a r
+will feature in the name, this predicate will
+
+70
+00:08:47,820 --> 00:08:53,180
+turn out to be true otherwise if there is
+no d a r in the name the predicate will turn
+
+71
+00:08:53,179 --> 00:08:58,569
+out to be false and that particular record
+will not get selected. So, in this way we
+
+72
+00:08:58,570 --> 00:09:05,920
+can using like, we can actually do different
+kinds string operations as conditions in the
+
+73
+00:09:05,919 --> 00:09:11,929
+weight loss or also..
+So now, naturally this brings in an issue
+
+74
+00:09:11,929 --> 00:09:19,689
+of for what if my string itself has a percentage
+or an underscore character. So, the rule followed
+
+75
+00:09:19,690 --> 00:09:25,380
+is you will need to escape that, with the
+escape character that you define. This is
+
+76
+00:09:25,379 --> 00:09:29,649
+a style which you have seen in C programming
+as well.
+
+77
+00:09:29,649 --> 00:09:37,009
+Patterns are certainly case sensitive. So,
+it depends it will distinguish between upper
+
+78
+00:09:37,009 --> 00:09:42,189
+case as well as lower case, and these are
+different examples of string matching that
+
+79
+00:09:42,190 --> 00:09:47,070
+you can do where, you can match at this beginning
+of a string, end of a string, anywhere in
+
+80
+00:09:47,070 --> 00:09:56,910
+the string, specific number of characters
+in a string and so on. SQL supports concatenation
+
+81
+00:09:56,909 --> 00:10:02,659
+conversion of lower to upper case and vice
+versa and different other common string operations,
+
+82
+00:10:02,659 --> 00:10:08,679
+those are available as functions in SQL and
+can be used for convenience.
+
+83
+00:10:08,679 --> 00:10:17,609
+Now, let us different question let us say,
+we have computed a query and then often we
+
+84
+00:10:17,610 --> 00:10:24,050
+would want, that the result be ordered in
+according to certain order particularly the
+
+85
+00:10:24,049 --> 00:10:29,159
+value of certain field if we want the result
+to be ordered, then SQL allows you to do that
+
+86
+00:10:29,159 --> 00:10:35,169
+by another clause that you add to the query,
+which is called order by. So, what this will
+
+87
+00:10:35,169 --> 00:10:41,208
+do we have already seen this query this will
+find out the names of all the instructors
+
+88
+00:10:41,208 --> 00:10:47,049
+and the names will occur in a distinct manner
+because, distinct is specified, but then the
+
+89
+00:10:47,049 --> 00:10:57,588
+output will be in terms ordered by the name.
+And the ordering can be descending or ascending
+
+90
+00:10:57,589 --> 00:11:02,220
+by you can control that, by specifying whether
+you want descending or ascending by default
+
+91
+00:11:02,220 --> 00:11:08,120
+the ordering is ascending. So, that makes
+the presentation of the result of and very
+
+92
+00:11:08,120 --> 00:11:13,679
+easy and you can certainly sort on multiple
+fields as well, so it can be ordered based
+
+93
+00:11:13,679 --> 00:11:21,109
+on combination of fields.
+SQL were closed also allows between as a comparison
+
+94
+00:11:21,110 --> 00:11:27,450
+parameter. So, between can specify 2 values.
+So that, whenever the field value will be
+
+95
+00:11:27,450 --> 00:11:33,230
+between these 2 given values the condition
+will be predicated will be taken to be true
+
+96
+00:11:33,230 --> 00:11:40,899
+otherwise is taken to be false. You can compare
+based on people as well. So, in this case
+
+97
+00:11:40,899 --> 00:11:49,720
+you could have written, you could have checked
+for equality of instructor.ID with teachers.ID
+
+98
+00:11:49,720 --> 00:11:56,990
+and department name with the literal biology,
+but you can compact it by writing a tuple
+
+99
+00:11:56,990 --> 00:12:02,600
+notation as is shown here. So, these are common
+convenient ways of writing different back
+
+100
+00:12:02,600 --> 00:12:09,269
+clause..
+Now, we have specified that SQL does carry
+
+101
+00:12:09,269 --> 00:12:18,020
+duplicates. So, unlike relational algebra
+which set theoretically specify that, their
+
+102
+00:12:18,020 --> 00:12:24,568
+duplicates should not be there if in SQL there
+could be duplicate entries in the same relation.
+
+103
+00:12:24,568 --> 00:12:31,179
+So, there is a this is called when duplicates
+are allowed in set theory, then such sets
+
+104
+00:12:31,179 --> 00:12:37,409
+where duplicates are allowed and known as
+multi sets. So, there are multi set versions
+
+105
+00:12:37,409 --> 00:12:42,698
+of the SQL queries or so to say the relational
+algebra operations.
+
+106
+00:12:42,698 --> 00:12:51,120
+So, you have a selection, which can be multi
+set selection which means that, if there are
+
+107
+00:12:51,120 --> 00:12:55,649
+certain c1 number of copies of a tuple in
+the relation, which satisfy the condition
+
+108
+00:12:55,649 --> 00:13:04,528
+theta then all of them will feature in the
+result. And all those copies can be seen simultaneously,
+
+109
+00:13:04,528 --> 00:13:11,009
+because it is a multi-set condition, similar
+definitions are hold for projection, as well
+
+110
+00:13:11,009 --> 00:13:16,250
+as for Cartesian product. So, I will leave
+it to you to go through the details and convince
+
+111
+00:13:16,250 --> 00:13:24,129
+yourself that, these multi set relations really
+extend the traditional single set distinct
+
+112
+00:13:24,129 --> 00:13:31,200
+definition of the relational algebra.
+So, here is an example where, there are 2
+
+113
+00:13:31,200 --> 00:13:39,980
+multi set relations as you can see particularly
+this one, which has identical duplicate entries.
+
+114
+00:13:39,980 --> 00:13:53,639
+So, using that you can define a Cartesian
+you can define a projection of r1 on B r1
+
+115
+00:13:53,639 --> 00:14:02,200
+on B, which will certainly give you it is
+you are doing projection on B. So, it will
+
+116
+00:14:02,200 --> 00:14:07,910
+give you a only. So, you will have this result
+itself will be a multi set because you will
+
+117
+00:14:07,909 --> 00:14:18,230
+get 2 as. So, this result will be like a a,
+and then you have r 2 with which you are doing
+
+118
+00:14:18,230 --> 00:14:24,490
+the Cartesian product. So, you will have all
+possible combinations all these 6 are the
+
+119
+00:14:24,490 --> 00:14:35,620
+result in the SQL whereas, in set theory typically
+the result should have been only these 2 tuples.
+
+120
+00:14:35,620 --> 00:14:47,649
+Now, we take a quick look into the common
+set operations. So, it is possible to do union,
+
+121
+00:14:47,649 --> 00:14:53,339
+intersection, difference kind of operations
+very easily with SQL queries. So, suppose
+
+122
+00:14:53,339 --> 00:15:03,440
+we want to find all courses, that ran in fall
+2009 or in spring 2010. So, certainly the
+
+123
+00:15:03,440 --> 00:15:08,769
+first part of the query is simple. This will
+give you all courses that ran. So, you are
+
+124
+00:15:08,769 --> 00:15:15,850
+taking out the course_id from section is where,
+the course running information is provided
+
+125
+00:15:15,850 --> 00:15:21,528
+and you part putting 2 conditions, which say
+that they actually this courses ran in fall
+
+126
+00:15:21,528 --> 00:15:25,570
+2009.
+So, this is the first query the second query
+
+127
+00:15:25,570 --> 00:15:33,639
+says the courses, that ran in spring 2010
+and you are you have an or condition in the
+
+128
+00:15:33,639 --> 00:15:38,409
+statement of what you are looking for. So,
+you do a union, union is another keyword.
+
+129
+00:15:38,409 --> 00:15:45,019
+So, this will simply give you a relation of
+the course_id attribute as the only attribute,
+
+130
+00:15:45,019 --> 00:15:53,789
+which has records from the first as well as
+the second query. Similarly, you can find
+
+131
+00:15:53,789 --> 00:16:03,639
+out the courses that ran, both in fall 2009
+and spring 2010 by using intersect, which
+
+132
+00:16:03,639 --> 00:16:09,930
+basically give you the intersection of the
+result of the first and the second query.
+
+133
+00:16:09,929 --> 00:16:15,859
+You could also do difference set difference
+by doing find courses, that ran in fall 2009,
+
+134
+00:16:15,860 --> 00:16:23,730
+but not in 2010. So, what will that mean,
+that will mean that the result of the first
+
+135
+00:16:23,730 --> 00:16:31,819
+query from the results of the second query
+be subtracted be done a difference from. So,
+
+136
+00:16:31,818 --> 00:16:41,528
+those that, had run in the fall 2009 and then
+was again run in spring 2010 will get removed.
+
+137
+00:16:41,528 --> 00:16:49,429
+So, that is done through the accept keyword.
+So, in this way you can very easily do set
+
+138
+00:16:49,429 --> 00:16:54,708
+operations, whenever that is easy to conceive;
+obviously, you can write these queries in
+
+139
+00:16:54,708 --> 00:16:59,489
+several other different forms, but this is
+just to show you how set theoretic operations
+
+140
+00:16:59,490 --> 00:17:07,150
+can be easily written.
+You can do set operations like, this in terms
+
+141
+00:17:07,150 --> 00:17:12,250
+of fine salaries of all instructions that
+are less than a largest salary. So, again
+
+142
+00:17:12,250 --> 00:17:21,480
+we are using renaming to think of the same
+relation as 2, and then as if from the relation
+
+143
+00:17:21,480 --> 00:17:27,539
+T you are trying to look at relation S and
+finding out what are the salaries, which are
+
+144
+00:17:27,539 --> 00:17:36,000
+smaller than that and certainly whatever comes
+in out is the one which is not the largest
+
+145
+00:17:36,000 --> 00:17:41,079
+because, certainly the largest will not satisfy
+this particular condition, because it will
+
+146
+00:17:41,079 --> 00:17:51,519
+get compared with itself. You can find salaries
+of all instructors, and then you can find
+
+147
+00:17:51,519 --> 00:17:56,650
+the largest salary.
+So, this is all salaries which are less than
+
+148
+00:17:56,650 --> 00:18:04,670
+largest, this is all salaries including the
+largest. So, what happens if you subtract
+
+149
+00:18:04,670 --> 00:18:10,779
+that is from this if you subtract this from
+all salaries, if you remove the salaries,
+
+150
+00:18:10,779 --> 00:18:15,849
+that are not largest naturally what you get
+is a largest salary. So, this is a interesting
+
+151
+00:18:15,849 --> 00:18:20,480
+way to find the largest salary we will see
+later on that there could be several other
+
+152
+00:18:20,480 --> 00:18:27,039
+ways particularly the use of aggregate function,
+which make these computations easier to perform,
+
+153
+00:18:27,039 --> 00:18:30,559
+but these are the typical ways to use set
+theoretic operations.
+
+154
+00:18:30,559 --> 00:18:38,919
+The set operations, so we have seen 3 of them
+union, intersect and except they automatically
+
+155
+00:18:38,920 --> 00:18:44,870
+these operations are set theoretic. So, each
+of them automatically, eliminate the duplicate,
+
+156
+00:18:44,869 --> 00:18:52,949
+unlike what SQL by default, SQL by default
+does what allows duplicates, but set operations
+
+157
+00:18:52,950 --> 00:18:57,809
+will eliminate duplicates, because they are
+set operations. So, if you want the SQL type
+
+158
+00:18:57,809 --> 00:19:03,419
+of behaviour, if you want the duplicates to
+be preserved, then you can have a multi set
+
+159
+00:19:03,420 --> 00:19:08,300
+version of these set operations, which are
+known as union all, intersect all, accept
+
+160
+00:19:08,299 --> 00:19:14,349
+all like that.
+And naturally if you do these operations then,
+
+161
+00:19:14,349 --> 00:19:20,709
+here is the simple formula of the number of
+tuples, that will get computed in different
+
+162
+00:19:20,710 --> 00:19:27,269
+cases you can study and convince yourself
+that these are the correct numbers. Let us,
+
+163
+00:19:27,269 --> 00:19:34,220
+go to the treatment of we talked about null
+values, that we said that it is possible that
+
+164
+00:19:34,220 --> 00:19:43,390
+certain records in a relation may have one
+or more attributes where, the value is not
+
+165
+00:19:43,390 --> 00:19:49,190
+known and to represent, that the value is
+not known we are putting a placeholder called
+
+166
+00:19:49,190 --> 00:19:52,720
+null.
+So, let us see what is the consequence of
+
+167
+00:19:52,720 --> 00:19:59,690
+that null value in terms of doing these query
+operations. So, the null signifies an unknown
+
+168
+00:19:59,690 --> 00:20:05,870
+value. So, if I do 5 plus null then naturally
+the result is null. So, what you are saying
+
+169
+00:20:05,869 --> 00:20:10,379
+that I am adding an unknown quantity to 5.
+So, then what would you say is the result
+
+170
+00:20:10,380 --> 00:20:18,530
+is unknown. So, that is the basic semantics
+of adding null to a number. So, it is possible
+
+171
+00:20:18,529 --> 00:20:25,809
+to check, if particularly a field is a null
+for a record, and that is done by a predicate
+
+172
+00:20:25,809 --> 00:20:30,599
+is null.
+So, in this particular query we are trying
+
+173
+00:20:30,599 --> 00:20:39,369
+to find all instructors, whose salary is null
+that is not known. So, this is a predicate.
+
+174
+00:20:39,369 --> 00:20:44,389
+So, for a particular record for which salaries
+null, this will become true and that will
+
+175
+00:20:44,390 --> 00:20:50,680
+get included in the result, but for all records
+for which, there is some value for the salary.
+
+176
+00:20:50,680 --> 00:20:57,360
+So, salary is known it is not null those will
+not get included in the result.
+
+177
+00:20:57,359 --> 00:21:09,319
+So, the basic semantics of null is then, combined
+with the truth values because, we know our
+
+178
+00:21:09,319 --> 00:21:14,329
+basic predicate logic is 2 values true and
+false. But now, you have a third value unknown
+
+179
+00:21:14,329 --> 00:21:20,929
+that is, you may not know the value of a predicate.
+So, how does it play around with the true
+
+180
+00:21:20,930 --> 00:21:27,019
+and false values you can reason through that
+quite easily if you are comparing with a null
+
+181
+00:21:27,019 --> 00:21:33,059
+in whatever way, then naturally the result
+is unknown. So, it returns a null, if you
+
+182
+00:21:33,059 --> 00:21:39,919
+are doing any connectives for example, if
+you are doing or of null or true, then the
+
+183
+00:21:39,920 --> 00:21:46,509
+result should be true because, in or we say
+that if any of the components is true then
+
+184
+00:21:46,509 --> 00:21:49,490
+the result is true.
+So, here you do not need to know what is that
+
+185
+00:21:49,490 --> 00:22:00,599
+unknown well you can say it is true, but if
+you do or with false or of unknown with false
+
+186
+00:22:00,599 --> 00:22:10,250
+the second row or of unknown with false if
+you do this, then naturally this is unknown
+
+187
+00:22:10,250 --> 00:22:18,210
+because, since this is false the result would
+be true only if unknown value is true and
+
+188
+00:22:18,210 --> 00:22:21,600
+the result would be false if the unknown value
+is false, you do not know what that unknown
+
+189
+00:22:21,599 --> 00:22:27,529
+value is. So, you have to say that you have
+result is unknown. So, using that same logic
+
+190
+00:22:27,529 --> 00:22:34,839
+you could see verify I would ask you to verify
+offline at home you please verify, that all
+
+191
+00:22:34,839 --> 00:22:43,149
+these combinations of true false with unknown
+are valid. So, if P is unknown is evaluate
+
+192
+00:22:43,150 --> 00:22:52,500
+will is as a predicate will evaluate to true
+if P is not known..
+
+193
+00:22:52,500 --> 00:23:03,099
+Now, we come to the aggregate functions, there
+are several aggregate functions they can be
+
+194
+00:23:03,099 --> 00:23:12,480
+used for convenience and these are the common
+months, that operate on the multi set values
+
+195
+00:23:12,480 --> 00:23:17,140
+naturally aggregate functions operate on a
+particular column they try to aggregate in
+
+196
+00:23:17,140 --> 00:23:23,480
+a particular column and return a single value
+for example, average would be meaning, that
+
+197
+00:23:23,480 --> 00:23:28,569
+you are trying to find average of the values
+of a particular column.
+
+198
+00:23:28,569 --> 00:23:36,990
+So, here is an example. So, we are trying
+to find the average salary of instructors
+
+199
+00:23:36,990 --> 00:23:44,611
+in computer science department. So, naturally
+what you output is average salary. So, mind
+
+200
+00:23:44,611 --> 00:23:51,300
+you this will this output relation will have
+one attribute, which is average salary and
+
+201
+00:23:51,299 --> 00:24:00,470
+since, average salary is a single quantity
+it will only have one, and here I have made
+
+202
+00:24:00,470 --> 00:24:09,430
+use of this aggregate function average. So,
+it says you do average on the attribute salary
+
+203
+00:24:09,430 --> 00:24:15,110
+and where do you get that attribute, from
+you get it from the table instructor and then
+
+204
+00:24:15,109 --> 00:24:20,119
+we are saying that we are not interested to
+find average of salary of all instructors.
+
+205
+00:24:20,119 --> 00:24:25,699
+We are interested to find the average salary
+of those instructors who work for computer
+
+206
+00:24:25,700 --> 00:24:31,400
+science. So, you put this back clause. So,
+this will ensure, that you find the average
+
+207
+00:24:31,400 --> 00:24:34,930
+salary of instructors in computer science
+department.
+
+208
+00:24:34,930 --> 00:24:46,539
+So, in similar way you can use other aggregate
+functions like, if you want to know the total
+
+209
+00:24:46,539 --> 00:24:55,170
+number of instructors who teach a course in
+this semester. So, you first put the where
+
+210
+00:24:55,170 --> 00:24:59,960
+clause, naturally you where will you find
+this information you will find this information
+
+211
+00:24:59,960 --> 00:25:07,769
+in teachers, teachers is the relation which
+tells you which instructor is teaching what
+
+212
+00:25:07,769 --> 00:25:15,339
+course. So, that comes in from then you have
+to specify that teaching a course in spring
+
+213
+00:25:15,339 --> 00:25:21,079
+2010 semester. So, the where clause specifies,
+that the semester is spring and the year is
+
+214
+00:25:21,079 --> 00:25:30,169
+2010. So, this will give you all records,
+which show that the some instructor is teaching
+
+215
+00:25:30,170 --> 00:25:37,220
+the course in spring 2010 semester.
+Now, naturally there could be multiple the
+
+216
+00:25:37,220 --> 00:25:42,430
+same instructor could happen multiple times,
+because an instructor may be teaching more
+
+217
+00:25:42,430 --> 00:25:49,460
+than one course. So, you make the instructor.ID,
+instructor.ID that you have here, you make
+
+218
+00:25:49,460 --> 00:25:58,860
+that distinct. So, that you get only those
+instructors every instructor who is teaching
+
+219
+00:25:58,859 --> 00:26:06,219
+one course or more than one course will feature
+only once in this total list, and then you
+
+220
+00:26:06,220 --> 00:26:09,420
+simply count it use aggregate function count
+on that.
+
+221
+00:26:09,420 --> 00:26:16,611
+So, that will tell you how many instructors
+are teaching some course in spring 2010 mind
+
+222
+00:26:16,611 --> 00:26:24,350
+you if this is critical to use this key word
+distinct, because unless you use that, then
+
+223
+00:26:24,349 --> 00:26:29,549
+all that you will eventually find out is not
+the number of instructors who are teaching
+
+224
+00:26:29,549 --> 00:26:33,169
+the course you will find out the number of
+courses, that are being offered in spring
+
+225
+00:26:33,170 --> 00:26:44,670
+2010 because, there could be the same instructor
+teaching more than one course. If you just
+
+226
+00:26:44,670 --> 00:26:52,360
+want to count the number of tuples you can
+do count on star because, what is star is
+
+227
+00:26:52,359 --> 00:26:57,529
+all the attributes. So, from if we want to
+find out the number of course, I suggest to
+
+228
+00:26:57,529 --> 00:27:06,649
+count star on course.
+So, this is showing you the computation of
+
+229
+00:27:06,650 --> 00:27:12,410
+average salary of instructors in each department.
+So now, what do you want to do is earlier
+
+230
+00:27:12,410 --> 00:27:18,870
+you try to find out the average salary in
+one department. Now, you want that for all
+
+231
+00:27:18,869 --> 00:27:26,629
+the departments for each department I want.
+So, my result now, is not a single row it
+
+232
+00:27:26,630 --> 00:27:34,530
+is not a single value it is a pair where,
+I show the department and the average salary
+
+233
+00:27:34,529 --> 00:27:40,269
+in that department. So, this is what I want
+visible and this is what I have.
+
+234
+00:27:40,269 --> 00:27:47,779
+So, naturally the information comes from instructor,
+that is from what I want is a department name
+
+235
+00:27:47,779 --> 00:27:54,549
+and the average salary and I want to give
+it a nice name avg_salary. So, I have done
+
+236
+00:27:54,549 --> 00:28:01,408
+a rename. So, I get avg_salary here, but then
+what I want is I do not want an average d1
+
+237
+00:28:01,409 --> 00:28:08,280
+over this whole set of fields I want separate
+average to be done here, to be done here,
+
+238
+00:28:08,279 --> 00:28:16,039
+to be done on this to be on this. So, these
+are these are basically groupings by the department
+
+239
+00:28:16,039 --> 00:28:22,509
+as you can see, that this particular relation
+has been sorted according to the department
+
+240
+00:28:22,509 --> 00:28:28,470
+name.
+So, when I want to do apply an aggregate function
+
+241
+00:28:28,470 --> 00:28:40,631
+on certain subgroups of records, I use this
+particular clause group by and use a name
+
+242
+00:28:40,631 --> 00:28:47,029
+of a field. So, what it does is if the values
+in the group by field in this case department
+
+243
+00:28:47,029 --> 00:28:54,180
+name are identical those records are put together
+and over those records and average is computed.
+
+244
+00:28:54,180 --> 00:28:59,970
+So, the average, that is computed over these
+records are put in here, average that is computed
+
+245
+00:28:59,970 --> 00:29:05,579
+in terms of these records are put in here,
+there is only one record, so average that
+
+246
+00:29:05,579 --> 00:29:11,939
+is computed in terms of that is put in here.
+So, group by is a very useful feature along
+
+247
+00:29:11,940 --> 00:29:20,460
+with the aggregation functions and it allows
+you to club information based on certain attribute
+
+248
+00:29:20,460 --> 00:29:29,509
+and then compute the aggregation on some other
+field..
+
+249
+00:29:29,509 --> 00:29:37,819
+Mind you will have to when you do group by
+and create the result id result table you
+
+250
+00:29:37,819 --> 00:29:42,960
+will have to make sure that, all your result
+table attribute are used in the group by,
+
+251
+00:29:42,960 --> 00:29:49,039
+which is not an aggregate function. So, here
+ID is not used. So, this is not a query, that
+
+252
+00:29:49,039 --> 00:30:00,470
+SQL would support.
+You can further refine your result is saying
+
+253
+00:30:00,470 --> 00:30:06,789
+that, fine names and average salary of all
+departments this much you have already done.
+
+254
+00:30:06,789 --> 00:30:12,950
+Now, you are qualifying that, whose average
+salary is greater than 42000. So, of all that
+
+255
+00:30:12,950 --> 00:30:20,529
+we have for example, if we look in here for
+example, in this music department average
+
+256
+00:30:20,529 --> 00:30:26,089
+salary is less than 42000. So, you do not
+want that in the result you want only those
+
+257
+00:30:26,089 --> 00:30:33,029
+where, the average salary is greater than
+42000 and the way to do that is to have add
+
+258
+00:30:33,029 --> 00:30:39,250
+another clause called having they say that,
+the average salary is greater than 42000.
+
+259
+00:30:39,250 --> 00:30:50,910
+So, you are adding another predicate for actually
+qualifying the aggregated value. Now, the
+
+260
+00:30:50,910 --> 00:30:58,019
+having clause actually applies after along
+with the group by because, naturally the having
+
+261
+00:30:58,019 --> 00:31:04,329
+relates to the grouping.
+So, once the grouping has happened groups
+
+262
+00:31:04,329 --> 00:31:13,369
+have been formed then the having clause will
+be evaluated on that, in contrast where clause
+
+263
+00:31:13,369 --> 00:31:20,579
+also has a predicate, but the where clause
+is applied before forming the groups. So,
+
+264
+00:31:20,579 --> 00:31:25,419
+this point this note has to be understood
+carefully because, if you have a where clause
+
+265
+00:31:25,420 --> 00:31:31,570
+to choose the records they it will first apply,
+then out of those records chosen the grouping
+
+266
+00:31:31,569 --> 00:31:37,990
+will happen and once the grouping has happened,
+then the aggregate function will evaluate
+
+267
+00:31:37,990 --> 00:31:44,049
+and the having clause will get evaluated the
+predicate of having clause will get evaluated.
+
+268
+00:31:44,049 --> 00:31:50,759
+Certainly, if there are null values in terms
+of aggregates, then there is a question of
+
+269
+00:31:50,759 --> 00:31:59,089
+what will happen. So, the general strategy
+is that, whenever you perform aggregation
+
+270
+00:31:59,089 --> 00:32:06,009
+then the null values are all ignored. So,
+if on that field there is no value which is
+
+271
+00:32:06,009 --> 00:32:10,680
+not null, that is if all values are null then
+the result is null otherwise the result is
+
+272
+00:32:10,680 --> 00:32:18,529
+computed by ignoring the null values..
+So, these are what do you have of course,
+
+273
+00:32:18,529 --> 00:32:25,869
+if you count then if the collection has only
+null values the count will return you 0, but
+
+274
+00:32:25,869 --> 00:32:29,469
+all other aggregates will return you simply
+null.
+
+275
+00:32:29,470 --> 00:32:36,690
+So, to summarize we have we had started the
+basic understanding of the basics query structure
+
+276
+00:32:36,690 --> 00:32:42,269
+in the last module. Now, we have completed
+that with some more additional operations,
+
+277
+00:32:42,269 --> 00:32:49,210
+we have understood the set theoretic operations
+and very importantly we have familiarized
+
+278
+00:32:49,210 --> 00:32:56,870
+with the treatment of null values and aggregation
+functions particularly the group by and having
+
+279
+00:32:56,869 --> 00:33:03,750
+clauses and how do null values and aggregation
+interact in terms of an SQL query.
+

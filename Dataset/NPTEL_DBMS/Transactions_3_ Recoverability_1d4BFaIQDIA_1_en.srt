@@ -1,0 +1,1609 @@
+﻿1
+00:00:17,219 --> 00:00:26,368
+Welcome to module 33 of Database Management
+Systems. This is on transactions again there
+
+2
+00:00:26,368 --> 00:00:34,759
+is a third and closing module on transactions
+and, we will ah discuss ah recoverability
+
+3
+00:00:34,759 --> 00:00:41,759
+issues and some more of the serializability
+issues in this module. In the last module
+
+4
+00:00:41,759 --> 00:00:47,519
+we have talked at length about serializability
+and specifically, we looked at what is known
+
+5
+00:00:47,520 --> 00:00:51,320
+as conflict serializability and the algorithm
+to detect that. ah
+
+6
+00:00:51,320 --> 00:00:59,280
+Now, we would bring in another perspective
+is if while a transaction is in execution
+
+7
+00:00:59,280 --> 00:01:06,140
+what if the system would fail the failure
+may be due to hardware software, various different
+
+8
+00:01:06,140 --> 00:01:14,349
+reasons power outage, disk crash and so on.
+So, why when that happens the database is
+
+9
+00:01:14,349 --> 00:01:21,739
+likely to come into an inconsistent state.
+So, we would like to discuss how to recover
+
+10
+00:01:21,739 --> 00:01:26,819
+from that inconsistent state and bring it
+back to a consistent state.
+
+11
+00:01:26,819 --> 00:01:33,549
+We would also look at that going forward from
+conflict serializability, what are the other
+
+12
+00:01:33,549 --> 00:01:39,379
+notions of serializability, that can be used
+to serialize transactions and we will look
+
+13
+00:01:39,379 --> 00:01:46,989
+at a weaker definition of serializability
+known as view serializability, which can serialize
+
+14
+00:01:46,989 --> 00:01:54,509
+more schedules than what conflict serializability
+can give us. So, these are the topics to discuss
+
+15
+00:01:54,510 --> 00:02:00,310
+and we start with recoverability and isolation.
+So, what we have done is we have seen the
+
+16
+00:02:00,310 --> 00:02:06,549
+serializability help us, if we think in terms
+of the acid properties ah that ah we started
+
+17
+00:02:06,549 --> 00:02:12,620
+by defining as the desirable properties of
+the transactions, we have seen that the serializability
+
+18
+00:02:12,620 --> 00:02:21,049
+significantly helps us to achieve isolation
+and consistency of a schedule, yet the atomicity
+
+19
+00:02:21,049 --> 00:02:25,580
+and consistency may be compromised, if there
+is a system failure.
+
+20
+00:02:25,580 --> 00:02:31,590
+So, we had talked about this example a bit
+earlier again let us take a look. So, this
+
+21
+00:02:31,590 --> 00:02:40,789
+is a transaction where an amount of 50 dollar
+is being transferred from account A to account
+
+22
+00:02:40,789 --> 00:02:46,989
+B. So, he first read debit and then write
+on account A and then read credit and write
+
+23
+00:02:46,990 --> 00:02:52,770
+to account B and we have added a 7th instruction,
+which is commit and I will talk more about
+
+24
+00:02:52,770 --> 00:03:00,010
+that ah in this module which makes that changes
+to a and B permanent and shows a result to
+
+25
+00:03:00,009 --> 00:03:05,318
+the user as well.
+Now, what happens if the system fails between
+
+26
+00:03:05,318 --> 00:03:15,209
+step 3 and after step 3 when a has been written
+and between before step 4 step 6 when B has
+
+27
+00:03:15,210 --> 00:03:20,599
+finally, been written. So, naturally 50 dollars
+will simply disappear because what has been
+
+28
+00:03:20,598 --> 00:03:28,139
+debited from A and will be available to be
+seen in account A will the corresponding credit
+
+29
+00:03:28,139 --> 00:03:34,708
+will not be visible. So, this leads to inconsistent
+state and to handle that what we need to do
+
+30
+00:03:34,709 --> 00:03:39,439
+is to roll back the transaction, which means
+that we need to undo the changes that we have
+
+31
+00:03:39,439 --> 00:03:45,800
+already done. So, we have to again go back
+to account A and write a new value which was
+
+32
+00:03:45,800 --> 00:03:52,769
+the earlier value the value before the debit
+had happened. And this process of ah restoring
+
+33
+00:03:52,769 --> 00:03:58,900
+the consistency back to the database is known
+as the recovery process.
+
+34
+00:03:58,900 --> 00:04:07,659
+So, we say that a so, let us define a schedule
+to be recoverable if a transaction T j reads
+
+35
+00:04:07,659 --> 00:04:14,628
+A data previously written by a transaction
+T i, then the commit operation of T i must
+
+36
+00:04:14,628 --> 00:04:21,908
+appear before the commit operation of T j,
+if that happens then that is the earlier transaction
+
+37
+00:04:21,908 --> 00:04:29,589
+which has written the data and T j the later
+transaction which is reading the data the
+
+38
+00:04:29,589 --> 00:04:35,719
+earlier transaction has to commit that is
+make the changes permanent in the database
+
+39
+00:04:35,720 --> 00:04:42,610
+before T j actually reads it. If that happens,
+then we say that that schedule is a recoverable
+
+40
+00:04:42,610 --> 00:04:46,660
+schedule.
+So, consider a following schedule of transactions
+
+41
+00:04:46,660 --> 00:04:53,419
+T 8 and T 9 where ah T 8 has read and written
+A, but has not committed; that means, some
+
+42
+00:04:53,418 --> 00:04:59,539
+more tasks in T 8 are still pending it has
+not finished, but T 9 then reads A which is
+
+43
+00:04:59,540 --> 00:05:07,150
+a in terms of serializability it is fine,
+but then T 9 commits and then T 8 is again
+
+44
+00:05:07,149 --> 00:05:17,250
+trying to read B the continues. So, what happens
+is what if the transaction will fail the transaction
+
+45
+00:05:17,250 --> 00:05:27,459
+T 9 will fail immediately after the read operation.
+So, what will happen I am sorry, if T 8 aborts
+
+46
+00:05:27,459 --> 00:05:34,719
+in between, then what will happen that T 9
+would have read because, say in read B or
+
+47
+00:05:34,720 --> 00:05:42,780
+of T 8 T 8 aborts that it fails, then T 9
+has already read the intermediate value of
+
+48
+00:05:42,779 --> 00:05:49,799
+A and has committed which means it is possibly
+shown it to the user, but T 8 since it has
+
+49
+00:05:49,800 --> 00:05:54,699
+aborted sent it has failed, it has to be rolled
+back and the original value of A will be rolled
+
+50
+00:05:54,699 --> 00:06:00,050
+back which is different from what has already
+been shown to the user and he will reach an
+
+51
+00:06:00,050 --> 00:06:03,569
+inconsistent state.
+So, this is an example of a schedule which
+
+52
+00:06:03,569 --> 00:06:10,599
+is not recoverable. Now let us also observe
+that a single transaction failure not only
+
+53
+00:06:10,600 --> 00:06:16,870
+means that one transaction needs to be rolled
+back, but it could have a cascading effect,
+
+54
+00:06:16,870 --> 00:06:21,978
+that is a series of transaction may require
+a rollback. So, here is an example of T 10
+
+55
+00:06:21,978 --> 00:06:31,360
+T 11 and T 12. So, T 10 reads A and B and
+writes A and then T 11 reads and writes A
+
+56
+00:06:31,360 --> 00:06:39,480
+and T 12 reads A and at that time if T 10
+fails if that aborts, then naturally it is
+
+57
+00:06:39,480 --> 00:06:47,400
+not enough to simply ah roll back T 10 because,
+if we roll back T 10, then we the value of
+
+58
+00:06:47,399 --> 00:06:54,250
+a goes back to the original and T 11 would
+have a wrong value which T 10 had written,
+
+59
+00:06:54,250 --> 00:06:57,269
+but has now been undone has now been rolled
+back.
+
+60
+00:06:57,269 --> 00:07:02,370
+So, it means that T 11 will also have to be
+rolled back. Similarly if that is rolled back
+
+61
+00:07:02,370 --> 00:07:07,540
+then naturally T 12 also have to be rolled
+back and so on and when this rolling back
+
+62
+00:07:07,540 --> 00:07:12,319
+goes from one transaction to the other we
+say this is the cascading roll back. And this
+
+63
+00:07:12,319 --> 00:07:19,009
+can lead to a significant amount of work.
+So, what we would prefer is if we could have
+
+64
+00:07:19,009 --> 00:07:26,660
+schedules where such cascading ah roll back
+is not required. So, and and there is a there
+
+65
+00:07:26,660 --> 00:07:31,020
+is a condition through which you can achieve
+that. So, if we have a pair of transaction
+
+66
+00:07:31,019 --> 00:07:38,209
+T i and T j. So, that T j reads A data item
+previously written by T i, then the commit
+
+67
+00:07:38,209 --> 00:07:44,569
+operation of T i has to happen before the
+read operation of T j which means that said
+
+68
+00:07:44,569 --> 00:07:52,360
+in other words that T j should read only read
+values which are already committed and not
+
+69
+00:07:52,360 --> 00:07:55,910
+read intermediate temporary values of other
+transactions.
+
+70
+00:07:55,910 --> 00:08:02,770
+So, every cascadable ah schedule is also recoverable
+because, you can individually recover that
+
+71
+00:08:02,769 --> 00:08:07,728
+and it is desirable to restrict schedules
+to those which are cascade less as far as
+
+72
+00:08:07,728 --> 00:08:11,918
+possible, we will see that in non not all
+cases that is possible, but if it is possible
+
+73
+00:08:11,918 --> 00:08:17,560
+you would like schedules which are cascade
+less. So, that covered a rollback work the
+
+74
+00:08:17,560 --> 00:08:22,189
+extra work can be minimized. So, here is an
+example which we had just seen which is not
+
+75
+00:08:22,189 --> 00:08:27,189
+a cascadable schedule.
+So, wait for word let us take a couple of
+
+76
+00:08:27,189 --> 00:08:37,318
+examples of very similar ah transactions and,
+ah we would see when their schedules are irrecoverable,
+
+77
+00:08:37,318 --> 00:08:45,549
+when their cascade dead recovery is possible
+cascaded rollback is possible and, when cascade
+
+78
+00:08:45,549 --> 00:08:52,859
+less rollback is possible. So, if you so,
+here what I have done is I have shown here
+
+79
+00:08:52,860 --> 00:08:59,499
+the 2 transactions T 1 and T 2. And this is
+what transaction T 1 is doing and we assume
+
+80
+00:08:59,499 --> 00:09:04,778
+that in the in the database the initial value
+of a is 5000.
+
+81
+00:09:04,778 --> 00:09:10,669
+So, what will happen is read here and this
+value is is a different A this is in the buffer
+
+82
+00:09:10,669 --> 00:09:19,588
+or the memory of T 1 transaction, where A
+becomes 5000, then you subtract 1000 and then
+
+83
+00:09:19,589 --> 00:09:23,989
+you write back the moment you write back in
+the database in between the value in the database
+
+84
+00:09:23,989 --> 00:09:28,860
+is not changing, it is only that value is
+only in the buffer and, when you write back
+
+85
+00:09:28,860 --> 00:09:33,778
+the value in the database has changed.
+And then transaction T 2 reads that value.
+
+86
+00:09:33,778 --> 00:09:40,198
+So, in its local buffer a becomes 4000 it
+increments by 500 and then writes it back
+
+87
+00:09:40,198 --> 00:09:47,349
+and when that happens, then in the database
+also the value has changed to 4500 and then
+
+88
+00:09:47,350 --> 00:09:54,249
+T 2 commits and at this point let us assume
+that there was if there was a failure. So,
+
+89
+00:09:54,249 --> 00:09:58,290
+this is the point where there was a failure
+there were other instructions in T 1 as well
+
+90
+00:09:58,289 --> 00:10:03,778
+which is not of our interest right now, and
+then T 1 would have committed, but what happens
+
+91
+00:10:03,778 --> 00:10:09,448
+if the failure happens at this point naturally
+the T 1 needs to roll back T 1 needs to undo
+
+92
+00:10:09,448 --> 00:10:14,508
+this and set the this value 5000 back into
+the database.
+
+93
+00:10:14,509 --> 00:10:23,048
+But that would mean that what T 2 has committed
+T 2 has already committed this value 4500
+
+94
+00:10:23,048 --> 00:10:27,629
+in the database and therefore, that has been
+probably been used in other places and shown
+
+95
+00:10:27,629 --> 00:10:33,661
+to the user that will create an inconsistency
+in the database. So, these are this is a schedule
+
+96
+00:10:33,660 --> 00:10:41,008
+of T 1 and T 2 which cannot be recovered from.
+So, let us and so what it has what has been
+
+97
+00:10:41,009 --> 00:10:50,399
+violated that T 2 has actually read A value
+which was in transit and, then it has already
+
+98
+00:10:50,399 --> 00:11:01,318
+committed based on that read value.
+Now, let us look into the next. So, what has
+
+99
+00:11:01,318 --> 00:11:07,759
+been done here that all the changes are the
+same, but the only point that we have done
+
+100
+00:11:07,759 --> 00:11:14,709
+is we have changed the point where the comet
+happens again still the T 2 is reading the
+
+101
+00:11:14,708 --> 00:11:24,058
+same value in our in a and is making the updates
+4500, but the commit happens at a later point
+
+102
+00:11:24,058 --> 00:11:30,499
+of time after the commit of this transaction
+T 1 has taken place.
+
+103
+00:11:30,499 --> 00:11:38,040
+So, this is recoverable, but if we want to
+recover T 1 naturally; that means, that for
+
+104
+00:11:38,039 --> 00:11:47,278
+T 1 to be recovered, I also need to recover
+T 2 because T 2 is used a value which is not
+
+105
+00:11:47,278 --> 00:11:52,850
+going to be the value in after the rollback
+of T 1 has happened T 2 has used 4000, but
+
+106
+00:11:52,850 --> 00:11:59,709
+after the rollback the value in the database
+will be back to 5000. So, it is the rollback
+
+107
+00:11:59,708 --> 00:12:04,878
+is required for T 1 as well as in T 2. So,
+this is a case of cascaded cascading roll
+
+108
+00:12:04,879 --> 00:12:08,870
+back that has happened. So, some more work
+is being done and that has happened because
+
+109
+00:12:08,870 --> 00:12:16,149
+T 2 now here the rollback is possible because
+T 2 is committing after T 1.
+
+110
+00:12:16,149 --> 00:12:22,208
+So, the transaction it is reading from it
+is actually committing the changes after that
+
+111
+00:12:22,208 --> 00:12:26,809
+source transaction has committed. So, that
+satisfies the condition of recoverable schedule.
+
+112
+00:12:26,809 --> 00:12:33,958
+So, you are able to recover, but it still
+required the cascading because T 1 had read
+
+113
+00:12:33,958 --> 00:12:42,518
+A value in here of A which was not yet committed.
+So, if we would have committed that, then
+
+114
+00:12:42,519 --> 00:12:48,970
+we would have been able to actually create
+a schedule which is cascade less as we see
+
+115
+00:12:48,970 --> 00:12:55,439
+in the next slide.
+So, now I what the change that has happened
+
+116
+00:12:55,438 --> 00:13:05,399
+is a commit is done, right after writing the
+value of A and T 2 reads that only after that
+
+117
+00:13:05,399 --> 00:13:11,239
+commit has happened, earlier it was reading
+before that commit has happened. So, once
+
+118
+00:13:11,239 --> 00:13:19,809
+T 2 reads it after this commit. So, if there
+is some there is some requirement of if there
+
+119
+00:13:19,808 --> 00:13:26,368
+is some situation of rollback, then only T
+1 needs to be rolled back and T 2 does not
+
+120
+00:13:26,369 --> 00:13:30,459
+need to be a rollback because, it has used
+a value which is already committed.
+
+121
+00:13:30,458 --> 00:13:36,809
+So, this is the basic through the example
+you can clearly see, what is how the rollback
+
+122
+00:13:36,809 --> 00:13:43,498
+can happen and in a later module, we will
+discuss the processes of how to do this kind
+
+123
+00:13:43,499 --> 00:13:50,759
+of rollback the cascading and non cascading
+both kinds and show how to go ahead with that,
+
+124
+00:13:50,759 --> 00:13:56,879
+but now for now what we learned is schedules
+need to be recoverable and, preferably cascade
+
+125
+00:13:56,879 --> 00:14:03,178
+less rollback recovery schedules are preferred
+in case of database transactions.
+
+126
+00:14:03,178 --> 00:14:11,838
+Now, let us move on and talk little bit about
+what is available in SQL language in terms
+
+127
+00:14:11,839 --> 00:14:19,399
+of handling transactions. So, SQL we have
+seen the kind of DDL data definition and data
+
+128
+00:14:19,399 --> 00:14:25,789
+manipulation language paths and those were
+discussed in terms of our interactive session
+
+129
+00:14:25,789 --> 00:14:33,769
+as well. As a part of data manipulation it
+is also possible to specify certain specific
+
+130
+00:14:33,769 --> 00:14:40,970
+transaction events. So, a transaction in SQL
+typically begins implicitly and, it ends by
+
+131
+00:14:40,970 --> 00:14:45,589
+a commit work which says that let us, you
+commit the current transaction that is make
+
+132
+00:14:45,589 --> 00:14:50,679
+all the changes permanent, in the database
+make it visible to the user and begin a new
+
+133
+00:14:50,678 --> 00:14:55,480
+work, or it could roll back the transaction
+which means that all the changes that you
+
+134
+00:14:55,480 --> 00:15:00,129
+had done are rolled back and the transaction
+basically aborts.
+
+135
+00:15:00,129 --> 00:15:07,999
+So, in almost all systems by default every
+SQL statement commits implicitly and, if it
+
+136
+00:15:07,999 --> 00:15:13,069
+has been able to execute successfully, otherwise
+it rolls back and this implicit commit can
+
+137
+00:15:13,068 --> 00:15:17,428
+be controlled also, it can be in different
+system there are different ways to control
+
+138
+00:15:17,428 --> 00:15:22,980
+that and say that I do not want implicit commit
+I would only want commit to be done explicitly.
+
+139
+00:15:22,980 --> 00:15:28,829
+So, for that purpose a part of SQL called
+the transaction control language has different
+
+140
+00:15:28,828 --> 00:15:35,229
+instructions commit to save the changes roll
+back to roll back, the changes undo the changes
+
+141
+00:15:35,230 --> 00:15:40,940
+and also to do some do,it in some controlled
+way by defining save point and you can also
+
+142
+00:15:40,940 --> 00:15:46,069
+set the a particular name to a transaction
+and it is behavior.
+
+143
+00:15:46,068 --> 00:15:55,259
+So, let us look at examples for doing that
+soon and these TCL commands are are used with
+
+144
+00:15:55,259 --> 00:15:59,928
+specific DML commands they are meaningful
+in terms of insert update and delete only
+
+145
+00:15:59,928 --> 00:16:05,678
+for example, if you are creating a database
+or you are doing a select to data retrieval,
+
+146
+00:16:05,678 --> 00:16:09,558
+then these instructions have no role in those
+transactions.
+
+147
+00:16:09,558 --> 00:16:17,838
+So, commit is a transaction command which
+is used to save changes and make them permanent
+
+148
+00:16:17,839 --> 00:16:24,779
+based on what has been invoked. So, here you
+see the example of a customer database and,
+
+149
+00:16:24,778 --> 00:16:32,259
+what I am showing is if you this is the initial
+state of that table and, before any value
+
+150
+00:16:32,259 --> 00:16:36,229
+has been deleted and if you do select star
+from customers these 7 records is what you
+
+151
+00:16:36,229 --> 00:16:40,319
+get to see, in view of that you do a delete
+and then you commit the delete.
+
+152
+00:16:40,318 --> 00:16:45,338
+So, we say that I have deleted and make that
+deletion permanent. So, deleting based on
+
+153
+00:16:45,339 --> 00:16:49,750
+age. So, this record is supposed to be get
+deleted and this record is supposed to get
+
+154
+00:16:49,750 --> 00:16:56,698
+deleted and, after I have done the commit
+then again if I do the same ah data retrieval.
+
+155
+00:16:56,698 --> 00:17:02,238
+And now I get to see 5 records only the 2
+record number 2 and record number 4 have been
+
+156
+00:17:02,239 --> 00:17:07,690
+permanently deleted. So, this is the way you
+can explicitly do commit and make the changes
+
+157
+00:17:07,690 --> 00:17:14,318
+permanent.
+In terms of rollback it is a command which
+
+158
+00:17:14,318 --> 00:17:21,078
+is used to undo transactions that is the changes
+that have already not been saved to the database
+
+159
+00:17:21,078 --> 00:17:25,328
+you can roll back.
+So, you can roll back or undo transactions
+
+160
+00:17:25,328 --> 00:17:32,548
+only back up in history up to the last commit,
+or the last rollback command was issued on
+
+161
+00:17:32,548 --> 00:17:39,119
+this. So, again looking at the same example
+this is the initial state and, then you did
+
+162
+00:17:39,119 --> 00:17:46,819
+a delete as we did last time. So, these 2
+records are to be deleted, but then instead
+
+163
+00:17:46,819 --> 00:17:51,689
+of commit we have given a rollback. So, as
+you give rollback this deletion operations
+
+164
+00:17:51,690 --> 00:17:59,889
+get undone. So, these 2 records are again
+back to the table and so, after the rollback
+
+165
+00:17:59,888 --> 00:18:05,819
+if I again do the select I will get to see
+the 2 records back in my list. So, this is
+
+166
+00:18:05,819 --> 00:18:13,019
+the purpose of the rollback command.
+Now, you can a transactions often could be
+
+167
+00:18:13,019 --> 00:18:19,138
+long. So, within the transaction you may want
+to mark certain points. So, that in case you
+
+168
+00:18:19,138 --> 00:18:23,528
+roll back or you need to roll back, you can
+roll back to that particular point and those
+
+169
+00:18:23,528 --> 00:18:31,619
+points are in the transaction are known as
+the save point. So, this is the format use
+
+170
+00:18:31,619 --> 00:18:37,199
+a save point and give it a name and, then
+later on you can use those save points for
+
+171
+00:18:37,200 --> 00:18:44,610
+your purpose of rollback.
+So, you are again if you are doing a rollback,
+
+172
+00:18:44,609 --> 00:18:51,689
+then you instead of just doing rollback, you
+now use the save point ID that you had used
+
+173
+00:18:51,690 --> 00:18:57,210
+in naming that particular point up to which
+you want to roll back and, do a rollback and
+
+174
+00:18:57,210 --> 00:19:07,090
+that will happen only up to that point. So,
+let us look at an example so, here it is a
+
+175
+00:19:07,089 --> 00:19:14,579
+series of instructions in a in a DML transaction.
+So, I initially set SP one as a save point
+
+176
+00:19:14,579 --> 00:19:21,199
+that is I may want to roll back to the beginning,
+when I delete one record say ID 1. So, 1 record
+
+177
+00:19:21,200 --> 00:19:30,539
+gets deleted, then I again save another save
+point another save point SP 2 this was SP
+
+178
+00:19:30,539 --> 00:19:35,278
+1 and, then delete a second record another
+save point delete another record.
+
+179
+00:19:35,278 --> 00:19:41,650
+So, now I have a control to undo at this point
+have a control to undo to 3 points for example,
+
+180
+00:19:41,650 --> 00:19:48,419
+if I do a rollback 2 SP 3 I will roll back
+to this point, where only this record will
+
+181
+00:19:48,419 --> 00:19:54,220
+be deletion of this record will be undone,
+but the first 2 records will still look show
+
+182
+00:19:54,220 --> 00:20:03,538
+as deleted, but if I roll back to save point
+SP 2, then 2 records ID 2 and ID 3 that were
+
+183
+00:20:03,538 --> 00:20:08,460
+deleted their deletion will be undone and
+only 1 deletion will look up. Similarly if
+
+184
+00:20:08,460 --> 00:20:13,460
+I roll back to SP 1, it will show that no
+deletion as it all happened.
+
+185
+00:20:13,460 --> 00:20:20,558
+So, if I do that on the this is the initial
+state on the left to the initial state of
+
+186
+00:20:20,558 --> 00:20:27,778
+the database 3 records have been deleted and,
+then I do undo off the first deletion of the
+
+187
+00:20:27,778 --> 00:20:35,989
+first 2 and I roll back to SP 2. So, then
+when I undo the deletion of the last 2 records,
+
+188
+00:20:35,989 --> 00:20:46,990
+then the what I see is the records which are
+marked as ID 2 and ID 3, which were done after
+
+189
+00:20:46,990 --> 00:20:52,319
+SP 2 was marked which were deleted after SP
+2 are marked, they are back into the table
+
+190
+00:20:52,319 --> 00:21:00,460
+whereas, the deletion of SP 1 is still in
+effect and therefore, deletion that was none
+
+191
+00:21:00,460 --> 00:21:07,490
+after SP 1 that is of record ID 1 is still
+missing and in this way you can control and
+
+192
+00:21:07,490 --> 00:21:14,079
+roll back to any specific point in a database
+in a database transaction.
+
+193
+00:21:14,079 --> 00:21:18,909
+You can once you have marked a safe point
+you can also, release the safe point that
+
+194
+00:21:18,910 --> 00:21:24,940
+is you can choose to forget that safe point.
+Once a safe point has been released you cannot
+
+195
+00:21:24,940 --> 00:21:30,289
+roll back to that safe point naturally.
+You can use set transaction command to initiate
+
+196
+00:21:30,289 --> 00:21:35,158
+a database transaction also and, it is typically
+used to specify the characteristics of the
+
+197
+00:21:35,159 --> 00:21:39,580
+transaction, particularly if you want to say
+whether a transaction is a read only transaction
+
+198
+00:21:39,579 --> 00:21:44,028
+or a read write transaction, then you can
+do it in this way, you can say set transaction
+
+199
+00:21:44,028 --> 00:21:52,009
+and give a read or write flag read or write
+or read only flag for that.
+
+200
+00:21:52,009 --> 00:21:58,769
+Let us quickly take a look at a different
+form of serializability besides the conflict
+
+201
+00:21:58,769 --> 00:22:04,048
+serializability is called view serializability.
+So, in terms of view serializability we again
+
+202
+00:22:04,048 --> 00:22:12,158
+define what is known as when are 2 tran schedules
+defined to be view equivalent, earlier you
+
+203
+00:22:12,159 --> 00:22:18,480
+remember we define 2 schedules to be conflict
+equivalent, now we are defining view equivalent.
+
+204
+00:22:18,480 --> 00:22:23,299
+So, there are 3 conditions the conditions
+are simple what conditions say is a to try
+
+205
+00:22:23,299 --> 00:22:30,389
+a schedules are view equivalent, if the transaction
+the initial value that a transaction reads
+
+206
+00:22:30,390 --> 00:22:35,389
+is same in both these schedules, for every
+transaction the initial value that it reads
+
+207
+00:22:35,388 --> 00:22:41,240
+must be the same between the 2 schedules.
+Similarly, the third condition says that the
+
+208
+00:22:41,240 --> 00:22:46,609
+final write that is done, final value that
+it writes every transaction writes in both
+
+209
+00:22:46,609 --> 00:22:52,709
+the schedules must be the same the same same
+rights should operate. And the second conditions
+
+210
+00:22:52,710 --> 00:22:58,990
+is a is a read write pair that every transaction
+when it performs a read on the data item,
+
+211
+00:22:58,990 --> 00:23:06,900
+it must read from the write corresponding
+write in the other schedule in by the same
+
+212
+00:23:06,900 --> 00:23:12,649
+by the transaction that which did the right.
+So, I always initialize start with the same
+
+213
+00:23:12,648 --> 00:23:18,508
+initial values for every data item in both
+schedules, I always read from the corresponding
+
+214
+00:23:18,509 --> 00:23:25,139
+right in the same schedule in the 2 schedules
+and, I must write the final in every transaction
+
+215
+00:23:25,138 --> 00:23:29,689
+every data item must be written in the same
+way in the 2 schedules.
+
+216
+00:23:29,690 --> 00:23:36,000
+So, this is again and the key balance is based
+purely on read write alone as is the case
+
+217
+00:23:36,000 --> 00:23:44,019
+of conflict equivalence also.
+So, given the definition of view ah equivalence,
+
+218
+00:23:44,019 --> 00:23:50,910
+we can say schedule is the view serializable,
+if it is view equivalent to a serial schedule
+
+219
+00:23:50,910 --> 00:23:57,298
+earlier which said said that a schedule is
+conflict serializable, if it is conflict equivalent
+
+220
+00:23:57,298 --> 00:24:02,168
+to a serial schedule. Now we are defining
+the view serializability, ah with a little
+
+221
+00:24:02,169 --> 00:24:07,809
+bit of thought you can convince yourself that
+every conflict serializable schedule is also
+
+222
+00:24:07,808 --> 00:24:10,269
+view serializable, but the reverse is not
+true.
+
+223
+00:24:10,269 --> 00:24:16,230
+So, here is a schedule which is view serializable,
+but it is not conflict serializable, you know
+
+224
+00:24:16,230 --> 00:24:24,029
+this is not conflict serializable because,
+certainly you cannot make it into a serial
+
+225
+00:24:24,029 --> 00:24:29,480
+schedule make it equivalent to a serial schedule
+because, you cannot move this right Q above
+
+226
+00:24:29,480 --> 00:24:38,710
+the right Q of T 28 or of T 29, but you cannot
+move this either. So, given that but if you
+
+227
+00:24:38,710 --> 00:24:44,870
+in terms of the view equivalence we balance,
+then you will say that this is ah equivalent
+
+228
+00:24:44,869 --> 00:24:51,209
+to a serial schedule and what should be the
+serial schedule; obviously, there are 6 choices
+
+229
+00:24:51,210 --> 00:24:54,620
+because there are 3 schedules.
+So, there are 6 possible permutations which
+
+230
+00:24:54,619 --> 00:24:59,250
+give you 6 different serial schedules and
+if in that so our first condition says that
+
+231
+00:24:59,250 --> 00:25:05,990
+I must read from the same value so; obviously,
+T 27 reads the initial value of Q. So, T 27
+
+232
+00:25:05,990 --> 00:25:10,500
+has to be the first transaction, if the third
+condition says that I must do the same right
+
+233
+00:25:10,500 --> 00:25:16,028
+T 29 does the final right here. So, the in
+the serial schedule also T 29 must be the
+
+234
+00:25:16,028 --> 00:25:21,220
+last 1. So, T 28 has to be the middle 1.
+So, the serial schedule that this is equivalent
+
+235
+00:25:21,220 --> 00:25:31,700
+to is T 27 T 28 T 29 and, the 1 reads and
+the other 2 rights and T 29 performs a final
+
+236
+00:25:31,700 --> 00:25:37,569
+right. So, you can see that this is a this
+is not a conflict serializable, but this is
+
+237
+00:25:37,569 --> 00:25:43,288
+view serializable and if you note the view
+serializability moment, you have you view
+
+238
+00:25:43,288 --> 00:25:49,308
+serializability and you may not have conflict
+serializability, then you must be having certain
+
+239
+00:25:49,308 --> 00:25:54,778
+blind rights, these are called blind rights
+this is a blind right, in the sense that here
+
+240
+00:25:54,778 --> 00:26:01,499
+you are writing the value of Q in T 28 without
+having read it is current or previous value.
+
+241
+00:26:01,499 --> 00:26:05,169
+So, you have just blindly you had just computed
+some value and you are writing to that.
+
+242
+00:26:05,169 --> 00:26:10,840
+So, if a schedule is not conflict serializable,
+but is view serializable it must have performed
+
+243
+00:26:10,839 --> 00:26:16,329
+some blind rights where it has written data
+without actually reading it. So, this is a
+
+244
+00:26:16,329 --> 00:26:24,089
+weaker form of serializability that is possible.
+Now, the question is similar to conflict serializability,
+
+245
+00:26:24,089 --> 00:26:31,028
+where we saw that it schedule can be conflict
+serializable, if it is corresponding precedence
+
+246
+00:26:31,028 --> 00:26:39,319
+graph is a cyclic. So, we would like to extend
+find out similar test for view serializability,
+
+247
+00:26:39,319 --> 00:26:47,480
+but ah as it turns out that trying to find
+out this is exponential in cost in terms of
+
+248
+00:26:47,480 --> 00:26:52,778
+the size of the precedence graph.
+So, it has been proved that the of checking,
+
+249
+00:26:52,778 --> 00:26:58,769
+whether a schedule is view serializable is
+in the class of NP complete problem. So, if
+
+250
+00:26:58,769 --> 00:27:03,720
+you are good in algorithms. So, you will know
+what NP problems are and when are problems
+
+251
+00:27:03,720 --> 00:27:09,579
+called NP complete, in very simple terms even
+if you are not familiar with that depth of
+
+252
+00:27:09,579 --> 00:27:17,009
+algorithms, you can simply issue note that
+if an algorithm is NP complete, then it is
+
+253
+00:27:17,009 --> 00:27:21,169
+extremely unlikely that there exists in efficient
+algorithm for.
+
+254
+00:27:21,169 --> 00:27:26,509
+It there exists any kind of polynomial time
+algorithm, it is extremely unlikely still
+
+255
+00:27:26,509 --> 00:27:31,308
+not it is still an open problem in computer
+science, whether a tall polynomial algorithm
+
+256
+00:27:31,308 --> 00:27:35,558
+exists for NP complete problems, but it is
+extremely unlikely that an efficient algorithm
+
+257
+00:27:35,558 --> 00:27:40,349
+will exist, you may have some approximate
+algorithms which can give sufficiency conditions
+
+258
+00:27:40,349 --> 00:27:45,109
+which can say that well if these conditions
+are satisfied, then necessarily a schedule
+
+259
+00:27:45,109 --> 00:27:50,479
+is view serializable, but not a sufficient
+condition are not a necessary condition, that
+
+260
+00:27:50,480 --> 00:27:56,589
+is in other words that there may be some schedules
+which do not satisfy the sufficient condition,
+
+261
+00:27:56,589 --> 00:28:01,878
+but are still view serializable.
+So, using view serializability have certain
+
+262
+00:28:01,878 --> 00:28:10,189
+problems. So, here I have worked out a longer
+problem in terms of the view serializability
+
+263
+00:28:10,190 --> 00:28:15,679
+to check that. So, it is kind of a brute force
+algorithm. So, if you see this is the schedule
+
+264
+00:28:15,679 --> 00:28:21,419
+given there are 2 data items A and B and there
+are 3 transactions T 1 T 2 T 3. Since there
+
+265
+00:28:21,419 --> 00:28:25,538
+are 3 transactions, then if I want to prove
+if it is view serializable, then what I will
+
+266
+00:28:25,538 --> 00:28:31,210
+have to do I will have to find a one of the
+possible serial schedules which is view equivalent
+
+267
+00:28:31,210 --> 00:28:35,620
+to this?
+So, first I list out all the serial schedules
+
+268
+00:28:35,619 --> 00:28:41,349
+given 3 transactions, there are 6 serial schedules
+and then I first start with condition 3 which
+
+269
+00:28:41,349 --> 00:28:48,689
+is who is doing the last update. So, there
+are rights are only on B. So, and last of
+
+270
+00:28:48,690 --> 00:28:55,830
+that are being done in all the 3 transactions.
+So, there is no write on A so, the list of
+
+271
+00:28:55,829 --> 00:29:02,970
+final update on A is empty and for B the order
+is T 1 T 2 T 3 so, T 3 does the last. So,
+
+272
+00:29:02,970 --> 00:29:11,058
+it must whatever schedule this whatever serial
+schedule this given schedule S has to be view
+
+273
+00:29:11,058 --> 00:29:18,138
+equivalent to must have T 3 as the last transaction
+to execute. So, only these 2 are the candidates
+
+274
+00:29:18,138 --> 00:29:23,528
+which may be view equivalent to this schedule
+S.
+
+275
+00:29:23,528 --> 00:29:30,009
+So, we reduce down and now we have only to
+decide whether these 2 any of these 2 are
+
+276
+00:29:30,009 --> 00:29:38,860
+view equivalent to the given schedule S. So,
+moving on with that now next we check condition
+
+277
+00:29:38,859 --> 00:29:45,148
+1 and condition 2 together. So, condition
+one checks that they must read the same value
+
+278
+00:29:45,148 --> 00:29:50,408
+in both the schedule. So, we see that these
+are the reads that are happening on A. So,
+
+279
+00:29:50,409 --> 00:29:57,590
+we see that on a there are reads happening,
+I am sorry this is these are the 3 that is
+
+280
+00:29:57,589 --> 00:30:02,178
+reading A. So, it happens in the order of
+T 2 T 3 T 1 and T 3.
+
+281
+00:30:02,179 --> 00:30:10,919
+So, this is what you find and in terms of
+B we find that transaction 2 reads B and writes
+
+282
+00:30:10,919 --> 00:30:17,610
+it. So, it has to be in that order. So, it
+reads it does an initial read in terms of
+
+283
+00:30:17,609 --> 00:30:25,329
+T 2 and, then the first right of that read
+value is happening in the transaction T 1
+
+284
+00:30:25,329 --> 00:30:34,980
+after the update of the read. So, ah that
+means, that whatever schedule we we look for
+
+285
+00:30:34,980 --> 00:30:42,028
+in terms of view equivalence, they must have
+in that schedule T 1 must follow T 2. So,
+
+286
+00:30:42,028 --> 00:30:47,769
+T 2 must happen first because it needs to
+read the initial value and, then that initial
+
+287
+00:30:47,769 --> 00:30:57,490
+value is is used by then there is a right
+on by T 1. So, T 2 has to come before T 1
+
+288
+00:30:57,490 --> 00:31:07,019
+so; that means, we are already in terms of
+only 2 we have seen that there are 2 possible
+
+289
+00:31:07,019 --> 00:31:11,660
+candidates based on condition 3, it is T T
+1 T 3.
+
+290
+00:31:11,660 --> 00:31:18,630
+So, in these 2 we only can have this one which
+is satisfying the other conditions and there
+
+291
+00:31:18,630 --> 00:31:25,749
+is no read write sequence. So, we conclude
+that indeed T 2 T 1 T 3 satisfies all the
+
+292
+00:31:25,749 --> 00:31:33,419
+3 conditions of initial read write after read
+and the final right conditions and therefore,
+
+293
+00:31:33,419 --> 00:31:41,889
+this given schedule S is actually view equivalent
+to a serial schedule and, it is a view serial
+
+294
+00:31:41,888 --> 00:31:51,439
+schedule and can be used safely for the transaction.
+There is ah another example given here, where
+
+295
+00:31:51,440 --> 00:31:57,308
+there is there are 4 transactions R one R
+2 R 3 and R 4 and there are 2 data items A
+
+296
+00:31:57,308 --> 00:32:02,849
+and B and, you have to find out establish
+whether this is view serializable or not,
+
+297
+00:32:02,849 --> 00:32:08,759
+I am not working out this one this is worked
+out in the presentation slide, but I will
+
+298
+00:32:08,759 --> 00:32:14,329
+not show it here you are you should first
+try it out and, then once you have been able
+
+299
+00:32:14,329 --> 00:32:18,878
+to do it or you are unable to do that, then
+you check the solution from the presentation
+
+300
+00:32:18,878 --> 00:32:25,319
+slide.
+ah There are different other complex motions
+
+301
+00:32:25,319 --> 00:32:33,678
+of serializability also for example, if you
+look at this particular schedule this actually
+
+302
+00:32:33,679 --> 00:32:41,450
+is a serializable ah schedule, this is the
+effect that it produces will be same as the
+
+303
+00:32:41,450 --> 00:32:46,100
+serial schedule of T 1 T 5, but if you go
+through the definitions of conflict equivalence
+
+304
+00:32:46,099 --> 00:32:51,238
+and, view equivalence you will be able to
+show that this schedule is neither conflict
+
+305
+00:32:51,239 --> 00:32:57,179
+conflict serializable not view serializable,
+but yet given the particular.
+
+306
+00:32:57,179 --> 00:33:02,149
+So, if you just look at the read write this
+is not a serializable schedule in terms of
+
+307
+00:33:02,148 --> 00:33:08,288
+conflict or view equivalence, but given the
+fact that it actually performs simple add
+
+308
+00:33:08,288 --> 00:33:14,099
+subtract operations on these variables, using
+the properties of add subtract operations
+
+309
+00:33:14,099 --> 00:33:20,028
+you would be able to you can actually see
+that this particular schedule actually is
+
+310
+00:33:20,028 --> 00:33:26,579
+a serializable schedule and, you will get
+whatever initial values you start with the
+
+311
+00:33:26,579 --> 00:33:30,349
+value that you will achieve ah through this
+schedule and the value that will achieve with
+
+312
+00:33:30,349 --> 00:33:34,250
+the serial schedule T 1 T 5 are indeed same
+in every case.
+
+313
+00:33:34,250 --> 00:33:39,388
+But this is determining this requires the
+understanding of other instructions other
+
+314
+00:33:39,388 --> 00:33:44,168
+operations, besides the read and write. So,
+this is just to show you that using the read
+
+315
+00:33:44,169 --> 00:33:49,538
+write model and conflict and view equivalents
+and the only not the only ways of getting
+
+316
+00:33:49,538 --> 00:33:53,169
+to serializability there are more complex
+models, but we will not go into the depth
+
+317
+00:33:53,169 --> 00:33:59,929
+of these complex serializability aspect.
+So, we have shown that with we have shown
+
+318
+00:33:59,929 --> 00:34:05,340
+here that with proper planning, a database
+can be recovered back to a consistent state
+
+319
+00:34:05,339 --> 00:34:10,969
+from an inconsistent state, in case of system
+failure. And this such a recovery can be through
+
+320
+00:34:10,969 --> 00:34:17,959
+cascaded or cascade lists rollback and, we
+have also introduced a simpler model of serializability
+
+321
+00:34:17,960 --> 00:34:23,750
+in terms of the view serializable, but testing
+for view celerity is MD complete. So, as an
+
+322
+00:34:23,750 --> 00:34:25,469
+effective algorithm it is not that powerful.
+

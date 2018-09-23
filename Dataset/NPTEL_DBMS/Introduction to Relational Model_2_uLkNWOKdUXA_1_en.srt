@@ -1,0 +1,1058 @@
+﻿1
+00:00:18,559 --> 00:00:27,129
+welcome to module five of database management
+systems in the previous module we started
+
+2
+00:00:27,129 --> 00:00:36,409
+discussions on introducing relational model
+we will conclude that in this module so in
+
+3
+00:00:36,409 --> 00:00:44,459
+the last module we have talked about attributes
+relational schemas and instances in mathematical
+
+4
+00:00:44,460 --> 00:00:52,640
+form and very importantly we have tried to
+introduce discuss about the concept of keys
+
+5
+00:00:52,640 --> 00:00:58,770
+in this module we will try to understand more
+on the relational algebra and familiarize
+
+6
+00:00:58,770 --> 00:01:03,640
+with the operations of relational algebra
+so these are the different operations that
+
+7
+00:01:03,640 --> 00:01:10,569
+we will ah look at ah select project union
+and so on some of them are simple set theoretic
+
+8
+00:01:10,569 --> 00:01:17,489
+operations some are newly defined operations
+and we look at the aggregators so relational
+
+9
+00:01:17,489 --> 00:01:18,489
+operators
+
+10
+00:01:18,489 --> 00:01:25,828
+ok so what is a relation as we have seen already
+a relation is nothing but a table it has a
+
+11
+00:01:25,828 --> 00:01:34,019
+set of columns and it has a set of rows or
+records that fill up data according to those
+
+12
+00:01:34,019 --> 00:01:45,548
+columns select is an operation which chooses
+a subset of rows from a relation based on
+
+13
+00:01:45,549 --> 00:01:54,429
+a certain condition so it is written in terms
+of in relational algebra we write it with
+
+14
+00:01:54,429 --> 00:02:04,149
+a notion of ah notation of sigma and following
+a parenthesis we put the name of the relation
+
+15
+00:02:04,149 --> 00:02:14,680
+so we say we are selecting from the relation
+r and then we put a condition here which is
+
+16
+00:02:14,680 --> 00:02:30,670
+a propositional condition 
+so if for this all rows of r will be checked
+
+17
+00:02:30,669 --> 00:02:40,609
+if a row will satisfy this condition then
+it will be included in the result if it does
+
+18
+00:02:40,610 --> 00:02:45,760
+not satisfy the condition then it will not
+be included in the result so
+
+19
+00:02:45,759 --> 00:02:55,509
+let us look at this example so our condition
+is sorry let this put this back so our condition
+
+20
+00:02:55,509 --> 00:03:05,039
+theta is a is equal to b and d is greater
+than five so you are saying that that any
+
+21
+00:03:05,039 --> 00:03:14,519
+row to be selected the value of its a attribute
+should equal the value of its b attribute
+
+22
+00:03:14,519 --> 00:03:21,209
+and when that happens the value of its d attribute
+must be greater than five so you can easily
+
+23
+00:03:21,209 --> 00:03:26,170
+if we look through this we can easily say
+by the first condition a equal to b you can
+
+24
+00:03:26,169 --> 00:03:35,369
+say that this row does not satisfy this condition
+because a is alpha and b is beta whereas these
+
+25
+00:03:35,370 --> 00:03:47,769
+three rows satisfy because a is equal to beta
+then you again look at d we find that this
+
+26
+00:03:47,769 --> 00:03:55,950
+d is less than five we say this also does
+not satisfy because it fails the second condition
+
+27
+00:03:55,949 --> 00:04:04,979
+both have to hold so we finally come to that
+this record and this record are the selected
+
+28
+00:04:04,979 --> 00:04:12,259
+record in the result alpha alpha one seven
+alpha alpha one seven beta beta twenty three
+
+29
+00:04:12,259 --> 00:04:18,789
+ten beta beta twenty three ten in both of
+these records a is equal to b in both of these
+
+30
+00:04:18,790 --> 00:04:27,750
+records d is greater than five so selection
+is a process is the operation which selects
+
+31
+00:04:27,750 --> 00:04:37,180
+a subset of rows from a table from a relation
+and creates a new relation based on a selection
+
+32
+00:04:37,180 --> 00:04:42,939
+condition that must be true for all the rows
+for all the records that have been selected
+
+33
+00:04:42,939 --> 00:04:51,620
+but the set of columns do not change they
+remain the same so for example if i if ah
+
+34
+00:04:51,620 --> 00:05:02,970
+if in the contrary if we say that sigma a
+not equal to b r then naturally i will have
+
+35
+00:05:02,970 --> 00:05:17,940
+a relation with fields a b c d and that relation
+will be only this row where that is the only
+
+36
+00:05:17,939 --> 00:05:32,370
+row where a is not equal to b we can i can
+have a selection saying r where c is greater
+
+37
+00:05:32,370 --> 00:05:41,780
+than zero naturally this will satisfy this
+will satisfy this will satisfy this will satisfy
+
+38
+00:05:41,779 --> 00:05:48,829
+so this whole relation would be the result
+of the selection so it is possible that it
+
+39
+00:05:48,829 --> 00:05:54,979
+is not necessary that some rows will have
+to get eliminated in the result i say that
+
+40
+00:05:54,980 --> 00:06:09,500
+ah this is is the 
+selection is d is less than one this will
+
+41
+00:06:09,500 --> 00:06:17,589
+fail this will fail this will fail this will
+fail so all of them will fail so it is possible
+
+42
+00:06:17,589 --> 00:06:24,489
+that the result of an operation could be either
+the whole relation as we saw last time or
+
+43
+00:06:24,490 --> 00:06:30,069
+a null relation which has where none of the
+record with feature because none of the record
+
+44
+00:06:30,069 --> 00:06:34,729
+satisfy the condition so that is a basic select
+operation
+
+45
+00:06:34,728 --> 00:06:43,550
+let us ah move on look at the next one is
+called a projection operation so select chooses
+
+46
+00:06:43,550 --> 00:06:56,810
+a subset of the rows projection necessarily
+chooses projects a set of columns from the
+
+47
+00:06:56,810 --> 00:07:03,930
+original relation so this is a quite straightforward
+to see it is written in terms of this notation
+
+48
+00:07:03,930 --> 00:07:13,780
+pi and then you write the columns that you
+want in the result of projection so we say
+
+49
+00:07:13,779 --> 00:07:22,109
+this is a c so which means basically the column
+which is not selected in the projection you
+
+50
+00:07:22,110 --> 00:07:30,889
+can simply forget about that simply erase
+it if you erase that you get this relation
+
+51
+00:07:30,889 --> 00:07:39,079
+and once you get that please recall that a
+relation is a set and in a set every element
+
+52
+00:07:39,079 --> 00:07:47,349
+has to be distinct so after erasing b this
+first and the second row have become identical
+
+53
+00:07:47,350 --> 00:07:55,990
+so naturally both of them cannot be there
+it will have to be made distinct by erasing
+
+54
+00:07:55,990 --> 00:08:05,960
+any one of them and hence they become one
+row in the result obviously i can project
+
+55
+00:08:05,959 --> 00:08:19,060
+on any of the infield single or all the fields
+also i can do a projection of of this a b
+
+56
+00:08:19,060 --> 00:08:25,189
+c of r of course that means in this case that
+will mean that it is a set which is equal
+
+57
+00:08:25,189 --> 00:08:32,960
+to r anyway but obviously i must have at least
+one column at least one attribute to project
+
+58
+00:08:32,960 --> 00:08:39,418
+on i cannot project on a null set of attributes
+because that does not give me a schema so
+
+59
+00:08:39,418 --> 00:08:46,059
+there will have to be some attribute one or
+more attribute on which i project so selection
+
+60
+00:08:46,059 --> 00:08:52,500
+and projection ah selection has given me the
+set of rows to retain and projection has given
+
+61
+00:08:52,500 --> 00:08:58,870
+me what are the columns to retain in the result
+and combining them i can do several different
+
+62
+00:08:58,870 --> 00:09:06,139
+operations in a database table which can give
+me several interesting results ah before proceeding
+
+63
+00:09:06,139 --> 00:09:10,509
+further
+let us look into some of the typical ah other
+
+64
+00:09:10,509 --> 00:09:16,669
+operations that relational algebra allows
+the next one is union given two relations
+
+65
+00:09:16,669 --> 00:09:22,729
+i can take a union this is nothing but a set
+theoretic union the two relations r and s
+
+66
+00:09:22,730 --> 00:09:28,690
+must have the same set of columns a and b
+because if the columns are not same then the
+
+67
+00:09:28,690 --> 00:09:33,680
+union does not make sense they because certainly
+if the columns are different attributes are
+
+68
+00:09:33,679 --> 00:09:38,179
+different their types and type of data values
+would be different so they cannot be put to
+
+69
+00:09:38,179 --> 00:09:45,689
+a same table so when two relations have the
+same set of attributes then their instances
+
+70
+00:09:45,690 --> 00:09:55,540
+can be taken a union of so all records that
+ah exist in both these relations will be put
+
+71
+00:09:55,539 --> 00:10:08,419
+together into a single table so here alpha
+one is coming here beta one is coming here
+
+72
+00:10:08,419 --> 00:10:16,789
+in terms of relation alpha one is coming here
+alpha two is coming here beta one is coming
+
+73
+00:10:16,789 --> 00:10:25,939
+here beta three is coming here and alpha two
+is coming here you can see that this record
+
+74
+00:10:25,940 --> 00:10:35,230
+alpha two exists in both the relations and
+by the set theoretic notion of uniqueness
+
+75
+00:10:35,230 --> 00:10:41,700
+in the union they have to be uniquified so
+one of them will be removed it does not matter
+
+76
+00:10:41,700 --> 00:10:50,040
+because they are identical anyway so for relations
+having the same set of attributes we can simply
+
+77
+00:10:50,039 --> 00:11:03,240
+make a union of all its records so 
+other the third operation is the a fourth
+
+78
+00:11:03,240 --> 00:11:09,959
+operation is doing a set difference it is
+works simply as set theoretic difference again
+
+79
+00:11:09,958 --> 00:11:18,588
+the two relations must have the same set of
+ah attributes and i can do a difference of
+
+80
+00:11:18,589 --> 00:11:29,560
+r minus s which mean that ah all tuples which
+exist in r but do not exist in s will be included
+
+81
+00:11:29,559 --> 00:11:37,989
+so this is included because this is not here
+but this is not included because it is in
+
+82
+00:11:37,990 --> 00:11:49,289
+s this is included because this is this does
+not exist in the set s so it is the set so
+
+83
+00:11:49,289 --> 00:12:01,088
+you take the set r and then erase all the
+records like this which exist in s and you
+
+84
+00:12:01,089 --> 00:12:12,860
+get r minus s so if i look into just two recap
+if i look into the ah venn diagram then this
+
+85
+00:12:12,860 --> 00:12:24,310
+is these are set r minus s which belongs to
+r but does not belong to s so there is a fourth
+
+86
+00:12:24,309 --> 00:12:37,888
+operation that one can do with the in relational
+algebra fifth is a set intersection of two
+
+87
+00:12:37,889 --> 00:12:43,000
+relations so again the two relations need
+to have the same set of attributes you can
+
+88
+00:12:43,000 --> 00:12:51,080
+take their intersection which is the record
+which belongs to both it is the record that
+
+89
+00:12:51,080 --> 00:13:02,750
+belongs to both of them and as you are aware
+now set intersection actually is not a new
+
+90
+00:13:02,750 --> 00:13:12,320
+operation it is not a fundamental operation
+because if i have r if i have s then ah this
+
+91
+00:13:12,320 --> 00:13:26,010
+is r minus s now if i subtract this r minus
+s which is this set from r which is this bigger
+
+92
+00:13:26,009 --> 00:13:36,049
+set then what will be remaining this is what
+will be remaining so if i subtract r minus
+
+93
+00:13:36,049 --> 00:13:42,240
+s from r then what will remain is necessarily
+the intersection of this is r intersection
+
+94
+00:13:42,240 --> 00:13:51,299
+s so set intersection is not a fundamental
+operation of relational algebra but can be
+
+95
+00:13:51,299 --> 00:14:04,278
+used because it can be expressed in terms
+of set difference 
+
+96
+00:14:04,278 --> 00:14:11,600
+next comes ah how can we join two different
+relations which have different set of ah attributes
+
+97
+00:14:11,600 --> 00:14:19,610
+so relation r has a b and relation ah s has
+c d e so we can take a cartesian product so
+
+98
+00:14:19,610 --> 00:14:25,360
+taking cartesian product is making all possible
+combinations so necessarily if since this
+
+99
+00:14:25,360 --> 00:14:33,259
+has two relations and this has three relations
+so this will ah have one two three four five
+
+100
+00:14:33,259 --> 00:14:42,300
+six seven eight this has four relations so
+these are eight eight total all possible pairing
+
+101
+00:14:42,299 --> 00:14:50,508
+of relations of r or records of r and records
+of s are included so that is the cartesian
+
+102
+00:14:50,509 --> 00:14:56,930
+product all possible combinations this is
+this is how we can join two relations but
+
+103
+00:14:56,929 --> 00:15:04,500
+ah certainly what is a important is something
+which we will discuss shortly
+
+104
+00:15:04,500 --> 00:15:10,528
+now in the cartesian product ah then issue
+may happen because there could be attributes
+
+105
+00:15:10,528 --> 00:15:15,740
+which are common between two relations so
+if you if two attributes are common when you
+
+106
+00:15:15,740 --> 00:15:20,409
+take cartesian product how do you put their
+name because as with the example show here
+
+107
+00:15:20,409 --> 00:15:27,169
+between r and s the attribute b is common
+so how do you take care of that so when the
+
+108
+00:15:27,169 --> 00:15:34,208
+such common names happen then we actually
+change the name of the attribute with the
+
+109
+00:15:34,208 --> 00:15:40,989
+name of the relation so b coming from r will
+be called r dot b and s be coming from s will
+
+110
+00:15:40,990 --> 00:15:52,769
+be called r dot s and accordingly the relational
+algebra gives you a way to rename a a a table
+
+111
+00:15:52,769 --> 00:16:04,860
+and put its name differently so this is ah
+given a this is given by this relation is
+
+112
+00:16:04,860 --> 00:16:14,289
+given by this symbol rho so you can using
+a relation r you can actually give it a different
+
+113
+00:16:14,289 --> 00:16:24,099
+name s and ah do that in terms of so with
+that you can actually because otherwise you
+
+114
+00:16:24,100 --> 00:16:30,220
+cannot compute r cross r because if you try
+to do r cross r then you will have r dot a
+
+115
+00:16:30,220 --> 00:16:37,860
+r dot b and you will again have r dot a r
+dot b so you are using this to rename r to
+
+116
+00:16:37,860 --> 00:16:44,199
+s and then compute this so renaming a table
+is another feature which is provided of course
+
+117
+00:16:44,198 --> 00:16:50,789
+it is not a fundamental operation of the algebra
+but this is ah what makes the any kind of
+
+118
+00:16:50,789 --> 00:17:00,578
+cartesian product possible ah finally we can
+ah make composition of ah operations that
+
+119
+00:17:00,578 --> 00:17:06,459
+if for example what we show here is ah we
+have two relations r and s you have taken
+
+120
+00:17:06,459 --> 00:17:12,670
+a cartesian product and then we have taken
+a selection so taken a cartesian product of
+
+121
+00:17:12,670 --> 00:17:19,759
+r n s to produce the table as you can see
+the r process and then added a selection based
+
+122
+00:17:19,759 --> 00:17:26,170
+on a equal to c based on that condition so
+all these operations can be combined in multiple
+
+123
+00:17:26,170 --> 00:17:35,400
+different ways to give you really complex
+ah relational algebra operations ah there
+
+124
+00:17:35,400 --> 00:17:41,001
+is a nice um ah operation which is a derived
+one which can be written in terms of other
+
+125
+00:17:41,999 --> 00:17:46,500
+operations which is called a natural join
+which we will use very heavily
+
+126
+00:17:46,500 --> 00:17:56,269
+let me first show you an example of that ah
+suppose i have two relations r and s and what
+
+127
+00:17:56,269 --> 00:18:05,779
+is important is there are some attributes
+which are common between them now we saw earlier
+
+128
+00:18:05,779 --> 00:18:13,039
+that in in cartesian product in terms of common
+attributes we basically the attributes got
+
+129
+00:18:13,039 --> 00:18:17,629
+renamed in terms of the table name but this
+is not what we are looking at in relation
+
+130
+00:18:17,630 --> 00:18:24,470
+natural joint what we want to say is if an
+attribute is common between two two tables
+
+131
+00:18:24,470 --> 00:18:37,690
+then while you join them the records from
+two fields can be joined if their value on
+
+132
+00:18:37,690 --> 00:18:48,570
+that common attribute is same so it is what
+it tries to do is it tries to make a cartesian
+
+133
+00:18:48,569 --> 00:18:56,720
+product of this two tables first take all
+possible combinations but then you select
+
+134
+00:18:56,720 --> 00:19:08,650
+only those rows where the values are identical
+between columns having the same name so for
+
+135
+00:19:08,650 --> 00:19:15,710
+example if you if you if you look into this
+row and this row so what will happen in in
+
+136
+00:19:15,710 --> 00:19:31,160
+the cartesian product i will have this alpha
+one alpha a one a alpha
+
+137
+00:19:31,160 --> 00:19:36,830
+let me write it in smaller so i am doing a
+cartesian product i am looking at this row
+
+138
+00:19:36,829 --> 00:19:54,159
+i am looking at this row so i have a b c d
+i have b d e and alpha alpha a one a alpha
+
+139
+00:19:54,160 --> 00:20:04,320
+now they match on b they match on d so i will
+say this is this will get retailed but in
+
+140
+00:20:04,319 --> 00:20:11,009
+the cartesian product i will also have the
+first row of r going with the second row of
+
+141
+00:20:11,009 --> 00:20:25,950
+s alpha one alpha a three a beta here the
+b does not match d does not does match but
+
+142
+00:20:25,950 --> 00:20:39,850
+the b does not match so this particular entry
+will not go in the final result to take the
+
+143
+00:20:39,849 --> 00:20:50,439
+cartesian product and you only retain those
+rows where the values match for the identically
+
+144
+00:20:50,440 --> 00:20:58,809
+named attribute that is why so you take the
+cartisan product now look at the expression
+
+145
+00:20:58,809 --> 00:21:07,500
+the attributes common attributes are b and
+c b and d so the b attribute is r dot b and
+
+146
+00:21:07,500 --> 00:21:16,019
+s dot b so we say that in the cartesian product
+r dot b must equal s dot b the name is common
+
+147
+00:21:16,019 --> 00:21:23,339
+the value will have to be same similarly d
+is a common attribute so r dot d value in
+
+148
+00:21:23,339 --> 00:21:31,579
+the r dot d and the value in the s dot d has
+to be same so based on the cartesian product
+
+149
+00:21:31,579 --> 00:21:40,879
+you do a selection for equality of values
+on attributes which are identical between
+
+150
+00:21:40,880 --> 00:21:48,370
+the two column between the two relations between
+the two tables this is a final selection as
+
+151
+00:21:48,369 --> 00:21:57,759
+you do that you get a table where there are
+two b s r dot b s dot b there are two d s
+
+152
+00:21:57,759 --> 00:22:07,320
+r dot d s dot d but according to this selection
+for all at all records for all rows the value
+
+153
+00:22:07,320 --> 00:22:14,199
+on r dot b and value on s dot b are same value
+on r dot d and value on r s dot d are same
+
+154
+00:22:14,200 --> 00:22:21,590
+because that is how we have done the selection
+so there is no reason to keep two b columns
+
+155
+00:22:21,589 --> 00:22:30,639
+or two d columns
+so now you project based on a r dot b c r
+
+156
+00:22:30,640 --> 00:22:42,060
+dot d and e which means that s dot b and s
+dot d are left out you do not project them
+
+157
+00:22:42,059 --> 00:22:50,299
+so after you have done this projection you
+get the final result of the natural join which
+
+158
+00:22:50,299 --> 00:22:58,549
+has a union of all the attributes that the
+two relations at a b c d and b d e union is
+
+159
+00:22:58,549 --> 00:23:11,309
+a b c d e and you have all those records whose
+values matched on the common attributes between
+
+160
+00:23:11,309 --> 00:23:18,000
+relation r and relation d so you can say that
+if i now do a selection if i now do a projection
+
+161
+00:23:18,000 --> 00:23:29,240
+on a b c or rather a b c d i will get a subset
+of r if i do a projection on b d e i will
+
+162
+00:23:29,240 --> 00:23:35,589
+get a subset of s so this is the natural join
+operation in relational algebra as you can
+
+163
+00:23:35,589 --> 00:23:42,179
+see this is a derived operation because we
+could use the cartesian product selection
+
+164
+00:23:42,180 --> 00:23:48,560
+and projection to get this but as i tell you
+we will see see more of this when we look
+
+165
+00:23:48,559 --> 00:23:57,139
+at the look at all these different aj query
+coding but natural join is one of the most
+
+166
+00:23:57,140 --> 00:24:02,420
+widely used most fundamental relational algebra
+operation that you will often need beyond
+
+167
+00:24:02,420 --> 00:24:09,259
+selection and projection so these were the
+six operations and the important derived operations
+
+168
+00:24:09,259 --> 00:24:15,390
+of relational algebra besides that relational
+algebra has some aggregation operators for
+
+169
+00:24:15,390 --> 00:24:22,380
+example ah given a a table we could ah compute
+the sum of values on a column we could compute
+
+170
+00:24:22,380 --> 00:24:29,160
+average of values max of values mean of values
+so these somehow aggregate values of multiple
+
+171
+00:24:29,160 --> 00:24:36,810
+rows on a particular column and therefore
+these are called aggregate operators ah we
+
+172
+00:24:36,809 --> 00:24:42,960
+will see when we talk about s q l we will
+see how this really can be coded in s q l
+
+173
+00:24:42,960 --> 00:24:49,100
+and used but these are this become very convenient
+to use because often we will need to know
+
+174
+00:24:49,099 --> 00:24:56,789
+ok if this is ah i mean these are the instructors
+and so let us see which instructor has a maximum
+
+175
+00:24:56,789 --> 00:25:03,809
+load of courses how many based on hours or
+ah which instructor has what is the average
+
+176
+00:25:03,809 --> 00:25:09,240
+load on the different instructors and so on
+so in every possible context different aggregate
+
+177
+00:25:09,240 --> 00:25:13,960
+operators are frequently required and they
+are also available as operators in most of
+
+178
+00:25:13,960 --> 00:25:24,049
+the pure as well as commercial query languages
+ah finally to note ah that ah relational algebra
+
+179
+00:25:24,049 --> 00:25:32,740
+in relational average every query input is
+a table and the output is also a table so
+
+180
+00:25:32,740 --> 00:25:38,970
+it is always manipulating one or more tables
+into a single table thats what we are i mean
+
+181
+00:25:38,970 --> 00:25:43,710
+in in very simple terms that is the way you
+can look at it and all data in the output
+
+182
+00:25:43,710 --> 00:25:51,789
+table appears in one of the input tables that
+is no new data gets generated its basically
+
+183
+00:25:51,789 --> 00:25:59,240
+taking selecting combining data from different
+input tables it does not generate a new data
+
+184
+00:25:59,240 --> 00:26:06,359
+that is that has to be that is ah if if i
+see that a we an attribute for a particular
+
+185
+00:26:06,359 --> 00:26:12,449
+row has a value fifteen then there must be
+some input table where there is a record where
+
+186
+00:26:12,450 --> 00:26:19,160
+in that field as an attribute value fifty
+otherwise this cannot happen again relational
+
+187
+00:26:19,160 --> 00:26:23,840
+algebra is not turing complete in the sense
+that there are algorithms which cannot be
+
+188
+00:26:23,839 --> 00:26:30,490
+coded in relational algebra we mentioned this
+ah earlier too and that is the reason that
+
+189
+00:26:30,490 --> 00:26:36,670
+is a foundational reason of why the s q l
+language commercial s q l language is based
+
+190
+00:26:36,670 --> 00:26:39,660
+on relational algebra is not turing completely
+there
+
+191
+00:26:39,660 --> 00:26:44,450
+so we might need to use other programming
+languages along with the relational algebra
+
+192
+00:26:44,450 --> 00:26:52,779
+coding for solving some of the application
+problems to summarize this is the ah so this
+
+193
+00:26:52,779 --> 00:26:58,099
+table is what you not only should remember
+but you should become a expert of in terms
+
+194
+00:26:58,099 --> 00:27:03,869
+of the operators of relational algebra which
+we will start using very heavily as we start
+
+195
+00:27:03,869 --> 00:27:09,949
+doing the query coding and processing so we
+talked about selection which takes rows selectively
+
+196
+00:27:09,950 --> 00:27:15,340
+we talked about projection which takes out
+certain columns of a table we talked about
+
+197
+00:27:15,339 --> 00:27:22,459
+cartesian product of two relations which make
+all possible combined relations we talked
+
+198
+00:27:22,460 --> 00:27:29,710
+about union of records from two tables having
+identical set of attributes we talked about
+
+199
+00:27:29,710 --> 00:27:40,590
+set difference which again is ah the difference
+of records of one relation from another given
+
+200
+00:27:40,589 --> 00:27:47,049
+that they have identical ah set of attributes
+we have shown that ah set difference can be
+
+201
+00:27:47,049 --> 00:27:53,139
+used to also compute set intersection it is
+not in the fundamental operation but is the
+
+202
+00:27:53,140 --> 00:28:00,200
+derived one and we have shown a very interesting
+ah operation based on cartesian product selection
+
+203
+00:28:00,200 --> 00:28:07,090
+and projection called natural join where two
+tables can be joined based on one or more
+
+204
+00:28:07,089 --> 00:28:11,649
+common attributes they have
+now i am sure you have already noted that
+
+205
+00:28:11,650 --> 00:28:17,820
+if i am doing a natural join between two tables
+which do not have any common attribute then
+
+206
+00:28:17,819 --> 00:28:22,629
+the result is merely the cartesian product
+because the selection around the cartesian
+
+207
+00:28:22,630 --> 00:28:30,420
+product has no condition to select any ah
+any of the you know any of the fields any
+
+208
+00:28:30,420 --> 00:28:40,289
+of the rows separately so it merely turns
+out to be a cartesian product so in this module
+
+209
+00:28:40,289 --> 00:28:47,289
+we have introduced the relational algebra
+and we have familiarized ourselves with the
+
+210
+00:28:47,289 --> 00:28:54,879
+fundamental and derived operators of relational
+algebra ah going forward in the next module
+
+211
+00:28:54,880 --> 00:29:01,510
+will take a deeper look into the relational
+model and start progressing towards the query
+
+212
+00:29:01,509 --> 00:29:03,369
+design and database design
+

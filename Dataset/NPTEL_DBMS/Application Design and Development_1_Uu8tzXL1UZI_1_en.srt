@@ -1,0 +1,1580 @@
+﻿1
+00:00:16,609 --> 00:00:20,730
+.
+Welcome to module 21 of Database Management
+
+2
+00:00:20,730 --> 00:00:27,368
+Systems in this module and the next too we
+will discuss about application design and
+
+3
+00:00:27,368 --> 00:00:33,119
+development.
+In the last week we have ah for the whole
+
+4
+00:00:33,119 --> 00:00:39,218
+week in the five modules we have discussed
+about relational database design; in depth
+
+5
+00:00:39,219 --> 00:00:42,600
+we have looked into what are the different
+aspects of that.
+
+6
+00:00:42,600 --> 00:00:50,280
+And now we get into the core issue of if I
+have a relational database design existing
+
+7
+00:00:50,280 --> 00:00:56,530
+and that is populated with the data then based
+on that how do we develop, how do we create
+
+8
+00:00:56,530 --> 00:01:04,150
+an application where the user can interact
+and actually ah get answers to the questions
+
+9
+00:01:04,150 --> 00:01:11,320
+that the user has or the user can actually
+update ah the data create new data, remove
+
+10
+00:01:11,319 --> 00:01:18,359
+old data and so, on. So, we would in that
+process like to familiarize with the fundamental
+
+11
+00:01:18,359 --> 00:01:26,680
+notions of ah notions and technologies of
+ah web applications and specifically we would
+
+12
+00:01:26,680 --> 00:01:34,729
+learned about servlets and Java server pages.
+So, these are the free topics to be covered.
+
+13
+00:01:34,728 --> 00:01:40,429
+So, we first start with application programs
+and user interfaces. So, the situation is
+
+14
+00:01:40,430 --> 00:01:48,080
+the where we do have a relational database
+design it is populated ah with ah the required
+
+15
+00:01:48,079 --> 00:01:56,469
+data, but how about the interaction with the
+user incidentally most of the you database
+
+16
+00:01:56,469 --> 00:02:04,129
+users do not ah interact with the database
+or query the database using language like
+
+17
+00:02:04,129 --> 00:02:11,669
+SQL because as you have seen it is not a very
+friendly language and it is not presentable
+
+18
+00:02:11,669 --> 00:02:17,669
+in a way which I would we would always expect
+or we would like.
+
+19
+00:02:17,669 --> 00:02:24,399
+So, usually an application program acts as
+a as we say as an intermediately between the
+
+20
+00:02:24,400 --> 00:02:32,480
+user and the database. And it is often split
+into three layers as we will say frontend
+
+21
+00:02:32,479 --> 00:02:38,179
+middle layer and backend. So, on the right
+ah I have shown these ah three layers we will
+
+22
+00:02:38,180 --> 00:02:45,591
+talk more about the this is just a representative
+diagram. So, the frontend is the user interface
+
+23
+00:02:45,591 --> 00:02:51,819
+it is also called the presentation layer.
+So, it is the the layer where it is the part
+
+24
+00:02:51,818 --> 00:03:01,310
+of the application where there are forms GUIs
+ah and ah different ah ways to input as well
+
+25
+00:03:01,310 --> 00:03:07,099
+as get output of the data.
+Which is directly interacting with the user
+
+26
+00:03:07,099 --> 00:03:13,341
+then we have a middle layer or its also called
+ah the business logic layer or the application
+
+27
+00:03:13,341 --> 00:03:20,330
+layer where the functionality of the application
+the required operations of the or desired
+
+28
+00:03:20,330 --> 00:03:26,640
+behavior of the application are coded and
+it is kind of acts as a link between the frontend
+
+29
+00:03:26,639 --> 00:03:33,769
+and the backend and what is the backend?
+Backend is a actual data access layer or it
+
+30
+00:03:33,770 --> 00:03:39,890
+is where the persistent data the database
+that we have created ah exist it is typically
+
+31
+00:03:39,889 --> 00:03:46,009
+large in volume need sufficient access and
+so, on. So, in this module we will try to
+
+32
+00:03:46,009 --> 00:03:51,759
+understand as to how such what are the different
+requirements and what are the different technologies
+
+33
+00:03:51,759 --> 00:03:58,979
+involved in creating such a layered application.
+Now, if we historically look at; so, here
+
+34
+00:03:58,979 --> 00:04:06,848
+we are just showing ah three phases ah initially
+60s and 70s where the first database applications
+
+35
+00:04:06,848 --> 00:04:12,829
+started then the interaction used to be takes
+based from the terminal.
+
+36
+00:04:12,830 --> 00:04:19,189
+And the those to directly connect to the main
+frame computer where the data existed through
+
+37
+00:04:19,189 --> 00:04:24,990
+either a direct connection dial up phone or
+proprietary network. And as we move to the
+
+38
+00:04:24,990 --> 00:04:31,680
+80s; then ah we saw the advent of ah local
+area networks to application programs or desktop
+
+39
+00:04:31,680 --> 00:04:39,028
+would interact to with the database through
+these ah local area networks. And beyond that
+
+40
+00:04:39,028 --> 00:04:46,281
+we have the what we call the web era which
+is 1990 onwards we in the that is that is
+
+41
+00:04:46,281 --> 00:04:53,559
+about roughly the last 30 years where typically
+the applications are now based on web browsers.
+
+42
+00:04:53,559 --> 00:05:00,080
+So, the frontend where we actually interact
+are web browsers and that ah connect to the
+
+43
+00:05:00,079 --> 00:05:06,139
+web application server the database everything
+through an internet. And I must ah tell you
+
+44
+00:05:06,139 --> 00:05:12,319
+at this point that when you say this is the
+architecture it does not necessarily mean
+
+45
+00:05:12,319 --> 00:05:18,319
+that the cloud shown as internet will have
+to be the web, it could be an internet which
+
+46
+00:05:18,319 --> 00:05:24,639
+is created ah with a set of ah systems within
+your organization which we typically call
+
+47
+00:05:24,639 --> 00:05:29,149
+as an intranet or couple of ah organizations
+across.
+
+48
+00:05:29,149 --> 00:05:34,978
+Which we say are extranet or it could even
+be a set of systems ah which are connected
+
+49
+00:05:34,978 --> 00:05:42,050
+through the internet protocol within your
+ah lap or it could even be a single computer
+
+50
+00:05:42,050 --> 00:05:48,879
+in which all these layers are integrated together,
+but by internet we mean it is a internet protocol
+
+51
+00:05:48,879 --> 00:05:52,379
+and technologies will be used for doing this
+interaction.
+
+52
+00:05:52,379 --> 00:05:59,639
+So, web interface has become the de-facto
+ah standard which ah gives a very distributed
+
+53
+00:05:59,639 --> 00:06:06,418
+access to the database enables large number
+of users to access together. And ah it avoids
+
+54
+00:06:06,418 --> 00:06:12,198
+the requirement of downloading or installing
+specialized code into that all that we need
+
+55
+00:06:12,199 --> 00:06:20,460
+is just a web browser. And we have seen we
+are living through a variety of applications
+
+56
+00:06:20,459 --> 00:06:26,618
+which are of this kind ah the banking application,
+the airline and railway reservations car rental
+
+57
+00:06:26,619 --> 00:06:35,509
+hotel booking or web mail systems we will
+ah check ah mail in Gmail or Yahoo those are
+
+58
+00:06:35,509 --> 00:06:43,528
+all different web interfaces through which
+we actually access a the required set of databases.
+
+59
+00:06:43,528 --> 00:06:52,478
+And every even even every ah enterprise operations
+the ERP are now web based and that is become
+
+60
+00:06:52,478 --> 00:06:59,278
+a de facto standard. So, in the web ah interface
+ah along with a web interface what has been
+
+61
+00:06:59,278 --> 00:07:06,218
+imagined of let of the last ah about 10 years
+are mobile interfaces that we are getting
+
+62
+00:07:06,218 --> 00:07:12,310
+ah use to using such applications from our
+mobile phone or tablet. And ah these are similar
+
+63
+00:07:12,310 --> 00:07:17,709
+in architecture and workflow as of the web
+application, but ah there are significant
+
+64
+00:07:17,709 --> 00:07:23,379
+differences to and at a later point ah in
+the next module, we will discuss about the
+
+65
+00:07:23,379 --> 00:07:27,639
+specific requirements of mobile apps in this
+context as well.
+
+66
+00:07:27,639 --> 00:07:34,408
+So, before we move forward in terms of the
+details of how to build this applications;
+
+67
+00:07:34,408 --> 00:07:40,868
+we need to familiarize ourselves with the
+ah basic notions of the web as such. So, we
+
+68
+00:07:40,869 --> 00:07:45,379
+call them as web fundamentals.
+So, web is a distributed information system
+
+69
+00:07:45,379 --> 00:07:50,830
+which is based on hyper text a hyper text
+is one where you have a part of the text available
+
+70
+00:07:50,829 --> 00:07:57,050
+to you and then you have links we say our
+hyper links which can connect to the different
+
+71
+00:07:57,050 --> 00:08:01,158
+documents contents.
+Which are locate at other places at other
+
+72
+00:08:01,158 --> 00:08:08,288
+servers and typically most web documents ah
+are hyper text documents which are formatted
+
+73
+00:08:08,288 --> 00:08:15,228
+in terms of what we know as HTML Hyper Text
+Markup Language; you will be familiar with
+
+74
+00:08:15,228 --> 00:08:22,068
+that I am sure. So, they contain text and
+along with that they can have a ah other ah
+
+75
+00:08:22,069 --> 00:08:27,679
+components like images, video, the text as
+ah specifications for font colors style all
+
+76
+00:08:27,678 --> 00:08:33,870
+that. And in addition there are forms which
+can be used to enter data and send them back
+
+77
+00:08:33,870 --> 00:08:39,570
+to the web server.
+Now, naturally when we operate on the web
+
+78
+00:08:39,570 --> 00:08:46,220
+we need to ah ah have the functionality of
+pointing to different resources and this is
+
+79
+00:08:46,220 --> 00:08:52,420
+done by what is known as URL or uniform resource
+locator. So, that is a URL is a procedure
+
+80
+00:08:52,419 --> 00:08:59,819
+to which you can identify and point to a certain
+ah specific ah location of content. So, here
+
+81
+00:08:59,820 --> 00:09:05,560
+I am showing an example of ah such a URL all
+of you be familiar with URLs.
+
+82
+00:09:05,559 --> 00:09:11,909
+But just to look into the different components
+the first component http colon this http is
+
+83
+00:09:11,909 --> 00:09:18,588
+actually a a tells us the way the content
+would be accessed and this is typically called
+
+84
+00:09:18,589 --> 00:09:24,829
+a protocol http its stands for hyper text
+transfer protocol which allows you different
+
+85
+00:09:24,828 --> 00:09:30,969
+text to be accessed. The second component
+ah in this URL which is between the two forward
+
+86
+00:09:30,970 --> 00:09:39,850
+slash and the next slash www dot acm dot org
+identifies uniquely identifies a machine on
+
+87
+00:09:39,850 --> 00:09:44,930
+the internet ah you will understand this is
+the symbolic name and the actual machine has
+
+88
+00:09:44,929 --> 00:09:50,239
+what is known as an IP address.
+And ah we will not go into those details,
+
+89
+00:09:50,240 --> 00:09:58,549
+but for us it is enough to understand that
+ah www dot acm dot org here is ah uniquely
+
+90
+00:09:58,549 --> 00:10:05,370
+ah relatable to a particular machine on the
+internet. And the last part ah which is remaining
+
+91
+00:10:05,370 --> 00:10:10,818
+sigmod and if there are more and more and
+more parts, then it identifies the document
+
+92
+00:10:10,818 --> 00:10:17,990
+inside within that machine. So, URL can be
+used in a um multiple other ways also.
+
+93
+00:10:17,990 --> 00:10:24,330
+For example ah I can use ah URL ah locator
+to specify a file in by machine for example,
+
+94
+00:10:24,330 --> 00:10:32,339
+I have shown an example of an AVI file in
+my ah c drive ah in windows and that is done
+
+95
+00:10:32,339 --> 00:10:37,750
+through a similar URL where the protocol is
+not http the protocol is file telling me that
+
+96
+00:10:37,750 --> 00:10:44,828
+it is actually residing in my local machines.
+So, I have shown two ways to ah to look at
+
+97
+00:10:44,828 --> 00:10:50,359
+that and ah you will see that between the
+two forms; if you look at the second form
+
+98
+00:10:50,360 --> 00:10:58,050
+you can easily ah understand that the machine
+to be identify this is called the local host.
+
+99
+00:10:58,049 --> 00:11:03,740
+And in the first form that part is missing
+because it is by default the machine where
+
+100
+00:11:03,740 --> 00:11:10,459
+I am running this code and rest of it is same
+which is basically the identifying the document
+
+101
+00:11:10,458 --> 00:11:18,479
+to be ah ah to be located in that machine.
+Similarly this such URL can also in the last
+
+102
+00:11:18,480 --> 00:11:25,449
+example you can see that www dot Google dot
+com is the ah ah basic machine where I am
+
+103
+00:11:25,448 --> 00:11:30,938
+putting the ah URL and ah then the rest of
+it is search.
+
+104
+00:11:30,938 --> 00:11:36,698
+So, which actually takes it to a document
+where where I tell the search to be performed
+
+105
+00:11:36,698 --> 00:11:43,028
+and then there are parameter to this ah form
+the parameter is ah q is equal to silberschatz
+
+106
+00:11:43,028 --> 00:11:49,088
+which is equivalent to same that I am asking
+Google dot com to search for contents which
+
+107
+00:11:49,089 --> 00:11:55,339
+have silberschatz in it. So, this is the basic
+ah purpose of the uniform resource locator
+
+108
+00:11:55,339 --> 00:12:02,689
+or URLl incidentally you may have hard the
+names like U R I and U R N in addition to
+
+109
+00:12:02,688 --> 00:12:08,909
+U R L. So, they are related, but they mean
+little bit different things as this venn diagram
+
+110
+00:12:08,909 --> 00:12:18,009
+shows. So, a U R I can be either a URL or
+a U R N or it could be both. So, U R N functions
+
+111
+00:12:18,009 --> 00:12:24,110
+like a persons name; so, you can conceive
+it that way universal resource name and URL
+
+112
+00:12:24,110 --> 00:12:30,139
+resembles that of a ah persons street address.
+So, U R N says what is the name of the content
+
+113
+00:12:30,139 --> 00:12:37,009
+and URL says where that can be found. And
+ah U R I in general could be either the name
+
+114
+00:12:37,009 --> 00:12:43,870
+or the address or both of them ah .
+In this ah context of our discussion we will
+
+115
+00:12:43,870 --> 00:12:49,879
+continue to use the term URL only, but I just
+wanted you to ah be aware of the other two
+
+116
+00:12:49,879 --> 00:12:53,480
+terms in case you come across them in the
+text.
+
+117
+00:12:53,480 --> 00:13:01,350
+So, we know by now that http HTML provides
+the formatting the hyper text links images
+
+118
+00:13:01,350 --> 00:13:08,139
+and so, on and http provides the protocol
+through which the contents are exchanged between
+
+119
+00:13:08,139 --> 00:13:15,759
+ah different machines in the internet. So,
+you can ah select from a set of options in
+
+120
+00:13:15,759 --> 00:13:23,100
+terms of a HTML ah popup menus radio buttons
+ah check boxes and so, on; you can enter values
+
+121
+00:13:23,100 --> 00:13:30,278
+to text box and once a form has been filled
+up that form will be sent back to the server
+
+122
+00:13:30,278 --> 00:13:38,299
+from where it came and ah would be acted upon
+by the server http helps in that transfer
+
+123
+00:13:38,299 --> 00:13:42,620
+mechanism.
+So, the here is a ah sample HTML code let
+
+124
+00:13:42,620 --> 00:13:48,940
+me ah show you the effect of this in the next
+slide. So, if you ah look in here then you
+
+125
+00:13:48,940 --> 00:13:56,670
+can see that these are this is what ah is
+known as a tag and ah it kind of ah the tax
+
+126
+00:13:56,669 --> 00:14:00,708
+are kind of given in the form of ah parenthesize
+notation.
+
+127
+00:14:00,708 --> 00:14:07,039
+So, it has a has a opening and a closing and
+ah these have to have to actually match and
+
+128
+00:14:07,039 --> 00:14:12,539
+you can see that the ah opening is written
+within ah corner brackets and the closing
+
+129
+00:14:12,539 --> 00:14:20,318
+is write the same tag name, but you put a
+forward slash for the name. And then ah between
+
+130
+00:14:20,318 --> 00:14:26,299
+ah the closing ah opening and the closing
+you can write more tabs in a nested manner.
+
+131
+00:14:26,299 --> 00:14:33,919
+So, here it says that I have HTML which has
+a body and ah the body expanse this much and
+
+132
+00:14:33,919 --> 00:14:37,878
+then we are saying that there is a table.
+So, this is the table that you can get to
+
+133
+00:14:37,879 --> 00:14:44,769
+see and ah then it also says that there is
+a form and ah this is the form that you get
+
+134
+00:14:44,769 --> 00:14:51,919
+to see within the table you can see. So, it
+is saying that ah this is an ID there is a
+
+135
+00:14:51,919 --> 00:14:56,878
+name; so, it is describing the first row the
+department. So, you can see each one of them
+
+136
+00:14:56,879 --> 00:15:06,188
+the the ID is here the name is here the department
+is here similarly this is a next row where
+
+137
+00:15:06,188 --> 00:15:11,338
+it is saying it is 0 1; 00128 Zhang Computer
+Science.
+
+138
+00:15:11,339 --> 00:15:16,949
+So, this is how you can you actually in an
+HTML in a text form all these ah details will
+
+139
+00:15:16,948 --> 00:15:23,500
+be given and when it is ah rendered by the
+web browser then you will see a table like
+
+140
+00:15:23,500 --> 00:15:31,208
+this. Similarly here we are ah I I am showing
+a an instance of a form which is use to input
+
+141
+00:15:31,208 --> 00:15:37,318
+data. So, we are ah saying that ah here is
+a is a drop down and it is written out here
+
+142
+00:15:37,318 --> 00:15:42,620
+in terms of options.
+So, the first options student is is ah visible
+
+143
+00:15:42,620 --> 00:15:47,399
+here if you drop down you will actually see
+another option instructor here you will not
+
+144
+00:15:47,399 --> 00:15:54,289
+see that because it is a frozen image. So,
+and then ah I I have a qualifier name and
+
+145
+00:15:54,289 --> 00:16:02,730
+there is a input text box where you can input
+any ah strain up to size 20. And ah once this
+
+146
+00:16:02,730 --> 00:16:09,399
+has been done then you have a input which
+is submit, which is the submit button here
+
+147
+00:16:09,399 --> 00:16:14,649
+which shows that you can now submit and then
+this form filled up form will be sent back
+
+148
+00:16:14,649 --> 00:16:17,639
+to the web browser from where it originally
+came.
+
+149
+00:16:17,639 --> 00:16:24,850
+So, this is the basic ah mechanism of ah HTML
+ah you can ah learn little bit more about
+
+150
+00:16:24,850 --> 00:16:33,100
+that and get familiar with it. So, a document
+name in a URL may identify a a program that
+
+151
+00:16:33,100 --> 00:16:38,459
+is written that generate. So, HTML could be
+either ah at the URL in the web server you
+
+152
+00:16:38,458 --> 00:16:45,958
+can either have a HTML which we say is a static
+HTML or you could actually have a program
+
+153
+00:16:45,958 --> 00:16:51,369
+which ah when you send the request it actually.
+For example, when you are doing Google you
+
+154
+00:16:51,370 --> 00:17:00,600
+said ah www dot Google dot com slash ah search
+question mark q is ah has a value silberschatz.
+
+155
+00:17:00,600 --> 00:17:07,200
+Then actually at that ah location there is
+no ah HTML currently existing which ah contains
+
+156
+00:17:07,200 --> 00:17:15,088
+the search result, but instead there is a
+program ah which will be executed based on
+
+157
+00:17:15,088 --> 00:17:21,688
+the submission of this form and when run that
+will generate a HTML document. And once that
+
+158
+00:17:21,689 --> 00:17:27,900
+is generated then this will be passed back
+to the ah to your web browser. So, that is
+
+159
+00:17:27,900 --> 00:17:33,019
+a basic mechanism.
+So, if you want a new service on the web then
+
+160
+00:17:33,019 --> 00:17:38,690
+you all that you simply need to do is to create
+and install a new program that will provide
+
+161
+00:17:38,690 --> 00:17:44,720
+that service and through this process we will
+see how easily this can be done and how web
+
+162
+00:17:44,720 --> 00:17:50,250
+browser provides a graphical interface to
+this information service. There is there has
+
+163
+00:17:50,250 --> 00:17:55,240
+been another other other mechanisms of doing
+similar things also which was particularly
+
+164
+00:17:55,240 --> 00:18:01,149
+popularly are called the common ah gateway
+interface or CGI, but ah now we have various
+
+165
+00:18:01,148 --> 00:18:08,279
+other ways of doing the same thing.
+So, in this context then the basic ah three
+
+166
+00:18:08,279 --> 00:18:14,129
+layers that we started discussing with are
+here. So, this is the most common way an application
+
+167
+00:18:14,130 --> 00:18:20,510
+is. So, this is where your your frontend is
+where ah you have the browser where you see
+
+168
+00:18:20,509 --> 00:18:24,759
+that this is the network; we are just in general
+writing network it could be internet it could
+
+169
+00:18:24,759 --> 00:18:31,829
+be intranet and a web server. So, when you
+send a request this is received by the server;
+
+170
+00:18:31,829 --> 00:18:38,058
+web server somehow computes a result HTML
+and that send back to the browser and that
+
+171
+00:18:38,058 --> 00:18:43,740
+is how the interaction keeps on happening.
+So, the browser and the web server together
+
+172
+00:18:43,740 --> 00:18:49,349
+often would be refer to as a frontend because
+that gives a presentation that presents the
+
+173
+00:18:49,349 --> 00:18:54,619
+results the interaction to you. The next is
+the application layer which is the business
+
+174
+00:18:54,619 --> 00:19:00,000
+ah logic where you write and then you have
+the data access layer or the database server
+
+175
+00:19:00,000 --> 00:19:05,769
+and these are the actual disk where the data
+exist. So, this is a tier 1 this is tier 2
+
+176
+00:19:05,769 --> 00:19:13,579
+and this is tier 3 which is a very typical
+ah way a web ah application will be architected
+
+177
+00:19:13,579 --> 00:19:20,710
+and these are the three layers or three tiers
+that we will usually find.
+
+178
+00:19:20,710 --> 00:19:27,048
+So, often ah actually three is not a very
+magical number in terms of tiers; it is possible
+
+179
+00:19:27,048 --> 00:19:32,629
+that you could have more some applications
+have more tiers. And some applications may
+
+180
+00:19:32,630 --> 00:19:38,000
+choose to have multiple functionality in the
+same layer for example, web server and application
+
+181
+00:19:38,000 --> 00:19:42,900
+server functionality could be clubbed together
+and when this is done we say that we will
+
+182
+00:19:42,900 --> 00:19:47,660
+then we have only two layers. So, the frontend
+and the middle layer are merge together and
+
+183
+00:19:47,660 --> 00:19:51,230
+the backend or the database server becomes
+a second layer.
+
+184
+00:19:51,230 --> 00:19:57,240
+So, we would often might want to do that the
+reason we do that ah I I will just take to
+
+185
+00:19:57,240 --> 00:20:04,980
+back to the ah three layer view. So, if ah
+the question is naturally if we have the web
+
+186
+00:20:04,980 --> 00:20:09,730
+server and we have this connections this is
+clear; now the question is what is this connection
+
+187
+00:20:09,730 --> 00:20:15,029
+and what is this connection? Is it necessary
+that ah they will have to be on the same server
+
+188
+00:20:15,029 --> 00:20:20,490
+physically or will they be on can be on different
+server and servers could be connected through
+
+189
+00:20:20,490 --> 00:20:27,798
+a LAN or they themselves could be on ah different
+servers ah over the internet and may they
+
+190
+00:20:27,798 --> 00:20:32,418
+may be connected through internet.
+So, all of these are possibilities and ah
+
+191
+00:20:32,419 --> 00:20:39,269
+the way we connect is the way we will write
+the application will be will not depend on
+
+192
+00:20:39,269 --> 00:20:44,400
+the way these servers are connected between
+each other we will often assume that as if
+
+193
+00:20:44,400 --> 00:20:50,070
+they are ah connected over a net and write
+it in a way so, that even when they may be
+
+194
+00:20:50,069 --> 00:20:56,019
+connected over a LAN or even when they may
+actually be on the same machine things will
+
+195
+00:20:56,019 --> 00:21:01,778
+work in the same way.
+Now, one point that should be born in mind
+
+196
+00:21:01,778 --> 00:21:08,308
+in terms of the http protocol is it is connectionless.
+So, this is a very very critical concept and
+
+197
+00:21:08,308 --> 00:21:16,089
+ah it means that ah once I start the process
+I ah have an URL; I submit that and that goes
+
+198
+00:21:16,089 --> 00:21:21,099
+to the server the server runs an application
+or it is a static page server picks up and
+
+199
+00:21:21,099 --> 00:21:28,259
+returns me that HTML; the http loop is closed.
+So, that is the all that happens and when
+
+200
+00:21:28,259 --> 00:21:34,679
+I submit again something based on that. So,
+I have gone to Gmail mail dot Google dot com
+
+201
+00:21:34,679 --> 00:21:43,440
+I submit that and I get back a ah form ah
+which tells me to put my user ID and login
+
+202
+00:21:43,440 --> 00:21:49,820
+I do that I submit and that when that goes
+then there is no memory about the earlier
+
+203
+00:21:49,819 --> 00:21:54,789
+ah interaction that has happen.
+So, when my ah login submission goes ah it
+
+204
+00:21:54,789 --> 00:22:01,538
+is authenticated in the backend I am able
+to login and I am given back the first screen
+
+205
+00:22:01,538 --> 00:22:09,759
+of my mail box which is ah the inbox screen.
+And as soon as I get that inbox ah the HTML
+
+206
+00:22:09,759 --> 00:22:16,970
+containing the inbox on my browser that transaction
+has also been over. So, if I now want to look
+
+207
+00:22:16,970 --> 00:22:22,470
+at a specific mail it has to be a new query
+and it is not remember anything from the previous
+
+208
+00:22:22,470 --> 00:22:26,288
+query.
+So, this connectionless property naturally
+
+209
+00:22:26,288 --> 00:22:33,230
+makes it makes certain things more difficult;
+you will you will ah realize that many of
+
+210
+00:22:33,230 --> 00:22:39,899
+the other ah connections that we do for example,
+if we login to UNIX ah ah system or to a window
+
+211
+00:22:39,898 --> 00:22:46,099
+system if we use some database connections
+they are connected till the we disconnect
+
+212
+00:22:46,099 --> 00:22:51,788
+them, but in http it is not. So, it is connectionless
+every time you do you you have a separate
+
+213
+00:22:51,788 --> 00:22:57,778
+ah session. So, naturally the question ah
+this was I mean the there are there are reasons
+
+214
+00:22:57,778 --> 00:23:02,058
+of why this is done this way this is to reduce
+ah load from the server and ao, on.
+
+215
+00:23:02,058 --> 00:23:07,960
+But naturally the consequences therefore,
+we cannot remember information from one request
+
+216
+00:23:07,960 --> 00:23:16,360
+response ah loop to the next. So, if I have
+logged in to my mail Gmail account and I have
+
+217
+00:23:16,359 --> 00:23:21,829
+seen the I have got the inbox then when I
+want to check my first mail the system does
+
+218
+00:23:21,829 --> 00:23:27,908
+not ah know any more that I am logged in because
+ah that ah session request response has is
+
+219
+00:23:27,909 --> 00:23:32,528
+over and now I am making a new request that
+show me the first mail and I expect to see
+
+220
+00:23:32,528 --> 00:23:35,909
+the whole body.
+So, there is no information that is carried
+
+221
+00:23:35,909 --> 00:23:43,299
+from one request to the other which ah makes
+ah http difficult to work with. So, the solution
+
+222
+00:23:43,298 --> 00:23:46,658
+for that is ah something which is known as
+a cookie.
+
+223
+00:23:46,659 --> 00:23:54,640
+So, a cookie is a small piece of text which
+contain information ah which is identifying
+
+224
+00:23:54,640 --> 00:24:01,240
+and ah which can go back and forth between
+the browser and the server. So, first it is
+
+225
+00:24:01,240 --> 00:24:04,120
+sent by the sever to the browser and the what
+the browser does.
+
+226
+00:24:04,119 --> 00:24:08,638
+So, this happens the first time. So, when
+we logged in my browser has got a got some
+
+227
+00:24:08,638 --> 00:24:17,479
+cookie from the ah mail ah ah Gmail server.
+Then the browser can send it back to the server
+
+228
+00:24:17,480 --> 00:24:23,970
+when it is doing the next ah request so, that
+I can be identified as a logged in person
+
+229
+00:24:23,970 --> 00:24:31,528
+and. So, the browser can keep it ah as a I
+mean locally in in its memory or locally here
+
+230
+00:24:31,528 --> 00:24:37,380
+and that is a part of the http protocol.
+So, this keeps on this cookie keeps on going
+
+231
+00:24:37,380 --> 00:24:41,660
+back and forth back and forth. So, every time
+I send a request the cookie actually has to
+
+232
+00:24:41,660 --> 00:24:47,919
+go to tell the server that yes this is the
+ah Partha Pratim Das who is already logged
+
+233
+00:24:47,919 --> 00:24:54,288
+in an authenticated himself for checking his
+mails. So, cookies are are a big convenience
+
+234
+00:24:54,288 --> 00:25:00,450
+and they are very important factor of the
+web applications. So, they can be stored ah
+
+235
+00:25:00,450 --> 00:25:06,210
+permanently or for a limited period of time
+ah.
+
+236
+00:25:06,210 --> 00:25:11,509
+Next ah um ah let us ah look into some of
+the core technologies that are involved the
+
+237
+00:25:11,509 --> 00:25:16,599
+first technology is ah is called a servlet.
+Servlet is nothing but as you can understand
+
+238
+00:25:16,599 --> 00:25:21,719
+from the name itself is ah as you have book
+booklet booklet is a small very small book
+
+239
+00:25:21,720 --> 00:25:26,028
+servlet is a very small server. So, it is
+a Java application which can do certain tasks;
+
+240
+00:25:26,028 --> 00:25:32,619
+so, it is an kind of an application program
+and ah every time we request then the server
+
+241
+00:25:32,619 --> 00:25:39,668
+actually spawns a new thread and ah in that
+thread this ah servlet would be running and
+
+242
+00:25:39,669 --> 00:25:42,549
+once the request is serviced the thread will
+be closed.
+
+243
+00:25:42,548 --> 00:25:49,259
+So, this is the typical ah ah server servlet
+ah view. So, which shows that ah in the servlet
+
+244
+00:25:49,259 --> 00:25:54,599
+you are creating actually creating the requested
+I mean possible HTML response that you would
+
+245
+00:25:54,599 --> 00:25:59,308
+like to have.
+So, there are ah; so, there are different
+
+246
+00:25:59,308 --> 00:26:03,369
+details you can read through that. So, this
+is the typical ah servlet code. So, it actually
+
+247
+00:26:03,369 --> 00:26:09,879
+is a is a Java code which ah through print
+line will ah generate different ah lines of
+
+248
+00:26:09,880 --> 00:26:17,070
+the HTML. Now naturally servlets ah maintain
+session the way we ah talked about.
+
+249
+00:26:17,069 --> 00:26:23,528
+So, that through an interaction I can continued
+to be identified and the servlet can check
+
+250
+00:26:23,528 --> 00:26:29,690
+whether the session is on or the session is
+already over. So, these are these are the
+
+251
+00:26:29,690 --> 00:26:35,269
+different ways of ah doing that in terms of
+shaking the user ID and ah several ah web
+
+252
+00:26:35,269 --> 00:26:41,179
+servers ah application servers have support
+for servlet apache tomcat is one of the very
+
+253
+00:26:41,179 --> 00:26:46,409
+popular one. So, which you must have heard
+the name of and there are, but there are several
+
+254
+00:26:46,409 --> 00:26:52,940
+other servers as well.
+Now, along with the servlet there is another
+
+255
+00:26:52,940 --> 00:26:58,269
+concept which is called server side scripting.
+Server side scripting is a is a mechanism
+
+256
+00:26:58,269 --> 00:27:07,599
+where you define an HTML document and to within
+that ah HTML document ah can be used. So,
+
+257
+00:27:07,599 --> 00:27:14,339
+you may have some inputs to that and they
+can be used to ah directly fire embedded SQL
+
+258
+00:27:14,339 --> 00:27:18,089
+queries.
+So, we talked about a madding of ah SQL query
+
+259
+00:27:18,089 --> 00:27:24,829
+in while we discuss about the basic mechanism
+of host language and query language. So, here
+
+260
+00:27:24,829 --> 00:27:31,740
+the HTML kind of a language is a host and
+you can embed ah the query right in ah as
+
+261
+00:27:31,740 --> 00:27:38,339
+a part of that. And ah so, that query goes
+to the database ah query server and you get
+
+262
+00:27:38,339 --> 00:27:45,579
+the answer and that answer is placed where
+your original query was there. So, that you
+
+263
+00:27:45,579 --> 00:27:50,549
+continue to get very easily a my complete
+HTML as a response.
+
+264
+00:27:50,549 --> 00:27:57,288
+So, this kind of a mechanism is makes it very
+easy because a it is quite easy to ah conceive
+
+265
+00:27:57,288 --> 00:28:06,500
+of the HTML and fill in. So, if I have asked
+for say ah logged in to the my mail ah Gmail
+
+266
+00:28:06,500 --> 00:28:11,130
+service then I have given the input as my
+user name password and when that got gets
+
+267
+00:28:11,130 --> 00:28:18,750
+authenticated. Then I get a response which
+is ah select ah mail from different respective
+
+268
+00:28:18,750 --> 00:28:25,759
+tables where my authentication is there the
+user name is PPD and so, on. So, it becomes
+
+269
+00:28:25,759 --> 00:28:32,058
+quite easy to ah actually create the HTML
+and there several ah such scripting language
+
+270
+00:28:32,058 --> 00:28:39,779
+is JSP and PHP are the most ah popular ones.
+So, this is how a a typical ah JSP will look
+
+271
+00:28:39,779 --> 00:28:45,349
+like. So, you can see that this actually looks
+like HTML, but inside that you have a you
+
+272
+00:28:45,349 --> 00:28:51,579
+have some part of a Java code. So, what will
+happen the body will get replaced when the
+
+273
+00:28:51,579 --> 00:28:58,379
+ah when ah the the response has come for example,
+here the response is ah doing hello world.
+
+274
+00:28:58,380 --> 00:29:03,720
+So, when this is executed then whatever is
+a result will replace the body in the HTML
+
+275
+00:29:03,720 --> 00:29:14,058
+here and the result in the HTML will get generated
+. There is another mechanism of scripting
+
+276
+00:29:14,058 --> 00:29:19,908
+which is also very popular called PHP. So,
+this is how it is done.
+
+277
+00:29:19,909 --> 00:29:25,080
+Similarly, you could have ah ah script an
+client side also for example, if you are entering
+
+278
+00:29:25,079 --> 00:29:32,329
+data for say a month and ah in numeric and
+you happened to enter 14; then in most ah
+
+279
+00:29:32,329 --> 00:29:37,788
+cases ah the page will ah immediately give
+a error saying that 14 cannot be a valid month;
+
+280
+00:29:37,788 --> 00:29:43,009
+so, there is a validation involved.
+So, in the client side in the browser there
+
+281
+00:29:43,009 --> 00:29:48,690
+are some small script that can run a most
+typically it is a Java script which can too
+
+282
+00:29:48,690 --> 00:29:53,840
+different authentication which is possible
+without actually accessing the data in the
+
+283
+00:29:53,839 --> 00:29:58,750
+database. You cannot for example, validate
+a mail data based on the client side scripting
+
+284
+00:29:58,750 --> 00:30:05,929
+sitting on the browser, but you can ah validate
+small things like ah valid data forms, range
+
+285
+00:30:05,929 --> 00:30:10,100
+of data and so, on.
+And it is it is very important because if
+
+286
+00:30:10,099 --> 00:30:15,869
+you could not do that then all you required
+is you would have send that faulty month numbered
+
+287
+00:30:15,869 --> 00:30:21,500
+14 to the to the backend server and got an
+error and you would have come back and then
+
+288
+00:30:21,500 --> 00:30:25,579
+have to correct it, but you can do this locally
+at the browser itself.
+
+289
+00:30:25,579 --> 00:30:31,099
+So, client side scripting has a lot of value,
+but you will have to have to remember that
+
+290
+00:30:31,099 --> 00:30:35,769
+a if you are doing client side scripting then
+there are security issues.
+
+291
+00:30:35,769 --> 00:30:41,910
+Because ah it is ah quite possible that if
+you are doing things on the client side that
+
+292
+00:30:41,910 --> 00:30:49,330
+is on the browser then we might also inadvertently
+or by a malicious intact actually make damages
+
+293
+00:30:49,329 --> 00:30:53,490
+to the machine on which the browser is running.
+So, there are different kinds of care that
+
+294
+00:30:53,490 --> 00:30:59,899
+is to be taken for example, Java applet which
+is another way of doing client side computation
+
+295
+00:30:59,898 --> 00:31:06,678
+disallows ah file writes and so, on.
+And Java script as I have said is widely used
+
+296
+00:31:06,679 --> 00:31:12,210
+and it can function to check for input validity
+which I gave an example of it can modify the
+
+297
+00:31:12,210 --> 00:31:16,808
+displayed web page, it can communicate with
+the web server to fetch data and so, on. And
+
+298
+00:31:16,808 --> 00:31:21,470
+it is you should familiarize yourself with
+Java script more; it is a very powerful mechanism
+
+299
+00:31:21,470 --> 00:31:26,730
+to ah do compute the sample things at the
+client side this is an example that I have
+
+300
+00:31:26,730 --> 00:31:29,028
+given.
+So, you can read through and you will be able
+
+301
+00:31:29,028 --> 00:31:34,429
+to if you know Java you will be able to understand
+Java script very easily, you could get through
+
+302
+00:31:34,429 --> 00:31:42,690
+that. And ah so, there are multiple options
+of doing such things, but ah JSP has a has
+
+303
+00:31:42,690 --> 00:31:48,028
+a unique position because it is it is very
+useful in many context wise a ah JSP has certain
+
+304
+00:31:48,028 --> 00:31:55,878
+USP like ah ah active server page ah which
+is ah used ah in terms of the Microsoft platform
+
+305
+00:31:55,878 --> 00:32:01,798
+ah is ah also another mechanism of doing server
+side scripting, but JSP is better because
+
+306
+00:32:01,798 --> 00:32:07,680
+it is portable ah in with respect to pure
+ah servlets which we showed you in the beginning
+
+307
+00:32:07,680 --> 00:32:13,880
+JSP performs ah is easier to use.
+Because JSP has the structure of the HTML
+
+308
+00:32:13,880 --> 00:32:19,230
+page whereas, in a pure servlet we will have
+to use print line to print every tag of the
+
+309
+00:32:19,230 --> 00:32:26,110
+HTML which is cumbersome. JSP ah in contrast
+with Java script ah is certainly a different
+
+310
+00:32:26,109 --> 00:32:30,459
+thing because Java script runs on the browser
+on the client side, JSP runs on the server
+
+311
+00:32:30,460 --> 00:32:37,740
+side and certainly JSP is ah compared to static
+HTML is more powerful because it can handle
+
+312
+00:32:37,740 --> 00:32:43,269
+dynamic information.
+So, in this that brings us to the end of this
+
+313
+00:32:43,269 --> 00:32:47,579
+current modules; so, what we have ah done
+we have understood the basic requirements
+
+314
+00:32:47,579 --> 00:32:53,089
+of database application programs and user
+interfaces understood the basic terminology
+
+315
+00:32:53,089 --> 00:33:01,519
+of the web and took a look into the core notion,
+core technologies of ah application development
+
+316
+00:33:01,519 --> 00:33:04,909
+which is in terms of the servlets and Java
+server pages .
+

@@ -1,0 +1,1279 @@
+﻿1
+00:00:16,260 --> 00:00:24,210
+Welcome to module 13 of database management
+systems, in this module and the next 2 we
+
+2
+00:00:24,210 --> 00:00:27,900
+will discuss about entity relationship model.
+
+3
+00:00:27,899 --> 00:00:37,019
+So, far we have had a good look into the SQL
+language, the query language and it is formal
+
+4
+00:00:37,020 --> 00:00:42,640
+basis in terms of relational algebra and calculi
+.
+
+5
+00:00:42,640 --> 00:00:49,329
+In this module we will un try to understand
+the design process for database systems, because
+
+6
+00:00:49,329 --> 00:00:56,359
+so far whatever we have done we have assumed
+that the schema is known to us, that some
+
+7
+00:00:56,359 --> 00:01:05,079
+instance is given to us and then we have tried
+to extract different query information from
+
+8
+00:01:05,079 --> 00:01:12,658
+the relation; but now we will look into how
+do we model the real world and actually get
+
+9
+00:01:12,659 --> 00:01:18,570
+into the design process .
+So, after an overview of the design process
+
+10
+00:01:18,569 --> 00:01:27,109
+we would study entity relationship model,
+which is used to represent the real world
+
+11
+00:01:27,109 --> 00:01:37,219
+whatever exists in the real world that will
+have to be represented for our use and final
+
+12
+00:01:37,219 --> 00:01:43,659
+representation in terms of different relations
+the design process at an abstract level.
+
+13
+00:01:43,659 --> 00:01:51,699
+The initial ah phase of database design certainly
+has to characterize what data is required
+
+14
+00:01:51,700 --> 00:01:54,579
+to be maintained for an enterprise.
+
+15
+00:01:54,579 --> 00:02:01,379
+So, whether I am doing, if I am doing an university
+database naturally we will need to identify
+
+16
+00:02:01,379 --> 00:02:06,589
+that ah what are the data needs the students
+need to be described, the instructors need
+
+17
+00:02:06,590 --> 00:02:13,250
+to be described, the courses sections time
+slots grades examinations etc; but if I am
+
+18
+00:02:13,250 --> 00:02:20,710
+trying to deal with an world which is ah say
+railway reservation, then I will need to deal
+
+19
+00:02:20,710 --> 00:02:28,379
+with stations trains date (Refer Time: 02:26)
+the different classes of coach that the train
+
+20
+00:02:28,378 --> 00:02:29,378
+has and so on.
+
+21
+00:02:29,378 --> 00:02:36,248
+So, the initial phase is to characterize the
+data requirement next ah the designer has
+
+22
+00:02:36,248 --> 00:02:45,709
+to choose a data model because, unless we
+can we cannot deal with a natural language
+
+23
+00:02:45,709 --> 00:02:53,408
+or English kind of description and ah work
+towards getting a particular schema.
+
+24
+00:02:53,408 --> 00:03:01,358
+So, we will need to use a data model and apply
+the concepts of the data model that we choose
+
+25
+00:03:01,359 --> 00:03:08,030
+and translate the requirements into what is
+known as a conceptual schema of the database
+
+26
+00:03:08,030 --> 00:03:12,598
+which is not a not a very concrete 1, but
+a conceptual one this is what grossly what
+
+27
+00:03:12,598 --> 00:03:21,389
+I want to do and a fully developed conceptual
+schema will indicate my functional requirements,
+
+28
+00:03:21,389 --> 00:03:30,559
+in terms of what usually is called a specification
+of functional requirements system requirements;
+
+29
+00:03:30,560 --> 00:03:38,408
+if it will specify what kind of users will
+be involved what kinds of operations transactions
+
+30
+00:03:38,408 --> 00:03:45,269
+will be performed and so on .
+Now, once we have that ah kind of a conceptual
+
+31
+00:03:45,269 --> 00:03:52,319
+model that abstract that is a conceptual more
+abstract data model, we will go to the next
+
+32
+00:03:52,318 --> 00:04:01,028
+phase of the design which is finding out what
+is the more concrete design through a process
+
+33
+00:04:01,028 --> 00:04:03,590
+of logical design.
+
+34
+00:04:03,590 --> 00:04:10,840
+In the process of logical design we will first
+decide on the database schema, we need to
+
+35
+00:04:10,840 --> 00:04:13,688
+decide on what is a good schema.
+
+36
+00:04:13,688 --> 00:04:21,750
+So, there are principles to say that what
+is good and what is not so good, we need to
+
+37
+00:04:21,750 --> 00:04:28,360
+make business decisions to find out which
+attributes we record in the database; we need
+
+38
+00:04:28,360 --> 00:04:36,650
+to make computer science decision as to how
+the relational schemas will be interrelated
+
+39
+00:04:36,649 --> 00:04:45,409
+between themselves, how the attributes will
+be distributed and at a last phase we need
+
+40
+00:04:45,410 --> 00:04:52,090
+to also decide on the physical design which
+will tell us what is the physical layout of
+
+41
+00:04:52,089 --> 00:04:53,089
+the data.
+
+42
+00:04:53,089 --> 00:05:01,219
+So, conceptual design refined into logical
+design finalized with physical design is our
+
+43
+00:05:01,220 --> 00:05:03,620
+gross process of design.
+
+44
+00:05:03,620 --> 00:05:14,480
+Now, in this for the conceptual design we
+primarily follow a model called entity relationship
+
+45
+00:05:14,480 --> 00:05:20,509
+model; that tries to identify the collection
+of entities and relationships.
+
+46
+00:05:20,509 --> 00:05:29,159
+An entity is nothing, but it is its is an
+object is a thing that is distinguishable
+
+47
+00:05:29,160 --> 00:05:30,720
+from other objects.
+
+48
+00:05:30,720 --> 00:05:39,350
+So, if I say that student is an entity, then
+the student is distinguishable from another
+
+49
+00:05:39,350 --> 00:05:47,700
+entity course both of them are distinguishable
+from a third entity instructor and so on.
+
+50
+00:05:47,699 --> 00:05:56,769
+So, every entity for the purpose of distinction
+is described by a set of attributes or properties
+
+51
+00:05:56,769 --> 00:06:02,709
+and these entities will have relations between
+them.
+
+52
+00:06:02,709 --> 00:06:09,789
+For example, you can say that a course will
+be attended by students; students will be
+
+53
+00:06:09,790 --> 00:06:11,560
+advised by instructors.
+
+54
+00:06:11,560 --> 00:06:20,189
+So, this attended by advised by these are
+relationships or association between several
+
+55
+00:06:20,189 --> 00:06:29,740
+entities and the model which represents initially
+diagrammatically and then in textual form
+
+56
+00:06:29,740 --> 00:06:35,639
+this kind of relationship is known as the
+entity relationship model or the entity relationship
+
+57
+00:06:35,639 --> 00:06:41,699
+diagram .
+We will then use it to get a relational set
+
+58
+00:06:41,699 --> 00:06:48,449
+of relational schema which subsequently we
+normalize; the normalization is nothing but
+
+59
+00:06:48,449 --> 00:06:57,789
+refinement of the design which improves a
+design to make it better in terms of correctness,
+
+60
+00:06:57,790 --> 00:07:01,400
+in terms of ease of manipulation performance
+and.
+
+61
+00:07:01,399 --> 00:07:02,659
+so on.
+
+62
+00:07:02,660 --> 00:07:13,550
+So, it basically removes bad designs from
+the database and converts them into good designs;
+
+63
+00:07:13,550 --> 00:07:19,900
+we will talk about this normalization theory
+later in the course right now we are interested
+
+64
+00:07:19,899 --> 00:07:27,250
+only in the entity relationship model, which
+will be used for conceptual design and then
+
+65
+00:07:27,250 --> 00:07:32,850
+will give us the basis for the logical design
+in terms of the schemas .
+
+66
+00:07:32,850 --> 00:07:41,629
+So, let us ah take a deeper look into the
+entity relationship model and entity relationship
+
+67
+00:07:41,629 --> 00:07:47,670
+model as I said is developed to facilitate
+the database design.
+
+68
+00:07:47,670 --> 00:07:54,160
+Get the overall logical structure it is useful
+in mapping the meaning and interactions of
+
+69
+00:07:54,160 --> 00:08:02,830
+the real world in terms of certain diagrammatic
+schemas and it employs 3 basic concepts entities
+
+70
+00:08:02,829 --> 00:08:09,750
+or entity sets we talked about entities, all
+entities that share the same set of properties
+
+71
+00:08:09,750 --> 00:08:16,769
+like if student is an entity, then the collection
+of student is an entity set a instructor is
+
+72
+00:08:16,769 --> 00:08:20,589
+an entity collection of instructors is an
+entity set.
+
+73
+00:08:20,589 --> 00:08:27,629
+So, all entities in an entity set will share
+the same set of attributes, will have relationship
+
+74
+00:08:27,629 --> 00:08:34,700
+sets which define relationship between multiple
+entity sets and certainly in the process will
+
+75
+00:08:34,700 --> 00:08:35,940
+use make use of attributes.
+
+76
+00:08:35,940 --> 00:08:47,320
+These are the 3 key components of an ER model
+it also has a ER diagram as we will show soon.
+
+77
+00:08:47,320 --> 00:08:54,250
+So, as already defined entity is an object
+that exist and is distinguishable from other
+
+78
+00:08:54,250 --> 00:09:00,460
+objects, entity set is a set of entities of
+the same type that share the same properties
+
+79
+00:09:00,460 --> 00:09:06,530
+and an entities is represented by the set
+of attributes or properties that describe
+
+80
+00:09:06,529 --> 00:09:07,529
+it.
+
+81
+00:09:07,529 --> 00:09:14,309
+So, when we say instructive for example, if
+we say here these are my attributes you have
+
+82
+00:09:14,309 --> 00:09:17,979
+already learned this in terms of studying
+SQL.
+
+83
+00:09:17,980 --> 00:09:24,649
+So, it has there is 5 attributes and these
+5 attributes together or the values of these
+
+84
+00:09:24,649 --> 00:09:31,319
+5 attributes for a particular instructor defines
+my entity set instructor, collection of these
+
+85
+00:09:31,320 --> 00:09:33,730
+attributes define my entity set courses.
+
+86
+00:09:33,730 --> 00:09:40,960
+So, these are my different entity sets that
+exist that can be defined .
+
+87
+00:09:40,960 --> 00:09:52,570
+So, a subset of attributes in the entity set
+forms a key called the primary key, which
+
+88
+00:09:52,570 --> 00:09:58,510
+can uniquely identify every entity in that
+entity set we have already been familiar with
+
+89
+00:09:58,509 --> 00:10:02,200
+this concept of primary key the same concept
+continues.
+
+90
+00:10:02,200 --> 00:10:10,480
+So, these are examples of ah entity sets instructor
+with 2 attributes and student with 2 attributes
+
+91
+00:10:10,480 --> 00:10:17,550
+as well .
+A relationship is an association among two
+
+92
+00:10:17,549 --> 00:10:28,819
+or more entities, so here we have an entity
+here shown as a student this is a student
+
+93
+00:10:28,820 --> 00:10:36,800
+entity, identified by the student id which
+is a primary key in the student entity set.
+
+94
+00:10:36,799 --> 00:10:45,620
+We have an instance of an instructor entity
+identified by the id of the instructor Einstein,
+
+95
+00:10:45,620 --> 00:10:56,019
+which identifies any instructor uniquely and
+then adviser is a relationship set which relates
+
+96
+00:10:56,019 --> 00:11:04,210
+these 2 .
+So, what I we want to mean is if I say adviser
+
+97
+00:11:04,210 --> 00:11:17,300
+relates 445532 2222, what I want to mean is
+peltier the student peltier is advised by
+
+98
+00:11:17,299 --> 00:11:19,109
+the instructor Einstein.
+
+99
+00:11:19,110 --> 00:11:25,550
+So, whenever we relate two or more entity
+sets like this we get relationships.
+
+100
+00:11:25,549 --> 00:11:34,339
+So, a relationship is a mathematical relation
+Emma more than two or more entities, each
+
+101
+00:11:34,340 --> 00:11:35,720
+taken from the entity set.
+
+102
+00:11:35,720 --> 00:11:44,060
+So, you can see that it can have components
+e 1 e 2 en, n entity sets and each entity
+
+103
+00:11:44,059 --> 00:11:50,369
+e 1 should belong to entity set capital E1,
+e2 should belong to entity set capital E2
+
+104
+00:11:50,370 --> 00:11:55,310
+and so on and is called a relationship we
+have already seen the advisor relationship
+
+105
+00:11:55,309 --> 00:11:56,939
+as above.
+
+106
+00:11:56,940 --> 00:12:05,940
+So, here what we show is a relationship advisor
+by these arrows these lines.
+
+107
+00:12:05,940 --> 00:12:12,899
+So, what we are showing is this connection
+between these 2, show that this student is
+
+108
+00:12:12,899 --> 00:12:17,070
+advised by this instructor where as you can
+see.
+
+109
+00:12:17,070 --> 00:12:23,480
+So, crick advises Tanaka where as Shankar
+and Zhang both are advised by Katz.
+
+110
+00:12:23,480 --> 00:12:33,019
+So, this group of associations between instructor
+and student is the gives me the relationship
+
+111
+00:12:33,019 --> 00:12:42,809
+adviser as to who advises whom .
+A relationship also like the entity sets the
+
+112
+00:12:42,809 --> 00:12:45,059
+relationship also can have some additional
+attribute.
+
+113
+00:12:45,059 --> 00:12:52,250
+For example, when I say that crick advises
+Tanaka I may associate an attribute date type
+
+114
+00:12:52,250 --> 00:13:02,000
+attribute set third May 2018, to mean that
+when did this process of crick advising Tanaka
+
+115
+00:13:02,000 --> 00:13:05,490
+started, we can it can be some other attribute
+also.
+
+116
+00:13:05,490 --> 00:13:11,430
+So, all that I am trying to highlight is attributes
+can be assigned to relationships as well .
+
+117
+00:13:11,429 --> 00:13:21,459
+Now, how will a relationship span out, we
+have said that a relationship must involve
+
+118
+00:13:21,460 --> 00:13:23,870
+2 entity sets.
+
+119
+00:13:23,870 --> 00:13:30,919
+So, primarily relationships are binary it
+involves 2 and most ah relationships in most
+
+120
+00:13:30,919 --> 00:13:38,028
+databases are binary in nature, but it could
+be that there are we will see later that there
+
+121
+00:13:38,028 --> 00:13:44,659
+are possibilities of having relationships
+which are ah more than binary ternary and
+
+122
+00:13:44,659 --> 00:13:45,659
+higher.
+
+123
+00:13:45,659 --> 00:13:52,409
+So, here are example students works on research
+projects under the guidance of an instructor.
+
+124
+00:13:52,409 --> 00:14:00,689
+So, here we have as you can see students research
+projects and instructors, so there are 3 entity
+
+125
+00:14:00,690 --> 00:14:01,690
+sets.
+
+126
+00:14:01,690 --> 00:14:06,850
+So, if I want to maintain a relationship of
+say project guidance between them then that
+
+127
+00:14:06,850 --> 00:14:12,980
+turns out to be a ternary relationship we
+will talk about this more later.
+
+128
+00:14:12,980 --> 00:14:21,570
+There are constraints in terms of the cardinality
+of the relationship, the cardinality basically
+
+129
+00:14:21,570 --> 00:14:33,790
+talks of that when we have when I have a relation
+entity set E1 and identity set E2.
+
+130
+00:14:33,789 --> 00:14:42,829
+So, there are different entities in them and
+I have different associations between them,
+
+131
+00:14:42,830 --> 00:14:50,610
+then the question is how many of the entity
+of one entity set is related to how many of
+
+132
+00:14:50,610 --> 00:14:59,050
+the entities of the other entity set and certain
+types of cardinality measures are very important.
+
+133
+00:14:59,049 --> 00:15:06,099
+To track and we say it is whether it is 1
+to 1 to many many to one or many to many.
+
+134
+00:15:06,100 --> 00:15:13,000
+So, here the examples or the schematics, so
+in the first one in the diagram A you see
+
+135
+00:15:13,000 --> 00:15:19,470
+that every entity from the entity set A relates
+to exactly one entity in the entity set B
+
+136
+00:15:19,470 --> 00:15:24,810
+or you can say at most one entity in then
+they decide B similarly every entity in entity
+
+137
+00:15:24,809 --> 00:15:31,919
+set B relates to exactly one entity in entity
+set A or at most 1 entity and entity set a
+
+138
+00:15:31,919 --> 00:15:38,599
+if this holds then we say this relationship
+is one to one whereas, in diagram B you see
+
+139
+00:15:38,600 --> 00:15:44,029
+that a 1 relates to b 1 as well as b 2 a 2
+relates to b 3 as well as b4.
+
+140
+00:15:44,029 --> 00:15:51,528
+So, 1 entity in A relates to more than 1 entity
+may relate to more than 1 entity in B, but
+
+141
+00:15:51,528 --> 00:15:58,409
+if you look from B side every entity in B
+is related to at most 1 entity in A then we
+
+142
+00:15:58,409 --> 00:16:02,399
+say from A to B it is 1 to many.
+
+143
+00:16:02,399 --> 00:16:09,561
+Now naturally since I can put the relations
+in any order ah as we have one to many if
+
+144
+00:16:09,561 --> 00:16:12,129
+you look in the other direction it becomes
+many to 1.
+
+145
+00:16:12,129 --> 00:16:17,958
+So, many to one is from A to B many to one
+is where more than one entity in set A may
+
+146
+00:16:17,958 --> 00:16:23,449
+relate to one entity inside B, but all entities
+in set B relates to at most one entity inside
+
+147
+00:16:23,450 --> 00:16:29,170
+A and when there is no restriction at all
+that is any number of entities in set A may
+
+148
+00:16:29,169 --> 00:16:35,379
+relate to any number of entities inside B
+and any number of entities in set B may relate
+
+149
+00:16:35,379 --> 00:16:39,028
+to any number of entities in set A we say
+it is a many to many relation.
+
+150
+00:16:39,028 --> 00:16:44,689
+So, we have one to many one to one, we have
+one to many and many to one and we have many
+
+151
+00:16:44,690 --> 00:16:50,320
+to many and it often helps in the design to
+be able to characterize which type of relationship
+
+152
+00:16:50,320 --> 00:16:51,320
+we do have.
+
+153
+00:16:51,320 --> 00:16:57,400
+Coming to the attributes ah we can note that
+attributes are of different types, one is
+
+154
+00:16:57,399 --> 00:17:02,519
+they could be simple or composite a simple
+attribute is just one single domain value
+
+155
+00:17:02,519 --> 00:17:09,058
+like a salary number like an id like a name
+string and so on; whereas, a composite attribute
+
+156
+00:17:09,058 --> 00:17:13,299
+may comprise of multiple parts.
+
+157
+00:17:13,299 --> 00:17:20,838
+So, consider this this is a composite attribute,
+so name is an attribute if I think of then
+
+158
+00:17:20,838 --> 00:17:26,078
+it has different parts, it is a first name
+middle name last name if I think of address
+
+159
+00:17:26,078 --> 00:17:27,078
+it has.
+
+160
+00:17:27,078 --> 00:17:30,460
+So, many different parts then street itself
+has, so many different parts.
+
+161
+00:17:30,460 --> 00:17:40,350
+So, whenever an attribute is comprised some
+more of the components, when it is not a simple
+
+162
+00:17:40,349 --> 00:17:47,409
+value then it is called a composite attribute
+we will see how to handle them; then some
+
+163
+00:17:47,410 --> 00:17:53,170
+attributes may be single valued, for example
+a person has a has 1 name let us say, but
+
+164
+00:17:53,170 --> 00:18:00,509
+has one address, but may have 2 or more phone
+numbers, the attributes which can take more
+
+165
+00:18:00,509 --> 00:18:04,190
+than 1 value is known to be multi valued attribute.
+
+166
+00:18:04,190 --> 00:18:10,670
+So, we also need to specify whether certain
+specifying in the design whether certain attributes
+
+167
+00:18:10,670 --> 00:18:16,029
+are single valued or multiple valued multi
+valued; of course, single value attributes
+
+168
+00:18:16,029 --> 00:18:21,609
+are easy to deal with if it is multi valued
+we need to do some design changes.
+
+169
+00:18:21,609 --> 00:18:29,129
+Certain attributes can be derived for example
+age, now I cannot keep the age of some a person
+
+170
+00:18:29,130 --> 00:18:32,280
+in the database because, with every day the
+age changes.
+
+171
+00:18:32,279 --> 00:18:39,779
+So, what we typically keep is a date of birth
+and the age is computed on the day when the
+
+172
+00:18:39,779 --> 00:18:45,519
+particular query is made to find out what
+the age is so it is called a derived attribute
+
+173
+00:18:45,519 --> 00:18:51,539
+and each 1 of them will have corresponding
+set of domains.
+
+174
+00:18:51,539 --> 00:18:56,639
+Some attributes ah in the design may turn
+out to be redundant also consider this you
+
+175
+00:18:56,640 --> 00:19:02,780
+have already seen this this is an instructor,
+which has a department name along with the
+
+176
+00:19:02,779 --> 00:19:09,039
+different attributes and certainly I have
+a department ah table, so which department
+
+177
+00:19:09,039 --> 00:19:11,759
+relation which gives the details of the department.
+
+178
+00:19:11,759 --> 00:19:23,109
+Now since every instructor belongs to a department,
+so naturally we might want to have a relation
+
+179
+00:19:23,109 --> 00:19:32,058
+in department which could give the instructor
+and his or her department name.
+
+180
+00:19:32,058 --> 00:19:40,950
+So, if we maintain that then this becomes
+a redundant attribute this is not required,
+
+181
+00:19:40,950 --> 00:19:45,130
+because if that information is already there
+in this relation.
+
+182
+00:19:45,130 --> 00:19:53,380
+So, in several cases there is a question of
+whether we maintain some information in terms
+
+183
+00:19:53,380 --> 00:20:04,429
+of a relation or we can make that directly
+include that directly in the entity set and
+
+184
+00:20:04,429 --> 00:20:05,880
+get rid of that relation.
+
+185
+00:20:05,880 --> 00:20:12,059
+So, if I have the inch depth relation and
+then the attribute department name appears
+
+186
+00:20:12,058 --> 00:20:20,119
+on both these sets, inst dept as well as on
+the instructor and there is ah duplication
+
+187
+00:20:20,119 --> 00:20:27,139
+replication of the data which we want to avoid
+. But we will see the different cases when
+
+188
+00:20:27,140 --> 00:20:32,180
+which style of design, whether we would be
+better to maintain the department name as
+
+189
+00:20:32,180 --> 00:20:39,000
+a part of the instructor relation or it would
+be better not to have it there and have a
+
+190
+00:20:39,000 --> 00:20:45,230
+separate relation which maps instructor id
+against the department name.
+
+191
+00:20:45,230 --> 00:20:51,839
+Finally comes a concept of weak entity sets
+you need to understand this a little bit,
+
+192
+00:20:51,839 --> 00:20:55,799
+consider the university database example.
+
+193
+00:20:55,799 --> 00:21:08,609
+So, we have courses we have students we have
+ah instructors and we have section, a section
+
+194
+00:21:08,609 --> 00:21:16,759
+is if a course is large then it needs to be
+taught in multiple sections.
+
+195
+00:21:16,759 --> 00:21:24,829
+So, for the same course at the same semester
+in the same year I may have different sections,
+
+196
+00:21:24,829 --> 00:21:31,269
+in which the students are divided and naturally
+there could be multiple instructors each teaching
+
+197
+00:21:31,269 --> 00:21:37,700
+1 section of that course and students will
+be distributed on the sections not on the
+
+198
+00:21:37,700 --> 00:21:38,700
+course.
+
+199
+00:21:38,700 --> 00:21:45,940
+Now, consider this section entity, if you
+look into this then this is how what we we
+
+200
+00:21:45,940 --> 00:21:54,900
+maintained we did a course id semester year
+and section id, but if you look into specifically
+
+201
+00:21:54,900 --> 00:22:01,280
+and if you want to know know you know that
+there is a section and there is a course.
+
+202
+00:22:01,279 --> 00:22:16,539
+So, you may want to relate these 2 section
+with the course and set up an entity between
+
+203
+00:22:16,539 --> 00:22:17,539
+them.
+
+204
+00:22:17,539 --> 00:22:23,730
+So, what will it relate it will relate the
+course id of the course with all of these,
+
+205
+00:22:23,730 --> 00:22:28,440
+but the course id is already there as a part
+of the section right.
+
+206
+00:22:28,440 --> 00:22:38,370
+So, you would say that well it is not ah required
+to have the course id ah, since it already
+
+207
+00:22:38,369 --> 00:22:43,250
+has that and ah it it identifies it.
+
+208
+00:22:43,250 --> 00:22:54,509
+So, we can can we remove this course id from
+here, well if we remove the course id now
+
+209
+00:22:54,509 --> 00:22:56,569
+we have a different problem.
+
+210
+00:22:56,569 --> 00:23:01,279
+If you remove the course id then you have
+section id semester and year.
+
+211
+00:23:01,279 --> 00:23:09,970
+But this does not uniquely represent the tuples
+of this relation because, there could be 2
+
+212
+00:23:09,970 --> 00:23:16,780
+section as in the same semester in the same
+year for 2 different courses how do you distinguish
+
+213
+00:23:16,780 --> 00:23:19,609
+them.
+
+214
+00:23:19,609 --> 00:23:39,359
+So, you get into a situation where the course
+the section gets identified uniquely provided,
+
+215
+00:23:39,359 --> 00:23:50,369
+either you know the relationship between the
+section and the course in terms of the sec
+
+216
+00:23:50,369 --> 00:24:03,129
+course relationship or you include the primary
+key of course, into the relation section which
+
+217
+00:24:03,130 --> 00:24:10,880
+we did in the design and this is not a coincidence
+this is something which happens regularly
+
+218
+00:24:10,880 --> 00:24:22,580
+and is ah is the characteristics that specify
+the existence of weak entity sets .
+
+219
+00:24:22,579 --> 00:24:31,409
+So, the weak entity set is one whose existence
+depends on another entity set.
+
+220
+00:24:31,410 --> 00:24:39,009
+So, if I just say section having section id
+year and semester then it is not uniquely
+
+221
+00:24:39,009 --> 00:24:47,099
+specified, until I have a relation section
+course which relates the section to the particular
+
+222
+00:24:47,099 --> 00:24:49,399
+course id.
+
+223
+00:24:49,400 --> 00:24:57,030
+When such relationships are used to identify
+entities of a particular entity set, then
+
+224
+00:24:57,029 --> 00:25:04,538
+the unique side the course side which is unique
+is known as the identifying entity and the
+
+225
+00:25:04,538 --> 00:25:13,940
+other attributes in this case section id year
+semester are known as the discriminators.
+
+226
+00:25:13,940 --> 00:25:30,288
+So, we have a relationship between a weak
+entity set which is section, we have a strong
+
+227
+00:25:30,288 --> 00:25:36,700
+entity set which is course why is it strong
+because course is identified by course id
+
+228
+00:25:36,700 --> 00:25:37,700
+itself.
+
+229
+00:25:37,700 --> 00:25:49,440
+Section is not unless you have a set course
+kind of relationship set between the course
+
+230
+00:25:49,440 --> 00:25:54,700
+and the section which specifies that well,
+for this course this is the section this is
+
+231
+00:25:54,700 --> 00:25:57,830
+the year this is the semester.
+
+232
+00:25:57,829 --> 00:26:08,629
+So, this is the identifying entity through
+which the entities of this set gets specified
+
+233
+00:26:08,630 --> 00:26:16,500
+and whenever that situation happens then we
+say that we have a weak entity set.
+
+234
+00:26:16,500 --> 00:26:24,669
+So, weak entity sets naturally cannot happen
+by themselves their existence dependent on
+
+235
+00:26:24,669 --> 00:26:31,730
+identifying entity set and the identifying
+entity set owns the weak entity set.
+
+236
+00:26:31,730 --> 00:26:40,970
+So, the courses in that way own the section
+and the identifying relationship between them
+
+237
+00:26:40,970 --> 00:26:49,319
+is necessary to uniquely identify every entity
+of this weak entity set or section in our
+
+238
+00:26:49,319 --> 00:26:50,409
+case.
+
+239
+00:26:50,410 --> 00:26:58,600
+So, this notion is ah very important for the
+design as we will see that the relational
+
+240
+00:26:58,599 --> 00:27:05,678
+schema that we eventually created, in this
+case from the entity set section we did include
+
+241
+00:27:05,679 --> 00:27:17,070
+course id as a part of the primary key not
+using the sec course kind of relationship
+
+242
+00:27:17,069 --> 00:27:25,990
+and we will show how this design style for
+dealing with entity weak entity sets influences
+
+243
+00:27:25,990 --> 00:27:27,829
+the different database designs.
+
+244
+00:27:27,829 --> 00:27:35,029
+So, weak entity sets are critical notions
+that you need to be aware of need to be confident
+
+245
+00:27:35,029 --> 00:27:36,200
+of.
+
+246
+00:27:36,200 --> 00:27:43,710
+So, in summary we have introduced the design
+process for database systems I will just quickly
+
+247
+00:27:43,710 --> 00:27:49,190
+recap, the first stage is identifying the
+data items which is leading to the conceptual
+
+248
+00:27:49,190 --> 00:27:55,850
+design, which will primarily do in terms of
+the entity relationship model identifying
+
+249
+00:27:55,849 --> 00:28:04,069
+the entities the entity sets, the attributes
+that define the entity set, describe the entity
+
+250
+00:28:04,069 --> 00:28:10,859
+set, the subset of attributes forming primary
+key that uniquely specifies every entity set,
+
+251
+00:28:10,859 --> 00:28:19,459
+every entity in the entity set and the relationships
+typically binary may be non binary also, relationships
+
+252
+00:28:19,460 --> 00:28:21,788
+that hold between the different entity sets.
+
+253
+00:28:21,788 --> 00:28:30,000
+So, this is the conceptual design that will
+lead to more detail logical design of how
+
+254
+00:28:30,000 --> 00:28:35,169
+the relationship should be organized, what
+is the cardinality of that, what kind of attributes
+
+255
+00:28:35,169 --> 00:28:41,759
+do I have, whether it is sample whether it
+is composite whether ah certain attributes
+
+256
+00:28:41,759 --> 00:28:44,299
+are ah derived or not.
+
+257
+00:28:44,299 --> 00:28:50,808
+So, all those are different aspects will have
+to be detailed out and we need to identify
+
+258
+00:28:50,808 --> 00:28:56,819
+what are the weak entity sets and what are
+the strong entity sets, what are the identifying
+
+259
+00:28:56,819 --> 00:29:05,429
+entities and with that we could complete the
+logical design and then we will need to make
+
+260
+00:29:05,430 --> 00:29:10,190
+it in terms of it express it in terms of a
+relational schema.
+
+261
+00:29:10,190 --> 00:29:15,700
+So, in this module we have just taken a look
+in the first part the entity relationship
+
+262
+00:29:15,700 --> 00:29:23,319
+model and the very basic of how the conceptual
+design will go forward, in the model we have
+
+263
+00:29:23,319 --> 00:29:30,288
+seen all the different primitives required
+to represent the reality represent what holds
+
+264
+00:29:30,288 --> 00:29:31,069
+in the real world.
+
