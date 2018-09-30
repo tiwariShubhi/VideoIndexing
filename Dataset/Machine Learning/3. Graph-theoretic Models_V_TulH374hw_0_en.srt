@@ -1,0 +1,5778 @@
+﻿1
+00:00:00,000 --> 00:00:00,790
+
+
+2
+00:00:00,790 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,269
+at ocw.mit.edu.
+
+9
+00:00:18,269 --> 00:00:29,390
+
+
+10
+00:00:29,390 --> 00:00:31,820
+PROFESSOR: Welcome back.
+
+11
+00:00:31,820 --> 00:00:33,829
+Over the last
+couple of lectures,
+
+12
+00:00:33,829 --> 00:00:36,359
+we've been looking at
+optimization models.
+
+13
+00:00:36,359 --> 00:00:40,429
+And the idea was how do I find
+a way to optimize an objective
+
+14
+00:00:40,429 --> 00:00:42,920
+function-- it could be
+minimize it or maximize it--
+
+15
+00:00:42,920 --> 00:00:45,280
+relative to a set
+of constraints?
+
+16
+00:00:45,280 --> 00:00:47,120
+And we saw, or
+Professor Guttag showed
+
+17
+00:00:47,119 --> 00:00:49,699
+you, one of the ways
+that naturally falls out
+
+18
+00:00:49,700 --> 00:00:52,130
+is by looking at
+trees, decision trees,
+
+19
+00:00:52,130 --> 00:00:54,800
+where you pass your way through
+a tree trying to figure out
+
+20
+00:00:54,799 --> 00:00:57,329
+how to optimize that model.
+
+21
+00:00:57,329 --> 00:01:00,739
+So today, we're going to
+generalize those trees
+
+22
+00:01:00,740 --> 00:01:03,710
+into another whole broad
+class of models called graph
+
+23
+00:01:03,710 --> 00:01:05,219
+theoretic or graph models.
+
+24
+00:01:05,219 --> 00:01:07,370
+And we're going to use
+those to again look
+
+25
+00:01:07,370 --> 00:01:12,050
+at how do we can do optimization
+on those kinds of models.
+
+26
+00:01:12,049 --> 00:01:14,659
+Just to remind you,
+there is a great piece
+
+27
+00:01:14,659 --> 00:01:16,709
+of information in the text.
+
+28
+00:01:16,709 --> 00:01:18,409
+There's the reading for today.
+
+29
+00:01:18,409 --> 00:01:20,200
+And these will, of
+course, be in the slides
+
+30
+00:01:20,200 --> 00:01:21,359
+that you can download.
+
+31
+00:01:21,359 --> 00:01:25,219
+So let's take a second
+just to reset again
+
+32
+00:01:25,219 --> 00:01:27,709
+what are we trying to do?
+
+33
+00:01:27,709 --> 00:01:31,579
+Generally, we're trying to
+build computational models.
+
+34
+00:01:31,579 --> 00:01:33,260
+So what does that mean?
+
+35
+00:01:33,260 --> 00:01:35,750
+The same way we could do
+a physical experiment,
+
+36
+00:01:35,750 --> 00:01:38,359
+or a social experiment,
+or model, if you like,
+
+37
+00:01:38,359 --> 00:01:40,609
+a physical system
+and a social system,
+
+38
+00:01:40,609 --> 00:01:42,890
+to both try and gather
+data and analyze it
+
+39
+00:01:42,890 --> 00:01:44,390
+or to do predictions.
+
+40
+00:01:44,390 --> 00:01:46,849
+We want to do the same
+thing computationally.
+
+41
+00:01:46,849 --> 00:01:50,479
+We'd like to be able
+to build models in code
+
+42
+00:01:50,480 --> 00:01:52,939
+that we can then run to
+predict effects, which we then
+
+43
+00:01:52,939 --> 00:01:56,859
+might test with an actual
+physical experiment.
+
+44
+00:01:56,859 --> 00:02:00,620
+And we've seen, for example,
+how you could take just
+
+45
+00:02:00,620 --> 00:02:04,100
+the informal problem of choosing
+what to eat and turning it
+
+46
+00:02:04,099 --> 00:02:06,239
+into an optimization
+problem-- in this case,
+
+47
+00:02:06,239 --> 00:02:09,288
+it was a version of something
+we called a knapsack problem--
+
+48
+00:02:09,288 --> 00:02:13,280
+and how you could then use
+that to find code to solve it.
+
+49
+00:02:13,281 --> 00:02:15,530
+And you've already seen two
+different general methods.
+
+50
+00:02:15,530 --> 00:02:17,612
+You've seen greedy algorithms
+that just try and do
+
+51
+00:02:17,612 --> 00:02:19,159
+the best thing at each stage.
+
+52
+00:02:19,159 --> 00:02:21,859
+And you saw dynamic programming
+as an elegant solution
+
+53
+00:02:21,860 --> 00:02:25,290
+to finding better
+ways to optimize this.
+
+54
+00:02:25,289 --> 00:02:28,319
+We're going to now look at
+broadening the class of models
+
+55
+00:02:28,319 --> 00:02:30,389
+to talk about graphs.
+
+56
+00:02:30,389 --> 00:02:34,329
+So, obvious question
+is, what's a graph?
+
+57
+00:02:34,330 --> 00:02:37,910
+And a graph has two
+elements, two components.
+
+58
+00:02:37,909 --> 00:02:42,400
+It has a set of nodes,
+sometimes called vertices.
+
+59
+00:02:42,400 --> 00:02:44,920
+Those nodes probably are
+going to have some information
+
+60
+00:02:44,919 --> 00:02:45,839
+associated with them.
+
+61
+00:02:45,840 --> 00:02:47,710
+It could be as simple
+as it's a name.
+
+62
+00:02:47,710 --> 00:02:49,030
+It could be more complicated.
+
+63
+00:02:49,030 --> 00:02:51,129
+A node might represent
+a student record--
+
+64
+00:02:51,129 --> 00:02:52,090
+the grades.
+
+65
+00:02:52,090 --> 00:02:54,099
+And a graph might talk
+about putting together
+
+66
+00:02:54,099 --> 00:02:56,780
+all of the grades for a class.
+
+67
+00:02:56,780 --> 00:02:58,840
+Associated with that,
+we can't just-- well,
+
+68
+00:02:58,840 --> 00:03:00,039
+I should say, we
+could just have nodes,
+
+69
+00:03:00,039 --> 00:03:01,122
+but that's kind of boring.
+
+70
+00:03:01,122 --> 00:03:02,799
+We want to know what
+are the connections
+
+71
+00:03:02,800 --> 00:03:05,719
+between the elements
+in my system?
+
+72
+00:03:05,719 --> 00:03:07,840
+And so the second thing
+we're going to have
+
+73
+00:03:07,840 --> 00:03:10,990
+is what we call edges,
+sometimes called arcs.
+
+74
+00:03:10,990 --> 00:03:14,588
+And an edge will
+connect a pair of nodes.
+
+75
+00:03:14,588 --> 00:03:16,629
+We're going to see two
+different ways in which we
+
+76
+00:03:16,629 --> 00:03:20,439
+could build graphs using edges.
+
+77
+00:03:20,439 --> 00:03:22,806
+The first one, the
+simple one, is an edge
+
+78
+00:03:22,806 --> 00:03:23,889
+is going to be undirected.
+
+79
+00:03:23,889 --> 00:03:25,555
+And actually, I should
+show this to you.
+
+80
+00:03:25,556 --> 00:03:27,640
+So there is the
+idea of just nodes.
+
+81
+00:03:27,639 --> 00:03:30,250
+Those nodes, as I said,
+might have information
+
+82
+00:03:30,250 --> 00:03:31,569
+in them, just labels or names.
+
+83
+00:03:31,569 --> 00:03:33,819
+They might have other
+information in them.
+
+84
+00:03:33,819 --> 00:03:37,000
+When I want to connect
+them up, the connections
+
+85
+00:03:37,000 --> 00:03:38,998
+could be undirected.
+
+86
+00:03:38,998 --> 00:03:41,289
+If you want to think of it
+this way, it goes both ways.
+
+87
+00:03:41,289 --> 00:03:43,090
+An edge connects
+two nodes together,
+
+88
+00:03:43,090 --> 00:03:45,039
+and that allows
+sharing of information
+
+89
+00:03:45,039 --> 00:03:46,947
+between both of them.
+
+90
+00:03:46,947 --> 00:03:49,030
+In some cases, we're going
+to see that we actually
+
+91
+00:03:49,030 --> 00:03:51,610
+want to use what we call a
+directed graph, sometimes
+
+92
+00:03:51,610 --> 00:03:55,840
+called a digraph, in
+which case the edge has
+
+93
+00:03:55,840 --> 00:03:58,810
+a direction from a
+source to a destination,
+
+94
+00:03:58,810 --> 00:04:01,960
+or sometimes from a
+parent to a child.
+
+95
+00:04:01,960 --> 00:04:03,520
+And in this case,
+the information
+
+96
+00:04:03,520 --> 00:04:07,671
+can only flow from the
+source to the child.
+
+97
+00:04:07,671 --> 00:04:09,129
+Now in the case
+I've drawn here, it
+
+98
+00:04:09,129 --> 00:04:12,460
+looks like there's only
+ever a single directed edge
+
+99
+00:04:12,460 --> 00:04:13,120
+between nodes.
+
+100
+00:04:13,120 --> 00:04:15,520
+I could, in fact, have
+them going both directions,
+
+101
+00:04:15,520 --> 00:04:18,774
+from source to destination and
+a separate directed edge coming
+
+102
+00:04:18,774 --> 00:04:20,439
+from the destination
+back to the source.
+
+103
+00:04:20,439 --> 00:04:22,759
+And we'll see some
+examples of that.
+
+104
+00:04:22,759 --> 00:04:25,129
+But I'm going to have edges.
+
+105
+00:04:25,129 --> 00:04:28,459
+Final thing is, those edges
+could just be connections.
+
+106
+00:04:28,459 --> 00:04:30,500
+But in some cases, we're
+going to put information
+
+107
+00:04:30,500 --> 00:04:35,259
+on the edges, for
+example, weights.
+
+108
+00:04:35,259 --> 00:04:37,870
+The weight might
+tell me how much
+
+109
+00:04:37,870 --> 00:04:40,209
+effort is it going to take
+me to go from a source
+
+110
+00:04:40,209 --> 00:04:41,403
+to a destination.
+
+111
+00:04:41,403 --> 00:04:42,819
+And one of the
+things you're going
+
+112
+00:04:42,819 --> 00:04:44,740
+to see as I want to
+think about how do I
+
+113
+00:04:44,740 --> 00:04:47,530
+pass through this graph,
+finding a path from one
+
+114
+00:04:47,529 --> 00:04:51,279
+place to another, for example,
+minimizing the cost associated
+
+115
+00:04:51,279 --> 00:04:53,409
+with passing through the edges?
+
+116
+00:04:53,410 --> 00:04:55,810
+Or how do I simply find
+a connection between two
+
+117
+00:04:55,810 --> 00:04:58,610
+nodes in this graph?
+
+118
+00:04:58,610 --> 00:05:02,439
+So graphs, composed
+of vertices or nodes,
+
+119
+00:05:02,439 --> 00:05:05,230
+they're composed
+of edges or arcs.
+
+120
+00:05:05,230 --> 00:05:08,110
+So why might we want them?
+
+121
+00:05:08,110 --> 00:05:09,370
+Well, we're going to see--
+
+122
+00:05:09,370 --> 00:05:10,869
+and you can probably
+already guess--
+
+123
+00:05:10,869 --> 00:05:15,340
+there are lots of really useful
+relationships between entities.
+
+124
+00:05:15,339 --> 00:05:18,219
+I might want to take
+a European vacation.
+
+125
+00:05:18,220 --> 00:05:19,870
+After November 8,
+I might really want
+
+126
+00:05:19,870 --> 00:05:22,000
+to take a European vacation.
+
+127
+00:05:22,000 --> 00:05:24,490
+So I'd like to know, what are
+the possible ways by rail I
+
+128
+00:05:24,490 --> 00:05:27,175
+can get from Paris to London?
+
+129
+00:05:27,175 --> 00:05:29,300
+Well, I could pull out the
+schedule and look at it.
+
+130
+00:05:29,300 --> 00:05:32,410
+But you could imagine, I hope,
+thinking about this as a graph.
+
+131
+00:05:32,410 --> 00:05:34,910
+The nodes would be cities.
+
+132
+00:05:34,910 --> 00:05:37,050
+The links would be rail
+links between them.
+
+133
+00:05:37,050 --> 00:05:39,050
+And then, one of the
+things I might like to know
+
+134
+00:05:39,050 --> 00:05:41,091
+is, first of all, can I
+get from Paris to London?
+
+135
+00:05:41,091 --> 00:05:42,769
+And then secondly,
+what's the fastest
+
+136
+00:05:42,769 --> 00:05:44,899
+way to do it or the
+cheapest way to do it?
+
+137
+00:05:44,899 --> 00:05:47,509
+So I'd like to explore that.
+
+138
+00:05:47,509 --> 00:05:51,959
+Second example, as you can see
+on the list, drug discovery,
+
+139
+00:05:51,959 --> 00:05:54,149
+modeling of complex
+molecule in terms
+
+140
+00:05:54,149 --> 00:05:56,729
+of the relationships between
+the pieces inside of it and then
+
+141
+00:05:56,730 --> 00:05:59,850
+asking questions like,
+what kind of energy
+
+142
+00:05:59,850 --> 00:06:02,790
+would it take to
+convert this molecule
+
+143
+00:06:02,790 --> 00:06:04,230
+into a different molecule?
+
+144
+00:06:04,230 --> 00:06:07,900
+And how might I think about
+that as a graph problem?
+
+145
+00:06:07,899 --> 00:06:13,639
+Third and obvious one, ancestral
+relationships, family trees.
+
+146
+00:06:13,639 --> 00:06:15,439
+In most families,
+almost all families,
+
+147
+00:06:15,439 --> 00:06:17,396
+they really are
+trees not graphs.
+
+148
+00:06:17,396 --> 00:06:18,980
+Hopefully you don't
+come from a family
+
+149
+00:06:18,980 --> 00:06:20,629
+that has strange loops in them.
+
+150
+00:06:20,629 --> 00:06:23,624
+But family trees are--
+
+151
+00:06:23,624 --> 00:06:25,040
+I know, I'm in
+trouble here today.
+
+152
+00:06:25,040 --> 00:06:25,539
+Aren't I?
+
+153
+00:06:25,538 --> 00:06:27,589
+Family trees-- stay with me--
+
+154
+00:06:27,589 --> 00:06:30,709
+are a great demonstration of
+relationships because there
+
+155
+00:06:30,709 --> 00:06:32,000
+its directional edges.
+
+156
+00:06:32,000 --> 00:06:32,689
+Right?
+
+157
+00:06:32,689 --> 00:06:34,339
+Parents have children.
+
+158
+00:06:34,339 --> 00:06:36,109
+Those children have children.
+
+159
+00:06:36,110 --> 00:06:38,240
+And like I say, it
+comes in a natural way
+
+160
+00:06:38,240 --> 00:06:42,110
+of thinking about traversing
+things in that tree.
+
+161
+00:06:42,110 --> 00:06:46,069
+And in fact, trees are a
+special case of a graph.
+
+162
+00:06:46,069 --> 00:06:49,139
+You've already seen decision
+trees in the last lecture.
+
+163
+00:06:49,139 --> 00:06:52,629
+But basically, a special kind
+of directed graph is a tree.
+
+164
+00:06:52,629 --> 00:06:54,980
+And the property of
+the tree is, as it
+
+165
+00:06:54,980 --> 00:06:58,370
+says there, any pair
+of nodes are connected,
+
+166
+00:06:58,370 --> 00:07:01,519
+if they are connected,
+by only a single path.
+
+167
+00:07:01,519 --> 00:07:02,419
+There are no loops.
+
+168
+00:07:02,420 --> 00:07:04,250
+There are no ways
+to go from one node,
+
+169
+00:07:04,250 --> 00:07:06,589
+find a set of things that
+brings you back to that node.
+
+170
+00:07:06,589 --> 00:07:11,246
+You can only have a single
+path to those points.
+
+171
+00:07:11,247 --> 00:07:13,080
+And Professor Guttag
+used this, for example,
+
+172
+00:07:13,079 --> 00:07:15,129
+to talk about solving
+the knapsack problem.
+
+173
+00:07:15,129 --> 00:07:16,769
+A decision trees is
+a really nice way
+
+174
+00:07:16,769 --> 00:07:19,109
+of finding that solution.
+
+175
+00:07:19,110 --> 00:07:21,600
+Now, I drew it this way.
+
+176
+00:07:21,600 --> 00:07:25,950
+In computer science, we
+mostly use Australian trees.
+
+177
+00:07:25,949 --> 00:07:27,810
+They're upside down.
+
+178
+00:07:27,810 --> 00:07:29,054
+The roots are at the top.
+
+179
+00:07:29,053 --> 00:07:30,719
+The leaves are at the
+bottom, because we
+
+180
+00:07:30,720 --> 00:07:32,970
+want to think about starting
+at the beginning of the tree,
+
+181
+00:07:32,970 --> 00:07:34,845
+which is typically
+something we call the root
+
+182
+00:07:34,845 --> 00:07:35,910
+and traversing it.
+
+183
+00:07:35,910 --> 00:07:37,439
+But however you
+use it, trees are
+
+184
+00:07:37,439 --> 00:07:39,449
+going to be a useful
+way of actually
+
+185
+00:07:39,449 --> 00:07:44,229
+thinking about representing
+particular kinds of graphs.
+
+186
+00:07:44,230 --> 00:07:44,830
+OK.
+
+187
+00:07:44,829 --> 00:07:48,456
+So, when I talk in a second
+about how to build graphs,
+
+188
+00:07:48,456 --> 00:07:50,290
+well let's spend just
+a second about saying,
+
+189
+00:07:50,290 --> 00:07:52,650
+so why are they useful?
+
+190
+00:07:52,649 --> 00:07:54,729
+And if you think
+about it, the world
+
+191
+00:07:54,730 --> 00:07:58,990
+is full of lots of networks that
+are based on relationships that
+
+192
+00:07:58,990 --> 00:08:01,650
+could be captured by a graph.
+
+193
+00:08:01,649 --> 00:08:03,899
+We use them all the time.
+
+194
+00:08:03,899 --> 00:08:06,289
+Some of you are using
+them right now--
+
+195
+00:08:06,290 --> 00:08:07,040
+computer networks.
+
+196
+00:08:07,040 --> 00:08:10,700
+You want to send an email
+message from your machine
+
+197
+00:08:10,699 --> 00:08:12,678
+to your friend at Stanford.
+
+198
+00:08:12,678 --> 00:08:14,719
+That's going to get routed
+through a set of links
+
+199
+00:08:14,720 --> 00:08:15,330
+to get there.
+
+200
+00:08:15,329 --> 00:08:18,810
+So the network set up by a
+series of routers that pass it
+
+201
+00:08:18,810 --> 00:08:21,530
+along, sending something
+requires an algorithm
+
+202
+00:08:21,529 --> 00:08:24,998
+that figures out the best way
+to actually move that around.
+
+203
+00:08:24,999 --> 00:08:26,540
+There's a great
+local company started
+
+204
+00:08:26,540 --> 00:08:28,770
+by an MIT professor
+called Akamai
+
+205
+00:08:28,769 --> 00:08:31,310
+that thinks about how do
+you move web content around
+
+206
+00:08:31,310 --> 00:08:31,810
+on the web?
+
+207
+00:08:31,810 --> 00:08:36,048
+Again, it's a nice
+computer network problem.
+
+208
+00:08:36,048 --> 00:08:37,340
+I've already talked about this.
+
+209
+00:08:37,340 --> 00:08:38,923
+We're going to do
+some other examples.
+
+210
+00:08:38,923 --> 00:08:41,980
+Transportation networks--
+here, if you think about it,
+
+211
+00:08:41,980 --> 00:08:45,039
+obvious thing is make
+the nodes cities.
+
+212
+00:08:45,039 --> 00:08:46,730
+Make the edges
+roads between them.
+
+213
+00:08:46,730 --> 00:08:49,779
+And now questions are,
+can I get to San Jose,
+
+214
+00:08:49,779 --> 00:08:50,808
+if you like old songs?
+
+215
+00:08:50,808 --> 00:08:52,600
+And what's the best
+way to get to San Jose,
+
+216
+00:08:52,600 --> 00:08:55,460
+even if you don't
+like old songs?
+
+217
+00:08:55,460 --> 00:08:59,269
+A network problem--
+how do I analyze it?
+
+218
+00:08:59,269 --> 00:09:02,329
+Financial networks--
+moving money around--
+
+219
+00:09:02,330 --> 00:09:05,950
+easily modeled by a graph.
+
+220
+00:09:05,950 --> 00:09:08,980
+Traditional networks--
+sewer, water, electrical,
+
+221
+00:09:08,980 --> 00:09:12,392
+anything that distributes
+content, if you like,
+
+222
+00:09:12,392 --> 00:09:14,600
+and the different kind of
+content in this way around.
+
+223
+00:09:14,600 --> 00:09:16,700
+You want to model that
+in terms of how you think
+
+224
+00:09:16,700 --> 00:09:18,590
+about flows in those networks.
+
+225
+00:09:18,590 --> 00:09:21,810
+How do I maximize distribution
+of water in an appropriate way,
+
+226
+00:09:21,809 --> 00:09:24,619
+given I've got certain
+capacities on different pipes,
+
+227
+00:09:24,620 --> 00:09:26,690
+which would mean those
+edges in the graph
+
+228
+00:09:26,690 --> 00:09:28,550
+would have different weights?
+
+229
+00:09:28,549 --> 00:09:29,779
+And you get the idea--
+
+230
+00:09:29,779 --> 00:09:34,039
+political networks, criminal
+networks, social networks.
+
+231
+00:09:34,039 --> 00:09:37,039
+One of the things we're
+going to see with graphs
+
+232
+00:09:37,039 --> 00:09:40,439
+is that they can capture
+interesting relationships.
+
+233
+00:09:40,440 --> 00:09:41,360
+So here's an example.
+
+234
+00:09:41,360 --> 00:09:43,401
+It's from that little web
+site you can see there.
+
+235
+00:09:43,400 --> 00:09:45,219
+You're welcome to go look at it.
+
+236
+00:09:45,220 --> 00:09:48,399
+And this is a graph
+analyzing The Wizard of Oz.
+
+237
+00:09:48,399 --> 00:09:50,809
+And what's been done
+here is the size
+
+238
+00:09:50,809 --> 00:09:54,739
+of the node reflects the number
+of scenes in which a character
+
+239
+00:09:54,740 --> 00:09:56,680
+shares dialog.
+
+240
+00:09:56,679 --> 00:09:59,229
+So you can see, obviously
+Dorothy is the biggest node
+
+241
+00:09:59,230 --> 00:10:01,029
+there.
+
+242
+00:10:01,029 --> 00:10:03,009
+The edges represent
+shared dialog,
+
+243
+00:10:03,009 --> 00:10:06,090
+so you can see who talks
+to whom in this graph.
+
+244
+00:10:06,090 --> 00:10:08,016
+And then, this group
+has done another thing,
+
+245
+00:10:08,015 --> 00:10:09,139
+which I'm going to mention.
+
+246
+00:10:09,139 --> 00:10:11,347
+We're not going to solve
+today, which is you can also
+
+247
+00:10:11,347 --> 00:10:12,500
+do analysis on the graphs.
+
+248
+00:10:12,500 --> 00:10:15,919
+And in fact, the color
+here has done something
+
+249
+00:10:15,919 --> 00:10:18,149
+called a min-flow
+or max-cut problem,
+
+250
+00:10:18,149 --> 00:10:22,039
+which is it's tried to identify
+which clusters in the graph
+
+251
+00:10:22,039 --> 00:10:23,569
+tend to have a lot
+of interactions
+
+252
+00:10:23,570 --> 00:10:26,710
+within that cluster but not
+very many with other clusters.
+
+253
+00:10:26,710 --> 00:10:27,710
+And you can kind of see.
+
+254
+00:10:27,710 --> 00:10:30,084
+There's some nice things here,
+right, if you can read it.
+
+255
+00:10:30,083 --> 00:10:32,209
+This is all the
+people in Kansas.
+
+256
+00:10:32,210 --> 00:10:35,070
+This is Glenda and the
+Munchkins in that part of Oz.
+
+257
+00:10:35,070 --> 00:10:38,260
+There's another little cluster
+over here that I can't read
+
+258
+00:10:38,259 --> 00:10:39,990
+and a little cluster over there.
+
+259
+00:10:39,990 --> 00:10:42,070
+And then the big
+cluster down here.
+
+260
+00:10:42,070 --> 00:10:45,850
+But you can analyze the graph
+to pull out pieces on it.
+
+261
+00:10:45,850 --> 00:10:50,050
+You can also notice, by the way,
+the book is probably misnamed.
+
+262
+00:10:50,049 --> 00:10:51,279
+It's called The Wizard of Oz.
+
+263
+00:10:51,279 --> 00:10:53,409
+But notice, there's
+the wizard, who
+
+264
+00:10:53,409 --> 00:10:55,449
+actually doesn't have
+a lot of interaction
+
+265
+00:10:55,450 --> 00:10:57,800
+with the other
+people in this story.
+
+266
+00:10:57,799 --> 00:10:59,919
+It's OK, literary choice.
+
+267
+00:10:59,919 --> 00:11:02,394
+But the graph is
+representing interactions.
+
+268
+00:11:02,394 --> 00:11:04,060
+And I could imagine
+searching that graph
+
+269
+00:11:04,059 --> 00:11:05,683
+to try and figure
+out things about what
+
+270
+00:11:05,683 --> 00:11:09,059
+goes on in The Wizard of Oz.
+
+271
+00:11:09,059 --> 00:11:09,729
+OK.
+
+272
+00:11:09,730 --> 00:11:10,690
+So why are they useful?
+
+273
+00:11:10,690 --> 00:11:14,950
+We're going to see that not only
+do graphs capture relationships
+
+274
+00:11:14,950 --> 00:11:17,376
+in these connected
+networks, but they're
+
+275
+00:11:17,375 --> 00:11:18,500
+going to support inference.
+
+276
+00:11:18,500 --> 00:11:20,860
+They're going to be able
+to reason about them.
+
+277
+00:11:20,860 --> 00:11:21,950
+And I want to set that up.
+
+278
+00:11:21,950 --> 00:11:24,408
+And then we'll actually look
+at how might we build a graph.
+
+279
+00:11:24,408 --> 00:11:26,710
+And so here are
+some ways in which
+
+280
+00:11:26,710 --> 00:11:28,910
+I might want to do inference.
+
+281
+00:11:28,909 --> 00:11:30,709
+Given a graph, I
+might say, is there
+
+282
+00:11:30,710 --> 00:11:34,400
+a sequence of edges, of
+links, between two elements?
+
+283
+00:11:34,399 --> 00:11:36,470
+Is there a way to
+get from A to B?
+
+284
+00:11:36,470 --> 00:11:41,670
+What are the sequence of edges
+I would use to get there?
+
+285
+00:11:41,669 --> 00:11:43,529
+A more interesting
+question is, can I
+
+286
+00:11:43,529 --> 00:11:46,559
+find the least expensive
+path, also known
+
+287
+00:11:46,559 --> 00:11:48,335
+as the shortest path?
+
+288
+00:11:48,336 --> 00:11:50,120
+If I want to get
+from Paris to London,
+
+289
+00:11:50,120 --> 00:11:52,202
+I might like to do it in
+the least amount of time.
+
+290
+00:11:52,202 --> 00:11:56,579
+What are the set of choices
+I want to make to get there?
+
+291
+00:11:56,580 --> 00:12:00,480
+A third graph problem used a lot
+is called the graph partition
+
+292
+00:12:00,480 --> 00:12:02,070
+problem.
+
+293
+00:12:02,070 --> 00:12:04,200
+Everything I've shown so
+far-- actually not quite.
+
+294
+00:12:04,200 --> 00:12:05,340
+The first example
+didn't have it.
+
+295
+00:12:05,340 --> 00:12:07,710
+You might think of all the
+nodes having some connection
+
+296
+00:12:07,710 --> 00:12:08,550
+to every other node.
+
+297
+00:12:08,549 --> 00:12:10,529
+But that may not be true.
+
+298
+00:12:10,529 --> 00:12:12,029
+There may actually
+be graphs where
+
+299
+00:12:12,029 --> 00:12:16,049
+I've got a set of connected
+elements and another component
+
+300
+00:12:16,049 --> 00:12:18,289
+with no connections
+between them.
+
+301
+00:12:18,289 --> 00:12:19,039
+Can I find those?
+
+302
+00:12:19,039 --> 00:12:20,789
+That's called the graph
+partition problem.
+
+303
+00:12:20,789 --> 00:12:23,659
+How do I separate the graph
+out into connected sets
+
+304
+00:12:23,659 --> 00:12:25,649
+of elements?
+
+305
+00:12:25,649 --> 00:12:27,149
+And then the one
+that we just showed
+
+306
+00:12:27,149 --> 00:12:29,740
+called the min-cut
+max-flow problem, is
+
+307
+00:12:29,740 --> 00:12:31,990
+is there an efficient
+way to separate out
+
+308
+00:12:31,990 --> 00:12:34,659
+the highly connected elements,
+the things that interact
+
+309
+00:12:34,659 --> 00:12:38,769
+a lot, and separate out how many
+of those kinds of subgraphs,
+
+310
+00:12:38,769 --> 00:12:42,573
+if you like, are there
+inside of my graph?
+
+311
+00:12:42,573 --> 00:12:46,389
+All right, let me show you
+a motivation for graphs.
+
+312
+00:12:46,389 --> 00:12:48,529
+And then we'll build them.
+
+313
+00:12:48,529 --> 00:12:51,319
+I use graph theory everyday.
+
+314
+00:12:51,320 --> 00:12:52,132
+I'm a math nut.
+
+315
+00:12:52,131 --> 00:12:53,839
+It's OK, but I use
+graph theory everyday.
+
+316
+00:12:53,840 --> 00:12:55,730
+You may as well, if you commute.
+
+317
+00:12:55,730 --> 00:12:57,230
+Because I use it
+to figure out how
+
+318
+00:12:57,230 --> 00:13:00,639
+to get from my home in Lexington
+down here to Cambridge.
+
+319
+00:13:00,639 --> 00:13:02,960
+And I use a nice
+little system called
+
+320
+00:13:02,960 --> 00:13:04,850
+Waze It's a great way
+of doing this, which
+
+321
+00:13:04,850 --> 00:13:06,840
+does graph theory inside of it.
+
+322
+00:13:06,840 --> 00:13:09,290
+So how do I get to my office?
+
+323
+00:13:09,289 --> 00:13:12,819
+Well, I'm going to model
+the road system using
+
+324
+00:13:12,820 --> 00:13:14,990
+a directed graph, a digraph.
+
+325
+00:13:14,990 --> 00:13:17,879
+Directed graph because
+streets can be one way.
+
+326
+00:13:17,879 --> 00:13:20,990
+And so I may only have a
+single direction there.
+
+327
+00:13:20,990 --> 00:13:23,200
+And the idea is, I'm
+going to simply let
+
+328
+00:13:23,200 --> 00:13:25,629
+my nodes or my
+vertices be points
+
+329
+00:13:25,629 --> 00:13:27,129
+where I have intersections.
+
+330
+00:13:27,129 --> 00:13:29,462
+They're places where I can
+make a choice or places where
+
+331
+00:13:29,462 --> 00:13:31,959
+I have terminals, things
+I'm going to end up in.
+
+332
+00:13:31,960 --> 00:13:34,990
+The edges would just be the
+connections between points,
+
+333
+00:13:34,990 --> 00:13:37,700
+the roads on which I can drive.
+
+334
+00:13:37,700 --> 00:13:39,920
+Some Boston drivers have a
+different kind of digraph
+
+335
+00:13:39,919 --> 00:13:42,578
+in which they don't care whether
+that road is drivable or not.
+
+336
+00:13:42,578 --> 00:13:43,370
+They just go on it.
+
+337
+00:13:43,370 --> 00:13:44,702
+You may have seen some of these.
+
+338
+00:13:44,702 --> 00:13:48,289
+But I want to keep my graphs as
+real roads that I can drive on.
+
+339
+00:13:48,289 --> 00:13:51,269
+And I'm not going to go
+against the "One Way" sign.
+
+340
+00:13:51,269 --> 00:13:53,730
+Each edge will have a weight.
+
+341
+00:13:53,730 --> 00:13:56,409
+Here I actually
+have some choices.
+
+342
+00:13:56,409 --> 00:14:00,120
+All right, the obvious one, the
+one that Waze probably uses,
+
+343
+00:14:00,120 --> 00:14:03,810
+is something like what's the
+expected time between a source
+
+344
+00:14:03,809 --> 00:14:05,245
+and a destination node?
+
+345
+00:14:05,245 --> 00:14:07,620
+How long do I expect it to
+take me to get from this point
+
+346
+00:14:07,620 --> 00:14:08,231
+to that?
+
+347
+00:14:08,231 --> 00:14:09,689
+And then, as you
+can see, I'm going
+
+348
+00:14:09,690 --> 00:14:13,160
+to try and find overall what's
+the best way to get around it.
+
+349
+00:14:13,159 --> 00:14:16,059
+You could pick just distance.
+
+350
+00:14:16,059 --> 00:14:17,896
+What's the distance
+between the two?
+
+351
+00:14:17,897 --> 00:14:19,730
+And while there there's
+a relationship here,
+
+352
+00:14:19,730 --> 00:14:22,930
+it's not direct because it
+will depend on traffic on it.
+
+353
+00:14:22,929 --> 00:14:25,209
+Or you could take something
+even funkier like what's
+
+354
+00:14:25,210 --> 00:14:28,629
+the average speed of
+travel between the source
+
+355
+00:14:28,629 --> 00:14:31,299
+and destination node?
+
+356
+00:14:31,299 --> 00:14:33,779
+And once I've got
+the graph, then I'm
+
+357
+00:14:33,779 --> 00:14:36,600
+going to solve an
+optimization problem.
+
+358
+00:14:36,600 --> 00:14:39,149
+What's the shortest weight
+between my house and my office
+
+359
+00:14:39,149 --> 00:14:42,014
+that gets me into work?
+
+360
+00:14:42,014 --> 00:14:43,139
+You can make a choice here.
+
+361
+00:14:43,139 --> 00:14:47,370
+As I said, a commercial system
+like Waze uses this one.
+
+362
+00:14:47,370 --> 00:14:48,960
+My wife and I actually
+have arguments
+
+363
+00:14:48,960 --> 00:14:50,460
+about commuting
+because she's a firm
+
+364
+00:14:50,460 --> 00:14:54,750
+believer in the second one,
+just shortest distance.
+
+365
+00:14:54,750 --> 00:14:58,620
+I actually like the third
+one because I get anxious
+
+366
+00:14:58,620 --> 00:14:59,929
+when I'm driving.
+
+367
+00:14:59,929 --> 00:15:03,089
+And so as long as I feel like
+I'm making progress, I like it.
+
+368
+00:15:03,090 --> 00:15:05,815
+So even though I may be
+serpentining all the way
+
+369
+00:15:05,815 --> 00:15:08,190
+through the back roads of
+Cambridge, if I'm driving fast,
+
+370
+00:15:08,190 --> 00:15:09,440
+I feel like I'm getting there.
+
+371
+00:15:09,440 --> 00:15:12,030
+So I like optimizing this
+bottom one down there.
+
+372
+00:15:12,029 --> 00:15:14,579
+And if you see me on the road,
+you'll know why I say that,
+
+373
+00:15:14,580 --> 00:15:15,990
+and then get out of the way.
+
+374
+00:15:15,990 --> 00:15:19,200
+
+
+375
+00:15:19,200 --> 00:15:21,090
+Thinking about navigation
+through systems
+
+376
+00:15:21,090 --> 00:15:22,798
+actually gives us a
+little bit of history
+
+377
+00:15:22,798 --> 00:15:26,340
+because, in fact, the very first
+reported use of graph theory
+
+378
+00:15:26,340 --> 00:15:28,560
+was exactly this problem.
+
+379
+00:15:28,559 --> 00:15:31,649
+Early 1700s, it's called
+the Bridges of Koenigsberg.
+
+380
+00:15:31,649 --> 00:15:33,754
+Koenigsberg is a
+city that has a set
+
+381
+00:15:33,754 --> 00:15:34,920
+of islands and rivers in it.
+
+382
+00:15:34,919 --> 00:15:37,750
+There are seven bridges that
+connect up those islands.
+
+383
+00:15:37,750 --> 00:15:40,080
+And the question that
+was posed is, is it
+
+384
+00:15:40,080 --> 00:15:44,340
+possible to take a walk that
+traverses each of the seven
+
+385
+00:15:44,340 --> 00:15:46,680
+bridges exactly once?
+
+386
+00:15:46,679 --> 00:15:48,929
+So could you take a walk
+where you go over each bridge
+
+387
+00:15:48,929 --> 00:15:50,849
+exactly once?
+
+388
+00:15:50,850 --> 00:15:52,440
+I'm showing you
+this because it lets
+
+389
+00:15:52,440 --> 00:15:56,640
+us think about how to in fact
+capture things in a model.
+
+390
+00:15:56,639 --> 00:16:00,559
+This problem was solved by
+a great Swiss mathematician,
+
+391
+00:16:00,559 --> 00:16:02,269
+Leonhard Euler.
+
+392
+00:16:02,269 --> 00:16:04,039
+And here's what he said.
+
+393
+00:16:04,039 --> 00:16:06,379
+Make each island a node.
+
+394
+00:16:06,379 --> 00:16:09,620
+Each bridge is just
+an undirected edge.
+
+395
+00:16:09,620 --> 00:16:12,590
+And notice in doing
+that, he's abstracted
+
+396
+00:16:12,590 --> 00:16:15,740
+away irrelevant details.
+
+397
+00:16:15,740 --> 00:16:18,389
+You don't care what the
+size of the island is.
+
+398
+00:16:18,389 --> 00:16:20,059
+You don't care how
+long the bridges are.
+
+399
+00:16:20,059 --> 00:16:23,976
+You simply want to think about
+what are the connections here?
+
+400
+00:16:23,976 --> 00:16:25,309
+And then you can ask a question.
+
+401
+00:16:25,309 --> 00:16:27,589
+In this graph, is it
+possible to find a way
+
+402
+00:16:27,590 --> 00:16:30,740
+to walk through it so that
+you go through each edge
+
+403
+00:16:30,740 --> 00:16:33,320
+exactly once?
+
+404
+00:16:33,320 --> 00:16:36,000
+And as Euler showed,
+the answer is no.
+
+405
+00:16:36,000 --> 00:16:38,110
+And if you're curious, go
+look it up on Wikipedia.
+
+406
+00:16:38,110 --> 00:16:40,543
+There's a nice, elegant
+solution to why that's the case.
+
+407
+00:16:40,543 --> 00:16:41,960
+But here's what
+we're going to do.
+
+408
+00:16:41,960 --> 00:16:43,700
+We're going to use
+those graphs to think
+
+409
+00:16:43,700 --> 00:16:46,394
+about these kinds of problems.
+
+410
+00:16:46,394 --> 00:16:48,310
+And in fact, the example
+I'm going to show you
+
+411
+00:16:48,309 --> 00:16:49,933
+are going to be
+shortest path problems.
+
+412
+00:16:49,933 --> 00:16:54,809
+So with that, let's turn to
+actually building a graph
+
+413
+00:16:54,809 --> 00:16:57,669
+and then thinking about
+how we're going to use it.
+
+414
+00:16:57,669 --> 00:17:00,083
+So we're going to start
+by constructing graphs.
+
+415
+00:17:00,083 --> 00:17:01,500
+And then what we're
+going to do is
+
+416
+00:17:01,500 --> 00:17:04,920
+show how we can build
+search algorithms
+
+417
+00:17:04,920 --> 00:17:06,089
+on top of those graphs.
+
+418
+00:17:06,088 --> 00:17:08,818
+And I hope that that flicker
+is going to go away here soon.
+
+419
+00:17:08,818 --> 00:17:09,930
+Here we go.
+
+420
+00:17:09,930 --> 00:17:12,131
+So to build a graph--
+
+421
+00:17:12,131 --> 00:17:14,339
+actually, I shouldn't have
+put this slide up so fast.
+
+422
+00:17:14,338 --> 00:17:15,750
+I've got lots of choices here.
+
+423
+00:17:15,750 --> 00:17:18,150
+If I'm thinking about maps,
+one way to build a graph
+
+424
+00:17:18,150 --> 00:17:20,970
+would really to just be
+build something with latitude
+
+425
+00:17:20,970 --> 00:17:23,068
+and longitude on it.
+
+426
+00:17:23,068 --> 00:17:26,039
+But as we've already seen, we'd
+like to extract things away
+
+427
+00:17:26,039 --> 00:17:27,420
+from the graphs.
+
+428
+00:17:27,420 --> 00:17:29,440
+And so a natural
+choice is to say,
+
+429
+00:17:29,440 --> 00:17:33,120
+let's represent the nodes in
+the graph just as objects.
+
+430
+00:17:33,119 --> 00:17:35,349
+I'm going to use
+classes for these.
+
+431
+00:17:35,349 --> 00:17:37,439
+So here's my
+definition of a node.
+
+432
+00:17:37,440 --> 00:17:39,309
+It's pretty straightforward.
+
+433
+00:17:39,309 --> 00:17:41,940
+I'm going to assume that
+the only information for now
+
+434
+00:17:41,940 --> 00:17:44,670
+I store in a node is just a
+name, which I'm going to assume
+
+435
+00:17:44,670 --> 00:17:46,060
+is a string.
+
+436
+00:17:46,059 --> 00:17:48,000
+So I've got a class
+definition for node.
+
+437
+00:17:48,000 --> 00:17:51,750
+It inherits from the
+base Python object class.
+
+438
+00:17:51,750 --> 00:17:54,039
+I need ways to create
+instances of nodes,
+
+439
+00:17:54,039 --> 00:17:55,740
+so I've got an init function.
+
+440
+00:17:55,740 --> 00:17:58,950
+And I'm simply going to
+store inside each instance,
+
+441
+00:17:58,950 --> 00:18:02,009
+in other words, inside of
+self, under the variable name,
+
+442
+00:18:02,009 --> 00:18:06,009
+whatever I passed in as
+the name of that node.
+
+443
+00:18:06,009 --> 00:18:08,529
+Of course, if I've got ways
+to create things with a name,
+
+444
+00:18:08,529 --> 00:18:09,709
+I need to get them back out.
+
+445
+00:18:09,709 --> 00:18:11,500
+So I've got a way of
+selecting it back out.
+
+446
+00:18:11,500 --> 00:18:14,440
+If I ask an instance of
+a node, what's your name?
+
+447
+00:18:14,440 --> 00:18:17,115
+By calling getName it
+will return that value.
+
+448
+00:18:17,115 --> 00:18:18,490
+And to print things
+out, I'm just
+
+449
+00:18:18,490 --> 00:18:19,655
+going to print out the name.
+
+450
+00:18:19,655 --> 00:18:21,576
+This is pretty straightforward.
+
+451
+00:18:21,576 --> 00:18:24,279
+And this, of course, lets
+me now create as many nodes
+
+452
+00:18:24,279 --> 00:18:27,230
+as I would like.
+
+453
+00:18:27,230 --> 00:18:28,559
+Edges?
+
+454
+00:18:28,559 --> 00:18:31,159
+Well, an edge
+connects up two nodes.
+
+455
+00:18:31,160 --> 00:18:34,670
+So again, I can do a fairly
+straightforward construction
+
+456
+00:18:34,670 --> 00:18:36,100
+of a class.
+
+457
+00:18:36,099 --> 00:18:39,519
+Again, it's going to inherit
+from the base Python object.
+
+458
+00:18:39,519 --> 00:18:41,710
+To create an
+instance of an edge,
+
+459
+00:18:41,710 --> 00:18:44,019
+I'm going to make an assumption,
+an important one which
+
+460
+00:18:44,019 --> 00:18:45,185
+we're going to come back to.
+
+461
+00:18:45,185 --> 00:18:48,220
+And the assumption is that the
+arguments passed in, source
+
+462
+00:18:48,220 --> 00:18:50,829
+and destination, are nodes--
+
+463
+00:18:50,829 --> 00:18:53,349
+not names-- the
+nodes themselves,
+
+464
+00:18:53,349 --> 00:18:56,379
+the actual instances
+of the object class.
+
+465
+00:18:56,380 --> 00:18:57,210
+And what will I do?
+
+466
+00:18:57,210 --> 00:19:01,049
+Inside of the edge, I'm going
+to set internal variables.
+
+467
+00:19:01,049 --> 00:19:04,069
+For each instance of the
+edge, source and destination
+
+468
+00:19:04,069 --> 00:19:06,269
+are going to point
+to those nodes,
+
+469
+00:19:06,269 --> 00:19:10,360
+to those objects that I
+created out of the node class.
+
+470
+00:19:10,361 --> 00:19:11,860
+Next two things are
+straightforward.
+
+471
+00:19:11,859 --> 00:19:14,279
+I can get those things back out.
+
+472
+00:19:14,279 --> 00:19:16,109
+And then the final
+piece is, if when
+
+473
+00:19:16,109 --> 00:19:18,929
+I want to print out
+what an edge looks like,
+
+474
+00:19:18,930 --> 00:19:21,240
+I'm going to ask
+that it print out
+
+475
+00:19:21,240 --> 00:19:24,000
+the name of the source,
+and then an arrow,
+
+476
+00:19:24,000 --> 00:19:25,900
+and then the name
+of the destination.
+
+477
+00:19:25,900 --> 00:19:27,720
+So notice what I do there.
+
+478
+00:19:27,720 --> 00:19:31,569
+Given an instance of an
+edge, I can print it.
+
+479
+00:19:31,569 --> 00:19:36,399
+And it will get the source or
+the node associated with source
+
+480
+00:19:36,400 --> 00:19:41,512
+inside this instance, get
+for that the getName method,
+
+481
+00:19:41,511 --> 00:19:42,220
+and then call it.
+
+482
+00:19:42,220 --> 00:19:45,040
+Notice the open-close paren
+there to actually call it.
+
+483
+00:19:45,040 --> 00:19:45,789
+What does that do?
+
+484
+00:19:45,789 --> 00:19:48,023
+It says, inside the
+edge I've got something
+
+485
+00:19:48,023 --> 00:19:48,939
+that points to a node.
+
+486
+00:19:48,940 --> 00:19:49,690
+I get that node.
+
+487
+00:19:49,690 --> 00:19:51,650
+I take the method
+associated with it.
+
+488
+00:19:51,650 --> 00:19:52,360
+And I call it.
+
+489
+00:19:52,359 --> 00:19:54,579
+That returns the string.
+
+490
+00:19:54,579 --> 00:19:56,559
+And then I glue that
+together with the arrow.
+
+491
+00:19:56,559 --> 00:19:58,299
+I do the same thing
+on the destination.
+
+492
+00:19:58,299 --> 00:20:01,240
+And I just print it out.
+
+493
+00:20:01,240 --> 00:20:04,769
+Pretty straightforward,
+hopefully.
+
+494
+00:20:04,769 --> 00:20:06,866
+OK, now I have to make a
+decision about the graph.
+
+495
+00:20:06,866 --> 00:20:08,950
+I'm going to start with
+digraphs, directed graphs.
+
+496
+00:20:08,950 --> 00:20:11,919
+And I need to think about how
+I might represent the graph.
+
+497
+00:20:11,919 --> 00:20:12,710
+I can create nodes.
+
+498
+00:20:12,710 --> 00:20:16,079
+I can create edges, but I've
+got to bring them all together.
+
+499
+00:20:16,079 --> 00:20:18,429
+So I'll remind you, a
+digraph is a directed graph.
+
+500
+00:20:18,430 --> 00:20:21,660
+The edges pass in
+only one direction.
+
+501
+00:20:21,660 --> 00:20:25,330
+And here's one
+way I could do it.
+
+502
+00:20:25,329 --> 00:20:27,879
+Given all the sources
+and all the destinations,
+
+503
+00:20:27,880 --> 00:20:32,420
+I could just create a big matrix
+called an adjacency matrix.
+
+504
+00:20:32,420 --> 00:20:35,380
+The rows would be
+all the sources.
+
+505
+00:20:35,380 --> 00:20:38,110
+The columns would be
+all the destinations.
+
+506
+00:20:38,109 --> 00:20:40,179
+And then in a particular
+spot in the matrix,
+
+507
+00:20:40,180 --> 00:20:43,750
+if there is an edge between
+a source and a destination,
+
+508
+00:20:43,750 --> 00:20:45,309
+I'd just put a one.
+
+509
+00:20:45,309 --> 00:20:48,379
+Otherwise I'd put a zero.
+
+510
+00:20:48,380 --> 00:20:51,970
+Note, by the way, because
+it's a directed graph,
+
+511
+00:20:51,970 --> 00:20:53,680
+it's not symmetric.
+
+512
+00:20:53,680 --> 00:20:57,250
+There might be a one between S
+and D, but not between D and S,
+
+513
+00:20:57,250 --> 00:20:59,950
+unless there are
+edges both ways.
+
+514
+00:20:59,950 --> 00:21:02,049
+This would be a
+perfectly reasonable way
+
+515
+00:21:02,049 --> 00:21:07,139
+to represent a graph, but
+not the most convenient one.
+
+516
+00:21:07,140 --> 00:21:09,270
+I'd have to go into the
+matrix to look things up.
+
+517
+00:21:09,269 --> 00:21:11,430
+It may also not be
+a very efficient way
+
+518
+00:21:11,430 --> 00:21:12,781
+of representing things.
+
+519
+00:21:12,780 --> 00:21:15,029
+For example, if there are
+very few edges in the graph,
+
+520
+00:21:15,029 --> 00:21:18,660
+I could have a huge
+matrix with mostly zeros.
+
+521
+00:21:18,660 --> 00:21:21,700
+And that's not the most
+effective way to do it.
+
+522
+00:21:21,700 --> 00:21:24,330
+So I'm going to use
+an alternative called
+
+523
+00:21:24,329 --> 00:21:26,210
+an adjacency list.
+
+524
+00:21:26,210 --> 00:21:30,480
+And the idea here is, for
+every node in the graph.
+
+525
+00:21:30,480 --> 00:21:33,390
+I'm going to associate with
+it a list of destinations.
+
+526
+00:21:33,390 --> 00:21:35,910
+That is, for a node,
+what are the places
+
+527
+00:21:35,910 --> 00:21:39,840
+I can reach with a single edge?
+
+528
+00:21:39,839 --> 00:21:43,109
+OK, so let's see what that
+does if we want to build it.
+
+529
+00:21:43,109 --> 00:21:44,609
+And yes, there's a
+lot of code here,
+
+530
+00:21:44,609 --> 00:21:47,629
+but it's pretty easy
+to look through I hope.
+
+531
+00:21:47,630 --> 00:21:51,324
+Here's the choice
+I'm going to make.
+
+532
+00:21:51,324 --> 00:21:52,240
+Again, what's a graph?
+
+533
+00:21:52,240 --> 00:21:53,180
+It's a set of nodes.
+
+534
+00:21:53,180 --> 00:21:54,700
+It's a set of edges.
+
+535
+00:21:54,700 --> 00:21:57,680
+I'm going to have a way of
+putting nodes into the graph.
+
+536
+00:21:57,680 --> 00:22:00,970
+And I'm going to choose to, when
+I put a node into the graph,
+
+537
+00:22:00,970 --> 00:22:04,405
+to store it as a
+key in a dictionary.
+
+538
+00:22:04,405 --> 00:22:06,700
+OK?
+
+539
+00:22:06,700 --> 00:22:08,799
+When I initialize
+the graph, I'm just
+
+540
+00:22:08,799 --> 00:22:11,710
+going to set this
+internal variable, edges,
+
+541
+00:22:11,710 --> 00:22:14,279
+to be an empty dictionary.
+
+542
+00:22:14,279 --> 00:22:15,960
+And the second
+part of it is, when
+
+543
+00:22:15,960 --> 00:22:18,840
+I add an edge to the
+graph between two
+
+544
+00:22:18,839 --> 00:22:22,019
+nodes from a source
+to a destination,
+
+545
+00:22:22,019 --> 00:22:25,253
+I'm going to take that point
+in the dictionary associated
+
+546
+00:22:25,253 --> 00:22:25,919
+with the source.
+
+547
+00:22:25,920 --> 00:22:27,305
+It's a key.
+
+548
+00:22:27,305 --> 00:22:28,680
+And associated
+with it, I'm going
+
+549
+00:22:28,680 --> 00:22:31,830
+to just have a list of
+the nodes I can reach
+
+550
+00:22:31,829 --> 00:22:34,463
+from edges from that source.
+
+551
+00:22:34,463 --> 00:22:35,629
+So notice what happens here.
+
+552
+00:22:35,630 --> 00:22:37,850
+If I want to add
+a node, remember,
+
+553
+00:22:37,849 --> 00:22:39,699
+it's a node not an edge--
+
+554
+00:22:39,700 --> 00:22:43,309
+I'll first check to make
+sure that it's not already
+
+555
+00:22:43,309 --> 00:22:44,839
+in the dictionary.
+
+556
+00:22:44,839 --> 00:22:46,699
+That little loop is
+basic, or that if is
+
+557
+00:22:46,700 --> 00:22:49,846
+saying, if it's in this set
+of keys, it will return true.
+
+558
+00:22:49,846 --> 00:22:50,930
+And I'm going to complain.
+
+559
+00:22:50,930 --> 00:22:53,964
+I'm trying to copy a
+node or duplicate a node.
+
+560
+00:22:53,963 --> 00:22:55,129
+Otherwise, notice what I do.
+
+561
+00:22:55,130 --> 00:22:56,750
+When I put a node
+into the dictionary,
+
+562
+00:22:56,750 --> 00:22:59,750
+I go into that
+dictionary, edges.
+
+563
+00:22:59,750 --> 00:23:04,049
+I create an entry with
+the key that is the node.
+
+564
+00:23:04,049 --> 00:23:07,940
+And the value I put in there
+is initially an empty list.
+
+565
+00:23:07,940 --> 00:23:09,690
+I'm going to say one
+more piece carefully.
+
+566
+00:23:09,690 --> 00:23:12,570
+It's a node not a name.
+
+567
+00:23:12,569 --> 00:23:13,740
+And that's OK in Python.
+
+568
+00:23:13,740 --> 00:23:16,279
+It is literally the
+key is the node itself.
+
+569
+00:23:16,279 --> 00:23:18,825
+It's an object, which
+is what I'd like.
+
+570
+00:23:18,825 --> 00:23:21,069
+All right, what if I
+want to add an edge?
+
+571
+00:23:21,069 --> 00:23:23,589
+Well, an edge is going
+to go from a source
+
+572
+00:23:23,589 --> 00:23:25,799
+to a destination node.
+
+573
+00:23:25,799 --> 00:23:30,703
+So, I'm going to get out from
+the edge the source piece.
+
+574
+00:23:30,703 --> 00:23:32,119
+I'm going to get
+out from the edge
+
+575
+00:23:32,119 --> 00:23:34,309
+the destination piece by
+calling those methods.
+
+576
+00:23:34,309 --> 00:23:37,339
+Again, notice the open-close
+paren, which takes the method
+
+577
+00:23:37,339 --> 00:23:38,539
+and actually calls it.
+
+578
+00:23:38,539 --> 00:23:41,720
+Because remember, an edge
+was an object itself.
+
+579
+00:23:41,720 --> 00:23:44,870
+Given those, I'll check
+to make sure that they
+
+580
+00:23:44,869 --> 00:23:47,029
+are both in the dictionary.
+
+581
+00:23:47,029 --> 00:23:49,094
+That is, I've already
+added them to the graph.
+
+582
+00:23:49,094 --> 00:23:50,759
+I can't make a
+connection between things
+
+583
+00:23:50,759 --> 00:23:52,749
+that aren't in the graph.
+
+584
+00:23:52,749 --> 00:23:54,539
+And then notice the
+nice little thing I do.
+
+585
+00:23:54,539 --> 00:23:58,029
+Presuming I have both of
+them in the dictionary,
+
+586
+00:23:58,029 --> 00:24:02,470
+I take the dictionary, I index
+into it with the source node.
+
+587
+00:24:02,470 --> 00:24:04,240
+That gives me a key
+into the dictionary.
+
+588
+00:24:04,240 --> 00:24:07,660
+I pull out the entry at
+that point, which is a list,
+
+589
+00:24:07,660 --> 00:24:09,519
+because I created them up here.
+
+590
+00:24:09,519 --> 00:24:13,930
+And I add the destination node
+with append into the list,
+
+591
+00:24:13,930 --> 00:24:16,660
+stick it back in.
+
+592
+00:24:16,660 --> 00:24:19,980
+So this now captures what
+I said I wanted to do.
+
+593
+00:24:19,980 --> 00:24:23,660
+The nodes are represented
+as keys in the dictionary.
+
+594
+00:24:23,660 --> 00:24:26,400
+And the edges are
+represented by destinations
+
+595
+00:24:26,400 --> 00:24:29,622
+as values in the list
+associated with the key.
+
+596
+00:24:29,622 --> 00:24:31,330
+So you can see, if I
+want to see is there
+
+597
+00:24:31,329 --> 00:24:34,824
+an edge between a source
+and a destination,
+
+598
+00:24:34,825 --> 00:24:36,700
+I would look at our
+source in the dictionary,
+
+599
+00:24:36,700 --> 00:24:37,779
+and then check in
+the list to see
+
+600
+00:24:37,779 --> 00:24:38,945
+if the destination is there.
+
+601
+00:24:38,945 --> 00:24:41,589
+
+
+602
+00:24:41,589 --> 00:24:43,598
+OK, the rest of
+this then follows
+
+603
+00:24:43,598 --> 00:24:44,639
+pretty straightforwardly.
+
+604
+00:24:44,640 --> 00:24:48,090
+If I want to get all the
+children of a particular node,
+
+605
+00:24:48,089 --> 00:24:50,020
+I just go into the
+dictionary, edges,
+
+606
+00:24:50,020 --> 00:24:52,019
+and look up the value
+associated with that node.
+
+607
+00:24:52,019 --> 00:24:53,490
+It gives me back the list.
+
+608
+00:24:53,490 --> 00:24:55,380
+I've got all the
+things I can reach
+
+609
+00:24:55,380 --> 00:24:57,890
+from that particular node.
+
+610
+00:24:57,890 --> 00:25:00,570
+If I want to know if a
+node is in the graph,
+
+611
+00:25:00,569 --> 00:25:05,069
+I just search over the
+keys of the dictionary.
+
+612
+00:25:05,069 --> 00:25:07,451
+They'll either
+return true or false.
+
+613
+00:25:07,451 --> 00:25:09,711
+If I want to get a
+node by its name, which
+
+614
+00:25:09,711 --> 00:25:12,170
+is going to be probably more
+convenient than trying to keep
+
+615
+00:25:12,170 --> 00:25:14,029
+track of all the
+nodes, well I could
+
+616
+00:25:14,029 --> 00:25:15,398
+pass in a name as a string.
+
+617
+00:25:15,398 --> 00:25:16,189
+And what will I do?
+
+618
+00:25:16,190 --> 00:25:19,340
+I'll just search over all
+the keys in the dictionary,
+
+619
+00:25:19,339 --> 00:25:22,189
+using the getName method
+associated with it--
+
+620
+00:25:22,190 --> 00:25:24,440
+there's the call-- then
+checking to see if it's
+
+621
+00:25:24,440 --> 00:25:26,549
+the thing I'm looking for.
+
+622
+00:25:26,549 --> 00:25:31,990
+And if it is, I'll return M.
+I'll return the node itself.
+
+623
+00:25:31,990 --> 00:25:34,434
+What about this thing here?
+
+624
+00:25:34,434 --> 00:25:35,856
+It might bother
+you a little bit.
+
+625
+00:25:35,856 --> 00:25:36,440
+Wait a minute.
+
+626
+00:25:36,440 --> 00:25:39,799
+That raise, isn't it always
+going to throw an error?
+
+627
+00:25:39,799 --> 00:25:42,509
+No, because I'm going to
+go through this loop first.
+
+628
+00:25:42,509 --> 00:25:44,690
+And if I actually find
+a node, that return
+
+629
+00:25:44,690 --> 00:25:48,170
+is going to pop me out of
+the call and return the node.
+
+630
+00:25:48,170 --> 00:25:50,690
+So I'll only ever get
+to this if in fact I
+
+631
+00:25:50,690 --> 00:25:52,440
+couldn't find anything here.
+
+632
+00:25:52,440 --> 00:25:54,830
+And so it's an appropriate
+way to simply raise the error
+
+633
+00:25:54,829 --> 00:25:57,109
+to say, if I get to this
+point, couldn't find
+
+634
+00:25:57,109 --> 00:26:01,240
+it, raise an error to
+say the node's not there.
+
+635
+00:26:01,240 --> 00:26:02,740
+The last piece looks
+a little funky,
+
+636
+00:26:02,740 --> 00:26:04,073
+Although you may have seen this.
+
+637
+00:26:04,073 --> 00:26:06,900
+I like to print out
+information about a graph.
+
+638
+00:26:06,900 --> 00:26:10,000
+And I made a choice, which
+is, I'm going to print out
+
+639
+00:26:10,000 --> 00:26:13,180
+all of the links in the graph.
+
+640
+00:26:13,180 --> 00:26:16,480
+So I'm going to set up a string
+initially here that's empty.
+
+641
+00:26:16,480 --> 00:26:20,440
+And then I'm going to loop over
+every key in the dictionary,
+
+642
+00:26:20,440 --> 00:26:22,225
+every node in the graph.
+
+643
+00:26:22,224 --> 00:26:25,039
+And for each one, I'm going to
+look at all the destinations.
+
+644
+00:26:25,039 --> 00:26:27,039
+So notice, I take
+the dictionary,
+
+645
+00:26:27,039 --> 00:26:28,599
+I look up the things
+at that point.
+
+646
+00:26:28,599 --> 00:26:29,230
+That's a list.
+
+647
+00:26:29,230 --> 00:26:30,569
+I loop over that.
+
+648
+00:26:30,569 --> 00:26:32,899
+And I'm just going
+to add in to result,
+
+649
+00:26:32,900 --> 00:26:35,710
+the name of the source,
+an arrow, and the name
+
+650
+00:26:35,710 --> 00:26:39,298
+of the destination followed
+by a carriage return.
+
+651
+00:26:39,298 --> 00:26:40,839
+I'll show you an
+example in a second.
+
+652
+00:26:40,839 --> 00:26:44,000
+But I'm simply walking down the
+graph, saying for each source,
+
+653
+00:26:44,000 --> 00:26:44,900
+what can it reach?
+
+654
+00:26:44,900 --> 00:26:46,370
+I'll print them all out.
+
+655
+00:26:46,369 --> 00:26:49,050
+And then I'll return everything
+but the last element.
+
+656
+00:26:49,050 --> 00:26:51,049
+I'm going to throw away
+the last carriage return
+
+657
+00:26:51,049 --> 00:26:53,169
+because I don't really need it.
+
+658
+00:26:53,170 --> 00:26:54,930
+So let me show you
+an example here,
+
+659
+00:26:54,930 --> 00:26:57,900
+trusting that my Python has
+come up the way I wanted it to.
+
+660
+00:26:57,900 --> 00:27:00,560
+
+
+661
+00:27:00,559 --> 00:27:04,940
+So I'm going to load that in,
+ignore that for the moment.
+
+662
+00:27:04,940 --> 00:27:07,580
+And I'm going to set g to--
+
+663
+00:27:07,579 --> 00:27:10,980
+I've got something we're going
+to come back to in a second
+
+664
+00:27:10,980 --> 00:27:12,910
+that actually creates a graph.
+
+665
+00:27:12,910 --> 00:27:17,130
+And if I print out
+g, it prints out,
+
+666
+00:27:17,130 --> 00:27:22,560
+in this case, all of the links
+from source to destination,
+
+667
+00:27:22,559 --> 00:27:25,679
+each one on a new line.
+
+668
+00:27:25,680 --> 00:27:28,170
+OK.
+
+669
+00:27:28,170 --> 00:27:31,800
+So I can create the graphs.
+
+670
+00:27:31,799 --> 00:27:35,069
+That was digraphs.
+
+671
+00:27:35,069 --> 00:27:38,700
+Suppose I actually
+want to get a graph.
+
+672
+00:27:38,700 --> 00:27:42,100
+Well, I'm going to make it
+as a subclass of digraph.
+
+673
+00:27:42,099 --> 00:27:44,549
+And in particular, the
+only thing I'm going to do
+
+674
+00:27:44,549 --> 00:27:49,378
+is I'm going to shadow the
+addEdge method of digraphs.
+
+675
+00:27:49,378 --> 00:27:51,419
+So if you think about it,
+it's so I make a graph.
+
+676
+00:27:51,420 --> 00:27:52,920
+If I ask it to add
+edges, it's going
+
+677
+00:27:52,920 --> 00:27:55,407
+to use this version of addEdge.
+
+678
+00:27:55,406 --> 00:27:56,490
+And what am I going to do?
+
+679
+00:27:56,490 --> 00:28:01,750
+I know in a graph, I could
+have both directions work.
+
+680
+00:28:01,750 --> 00:28:06,509
+So, given an edge that I
+want to add into this graph,
+
+681
+00:28:06,509 --> 00:28:09,509
+I'll use the method
+from the digraph class.
+
+682
+00:28:09,509 --> 00:28:13,759
+And I'll add an edge going
+from source to destination.
+
+683
+00:28:13,759 --> 00:28:18,269
+And then I'll just create
+an edge the other direction.
+
+684
+00:28:18,269 --> 00:28:19,559
+Destination becomes source.
+
+685
+00:28:19,559 --> 00:28:21,329
+Source becomes destination.
+
+686
+00:28:21,329 --> 00:28:24,359
+And I'll add that
+into the graph.
+
+687
+00:28:24,359 --> 00:28:27,149
+Nice and easy,
+straightforward to do.
+
+688
+00:28:27,150 --> 00:28:30,360
+And this is kind of nice
+because, in a graph,
+
+689
+00:28:30,359 --> 00:28:32,759
+I don't have any directionality
+associated with the edge.
+
+690
+00:28:32,759 --> 00:28:33,968
+I can go in either direction.
+
+691
+00:28:33,968 --> 00:28:35,664
+I just created
+something like that.
+
+692
+00:28:35,664 --> 00:28:37,289
+And you might say,
+well, wait a minute.
+
+693
+00:28:37,289 --> 00:28:40,769
+Why did I pick graph to
+be a subclass of digraph?
+
+694
+00:28:40,769 --> 00:28:43,480
+Why not the other way around?
+
+695
+00:28:43,480 --> 00:28:46,620
+Reasonable question, and you
+actually know the answer.
+
+696
+00:28:46,619 --> 00:28:48,539
+You've seen this before.
+
+697
+00:28:48,539 --> 00:28:50,009
+One of the things
+I'd like to have
+
+698
+00:28:50,009 --> 00:28:53,730
+is the property that if the
+client code works correctly
+
+699
+00:28:53,730 --> 00:28:55,799
+using an instance
+of the bigger type,
+
+700
+00:28:55,799 --> 00:28:57,569
+it should also
+work correctly when
+
+701
+00:28:57,569 --> 00:29:01,599
+it is using an instance of the
+subtype substituted in, which
+
+702
+00:29:01,599 --> 00:29:03,279
+is another way of
+saying anything that
+
+703
+00:29:03,279 --> 00:29:07,450
+works for a digraph will
+also work for a graph,
+
+704
+00:29:07,450 --> 00:29:09,340
+but not vice versa.
+
+705
+00:29:09,339 --> 00:29:10,839
+And as a consequence,
+it's easier
+
+706
+00:29:10,839 --> 00:29:13,884
+to make the graph a
+subclass of digraph.
+
+707
+00:29:13,884 --> 00:29:15,549
+Notice the other thing
+that's nice here.
+
+708
+00:29:15,549 --> 00:29:17,799
+One little piece of
+code, just change
+
+709
+00:29:17,799 --> 00:29:19,539
+what it means to make an edge.
+
+710
+00:29:19,539 --> 00:29:21,519
+Everything else still holds.
+
+711
+00:29:21,519 --> 00:29:23,980
+And also notice-- you've seen
+this before-- how we nicely
+
+712
+00:29:23,980 --> 00:29:27,190
+inherit the method
+from the subclass
+
+713
+00:29:27,190 --> 00:29:28,400
+by explicitly calling it.
+
+714
+00:29:28,400 --> 00:29:32,080
+It says, from the digraph class,
+get out the addEdge method
+
+715
+00:29:32,079 --> 00:29:34,849
+and apply it.
+
+716
+00:29:34,849 --> 00:29:36,649
+OK.
+
+717
+00:29:36,650 --> 00:29:38,330
+So we can build graphs.
+
+718
+00:29:38,329 --> 00:29:40,799
+We're going to do
+that in a second.
+
+719
+00:29:40,799 --> 00:29:44,250
+Let's turn now to thinking about
+I'd like to search on a graph.
+
+720
+00:29:44,250 --> 00:29:46,880
+And I'm going to start with
+the classic graph optimization
+
+721
+00:29:46,880 --> 00:29:47,930
+problem.
+
+722
+00:29:47,930 --> 00:29:49,890
+I'd like to find
+the best path home.
+
+723
+00:29:49,890 --> 00:29:54,200
+So, what's the shortest path
+from one node to another?
+
+724
+00:29:54,200 --> 00:29:56,220
+And that shortest path
+initially will just
+
+725
+00:29:56,220 --> 00:29:59,170
+be the shortest
+sequence of steps.
+
+726
+00:29:59,170 --> 00:30:02,829
+
+
+727
+00:30:02,828 --> 00:30:04,619
+I hope I'm not having
+a little attack here.
+
+728
+00:30:04,619 --> 00:30:06,679
+You just saw that
+screen blank out, right?
+
+729
+00:30:06,680 --> 00:30:09,509
+The shortest path of
+steps with the property
+
+730
+00:30:09,509 --> 00:30:14,069
+that the source of the first
+edge is the starting point.
+
+731
+00:30:14,069 --> 00:30:15,658
+The destination of
+the last edge is
+
+732
+00:30:15,659 --> 00:30:16,950
+the thing I'm trying to get to.
+
+733
+00:30:16,950 --> 00:30:19,200
+And for any edge
+in between, if I
+
+734
+00:30:19,200 --> 00:30:22,860
+go in my first edge from
+source to say node one,
+
+735
+00:30:22,859 --> 00:30:25,819
+the next edge has that
+destination as its source.
+
+736
+00:30:25,819 --> 00:30:28,319
+So there's simply a chain that
+says can go from here to here
+
+737
+00:30:28,319 --> 00:30:31,169
+to here to here to get
+all the way through.
+
+738
+00:30:31,170 --> 00:30:34,120
+And I'd like to find what's
+the shortest number of steps?
+
+739
+00:30:34,119 --> 00:30:38,369
+Edges like that that will get
+me from source to destination.
+
+740
+00:30:38,369 --> 00:30:41,759
+Ultimately, if those edges
+have weights on them,
+
+741
+00:30:41,759 --> 00:30:43,619
+the optimization problem
+I'd like to solve
+
+742
+00:30:43,619 --> 00:30:46,859
+is, what's the shortest
+weighted path, the shortest
+
+743
+00:30:46,859 --> 00:30:49,493
+amount of work I have to
+do to get to those places?
+
+744
+00:30:49,493 --> 00:30:50,909
+And if we can solve
+one, we'll see
+
+745
+00:30:50,910 --> 00:30:54,340
+that we can solve the other
+one pretty straightforwardly.
+
+746
+00:30:54,339 --> 00:30:57,939
+And we've already seen examples
+of shortest path problems.
+
+747
+00:30:57,940 --> 00:31:01,059
+Clearly, finding a
+route navigation is one.
+
+748
+00:31:01,059 --> 00:31:03,819
+Designing communication networks
+is another great example
+
+749
+00:31:03,819 --> 00:31:05,424
+of a shortest path problem.
+
+750
+00:31:05,424 --> 00:31:07,299
+You'd like your message
+to get to your friend
+
+751
+00:31:07,299 --> 00:31:09,297
+as quickly as possible
+and not go as many times
+
+752
+00:31:09,297 --> 00:31:10,880
+around the world
+before it gets there.
+
+753
+00:31:10,880 --> 00:31:13,690
+So what's the shortest amount
+of time or the fewest links
+
+754
+00:31:13,690 --> 00:31:15,549
+I have to use to get there?
+
+755
+00:31:15,549 --> 00:31:20,960
+Lots of nice biological problems
+that also captured this piece.
+
+756
+00:31:20,960 --> 00:31:22,180
+So here is an example.
+
+757
+00:31:22,180 --> 00:31:23,019
+And we're going to
+use this to look
+
+758
+00:31:23,019 --> 00:31:24,609
+at two different
+kinds of algorithms
+
+759
+00:31:24,609 --> 00:31:26,899
+to solve this problem.
+
+760
+00:31:26,900 --> 00:31:30,810
+This is a little navigation
+problem from a set of cities.
+
+761
+00:31:30,809 --> 00:31:32,849
+Think of it as flight paths.
+
+762
+00:31:32,849 --> 00:31:34,500
+If you're from
+Arizona, my apologies.
+
+763
+00:31:34,500 --> 00:31:37,349
+But once you get to Phoenix,
+you can't get out of there
+
+764
+00:31:37,349 --> 00:31:39,089
+unless you grow from
+the ashes, I guess.
+
+765
+00:31:39,089 --> 00:31:40,297
+[LAUGHTER]
+
+766
+00:31:40,297 --> 00:31:42,130
+But you know, it's a
+way of dealing with how
+
+767
+00:31:42,130 --> 00:31:43,820
+to get around in places.
+
+768
+00:31:43,819 --> 00:31:46,813
+And to think about this,
+here's the representation
+
+769
+00:31:46,814 --> 00:31:47,980
+that we'd have in the graph.
+
+770
+00:31:47,980 --> 00:31:50,650
+The adjacency graph
+here-- or adjacency list
+
+771
+00:31:50,650 --> 00:31:53,180
+here is, from Boston, I
+can get to Providence.
+
+772
+00:31:53,180 --> 00:31:54,940
+I can get to New York.
+
+773
+00:31:54,940 --> 00:31:57,250
+From Providence, I
+can get to Boston.
+
+774
+00:31:57,250 --> 00:31:59,109
+I can get to New York.
+
+775
+00:31:59,109 --> 00:32:02,169
+From New York, I can
+only get to Chicago.
+
+776
+00:32:02,170 --> 00:32:04,630
+Chicago, I can go to
+Denver or Phoenix.
+
+777
+00:32:04,630 --> 00:32:06,700
+Denver, I can go to
+Phoenix or New York.
+
+778
+00:32:06,700 --> 00:32:09,580
+And from L.A., you can
+only come back to Boston.
+
+779
+00:32:09,579 --> 00:32:12,011
+And Phoenix has no
+exits out of it.
+
+780
+00:32:12,011 --> 00:32:13,345
+So there is that representation.
+
+781
+00:32:13,345 --> 00:32:14,678
+I just want to let you see that.
+
+782
+00:32:14,678 --> 00:32:15,310
+Right?
+
+783
+00:32:15,309 --> 00:32:17,659
+There are the keys
+in the dictionary.
+
+784
+00:32:17,660 --> 00:32:18,880
+They're all the nodes.
+
+785
+00:32:18,880 --> 00:32:21,640
+And there, each
+one of those lists
+
+786
+00:32:21,640 --> 00:32:25,700
+is a set of edges from the
+source to the destination.
+
+787
+00:32:25,700 --> 00:32:27,440
+OK.
+
+788
+00:32:27,440 --> 00:32:30,365
+How would I build this?
+
+789
+00:32:30,365 --> 00:32:31,740
+Well this is the
+code I just ran.
+
+790
+00:32:31,740 --> 00:32:33,210
+I just want to show it to you.
+
+791
+00:32:33,210 --> 00:32:37,289
+I notice, by the way, in the
+slides I distributed earlier,
+
+792
+00:32:37,289 --> 00:32:38,700
+the return g is missing there.
+
+793
+00:32:38,700 --> 00:32:41,670
+If you want to correct it,
+I'll repost it later on.
+
+794
+00:32:41,670 --> 00:32:43,529
+I'm going to create a
+little function that's
+
+795
+00:32:43,529 --> 00:32:45,089
+going to build a city graph.
+
+796
+00:32:45,089 --> 00:32:47,849
+I'm going to pass in a type
+of graph, which I will then
+
+797
+00:32:47,849 --> 00:32:48,659
+call to create it.
+
+798
+00:32:48,660 --> 00:32:50,180
+So I could make
+this as a digraph.
+
+799
+00:32:50,180 --> 00:32:51,549
+I could make it as a graph.
+
+800
+00:32:51,549 --> 00:32:53,970
+I'm going to start off
+with it as a digraph.
+
+801
+00:32:53,970 --> 00:32:55,319
+And then notice what I do here.
+
+802
+00:32:55,319 --> 00:32:58,529
+I just run over a little
+loop with a set of names,
+
+803
+00:32:58,529 --> 00:33:02,160
+creating a node with
+that name and then
+
+804
+00:33:02,160 --> 00:33:04,282
+adding it into the graph.
+
+805
+00:33:04,281 --> 00:33:06,779
+All right, so node
+is a class instance.
+
+806
+00:33:06,779 --> 00:33:08,369
+It creates-- or a
+class definition--
+
+807
+00:33:08,369 --> 00:33:09,839
+it creates an instance.
+
+808
+00:33:09,839 --> 00:33:13,099
+And once I've got that, addNode
+as a method on the graph.
+
+809
+00:33:13,099 --> 00:33:15,059
+It will simply add it in.
+
+810
+00:33:15,059 --> 00:33:19,169
+And then this set here, is
+simply adding in the edges.
+
+811
+00:33:19,170 --> 00:33:19,920
+And I can do that.
+
+812
+00:33:19,920 --> 00:33:22,300
+I'm capturing what I had
+on that previous slide.
+
+813
+00:33:22,299 --> 00:33:24,419
+And on a given
+name to getNode, it
+
+814
+00:33:24,420 --> 00:33:26,710
+will get out the actual node.
+
+815
+00:33:26,710 --> 00:33:29,829
+And I use that coming
+out of the graph g.
+
+816
+00:33:29,829 --> 00:33:31,869
+I do the same thing
+with the getNode
+
+817
+00:33:31,869 --> 00:33:33,729
+from graph g for Providence.
+
+818
+00:33:33,730 --> 00:33:35,769
+And then I make an
+edge out of that.
+
+819
+00:33:35,769 --> 00:33:39,940
+And then I use the method from
+the graph to add the edge.
+
+820
+00:33:39,940 --> 00:33:41,710
+If this looks like
+a lot of code,
+
+821
+00:33:41,710 --> 00:33:42,876
+yeah, it's a lot of words.
+
+822
+00:33:42,876 --> 00:33:44,210
+But it's pretty straightforward.
+
+823
+00:33:44,210 --> 00:33:46,900
+I'm literally creating
+nodes with the names,
+
+824
+00:33:46,900 --> 00:33:49,820
+using the appropriate
+methods, creating an edge,
+
+825
+00:33:49,819 --> 00:33:50,966
+adding it into the graph.
+
+826
+00:33:50,967 --> 00:33:53,300
+And when I'm done, I'm just
+going to return the graph g.
+
+827
+00:33:53,299 --> 00:33:56,069
+
+
+828
+00:33:56,069 --> 00:33:57,169
+OK.
+
+829
+00:33:57,170 --> 00:34:00,600
+Now I want to find
+the shortest path.
+
+830
+00:34:00,599 --> 00:34:03,029
+I'm going to show you two
+techniques for doing this.
+
+831
+00:34:03,029 --> 00:34:08,351
+The first one is called
+depth first search.
+
+832
+00:34:08,351 --> 00:34:10,559
+It's similar to something
+Professor Guttag showed you
+
+833
+00:34:10,559 --> 00:34:14,400
+when you sort of took the
+left most depth first method
+
+834
+00:34:14,400 --> 00:34:16,469
+in terms of a search tree.
+
+835
+00:34:16,469 --> 00:34:19,320
+The one trick here is, because
+I've got graphs not trees,
+
+836
+00:34:19,320 --> 00:34:20,989
+there are the
+potential for loops.
+
+837
+00:34:20,989 --> 00:34:23,961
+So I'm simply going to keep
+track of what's in the path.
+
+838
+00:34:23,961 --> 00:34:25,920
+And I'm never going to
+go back to a node that's
+
+839
+00:34:25,920 --> 00:34:26,753
+already in the path.
+
+840
+00:34:26,753 --> 00:34:29,610
+So I don't just run in circles
+going from New York to Boston
+
+841
+00:34:29,610 --> 00:34:31,880
+to New York to
+Boston constantly.
+
+842
+00:34:31,880 --> 00:34:33,150
+All right.
+
+843
+00:34:33,150 --> 00:34:36,487
+So, the second thing
+I'm going to do here
+
+844
+00:34:36,487 --> 00:34:38,570
+is I'm going to take
+advantage of a problem you've
+
+845
+00:34:38,570 --> 00:34:42,860
+seen before, which is this is
+literally a version of divide
+
+846
+00:34:42,860 --> 00:34:43,977
+and conquer.
+
+847
+00:34:43,976 --> 00:34:44,809
+What does that mean?
+
+848
+00:34:44,809 --> 00:34:47,059
+If I want to find a
+path from a source node
+
+849
+00:34:47,059 --> 00:34:49,489
+to destination
+node, if I can find
+
+850
+00:34:49,489 --> 00:34:52,670
+a path to some intermediate
+node from source intermediate,
+
+851
+00:34:52,670 --> 00:34:55,789
+and then I find a path from
+intermediate to destination,
+
+852
+00:34:55,789 --> 00:34:59,719
+the combination is obviously
+a path the entire way.
+
+853
+00:34:59,719 --> 00:35:02,119
+So recursively, I can
+just break this down
+
+854
+00:35:02,119 --> 00:35:05,389
+into simpler and simpler
+versions of that search
+
+855
+00:35:05,389 --> 00:35:07,429
+problem.
+
+856
+00:35:07,429 --> 00:35:09,909
+So here's the idea behind
+depth first search.
+
+857
+00:35:09,909 --> 00:35:12,859
+Start off with that source
+node, that initial node.
+
+858
+00:35:12,860 --> 00:35:14,390
+I'm going to look
+at all the edges
+
+859
+00:35:14,389 --> 00:35:16,259
+that leave that
+node in some order,
+
+860
+00:35:16,260 --> 00:35:19,190
+however order it was
+put into the system.
+
+861
+00:35:19,190 --> 00:35:21,601
+And I'm going to
+follow the first edge.
+
+862
+00:35:21,601 --> 00:35:23,559
+I'll check to see if I'm
+at the right location.
+
+863
+00:35:23,559 --> 00:35:25,429
+If I am, I'm done.
+
+864
+00:35:25,429 --> 00:35:28,299
+If I'm not, I'm going to
+follow the first edge out
+
+865
+00:35:28,300 --> 00:35:29,840
+of that node.
+
+866
+00:35:29,840 --> 00:35:32,700
+So I'm actually creating
+a little loop here.
+
+867
+00:35:32,699 --> 00:35:36,099
+And I'm going to keep doing that
+until I either find the goal
+
+868
+00:35:36,099 --> 00:35:38,750
+node or I run out of options.
+
+869
+00:35:38,750 --> 00:35:41,349
+So let me show you an example.
+
+870
+00:35:41,349 --> 00:35:44,369
+I've got a little search
+tree here, a very simple one.
+
+871
+00:35:44,369 --> 00:35:45,579
+Here's my source.
+
+872
+00:35:45,579 --> 00:35:47,480
+There is my destination.
+
+873
+00:35:47,481 --> 00:35:49,480
+In depth first, I'm going
+to start at the source
+
+874
+00:35:49,480 --> 00:35:52,289
+and go down the first path.
+
+875
+00:35:52,289 --> 00:35:53,639
+See if I'm at the right place.
+
+876
+00:35:53,639 --> 00:35:55,019
+I'm not.
+
+877
+00:35:55,019 --> 00:35:56,730
+So I'm going to take
+the first path out
+
+878
+00:35:56,730 --> 00:35:59,550
+of here, which
+might be that one.
+
+879
+00:35:59,550 --> 00:36:00,990
+See if I'm in the right place.
+
+880
+00:36:00,989 --> 00:36:02,489
+Actually, let me
+not do it that way.
+
+881
+00:36:02,489 --> 00:36:05,279
+Let me do it this way.
+
+882
+00:36:05,280 --> 00:36:06,850
+Am I in the right place?
+
+883
+00:36:06,849 --> 00:36:07,505
+I'm not.
+
+884
+00:36:07,505 --> 00:36:09,329
+So I'm going to take
+the first path out
+
+885
+00:36:09,329 --> 00:36:12,675
+of this one, which
+gets me there.
+
+886
+00:36:12,675 --> 00:36:14,049
+I'm still not in
+the right place,
+
+887
+00:36:14,050 --> 00:36:17,907
+so I'm going to take the
+first path out of that one.
+
+888
+00:36:17,907 --> 00:36:19,740
+And you can see why
+it's called depth first.
+
+889
+00:36:19,739 --> 00:36:22,319
+I'm going as deep, if you
+like, in this graph as I can,
+
+890
+00:36:22,320 --> 00:36:26,840
+from here, to there, to
+there, to there, to there.
+
+891
+00:36:26,840 --> 00:36:27,884
+At this stage, I'm stuck.
+
+892
+00:36:27,884 --> 00:36:29,300
+There is no place
+to go to, so I'm
+
+893
+00:36:29,300 --> 00:36:33,037
+going to go back to this node
+and say, is there another edge?
+
+894
+00:36:33,036 --> 00:36:35,119
+In this case there isn't,
+so I'll go back to here.
+
+895
+00:36:35,119 --> 00:36:36,359
+There's not another edge.
+
+896
+00:36:36,360 --> 00:36:37,579
+Go back to here.
+
+897
+00:36:37,579 --> 00:36:39,049
+There is another edge.
+
+898
+00:36:39,050 --> 00:36:42,710
+So I'm going to
+go this direction.
+
+899
+00:36:42,710 --> 00:36:46,949
+And from here, I'll
+look down there.
+
+900
+00:36:46,949 --> 00:36:50,146
+OK, notice I'm now going depth
+first down the next chain.
+
+901
+00:36:50,146 --> 00:36:51,230
+There's nothing from here.
+
+902
+00:36:51,230 --> 00:36:51,920
+I backtrack.
+
+903
+00:36:51,920 --> 00:36:53,045
+There's nothing from there.
+
+904
+00:36:53,045 --> 00:36:54,110
+I backtrack over to here.
+
+905
+00:36:54,110 --> 00:36:56,059
+There's no additional
+choices there,
+
+906
+00:36:56,059 --> 00:37:01,029
+so go all the way back to
+here to follow that one.
+
+907
+00:37:01,030 --> 00:37:04,360
+And then we'll go down this one
+again, backtrack, backtrack,
+
+908
+00:37:04,360 --> 00:37:09,950
+and eventually I find the
+thing I'm looking for.
+
+909
+00:37:09,949 --> 00:37:15,059
+Depth first-- following
+my way down this path.
+
+910
+00:37:15,059 --> 00:37:16,920
+So let's write the
+code for-- yes ma'am?
+
+911
+00:37:16,920 --> 00:37:17,753
+AUDIENCE: Pardon me.
+
+912
+00:37:17,753 --> 00:37:19,680
+Is the choice of
+depth first node
+
+913
+00:37:19,679 --> 00:37:21,706
+we go down, is that random?
+
+914
+00:37:21,706 --> 00:37:23,539
+PROFESSOR: The question
+is, which node do I,
+
+915
+00:37:23,539 --> 00:37:25,244
+or which edge do I choose?
+
+916
+00:37:25,244 --> 00:37:27,429
+It's however I stored
+it in the system.
+
+917
+00:37:27,429 --> 00:37:30,135
+So since it's a list, I'm
+going to just make that choice.
+
+918
+00:37:30,135 --> 00:37:31,759
+I could have other
+ways of deciding it.
+
+919
+00:37:31,760 --> 00:37:34,210
+But think of it as,
+yeah, essentially random,
+
+920
+00:37:34,210 --> 00:37:36,900
+which one I would pick.
+
+921
+00:37:36,900 --> 00:37:39,740
+OK, let's look at the code.
+
+922
+00:37:39,739 --> 00:37:40,519
+Don't panic.
+
+923
+00:37:40,519 --> 00:37:42,170
+It's not as bad as it looks.
+
+924
+00:37:42,170 --> 00:37:45,548
+It actually just
+captures that idea.
+
+925
+00:37:45,548 --> 00:37:47,090
+Ignore for the moment
+this down here.
+
+926
+00:37:47,090 --> 00:37:48,298
+It's just going to set it up.
+
+927
+00:37:48,297 --> 00:37:50,779
+Depth first search, I'm going
+to give it a graph, a start
+
+928
+00:37:50,780 --> 00:37:54,572
+node, an end node, and a path
+that got me to that start
+
+929
+00:37:54,572 --> 00:37:56,030
+node, which initially
+is just going
+
+930
+00:37:56,030 --> 00:37:59,690
+to be an empty list,
+something that tells me what's
+
+931
+00:37:59,690 --> 00:38:01,327
+the shortest path
+I've found so far,
+
+932
+00:38:01,327 --> 00:38:02,660
+which would be my best solution?
+
+933
+00:38:02,659 --> 00:38:04,969
+And then just a little flag
+here if I want to print out
+
+934
+00:38:04,969 --> 00:38:07,429
+things along the way.
+
+935
+00:38:07,429 --> 00:38:08,539
+What do I do?
+
+936
+00:38:08,539 --> 00:38:11,480
+I set up path to add
+in the start node.
+
+937
+00:38:11,480 --> 00:38:14,019
+So if path initially
+is an empty list,
+
+938
+00:38:14,019 --> 00:38:17,090
+the first time around is
+just, here's the node I'm at.
+
+939
+00:38:17,090 --> 00:38:20,689
+I print out some stuff and
+then I say, see if I'm done.
+
+940
+00:38:20,688 --> 00:38:21,980
+I'm just going to stay at home.
+
+941
+00:38:21,980 --> 00:38:23,623
+I'm not going to go anywhere.
+
+942
+00:38:23,623 --> 00:38:25,539
+Unlikely to happen, but
+you'll see recursively
+
+943
+00:38:25,539 --> 00:38:27,340
+why this is going to be nice.
+
+944
+00:38:27,340 --> 00:38:29,860
+If I'm not done,
+then notice the loop.
+
+945
+00:38:29,860 --> 00:38:34,960
+I'm going to loop over all the
+children of the start node.
+
+946
+00:38:34,960 --> 00:38:36,400
+Those are the edges I can reach.
+
+947
+00:38:36,400 --> 00:38:38,470
+Then those I can reach
+with a single edge.
+
+948
+00:38:38,469 --> 00:38:39,926
+I pick the first one.
+
+949
+00:38:39,927 --> 00:38:41,760
+And in answer to the
+question, in this case,
+
+950
+00:38:41,760 --> 00:38:43,968
+it would be the order in
+which I started in the list.
+
+951
+00:38:43,967 --> 00:38:45,569
+I just pick that one up.
+
+952
+00:38:45,570 --> 00:38:49,350
+I then say, let's make sure
+it's not already in the path
+
+953
+00:38:49,349 --> 00:38:51,480
+because I want to avoid loops.
+
+954
+00:38:51,480 --> 00:38:53,610
+And assuming it
+isn't, and assuming
+
+955
+00:38:53,610 --> 00:38:57,360
+I don't yet have a solution,
+or the best solution I have
+
+956
+00:38:57,360 --> 00:39:00,700
+is smaller than what
+I've done so far,
+
+957
+00:39:00,699 --> 00:39:05,309
+oh, cool, just do
+the same search.
+
+958
+00:39:05,309 --> 00:39:07,179
+So notice, there's
+that nice recursion.
+
+959
+00:39:07,179 --> 00:39:08,289
+Right?
+
+960
+00:39:08,289 --> 00:39:09,429
+I'm going to explore.
+
+961
+00:39:09,429 --> 00:39:12,725
+I just picked the first
+option out of that first node.
+
+962
+00:39:12,726 --> 00:39:14,349
+And the first thing
+I do is try and see
+
+963
+00:39:14,349 --> 00:39:17,059
+if there's a path from that
+node using the same thing.
+
+964
+00:39:17,059 --> 00:39:18,869
+So it's literally like
+I picked this one.
+
+965
+00:39:18,869 --> 00:39:20,410
+I don't care about
+those other edges.
+
+966
+00:39:20,409 --> 00:39:24,599
+I'm going to try and
+take this search down.
+
+967
+00:39:24,599 --> 00:39:26,130
+When it comes back
+with a solution,
+
+968
+00:39:26,130 --> 00:39:27,809
+as long as there
+is a solution, I'll
+
+969
+00:39:27,809 --> 00:39:29,429
+say that's my best
+solution so far.
+
+970
+00:39:29,429 --> 00:39:33,556
+
+
+971
+00:39:33,556 --> 00:39:34,639
+And then I go back around.
+
+972
+00:39:34,639 --> 00:39:36,409
+Now this last little
+piece here is just,
+
+973
+00:39:36,409 --> 00:39:38,335
+if in fact the node's
+already in the path,
+
+974
+00:39:38,335 --> 00:39:39,710
+I'm just going to
+print something
+
+975
+00:39:39,710 --> 00:39:41,418
+that says don't keep
+doing it because you
+
+976
+00:39:41,418 --> 00:39:43,400
+don't need to keep going on.
+
+977
+00:39:43,400 --> 00:39:46,280
+And I'm going to do that loop,
+taking all the paths down
+
+978
+00:39:46,280 --> 00:39:48,010
+until it comes back.
+
+979
+00:39:48,010 --> 00:39:51,860
+And only at that stage do
+I go to the next portion
+
+980
+00:39:51,860 --> 00:39:54,780
+around this loop.
+
+981
+00:39:54,780 --> 00:39:56,820
+The piece down here
+just sets this up,
+
+982
+00:39:56,820 --> 00:40:01,800
+calling it with an initial
+empty list for path
+
+983
+00:40:01,800 --> 00:40:03,130
+and no solution for shortest.
+
+984
+00:40:03,130 --> 00:40:06,059
+So it's just a nice way of
+putting a wrap around it that
+
+985
+00:40:06,059 --> 00:40:09,429
+gets things started up.
+
+986
+00:40:09,429 --> 00:40:11,351
+This may look a little funky.
+
+987
+00:40:11,351 --> 00:40:13,699
+It may look a
+little bit twisted.
+
+988
+00:40:13,699 --> 00:40:17,301
+So let's see if it actually
+does what we'd expect it to.
+
+989
+00:40:17,302 --> 00:40:19,760
+And to do that I'm just going
+to be a little test function.
+
+990
+00:40:19,760 --> 00:40:21,551
+I'm going to build that
+city graph I'm just
+
+991
+00:40:21,550 --> 00:40:22,927
+going to call "Shortest Path."
+
+992
+00:40:22,927 --> 00:40:24,010
+I'm going to print it out.
+
+993
+00:40:24,010 --> 00:40:25,468
+And I'd like to
+see, is there a way
+
+994
+00:40:25,467 --> 00:40:28,159
+to get from Boston to Chicago?
+
+995
+00:40:28,159 --> 00:40:33,349
+So let's go back over to
+my Python and try that out.
+
+996
+00:40:33,349 --> 00:40:36,099
+And I've got a call for that.
+
+997
+00:40:36,099 --> 00:40:37,469
+Oh, and it prints out.
+
+998
+00:40:37,469 --> 00:40:39,813
+I start off-- oh, so I
+did it the wrong way.
+
+999
+00:40:39,813 --> 00:40:40,980
+It's from Chicago to Boston.
+
+1000
+00:40:40,980 --> 00:40:44,869
+Yes, Chicago to Denver
+to Phoenix, from Denver
+
+1001
+00:40:44,869 --> 00:40:48,529
+to New York, it comes back and
+says, I've already visited.
+
+1002
+00:40:48,530 --> 00:40:52,255
+Basically concludes I can't
+get from Chicago to Boston.
+
+1003
+00:40:52,255 --> 00:40:54,012
+It's just printing
+out each stage.
+
+1004
+00:40:54,012 --> 00:40:55,720
+Let's actually look
+at that a little more
+
+1005
+00:40:55,719 --> 00:40:57,189
+carefully to see
+how it got there.
+
+1006
+00:40:57,190 --> 00:41:01,220
+
+
+1007
+00:41:01,219 --> 00:41:03,109
+So there's my example.
+
+1008
+00:41:03,110 --> 00:41:04,630
+There is the adjacency list.
+
+1009
+00:41:04,630 --> 00:41:06,250
+And here's what happens.
+
+1010
+00:41:06,250 --> 00:41:08,179
+I start off in Chicago.
+
+1011
+00:41:08,179 --> 00:41:10,149
+So that's my first node.
+
+1012
+00:41:10,150 --> 00:41:14,139
+From Chicago, the first
+edge goes to Denver.
+
+1013
+00:41:14,139 --> 00:41:15,769
+Denver is not what
+I'm looking for.
+
+1014
+00:41:15,769 --> 00:41:18,349
+But since I am in
+Denver, recursively I'm
+
+1015
+00:41:18,349 --> 00:41:19,400
+going to call it again.
+
+1016
+00:41:19,400 --> 00:41:23,220
+So the first edge out
+of there is to Phoenix.
+
+1017
+00:41:23,219 --> 00:41:25,219
+Again, sorry if you're
+from Arizona and Phoenix.
+
+1018
+00:41:25,219 --> 00:41:26,809
+There's nowhere to go.
+
+1019
+00:41:26,809 --> 00:41:28,869
+So I'm going to
+have to backtrack.
+
+1020
+00:41:28,869 --> 00:41:31,594
+And that will take
+me back up to Denver.
+
+1021
+00:41:31,594 --> 00:41:32,760
+And I look at the next edge.
+
+1022
+00:41:32,760 --> 00:41:35,080
+It takes me to New York.
+
+1023
+00:41:35,079 --> 00:41:37,067
+From New York I'd
+like to go to Chicago.
+
+1024
+00:41:37,067 --> 00:41:38,650
+But oh, that's nice
+because, remember,
+
+1025
+00:41:38,650 --> 00:41:41,619
+that first check it says, is
+Chicago already in the path?
+
+1026
+00:41:41,619 --> 00:41:42,609
+It is.
+
+1027
+00:41:42,610 --> 00:41:45,519
+I don't want to loop,
+because otherwise I'm
+
+1028
+00:41:45,519 --> 00:41:48,329
+simply going to go around
+and around and around here.
+
+1029
+00:41:48,329 --> 00:41:50,170
+And it may be good for
+frequent flyer miles,
+
+1030
+00:41:50,170 --> 00:41:53,630
+but it's not a great way to get
+to where you're trying to go.
+
+1031
+00:41:53,630 --> 00:41:55,584
+So I break out of it.
+
+1032
+00:41:55,583 --> 00:41:57,000
+And now, what else
+do I have left?
+
+1033
+00:41:57,000 --> 00:41:58,500
+Chicago to Denver I've explored.
+
+1034
+00:41:58,500 --> 00:41:59,849
+I'll look at Chicago to Phoenix.
+
+1035
+00:41:59,849 --> 00:42:01,307
+From Phoenix there's
+nowhere to go.
+
+1036
+00:42:01,307 --> 00:42:02,570
+I go back up to Chicago.
+
+1037
+00:42:02,570 --> 00:42:04,200
+There are no more paths.
+
+1038
+00:42:04,199 --> 00:42:06,960
+I'm done.
+
+1039
+00:42:06,960 --> 00:42:08,079
+OK.
+
+1040
+00:42:08,079 --> 00:42:09,539
+Now, it turns out
+you can actually
+
+1041
+00:42:09,539 --> 00:42:10,630
+get somewhere in this graph.
+
+1042
+00:42:10,630 --> 00:42:11,849
+So here's just another example.
+
+1043
+00:42:11,849 --> 00:42:13,266
+I'm simply going
+to show you, if I
+
+1044
+00:42:13,266 --> 00:42:15,650
+want to go from
+Boston to Phoenix,
+
+1045
+00:42:15,650 --> 00:42:17,030
+notice the set of stages.
+
+1046
+00:42:17,030 --> 00:42:18,920
+And you can see, notice
+how at each stage
+
+1047
+00:42:18,920 --> 00:42:20,090
+it tends to be growing.
+
+1048
+00:42:20,090 --> 00:42:21,088
+That's that depth first.
+
+1049
+00:42:21,088 --> 00:42:22,940
+I'm exploring the edges.
+
+1050
+00:42:22,940 --> 00:42:25,429
+I find a path.
+
+1051
+00:42:25,429 --> 00:42:26,789
+That's great.
+
+1052
+00:42:26,789 --> 00:42:29,139
+But is it the shortest path?
+
+1053
+00:42:29,139 --> 00:42:30,219
+I don't know.
+
+1054
+00:42:30,219 --> 00:42:33,189
+So having found that path, I
+try and take the next branch,
+
+1055
+00:42:33,190 --> 00:42:35,200
+which finds a loop.
+
+1056
+00:42:35,199 --> 00:42:39,859
+And I keep moving through
+this, finding paths
+
+1057
+00:42:39,860 --> 00:42:42,079
+until I look at all
+the possible paths
+
+1058
+00:42:42,079 --> 00:42:45,692
+and I actually return
+the shortest path.
+
+1059
+00:42:45,692 --> 00:42:47,150
+You can try running
+the code on it.
+
+1060
+00:42:47,150 --> 00:42:49,130
+But what I want you to
+see is, again, this idea
+
+1061
+00:42:49,130 --> 00:42:50,599
+that I can explore it.
+
+1062
+00:42:50,599 --> 00:42:53,420
+But in fact, I'm going
+to have to explore it
+
+1063
+00:42:53,420 --> 00:42:56,309
+in a particular order.
+
+1064
+00:42:56,309 --> 00:42:57,809
+But there is depth first search.
+
+1065
+00:42:57,809 --> 00:43:01,429
+It will find a solution for me.
+
+1066
+00:43:01,429 --> 00:43:05,359
+Alternative, it's what's
+called breadth first search.
+
+1067
+00:43:05,360 --> 00:43:06,809
+Sounds almost the same.
+
+1068
+00:43:06,809 --> 00:43:08,809
+Again, I'm going to start
+off with initial load.
+
+1069
+00:43:08,809 --> 00:43:10,433
+I'm going to look at
+all the edges that
+
+1070
+00:43:10,434 --> 00:43:11,810
+leave that node, in some order.
+
+1071
+00:43:11,809 --> 00:43:14,210
+I'm going to follow the
+first edge as before
+
+1072
+00:43:14,210 --> 00:43:16,829
+and see if I'm at
+the right place.
+
+1073
+00:43:16,829 --> 00:43:20,509
+If I'm not, I'm going
+to follow the next edge
+
+1074
+00:43:20,510 --> 00:43:22,730
+and do the same thing.
+
+1075
+00:43:22,730 --> 00:43:24,699
+So whereas this went
+down through the tree
+
+1076
+00:43:24,699 --> 00:43:27,439
+as deeply as it could of
+the graph, in breadth first,
+
+1077
+00:43:27,440 --> 00:43:31,030
+I'm going to start off
+taking that edge as before.
+
+1078
+00:43:31,030 --> 00:43:32,172
+I'm not done.
+
+1079
+00:43:32,172 --> 00:43:33,880
+I'm going to keep
+track of that in case I
+
+1080
+00:43:33,880 --> 00:43:35,005
+want to explore more of it.
+
+1081
+00:43:35,005 --> 00:43:38,410
+But I'm going to go back over
+here and follow that edge.
+
+1082
+00:43:38,409 --> 00:43:39,329
+I'm not done.
+
+1083
+00:43:39,329 --> 00:43:42,039
+Again, I'll keep track of that,
+but I'll come back up here
+
+1084
+00:43:42,039 --> 00:43:43,344
+and explore that one.
+
+1085
+00:43:43,344 --> 00:43:48,489
+And oh, cool, I found a
+solution in three steps.
+
+1086
+00:43:48,489 --> 00:43:50,889
+I've reached the destination.
+
+1087
+00:43:50,889 --> 00:43:52,659
+And notice, because
+I'm exploring
+
+1088
+00:43:52,659 --> 00:43:55,989
+all the paths of
+length one before I
+
+1089
+00:43:55,989 --> 00:43:57,789
+get to paths of length two.
+
+1090
+00:43:57,789 --> 00:44:01,449
+Once I find a solution,
+I can stop because I
+
+1091
+00:44:01,449 --> 00:44:03,279
+know it's the shortest path.
+
+1092
+00:44:03,280 --> 00:44:05,200
+Any other path through
+here would be longer
+
+1093
+00:44:05,199 --> 00:44:07,719
+than that particular solution.
+
+1094
+00:44:07,719 --> 00:44:10,809
+So the loop here is
+a little different.
+
+1095
+00:44:10,809 --> 00:44:13,199
+I'm looking over all
+the paths of length one.
+
+1096
+00:44:13,199 --> 00:44:14,939
+There are all the
+paths of length two.
+
+1097
+00:44:14,940 --> 00:44:16,648
+And the one thing I'm
+going to have to do
+
+1098
+00:44:16,648 --> 00:44:19,291
+is I'm going to have to keep
+track of the remaining options
+
+1099
+00:44:19,291 --> 00:44:21,000
+here in case I have
+to come down to them.
+
+1100
+00:44:21,000 --> 00:44:22,958
+Because if I didn't find
+it at the first level,
+
+1101
+00:44:22,958 --> 00:44:27,617
+then I come down here and
+look at things of length two.
+
+1102
+00:44:27,617 --> 00:44:28,572
+OK?
+
+1103
+00:44:28,572 --> 00:44:31,610
+So let's build that code.
+
+1104
+00:44:31,610 --> 00:44:36,442
+Breadth first search, or
+BFS, again, a graph, a start,
+
+1105
+00:44:36,442 --> 00:44:38,900
+and an end node, something that
+would just print things out
+
+1106
+00:44:38,900 --> 00:44:41,539
+as I go along.
+
+1107
+00:44:41,539 --> 00:44:45,719
+My initial path is
+just the start point.
+
+1108
+00:44:45,719 --> 00:44:48,299
+But now I've got to keep track
+of what are the paths that I
+
+1109
+00:44:48,300 --> 00:44:50,670
+have yet to explore?
+
+1110
+00:44:50,670 --> 00:44:52,170
+And so for that,
+I'm going to create
+
+1111
+00:44:52,170 --> 00:44:53,700
+something called a queue.
+
+1112
+00:44:53,699 --> 00:44:57,569
+And a queue is going
+to be a list of paths.
+
+1113
+00:44:57,570 --> 00:44:59,280
+Remember, a path
+is a list of nodes.
+
+1114
+00:44:59,280 --> 00:45:00,960
+A queue is going to
+be a list of paths.
+
+1115
+00:45:00,960 --> 00:45:05,579
+So the initial queue is
+just where I've started.
+
+1116
+00:45:05,579 --> 00:45:08,150
+And then, as long as I've got
+something still to explore
+
+1117
+00:45:08,150 --> 00:45:10,610
+and I haven't found
+a solution, I'm
+
+1118
+00:45:10,610 --> 00:45:13,760
+going to pop off the
+queue the oldest element,
+
+1119
+00:45:13,760 --> 00:45:15,640
+the thing at the beginning.
+
+1120
+00:45:15,639 --> 00:45:16,789
+That's my temporary path.
+
+1121
+00:45:16,789 --> 00:45:18,920
+I'll print out some
+information about it.
+
+1122
+00:45:18,920 --> 00:45:21,320
+And then I'll grab the
+last element of that path.
+
+1123
+00:45:21,320 --> 00:45:24,160
+That's the last
+point in that path.
+
+1124
+00:45:24,159 --> 00:45:26,170
+And I'll now explore.
+
+1125
+00:45:26,170 --> 00:45:27,519
+Is it the thing I'm looking for?
+
+1126
+00:45:27,519 --> 00:45:28,730
+In which case I'm done.
+
+1127
+00:45:28,730 --> 00:45:30,369
+I'll return the path.
+
+1128
+00:45:30,369 --> 00:45:35,469
+Otherwise, for each node that
+you can reach from that point,
+
+1129
+00:45:35,469 --> 00:45:39,409
+create a new path by adding
+that on the end of this path
+
+1130
+00:45:39,409 --> 00:45:43,061
+and add it into the queue
+at the end of the queue.
+
+1131
+00:45:43,061 --> 00:45:44,519
+So I'm going to
+keep looping around
+
+1132
+00:45:44,519 --> 00:45:47,469
+here until I either
+find a solution here,
+
+1133
+00:45:47,469 --> 00:45:48,889
+which I'll return.
+
+1134
+00:45:48,889 --> 00:45:52,219
+And if I get through all of
+it, I'm going to return none.
+
+1135
+00:45:52,219 --> 00:45:54,709
+And right there, there
+is that nice thing where
+
+1136
+00:45:54,710 --> 00:45:57,530
+once I find a solution, I
+know it's the shortest thing,
+
+1137
+00:45:57,530 --> 00:45:59,820
+I can stop.
+
+1138
+00:45:59,820 --> 00:46:03,245
+OK, let's look at
+an example of this.
+
+1139
+00:46:03,244 --> 00:46:05,119
+So I'm going to go back
+over to Python, where
+
+1140
+00:46:05,119 --> 00:46:06,319
+I've got a version of this.
+
+1141
+00:46:06,320 --> 00:46:12,552
+I'm going to comment that out.
+
+1142
+00:46:12,552 --> 00:46:14,450
+And down here in
+breadth first search,
+
+1143
+00:46:14,449 --> 00:46:16,201
+I've actually added a
+little piece of code
+
+1144
+00:46:16,201 --> 00:46:17,824
+that I don't have in
+the handout that's
+
+1145
+00:46:17,824 --> 00:46:19,939
+going to print out the
+queue as well so we can see
+
+1146
+00:46:19,940 --> 00:46:22,990
+what happens when we call this.
+
+1147
+00:46:22,989 --> 00:46:26,329
+So let's take a look at it.
+
+1148
+00:46:26,329 --> 00:46:28,329
+My initial call, there's
+one thing in the queue.
+
+1149
+00:46:28,329 --> 00:46:29,199
+It's just Boston.
+
+1150
+00:46:29,199 --> 00:46:31,359
+I started in Boston.
+
+1151
+00:46:31,360 --> 00:46:35,530
+So the current path
+is to start in Boston.
+
+1152
+00:46:35,530 --> 00:46:37,660
+I take that element
+off the queue,
+
+1153
+00:46:37,659 --> 00:46:40,359
+and I say what are the things
+I can reach from Boston?
+
+1154
+00:46:40,360 --> 00:46:42,730
+Oh, nice, I put two things in.
+
+1155
+00:46:42,730 --> 00:46:44,230
+I can get from
+Boston to Providence.
+
+1156
+00:46:44,230 --> 00:46:46,780
+I can get from
+Boston to New York.
+
+1157
+00:46:46,780 --> 00:46:48,280
+The top thing is
+gone off the queue.
+
+1158
+00:46:48,280 --> 00:46:48,820
+I popped it.
+
+1159
+00:46:48,820 --> 00:46:50,193
+I've replaced it
+with two things.
+
+1160
+00:46:50,193 --> 00:46:53,199
+Or I take this, and
+say, OK, from Boston
+
+1161
+00:46:53,199 --> 00:46:56,259
+to Providence, where can
+I get from Providence?
+
+1162
+00:46:56,260 --> 00:46:57,500
+Oh, I can get to New York.
+
+1163
+00:46:57,500 --> 00:46:59,679
+So I put that in the queue.
+
+1164
+00:46:59,679 --> 00:47:01,089
+This has gone off.
+
+1165
+00:47:01,090 --> 00:47:02,692
+That one is still there.
+
+1166
+00:47:02,692 --> 00:47:04,150
+And I do that
+because I haven't yet
+
+1167
+00:47:04,150 --> 00:47:06,398
+reached the thing I'm looking
+for, which was, I think,
+
+1168
+00:47:06,398 --> 00:47:08,290
+Phoenix I was trying to get to.
+
+1169
+00:47:08,291 --> 00:47:09,789
+And you could see
+at each stage, I'm
+
+1170
+00:47:09,789 --> 00:47:11,590
+taking the top
+thing off the queue,
+
+1171
+00:47:11,590 --> 00:47:14,170
+and asking for all the
+things that I can get to,
+
+1172
+00:47:14,170 --> 00:47:16,369
+and adding them to it.
+
+1173
+00:47:16,369 --> 00:47:19,420
+And notice, in some cases,
+it may be more than one.
+
+1174
+00:47:19,420 --> 00:47:22,269
+For example, which
+one do I want here?
+
+1175
+00:47:22,269 --> 00:47:25,420
+Right here, if I take
+Boston, New York to Chicago,
+
+1176
+00:47:25,420 --> 00:47:27,470
+from Chicago I
+can get to Denver.
+
+1177
+00:47:27,469 --> 00:47:28,629
+So there's one new path.
+
+1178
+00:47:28,630 --> 00:47:30,490
+I can also get to Phoenix.
+
+1179
+00:47:30,489 --> 00:47:33,029
+There's a second new path.
+
+1180
+00:47:33,030 --> 00:47:36,500
+Also notice how they
+are only growing slowly
+
+1181
+00:47:36,500 --> 00:47:38,260
+as I build them out.
+
+1182
+00:47:38,260 --> 00:47:41,350
+And in fact, if we go back,
+we can see that nicely
+
+1183
+00:47:41,349 --> 00:47:44,409
+by looking at what happens if
+we were to actually trace this
+
+1184
+00:47:44,409 --> 00:47:46,239
+along.
+
+1185
+00:47:46,239 --> 00:47:49,099
+So Boston to Phoenix,
+I start at Boston.
+
+1186
+00:47:49,099 --> 00:47:51,839
+Then I look at
+that and then that.
+
+1187
+00:47:51,840 --> 00:47:54,390
+Those are all the
+paths of length one.
+
+1188
+00:47:54,389 --> 00:47:56,879
+Having exhausted
+those, oh nice, I'm
+
+1189
+00:47:56,880 --> 00:48:01,970
+looking at paths of length two,
+and then paths of length three,
+
+1190
+00:48:01,969 --> 00:48:03,899
+and then paths the
+length four, until I
+
+1191
+00:48:03,900 --> 00:48:07,550
+found the one that I wanted.
+
+1192
+00:48:07,550 --> 00:48:10,660
+And here's one other
+way of looking at it.
+
+1193
+00:48:10,659 --> 00:48:15,549
+Breadth first says, I'll look
+at each path of length one.
+
+1194
+00:48:15,550 --> 00:48:18,460
+And then, oh yes,
+I avoid the loop.
+
+1195
+00:48:18,460 --> 00:48:21,059
+I look at each
+path of length two,
+
+1196
+00:48:21,059 --> 00:48:24,400
+then paths of length
+three, until I actually
+
+1197
+00:48:24,400 --> 00:48:27,700
+find the solution.
+
+1198
+00:48:27,699 --> 00:48:30,730
+Subtle difference,
+different performance.
+
+1199
+00:48:30,730 --> 00:48:32,889
+Depth first, I'm
+always following
+
+1200
+00:48:32,889 --> 00:48:36,909
+the next available edge until
+I get stuck and I backtrack.
+
+1201
+00:48:36,909 --> 00:48:40,750
+Breadth first, I'm always
+exploring the next equal length
+
+1202
+00:48:40,750 --> 00:48:41,889
+option.
+
+1203
+00:48:41,889 --> 00:48:43,960
+And I just have to keep
+track in that queue
+
+1204
+00:48:43,960 --> 00:48:47,050
+of the things I have left to
+do as I walk my way through.
+
+1205
+00:48:47,050 --> 00:48:49,610
+
+
+1206
+00:48:49,610 --> 00:48:53,539
+What about weighted
+shortest path?
+
+1207
+00:48:53,539 --> 00:48:55,219
+Well, as the
+mathematicians say, we
+
+1208
+00:48:55,219 --> 00:48:58,379
+leave this is an easy
+exercise for the reader.
+
+1209
+00:48:58,380 --> 00:48:59,630
+It's a little unfair.
+
+1210
+00:48:59,630 --> 00:49:02,990
+The idea would be, imagine on
+my edges, it's not just a step,
+
+1211
+00:49:02,989 --> 00:49:04,519
+but I have a weight.
+
+1212
+00:49:04,519 --> 00:49:06,650
+Flying to L.A. Is a
+little longer than flying
+
+1213
+00:49:06,650 --> 00:49:08,510
+from Boston to New York.
+
+1214
+00:49:08,510 --> 00:49:11,330
+What I'd like to do is do the
+same kind of optimization,
+
+1215
+00:49:11,329 --> 00:49:14,329
+but now just minimizing the sum
+of the weights on the edges,
+
+1216
+00:49:14,329 --> 00:49:17,420
+not the number of edges.
+
+1217
+00:49:17,420 --> 00:49:19,159
+As you might guess,
+depth first search
+
+1218
+00:49:19,159 --> 00:49:21,679
+is easily modified to do this.
+
+1219
+00:49:21,679 --> 00:49:23,419
+The cost now would
+simply be what's
+
+1220
+00:49:23,420 --> 00:49:24,500
+the sum of those weights?
+
+1221
+00:49:24,500 --> 00:49:26,750
+And again, I would have to
+search all possible options
+
+1222
+00:49:26,750 --> 00:49:29,150
+till I find a solution.
+
+1223
+00:49:29,150 --> 00:49:30,710
+Unfortunately,
+breadth first search
+
+1224
+00:49:30,710 --> 00:49:35,900
+can't easily be modified because
+the short weighted path may
+
+1225
+00:49:35,900 --> 00:49:37,970
+have many more than the
+minimum number of loops.
+
+1226
+00:49:37,969 --> 00:49:39,677
+And I'd have to think
+about how to adjust
+
+1227
+00:49:39,677 --> 00:49:43,099
+it to make that happen.
+
+1228
+00:49:43,099 --> 00:49:45,980
+But to pull it together,
+here's a new model--
+
+1229
+00:49:45,980 --> 00:49:47,440
+graphs.
+
+1230
+00:49:47,440 --> 00:49:49,030
+Great way of
+representing networks,
+
+1231
+00:49:49,030 --> 00:49:52,790
+collections of entities with
+relationships between them.
+
+1232
+00:49:52,789 --> 00:49:55,539
+There are lots of nice
+graph optimization problems.
+
+1233
+00:49:55,539 --> 00:49:58,309
+And we've just shown you
+two examples of that.
+
+1234
+00:49:58,309 --> 00:50:00,909
+But we'll come back to more
+examples as we go along.
+
+1235
+00:50:00,909 --> 00:50:03,420
+And with that, we'll
+see you next time.
+
+1236
+00:50:03,420 --> 00:50:10,836
+
+
