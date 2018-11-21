@@ -1,0 +1,709 @@
+WEBVTT
+
+1
+00:00:01.873 --> 00:00:05.670
+MapReduce, Simple Programming for
+Big Results.
+
+2
+00:00:21.723 --> 00:00:26.650
+MapReduce is a programming model for
+the Hadoop ecosystem.
+
+3
+00:00:26.650 --> 00:00:29.020
+It relies on YARN to schedule and
+
+4
+00:00:29.020 --> 00:00:33.430
+execute parallel processing over
+the distributed file blocks in HDFS.
+
+5
+00:00:34.600 --> 00:00:39.292
+There are several tools that use the
+MapReduce model to provide a higher level
+
+6
+00:00:39.292 --> 00:00:41.829
+interface to other programming models.
+
+7
+00:00:41.829 --> 00:00:46.747
+Hive has a SQL-like interface that
+adds capabilities that help with
+
+8
+00:00:46.747 --> 00:00:49.220
+relational data modeling.
+
+9
+00:00:49.220 --> 00:00:52.460
+And Pig is a high level data flow language
+
+10
+00:00:52.460 --> 00:00:55.470
+that adds capabilities that
+help with process map modeling.
+
+11
+00:00:57.070 --> 00:01:02.200
+Traditional parallel programming requires
+expertise on a number of computing and
+
+12
+00:01:02.200 --> 00:01:04.160
+systems concepts.
+
+13
+00:01:04.160 --> 00:01:09.170
+For example, synchronization
+mechanisms like locks, semaphores,
+
+14
+00:01:09.170 --> 00:01:11.460
+and monitors are essential.
+
+15
+00:01:11.460 --> 00:01:15.450
+And incorrectly using them can
+either crash your program, or
+
+16
+00:01:15.450 --> 00:01:17.460
+severely impact performance.
+
+17
+00:01:19.080 --> 00:01:21.600
+This high learning curve
+makes it difficult.
+
+18
+00:01:22.930 --> 00:01:27.465
+It is also error prone,
+since your code can run on hundreds, or
+
+19
+00:01:27.465 --> 00:01:30.813
+thousands of nodes,
+each having many cores.
+
+20
+00:01:30.813 --> 00:01:33.685
+And any problem related to
+these parallel processes,
+
+21
+00:01:33.685 --> 00:01:36.130
+needs to be handled by
+your parallel program.
+
+22
+00:01:37.510 --> 00:01:43.200
+The MapReduce programming model greatly
+simplifies running code in parallel
+
+23
+00:01:43.200 --> 00:01:46.250
+since you don't have to deal
+with any of these issues.
+
+24
+00:01:46.250 --> 00:01:52.450
+Instead, you only need to create and
+map and reduce tasks, and you don't
+
+25
+00:01:52.450 --> 00:01:56.670
+have to worry about multiple threads,
+synchronization, or concurrency issues.
+
+26
+00:01:58.900 --> 00:02:01.110
+So, what is a map and reduce?
+
+27
+00:02:02.760 --> 00:02:07.522
+Map and reduce are two concepts
+based on functional programming
+
+28
+00:02:07.522 --> 00:02:12.160
+where the output the function
+is based solely on the input.
+
+29
+00:02:14.010 --> 00:02:20.060
+Just like in a mathematical function,
+f (x) = y, y depends on x.
+
+30
+00:02:21.480 --> 00:02:25.360
+You provide a function, or
+operation for a map, and reduce.
+
+31
+00:02:26.890 --> 00:02:30.570
+And the runtime executes it over the data.
+
+32
+00:02:30.570 --> 00:02:35.890
+For map, the operation is
+applied on each data element.
+
+33
+00:02:35.890 --> 00:02:40.110
+And in reduce, the operation
+summarizes elements in some manner.
+
+34
+00:02:41.510 --> 00:02:47.180
+An example, using map and
+reduce will make this concepts more clear.
+
+35
+00:02:49.230 --> 00:02:52.180
+Hello word is a traditional
+first program you code
+
+36
+00:02:52.180 --> 00:02:54.310
+when you start to learning
+programming languages.
+
+37
+00:02:55.730 --> 00:03:01.661
+The first program to learn, or hello
+word of map reduce, is often WordCount.
+
+38
+00:03:03.735 --> 00:03:08.128
+WordCount reads one or
+more text files, and
+
+39
+00:03:08.128 --> 00:03:14.313
+counts the number of occurrences
+of each word in these files.
+
+40
+00:03:14.313 --> 00:03:17.654
+The output will be a text
+file with a list of words and
+
+41
+00:03:17.654 --> 00:03:20.940
+their occurrence frequencies
+in the input data.
+
+42
+00:03:22.320 --> 00:03:25.560
+Let's examine each step of WordCount.
+
+43
+00:03:26.820 --> 00:03:31.790
+For simplification we are assuming
+we have one big file as an input.
+
+44
+00:03:33.200 --> 00:03:39.040
+Before WordCount runs,
+the input file is stored in HDFS.
+
+45
+00:03:39.040 --> 00:03:40.880
+As you know now,
+
+46
+00:03:40.880 --> 00:03:45.200
+HDFS partitions the blocks across
+multiple nodes in the cluster.
+
+47
+00:03:46.470 --> 00:03:53.503
+In this case, four partitions labeled,
+A, B, C, and D.
+
+48
+00:03:53.503 --> 00:03:58.550
+The first step in MapReduce is to
+run a map operation on each node.
+
+49
+00:04:00.100 --> 00:04:05.190
+As the input partitions are read
+from HTFS, map is called for
+
+50
+00:04:05.190 --> 00:04:06.760
+each line in the input.
+
+51
+00:04:08.020 --> 00:04:12.330
+Let's look at the first lines
+of the input partitions, A and
+
+52
+00:04:12.330 --> 00:04:14.810
+B, and start counting the words.
+
+53
+00:04:15.920 --> 00:04:21.162
+The first line,
+in the partition on node A,
+
+54
+00:04:21.162 --> 00:04:26.133
+says, My apple is red and my rose is blue.
+
+55
+00:04:26.133 --> 00:04:32.990
+Similarly, the first line, on partition B,
+says, You are the apple of my eye.
+
+56
+00:04:34.370 --> 00:04:38.170
+Let's now see what happens in
+the first map node for partition A.
+
+57
+00:04:40.138 --> 00:04:42.910
+Map creates a key value for
+
+58
+00:04:42.910 --> 00:04:49.510
+each word on the line containing
+the word as the key, and 1 as the value.
+
+59
+00:04:49.510 --> 00:04:55.470
+In this example, the word apple is
+read from the line in partition A.
+
+60
+00:04:56.550 --> 00:05:01.447
+Map produces a key value of (apple, 1).
+
+61
+00:05:01.447 --> 00:05:08.273
+Similarly, the word my is seen
+on the first line of A twice.
+
+62
+00:05:08.273 --> 00:05:14.759
+So, the key values of (my,
+1), are created.
+
+63
+00:05:14.759 --> 00:05:20.040
+Note that map goes to each node
+containing a data block for
+
+64
+00:05:20.040 --> 00:05:25.050
+the file,
+instead of the data moving to map.
+
+65
+00:05:25.050 --> 00:05:27.410
+This is moving computation to data.
+
+66
+00:05:28.790 --> 00:05:33.863
+Let's now see what the same map
+operation generates for partition B.
+
+67
+00:05:33.863 --> 00:05:37.221
+Since each word only
+happens to occur once,
+
+68
+00:05:37.221 --> 00:05:42.770
+a list of all the words with one
+key-value pairing each gets generated.
+
+69
+00:05:43.950 --> 00:05:48.170
+Please take a moment to
+observe the outputs of map and
+
+70
+00:05:48.170 --> 00:05:52.480
+each key-value pair associated to a word.
+
+71
+00:06:02.003 --> 00:06:09.570
+Next, all the key-values that were output
+from map are sorted based on their key.
+
+72
+00:06:09.570 --> 00:06:16.810
+And the key values, with the same word,
+are moved, or shuffled, to the same node.
+
+73
+00:06:17.980 --> 00:06:23.850
+To simplify this figure, each node only
+has a single word, in orange boxes.
+
+74
+00:06:24.970 --> 00:06:29.010
+But in general,
+a node will have many different words.
+
+75
+00:06:29.010 --> 00:06:32.890
+Just like our example from the two
+lines in A and B partitions.
+
+76
+00:06:33.960 --> 00:06:39.480
+Here we see that, you and apple,
+are assigned to the first node.
+
+77
+00:06:39.480 --> 00:06:43.543
+The word is, to the second node.
+
+78
+00:06:43.543 --> 00:06:47.710
+And the words, rose and red, to the third.
+
+79
+00:06:48.900 --> 00:06:54.960
+Although, for simplicity, we drew four
+map nodes and three shuffle nodes.
+
+80
+00:06:54.960 --> 00:06:58.760
+The number of nodes can be extended
+as much as the application demands.
+
+81
+00:07:01.903 --> 00:07:07.083
+Next, the reduce operation
+executes on these nodes to
+
+82
+00:07:07.083 --> 00:07:12.045
+add values for
+key-value pairs with the same keys.
+
+83
+00:07:12.045 --> 00:07:16.875
+For example, (apple, 1), and
+
+84
+00:07:16.875 --> 00:07:23.959
+another (apple, 1), becomes (apple, 2).
+
+85
+00:07:23.959 --> 00:07:28.161
+The result of reduce is
+a single key pair for
+
+86
+00:07:28.161 --> 00:07:32.263
+each word that was read in the input file.
+
+87
+00:07:32.263 --> 00:07:36.160
+The key is the word, and
+the value is the number of occurrences.
+
+88
+00:07:38.790 --> 00:07:42.650
+If we look back at our WordCount example,
+
+89
+00:07:42.650 --> 00:07:45.640
+we see that there were
+three distinct steps.
+
+90
+00:07:45.640 --> 00:07:52.818
+Namely, the map step, the shuffle and
+sort step, and the reduce step.
+
+91
+00:07:52.818 --> 00:07:58.840
+Although, the WordCount
+example is pretty simple,
+
+92
+00:07:58.840 --> 00:08:03.320
+it represents a large number of
+applications to which these three steps
+
+93
+00:08:03.320 --> 00:08:07.000
+can be applied in order to achieve
+data parallel scalability.
+
+94
+00:08:08.540 --> 00:08:14.213
+For example, now that you have
+seen the WordCount application,
+
+95
+00:08:14.213 --> 00:08:19.063
+consider changing the WordCount
+algorithm to index all
+
+96
+00:08:19.063 --> 00:08:22.170
+the URLs by words after a web crawl.
+
+97
+00:08:23.320 --> 00:08:29.225
+This means, instead of pointing to
+a number, the keys would refer to URLs.
+
+98
+00:08:31.100 --> 00:08:36.350
+After the map, with this new function,
+which by the way is called a user
+
+99
+00:08:36.350 --> 00:08:41.760
+defined function, the output of
+shuffle and sort would look like this.
+
+100
+00:08:46.333 --> 00:08:53.450
+Now, when we reduce the URLs, all the URLs
+that mention Apple would look like this.
+
+101
+00:08:55.943 --> 00:09:01.010
+This is, in fact, one of the ways
+a search engine like Google works.
+
+102
+00:09:02.900 --> 00:09:08.150
+So now, if somebody came to the interface
+built for this application,
+
+103
+00:09:08.150 --> 00:09:12.078
+to search for the word apple,
+and entered apple,
+
+104
+00:09:12.078 --> 00:09:17.490
+it would be easy to get all
+the URLs as the word itself.
+
+105
+00:09:18.840 --> 00:09:22.943
+No wonder the first MapReduce
+paper was produced by Google.
+
+106
+00:09:22.943 --> 00:09:27.760
+We will give you a link to the original
+Google paper on MapReduce from
+
+107
+00:09:27.760 --> 00:09:30.390
+2004 at the end of this lecture.
+
+108
+00:09:32.030 --> 00:09:34.080
+It is pretty technical, but
+
+109
+00:09:34.080 --> 00:09:38.040
+it gives you a simple overview without
+the current system implementations.
+
+110
+00:09:39.720 --> 00:09:43.440
+We just saw how MapReduce can
+be used in search engines
+
+111
+00:09:43.440 --> 00:09:45.800
+in addition to counting the words and
+documents.
+
+112
+00:09:47.180 --> 00:09:51.900
+Although it's possible to add many
+more applications, let's stop here for
+
+113
+00:09:51.900 --> 00:09:55.150
+a general discussion on how the points of
+
+114
+00:09:55.150 --> 00:09:59.670
+data parallelism can be used in
+search in this three step pattern.
+
+115
+00:10:01.480 --> 00:10:05.780
+There is definitely parallelization
+during the map step.
+
+116
+00:10:06.810 --> 00:10:09.953
+This parallelization is over the input,
+
+117
+00:10:09.953 --> 00:10:13.918
+as each partition gets
+processed one line at a time.
+
+118
+00:10:13.918 --> 00:10:18.440
+To achieve this type of data
+parallelism we must decide on
+
+119
+00:10:18.440 --> 00:10:23.430
+the data granularity of
+each parallel competition.
+
+120
+00:10:23.430 --> 00:10:25.540
+In this case, it will be a line.
+
+121
+00:10:26.860 --> 00:10:33.410
+We also see parallel grouping of
+data in the shuffle and sort phase.
+
+122
+00:10:33.410 --> 00:10:37.710
+This time, the parallelization is
+over the intermediate products.
+
+123
+00:10:38.740 --> 00:10:41.570
+That is, the individual key-value pairs.
+
+124
+00:10:42.940 --> 00:10:46.400
+And after the grouping of
+the intermediate products,
+
+125
+00:10:46.400 --> 00:10:51.630
+the reduce step gets parallelized
+to construct one output file.
+
+126
+00:10:53.090 --> 00:10:56.340
+You have probably noticed
+that the data gets reduced
+
+127
+00:10:56.340 --> 00:10:58.140
+to a smaller set at each step.
+
+128
+00:10:59.840 --> 00:11:06.208
+This overview gave us an idea of what
+kinds of tasks that MapReduce is good for.
+
+129
+00:11:06.208 --> 00:11:11.604
+While MapReduce excels at independent
+batch tasks similar to our applications,
+
+130
+00:11:11.604 --> 00:11:16.700
+there are certain kinds of tasks that
+you would not want to use MapReduce for.
+
+131
+00:11:17.965 --> 00:11:22.300
+For example,
+if your data is frequently changing,
+
+132
+00:11:22.300 --> 00:11:27.120
+MapReduce is slow since it reads
+the entire input data set each time.
+
+133
+00:11:28.350 --> 00:11:31.540
+The MapReduce model requires that maps and
+
+134
+00:11:31.540 --> 00:11:35.320
+reduces execute
+independently of each other.
+
+135
+00:11:35.320 --> 00:11:37.920
+This greatly simplifies
+your job as a designer,
+
+136
+00:11:37.920 --> 00:11:41.910
+since you do not have to deal
+with synchronization issues.
+
+137
+00:11:41.910 --> 00:11:46.060
+However, it means that computations
+that do have dependencies,
+
+138
+00:11:46.060 --> 00:11:47.880
+cannot be expressed with MapReduce.
+
+139
+00:11:49.600 --> 00:11:53.760
+Finally, MapReduce does
+not return any results
+
+140
+00:11:53.760 --> 00:11:56.490
+until the entire process is finished.
+
+141
+00:11:56.490 --> 00:11:59.060
+It must read the entire input data set.
+
+142
+00:12:00.130 --> 00:12:04.240
+This makes it unsuitable for interactive
+applications where the results must be
+
+143
+00:12:04.240 --> 00:12:09.200
+presented to the user very quickly,
+expecting a return from the user.
+
+144
+00:12:10.880 --> 00:12:15.830
+As a summary, MapReduce hides
+complexities of parallel programming and
+
+145
+00:12:15.830 --> 00:12:18.450
+greatly simplifies building
+parallel applications.
+
+146
+00:12:19.530 --> 00:12:21.996
+Many types of tasks suitable for
+
+147
+00:12:21.996 --> 00:12:27.130
+MapReduce include search engine
+page ranking and topic mapping.
+
+148
+00:12:27.130 --> 00:12:30.929
+Please see the reading after
+this lecture on making Pasta Sauce
+
+149
+00:12:32.382 --> 00:12:38.320
+with MapReduce for another fun application
+using the MapReduce programming model.

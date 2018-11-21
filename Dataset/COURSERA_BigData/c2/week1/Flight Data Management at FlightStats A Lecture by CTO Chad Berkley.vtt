@@ -1,0 +1,978 @@
+WEBVTT
+
+1
+00:00:07.370 --> 00:00:08.820
+Hi, my name is Chad Berkley.
+
+2
+00:00:08.820 --> 00:00:13.750
+I'm the CTO of FlightStats, and I'm here
+today to talk to you a little bit about
+
+3
+00:00:13.750 --> 00:00:17.740
+our platform and
+how we acquire and process data.
+
+4
+00:00:17.740 --> 00:00:21.320
+But first of all, I'd like to start by
+just kind of introducing the company and
+
+5
+00:00:21.320 --> 00:00:26.540
+telling you a little bit
+about what we're all about.
+
+6
+00:00:26.540 --> 00:00:30.940
+So FlightStats is a data company and
+
+7
+00:00:30.940 --> 00:00:36.340
+we basically are the leading provider
+of global real-time flight status data.
+
+8
+00:00:36.340 --> 00:00:41.110
+We pull in data from over 500 sources and
+we aggregate that data back together, and
+
+9
+00:00:41.110 --> 00:00:46.140
+we sell it out to our customers which our
+other businesses as well as consumers.
+
+10
+00:00:47.290 --> 00:00:50.920
+So just to give you a little bit
+of information about the scope and
+
+11
+00:00:50.920 --> 00:00:52.460
+scale of what we do.
+
+12
+00:00:52.460 --> 00:00:55.210
+Like I said,
+we have over 500 sources of data.
+
+13
+00:00:55.210 --> 00:01:00.300
+And on a daily basis,
+we process about 15 million flight events,
+
+14
+00:01:00.300 --> 00:01:04.380
+those that includes landings,
+arrivals, departures.
+
+15
+00:01:05.510 --> 00:01:10.600
+Any time the status of the flight changes,
+we got some sort of message on that.
+
+16
+00:01:10.600 --> 00:01:15.790
+We process about 260 million aircraft
+positions per day, so we have an extensive
+
+17
+00:01:15.790 --> 00:01:21.980
+network that monitors graph positions for
+realtime flight tracking applications.
+
+18
+00:01:21.980 --> 00:01:26.020
+And we also handle about One million PNRs,
+or passenger name records,
+
+19
+00:01:26.020 --> 00:01:31.590
+which are the actual data type
+of an itenerary any time you
+
+20
+00:01:31.590 --> 00:01:36.520
+book travel, a PNR is created for
+you, for your travel.
+
+21
+00:01:36.520 --> 00:01:41.770
+And it includes all of the segments,
+like air travel, ferries,
+
+22
+00:01:41.770 --> 00:01:46.110
+hotels, taxis, Anyhting that
+can be scheduled on your trip.
+
+23
+00:01:47.390 --> 00:01:49.650
+And we basically take in all that data and
+
+24
+00:01:49.650 --> 00:01:54.080
+we aggregate it together and
+we sell it back out.
+
+25
+00:01:54.080 --> 00:01:57.930
+And how most people kind of know us for
+FlightStats.com, that's our
+
+26
+00:01:57.930 --> 00:02:02.260
+consumer site for business where we
+handle about 2 million daily requests.
+
+27
+00:02:02.260 --> 00:02:04.550
+And we handle about 1
+million mobile app requests.
+
+28
+00:02:05.790 --> 00:02:12.710
+That our b to b side, we cert out a lot
+of data by APIs and real time data feeds.
+
+29
+00:02:12.710 --> 00:02:16.480
+People make about 15 million
+API requests to us everyday.
+
+30
+00:02:16.480 --> 00:02:20.180
+And we also send out about one and half
+million flight and trip notifications.
+
+31
+00:02:20.180 --> 00:02:24.310
+So if you get a push
+notification to your phone,
+
+32
+00:02:24.310 --> 00:02:26.930
+telling you that your flight is delayed or
+on time.
+
+33
+00:02:26.930 --> 00:02:29.010
+That possibly has come from us.
+
+34
+00:02:29.010 --> 00:02:34.530
+So a little bit about how the data
+flows through our company.
+
+35
+00:02:34.530 --> 00:02:37.820
+We bring in all these
+different types of data and
+
+36
+00:02:37.820 --> 00:02:41.260
+our sources and it flows through
+our data acquisition team.
+
+37
+00:02:41.260 --> 00:02:47.380
+We have a team whose primary purpose
+is to pull in all sorts of raw data,
+
+38
+00:02:47.380 --> 00:02:49.520
+a very heterogeneous datasets.
+
+39
+00:02:49.520 --> 00:02:55.150
+And process that into a normalized form.
+
+40
+00:02:55.150 --> 00:02:58.420
+So if you kind of follow the blue arrow
+in this diagram you can see that it goes
+
+41
+00:02:58.420 --> 00:03:00.840
+through this raw data
+channel through the data hub.
+
+42
+00:03:00.840 --> 00:03:03.660
+Which the data hub is a central
+component of our system that I'll talk
+
+43
+00:03:03.660 --> 00:03:06.000
+a little bit more about in a second.
+
+44
+00:03:06.000 --> 00:03:09.960
+So the blue data, the blue line is
+raw data coming in from the source
+
+45
+00:03:09.960 --> 00:03:12.300
+It goes through our data
+acquisition system,
+
+46
+00:03:12.300 --> 00:03:16.360
+it turns into that purple line
+which is a normalized form.
+
+47
+00:03:16.360 --> 00:03:20.640
+It then goes back through our data hub
+again and into our processing engine.
+
+48
+00:03:20.640 --> 00:03:24.210
+Our processing engine is really where
+most of the business logic happens.
+
+49
+00:03:24.210 --> 00:03:27.210
+The first thing we have to do
+is we have to match any piece of
+
+50
+00:03:27.210 --> 00:03:30.390
+flight information against
+a flight that we know about and
+
+51
+00:03:30.390 --> 00:03:33.220
+primarily the way we know about
+flights is through schedules.
+
+52
+00:03:33.220 --> 00:03:38.560
+So we import schedules on a daily
+basis from one of our partner
+
+53
+00:03:38.560 --> 00:03:39.510
+schedule providers.
+
+54
+00:03:40.750 --> 00:03:45.065
+That data,
+once it's matched is then processed and
+
+55
+00:03:45.065 --> 00:03:49.635
+the processing basically looks at each
+message, and tries to determine if
+
+56
+00:03:49.635 --> 00:03:52.825
+we think that that message needs
+to be passed on to consumers.
+
+57
+00:03:52.825 --> 00:03:56.940
+So you know it looks at things like,
+have we seen that message before.
+
+58
+00:03:56.940 --> 00:03:58.560
+Or is it a duplicate?
+
+59
+00:03:58.560 --> 00:04:00.530
+Is it from a data source that we trust?
+
+60
+00:04:01.530 --> 00:04:05.120
+Are there other things going on
+that we need to know about that
+
+61
+00:04:05.120 --> 00:04:08.300
+may impact whether that message is true or
+not?
+
+62
+00:04:08.300 --> 00:04:11.370
+And once we decide that a message
+should be passed through,
+
+63
+00:04:11.370 --> 00:04:13.020
+if you follow the green line.
+
+64
+00:04:13.020 --> 00:04:15.860
+It goes into our process
+data channel on our hub, and
+
+65
+00:04:15.860 --> 00:04:18.400
+it's then pushed out to
+a couple different places.
+
+66
+00:04:18.400 --> 00:04:19.080
+So first of all,
+
+67
+00:04:19.080 --> 00:04:23.510
+it goes into our production database which
+is where all of our real time data lives.
+
+68
+00:04:23.510 --> 00:04:27.750
+That database serves data to our websites,
+
+69
+00:04:27.750 --> 00:04:32.230
+to our mobile apps, and
+a variety of other places.
+
+70
+00:04:32.230 --> 00:04:34.060
+It also goes into our
+data warehouse which,
+
+71
+00:04:34.060 --> 00:04:37.330
+is where our analytics products use it.
+
+72
+00:04:37.330 --> 00:04:39.670
+I'll talk a bit more
+about that in a minute.
+
+73
+00:04:39.670 --> 00:04:43.910
+And then, the stream of data actually
+goes up to so many of our customers.
+
+74
+00:04:43.910 --> 00:04:45.490
+We don't need a database on our side.
+
+75
+00:04:45.490 --> 00:04:47.650
+They would rather build
+a database on their side so
+
+76
+00:04:47.650 --> 00:04:51.490
+we actually just stream all of
+the processed data directly to them.
+
+77
+00:04:51.490 --> 00:04:54.930
+They then host it within
+their own systems.
+
+78
+00:04:57.600 --> 00:05:04.920
+So a little bit more about the hub, the
+hub is central to how we move data around.
+
+79
+00:05:04.920 --> 00:05:07.960
+It's a technology that
+we developed in-house.
+
+80
+00:05:07.960 --> 00:05:11.125
+And it's an object storage based,
+scalable, highly available,
+
+81
+00:05:11.125 --> 00:05:15.810
+multi-channel data queuing and
+eventing system.
+
+82
+00:05:15.810 --> 00:05:21.690
+The object storage part is,
+we use Amazon S3 to store this data.
+
+83
+00:05:21.690 --> 00:05:24.310
+So it's an object storage system.
+
+84
+00:05:24.310 --> 00:05:26.600
+It's scalable,
+we can scale it horizontally or
+
+85
+00:05:26.600 --> 00:05:32.140
+vertically depending on, but the what
+type of data is flowing through it.
+
+86
+00:05:32.140 --> 00:05:33.250
+It's highly available meaning,
+
+87
+00:05:33.250 --> 00:05:36.350
+that we have multiple instances
+of it in different data centers.
+
+88
+00:05:36.350 --> 00:05:39.410
+So if one that goes down we can
+easily pull another one up or
+
+89
+00:05:39.410 --> 00:05:42.490
+it's we're going to cross
+multiple instances.
+
+90
+00:05:42.490 --> 00:05:44.600
+And then it's multi channel.
+
+91
+00:05:44.600 --> 00:05:49.030
+So it's got a rest interface and
+any surface can create
+
+92
+00:05:49.030 --> 00:05:53.760
+a new channel within the system and
+start posting data to it.
+
+93
+00:05:53.760 --> 00:05:58.260
+That data is then queued based on
+the time that it comes in, and
+
+94
+00:05:58.260 --> 00:06:01.490
+other services can be listening for
+events on those channels.
+
+95
+00:06:01.490 --> 00:06:05.240
+So, as soon as a new piece of data
+comes into one of those channels,
+
+96
+00:06:05.240 --> 00:06:09.330
+any service that's listening on that
+channel, gets an event notification.
+
+97
+00:06:09.330 --> 00:06:12.470
+They, that service can then
+act upon that piece of data.
+
+98
+00:06:12.470 --> 00:06:16.700
+And do whatever processing
+it may need to do.
+
+99
+00:06:16.700 --> 00:06:21.690
+This project is open source and
+anybody can download it and use it.
+
+100
+00:06:24.490 --> 00:06:28.230
+So a little bit about some of the data
+that we collect and aggregate.
+
+101
+00:06:28.230 --> 00:06:33.560
+And FLIFO is kind of the industry term for
+flight information.
+
+102
+00:06:33.560 --> 00:06:39.360
+And primarily we look at kind of
+the five different parts of flight.
+
+103
+00:06:39.360 --> 00:06:43.870
+So we pull in information on gate
+departure, and then that becomes a runway
+
+104
+00:06:43.870 --> 00:06:47.855
+departure, basically when the wheels
+go up, that is a runway departure.
+
+105
+00:06:47.855 --> 00:06:54.080
+We do in-flight positional tracking,
+so when your flight is moving along,
+
+106
+00:06:54.080 --> 00:06:58.330
+about once every ten seconds we get
+notified of its latitude and longitude.
+
+107
+00:06:58.330 --> 00:07:00.530
+And its heading and its speed and
+
+108
+00:07:00.530 --> 00:07:04.790
+its vertical center descent rate and
+several other variables.
+
+109
+00:07:05.960 --> 00:07:07.230
+Then once it lands,
+
+110
+00:07:07.230 --> 00:07:11.300
+as soon as the wheels touch the ground,
+we're notified of a runway arrival and
+
+111
+00:07:11.300 --> 00:07:15.890
+when the door is opened at the gate,
+we have gate arrival information.
+
+112
+00:07:15.890 --> 00:07:21.480
+All five of these data fields
+come in three different forms.
+
+113
+00:07:21.480 --> 00:07:24.460
+So we have a scheduled,
+scheduled departure and arrival.
+
+114
+00:07:24.460 --> 00:07:29.310
+We have estimated departure and arrival
+which can come from a variety of sources,
+
+115
+00:07:29.310 --> 00:07:33.710
+either airlines, airports,
+positional data, et cetera.
+
+116
+00:07:33.710 --> 00:07:38.120
+And then, we have actuals so
+if we have an airport or
+
+117
+00:07:38.120 --> 00:07:42.460
+an airline that's sending us data about
+exactly when the wheels touch down, or
+
+118
+00:07:42.460 --> 00:07:46.770
+exactly when that door opens on that
+aircraft, we push that data as well.
+
+119
+00:07:46.770 --> 00:07:51.100
+We also generate some
+data at flight stops.
+
+120
+00:07:51.100 --> 00:07:56.850
+So special incidents, if an aircraft
+has an issue It's in the news.
+
+121
+00:07:56.850 --> 00:08:01.920
+We do flag our content with
+a message from our support staff.
+
+122
+00:08:01.920 --> 00:08:04.790
+We do some prediction.
+
+123
+00:08:04.790 --> 00:08:08.030
+Right now we're just starting to get into
+that market, or we're actually trying to
+
+124
+00:08:08.030 --> 00:08:13.490
+predict 24 hours out whether a flight
+will be delayed, disrupted or on time.
+
+125
+00:08:14.500 --> 00:08:19.550
+We do some synthetic positions,
+so over oceans, primarily.
+
+126
+00:08:19.550 --> 00:08:24.310
+We don't get tracking data
+on aircraft over the oceans.
+
+127
+00:08:24.310 --> 00:08:28.480
+There is currently no satellite-based
+tracking system for aircraft.
+
+128
+00:08:28.480 --> 00:08:34.010
+So we basically take the last
+known position a heading, a speed.
+
+129
+00:08:34.010 --> 00:08:38.330
+And if we have a flight plan, we'll use
+a flight plan to synthesize the positions
+
+130
+00:08:38.330 --> 00:08:42.140
+when we're not getting actual
+positions over large bodies of water.
+
+131
+00:08:43.320 --> 00:08:47.560
+We also generate notifications,
+so the push alerts,
+
+132
+00:08:47.560 --> 00:08:52.680
+the preflight emails,
+delay notifications those types of things.
+
+133
+00:08:52.680 --> 00:08:56.570
+We create those based on what we see
+in the data that's coming in to us.
+
+134
+00:08:58.970 --> 00:09:02.630
+We store all of our historical
+data in a data warehouse,
+
+135
+00:09:02.630 --> 00:09:05.860
+so right now we have six years
+of historical flight data.
+
+136
+00:09:05.860 --> 00:09:08.080
+And that powers our analytics products,
+
+137
+00:09:08.080 --> 00:09:12.570
+so we allow airlines to do competitive
+analysis, and route analysis.
+
+138
+00:09:13.690 --> 00:09:15.320
+Routes are very important to airlines.
+
+139
+00:09:15.320 --> 00:09:17.220
+That's how they compete
+with each other and
+
+140
+00:09:17.220 --> 00:09:22.800
+that's primarily how they
+are judged by the FAA and
+
+141
+00:09:22.800 --> 00:09:27.429
+other governmental organizations
+on whether they're on-time or not.
+
+142
+00:09:27.429 --> 00:09:32.070
+We also do airport operations analysis
+things like taxi in and taxi out times.
+
+143
+00:09:32.070 --> 00:09:35.910
+Very important for lots of airports,
+runway utilization,
+
+144
+00:09:35.910 --> 00:09:40.230
+hourly passenger flows through airports,
+that type of information.
+
+145
+00:09:40.230 --> 00:09:42.830
+And we do on-time performance metrics so.
+
+146
+00:09:42.830 --> 00:09:45.290
+Airlines can look at how they're doing.
+
+147
+00:09:45.290 --> 00:09:47.020
+How many flights did they complete?
+
+148
+00:09:47.020 --> 00:09:49.870
+How many flights were on
+time within 14 minutes?
+
+149
+00:09:51.640 --> 00:09:54.630
+And they can compare themselves
+to their competitors.
+
+150
+00:09:56.890 --> 00:10:01.310
+So we host all of this in
+a hybrid cloud architecture.
+
+151
+00:10:01.310 --> 00:10:05.560
+Hybrid cloud basically means that we have
+our own private datacenter resources and
+
+152
+00:10:05.560 --> 00:10:10.120
+we also host resources in
+the Amazon Web Services cloud.
+
+153
+00:10:11.870 --> 00:10:15.680
+Most of our core data processing and
+service layer is in our private data
+
+154
+00:10:15.680 --> 00:10:19.250
+center and we're getting ready to spin
+up a second private data center as well.
+
+155
+00:10:19.250 --> 00:10:24.270
+Right now, our main data center is in
+Portland, Oregon, and we're going to spin
+
+156
+00:10:24.270 --> 00:10:29.499
+another one up on the east coast of
+the United States probably in Q2 or Q3.
+
+157
+00:10:31.210 --> 00:10:35.050
+For our API's we try to keep
+those close to our customers so
+
+158
+00:10:35.050 --> 00:10:38.810
+API end points and
+web end points live in Amazon.
+
+159
+00:10:38.810 --> 00:10:44.170
+And they are automatically routed to
+whichever end point is closest to you,
+
+160
+00:10:44.170 --> 00:10:45.640
+you will automatically be routed to them.
+
+161
+00:10:46.720 --> 00:10:50.700
+All of our private infrastructure
+is virtualized with VMWare.
+
+162
+00:10:50.700 --> 00:10:54.560
+We pretty much have a fully
+virtualized environment.
+
+163
+00:10:57.530 --> 00:11:04.870
+And we're an Agile shop, so
+we have six small, fast teams.
+
+164
+00:11:04.870 --> 00:11:09.300
+Those are product centric teams, we
+allow them to be as customer interactive
+
+165
+00:11:09.300 --> 00:11:12.610
+as they need to be, and
+we try to make our teams semi autonomous.
+
+166
+00:11:12.610 --> 00:11:16.300
+So, teams get to choose their own tools,
+they get to choose their
+
+167
+00:11:16.300 --> 00:11:21.340
+own development methodologies,
+they choose a variety of things.
+
+168
+00:11:21.340 --> 00:11:24.020
+And We physically allow them
+
+169
+00:11:24.020 --> 00:11:26.770
+to do what they need to do to get
+their job done as quickly as possible.
+
+170
+00:11:28.030 --> 00:11:30.010
+We try to automate everything.
+
+171
+00:11:30.010 --> 00:11:33.120
+You do something once manually and
+then the next time you write a script or
+
+172
+00:11:33.120 --> 00:11:34.480
+program to do it.
+
+173
+00:11:34.480 --> 00:11:35.700
+And we also measure everything.
+
+174
+00:11:35.700 --> 00:11:39.190
+Right now, we're taking in about
+2.5 billion metrics per month off
+
+175
+00:11:39.190 --> 00:11:40.480
+of our systems.
+
+176
+00:11:40.480 --> 00:11:44.680
+And we use those metrics to monitor
+our application performance,
+
+177
+00:11:44.680 --> 00:11:48.890
+to monitor revenue, to monitor pretty
+much everything we do in the company.
+
+178
+00:11:48.890 --> 00:11:51.390
+We really try to enable
+total system awareness,
+
+179
+00:11:51.390 --> 00:11:56.200
+everything from the hardware layer
+up to the website is monitored.
+
+180
+00:11:57.240 --> 00:12:01.190
+And we use industry best practices and
+tools and of course, we try to recruit and
+
+181
+00:12:01.190 --> 00:12:05.740
+hire the best talent possible a little
+bit about our software stock.
+
+182
+00:12:05.740 --> 00:12:07.140
+We're primarily a Java shop.
+
+183
+00:12:08.220 --> 00:12:11.830
+Our core processing services
+are all written in Java.
+
+184
+00:12:11.830 --> 00:12:15.870
+We do use node JS in our
+Microservice Edge layer.
+
+185
+00:12:15.870 --> 00:12:20.090
+And node JS is actually starting to move
+more down into the processing service
+
+186
+00:12:20.090 --> 00:12:21.750
+layer as well.
+
+187
+00:12:21.750 --> 00:12:23.760
+We use many different types of data bases.
+
+188
+00:12:23.760 --> 00:12:27.220
+Our primary realtime
+database is Post Press.
+
+189
+00:12:27.220 --> 00:12:31.140
+And we use Mongo for
+the backend of our API services.
+
+190
+00:12:32.280 --> 00:12:36.940
+On the website, we're all HTML5 and
+we're moving to React and Redux, and
+
+191
+00:12:36.940 --> 00:12:41.750
+we're making use of Elasticsearch for
+quick searching and indexing on our data.
+
+192
+00:12:41.750 --> 00:12:45.750
+And, of course, we have iOS and
+Android mobile applications.
+
+193
+00:12:45.750 --> 00:12:51.610
+So you can find out more about
+Flightstats on our website.
+
+194
+00:12:51.610 --> 00:12:53.950
+If you need data for your applications,
+
+195
+00:12:53.950 --> 00:12:57.860
+please go to the developer center
+at developer.flightstats.com.
+
+196
+00:12:57.860 --> 00:13:00.790
+You can sign up for
+a free test account and
+
+197
+00:13:00.790 --> 00:13:03.980
+be able to pull data
+directly off of our APIs.
+
+198
+00:13:03.980 --> 00:13:06.660
+If you're interested in the Hub,
+like I said that's open source.
+
+199
+00:13:06.660 --> 00:13:10.540
+Please check out the Git Hub page and
+if you have any additional questions,
+
+200
+00:13:10.540 --> 00:13:14.270
+feel free to contact
+myself John Berkeley and
+
+201
+00:13:14.270 --> 00:13:18.360
+I'd be happy to answer any
+of your questions via email.
+
+202
+00:13:18.360 --> 00:13:20.690
+Thanks for listening today and
+hope you have a great day.
+
+203
+00:13:20.690 --> 00:13:21.190
+Bye.

@@ -1,0 +1,464 @@
+WEBVTT
+
+1
+00:00:01.058 --> 00:00:03.042
+Programming Models for Big Data.
+
+2
+00:00:22.264 --> 00:00:26.664
+We have seen that scalable computing
+over the internet to achieve
+
+3
+00:00:26.664 --> 00:00:32.375
+data-parallel scalability for big data
+applications is now a possibility.
+
+4
+00:00:32.375 --> 00:00:34.625
+Thanks to commodity clusters.
+
+5
+00:00:34.625 --> 00:00:38.970
+Cost-effective commodity clusters
+together with advances in distributed
+
+6
+00:00:38.970 --> 00:00:41.670
+file systems to move computation to data,
+
+7
+00:00:41.670 --> 00:00:46.280
+provide a potential to conduct
+scalable big data analytics.
+
+8
+00:00:46.280 --> 00:00:49.050
+The next thing we will
+talk about is how to take
+
+9
+00:00:49.050 --> 00:00:51.050
+advantage of these
+infrastructure advances.
+
+10
+00:00:52.100 --> 00:00:53.560
+What are the right programming models?
+
+11
+00:00:54.680 --> 00:01:00.460
+A programming model is an abstraction or
+existing machinery or infrastructure.
+
+12
+00:01:00.460 --> 00:01:03.970
+It is a set of abstract
+runtime libraries and
+
+13
+00:01:03.970 --> 00:01:08.310
+programming languages that
+form a model of computation.
+
+14
+00:01:08.310 --> 00:01:14.110
+This abstraction level can be low-level
+as in machine language in computers.
+
+15
+00:01:14.110 --> 00:01:20.030
+Or very high as in high-level programming
+languages, for example, Java.
+
+16
+00:01:20.030 --> 00:01:23.470
+So we can say,
+if the enabling infrastructure for
+
+17
+00:01:23.470 --> 00:01:28.320
+big data analysis is distributed
+file systems as we mentioned,
+
+18
+00:01:28.320 --> 00:01:33.120
+then the programming model for
+big data should enable the programmability
+
+19
+00:01:33.120 --> 00:01:37.100
+of the operations within
+distributed file systems.
+
+20
+00:01:37.100 --> 00:01:41.840
+What we mean by this being able to
+write computer programs that work
+
+21
+00:01:41.840 --> 00:01:46.410
+efficiently on top of distributed
+file systems using big data and
+
+22
+00:01:46.410 --> 00:01:50.430
+making it easy to cope with
+all the potential issues.
+
+23
+00:01:50.430 --> 00:01:52.320
+Based on everything we discussed so
+
+24
+00:01:52.320 --> 00:01:57.680
+far, let's describe the requirements for
+big data programming models.
+
+25
+00:01:57.680 --> 00:02:02.480
+First of all, such a programming model for
+big data should support
+
+26
+00:02:02.480 --> 00:02:07.280
+common big data operations like
+splitting large volumes of data.
+
+27
+00:02:08.420 --> 00:02:12.460
+This means for partitioning and
+placement of data in and
+
+28
+00:02:12.460 --> 00:02:18.220
+out of computer memory along with a model
+to synchronize the datasets later on.
+
+29
+00:02:18.220 --> 00:02:21.463
+The access to data should
+be achieved in a fast way.
+
+30
+00:02:21.463 --> 00:02:26.291
+It should allow fast distribution to nodes
+within a rack and these are potentially,
+
+31
+00:02:26.291 --> 00:02:28.815
+the data nodes we moved
+the computation to.
+
+32
+00:02:28.815 --> 00:02:34.020
+This means scheduling of
+many parallel tasks at once.
+
+33
+00:02:34.020 --> 00:02:37.950
+It should also enable
+reliability of the computing and
+
+34
+00:02:37.950 --> 00:02:40.100
+full tolerance from failures.
+
+35
+00:02:40.100 --> 00:02:43.768
+This means it should enable
+programmable replications and
+
+36
+00:02:43.768 --> 00:02:45.758
+recovery of files when needed.
+
+37
+00:02:45.758 --> 00:02:50.518
+It should be easily scalable to
+the distributed notes where the data gets
+
+38
+00:02:50.518 --> 00:02:51.305
+produced.
+
+39
+00:02:51.305 --> 00:02:56.647
+It should also enable adding new resources
+to take advantage of distributive
+
+40
+00:02:56.647 --> 00:03:01.670
+computers and scale to more or
+faster data without losing performance.
+
+41
+00:03:01.670 --> 00:03:05.280
+This is called scaling out if needed.
+
+42
+00:03:05.280 --> 00:03:08.220
+Since there are a variety
+of different types of data,
+
+43
+00:03:08.220 --> 00:03:13.140
+such as documents, graphs,
+tables, key values, etc.
+
+44
+00:03:13.140 --> 00:03:17.100
+A programming model should enable
+operations over a particular set
+
+45
+00:03:17.100 --> 00:03:18.680
+of these types.
+
+46
+00:03:18.680 --> 00:03:23.261
+Not every type of data may be
+supported by a particular model, but
+
+47
+00:03:23.261 --> 00:03:27.020
+the models should be optimized for
+at least one type.
+
+48
+00:03:27.020 --> 00:03:29.540
+Is it getting a little complicated?
+
+49
+00:03:29.540 --> 00:03:31.153
+It doesn't have to have to be.
+
+50
+00:03:31.153 --> 00:03:36.696
+In fact, we apply similar models in
+our daily lives for everyday tasks.
+
+51
+00:03:36.696 --> 00:03:41.520
+Let's look at the scenario where you
+might unknowingly apply this model.
+
+52
+00:03:41.520 --> 00:03:45.020
+Imagine a peaceful Saturday afternoon.
+
+53
+00:03:45.020 --> 00:03:47.840
+You receive a phone call from a friend and
+she says,
+
+54
+00:03:47.840 --> 00:03:50.050
+she they will be at your
+house in an hour for dinner.
+
+55
+00:03:51.290 --> 00:03:56.157
+It seems like you completely forgot that
+you had invited your friends for dinner.
+
+56
+00:03:56.157 --> 00:03:59.309
+So you say, you are looking forward
+to it and head to the kitchen.
+
+57
+00:03:59.309 --> 00:04:05.035
+As a quick solution, you decide to
+cook pasta with some tomato sauce.
+
+58
+00:04:05.035 --> 00:04:07.487
+You need to take advantage
+of parallelization, so
+
+59
+00:04:07.487 --> 00:04:11.315
+that the dinner is ready by the time your
+guest arrive, that's within an hour.
+
+60
+00:04:11.315 --> 00:04:15.593
+You call your spouse and your teenage
+kids to action in the kitchen.
+
+61
+00:04:15.593 --> 00:04:20.464
+Now, you need to give them directions to
+start dicing the ingredients for you.
+
+62
+00:04:20.464 --> 00:04:27.010
+But in the heat of the moment, you end up
+mixing the onions, tomatoes and peppers.
+
+63
+00:04:27.010 --> 00:04:28.890
+Instead of sorting them first,
+
+64
+00:04:28.890 --> 00:04:33.380
+you give everyone a randomly mixed
+batch of different types of vegetables.
+
+65
+00:04:33.380 --> 00:04:38.360
+They are required to use their computer
+powers to chop the vegetables.
+
+66
+00:04:38.360 --> 00:04:42.210
+They need to ensure not mix
+different types of veggies.
+
+67
+00:04:42.210 --> 00:04:47.562
+When everyone is done chopping, you want
+to group the veggies by their types.
+
+68
+00:04:47.562 --> 00:04:52.877
+You ask each helper to collect items
+of the same type, put them in a large
+
+69
+00:04:52.877 --> 00:04:58.016
+bowl and label this large bowl with
+the sum of individual bowl weights
+
+70
+00:04:58.016 --> 00:05:03.975
+like tomatoes in one bowl, peppers in
+another and the onions in the third bowl.
+
+71
+00:05:03.975 --> 00:05:04.781
+In the end,
+
+72
+00:05:04.781 --> 00:05:10.209
+you have nice large bowls with the total
+weight of each vegetable labeled on it.
+
+73
+00:05:10.209 --> 00:05:15.378
+Your helpers are soon done with their work
+while you're focused on coordinating their
+
+74
+00:05:15.378 --> 00:05:20.284
+actions and other dinner tasks in the
+kitchen, you can start cooking your pasta.
+
+75
+00:05:20.284 --> 00:05:25.230
+What you have just seen is an excellent
+example of big data modeling in action.
+
+76
+00:05:25.230 --> 00:05:30.439
+Only it is really the data
+processed by human processors.
+
+77
+00:05:30.439 --> 00:05:34.600
+This scenario can be modeled by a common
+programming model for big data.
+
+78
+00:05:34.600 --> 00:05:36.609
+Namely MapReduce.
+
+79
+00:05:36.609 --> 00:05:40.625
+MapReduce is a big data programming
+model that supports all
+
+80
+00:05:40.625 --> 00:05:44.249
+the requirements of big
+data modeling we mentioned.
+
+81
+00:05:44.249 --> 00:05:47.093
+It can model processing large data,
+
+82
+00:05:47.093 --> 00:05:51.406
+split complications into
+different parallel tasks and
+
+83
+00:05:51.406 --> 00:05:57.562
+make efficient use of large commodity
+clusters and distributed file systems.
+
+84
+00:05:57.562 --> 00:06:01.542
+In addition, it abstracts out
+the details of parallelzation,
+
+85
+00:06:01.542 --> 00:06:06.050
+full tolerance, data distribution,
+monitoring and load balancing.
+
+86
+00:06:07.140 --> 00:06:08.700
+As a programming model,
+
+87
+00:06:08.700 --> 00:06:12.590
+it has been implemented in a few
+different big data frameworks.
+
+88
+00:06:12.590 --> 00:06:16.123
+Next week,
+we will see more details on MapReduce and
+
+89
+00:06:16.123 --> 00:06:18.788
+how its Hadoop implementation works.
+
+90
+00:06:18.788 --> 00:06:21.362
+To summarize, programming models for
+
+91
+00:06:21.362 --> 00:06:25.267
+big data are abstractions over
+distributed file systems.
+
+92
+00:06:25.267 --> 00:06:30.022
+The desired programming models for
+big data should handle large volumes and
+
+93
+00:06:30.022 --> 00:06:31.289
+varieties of data.
+
+94
+00:06:31.289 --> 00:06:35.492
+Support full tolerance and
+provide scale out functionality.
+
+95
+00:06:35.492 --> 00:06:37.535
+MapReduce is one of these models,
+
+96
+00:06:37.535 --> 00:06:41.063
+implemented in a variety of
+frameworks including Hadoop.
+
+97
+00:06:41.063 --> 00:06:45.360
+We will summarize the inner workings
+of the Hadoop implementation next week.

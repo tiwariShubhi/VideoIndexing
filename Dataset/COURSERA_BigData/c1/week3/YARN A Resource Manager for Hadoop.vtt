@@ -1,0 +1,308 @@
+WEBVTT
+
+1
+00:00:02.028 --> 00:00:04.748
+YARN, The Resource Manager for Hadoop.
+
+2
+00:00:21.825 --> 00:00:27.260
+YARN is a resource manage layer that
+sits just above the storage layer HDFS.
+
+3
+00:00:28.510 --> 00:00:33.210
+YARN interacts with applications and
+schedules resources for their use.
+
+4
+00:00:34.390 --> 00:00:39.390
+YARN enables running multiple
+applications over HDFC increases
+
+5
+00:00:39.390 --> 00:00:44.160
+resource efficiency and
+let's you go beyond the map reduce or
+
+6
+00:00:44.160 --> 00:00:46.720
+even beyond the data
+parallel programming model.
+
+7
+00:00:48.910 --> 00:00:52.630
+When Hadoop was first created,
+this wasn't the case.
+
+8
+00:00:52.630 --> 00:00:57.560
+In fact, the original Hadoop
+stack had no resource manager.
+
+9
+00:00:57.560 --> 00:01:02.480
+These two stacked diagrams, show, some of
+it's evolution over the last ten years.
+
+10
+00:01:03.980 --> 00:01:07.580
+One of the biggest limitations
+of Hadoop one point zero,
+
+11
+00:01:07.580 --> 00:01:11.318
+was it's inability to support
+non-mapreduce applications.
+
+12
+00:01:11.318 --> 00:01:15.200
+It had several terrible
+resource utilization.
+
+13
+00:01:15.200 --> 00:01:19.770
+This meant that for advanced
+applications such as graph analysis that
+
+14
+00:01:19.770 --> 00:01:22.020
+required different ways of modelling and
+
+15
+00:01:22.020 --> 00:01:26.950
+looking at data, you would need to
+move your data to another platform.
+
+16
+00:01:26.950 --> 00:01:29.310
+That's a lot of work if your data is big.
+
+17
+00:01:31.540 --> 00:01:36.510
+Adding YARN in between HDFS and
+the applications enabled
+
+18
+00:01:36.510 --> 00:01:41.510
+new systems to be built, focusing on
+different types of big data applications
+
+19
+00:01:41.510 --> 00:01:46.280
+such as Giraph for
+graph data analysis, Storm for
+
+20
+00:01:46.280 --> 00:01:50.190
+streaming data analysis, and
+Spark for in-memory analysis.
+
+21
+00:01:51.360 --> 00:01:55.150
+YARN does so
+by providing a standard framework
+
+22
+00:01:55.150 --> 00:01:59.530
+that supports customized application
+development in the HADOOP ecosystem.
+
+23
+00:02:00.990 --> 00:02:04.850
+YARN lets you extract maximum
+benefits from your data sets
+
+24
+00:02:04.850 --> 00:02:09.320
+by letting you use the tools you
+think are best for your big data.
+
+25
+00:02:10.860 --> 00:02:14.810
+Let's take a peek into the architecture
+of YARN without getting too technical.
+
+26
+00:02:16.430 --> 00:02:21.620
+In this picture, notice the resource
+manager in the center, and
+
+27
+00:02:21.620 --> 00:02:25.810
+the node managers on each of
+the three nodes on the right.
+
+28
+00:02:27.910 --> 00:02:32.450
+The resource manager controls all
+the resources, and decides who gets what.
+
+29
+00:02:34.290 --> 00:02:39.580
+Node manager operates at machine level and
+is in charge of a single machine.
+
+30
+00:02:41.490 --> 00:02:44.180
+Together the resource manager and
+
+31
+00:02:44.180 --> 00:02:47.240
+the node manager form the data
+computation framework.
+
+32
+00:02:48.410 --> 00:02:51.530
+Each application gets
+an application master.
+
+33
+00:02:52.560 --> 00:02:56.190
+It negotiates resource from
+the Resource Manager and
+
+34
+00:02:56.190 --> 00:02:59.640
+it talks to Node Manager
+to get its tasks completed.
+
+35
+00:03:01.820 --> 00:03:06.900
+Notice the ovals labeled
+Container The container
+
+36
+00:03:06.900 --> 00:03:12.240
+is an abstract Notions that
+signifies a resource that is
+
+37
+00:03:12.240 --> 00:03:16.760
+a collection of CPU
+memory disk network and
+
+38
+00:03:16.760 --> 00:03:21.680
+other resources within
+the compute note to simplify and
+
+39
+00:03:21.680 --> 00:03:26.020
+be less precise you can think
+of a container and the Machine.
+
+40
+00:03:27.440 --> 00:03:30.460
+We looked at the essential
+gears of the YARN
+
+41
+00:03:30.460 --> 00:03:34.880
+engine to give you an idea of
+the key components of YARN.
+
+42
+00:03:34.880 --> 00:03:38.580
+Now when you hear terms like
+Resource Manager, Node Manager and
+
+43
+00:03:38.580 --> 00:03:43.670
+Container, you will have an understanding
+of what tasks they are responsible for.
+
+44
+00:03:46.150 --> 00:03:52.400
+Here is a real life example to show
+the strength Hadoop 2.0 over 1.0.
+
+45
+00:03:52.400 --> 00:03:55.940
+Yahoo was able to run almost
+
+46
+00:03:55.940 --> 00:03:59.910
+twice as many jobs per day with
+Yarn than with Hadoop 1.0.
+
+47
+00:03:59.910 --> 00:04:07.100
+They also experienced a substantial
+increase in CPU utilization.
+
+48
+00:04:07.100 --> 00:04:08.130
+Yahoo!
+
+49
+00:04:08.130 --> 00:04:11.710
+even claimed that upgrading
+to YARN was equal into
+
+50
+00:04:11.710 --> 00:04:15.850
+adding 1000 machines to
+their 2500 machine cluster.
+
+51
+00:04:15.850 --> 00:04:16.480
+That's big.
+
+52
+00:04:18.450 --> 00:04:22.790
+YARN success is evident
+from an explosive growth of
+
+53
+00:04:22.790 --> 00:04:25.940
+different application that
+the Hadoop ecosystem now has.
+
+54
+00:04:27.330 --> 00:04:28.660
+New to yarn?
+
+55
+00:04:28.660 --> 00:04:32.750
+You can use the tool of your choice
+over your big data without any hassle.
+
+56
+00:04:33.920 --> 00:04:39.170
+Compare this with Hadoop 1.0 which
+was limited to MapReduce alone.
+
+57
+00:04:41.260 --> 00:04:45.630
+Let's review a summary of
+the key take-aways about yarn.
+
+58
+00:04:45.630 --> 00:04:50.540
+Yarn gives you many ways for
+applications to extract value from data.
+
+59
+00:04:51.720 --> 00:04:56.490
+It lets you run many distributed
+applications over the same Hadoop cluster.
+
+60
+00:04:57.860 --> 00:05:02.630
+In addition, YARN reduces
+the need to move data around and
+
+61
+00:05:02.630 --> 00:05:07.110
+supports higher resource utilization
+resulting in lower costs.
+
+62
+00:05:08.690 --> 00:05:13.310
+It's a scalable platform that has
+enabled growth of several applications
+
+63
+00:05:13.310 --> 00:05:17.490
+over the HDFS,
+enriching the Hadoop ecosystem.

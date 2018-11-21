@@ -1,0 +1,226 @@
+WEBVTT
+
+1
+00:00:00.530 --> 00:00:05.150
+Now the goal of a storage infrastructure,
+obviously, is to store data.
+
+2
+00:00:05.150 --> 00:00:07.330
+There are two storage related
+issues we consider here.
+
+3
+00:00:09.590 --> 00:00:12.920
+The first is the issue of capacity.
+
+4
+00:00:12.920 --> 00:00:15.110
+How much storage should we allocate?
+
+5
+00:00:15.110 --> 00:00:18.990
+That means, what should be the size
+of the memory, how large and
+
+6
+00:00:18.990 --> 00:00:21.280
+how many disk units should we have,
+and so forth.
+
+7
+00:00:22.700 --> 00:00:26.760
+There is also the issue of scalability.
+
+8
+00:00:26.760 --> 00:00:30.150
+Should the storage devices be
+attached directly to the computers
+
+9
+00:00:30.150 --> 00:00:33.690
+to make the direct IO fast but
+less scalable?
+
+10
+00:00:33.690 --> 00:00:36.310
+Or should the storage be
+attached to the network
+
+11
+00:00:37.340 --> 00:00:39.820
+that connect the computers in the cluster?
+
+12
+00:00:39.820 --> 00:00:42.690
+This will make disk
+access a bit slower but
+
+13
+00:00:42.690 --> 00:00:45.210
+allows one to add more
+storage to the system easily.
+
+14
+00:00:46.230 --> 00:00:49.060
+Now these questions do
+not have a simple answer.
+
+15
+00:00:49.060 --> 00:00:52.200
+If you're interested, you may look up
+a website given on your reading list.
+
+16
+00:00:53.470 --> 00:00:58.080
+A different class of questions deals
+with the speed of the IU operation.
+
+17
+00:00:59.090 --> 00:01:03.620
+This question is often addressed with
+this kind of diagram here called a memory
+
+18
+00:01:03.620 --> 00:01:07.480
+hierarchy, or storage hierarchy, or
+sometimes memory storage hierarchy.
+
+19
+00:01:09.270 --> 00:01:13.740
+The top of the pyramid structure shows
+a part of memory called cache memory,
+
+20
+00:01:14.840 --> 00:01:17.410
+that lives inside the CPU and
+is very fast.
+
+21
+00:01:17.410 --> 00:01:21.650
+There are different levels of cache,
+called L1, L2, L3,
+
+22
+00:01:21.650 --> 00:01:27.229
+where L3 is the slowest but
+still faster than what we call memory,
+
+23
+00:01:27.229 --> 00:01:30.110
+shown here in orange near the middle.
+
+24
+00:01:31.400 --> 00:01:33.990
+The figure shows their speed
+in terms of response times.
+
+25
+00:01:35.070 --> 00:01:38.410
+Notice the memory streamed here
+is 65 nanoseconds per access.
+
+26
+00:01:39.930 --> 00:01:40.892
+In contrast,
+
+27
+00:01:40.892 --> 00:01:46.030
+the speed of the traditional hard disk
+is of the order of 10 milliseconds.
+
+28
+00:01:47.510 --> 00:01:51.918
+This gap has prompted the design
+of many data structures and
+
+29
+00:01:51.918 --> 00:01:56.768
+algorithms.that use a hard disk but
+tries to minimize the cost of
+
+30
+00:01:56.768 --> 00:02:01.455
+the IO operations between the fast
+memory and the slower disk.
+
+31
+00:02:01.455 --> 00:02:04.543
+But more recently,
+a newer kind of storage.
+
+32
+00:02:07.329 --> 00:02:09.463
+Very similar to the flash drives or
+
+33
+00:02:09.463 --> 00:02:13.738
+USBs that we regularly use have made
+an entry as a new storage medium.
+
+34
+00:02:13.738 --> 00:02:17.820
+These devices are called SSDs or
+Solid State Devices.
+
+35
+00:02:17.820 --> 00:02:19.780
+They are much faster
+than spinning hard disks.
+
+36
+00:02:20.990 --> 00:02:24.795
+An even newer addition is
+the method called NVMe,
+
+37
+00:02:24.795 --> 00:02:27.787
+NVM stands for non-volatile memory,
+
+38
+00:02:27.787 --> 00:02:32.600
+that makes data transfer between SSDs and
+memory much faster.
+
+39
+00:02:33.940 --> 00:02:38.317
+What all this means in a big data system
+is that now we have the choice of
+
+40
+00:02:38.317 --> 00:02:43.077
+architecting a storage infrastructure
+by choosing how much of each type of
+
+41
+00:02:43.077 --> 00:02:44.684
+storage we need to have.
+
+42
+00:02:44.684 --> 00:02:49.842
+In my own research with large amounts
+of data, I have found that using SSDs
+
+43
+00:02:49.842 --> 00:02:55.597
+speed up all look up operations in data by
+at least a factor of ten over hard drives.
+
+44
+00:02:55.597 --> 00:02:59.057
+Of course the flip side of
+this is the cost factor.
+
+45
+00:02:59.057 --> 00:03:03.305
+The components become increasingly more
+expensive as we go from the lower layers
+
+46
+00:03:03.305 --> 00:03:05.187
+of the pyramid to the upper layers.
+
+47
+00:03:05.187 --> 00:03:08.972
+So ultimately, it becomes an issue
+of cost-benefit tradeoff.

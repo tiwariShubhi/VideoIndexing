@@ -1,0 +1,396 @@
+WEBVTT
+
+1
+00:00:01.226 --> 00:00:02.488
+In this hands-on activity,
+
+2
+00:00:02.488 --> 00:00:05.520
+we'll be performing word count on
+the complete works of Shakespeare.
+
+3
+00:00:07.110 --> 00:00:11.350
+First, we will copy the Shakespeare
+text into the Hadoop file system.
+
+4
+00:00:11.350 --> 00:00:14.847
+Next, we will create a new
+Jupyter Notebook, and
+
+5
+00:00:14.847 --> 00:00:17.937
+read the Shakespeare
+text into a Spark RDD.
+
+6
+00:00:17.937 --> 00:00:21.177
+We will then perform WordCount
+using map and reduce,
+
+7
+00:00:21.177 --> 00:00:24.352
+and write the results to HDFS and
+view the contents.
+
+8
+00:00:27.553 --> 00:00:29.301
+Let's begin.
+
+9
+00:00:29.301 --> 00:00:33.300
+In the intro to big data course,
+we copy the Shakespeare text into HDFS.
+
+10
+00:00:33.300 --> 00:00:36.630
+Let's see if it's still there.
+
+11
+00:00:36.630 --> 00:00:38.150
+If not, we can copy it now.
+
+12
+00:00:38.150 --> 00:00:42.180
+Click on the terminal icon
+at the top of the toolbar.
+
+13
+00:00:43.950 --> 00:00:49.830
+Now we can run hadoop fs- ls to see what's
+in our hadoop filesystem directory.
+
+14
+00:00:51.900 --> 00:00:54.380
+There are no files in HTFS,
+so let's copy it.
+
+15
+00:00:54.380 --> 00:01:01.070
+If you already have words.txt in your HTFS
+directory, you can skip this next step.
+
+16
+00:01:02.450 --> 00:01:06.837
+Cd into downloads,
+
+17
+00:01:06.837 --> 00:01:15.359
+big-data-3/spark-wordcount.
+
+18
+00:01:15.359 --> 00:01:17.450
+We can do ls to see the file.
+
+19
+00:01:18.960 --> 00:01:21.390
+Let's copy this file to HTFS.
+
+20
+00:01:21.390 --> 00:01:28.221
+We run Hadoop,
+fs copy from local, words.txt.
+
+21
+00:01:33.314 --> 00:01:37.800
+We can write Hadoop fs -ls again
+to verify that the file is there.
+
+22
+00:01:41.290 --> 00:01:42.600
+Now let's do work count in spark.
+
+23
+00:01:44.220 --> 00:01:47.380
+We will do this in an iPython
+notebook using Jupyter server.
+
+24
+00:01:49.070 --> 00:01:51.587
+Look on the web browser icon,
+the top of the toolbar.
+
+25
+00:01:55.112 --> 00:01:59.706
+And go to the Jupyter server URL,
+which is local host port 8889.
+
+26
+00:02:02.360 --> 00:02:04.789
+Next, let's create a new iPython notebook
+
+27
+00:02:10.685 --> 00:02:16.855
+The first step is to read the words.txt
+files in HTFS into a spark RDD.
+
+28
+00:02:16.855 --> 00:02:18.572
+We'll call the RDD, lines.
+
+29
+00:02:22.140 --> 00:02:27.128
+We can read it using the spark context SC,
+in calling the text file method.
+
+30
+00:02:32.609 --> 00:02:37.041
+The argument is the URL of
+the word set TXT file and HDFS.
+
+31
+00:02:47.270 --> 00:02:51.998
+Let's run this We can
+
+32
+00:02:51.998 --> 00:02:56.920
+view the contents of this RDD
+by calling lines.take(5).
+
+33
+00:03:01.553 --> 00:03:05.010
+The argument 5 says how many
+lines to show of the RDD.
+
+34
+00:03:06.930 --> 00:03:11.112
+Next, we'll transform this RDD
+of lines into an RDD of words.
+
+35
+00:03:11.112 --> 00:03:15.755
+We'll say, words = lines.flatmap,
+
+36
+00:03:18.940 --> 00:03:20.852
+lambda line:
+
+37
+00:03:24.123 --> 00:03:28.568
+line.split Double quote
+space double quote.
+
+38
+00:03:31.374 --> 00:03:38.852
+This creates a new RDD called, words,
+by running flatMap over the line RDD.
+
+39
+00:03:38.852 --> 00:03:41.092
+The argument is this lambda expression.
+
+40
+00:03:43.729 --> 00:03:47.310
+A lambda in Python is a simple way
+to declare a one line expression.
+
+41
+00:03:48.860 --> 00:03:51.890
+In this case,
+there's one argument called line and
+
+42
+00:03:51.890 --> 00:03:55.160
+we called it split method on this line and
+we split on spaces.
+
+43
+00:03:57.080 --> 00:03:59.720
+We can run this and
+look at the contents of words.
+
+44
+00:04:09.720 --> 00:04:12.500
+We can see that each element
+now is an individual word.
+
+45
+00:04:14.769 --> 00:04:17.136
+Next, we'll create tuples of these words.
+
+46
+00:04:18.907 --> 00:04:23.138
+We'll put them in a new RDD called tuples.
+
+47
+00:04:23.138 --> 00:04:26.405
+Enter, tuples
+
+48
+00:04:26.405 --> 00:04:31.433
+= words.map:lambda
+
+49
+00:04:31.433 --> 00:04:36.465
+word; (word, 1).
+
+50
+00:04:41.144 --> 00:04:45.080
+This creates the tuples
+by transforming words.
+
+51
+00:04:45.080 --> 00:04:47.370
+This uses map and another lambda function.
+
+52
+00:04:47.370 --> 00:04:53.400
+In this case, the lambda takes
+one argument and returns a tuple.
+
+53
+00:04:53.400 --> 00:04:55.350
+Where the first value of
+the tuple is the word.
+
+54
+00:04:56.500 --> 00:04:58.320
+The second value, is the number 1.
+
+55
+00:04:58.320 --> 00:05:04.460
+Not that in this case, we use map,
+whereas before, we used flat map.
+
+56
+00:05:06.490 --> 00:05:09.930
+In this case, we want a tuple for
+every word in the words.
+
+57
+00:05:09.930 --> 00:05:13.690
+So we have a one to one mapping
+between inputs and outputs.
+
+58
+00:05:13.690 --> 00:05:19.064
+Previously, while we were splitting lines
+into word, each line had multiple words.
+
+59
+00:05:21.677 --> 00:05:22.348
+In general,
+
+60
+00:05:22.348 --> 00:05:26.950
+you want to use map when you have a one to
+one mapping between inputs and outputs.
+
+61
+00:05:26.950 --> 00:05:31.804
+In flatMap you have a one to many or
+none mapping between inputs and
+
+62
+00:05:31.804 --> 00:05:37.607
+outputs Let's run this and look at tuples.
+
+63
+00:05:45.043 --> 00:05:50.538
+We can see that each word now has
+a tuple initialized with the count of 1.
+
+64
+00:05:50.538 --> 00:05:55.080
+We can now count all the words by
+combining or reducing these tuples.
+
+65
+00:05:55.080 --> 00:05:57.190
+We'll put this in a new RDD called counts.
+
+66
+00:05:58.660 --> 00:06:03.039
+So we'll say counts equals
+tuples.reduce by key.
+
+67
+00:06:07.602 --> 00:06:11.955
+Lambda a,b:.
+
+68
+00:06:11.955 --> 00:06:13.125
+a + b.
+
+69
+00:06:16.313 --> 00:06:20.038
+In this case, the lambda function
+takes two arguments, a and be, and
+
+70
+00:06:20.038 --> 00:06:22.199
+will return the result of adding a and b.
+
+71
+00:06:24.876 --> 00:06:26.071
+To view the result,
+
+72
+00:06:33.657 --> 00:06:37.815
+You can see now that the counts for
+each words have been created.
+
+73
+00:06:37.815 --> 00:06:40.839
+We can write this result back to HDFS.
+
+74
+00:06:40.839 --> 00:06:50.239
+Let's say
+counts.coalesce(1).saveAsTextFile,
+
+75
+00:06:50.239 --> 00:06:53.120
+and then the URL.
+
+76
+00:07:04.966 --> 00:07:09.675
+The coalesce means we only
+want a single output file.
+
+77
+00:07:09.675 --> 00:07:12.172
+Let's go back to our shell and
+view the results.
+
+78
+00:07:15.582 --> 00:07:18.930
+We'll run hadoop fs -ls
+to see the directory.
+
+79
+00:07:21.809 --> 00:07:24.553
+And run it again to look inside
+the wordcount directory.
+
+80
+00:07:29.294 --> 00:07:32.602
+And once more,
+to look inside wordcount/outputDir.
+
+81
+00:07:38.808 --> 00:07:45.420
+As you recall,
+the output from hadoop jobs is part-0000.
+
+82
+00:07:45.420 --> 00:07:48.837
+This is also true for spark jobs.
+
+83
+00:07:48.837 --> 00:07:51.484
+Let's copy this file to
+the local file system.
+
+84
+00:07:51.484 --> 00:07:55.899
+We'll run hadoop fs CopyToLocal
+
+85
+00:07:55.899 --> 00:08:02.212
+wordcount/outputDir/part-00000.
+
+86
+00:08:09.530 --> 00:08:11.066
+You can view the results with more.

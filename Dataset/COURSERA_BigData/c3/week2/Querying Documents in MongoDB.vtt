@@ -1,0 +1,357 @@
+WEBVTT
+
+1
+00:00:00.008 --> 00:00:04.900
+In this hands-on activity,
+we will be querying documents in MongoDB.
+
+2
+00:00:06.020 --> 00:00:10.480
+First, we will start a MongoDB server and
+then run the MongoDB Shell.
+
+3
+00:00:10.480 --> 00:00:15.730
+We will see how to show the databases and
+collections in the MongoDB Server.
+
+4
+00:00:15.730 --> 00:00:19.520
+We will look at an example
+document in the database and
+
+5
+00:00:19.520 --> 00:00:21.529
+see how to find distinct values for
+a field.
+
+6
+00:00:23.360 --> 00:00:26.540
+Next, we will search for
+specific field values and
+
+7
+00:00:26.540 --> 00:00:28.620
+see how to filter fields
+returned in a query.
+
+8
+00:00:30.530 --> 00:00:34.070
+Finally, we will search using
+regular expressions and operators.
+
+9
+00:00:36.903 --> 00:00:41.361
+Let's begin,
+first we'll start the MongoDB server.
+
+10
+00:00:41.361 --> 00:00:46.830
+Open the terminal window by clicking on
+the terminal icon, the top of the toolbar.
+
+11
+00:00:46.830 --> 00:00:53.680
+We'll cd into
+Downloads/big-data-3-mongodb.
+
+12
+00:00:53.680 --> 00:00:59.495
+We'll start the MongoDB server by running
+
+13
+00:00:59.495 --> 00:01:05.675
+./mongodb/bin/mongod --dbpath db.
+
+14
+00:01:05.675 --> 00:01:08.930
+The arguments dbpath db
+
+15
+00:01:08.930 --> 00:01:13.330
+specified that the database on
+MongoDB is in the directory named db.
+
+16
+00:01:15.260 --> 00:01:16.780
+Run this to start the server.
+
+17
+00:01:20.530 --> 00:01:24.413
+Next, we'll start the MongoDB Shell so
+that we can perform queries.
+
+18
+00:01:24.413 --> 00:01:29.416
+We'll open another terminal window.
+
+19
+00:01:29.416 --> 00:01:36.417
+Again, cd into
+Downloads/big-data-3-mongodb.
+
+20
+00:01:36.417 --> 00:01:41.955
+We'll start the shell by
+running ./mongodb/bin/mongo.
+
+21
+00:01:49.734 --> 00:01:55.237
+We can see what databases are available in
+the MongoDB server by running the command,
+
+22
+00:01:55.237 --> 00:01:55.933
+show dbs.
+
+23
+00:01:59.521 --> 00:02:02.680
+We've created the sample database
+with JSON data from Twitter.
+
+24
+00:02:04.400 --> 00:02:08.400
+We can use the use command
+to change to this database.
+
+25
+00:02:08.400 --> 00:02:10.245
+We'll run use sample.
+
+26
+00:02:13.078 --> 00:02:16.828
+We can see the collections in this
+database by running, show collections.
+
+27
+00:02:19.858 --> 00:02:22.656
+There's only one collection called users.
+
+28
+00:02:22.656 --> 00:02:26.987
+So, all of the queries will be
+using the users collection.
+
+29
+00:02:26.987 --> 00:02:31.945
+Let's count how many documents there
+are in the users collection by writing
+
+30
+00:02:31.945 --> 00:02:33.349
+db.users.count.
+
+31
+00:02:38.225 --> 00:02:43.241
+We can look at one of these documents
+by writing db.users.findOne.
+
+32
+00:02:51.078 --> 00:02:55.443
+This document contains
+Jason from a Twitter tweet.
+
+33
+00:02:55.443 --> 00:02:58.740
+You can see the field names
+here with their values.
+
+34
+00:02:58.740 --> 00:03:02.380
+There are also nested fields
+under the user field.
+
+35
+00:03:02.380 --> 00:03:04.410
+And each of these fields also has values.
+
+36
+00:03:05.730 --> 00:03:08.870
+You can find the distinct values for
+
+37
+00:03:08.870 --> 00:03:12.320
+particular field,
+by using the distinct command.
+
+38
+00:03:12.320 --> 00:03:15.058
+Let's find the distinct values for
+the username field.
+
+39
+00:03:15.058 --> 00:03:21.234
+We'll write
+db.users.distinct("user_name").
+
+40
+00:03:30.324 --> 00:03:35.193
+Next, let's find all the documents in
+this collection where the field username
+
+41
+00:03:35.193 --> 00:03:36.990
+matches the specific value.
+
+42
+00:03:38.050 --> 00:03:41.360
+The value we'll search for
+is ActionSportsJax.
+
+43
+00:03:42.730 --> 00:03:46.851
+We'll run the command db.users.find.
+
+44
+00:03:46.851 --> 00:03:49.980
+And the field name is username, and
+
+45
+00:03:49.980 --> 00:03:54.688
+the value we're searching for
+is ActionSportsJax.
+
+46
+00:04:04.405 --> 00:04:07.050
+Results of this query is
+compressed all in one line.
+
+47
+00:04:08.650 --> 00:04:11.401
+If we append the .pretty
+to the previous query.
+
+48
+00:04:11.401 --> 00:04:13.874
+We can see the formatted output.
+
+49
+00:04:13.874 --> 00:04:16.776
+So we'll run the same
+command with append .pretty.
+
+50
+00:04:23.289 --> 00:04:25.980
+We can filter the fields
+returned from the queries.
+
+51
+00:04:27.560 --> 00:04:31.709
+Let's perform the same query again but
+only show the tweet_id field.
+
+52
+00:04:33.200 --> 00:04:36.090
+We can do this by adding a second
+argument to the find command.
+
+53
+00:04:37.440 --> 00:04:42.648
+So we'll run the same command again,
+
+54
+00:04:42.648 --> 00:04:49.827
+but add a second argument,
+saying tweet_ID: 1.
+
+55
+00:04:49.827 --> 00:04:55.748
+The underscore ID field is a primary
+key used in all documents in MongoDB.
+
+56
+00:04:55.748 --> 00:04:58.280
+You can turn this off by adding
+another field to our filter.
+
+57
+00:05:00.130 --> 00:05:03.287
+We'll run the same command again,
+but turn of _ID.
+
+58
+00:05:11.820 --> 00:05:16.550
+Next, we use the regular expression search
+to find strings containing the document.
+
+59
+00:05:17.680 --> 00:05:21.640
+For example, if we want to find all
+the tweets containing the text FIFA,
+
+60
+00:05:21.640 --> 00:05:25.171
+we can run db.users.find tweet_text FIFA.
+
+61
+00:05:32.170 --> 00:05:35.850
+There are no results in this query
+because this query is searching for
+
+62
+00:05:35.850 --> 00:05:37.580
+tweet text equals FIFA.
+
+63
+00:05:39.030 --> 00:05:43.590
+That is the entire contents and
+the value of tweet_text must be FIFA.
+
+64
+00:05:44.720 --> 00:05:46.110
+Instead, if we want to look for
+
+65
+00:05:46.110 --> 00:05:51.230
+FIFA anywhere in the tweet_text,
+we can do a regular expression search.
+
+66
+00:05:51.230 --> 00:05:55.750
+To do this,
+replace the double quotes with slashes.
+
+67
+00:05:55.750 --> 00:05:57.850
+So we'll run the same command again.
+
+68
+00:05:57.850 --> 00:06:03.573
+But replacing double quotes with slashes.
+
+69
+00:06:03.573 --> 00:06:07.423
+We can count how many documents are
+returned by this query by running the same
+
+70
+00:06:07.423 --> 00:06:09.540
+command again, but appending .count.
+
+71
+00:06:13.325 --> 00:06:17.948
+We can also search for documents in
+MongoDB where the field values are greater
+
+72
+00:06:17.948 --> 00:06:20.020
+than or less than a certain value.
+
+73
+00:06:21.170 --> 00:06:26.162
+For example, lets find tweet
+mention count greater than six.
+
+74
+00:06:26.162 --> 00:06:32.977
+We'll run db.users.find, and
+the field name is tweet_mentioned_count.
+
+75
+00:06:35.670 --> 00:06:41.265
+And we want to look for the value
+where this field is greater than six.
+
+76
+00:06:41.265 --> 00:06:47.940
+So I'll enter a { $gt : 6 }.

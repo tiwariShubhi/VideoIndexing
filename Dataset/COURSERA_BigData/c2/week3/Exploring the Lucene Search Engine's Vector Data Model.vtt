@@ -1,0 +1,228 @@
+WEBVTT
+
+1
+00:00:01.350 --> 00:00:04.350
+In this hands on activity,
+we will be working with Lucene,
+
+2
+00:00:04.350 --> 00:00:07.310
+a search engine that uses a vector
+space model to index data.
+
+3
+00:00:08.430 --> 00:00:10.580
+First, we will open a terminal window and
+
+4
+00:00:10.580 --> 00:00:14.200
+change into the directory
+containing the data and scripts.
+
+5
+00:00:14.200 --> 00:00:18.700
+Next, we will index some text
+documents and query terms in Lucene.
+
+6
+00:00:19.960 --> 00:00:22.538
+After that we'll query
+using weighted terms or
+
+7
+00:00:22.538 --> 00:00:25.810
+boosting to see how this
+changes the rankings.
+
+8
+00:00:25.810 --> 00:00:30.045
+Finally, we will show the term
+frequency-inverse document frequency or
+
+9
+00:00:30.045 --> 00:00:32.988
+TF-IDF in terms.
+
+10
+00:00:32.988 --> 00:00:35.300
+Let's begin.
+
+11
+00:00:35.300 --> 00:00:39.139
+First, let's open a terminal window by
+clicking on the terminal icon at the top
+
+12
+00:00:39.139 --> 00:00:39.953
+of the tool bar.
+
+13
+00:00:43.413 --> 00:00:47.090
+Next, let's cd into the directory
+containing the scripts and data.
+
+14
+00:00:47.090 --> 00:00:48.679
+We'll run cd
+
+15
+00:00:48.679 --> 00:00:58.560
+Downloads/big-data-2/vector/.
+
+16
+00:00:58.560 --> 00:01:02.201
+We'll run ls to see the scripts.
+
+17
+00:01:06.543 --> 00:01:09.670
+The data directory
+contains three text files.
+
+18
+00:01:09.670 --> 00:01:13.310
+Each of these text files contains
+news data about elections.
+
+19
+00:01:15.730 --> 00:01:21.497
+Let's index these files by
+running runLuceneQuery.sh data.
+
+20
+00:01:28.974 --> 00:01:35.740
+Next, let's query Lucene for some terms in
+these text documents and see the rankings.
+
+21
+00:01:35.740 --> 00:01:37.970
+Let's query for the term voters.
+
+22
+00:01:43.242 --> 00:01:47.973
+You can see the rankings and
+scores that news1.csv ranked first,
+
+23
+00:01:47.973 --> 00:01:52.900
+news2.csv was the second ranking,
+and the third was news3.csv.
+
+24
+00:01:52.900 --> 00:01:56.359
+Let's query for delegates.
+
+25
+00:01:56.359 --> 00:02:01.324
+For this term, we see that news2.csv
+
+26
+00:02:01.324 --> 00:02:06.288
+was first, and news1 was second, and
+
+27
+00:02:06.288 --> 00:02:11.260
+news3 did not contain the term at all.
+
+28
+00:02:13.710 --> 00:02:17.275
+Now, let's query for both terms,
+voters and delegates.
+
+29
+00:02:17.275 --> 00:02:24.935
+In this result we see that
+news2 was ranked first,
+
+30
+00:02:24.935 --> 00:02:29.566
+news1 was ranked second, and
+
+31
+00:02:29.566 --> 00:02:33.500
+news3 was ranked third.
+
+32
+00:02:35.230 --> 00:02:37.000
+Now lets use query term waiting or
+
+33
+00:02:37.000 --> 00:02:40.920
+boosting to increase
+the relevance of voters.
+
+34
+00:02:40.920 --> 00:02:45.900
+I can do this by ensuring
+voters carat 5 delegates.
+
+35
+00:02:45.900 --> 00:02:53.524
+The carat 5 notation is a syntax for
+
+36
+00:02:53.524 --> 00:02:58.360
+Lucene for boosting.
+
+37
+00:02:59.890 --> 00:03:05.990
+When we run this, we see that now,
+news1 is ranked first,
+
+38
+00:03:05.990 --> 00:03:10.170
+news2 is ranked second,
+and news3 is ranked third.
+
+39
+00:03:10.170 --> 00:03:14.500
+Notice this is different from the original
+query with voters and delegates,
+
+40
+00:03:14.500 --> 00:03:18.100
+where news2 is ranked first and
+news1 was ranked second.
+
+41
+00:03:20.210 --> 00:03:23.890
+Now let's look at the term frequency,
+inverse document frequency or TF-IDF.
+
+42
+00:03:23.890 --> 00:03:28.465
+We'll enter q to quit this and
+
+43
+00:03:28.465 --> 00:03:33.960
+we'll run Lucene TF-IDF SH data.
+
+44
+00:03:45.380 --> 00:03:51.000
+Let's look at the TF-IDF for voters.
+
+45
+00:03:51.000 --> 00:03:53.320
+You can see that it ranked number 1 for
+news1.
+
+46
+00:03:54.370 --> 00:03:58.160
+Second news 2 and news 3 is last.
+
+47
+00:03:58.160 --> 00:03:59.170
+Lets try delegates.
+
+48
+00:04:05.110 --> 00:04:09.040
+Here we see that news 2 had
+a higher score than news 1,
+
+49
+00:04:09.040 --> 00:04:12.850
+and news 3 is not listed because
+news 3 does not contain this term.
+
+50
+00:04:13.870 --> 00:04:14.590
+Hit q to quit.

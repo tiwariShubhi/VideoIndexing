@@ -1,0 +1,535 @@
+WEBVTT
+
+1
+00:00:02.542 --> 00:00:07.110
+The first up in our rapid tour
+of modern systems is Redis.
+
+2
+00:00:08.420 --> 00:00:12.690
+Redis calls itself an in-memory
+data structure store.
+
+3
+00:00:12.690 --> 00:00:18.540
+In simple terms, Redis is not a full blown
+DBMS, in the sense we discussed earlier.
+
+4
+00:00:19.620 --> 00:00:24.490
+It can persist data on disks, and
+does so to save its state, but
+
+5
+00:00:24.490 --> 00:00:29.840
+it's intended use is to optimally
+use memory and memory based methods
+
+6
+00:00:29.840 --> 00:00:33.840
+to make a number of common data
+structures very fast for lots of users.
+
+7
+00:00:35.000 --> 00:00:37.649
+Here is a list of data
+structures that Redis supports.
+
+8
+00:00:41.084 --> 00:00:46.410
+A good way to think about them is
+to think of a data lookup problem.
+
+9
+00:00:46.410 --> 00:00:50.160
+Now, in the simplest case,
+a lookup needs a key value pair
+
+10
+00:00:50.160 --> 00:00:54.650
+where the key is a string and
+the value is also a string.
+
+11
+00:00:54.650 --> 00:00:59.000
+So for a lookup we provide the key and
+get back the value.
+
+12
+00:00:59.000 --> 00:01:00.550
+Simple, right?
+
+13
+00:01:00.550 --> 00:01:01.050
+Let's see.
+
+14
+00:01:02.760 --> 00:01:05.510
+I'm sure you've seen captures like this.
+
+15
+00:01:07.090 --> 00:01:11.770
+These are small images used by websites
+to ensure that the user is a human and
+
+16
+00:01:11.770 --> 00:01:12.370
+not a robot.
+
+17
+00:01:13.470 --> 00:01:17.810
+The images presented to the user,
+who is supposed to write the text he or
+
+18
+00:01:17.810 --> 00:01:20.990
+she sees in the image, into a text box.
+
+19
+00:01:20.990 --> 00:01:23.010
+Upon success, the user is let in.
+
+20
+00:01:24.100 --> 00:01:28.900
+To implement this,
+one obviously needs a key value stored,
+
+21
+00:01:28.900 --> 00:01:31.500
+where the key is the idea of the image.
+
+22
+00:01:31.500 --> 00:01:33.230
+And the value is the desired text.
+
+23
+00:01:34.610 --> 00:01:39.900
+Now what if we wanted to use
+the image itself as the key,
+
+24
+00:01:39.900 --> 00:01:42.940
+instead of an ID number that
+you generate separately?
+
+25
+00:01:44.580 --> 00:01:46.160
+The content of the image,
+
+26
+00:01:46.160 --> 00:01:51.400
+which let's say is a .jpg file,
+can be thought of as a binary string.
+
+27
+00:01:51.400 --> 00:01:52.706
+But can it serve as a key then?
+
+28
+00:01:52.706 --> 00:01:56.050
+According to the Redis specification,
+it can.
+
+29
+00:01:57.360 --> 00:02:00.050
+The Redis string can be binary and
+
+30
+00:02:00.050 --> 00:02:05.770
+can have a size of up to 512 megabytes,
+although its internal limit is higher.
+
+31
+00:02:06.840 --> 00:02:12.169
+So, small images like this can indeed
+be used as binary string keys.
+
+32
+00:02:14.040 --> 00:02:19.100
+In some application scenarios,
+keys may have an internal structure.
+
+33
+00:02:19.100 --> 00:02:23.090
+For example,
+product codes may have product family,
+
+34
+00:02:23.090 --> 00:02:28.040
+manufacturing batch, and the actual
+product ID strung together into one ID.
+
+35
+00:02:29.250 --> 00:02:33.710
+The example shown here is a typical
+Twitter style key to store the response
+
+36
+00:02:33.710 --> 00:02:35.500
+to comment one, two, three, four.
+
+37
+00:02:37.240 --> 00:02:40.980
+How long do we want to
+keep the comment around,
+
+38
+00:02:40.980 --> 00:02:45.240
+this is a standard big data issue
+when it comes to streaming data
+
+39
+00:02:45.240 --> 00:02:48.680
+whose data values have limited
+utility beyond the certain period.
+
+40
+00:02:50.540 --> 00:02:52.000
+One typically would not look for
+
+41
+00:02:52.000 --> 00:02:55.110
+this response possibly three
+months after the conversation.
+
+42
+00:02:56.410 --> 00:03:00.490
+One would certainly not like to keep
+such a value in memory for a long time.
+
+43
+00:03:00.490 --> 00:03:04.250
+Because the memory is being used as
+a cache for rapid access to current data.
+
+44
+00:03:05.510 --> 00:03:11.250
+In fact Redis has the ability
+to delete an expired key and
+
+45
+00:03:11.250 --> 00:03:14.230
+can be made to call a function
+to generate a new key.
+
+46
+00:03:16.210 --> 00:03:19.580
+An interesting side
+benefits to structured keys
+
+47
+00:03:19.580 --> 00:03:22.830
+that it can encode
+a hierarchy to the structure.
+
+48
+00:03:22.830 --> 00:03:23.490
+In the example,
+
+49
+00:03:23.490 --> 00:03:28.449
+we show keys that represent
+increasingly finer subgroups of users.
+
+50
+00:03:30.290 --> 00:03:31.730
+With this structure,
+
+51
+00:03:31.730 --> 00:03:36.433
+a lookup on user.commercial.entertainment
+will also retrieve values
+
+52
+00:03:36.433 --> 00:03:40.390
+from user.commercial.entertainment.movie
+industry.
+
+53
+00:03:43.330 --> 00:03:49.390
+A slightly more complex case occurs
+when the value is not atomic,
+
+54
+00:03:49.390 --> 00:03:54.300
+but a collection object like a list
+which by definition is an ordered set.
+
+55
+00:03:55.720 --> 00:03:58.218
+An example of such a list
+can come from Twitter,
+
+56
+00:03:58.218 --> 00:04:02.760
+that uses Redis list to store timelines.
+
+57
+00:04:02.760 --> 00:04:05.860
+Now borrowed from a Twitter presentation
+about their timeline architecture
+
+58
+00:04:06.920 --> 00:04:10.880
+our timeline service can
+take a specific ID, and
+
+59
+00:04:10.880 --> 00:04:14.550
+it quickly identifies all tweets of
+this user that are in the cache.
+
+60
+00:04:16.010 --> 00:04:19.310
+These tweets are then populated
+by the content of the tweet,
+
+61
+00:04:19.310 --> 00:04:21.460
+then returned as a result.
+
+62
+00:04:21.460 --> 00:04:26.000
+This list can be long, but the insertion
+and delete operations on the list
+
+63
+00:04:26.000 --> 00:04:28.970
+can be performed in constant
+time which is in milliseconds.
+
+64
+00:04:30.220 --> 00:04:35.110
+If a tweet is retweeted,
+the IDs of those tweets are also added
+
+65
+00:04:35.110 --> 00:04:38.820
+to the list of the first tweet, as you can
+see for the three cases in the figure.
+
+66
+00:04:41.099 --> 00:04:45.210
+When the lists are long,
+space saving becomes an important issue.
+
+67
+00:04:46.480 --> 00:04:50.370
+So Redis employs a method called
+Ziplists which essentially
+
+68
+00:04:50.370 --> 00:04:54.700
+compacts the size of the list in
+memory without changing the content.
+
+69
+00:04:54.700 --> 00:04:57.620
+Often producing significant
+reduction in memory used.
+
+70
+00:04:59.150 --> 00:05:01.890
+Of course,
+while Ziplists are very efficient for
+
+71
+00:05:01.890 --> 00:05:06.240
+retrieval, they are a little more complex
+for insertion and deletion operations.
+
+72
+00:05:08.100 --> 00:05:11.100
+Since Redis is an open source system,
+
+73
+00:05:11.100 --> 00:05:15.070
+Twitter made a few innovations
+on the Redis data structures.
+
+74
+00:05:15.070 --> 00:05:20.470
+One of these innovations is that
+they created lists of Ziplists.
+
+75
+00:05:20.470 --> 00:05:24.480
+This gave them the flexibility of
+having constant timing insertions and
+
+76
+00:05:24.480 --> 00:05:28.970
+deletions and at the same time used the
+compressed representation to save space.
+
+77
+00:05:30.880 --> 00:05:35.830
+In 2012, the timeline service has about
+
+78
+00:05:35.830 --> 00:05:41.220
+40 terabytes of main memory, serving
+30 million user queries per second.
+
+79
+00:05:41.220 --> 00:05:44.589
+Running on over 6,000
+machines in one data center.
+
+80
+00:05:45.870 --> 00:05:51.280
+For those interested I would like to point
+you to two wonderful Twitter presentation
+
+81
+00:05:51.280 --> 00:05:55.200
+explaining Twitter's use of Redis
+among other design issue for
+
+82
+00:05:55.200 --> 00:05:56.790
+a realtime data system like Twitter.
+
+83
+00:05:58.740 --> 00:06:01.800
+We also introduce links in
+the supplemental readings for this lesson.
+
+84
+00:06:05.843 --> 00:06:10.949
+Now the value to be looked up by the keys
+can actually be more complicated and
+
+85
+00:06:10.949 --> 00:06:15.260
+can be records containing
+attribute value pairs themselves.
+
+86
+00:06:17.110 --> 00:06:18.939
+Redis values can be hashes
+
+87
+00:06:20.010 --> 00:06:24.970
+which are essentially named containers
+of unique fields and their values.
+
+88
+00:06:26.010 --> 00:06:29.210
+In the example, the key, std:101,
+
+89
+00:06:29.210 --> 00:06:33.960
+is associated with five
+attributed value pairs.
+
+90
+00:06:35.150 --> 00:06:38.330
+The hashed attributes
+are stored very efficiently.
+
+91
+00:06:38.330 --> 00:06:43.570
+And even when the list of attributed
+value pairs in a hash is really long,
+
+92
+00:06:43.570 --> 00:06:45.110
+retrieval is efficient.
+
+93
+00:06:48.250 --> 00:06:50.240
+Horizontal scalability or
+
+94
+00:06:50.240 --> 00:06:54.710
+scale out capabilities refers
+to the ability of a system
+
+95
+00:06:54.710 --> 00:06:59.170
+to achieve scalability when the number
+of machines it operates on is increased.
+
+96
+00:07:00.720 --> 00:07:06.380
+Redis allows data partitioning through
+range partitioning and hash partitioning.
+
+97
+00:07:07.600 --> 00:07:13.110
+Rate partitioning takes a numeric key and
+breaks up the range of keys into bins.
+
+98
+00:07:13.110 --> 00:07:18.610
+In this case, by bins of 10,000
+each of bin is assigned a machine.
+
+99
+00:07:20.730 --> 00:07:24.940
+And ultimately, a partitioning is where
+computing a hashing function on a key.
+
+100
+00:07:26.060 --> 00:07:28.360
+Suppose we have 10 machines.
+
+101
+00:07:28.360 --> 00:07:31.690
+We pick the key and use the hash
+function to get back a number.
+
+102
+00:07:33.050 --> 00:07:37.560
+We represent the number, modular 10,
+and the result, in this case,
+
+103
+00:07:37.560 --> 00:07:40.920
+2, is the machine to which
+the record will be allocated.
+
+104
+00:07:43.979 --> 00:07:48.110
+Replication is accomplished in
+Redis through master-slave mode.
+
+105
+00:07:50.350 --> 00:07:54.110
+The slaves have a copy of the master node.
+
+106
+00:07:54.110 --> 00:07:55.940
+And can serve read queries.
+
+107
+00:07:58.090 --> 00:08:00.850
+Clients write to the master node.
+
+108
+00:08:00.850 --> 00:08:03.280
+And master node replicates to the slaves.
+
+109
+00:08:05.310 --> 00:08:08.090
+Clients read from the slaves to
+scale up the read performance.
+
+110
+00:08:09.190 --> 00:08:11.760
+The replication processes are synchronous.
+
+111
+00:08:11.760 --> 00:08:16.040
+That is that slaves do not get replicated
+data, it locks them with each other.
+
+112
+00:08:17.360 --> 00:08:20.540
+However, the replication
+process does ensure
+
+113
+00:08:20.540 --> 00:08:22.120
+that they're consistent with each other.

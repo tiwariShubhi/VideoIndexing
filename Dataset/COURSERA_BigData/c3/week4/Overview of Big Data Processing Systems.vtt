@@ -1,0 +1,443 @@
+WEBVTT
+
+1
+00:00:01.670 --> 00:00:05.470
+There are many big data
+processing systems, but
+
+2
+00:00:05.470 --> 00:00:09.260
+how do we make sense of them in order to
+take full advantage of these systems?
+
+3
+00:00:10.320 --> 00:00:13.820
+In this video,
+we will review some of them, and
+
+4
+00:00:13.820 --> 00:00:17.600
+a way to categorize big data processing
+systems as we go through our review.
+
+5
+00:00:19.290 --> 00:00:24.330
+After this video, you will be able
+to recall the Hadoop ecosystem,
+
+6
+00:00:25.490 --> 00:00:30.050
+draw a layer diagram with three layers for
+data storage, data processing and
+
+7
+00:00:30.050 --> 00:00:31.930
+workflow management.
+
+8
+00:00:31.930 --> 00:00:36.800
+Summarize an evaluation criteria for
+big data processing systems and
+
+9
+00:00:36.800 --> 00:00:41.363
+explain the properties of Hadoop,
+Spark, Flink,
+
+10
+00:00:41.363 --> 00:00:45.720
+Beam, and Storm as major big
+data processing systems.
+
+11
+00:00:46.750 --> 00:00:49.900
+In our introduction to big data course,
+
+12
+00:00:49.900 --> 00:00:53.500
+we talked about a version of
+the layer diagram for the tools
+
+13
+00:00:53.500 --> 00:00:59.030
+in the Hadoop ecosystem organized
+vertically based on the interface.
+
+14
+00:00:59.030 --> 00:01:03.225
+Lower level interface is the storage and
+scheduling on the bottom and
+
+15
+00:01:03.225 --> 00:01:06.560
+higher level languages and
+interactivity at the top.
+
+16
+00:01:07.830 --> 00:01:12.040
+Most of the tools in the Hadoop ecosystem
+are initially built to complement
+
+17
+00:01:12.040 --> 00:01:17.410
+the capabilities of Hadoop for distributed
+filesystem management using HDFS.
+
+18
+00:01:18.440 --> 00:01:23.240
+Data processing using the MapReduce
+engine, and resource scheduling and
+
+19
+00:01:23.240 --> 00:01:25.210
+negotiation using the YARN engine.
+
+20
+00:01:26.310 --> 00:01:30.170
+Over time,
+a number of new projects were built
+
+21
+00:01:30.170 --> 00:01:35.150
+either to add to these
+complimentary tools or to handle
+
+22
+00:01:35.150 --> 00:01:39.750
+additional types of big data management
+and processing not available in Hadoop.
+
+23
+00:01:41.520 --> 00:01:46.250
+Arguably, the most important
+change to Hadoop over time
+
+24
+00:01:46.250 --> 00:01:51.210
+was the separation of YARN from
+the MapReduce programming model
+
+25
+00:01:51.210 --> 00:01:54.510
+to solely handle resource
+management concerns.
+
+26
+00:01:55.780 --> 00:02:00.660
+This allowed for Hadoop to be extensible
+to different programming models.
+
+27
+00:02:00.660 --> 00:02:04.950
+And enabled the development of
+a number of processing engines for
+
+28
+00:02:04.950 --> 00:02:06.920
+batch and stream processing.
+
+29
+00:02:08.250 --> 00:02:12.580
+Another way to look at the vast number of
+tools that have been added to the Hadoop
+
+30
+00:02:12.580 --> 00:02:15.170
+ecosystem, is from the point of view of
+
+31
+00:02:15.170 --> 00:02:17.820
+their functionality in the big
+data processing pipeline.
+
+32
+00:02:18.870 --> 00:02:24.500
+Simply put, these associate to three
+distinct layers for data management and
+
+33
+00:02:24.500 --> 00:02:31.380
+storage, data processing, and resource
+coordination and workflow management.
+
+34
+00:02:32.550 --> 00:02:37.760
+In our second course,
+we talked about the bottom layer
+
+35
+00:02:37.760 --> 00:02:42.770
+in this diagram in detail,
+namely the data management and storage.
+
+36
+00:02:44.600 --> 00:02:50.440
+While this layer includs Hadoop's HDFS
+there are a number of other systems that
+
+37
+00:02:50.440 --> 00:02:56.250
+rely on HDFS as a file system or implement
+their own no SQL storage options.
+
+38
+00:02:58.290 --> 00:03:02.940
+As big data can have a variety of
+structure, semi structured and
+
+39
+00:03:02.940 --> 00:03:07.858
+unstructured formats, and
+gets analyzed through a variety of tools,
+
+40
+00:03:07.858 --> 00:03:12.890
+many tools were introduced to
+fit this variety of needs.
+
+41
+00:03:12.890 --> 00:03:15.180
+We call these big data management systems.
+
+42
+00:03:18.040 --> 00:03:22.630
+We reviewed redis and
+Aerospike as key value stores,
+
+43
+00:03:22.630 --> 00:03:25.670
+where each data item is
+identified with a unique key.
+
+44
+00:03:27.150 --> 00:03:30.827
+We got some practical
+experience with Lucene and
+
+45
+00:03:30.827 --> 00:03:35.048
+Gephi as vector and
+graph data stores, respectively.
+
+46
+00:03:36.800 --> 00:03:40.505
+We also talked about Vertica
+as a column store database,
+
+47
+00:03:40.505 --> 00:03:44.300
+where information is stored
+in columns rather than rows.
+
+48
+00:03:45.880 --> 00:03:49.070
+Cassandra and
+Hbase are also in this category.
+
+49
+00:03:50.270 --> 00:03:56.402
+Finally, we introduce Solr and
+Asterisk DB for managing unstructured and
+
+50
+00:03:56.402 --> 00:04:02.260
+semi-structured text, and
+mongoDB as a document store.
+
+51
+00:04:02.260 --> 00:04:07.547
+The processing layer is where these
+different varieties of data gets
+
+52
+00:04:07.547 --> 00:04:14.030
+retrieved, integrated, and analyzed,
+which is the primary focus of this class.
+
+53
+00:04:16.232 --> 00:04:19.061
+In the integration and processing layer
+
+54
+00:04:19.061 --> 00:04:23.966
+we roughly refer to the tools that
+are built on top of the HDFS and YARN,
+
+55
+00:04:23.966 --> 00:04:28.480
+although some of them work with
+other storage and file systems.
+
+56
+00:04:30.180 --> 00:04:37.140
+YARN is a significant enabler of many of
+these tools making a number of batch and
+
+57
+00:04:37.140 --> 00:04:42.111
+stream processing engines like Storm,
+Spark, Flink and being possible.
+
+58
+00:04:43.700 --> 00:04:47.340
+We will revisit these processing
+engines and explain why we have so
+
+59
+00:04:47.340 --> 00:04:48.890
+many later in this lecture.
+
+60
+00:04:49.970 --> 00:04:54.940
+This layer also includes tools like Hive,
+or Spark SQL, for
+
+61
+00:04:54.940 --> 00:04:59.120
+bringing a query interface
+on top of the storage layer.
+
+62
+00:04:59.120 --> 00:05:04.280
+Pig, for scripting simple big data
+pipelines using the MapReduce framework.
+
+63
+00:05:04.280 --> 00:05:09.009
+And a number of specialized analytical
+libraries for machine learning and
+
+64
+00:05:09.009 --> 00:05:14.262
+graph analytics, like Giraph as GraphX of
+Spark are examples of such libraries for
+
+65
+00:05:14.262 --> 00:05:15.551
+graph processing.
+
+66
+00:05:15.551 --> 00:05:20.187
+And Mahout on top of the Hadoop stack and
+MLlib of Spark are two options for
+
+67
+00:05:20.187 --> 00:05:21.480
+machine learning.
+
+68
+00:05:22.640 --> 00:05:26.760
+Although we have a basic overview of
+graph processing and machine learning for
+
+69
+00:05:26.760 --> 00:05:31.700
+big data analytics later in this course,
+we won't go into the details here.
+
+70
+00:05:31.700 --> 00:05:36.530
+Instead, we will have a dedicated
+course on each of them
+
+71
+00:05:36.530 --> 00:05:38.670
+later in this specialization.
+
+72
+00:05:38.670 --> 00:05:46.720
+The third and top layer in our diagram is
+the coordination and management layer.
+
+73
+00:05:46.720 --> 00:05:50.890
+This is where integration,
+scheduling, coordination, and
+
+74
+00:05:50.890 --> 00:05:56.410
+monitoring of applications across many
+tools in the bottom two layers take place.
+
+75
+00:05:57.440 --> 00:06:01.870
+This layer is also where the results of
+the big data analysis gets communicated to
+
+76
+00:06:01.870 --> 00:06:07.630
+other programs, websites, visualization
+tools, and business intelligence tools.
+
+77
+00:06:07.630 --> 00:06:12.830
+Workflow management systems help to
+develop automated solutions that can
+
+78
+00:06:12.830 --> 00:06:17.960
+manage and coordinate the process of
+combining data management and analytical
+
+79
+00:06:17.960 --> 00:06:23.264
+tests in a big data pipeline, as
+a configurable, structured set of steps.
+
+80
+00:06:25.020 --> 00:06:29.544
+The workflow driven thinking also
+matches this basic process of data
+
+81
+00:06:29.544 --> 00:06:31.970
+science that we overviewed before.
+
+82
+00:06:33.220 --> 00:06:37.420
+Oozie is an example of a workflow
+scheduler that can interact with
+
+83
+00:06:37.420 --> 00:06:40.295
+many of the tools in the integration and
+processing layer.
+
+84
+00:06:41.690 --> 00:06:46.390
+Zookeeper is the resource coordination and
+monitoring tool and
+
+85
+00:06:46.390 --> 00:06:50.990
+manages and coordinates all these tools
+and middleware named after animals.
+
+86
+00:06:52.460 --> 00:06:56.429
+Although virtual management is
+my personal research area and
+
+87
+00:06:56.429 --> 00:06:58.793
+I talk more about it in other venues,
+
+88
+00:06:58.793 --> 00:07:03.999
+in this specialization we focus mainly
+on big data integration and processing.
+
+89
+00:07:03.999 --> 00:07:09.450
+And we will not have a specific
+lecture on this layer in this course.
+
+90
+00:07:09.450 --> 00:07:13.430
+We give you a reading on big data
+workflows after this video as
+
+91
+00:07:13.430 --> 00:07:16.750
+further information and
+a starting point for the subject.

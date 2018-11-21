@@ -1,0 +1,264 @@
+WEBVTT
+
+1
+00:00:02.180 --> 00:00:05.380
+In this hands on activity,
+we will be performing queries in Splunk.
+
+2
+00:00:06.620 --> 00:00:09.980
+First, we will open a browser and
+login to Splunk.
+
+3
+00:00:09.980 --> 00:00:13.590
+Next, we will import a CSV file and
+search its contents.
+
+4
+00:00:13.590 --> 00:00:18.030
+We will see how to filter fields for
+specific values and
+
+5
+00:00:18.030 --> 00:00:20.532
+also perform statistical
+calculations on the data.
+
+6
+00:00:20.532 --> 00:00:23.678
+Let's begin.
+
+7
+00:00:23.678 --> 00:00:28.236
+First, open a web browser and
+navigate to the Splunk web page.
+
+8
+00:00:28.236 --> 00:00:33.103
+We'll enter localhost:8000.
+
+9
+00:00:36.793 --> 00:00:41.870
+Next we'll log in to Splunk using
+admin and the default password.
+
+10
+00:00:51.160 --> 00:00:55.231
+Next, we'll import a CSV file into Splunk.
+
+11
+00:00:55.231 --> 00:00:56.952
+We'll click on Add Data.
+
+12
+00:01:00.159 --> 00:01:05.704
+Upload We'll click on Select File.
+
+13
+00:01:08.366 --> 00:01:11.838
+And we'll choose the census.csv
+file that we downloaded.
+
+14
+00:01:16.364 --> 00:01:17.583
+Click Next.
+
+15
+00:01:22.148 --> 00:01:25.010
+On the left,
+it should say source type csv.
+
+16
+00:01:25.010 --> 00:01:30.066
+If it does not, click on the button and
+
+17
+00:01:30.066 --> 00:01:35.128
+go down to Structured and select csv.
+
+18
+00:01:35.128 --> 00:01:37.290
+In this table,
+we see a preview of the data.
+
+19
+00:01:39.050 --> 00:01:42.100
+You should see the column names
+of the CSV file at the top.
+
+20
+00:01:44.260 --> 00:01:45.360
+Click on Next.
+
+21
+00:01:48.372 --> 00:01:49.888
+Review.
+
+22
+00:01:51.026 --> 00:01:52.227
+And Submit.
+
+23
+00:01:54.602 --> 00:01:58.797
+Now that the file has been imported
+successfully, click on Start Searching.
+
+24
+00:02:04.511 --> 00:02:09.539
+In the search box,
+it fills in the default query,
+
+25
+00:02:09.539 --> 00:02:16.260
+source="cencus.csv" the host name and
+sourcetype="csv"
+
+26
+00:02:18.161 --> 00:02:22.067
+We could change these fields
+to search other files or
+
+27
+00:02:22.067 --> 00:02:25.894
+other data types if we
+imported those into Splunk.
+
+28
+00:02:25.894 --> 00:02:31.135
+Now let's search census.csv for
+particular values in the fields.
+
+29
+00:02:31.135 --> 00:02:34.478
+Let's search for all the data
+where the state is California.
+
+30
+00:02:37.251 --> 00:02:40.908
+We'll enter STNAME="California".
+
+31
+00:02:46.621 --> 00:02:50.521
+You'll see the results down here.
+
+32
+00:02:50.521 --> 00:02:53.604
+You could search for
+other states by using or.
+
+33
+00:02:53.604 --> 00:02:57.581
+For example, we can add OR
+STNAME="Alaska".
+
+34
+00:02:57.581 --> 00:03:01.840
+This will search for
+state names equal to California or Alaska.
+
+35
+00:03:05.450 --> 00:03:07.270
+We can add conditions
+to our query as well.
+
+36
+00:03:07.270 --> 00:03:14.930
+Let's search for state equals California
+whose population was over one million.
+
+37
+00:03:14.930 --> 00:03:21.467
+We'll do this by saying
+STNAME = "California"
+
+38
+00:03:21.467 --> 00:03:26.925
+CENSUS2010POP > 1000000.
+
+39
+00:03:32.477 --> 00:03:35.900
+Can limit the results to one or
+more columns.
+
+40
+00:03:35.900 --> 00:03:42.446
+You do this by adding pipe table
+CTYNAME to the end of our query.
+
+41
+00:03:47.573 --> 00:03:52.336
+In Spunk queries, the pipe command is used
+to send the outputs from the first part of
+
+42
+00:03:52.336 --> 00:03:53.778
+the query into the next.
+
+43
+00:03:56.139 --> 00:03:58.441
+You can also show more than
+one column from the output.
+
+44
+00:03:58.441 --> 00:04:02.982
+If we add a comma CENSUS2010POP
+to the end of this,
+
+45
+00:04:02.982 --> 00:04:07.145
+we'll see both the city name and
+the population.
+
+46
+00:04:07.145 --> 00:04:10.944
+You can also see a visualization of this
+data by clicking on the Visualization tab.
+
+47
+00:04:13.883 --> 00:04:18.344
+At the bottom, on the x-axis,
+we see the county names, and
+
+48
+00:04:18.344 --> 00:04:21.420
+the y values are the population numbers.
+
+49
+00:04:24.300 --> 00:04:27.994
+Now let's perform some
+statistics on this data.
+
+50
+00:04:27.994 --> 00:04:31.630
+We'll begin by counting the number of
+records where the state is California.
+
+51
+00:04:33.570 --> 00:04:39.951
+You can do this by saying
+STNAME="California" pipe stats count.
+
+52
+00:04:44.282 --> 00:04:49.468
+Now switch back to the statistics tab,
+see the result here
+
+53
+00:04:52.360 --> 00:04:55.775
+Now let's see the total population for
+California.
+
+54
+00:04:55.775 --> 00:05:01.241
+You can replace count
+with sum(CENUS2010POP)
+
+55
+00:05:05.290 --> 00:05:07.923
+You can also calculate
+the average population.
+
+56
+00:05:07.923 --> 00:05:09.781
+We'll replace sum with mean.
