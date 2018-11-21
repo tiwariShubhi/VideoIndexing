@@ -1,7 +1,7 @@
 import os
 
 folderPath = 'D:/m.tech/Sem 3/NLP/Project/VideoIndexing/Dataset/COURSERA_BigData/'
-outFile = 'D:/m.tech/Sem 3/NLP/Project/VideoIndexing/Result/BigData.vdtt'
+outFile = 'D:/m.tech/Sem 3/NLP/Project/VideoIndexing/Result/BigData1.srt'
 dirList = os.listdir(folderPath)
 
 fp = open(outFile,'w')
