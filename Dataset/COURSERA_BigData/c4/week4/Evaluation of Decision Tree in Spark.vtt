@@ -1,0 +1,175 @@
+WEBVTT
+
+1
+00:00:00.990 --> 00:00:04.970
+In this activity we will use Spark
+to evaluate our decision tree.
+
+2
+00:00:04.970 --> 00:00:07.820
+First, we load
+the classification predictions,
+
+3
+00:00:07.820 --> 00:00:10.170
+created during the last
+Spark hands on activity.
+
+4
+00:00:11.180 --> 00:00:14.320
+We then compute the accuracy
+of these predictions.
+
+5
+00:00:14.320 --> 00:00:16.000
+And then, generate a confusion matrix.
+
+6
+00:00:18.050 --> 00:00:19.480
+Let's begin.
+
+7
+00:00:19.480 --> 00:00:22.065
+First, let's open the model
+evaluation notebook.
+
+8
+00:00:24.630 --> 00:00:28.320
+Next, let's execute the first
+cell to load the classes.
+
+9
+00:00:29.460 --> 00:00:32.740
+Then, execute the second cell
+to load the predictions we saved
+
+10
+00:00:32.740 --> 00:00:33.950
+during the previous hands on.
+
+11
+00:00:35.760 --> 00:00:38.580
+We could then complete
+the accuracy of these predictions
+
+12
+00:00:38.580 --> 00:00:41.539
+by using a multi-class
+classification evaluator.
+
+13
+00:00:42.590 --> 00:00:50.088
+Let's enter evaluator =
+MulticlassClassificationEvaluator(labelCo-
+
+14
+00:00:50.088 --> 00:00:55.124
+l="label", predictionCol="prediction") and
+
+15
+00:00:55.124 --> 00:01:00.505
+finally metricName="precision" and
+execute this.
+
+16
+00:01:04.253 --> 00:01:08.605
+We can then compute the accuracy by
+calling evaluate on the evaluator.
+
+17
+00:01:08.605 --> 00:01:13.384
+We'll enter
+evaluator.evaluate[predictions].
+
+18
+00:01:15.877 --> 00:01:18.924
+This says that the accuracy is about 81%.
+
+19
+00:01:19.940 --> 00:01:24.095
+Next, let's use multi-class metrics
+to compute a confusion matrix.
+
+20
+00:01:24.095 --> 00:01:28.485
+Multi-class metrics takes
+an RDD of numbers, and
+
+21
+00:01:28.485 --> 00:01:31.759
+our data is currently in a data frame.
+
+22
+00:01:31.759 --> 00:01:36.457
+We can access the RDD of the underlying
+data frame by using the RDD
+
+23
+00:01:36.457 --> 00:01:38.549
+attribute of predictions.
+
+24
+00:01:38.549 --> 00:01:44.184
+If we look at predictions.rdd.take(2)
+we see the RDD
+
+25
+00:01:44.184 --> 00:01:50.520
+is the RDD of rows, or
+each row has a prediction and label.
+
+26
+00:01:50.520 --> 00:01:54.660
+However multi-class metrics
+wants an RDD of numbers.
+
+27
+00:01:54.660 --> 00:01:56.046
+We could do this using a map.
+
+28
+00:01:56.046 --> 00:02:01.860
+We'll enter predictions.rdd.map and
+we'll use a key word,
+
+29
+00:02:01.860 --> 00:02:06.010
+tuple, and we'll look at the first
+two elements in this RDD.
+
+30
+00:02:06.010 --> 00:02:06.510
+Run this.
+
+31
+00:02:09.137 --> 00:02:11.740
+We can see now this RDD is just numbers.
+
+32
+00:02:12.810 --> 00:02:17.058
+Now we'll create a new instance of
+a multiclass metrics using this RDD.
+
+33
+00:02:17.058 --> 00:02:24.275
+Metrics =
+MulticlassMetrics(predrictions.rdd.map(tu-
+
+34
+00:02:24.275 --> 00:02:25.162
+ple)).
+
+35
+00:02:28.149 --> 00:02:32.667
+We can then display
+the confusion matrix by running
+
+36
+00:02:32.667 --> 00:02:38.780
+metrics.confusionMatrix().toArray().trans-
+pose().
+
+37
+00:02:38.780 --> 00:02:45.674
+We can see these results are similar
+to the confusion matrix in nine.

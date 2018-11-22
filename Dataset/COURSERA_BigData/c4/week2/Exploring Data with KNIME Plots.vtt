@@ -1,0 +1,583 @@
+WEBVTT
+
+1
+00:00:01.740 --> 00:00:05.720
+In this activity, we will use KNIME to
+perform data exploration of weather data.
+
+2
+00:00:07.890 --> 00:00:10.000
+First, we will create
+a new KNIME workflow.
+
+3
+00:00:11.140 --> 00:00:12.560
+We'll then input the weather data.
+
+4
+00:00:12.560 --> 00:00:17.740
+Next, we will create
+a histogram of air temperature.
+
+5
+00:00:17.740 --> 00:00:21.250
+Create a scatter plot
+between two variables.
+
+6
+00:00:21.250 --> 00:00:25.930
+Create a bar chart to show the
+distribution of a categorical variable.
+
+7
+00:00:25.930 --> 00:00:29.700
+And finally, create a box plot to
+compare two different distributions.
+
+8
+00:00:31.493 --> 00:00:34.350
+Let's begin.
+
+9
+00:00:34.350 --> 00:00:36.660
+First, we will create
+a new workflow in KNIME.
+
+10
+00:00:38.100 --> 00:00:40.000
+To do this we go to the File menu.
+
+11
+00:00:41.277 --> 00:00:48.890
+Select new, select new KNIME workflow and
+click on next.
+
+12
+00:00:50.410 --> 00:00:52.720
+Then we type the name of
+the workflow we want to create.
+
+13
+00:00:53.730 --> 00:00:55.380
+We'll call this one plots.
+
+14
+00:00:56.850 --> 00:00:57.710
+Click on finish.
+
+15
+00:00:59.969 --> 00:01:04.690
+Next we want to load
+weather data into KNIME.
+
+16
+00:01:04.690 --> 00:01:06.710
+To do this we'll use a file reader node.
+
+17
+00:01:07.720 --> 00:01:11.890
+To add this node,
+go to the bottom left node repository.
+
+18
+00:01:11.890 --> 00:01:14.220
+And in the box type in file reader.
+
+19
+00:01:15.298 --> 00:01:19.670
+Drag File Reader to the canvas.
+
+20
+00:01:19.670 --> 00:01:23.890
+Next, double click on File Reader to
+configure it with the weather data.
+
+21
+00:01:24.930 --> 00:01:25.900
+Click on the Browse button.
+
+22
+00:01:27.879 --> 00:01:31.360
+We'll choose the weather file.
+
+23
+00:01:31.360 --> 00:01:34.084
+That's daily_weather.csv.
+
+24
+00:01:35.794 --> 00:01:38.875
+We can see preview of
+the data at the bottom half
+
+25
+00:01:38.875 --> 00:01:41.410
+of the file reader configure dialog.
+
+26
+00:01:41.410 --> 00:01:45.270
+You can see values for
+each column in the CSV file.
+
+27
+00:01:45.270 --> 00:01:48.440
+Click OK to close the dialog.
+
+28
+00:01:49.520 --> 00:01:53.510
+Next, we want to create
+a histogram of air temperature.
+
+29
+00:01:53.510 --> 00:01:56.410
+We'll add the histogram
+node to the workflow.
+
+30
+00:01:56.410 --> 00:02:00.230
+Again, we go to the node repository and
+type in histogram.
+
+31
+00:02:01.640 --> 00:02:04.170
+We'll drag and
+drop histogram to the workflow and
+
+32
+00:02:06.640 --> 00:02:08.700
+we'll connect File Reader to histogram.
+
+33
+00:02:09.700 --> 00:02:13.327
+We'll click and
+hold on output to File Reader and
+
+34
+00:02:13.327 --> 00:02:16.610
+drag to the input of histogram and
+release.
+
+35
+00:02:18.530 --> 00:02:22.520
+Before we configure the histogram node,
+we need to run the file reader node.
+
+36
+00:02:22.520 --> 00:02:26.662
+We can do that by selecting
+the file reader and
+
+37
+00:02:26.662 --> 00:02:30.913
+either clicking on the green
+arrow at the top or
+
+38
+00:02:30.913 --> 00:02:34.952
+right clicking and choosing execute here.
+
+39
+00:02:37.466 --> 00:02:42.508
+Once we've done that,
+double-click on histogram.
+
+40
+00:02:42.508 --> 00:02:48.176
+We'll select error_temp_9AM
+as the biding column and
+
+41
+00:02:48.176 --> 00:02:54.520
+also add error_temp_9AM to
+the aggregation column.
+
+42
+00:02:54.520 --> 00:02:57.570
+We'll leave the default
+number of bins as ten.
+
+43
+00:02:57.570 --> 00:02:59.020
+Click on OK.
+
+44
+00:03:01.110 --> 00:03:02.070
+Now we'll run the workflow.
+
+45
+00:03:02.070 --> 00:03:07.060
+You can click on the two arrow green
+button at the top to run all the nodes.
+
+46
+00:03:08.339 --> 00:03:11.420
+Now let's view the histogram.
+
+47
+00:03:11.420 --> 00:03:13.690
+Right click on the histogram node.
+
+48
+00:03:13.690 --> 00:03:17.453
+And choose View, Histogram View.
+
+49
+00:03:17.453 --> 00:03:21.530
+The x-axis shows the value for
+each bin in the histogram.
+
+50
+00:03:21.530 --> 00:03:24.850
+And the y-axis is the count, or frequency.
+
+51
+00:03:26.080 --> 00:03:30.000
+We can see the most frequent
+values are between 60 and 73.
+
+52
+00:03:30.000 --> 00:03:35.119
+On the right, we also see that
+there's some with missing values.
+
+53
+00:03:36.710 --> 00:03:38.250
+Next close the window.
+
+54
+00:03:39.580 --> 00:03:43.550
+Now let's create a scatter plot to show
+the relationship between two variables.
+
+55
+00:03:44.650 --> 00:03:47.430
+First, we will add the scatter
+plot node to the work flow.
+
+56
+00:03:50.128 --> 00:03:54.870
+We'll connect the the output of
+File Reader to the input of Scatter Plot.
+
+57
+00:03:56.244 --> 00:04:01.700
+Execute the workflow, right-click on
+
+58
+00:04:01.700 --> 00:04:07.650
+Scatter Plot and choose View Scatter Plot.
+
+59
+00:04:07.650 --> 00:04:14.560
+We'll click on the Column Selection and
+choose air_temp_9am for the X Column.
+
+60
+00:04:14.560 --> 00:04:17.990
+And for the Y Column,
+choose relative humidity 9 AM.
+
+61
+00:04:17.990 --> 00:04:20.630
+In this plot,
+
+62
+00:04:20.630 --> 00:04:24.650
+we can see a negative correlation
+between temperature and humidity.
+
+63
+00:04:24.650 --> 00:04:27.650
+As the temperature increases,
+the humidity goes down.
+
+64
+00:04:29.520 --> 00:04:30.480
+We'll close this window.
+
+65
+00:04:32.490 --> 00:04:37.890
+Next, we'll create a bar chart to show the
+distribution of a categorical variable.
+
+66
+00:04:37.890 --> 00:04:40.120
+We'll visualize the wind
+direction at 9 AM.
+
+67
+00:04:40.120 --> 00:04:45.290
+We will begin by creating the categorical
+variable by using the numeric binner node.
+
+68
+00:04:46.310 --> 00:04:48.400
+Let's add numeric binner to the work flow.
+
+69
+00:04:51.011 --> 00:04:56.510
+We'll connect the output of file
+reader to the input of numeric binner.
+
+70
+00:04:57.675 --> 00:05:01.528
+Double-click on Numeric Binner
+to configure it.
+
+71
+00:05:01.528 --> 00:05:05.799
+Select max_wind_direction_9am and
+
+72
+00:05:05.799 --> 00:05:09.950
+click on add five times to add five bins.
+
+73
+00:05:11.220 --> 00:05:13.050
+Now let's give a name for
+each of these bins.
+
+74
+00:05:14.510 --> 00:05:17.180
+Select a bin and now choose a name.
+
+75
+00:05:17.180 --> 00:05:19.920
+The first will be for the North direction.
+
+76
+00:05:19.920 --> 00:05:22.938
+So we'll call that 1-N.
+
+77
+00:05:22.938 --> 00:05:29.214
+Next, 2-E for East, 3-S for
+
+78
+00:05:29.214 --> 00:05:34.444
+South, 4-W for West and
+
+79
+00:05:34.444 --> 00:05:38.630
+finally 1-N for north again.
+
+80
+00:05:39.650 --> 00:05:43.340
+Now we need to specify the values for
+each of these bins.
+
+81
+00:05:43.340 --> 00:05:48.010
+We'll select the first one and
+set the endpoint to be 45 degrees.
+
+82
+00:05:48.010 --> 00:05:53.820
+Next, choose east and
+set that maximum to be 135.
+
+83
+00:05:55.330 --> 00:05:59.360
+Select the third one and
+choose the max to be 225.
+
+84
+00:05:59.360 --> 00:06:05.110
+Finally, select the fourth one and
+select the max to be 315.
+
+85
+00:06:05.110 --> 00:06:08.510
+Next, click on a pin new column.
+
+86
+00:06:08.510 --> 00:06:14.368
+Set the name for categorical variable to
+be categorical underscore max underscore.
+
+87
+00:06:14.368 --> 00:06:18.531
+Wind_direction_9AM.
+
+88
+00:06:20.419 --> 00:06:23.740
+Click OK.
+
+89
+00:06:23.740 --> 00:06:25.880
+Now add a histogram note to the work flow.
+
+90
+00:06:30.111 --> 00:06:34.455
+Connect the output of
+Numeric Binner to histogram.
+
+91
+00:06:34.455 --> 00:06:38.630
+Double-click on Histogram to configure it.
+
+92
+00:06:38.630 --> 00:06:44.908
+Make sure they binning column is
+categorical_max_wind_direction_9AM.
+
+93
+00:06:44.908 --> 00:06:47.160
+And also there are no aggregation columns.
+
+94
+00:06:48.800 --> 00:06:52.140
+Click OK and execute the work flow.
+
+95
+00:06:54.066 --> 00:06:55.840
+Let's view the chart.
+
+96
+00:06:56.880 --> 00:07:01.170
+Right click on Histogram and
+choose View, Histogram View.
+
+97
+00:07:03.470 --> 00:07:07.720
+This tells us that most of the wind
+comes from the east and the south.
+
+98
+00:07:09.070 --> 00:07:10.620
+And not many measurements from the north.
+
+99
+00:07:12.220 --> 00:07:13.650
+Next, close this.
+
+100
+00:07:15.490 --> 00:07:19.252
+Now lets create a box plot to
+compare two different distributions.
+
+101
+00:07:19.252 --> 00:07:22.380
+We w'll examine the distribution,
+air pressure for
+
+102
+00:07:22.380 --> 00:07:26.610
+low humidity days versus normal or
+high humidity days.
+
+103
+00:07:26.610 --> 00:07:30.810
+To do this, we'll first need to creat
+a categorical variable for humidity.
+
+104
+00:07:30.810 --> 00:07:33.800
+Lets add another numeric
+binner actor to the workflow.
+
+105
+00:07:36.599 --> 00:07:40.190
+Connect the output,
+a file reader to this actor.
+
+106
+00:07:42.090 --> 00:07:44.500
+Double click to configure.
+
+107
+00:07:44.500 --> 00:07:46.830
+Select relative humidity, 9 AM.
+
+108
+00:07:46.830 --> 00:07:49.830
+And click on add twice to add two bins.
+
+109
+00:07:51.820 --> 00:07:56.350
+Select the first bin and
+we'll call that humidity_low.
+
+110
+00:07:56.350 --> 00:08:03.750
+Select the second bin and
+we'll call that humidity_not_low.
+
+111
+00:08:03.750 --> 00:08:06.859
+Select the first bin, and
+
+112
+00:08:06.859 --> 00:08:11.390
+we'll set the maximum value to 25.
+
+113
+00:08:11.390 --> 00:08:12.900
+Check append new column.
+
+114
+00:08:14.290 --> 00:08:21.130
+And set the name to low_humidity_day,
+click on OK.
+
+115
+00:08:21.130 --> 00:08:24.110
+Next, add the conditional box
+plot node to the workflow.
+
+116
+00:08:28.604 --> 00:08:33.310
+Right click on conditional
+box plot to configure it.
+
+117
+00:08:33.310 --> 00:08:37.891
+Make sure the nominal column
+is low_humidity_day and
+
+118
+00:08:37.891 --> 00:08:41.100
+the numeric column is air_pressure_9am.
+
+119
+00:08:41.100 --> 00:08:42.010
+Click OK.
+
+120
+00:08:42.010 --> 00:08:46.260
+Run the workflow.
+
+121
+00:08:48.760 --> 00:08:53.410
+Right click on conditional box plot and
+choose few additional box plot.
+
+122
+00:08:55.210 --> 00:08:59.870
+And the x axis, we see the two values or
+a categorical variable, humidity low and
+
+123
+00:08:59.870 --> 00:09:01.650
+humidity not low.
+
+124
+00:09:01.650 --> 00:09:04.000
+The y axis shows the air pressure values.
+
+125
+00:09:05.370 --> 00:09:09.300
+I can see that on average,
+lower humidity means higher air pressure.
+
+126
+00:09:11.792 --> 00:09:13.750
+Close this.
+
+127
+00:09:13.750 --> 00:09:17.330
+Finally, save the workflow when
+we're done by clicking on the disk
+
+128
+00:09:17.330 --> 00:09:18.630
+at the top left of the toolbar.

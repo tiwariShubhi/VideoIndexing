@@ -1,0 +1,526 @@
+WEBVTT
+
+1
+00:00:00.790 --> 00:00:05.070
+The data used in machine learning
+processes often have many variables.
+
+2
+00:00:05.070 --> 00:00:08.413
+This is what we call
+highly dimensional data.
+
+3
+00:00:08.413 --> 00:00:12.815
+Most of these dimensions may or may not
+matter in the context of our application
+
+4
+00:00:12.815 --> 00:00:14.760
+with the questions we are asking.
+
+5
+00:00:14.760 --> 00:00:19.288
+Reducing such high dimensions to
+a more manageable set of related and
+
+6
+00:00:19.288 --> 00:00:24.222
+useful variables improves the performance
+and accuracy of our analysis.
+
+7
+00:00:24.222 --> 00:00:30.365
+After this video, you will be able to
+explain what dimensionality reduction is,
+
+8
+00:00:30.365 --> 00:00:34.639
+discuss the benefits of
+dimensionality reduction, and
+
+9
+00:00:34.639 --> 00:00:37.678
+describe how PCA transforms your data.
+
+10
+00:00:37.678 --> 00:00:42.465
+The number of features or variables
+you have in your data set determines
+
+11
+00:00:42.465 --> 00:00:46.391
+the number of dimensions or
+dimensionality of your data.
+
+12
+00:00:46.391 --> 00:00:50.857
+If your dataset has two features,
+than it is two dimensional data.
+
+13
+00:00:50.857 --> 00:00:55.454
+If it has three features than
+it has three features and so on.
+
+14
+00:00:55.454 --> 00:01:00.090
+You want to use as many features as
+possible to capture the characteristics of
+
+15
+00:01:00.090 --> 00:01:01.016
+your data, but
+
+16
+00:01:01.016 --> 00:01:05.105
+you also don't want the dimension
+audio of your data to be too high.
+
+17
+00:01:05.105 --> 00:01:10.844
+As the dimensionality increases, the
+problem spaces you're looking at increases
+
+18
+00:01:10.844 --> 00:01:16.197
+requiring substantially more instances
+to adequately sample of that space.
+
+19
+00:01:16.197 --> 00:01:18.805
+So as the dimensionality increases,
+
+20
+00:01:18.805 --> 00:01:22.640
+the space that you are looking
+at grows exponentially.
+
+21
+00:01:22.640 --> 00:01:26.460
+As the space grows data
+becomes increasingly sparse.
+
+22
+00:01:26.460 --> 00:01:30.782
+In this diagram we see how
+the problem space grows as
+
+23
+00:01:30.782 --> 00:01:35.011
+the dimensionality
+increases from 1 to 2 to 3.
+
+24
+00:01:35.011 --> 00:01:39.915
+In the left plot, we have a one
+dimensional space partitioned into four
+
+25
+00:01:39.915 --> 00:01:43.150
+regions each with size of 5 units.
+
+26
+00:01:43.150 --> 00:01:48.249
+The middle plot shows a two
+dimensional space with 5x5 regions.
+
+27
+00:01:48.249 --> 00:01:52.429
+The number of regions has
+now going from 4 to 16.
+
+28
+00:01:52.429 --> 00:01:58.911
+In the third plot, the problem space is
+three dimensional with 5x5x5 regions.
+
+29
+00:01:58.911 --> 00:02:03.171
+The number of regions
+increased even more to 64.
+
+30
+00:02:03.171 --> 00:02:08.364
+We see that as the number of dimensions
+increases, the number of regions
+
+31
+00:02:08.364 --> 00:02:13.403
+increases exponentially and
+the data becomes increasingly sparse.
+
+32
+00:02:13.403 --> 00:02:19.230
+With a small dataset relative to the
+problem space, analysis results degrade.
+
+33
+00:02:19.230 --> 00:02:23.927
+In addition, certain calculations used in
+analysis become much more difficult to
+
+34
+00:02:23.927 --> 00:02:26.018
+define and calculate effectively.
+
+35
+00:02:26.018 --> 00:02:29.998
+For example, distances between samples
+are harder to compare since all samples
+
+36
+00:02:29.998 --> 00:02:32.330
+are far away from each other.
+
+37
+00:02:32.330 --> 00:02:36.784
+All of these challenges represent
+the difficulty of dealing with high
+
+38
+00:02:36.784 --> 00:02:41.172
+dimensional data and as referred
+to as the curse of dimensionality.
+
+39
+00:02:41.172 --> 00:02:43.632
+To avoid the curse of dimensionality,
+
+40
+00:02:43.632 --> 00:02:46.918
+you want to reduce
+the dimensionality of your data.
+
+41
+00:02:46.918 --> 00:02:51.095
+This means finding a smaller subset of
+features that can effectively capture
+
+42
+00:02:51.095 --> 00:02:53.030
+the characteristics of your data.
+
+43
+00:02:54.050 --> 00:02:58.350
+Recall from the lecture on feature
+selection part of data preparation is to
+
+44
+00:02:58.350 --> 00:02:59.996
+select the features to use.
+
+45
+00:02:59.996 --> 00:03:05.081
+For example, you can a feature that is
+very correlated with another feature.
+
+46
+00:03:05.081 --> 00:03:08.021
+Using feature selection
+techniques to select assessitive
+
+47
+00:03:08.021 --> 00:03:10.850
+features is one approach to
+dimensionality reduction.
+
+48
+00:03:12.220 --> 00:03:16.160
+Another approach to dimensionality
+reduction is to mathematically determine
+
+49
+00:03:16.160 --> 00:03:20.230
+the most important dimension to keep and
+ignore the rest.
+
+50
+00:03:20.230 --> 00:03:23.260
+The idea is to find a smallest
+subset of dimensions that
+
+51
+00:03:23.260 --> 00:03:25.670
+capture the most variation in your data.
+
+52
+00:03:26.850 --> 00:03:31.734
+This reduces the dimensions of the data
+while eliminating the relevant features
+
+53
+00:03:31.734 --> 00:03:34.263
+making the subsequent analysis simple.
+
+54
+00:03:34.263 --> 00:03:39.188
+A technique commonly use to find
+the subset of most important dimensions is
+
+55
+00:03:39.188 --> 00:03:43.028
+called principal component analysis,
+or PCA for short.
+
+56
+00:03:43.028 --> 00:03:47.997
+The goal of PCA is to map the data from
+the original high dimensional space
+
+57
+00:03:47.997 --> 00:03:52.722
+to a lower dimensional space that
+captures as much of the variation in
+
+58
+00:03:52.722 --> 00:03:54.282
+the data as possible.
+
+59
+00:03:54.282 --> 00:03:55.444
+In other words,
+
+60
+00:03:55.444 --> 00:04:00.760
+PCA aims to find the most useful subset
+of dimensions to summarize the data.
+
+61
+00:04:02.380 --> 00:04:04.330
+This plot illustrates the idea behind PCA.
+
+62
+00:04:05.560 --> 00:04:10.200
+Here, we have data samples in a two
+dimensional space that is defined
+
+63
+00:04:10.200 --> 00:04:12.044
+by the x axis and the y axis.
+
+64
+00:04:12.044 --> 00:04:17.168
+You can see that most of the variation in
+the data lies along the red diagonal line.
+
+65
+00:04:17.168 --> 00:04:21.527
+This means that the dat samples are best
+differentiated along this dimension
+
+66
+00:04:21.527 --> 00:04:26.730
+because they're spread out,
+not clumped together along this dimension.
+
+67
+00:04:26.730 --> 00:04:31.577
+This dimension indicated by the red
+line is the first principle component
+
+68
+00:04:31.577 --> 00:04:33.538
+labelled as PC1 in the part.
+
+69
+00:04:33.538 --> 00:04:39.130
+It captures the large amount of variance
+along a single dimension in data.
+
+70
+00:04:39.130 --> 00:04:44.305
+PC1, indicated by the red line does
+not correspond to either axis.
+
+71
+00:04:44.305 --> 00:04:48.450
+The next principle component is determined
+by looking in the direction that is
+
+72
+00:04:48.450 --> 00:04:52.972
+orthogonal, in other words perpendicular,
+to the first principle component which
+
+73
+00:04:52.972 --> 00:04:56.800
+captures the next largest
+amount of variance in the data.
+
+74
+00:04:56.800 --> 00:05:00.042
+This is the second
+principal component PC2 and
+
+75
+00:05:00.042 --> 00:05:03.212
+it's indicated by
+the green line in the plot.
+
+76
+00:05:03.212 --> 00:05:08.198
+This process can be repeated to find as
+many principal components as desired.
+
+77
+00:05:08.198 --> 00:05:12.726
+Note that the principal components do
+not align with either the x-axis or
+
+78
+00:05:12.726 --> 00:05:13.610
+the y-axis.
+
+79
+00:05:13.610 --> 00:05:17.720
+And that they are orthogonal, in other
+words, perpendicular to each other.
+
+80
+00:05:17.720 --> 00:05:19.489
+This is what PCA does.
+
+81
+00:05:19.489 --> 00:05:22.693
+It finds the underlined dimensions,
+the principal
+
+82
+00:05:22.693 --> 00:05:27.223
+components that capture as much of
+the variation in the data as possible.
+
+83
+00:05:27.223 --> 00:05:31.853
+These principal components form a new
+coordinates system to transform
+
+84
+00:05:31.853 --> 00:05:36.567
+the data to, instead of the conventional
+dimensions like X, Y, and Z.
+
+85
+00:05:36.567 --> 00:05:40.320
+So how does PCA help with
+dimensionality reduction?
+
+86
+00:05:40.320 --> 00:05:43.817
+Let's look again in this plot with
+the first principle component.
+
+87
+00:05:43.817 --> 00:05:47.846
+Since the first principle component
+captures most of the variations in
+
+88
+00:05:47.846 --> 00:05:52.342
+the data, the original data sample can
+be mapped to this dimension indicated by
+
+89
+00:05:52.342 --> 00:05:55.045
+the red line with minimum
+loss of information.
+
+90
+00:05:55.045 --> 00:05:58.645
+In this case then,
+we map a two-dimensional dataset to
+
+91
+00:05:58.645 --> 00:06:03.487
+a one-dimensional space while keeping
+as much information as possible.
+
+92
+00:06:03.487 --> 00:06:06.990
+Here are some main points about
+principal components analysis.
+
+93
+00:06:06.990 --> 00:06:10.147
+PCA finds a new coordinate system for
+your data,
+
+94
+00:06:10.147 --> 00:06:14.151
+such that the first coordinate
+defined by the first principal
+
+95
+00:06:14.151 --> 00:06:17.855
+component Captures the greatest
+variance in your data.
+
+96
+00:06:17.855 --> 00:06:22.341
+The second coordinate defined by
+the second principal component captures
+
+97
+00:06:22.341 --> 00:06:25.271
+the second greatest variance in a data,
+etc..
+
+98
+00:06:25.271 --> 00:06:30.098
+The first few principle components that
+capture most of the variance in a data
+
+99
+00:06:30.098 --> 00:06:34.120
+can be used to define
+a lower-dimensional space for your data.
+
+100
+00:06:34.120 --> 00:06:38.513
+PCA can be a very useful technique for
+dimensionality reduction,
+
+101
+00:06:38.513 --> 00:06:42.284
+especially when working
+with high-dimensional data.
+
+102
+00:06:42.284 --> 00:06:46.032
+While PCA is a useful technique for
+reducing the dimensionality of your
+
+103
+00:06:46.032 --> 00:06:48.718
+data which can help with
+the downstream analysis,
+
+104
+00:06:48.718 --> 00:06:53.715
+it can also make the resulting analysis
+models more difficult to interpret.
+
+105
+00:06:53.715 --> 00:06:58.965
+The original features in your data set
+have specific meanings such as income,
+
+106
+00:06:58.965 --> 00:07:00.865
+age and occupation.
+
+107
+00:07:00.865 --> 00:07:05.792
+By mapping the data to a new coordinate
+system defined by principal components,
+
+108
+00:07:05.792 --> 00:07:10.364
+the dimensions in your transformed
+data no longer have natural meanings.
+
+109
+00:07:10.364 --> 00:07:14.136
+This should be kept in mind when using
+PCA for dimensionality reduction.

@@ -1,0 +1,299 @@
+WEBVTT
+
+1
+00:00:00.163 --> 00:00:04.662
+This activity we'll be exploring
+weather data in Spark.
+
+2
+00:00:04.662 --> 00:00:09.936
+First, we will load weather data from
+a CSV file into a Spark DataFrame.
+
+3
+00:00:09.936 --> 00:00:15.259
+Next, we will examine the columns and
+schema of the DataFrame.
+
+4
+00:00:15.259 --> 00:00:20.957
+We will then view the summary statistics
+and drop rows with missing values.
+
+5
+00:00:20.957 --> 00:00:23.762
+Finally, we will compute
+the correlation between two columns.
+
+6
+00:00:26.918 --> 00:00:28.698
+Let's begin.
+
+7
+00:00:28.698 --> 00:00:32.088
+First, we'll create a new
+Jupyter Python notebook.
+
+8
+00:00:32.088 --> 00:00:36.741
+You do this by clicking on New and
+choosing Python 3.
+
+9
+00:00:40.522 --> 00:00:44.058
+Next, we'll import SQL context.
+
+10
+00:00:44.058 --> 00:00:48.007
+This is done by entering from
+
+11
+00:00:48.007 --> 00:00:52.960
+pyspark.sql import SQLContext.
+
+12
+00:00:52.960 --> 00:00:55.320
+Next, we'll create an instance
+of the SQLContext.
+
+13
+00:00:56.320 --> 00:01:03.510
+We'll enter sqlContext = SQLContext(sc).
+
+14
+00:01:03.510 --> 00:01:06.490
+Now let's read our weather
+data into a DataFrame.
+
+15
+00:01:06.490 --> 00:01:12.177
+We'll call the DataFrame df and
+we'll read it using the sqlContext.
+
+16
+00:01:12.177 --> 00:01:17.027
+We'll enter sqlContext.read.load.
+
+17
+00:01:17.027 --> 00:01:20.808
+The first argument is the URL of the file.
+
+18
+00:01:20.808 --> 00:01:28.681
+That's
+file:///home/cloudera/Downloads/big-data--
+
+19
+00:01:28.681 --> 00:01:34.313
+4/daily_weather.csv.
+
+20
+00:01:34.313 --> 00:01:39.269
+The second argument specifies
+the format of how to read the file.
+
+21
+00:01:39.269 --> 00:01:44.246
+In this case, we're going to use the
+Spark CSV package from Databricks to load
+
+22
+00:01:44.246 --> 00:01:46.748
+the CSV directly into the DataFrame.
+
+23
+00:01:46.748 --> 00:01:51.202
+We need to use this because
+the Cloudera image only has Spark 1.
+
+24
+00:01:51.202 --> 00:01:54.628
+In Spark 2 and later,
+this package is included so
+
+25
+00:01:54.628 --> 00:01:57.166
+we don't have to use this argument.
+
+26
+00:01:57.166 --> 00:02:01.159
+We'll enter ,format= and
+
+27
+00:02:01.159 --> 00:02:09.510
+the name of the package is
+com.databricks.spark.csv.
+
+28
+00:02:09.510 --> 00:02:13.745
+The next argument specifies that the first
+line in the CSV file is the header,
+
+29
+00:02:13.745 --> 00:02:19.060
+header='true'.
+
+30
+00:02:19.060 --> 00:02:24.503
+The last argument tells Spark
+to try to infer the schema
+
+31
+00:02:24.503 --> 00:02:29.366
+from the CSV header, inferSchema='true'.
+
+32
+00:02:29.366 --> 00:02:31.020
+Run this.
+
+33
+00:02:31.020 --> 00:02:33.240
+Now let's look at our DataFrame.
+
+34
+00:02:33.240 --> 00:02:38.873
+We can run a df.columns to see
+the names of all the columns.
+
+35
+00:02:38.873 --> 00:02:42.633
+We can also run df.printSchema to
+see the schema of the DataFrame.
+
+36
+00:02:46.360 --> 00:02:49.983
+Next, let's look at the summary
+statistics for the data.
+
+37
+00:02:49.983 --> 00:02:52.645
+We can do this using the describe method.
+
+38
+00:02:52.645 --> 00:02:58.459
+We'll run df.describe().show().
+
+39
+00:03:02.491 --> 00:03:06.739
+This shows summary statistics for
+all the columns in the DataFrame.
+
+40
+00:03:06.739 --> 00:03:10.020
+There's a lot of information here,
+so lets just choose one column.
+
+41
+00:03:10.020 --> 00:03:13.490
+Let's look at air pressure at 9 AM.
+
+42
+00:03:13.490 --> 00:03:18.867
+We can see the summary statistics for
+air pressure 9 AM by running
+
+43
+00:03:18.867 --> 00:03:23.868
+df.describe('air_pressure_9am').show().
+
+44
+00:03:28.531 --> 00:03:34.860
+There are five statistics in this output,
+the count, the number of rows,
+
+45
+00:03:34.860 --> 00:03:40.300
+the mean, the standard deviation,
+and the min and max values.
+
+46
+00:03:40.300 --> 00:03:46.872
+We can see the total number of columns in
+the DataFrame by running len(df.columns).
+
+47
+00:03:50.056 --> 00:03:56.214
+We can also see the total number of rows
+in the DataFrame by writing df.count.
+
+48
+00:03:56.214 --> 00:04:00.502
+This says that there are 1,095
+rows in the DataFrame.
+
+49
+00:04:00.502 --> 00:04:05.393
+However, the summary statistics for
+air_pressure_9am,
+
+50
+00:04:05.393 --> 00:04:07.889
+we see the count is 1,092.
+
+51
+00:04:09.800 --> 00:04:12.882
+Summary statistics do not
+include rows of missing values.
+
+52
+00:04:12.882 --> 00:04:17.587
+This means that there are three rows in
+the air_pressure_9am column that have
+
+53
+00:04:17.587 --> 00:04:18.630
+missing values.
+
+54
+00:04:18.630 --> 00:04:21.066
+We can drop these missing values.
+
+55
+00:04:21.066 --> 00:04:24.670
+Let's create a new DataFrame where
+we've dropped these missing values.
+
+56
+00:04:26.370 --> 00:04:29.572
+We'll call the new DataFrame df2.
+
+57
+00:04:29.572 --> 00:04:34.773
+To drop the missing values, we'll enter
+
+58
+00:04:34.773 --> 00:04:42.656
+df.na.drop(subset=['air_pressure_9am']).
+
+59
+00:04:42.656 --> 00:04:47.779
+We can then count the total number of
+rows in the new DataFrame, df2.count.
+
+60
+00:04:50.551 --> 00:04:55.208
+We see this value agrees with
+our earlier value of 1092.
+
+61
+00:04:55.208 --> 00:05:00.772
+Next, let's compute the correlation
+between two columns in the DataFrame.
+
+62
+00:05:00.772 --> 00:05:05.485
+We'll compute the correlation between
+rain accumulation and rain duration.
+
+63
+00:05:05.485 --> 00:05:11.144
+To do this, we'll enter df2.stat.corr and
+
+64
+00:05:11.144 --> 00:05:15.245
+then the names of the two columns,
+
+65
+00:05:15.245 --> 00:05:22.182
+rain_accumulation_9am and
+rain_duration_9am.

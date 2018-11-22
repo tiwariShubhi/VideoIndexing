@@ -1,0 +1,782 @@
+WEBVTT
+
+1
+00:00:00.570 --> 00:00:03.984
+A parallel computation is at
+the heart of big data computing.
+
+2
+00:00:03.984 --> 00:00:08.427
+However, to specify what becomes parallel,
+we usually think of a conceptual model
+
+3
+00:00:08.427 --> 00:00:11.760
+of parallel computation often called,
+a programming model.
+
+4
+00:00:13.630 --> 00:00:16.990
+A parallel programming model is
+a way to specify abstractly,
+
+5
+00:00:16.990 --> 00:00:18.280
+how a parallel program will run.
+
+6
+00:00:19.310 --> 00:00:21.720
+Naturally for a program to be parallel,
+
+7
+00:00:21.720 --> 00:00:26.040
+there must be a number of
+concurrently operating processes.
+
+8
+00:00:26.040 --> 00:00:28.540
+But how do these processes communicate and
+exchange data?
+
+9
+00:00:29.760 --> 00:00:32.280
+How do they decide,
+when to communicate with each other?
+
+10
+00:00:33.560 --> 00:00:35.320
+Further, what exactly is done in parallel?
+
+11
+00:00:36.550 --> 00:00:38.870
+To think of the first question.
+
+12
+00:00:38.870 --> 00:00:42.870
+Two processes communicate
+data by sharing memory.
+
+13
+00:00:44.490 --> 00:00:48.150
+Indeed, there are architectures in which
+all memory in multiple machines can be
+
+14
+00:00:48.150 --> 00:00:51.480
+made to virtually look like,
+one large addressable memory space.
+
+15
+00:00:52.990 --> 00:00:54.840
+However, two processes,
+
+16
+00:00:54.840 --> 00:00:58.570
+we also communicate by passing
+messages to one another.
+
+17
+00:00:58.570 --> 00:01:01.210
+Either, directly from one
+process to another, or
+
+18
+00:01:01.210 --> 00:01:04.690
+through a common message carrying pipe,
+often called a message bus.
+
+19
+00:01:06.750 --> 00:01:09.130
+The second question can
+also have multiple answers.
+
+20
+00:01:10.250 --> 00:01:15.050
+Two of the most common ways of achieving
+parallelism are pass parallelism and
+
+21
+00:01:15.050 --> 00:01:16.790
+data parallels.
+
+22
+00:01:16.790 --> 00:01:21.860
+In task parallelism, a large task can
+be decomposed into multiple sub-tasks,
+
+23
+00:01:21.860 --> 00:01:23.380
+each of which can be run concurrently.
+
+24
+00:01:24.460 --> 00:01:29.690
+In data parallelism, the data can be
+partitioned into many smaller fragments
+
+25
+00:01:29.690 --> 00:01:32.850
+and operation can run on each partition,
+independent of the others.
+
+26
+00:01:34.480 --> 00:01:38.040
+Typically, these partial operations
+have then synchronized and
+
+27
+00:01:38.040 --> 00:01:41.500
+partially process data combined
+to produce a full answer.
+
+28
+00:01:42.770 --> 00:01:44.870
+Many parallel data management systems,
+
+29
+00:01:44.870 --> 00:01:46.760
+operate a partition due
+to parallel manner.
+
+30
+00:01:48.240 --> 00:01:51.490
+We need to remember that task
+parallelism is somewhat independent of
+
+31
+00:01:51.490 --> 00:01:52.780
+data parallelism.
+
+32
+00:01:52.780 --> 00:01:56.440
+And it is possible to have both problems
+of parallelism in a programming model.
+
+33
+00:01:57.540 --> 00:02:00.650
+It is important to emphasize
+the issue of a programming model,
+
+34
+00:02:00.650 --> 00:02:04.320
+should be not be confused with
+the issue of a programming language.
+
+35
+00:02:05.405 --> 00:02:08.295
+A programming language is independent
+of the programming model.
+
+36
+00:02:08.295 --> 00:02:10.765
+And therefore,
+a programming model can be implemented
+
+37
+00:02:10.765 --> 00:02:12.185
+in several different languages.
+
+38
+00:02:13.425 --> 00:02:17.155
+As I mentioned, the programming model
+we are going to consider is BSP.
+
+39
+00:02:18.425 --> 00:02:22.350
+BSP wasn't initially created for
+graph computation.
+
+40
+00:02:22.350 --> 00:02:24.550
+It was thought of as
+a parallel computing model,
+
+41
+00:02:24.550 --> 00:02:28.740
+that will bridge the gap between software
+models of parallel computation, and
+
+42
+00:02:28.740 --> 00:02:31.890
+hardware capabilities for
+supporting parallelism.
+
+43
+00:02:31.890 --> 00:02:34.100
+The basic idea of BSP is as follows.
+
+44
+00:02:35.430 --> 00:02:37.880
+There are number of processors.
+
+45
+00:02:37.880 --> 00:02:41.860
+Each processor can perform local
+computation, using its own local memory.
+
+46
+00:02:43.640 --> 00:02:49.020
+There's a router, which can serve to pass
+a message from any processor to any other.
+
+47
+00:02:50.090 --> 00:02:53.080
+When one pair of nodes
+are exchanging messages,
+
+48
+00:02:53.080 --> 00:02:55.420
+another third node can
+still perform computation.
+
+49
+00:02:58.000 --> 00:03:01.060
+There's a facility that can
+synchronize the state of
+
+50
+00:03:01.060 --> 00:03:02.860
+all auto-substative processes.
+
+51
+00:03:04.010 --> 00:03:06.880
+This synchronize may either
+happen periodically,
+
+52
+00:03:06.880 --> 00:03:12.100
+at intervals of L time units or
+there may be another way of specifying,
+
+53
+00:03:12.100 --> 00:03:14.490
+when this synchronization
+is going to happen.
+
+54
+00:03:14.490 --> 00:03:19.270
+But when it does, all processors affected
+by it, will come to a consistent state.
+
+55
+00:03:20.490 --> 00:03:25.420
+When synchronization is performed,
+a fresh round of computation can start.
+
+56
+00:03:25.420 --> 00:03:26.905
+We call this.
+
+57
+00:03:26.905 --> 00:03:28.105
+Synchronization point.
+
+58
+00:03:28.105 --> 00:03:29.815
+Barrier synchronization.
+
+59
+00:03:29.815 --> 00:03:33.575
+Because all executed processes
+must reach this barrier point,
+
+60
+00:03:33.575 --> 00:03:36.935
+before the next step of
+processing can continue.
+
+61
+00:03:36.935 --> 00:03:40.935
+A BSP program is broken up into
+a sequence stop supersteps.
+
+62
+00:03:42.325 --> 00:03:46.540
+In each superstep, each processor
+will get the data, if needed.
+
+63
+00:03:46.540 --> 00:03:49.040
+Performance computation if needed and
+
+64
+00:03:49.040 --> 00:03:51.180
+then, exchange data
+with the right partner.
+
+65
+00:03:52.360 --> 00:03:56.260
+Once all the nodes are done,
+the system helps to synchronize.
+
+66
+00:03:56.260 --> 00:03:57.680
+Then, the next round starts.
+
+67
+00:03:58.760 --> 00:04:03.140
+Each processor can determine,
+if it needs to compute or exchange data.
+
+68
+00:04:03.140 --> 00:04:05.300
+If not, it will make itself inactive.
+
+69
+00:04:06.760 --> 00:04:10.540
+If required later, a processor can
+be woken up to be active again.
+
+70
+00:04:12.390 --> 00:04:15.700
+When all processors are inactive,
+the computation stops.
+
+71
+00:04:17.320 --> 00:04:20.720
+In applying BSP model to graphs,
+we make a few assumptions.
+
+72
+00:04:21.830 --> 00:04:24.850
+We assume that a processor
+is synonymous with a vertex.
+
+73
+00:04:26.100 --> 00:04:30.130
+So for
+a processor can only send messages to or
+
+74
+00:04:30.130 --> 00:04:32.810
+receive from, its neighboring processes.
+
+75
+00:04:34.170 --> 00:04:39.920
+We also assume, a vertex has an ID and
+possibly a complex value.
+
+76
+00:04:39.920 --> 00:04:42.270
+And an edge,
+we also have an idea and fact.
+
+77
+00:04:43.570 --> 00:04:46.170
+Each vertex knows,
+which edges it's connected to.
+
+78
+00:04:48.630 --> 00:04:52.918
+We cannot think of a computation
+as a vertex centered task.
+
+79
+00:04:52.918 --> 00:04:55.260
+We shall [INAUDIBLE] what this means.
+
+80
+00:04:57.640 --> 00:04:59.760
+In a now famous paper from Google.
+
+81
+00:04:59.760 --> 00:05:03.030
+This programming model was called,
+think like a vertex.
+
+82
+00:05:04.120 --> 00:05:07.620
+Well to think like a vertex,
+we need to know what a vertex can do.
+
+83
+00:05:08.970 --> 00:05:10.950
+Here's a list of actions,
+a vertex can take.
+
+84
+00:05:13.030 --> 00:05:14.460
+The first one is easy.
+
+85
+00:05:14.460 --> 00:05:16.020
+A vertex can find its own identifier.
+
+86
+00:05:17.680 --> 00:05:22.010
+The second operation is to get or
+set the value of the node.
+
+87
+00:05:22.010 --> 00:05:26.450
+This operation may be a little involved,
+if the value is a complex data object.
+
+88
+00:05:26.450 --> 00:05:29.060
+For our purposes,
+we'll assume the value is a scalar.
+
+89
+00:05:30.490 --> 00:05:32.620
+Next, a node can ask for
+
+90
+00:05:32.620 --> 00:05:36.370
+its own edges, the result of
+the operation is a set of edge objects.
+
+91
+00:05:37.740 --> 00:05:39.720
+A node may also count its edges.
+
+92
+00:05:40.780 --> 00:05:43.650
+Since we are referring to
+outgoing edges throughout,
+
+93
+00:05:43.650 --> 00:05:45.160
+this is the out degree of the vertex.
+
+94
+00:05:46.390 --> 00:05:47.170
+Recognize that,
+
+95
+00:05:47.170 --> 00:05:52.210
+this means a vertex does not natively
+have access to its incident notes.
+
+96
+00:05:54.220 --> 00:05:57.830
+However, it does have control
+of the outgoing edges.
+
+97
+00:05:57.830 --> 00:05:59.990
+So it can get inside the edge values.
+
+98
+00:06:01.620 --> 00:06:04.470
+There may be two different
+ways of specifying an edge.
+
+99
+00:06:04.470 --> 00:06:07.280
+The edge we have an ID
+that the node can get.
+
+100
+00:06:07.280 --> 00:06:11.460
+Passively, more commonly, an edge is
+identified the vertex of targets.
+
+101
+00:06:12.500 --> 00:06:16.520
+So in our diagram V1 lasts for
+the edge, targeting V4.
+
+102
+00:06:18.950 --> 00:06:24.240
+So in the situation like v3 and v5, we're
+there are multiple edges between v3 and
+
+103
+00:06:24.240 --> 00:06:30.370
+v5, the source v3 can ask for
+the values of all edges going to v5.
+
+104
+00:06:32.520 --> 00:06:35.990
+The operate operation can add or
+remove an edge of a vertex.
+
+105
+00:06:37.270 --> 00:06:43.240
+Finally, since the vertices are processes,
+they can start or stop computing.
+
+106
+00:06:43.240 --> 00:06:46.890
+Typically a node wakes up, if it
+receives a message from another node.
+
+107
+00:06:46.890 --> 00:06:51.450
+Now in comparison to a vertex,
+an edge can do far less.
+
+108
+00:06:52.760 --> 00:06:57.220
+It can get its own ID if the system
+allows edge ID's, it can set and
+
+109
+00:06:57.220 --> 00:07:02.380
+retrieve its own values, and it can get
+the ID of the node its pointing to.
+
+110
+00:07:02.380 --> 00:07:02.880
+That's it.
+
+111
+00:07:04.080 --> 00:07:07.500
+Now, we still have not defined,
+how to think like a vertex.
+
+112
+00:07:07.500 --> 00:07:09.470
+That's what we'll do next,
+
+113
+00:07:09.470 --> 00:07:13.330
+using an example that we have
+seen several times before.
+
+114
+00:07:13.330 --> 00:07:17.700
+It's Dijkstra's single source
+shortest path, SSSP, algorithm.
+
+115
+00:07:19.000 --> 00:07:21.120
+We have seen this algorithm before.
+
+116
+00:07:21.120 --> 00:07:25.710
+But now, we'll show how to compute
+it in a parallel setting using BSP.
+
+117
+00:07:27.140 --> 00:07:30.320
+Here is the edge value,
+that's the weight of the edge.
+
+118
+00:07:31.710 --> 00:07:33.830
+This is known before the algorithm starts.
+
+119
+00:07:35.010 --> 00:07:39.180
+Each vertex,
+runs the exact same routine concurrently.
+
+120
+00:07:40.200 --> 00:07:41.530
+Each vertex asks.
+
+121
+00:07:41.530 --> 00:07:44.500
+1, is it super step zero?
+
+122
+00:07:44.500 --> 00:07:47.810
+2, if yes,
+
+123
+00:07:47.810 --> 00:07:52.810
+then if this is a source vertex,
+it sets the value to zero.
+
+124
+00:07:53.870 --> 00:07:56.930
+Else, it sets the value to infinity,
+which is a large number.
+
+125
+00:07:58.310 --> 00:07:59.610
+The source vertex,
+
+126
+00:07:59.610 --> 00:08:03.450
+propagates its edge value to the nodes
+at the other end of the edges.
+
+127
+00:08:03.450 --> 00:08:04.250
+Just the source vertex.
+
+128
+00:08:05.380 --> 00:08:06.650
+All other vertices are quiet.
+
+129
+00:08:08.300 --> 00:08:11.170
+The propagation process works like this.
+
+130
+00:08:11.170 --> 00:08:15.710
+A vertex gets its own value,
+which for the source vertex is zero.
+
+131
+00:08:15.710 --> 00:08:21.990
+It gets its edges, for each edge,
+it gets the value of the edge,
+
+132
+00:08:21.990 --> 00:08:27.020
+adds it to its own value and sends
+the result to the end point of the edge.
+
+133
+00:08:28.080 --> 00:08:31.840
+The blue numbers indicate
+that the messages are sent.
+
+134
+00:08:31.840 --> 00:08:33.410
+All vertices go to halt.
+
+135
+00:08:33.410 --> 00:08:37.180
+That is, they now have hit
+a synchronization barrier.
+
+136
+00:08:38.290 --> 00:08:41.590
+Notice, that the receiving nodes
+do not look at the messages yet.
+
+137
+00:08:42.590 --> 00:08:46.860
+It's the system's job to ensure that
+the messages are available to these nodes
+
+138
+00:08:46.860 --> 00:08:47.810
+at the next superstep.
+
+139
+00:08:49.690 --> 00:08:54.520
+All nodes who have received messages
+wake up and read the messages.
+
+140
+00:08:54.520 --> 00:08:58.530
+If a node receives multiple messages,
+it picks the minimum.
+
+141
+00:08:58.530 --> 00:09:04.140
+In our case, the two active nodes
+have received only one value each.
+
+142
+00:09:04.140 --> 00:09:08.720
+We have for the sake of convenience,
+colored the processed edges in yellow.
+
+143
+00:09:08.720 --> 00:09:11.250
+This is just for
+visualization purposes in this example.
+
+144
+00:09:12.470 --> 00:09:17.690
+Now, it compares this band for
+a minimum value, to its own value.
+
+145
+00:09:17.690 --> 00:09:24.790
+And if its own value is greater, it sets
+its own value with the minimum value.
+
+146
+00:09:24.790 --> 00:09:29.480
+In our case, both notes set their value
+to that, of the incoming message.
+
+147
+00:09:30.800 --> 00:09:33.400
+The same propagation routine works again.
+
+148
+00:09:33.400 --> 00:09:36.320
+So, each note completes the new distance.
+
+149
+00:09:37.680 --> 00:09:41.830
+And sends the message along an edge
+to the other endpoint, then halts.
+
+150
+00:09:42.990 --> 00:09:46.030
+The same step is repeated
+in the next superstep.
+
+151
+00:09:47.700 --> 00:09:51.690
+At this point,
+the nodes have updated their values.
+
+152
+00:09:51.690 --> 00:09:53.320
+The node with the value 6,
+
+153
+00:09:53.320 --> 00:09:58.089
+has received our message,
+just along one of the three edges on it.
+
+154
+00:09:59.120 --> 00:09:59.680
+Continuing.
+
+155
+00:10:01.030 --> 00:10:02.860
+At the end of superstep 2,
+
+156
+00:10:02.860 --> 00:10:07.690
+all nodes are ready to receive messages
+from all their incident edges.
+
+157
+00:10:09.150 --> 00:10:13.210
+The node with a value 6, received a value
+which is lower than its current value.
+
+158
+00:10:14.290 --> 00:10:18.020
+Now the active nodes,
+have no more messages to send.
+
+159
+00:10:18.020 --> 00:10:20.010
+So each vertex, votes to halt.
+
+160
+00:10:21.020 --> 00:10:25.300
+The vertex ID and the value
+are read out from each vertex, and
+
+161
+00:10:25.300 --> 00:10:27.600
+then the process starts.
+
+162
+00:10:27.600 --> 00:10:31.110
+If these nodes are in different
+machines of a cluster,
+
+163
+00:10:31.110 --> 00:10:35.320
+the system will rely on
+the underlying platform like YARN.
+
+164
+00:10:35.320 --> 00:10:37.960
+Or sparks underlying
+infrastructure to ensure,
+
+165
+00:10:37.960 --> 00:10:41.770
+that the edges going across machines can
+send and receive messages effectively.
+
+166
+00:10:42.880 --> 00:10:46.698
+This should give you a sense of the speed
+of this process for a large scale network.

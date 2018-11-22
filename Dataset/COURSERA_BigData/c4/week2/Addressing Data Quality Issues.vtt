@@ -1,0 +1,389 @@
+WEBVTT
+
+1
+00:00:00.790 --> 00:00:03.940
+In the last lecture we
+discussed data quality issues.
+
+2
+00:00:03.940 --> 00:00:08.340
+We will now discuss some common techniques
+for addressing those quality issues.
+
+3
+00:00:08.340 --> 00:00:13.600
+After this video, you will be able
+to define what imputation means,
+
+4
+00:00:13.600 --> 00:00:16.570
+illustrate three ways to
+handle missing values, and
+
+5
+00:00:16.570 --> 00:00:21.270
+describe the role of domain knowledge
+in addressing data quality issues.
+
+6
+00:00:21.270 --> 00:00:25.150
+As we discussed in the last lecture,
+real world data is messy.
+
+7
+00:00:25.150 --> 00:00:28.776
+Some data quality issues that you can
+find in your data are missing values,
+
+8
+00:00:28.776 --> 00:00:34.420
+duplicate data, invalid data,
+noise and outliers.
+
+9
+00:00:34.420 --> 00:00:37.840
+You will need to clean your data if you
+want to perform any meaningful analysis
+
+10
+00:00:37.840 --> 00:00:38.390
+on that data.
+
+11
+00:00:39.960 --> 00:00:42.880
+Recall that missing data occurs
+when you don't have a value for
+
+12
+00:00:42.880 --> 00:00:45.380
+certain variables in some samples.
+
+13
+00:00:45.380 --> 00:00:49.050
+A simple way to handle missing data is
+to simply drop any samples with missing
+
+14
+00:00:49.050 --> 00:00:50.220
+values or NAs.
+
+15
+00:00:51.460 --> 00:00:54.320
+All machine learning tools provide
+a mechanism or command for
+
+16
+00:00:54.320 --> 00:00:57.200
+filtering out rows with
+any missing values.
+
+17
+00:00:57.200 --> 00:01:00.360
+The advantage of this approach
+is that it is very simple.
+
+18
+00:01:00.360 --> 00:01:04.770
+The caveat is that you are removing
+data when you filter out examples.
+
+19
+00:01:04.770 --> 00:01:08.510
+If the number of samples dropped is large,
+then you end up losing a lot of your data.
+
+20
+00:01:09.830 --> 00:01:12.970
+An alternative to dropping
+samples with missing data is to
+
+21
+00:01:12.970 --> 00:01:14.810
+impute the missing values.
+
+22
+00:01:14.810 --> 00:01:18.720
+Imputing means to replace the missing
+values with some reasonable values.
+
+23
+00:01:19.900 --> 00:01:24.000
+The advantage of this approach is that
+you're making use of all your data.
+
+24
+00:01:24.000 --> 00:01:27.310
+Oc course, imputing is more complicated
+than simply dropping samples.
+
+25
+00:01:28.650 --> 00:01:31.000
+There are several ways to
+impute missing values.
+
+26
+00:01:31.000 --> 00:01:34.640
+One strategy is to replace
+the missing values with the mean or
+
+27
+00:01:34.640 --> 00:01:37.100
+median value of the variable.
+
+28
+00:01:37.100 --> 00:01:42.490
+For example, a missing value for years of
+employment can be replaced by the mean or
+
+29
+00:01:42.490 --> 00:01:47.120
+median value for years of employment for
+all current employees.
+
+30
+00:01:47.120 --> 00:01:50.290
+Another approach is to use
+the most frequent value
+
+31
+00:01:50.290 --> 00:01:52.070
+in place of the missing value.
+
+32
+00:01:52.070 --> 00:01:56.230
+For example, the most frequently
+recorded age of customers
+
+33
+00:01:56.230 --> 00:02:01.110
+associated with the specific item can
+be used if that value is missing.
+
+34
+00:02:01.110 --> 00:02:05.160
+Alternatively, a sensible value can
+be derived as a replacement for
+
+35
+00:02:05.160 --> 00:02:06.510
+a missing value.
+
+36
+00:02:06.510 --> 00:02:09.980
+For example, a missing value for
+income can be set to zero for
+
+37
+00:02:09.980 --> 00:02:12.340
+customers less then 18 years old, or
+
+38
+00:02:12.340 --> 00:02:17.120
+it can be replaced with an average
+value based on occupation and location.
+
+39
+00:02:17.120 --> 00:02:20.110
+Note that this approach requires
+knowledge about the application and
+
+40
+00:02:20.110 --> 00:02:24.130
+the variable with missing values in
+order to make reasonable choices
+
+41
+00:02:24.130 --> 00:02:27.140
+about what valuables would be sensible
+to replace the missing values.
+
+42
+00:02:28.660 --> 00:02:33.390
+In the case of duplicate data one
+approach is to delete the older record.
+
+43
+00:02:33.390 --> 00:02:36.500
+Another approach is to
+merge duplicate records.
+
+44
+00:02:36.500 --> 00:02:41.330
+This often requires a way to determine
+how to resolve conflicting values.
+
+45
+00:02:41.330 --> 00:02:45.720
+For example, in the case of multiple
+addresses for the same customer,
+
+46
+00:02:45.720 --> 00:02:50.360
+some logic for determining similarities
+between addresses might be necessary.
+
+47
+00:02:50.360 --> 00:02:53.130
+For example,
+St period is the same as Street.
+
+48
+00:02:54.740 --> 00:02:59.180
+To address invalid data, consulting
+another data source may be necessary.
+
+49
+00:02:59.180 --> 00:03:02.910
+For example,
+an invalid zip code can be corrected
+
+50
+00:03:02.910 --> 00:03:06.810
+by looking up the correct zip
+code based on city and state.
+
+51
+00:03:06.810 --> 00:03:11.200
+A best estimate for a reasonable value
+can also be used as a replacement.
+
+52
+00:03:11.200 --> 00:03:14.460
+For example, for
+a missing age value for an employee,
+
+53
+00:03:14.460 --> 00:03:18.980
+a reasonable value can be estimated based
+on the employee's length of employment.
+
+54
+00:03:20.850 --> 00:03:23.750
+Noise that distorts the data
+values can be addressed by
+
+55
+00:03:23.750 --> 00:03:26.010
+filtering out the source of the noise.
+
+56
+00:03:26.010 --> 00:03:30.390
+For example, filtering out the frequency
+of a constant background noise
+
+57
+00:03:30.390 --> 00:03:33.680
+will remove that noise
+component from a recording.
+
+58
+00:03:33.680 --> 00:03:36.670
+This filtering must be
+done with care however,
+
+59
+00:03:36.670 --> 00:03:40.290
+as it can also remove some components
+of the true data in the process.
+
+60
+00:03:41.760 --> 00:03:45.005
+Outliers can be detected through
+the use of summary statistics and
+
+61
+00:03:45.005 --> 00:03:46.760
+plots of the data.
+
+62
+00:03:46.760 --> 00:03:49.940
+Outliers can significantly skew
+the distribution of your data and
+
+63
+00:03:49.940 --> 00:03:52.430
+thus the results of your analysis.
+
+64
+00:03:52.430 --> 00:03:55.240
+In cases where outliers are not
+the focus of your analysis,
+
+65
+00:03:55.240 --> 00:03:59.100
+you will want to remove these
+outlier samples from your data set.
+
+66
+00:03:59.100 --> 00:04:01.710
+For example,
+when a thermostat malfunctions and
+
+67
+00:04:01.710 --> 00:04:05.070
+causes values to fluctuate wildly,
+or to be much higher or
+
+68
+00:04:05.070 --> 00:04:08.760
+lower than normal,
+these samples should be filtered out.
+
+69
+00:04:08.760 --> 00:04:13.140
+In some applications, however, outliers
+are exactly what you're looking for.
+
+70
+00:04:13.140 --> 00:04:16.100
+So when you detect outliers,
+you don't want to throw them out.
+
+71
+00:04:16.100 --> 00:04:19.110
+Instead, you want to
+examine them more closely.
+
+72
+00:04:19.110 --> 00:04:23.610
+A classic example of this is in fraud
+detection, where outliers represent
+
+73
+00:04:23.610 --> 00:04:27.410
+potential fraudulent use and
+those samples should be analyzed closely.
+
+74
+00:04:28.700 --> 00:04:31.750
+In order to address data
+quality issues effectively
+
+75
+00:04:31.750 --> 00:04:34.640
+knowledge about
+the application is crucial.
+
+76
+00:04:34.640 --> 00:04:37.360
+Things such as how the data was collected,
+
+77
+00:04:37.360 --> 00:04:42.980
+the user population, the intended use
+of the application etc, are important.
+
+78
+00:04:42.980 --> 00:04:47.060
+This domain knowledge is essential
+to making informed decisions on how
+
+79
+00:04:47.060 --> 00:04:50.936
+to best impute missing values,
+how to handle duplicate records and
+
+80
+00:04:50.936 --> 00:04:54.688
+invalid data and what to do about
+noise and outliers in your data.

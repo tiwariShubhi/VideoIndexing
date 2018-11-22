@@ -1,0 +1,261 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.871
+In this activity we will be using
+KNIME to handle missing data.
+
+2
+00:00:04.871 --> 00:00:09.045
+First, we will create new workflow and
+import our weather data.
+
+3
+00:00:09.045 --> 00:00:15.571
+Next, we will remove missing values for
+specific measurement in the data.
+
+4
+00:00:15.571 --> 00:00:18.813
+We will then impute missing
+values with the mean.
+
+5
+00:00:18.813 --> 00:00:21.554
+And finally,
+remove all the rows with missing values.
+
+6
+00:00:24.655 --> 00:00:28.145
+Let's begin, first,
+let's create a new workflow in KNIME.
+
+7
+00:00:34.723 --> 00:00:36.558
+We'll name it, Handling Missing Values.
+
+8
+00:00:42.252 --> 00:00:47.453
+Next, let's import the weather
+data using the File Reader node.
+
+9
+00:00:47.453 --> 00:00:49.421
+We'll add the File Reader
+node to the canvas.
+
+10
+00:00:58.553 --> 00:01:02.060
+We'll configure File Reader
+to read daily_weather.csv.
+
+11
+00:01:08.409 --> 00:01:13.280
+Next, we'll connect the Histogram
+node to File Reader.
+
+12
+00:01:20.553 --> 00:01:24.909
+Before we configure the Histogram node,
+we need to run the File Reader node.
+
+13
+00:01:24.909 --> 00:01:28.331
+We can do this by clicking on File Reader,
+and
+
+14
+00:01:28.331 --> 00:01:31.677
+clicking on the green
+arrow in the toolbar.
+
+15
+00:01:35.224 --> 00:01:38.259
+Next, double-click on
+Histogram to configure it.
+
+16
+00:01:38.259 --> 00:01:43.561
+We'll set both the binning column and
+aggregation columns to air_temp_9am.
+
+17
+00:01:52.003 --> 00:01:54.259
+Next, we'll add a missing value node.
+
+18
+00:02:02.931 --> 00:02:06.257
+We'll connect this to
+the file reader node.
+
+19
+00:02:06.257 --> 00:02:09.992
+Double click on missing
+value to configuring it.
+
+20
+00:02:09.992 --> 00:02:13.945
+Go to column settings,
+
+21
+00:02:13.945 --> 00:02:21.466
+select air_temp_9am, and click on Add.
+
+22
+00:02:21.466 --> 00:02:23.584
+We'll then choose remove row.
+
+23
+00:02:26.982 --> 00:02:32.298
+This will remove the measurements of
+air_temp_9am that had missing values.
+
+24
+00:02:32.298 --> 00:02:32.948
+Click OK.
+
+25
+00:02:35.838 --> 00:02:41.106
+Next, we'll add another histogram
+node to the output of missing value.
+
+26
+00:02:41.106 --> 00:02:45.162
+We can do this easily by copying and
+pasting the existing histogram node.
+
+27
+00:02:54.404 --> 00:02:57.144
+Now let's run the workflow by
+clicking on the double green arrows.
+
+28
+00:03:00.966 --> 00:03:04.491
+Let's view the output in
+the histogram nodes before and
+
+29
+00:03:04.491 --> 00:03:06.592
+after we remove missing values.
+
+30
+00:03:06.592 --> 00:03:10.158
+In this histogram view,
+we can see that there are missing values.
+
+31
+00:03:10.158 --> 00:03:12.985
+If we go and
+look at the second histogram node,
+
+32
+00:03:12.985 --> 00:03:15.752
+the one after we removed
+the missing values.
+
+33
+00:03:18.766 --> 00:03:20.958
+We can see that there are no
+missing values in this chart.
+
+34
+00:03:23.678 --> 00:03:28.748
+Next, instead of removing missing values,
+let's impute the values to the mean.
+
+35
+00:03:28.748 --> 00:03:32.042
+We could do this by configuring
+the missing value node.
+
+36
+00:03:34.865 --> 00:03:39.454
+And instead of remove row,
+change that to mean.
+
+37
+00:03:39.454 --> 00:03:47.050
+Click OK, and rerun the work flow.
+
+38
+00:03:47.050 --> 00:03:50.906
+We could see the difference by comparing
+the graphs and the two histogram nodes.
+
+39
+00:03:56.182 --> 00:03:57.700
+If we go to visualization settings.
+
+40
+00:04:00.403 --> 00:04:04.412
+And change labels to all elements, we'll
+see the number of elements in each band.
+
+41
+00:04:11.379 --> 00:04:14.929
+In the histogram,
+before we removed the missing values,
+
+42
+00:04:14.929 --> 00:04:18.486
+we can see the fifth column
+has 216 measurements in it.
+
+43
+00:04:18.486 --> 00:04:25.952
+Where as the fifth column after we imputed
+the missing values has 221 values in it.
+
+44
+00:04:25.952 --> 00:04:26.680
+Let's close these.
+
+45
+00:04:31.608 --> 00:04:36.756
+Next, let's remove all the rows that
+have missing values in the data.
+
+46
+00:04:36.756 --> 00:04:39.073
+We can do this by double
+clicking on missing value.
+
+47
+00:04:42.578 --> 00:04:44.770
+Removing air_temp_ 9am.
+
+48
+00:04:46.918 --> 00:04:48.116
+Clicking on the default tab.
+
+49
+00:04:50.728 --> 00:04:53.892
+Changing this to remove row.
+
+50
+00:04:53.892 --> 00:04:59.224
+I'll click OK, now we rerun the workflow.
+
+51
+00:04:59.224 --> 00:05:03.470
+Again, we'll look at the histograms before
+and after we remove the missing values.
+
+52
+00:05:15.128 --> 00:05:20.170
+Again, we'll go to visualization settings
+and change the labels to all elements so
+
+53
+00:05:20.170 --> 00:05:22.878
+we can see the number of
+elements in each bin.
+
+54
+00:05:27.213 --> 00:05:30.490
+We can see the number of elements in
+each bin in the different histograms
+
+55
+00:05:30.490 --> 00:05:31.149
+has changed.

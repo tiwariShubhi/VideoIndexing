@@ -1,0 +1,553 @@
+WEBVTT
+
+1
+00:00:01.070 --> 00:00:04.570
+This lesson on graph analytics,
+is about identifying and
+
+2
+00:00:04.570 --> 00:00:07.290
+tracking groups of interacting
+entities in a network.
+
+3
+00:00:08.900 --> 00:00:10.740
+We call these groups communities.
+
+4
+00:00:12.550 --> 00:00:16.060
+Let's try to provide a more concrete
+definition of communities in a network.
+
+5
+00:00:17.410 --> 00:00:19.800
+We multiply the definition
+by this diagram,
+
+6
+00:00:19.800 --> 00:00:22.820
+showing a research study
+on the Santa Fe Institute.
+
+7
+00:00:22.820 --> 00:00:27.680
+A theoretical research institute
+located in Santa Fe, New Mexico, US.
+
+8
+00:00:27.680 --> 00:00:31.850
+They performed multidisciplinary
+studies on fundamental principles
+
+9
+00:00:31.850 --> 00:00:34.220
+of complex adaptive systems.
+
+10
+00:00:34.220 --> 00:00:37.110
+The nodes in the graph are researchers.
+
+11
+00:00:37.110 --> 00:00:39.640
+And an edge exists
+between two researchers,
+
+12
+00:00:39.640 --> 00:00:40.830
+if they collaborate with each other.
+
+13
+00:00:42.070 --> 00:00:47.020
+As you can see, there are distinct
+groups among researchers.
+
+14
+00:00:47.020 --> 00:00:49.300
+A mathematically college researcher,
+
+15
+00:00:49.300 --> 00:00:53.090
+does not collaborate with researchers
+who work on structure of the RNA.
+
+16
+00:00:54.370 --> 00:00:58.450
+So the graph,
+is essentially a set of separate groups,
+
+17
+00:00:58.450 --> 00:01:02.570
+thinly connected through a handful
+of cross-disciplinary researchers,
+
+18
+00:01:02.570 --> 00:01:04.000
+who collaborate across groups.
+
+19
+00:01:05.290 --> 00:01:08.320
+These groups are then the communities
+in this collaboration graph.
+
+20
+00:01:09.590 --> 00:01:10.280
+What does this tell us?
+
+21
+00:01:11.650 --> 00:01:16.260
+It tells us that communities are highly
+interacting clusters in a graph.
+
+22
+00:01:16.260 --> 00:01:20.690
+That is, they form pockets of
+denser subgraphs that are more
+
+23
+00:01:20.690 --> 00:01:24.400
+connected to each other,
+than to members of the other clusters.
+
+24
+00:01:25.540 --> 00:01:30.020
+Communities of humans, or otherwise,
+are interesting things to study,
+
+25
+00:01:30.020 --> 00:01:33.740
+because it gives us an insight
+into the interaction patterns.
+
+26
+00:01:33.740 --> 00:01:35.280
+And how they change with time.
+
+27
+00:01:36.340 --> 00:01:39.280
+Here, are some analytics
+questions about communities.
+
+28
+00:01:40.310 --> 00:01:42.740
+We have divided them
+into three categories.
+
+29
+00:01:44.080 --> 00:01:46.990
+Analytics questions that do not
+depend on time, are called static.
+
+30
+00:01:48.030 --> 00:01:52.290
+Here, we ask questions about
+the composition of the community,
+
+31
+00:01:52.290 --> 00:01:54.970
+how tight-knit members are connected,
+and so forth.
+
+32
+00:01:56.030 --> 00:02:02.470
+In the second category, we involve the
+formation, and evolution of the community.
+
+33
+00:02:03.740 --> 00:02:06.720
+Communities can form temporal,
+for example,
+
+34
+00:02:06.720 --> 00:02:09.720
+around an event like a school shooting.
+
+35
+00:02:09.720 --> 00:02:12.620
+Or some communities,
+despite the comings and
+
+36
+00:02:12.620 --> 00:02:16.750
+goings of members,
+sustain themselves well.
+
+37
+00:02:16.750 --> 00:02:22.040
+A Facebook group, a political party,
+fans of a music band,
+
+38
+00:02:22.040 --> 00:02:25.515
+are likely to continue over time,
+and hence are non-transient.
+
+39
+00:02:27.070 --> 00:02:30.350
+One can also be interested in
+the history of formation of a community,
+
+40
+00:02:30.350 --> 00:02:31.100
+like a criminal network.
+
+41
+00:02:32.230 --> 00:02:34.410
+The third category is about predictions.
+
+42
+00:02:35.780 --> 00:02:39.740
+Analysts would like to predict
+how a community would grow.
+
+43
+00:02:39.740 --> 00:02:41.828
+Whether it's composition
+of members might change.
+
+44
+00:02:41.828 --> 00:02:46.300
+Or whether there are emerging
+power shifts within the community.
+
+45
+00:02:47.920 --> 00:02:51.490
+Now before we ask these questions,
+however,
+
+46
+00:02:51.490 --> 00:02:54.620
+we need to first identify
+communities in a large network.
+
+47
+00:02:55.900 --> 00:03:00.790
+To find communities, we need to
+formalize the idea that there are more
+
+48
+00:03:00.790 --> 00:03:05.520
+connections within the community, and
+fewer connections between two communities.
+
+49
+00:03:06.770 --> 00:03:11.180
+One way to achieve this, is to think
+of dividing the degree of a node,
+
+50
+00:03:11.180 --> 00:03:15.430
+into an internal and
+an external component.
+
+51
+00:03:15.430 --> 00:03:20.310
+The internal component is the count
+of edges within community.
+
+52
+00:03:20.310 --> 00:03:23.680
+And the external degree, is the count
+of edges outside the community.
+
+53
+00:03:25.480 --> 00:03:26.110
+An example,
+
+54
+00:03:26.110 --> 00:03:30.450
+will be to consider that my community
+is where I live, that is San Diego.
+
+55
+00:03:30.450 --> 00:03:35.280
+And then count the number of my friends
+within San Diego versus outside San Diego.
+
+56
+00:03:36.660 --> 00:03:41.560
+In the figure, the highlighted node
+has four internal connections and
+
+57
+00:03:41.560 --> 00:03:42.640
+one external connection.
+
+58
+00:03:44.730 --> 00:03:48.310
+The next step, would be to think
+of the internal degree, and
+
+59
+00:03:48.310 --> 00:03:50.660
+the external degree of an entire cluster.
+
+60
+00:03:51.890 --> 00:03:56.080
+We can sum up the internal degrees
+of all nodes in a cluster.
+
+61
+00:03:56.080 --> 00:03:59.480
+And call it the internal
+degree of the whole cluster.
+
+62
+00:03:59.480 --> 00:04:02.089
+And similarly,
+sum the external degrees of the nodes,
+
+63
+00:04:02.089 --> 00:04:04.320
+to compute the external
+degree of the cluster.
+
+64
+00:04:05.460 --> 00:04:08.360
+Now, we can define intra-cluster
+
+65
+00:04:08.360 --> 00:04:12.810
+density to be the ratio of the number
+of internal edges of the cluster,
+
+66
+00:04:12.810 --> 00:04:16.250
+divided by the number of possible
+connections inside the box.
+
+67
+00:04:17.670 --> 00:04:20.350
+The denominator is N cues 2.
+
+68
+00:04:20.350 --> 00:04:24.190
+Which is the number of pairwise
+combination of nodes within the cluster.
+
+69
+00:04:24.190 --> 00:04:25.490
+We call this delta int.
+
+70
+00:04:26.780 --> 00:04:30.750
+Similarly, inter-cluster density,
+delta x is the number
+
+71
+00:04:30.750 --> 00:04:35.040
+of inter-cluster edges divided by
+the possible pairings between nC,
+
+72
+00:04:36.120 --> 00:04:40.070
+a node in the cluster, to n- nC,
+the number of nodes outside the cluster.
+
+73
+00:04:41.970 --> 00:04:47.500
+There are two kinds of methods used for
+finding communities in the network.
+
+74
+00:04:47.500 --> 00:04:52.320
+One of them focuses on local properties,
+that is,
+
+75
+00:04:52.320 --> 00:04:56.560
+properties for which one only
+looks at a node and its neighbor.
+
+76
+00:04:57.720 --> 00:05:01.110
+For the most ideal community
+in a network is a subgraph,
+
+77
+00:05:01.110 --> 00:05:04.099
+where every node is connected to
+every other node in the subgraph.
+
+78
+00:05:05.230 --> 00:05:06.840
+Such a structure is called a clique.
+
+79
+00:05:08.570 --> 00:05:11.740
+To find a perfect community
+structure as a clique,
+
+80
+00:05:11.740 --> 00:05:16.560
+one can try to find the largest
+clique within a graph, return cell.
+
+81
+00:05:17.580 --> 00:05:19.670
+That is a computationally
+challenging problem.
+
+82
+00:05:21.260 --> 00:05:25.780
+It's much simpler to find cliques
+if we know the value of k.
+
+83
+00:05:26.780 --> 00:05:30.312
+That means the number of
+members in the clique.
+
+84
+00:05:30.312 --> 00:05:33.000
+We're going to show a simple
+version of this in model three.
+
+85
+00:05:34.710 --> 00:05:38.230
+The more general problem has been
+solved by complex algorithms,
+
+86
+00:05:38.230 --> 00:05:39.990
+that are beyond the scope of this course.
+
+87
+00:05:41.950 --> 00:05:47.620
+In the real world, perfect cliques larger
+than three or four are harder to find.
+
+88
+00:05:47.620 --> 00:05:49.450
+So we need to relax the definition of it.
+
+89
+00:05:50.750 --> 00:05:53.680
+Now, there are two types of relaxations,
+
+90
+00:05:53.680 --> 00:05:57.250
+those based on distance,
+and those based on density.
+
+91
+00:05:58.950 --> 00:06:04.970
+Two distance based definitions
+are n-clique and n-plan.
+
+92
+00:06:04.970 --> 00:06:08.660
+We'll illustrate this over
+a friendship graph shown here.
+
+93
+00:06:08.660 --> 00:06:12.050
+n-clique, is a subgraph,
+
+94
+00:06:12.050 --> 00:06:16.990
+such that the distance between each
+node pair in that subgraph is n or less.
+
+95
+00:06:16.990 --> 00:06:22.790
+By this definition, Holly, Paul,
+and Gary form a two clique.
+
+96
+00:06:24.100 --> 00:06:27.090
+That's a little awkward, isn't it?
+
+97
+00:06:27.090 --> 00:06:28.120
+Yeah.
+
+98
+00:06:28.120 --> 00:06:30.550
+They are within two
+distance of each other.
+
+99
+00:06:30.550 --> 00:06:33.600
+But the two clique does not
+include intermediate nodes that
+
+100
+00:06:33.600 --> 00:06:34.480
+connect the member nodes.
+
+101
+00:06:35.760 --> 00:06:39.690
+So, Mike, is not in the two clique.
+
+102
+00:06:40.890 --> 00:06:44.570
+This situation is corrected in n-clan.
+
+103
+00:06:44.570 --> 00:06:49.280
+Where, to belong to the n-clan,
+the shortest part between any members,
+
+104
+00:06:49.280 --> 00:06:51.438
+without involving outsiders, is n or less.
+
+105
+00:06:51.438 --> 00:06:56.250
+Now, Holly, Mike,
+
+106
+00:06:56.250 --> 00:07:01.030
+Bill, Don, Harry, and
+Gary form a two-clan.
+
+107
+00:07:01.030 --> 00:07:05.660
+Clearly, this group is more cohesive
+than the two-clique we saw before.
+
+108
+00:07:07.760 --> 00:07:11.490
+n-clique and n-clan
+are distance based measures for
+
+109
+00:07:11.490 --> 00:07:13.455
+finding cohesive groups of communities.
+
+110
+00:07:13.455 --> 00:07:19.270
+K-core is a density based method for
+finding communities.
+
+111
+00:07:19.270 --> 00:07:22.117
+Let's look at the dark, orange subgraph.
+
+112
+00:07:22.117 --> 00:07:27.410
+Every node is connected to at least
+three other nodes within the subgraph.
+
+113
+00:07:27.410 --> 00:07:28.867
+They form a 3-core.
+
+114
+00:07:28.867 --> 00:07:33.110
+Let's include the medium light
+orange nodes in the subgraph now.
+
+115
+00:07:34.720 --> 00:07:39.380
+Each node is connected to at least two
+other members within the subgraph,
+
+116
+00:07:39.380 --> 00:07:40.495
+they form a 2-core.
+
+117
+00:07:42.400 --> 00:07:49.894
+Relaxing further, we can add the light
+orange nodes and the graph as a 1-core.

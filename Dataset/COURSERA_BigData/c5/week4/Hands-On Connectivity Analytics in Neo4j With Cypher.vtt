@@ -1,0 +1,636 @@
+WEBVTT
+
+1
+00:00:01.130 --> 00:00:04.808
+Next, we will talk about
+connectivity analytics with Cypher.
+
+2
+00:00:04.808 --> 00:00:06.713
+If you remember in module two,
+
+3
+00:00:06.713 --> 00:00:11.810
+we talked about connectivity analytics
+in terms of network robustness.
+
+4
+00:00:11.810 --> 00:00:15.590
+In other words, a measure of how resistant
+a graph network is to being disconnected.
+
+5
+00:00:16.820 --> 00:00:19.720
+Specifically, we used
+two kinds of methods.
+
+6
+00:00:19.720 --> 00:00:24.790
+One computed the eigenvalues, and the
+second computed the degree distribution.
+
+7
+00:00:24.790 --> 00:00:29.150
+For these examples, we're going to use
+the second one, degree distributions.
+
+8
+00:00:29.150 --> 00:00:32.710
+And we will use the same graph
+network we've used previously.
+
+9
+00:00:32.710 --> 00:00:35.280
+A simple graph representing
+a road network.
+
+10
+00:00:36.280 --> 00:00:40.534
+And here's a listing of the query examples
+we're going to be applying to our network.
+
+11
+00:00:57.639 --> 00:01:03.080
+My first query example finds all
+of the outdegrees of all nodes.
+
+12
+00:01:03.080 --> 00:01:07.050
+Now, if you'll notice, this query consists
+of two parts, because there's a specific
+
+13
+00:01:07.050 --> 00:01:12.940
+type of node, a leaf node, which does not
+conform to this particular constraint.
+
+14
+00:01:12.940 --> 00:01:16.620
+So our first match statement finds
+all nodes with outgoing edges,
+
+15
+00:01:16.620 --> 00:01:19.510
+as you can see here,
+this is a directed edge.
+
+16
+00:01:19.510 --> 00:01:21.930
+And then,
+we returns the names of the nodes and
+
+17
+00:01:21.930 --> 00:01:24.870
+the count as the variable outdegree.
+
+18
+00:01:24.870 --> 00:01:27.610
+And for convenience,
+we order by outdegree.
+
+19
+00:01:27.610 --> 00:01:32.820
+And we need to combine that with
+a specific query dealing with leaf nodes.
+
+20
+00:01:32.820 --> 00:01:36.820
+We're familiar with how to
+do that from past examples.
+
+21
+00:01:36.820 --> 00:01:41.220
+And so, we'll match all leaf nodes and
+return the name and
+
+22
+00:01:41.220 --> 00:01:43.950
+the value zero for its outdegree.
+
+23
+00:01:43.950 --> 00:01:48.460
+So when we submit this query we
+get this listing right here.
+
+24
+00:01:48.460 --> 00:01:52.792
+The node P has 0 for its outdegree and
+all of the other nodes are as we might
+
+25
+00:01:52.792 --> 00:01:56.286
+expect and they're ordered
+by their value of outdegree.
+
+26
+00:02:00.118 --> 00:02:02.695
+Our next query finds
+the indegree of all nodes,
+
+27
+00:02:02.695 --> 00:02:05.850
+which is very similar to
+our previous example.
+
+28
+00:02:05.850 --> 00:02:07.360
+But, in this case, as you might expect,
+
+29
+00:02:07.360 --> 00:02:12.240
+we're going to take into account
+root nodes instead of leaf nodes.
+
+30
+00:02:12.240 --> 00:02:15.910
+And so, our match involves incoming edges.
+
+31
+00:02:15.910 --> 00:02:19.540
+Indegree is a measure of all nodes
+connected to a specific node with
+
+32
+00:02:19.540 --> 00:02:21.130
+incoming edges.
+
+33
+00:02:21.130 --> 00:02:23.730
+And we return similar results and
+
+34
+00:02:23.730 --> 00:02:29.030
+we union that with the specific query
+commands to find all of the root nodes,
+
+35
+00:02:29.030 --> 00:02:33.090
+and then we return those names and
+0 as the value of indegree.
+
+36
+00:02:33.090 --> 00:02:37.820
+So when we submit this query,
+here's our results as we might expect.
+
+37
+00:02:37.820 --> 00:02:40.690
+In this case, H is our only root node.
+
+38
+00:02:40.690 --> 00:02:43.264
+So it has a value of 0 for indegree, and
+
+39
+00:02:43.264 --> 00:02:46.072
+all the other nodes
+are as we might expect.
+
+40
+00:02:49.438 --> 00:02:53.040
+And our third query example
+finds the degree of all nodes,
+
+41
+00:02:53.040 --> 00:02:56.220
+which is a combination of outdegree and
+indegree.
+
+42
+00:02:56.220 --> 00:03:02.010
+So in this case we're not including any
+specific direction in our match statement.
+
+43
+00:03:02.010 --> 00:03:06.820
+And we're returning the name and
+the count for all of our edges.
+
+44
+00:03:06.820 --> 00:03:09.540
+But we're using the distinct statement,
+
+45
+00:03:09.540 --> 00:03:13.090
+otherwise we would be
+counting some nodes twice.
+
+46
+00:03:13.090 --> 00:03:16.820
+And then, for convenience,
+we order this by the value of degree.
+
+47
+00:03:16.820 --> 00:03:21.628
+And when we submit this query,
+we get the results as shown here.
+
+48
+00:03:21.628 --> 00:03:26.071
+We have 1 column with the name and
+the other column with the degree and
+
+49
+00:03:26.071 --> 00:03:31.048
+the values are as we would expect, we have
+a leaf node P with the degree of 1 and
+
+50
+00:03:31.048 --> 00:03:33.128
+a root node H with a degree of 1.
+
+51
+00:03:37.296 --> 00:03:43.262
+Our next query example generates a degree
+histogram of the graph since we're able to
+
+52
+00:03:43.262 --> 00:03:49.670
+calculate the degree of each node, we can
+sort those into actual values of degree.
+
+53
+00:03:49.670 --> 00:03:53.606
+So if we look at the distribution
+of degree among our nodes,
+
+54
+00:03:53.606 --> 00:03:58.801
+we see there's 2 nodes with the degree 1,
+there's 3 nodes with degree 2,
+
+55
+00:03:58.801 --> 00:04:04.280
+there's 4 nodes with degree 3, and
+there's 2 nodes with degree 4.
+
+56
+00:04:04.280 --> 00:04:07.181
+So we're going to group those
+in the form of a histogram.
+
+57
+00:04:07.181 --> 00:04:11.310
+So when we submit this query,
+we get this table.
+
+58
+00:04:11.310 --> 00:04:16.002
+The first column list the degree
+value in ascending order and
+
+59
+00:04:16.002 --> 00:04:22.500
+the second column list the counts of
+the nodes that have that degree value.
+
+60
+00:04:22.500 --> 00:04:27.451
+So for those of you who are familiar with
+SQL you might recognize this as similar
+
+61
+00:04:27.451 --> 00:04:30.989
+to the group by command,
+it performs a similar function
+
+62
+00:04:34.471 --> 00:04:38.980
+Our next query example saves the degree
+of the node as a new node property.
+
+63
+00:04:38.980 --> 00:04:44.000
+This provides an added convenience so that
+we don't have to calculate the degree of
+
+64
+00:04:44.000 --> 00:04:47.330
+a node every time we're
+performing some sort of analysis.
+
+65
+00:04:47.330 --> 00:04:50.640
+So we match all nodes with edges, and
+
+66
+00:04:50.640 --> 00:04:54.950
+there's no direction in this
+particular edge definition.
+
+67
+00:04:54.950 --> 00:04:59.090
+And then, we return distinct
+counts of each node's degree, and
+
+68
+00:04:59.090 --> 00:05:05.460
+then we create a new property, called deg,
+and assign the value of degree to it.
+
+69
+00:05:05.460 --> 00:05:09.090
+Then, we return the names and
+the degree values, and so
+
+70
+00:05:09.090 --> 00:05:13.040
+when we submit this query,
+we see this distribution right here,
+
+71
+00:05:13.040 --> 00:05:17.690
+with the names in the left column, and
+the values of degree in the right column.
+
+72
+00:05:19.070 --> 00:05:23.740
+And we can verify that if we issue a
+command to return all of the properties of
+
+73
+00:05:23.740 --> 00:05:25.250
+the specific node.
+
+74
+00:05:25.250 --> 00:05:28.970
+So in this case I issued a command
+to match the node named D and
+
+75
+00:05:28.970 --> 00:05:30.640
+return all of its properties.
+
+76
+00:05:30.640 --> 00:05:34.272
+And sure enough we see that it has
+a property name and a property degree.
+
+77
+00:05:37.569 --> 00:05:39.476
+Before we go to the last two examples,
+
+78
+00:05:39.476 --> 00:05:43.800
+there's a philosophical issue that we
+need to remember with all databases.
+
+79
+00:05:43.800 --> 00:05:47.780
+Every database will allow you some
+analytical computation and the remainder
+
+80
+00:05:47.780 --> 00:05:51.610
+of the analytical computations must
+be done outside of the database.
+
+81
+00:05:51.610 --> 00:05:54.830
+However, it is always a judicious
+idea to get the database to
+
+82
+00:05:54.830 --> 00:05:58.683
+achieve an intermediate result formatted
+in a way that you would need for
+
+83
+00:05:58.683 --> 00:05:59.962
+the next computation.
+
+84
+00:05:59.962 --> 00:06:04.560
+And then, you use that intermediate result
+as the input to the next computation.
+
+85
+00:06:04.560 --> 00:06:07.290
+We've seen that a number of
+computations in graph analytics
+
+86
+00:06:07.290 --> 00:06:10.040
+start with the adjacency matrix.
+
+87
+00:06:10.040 --> 00:06:14.370
+So we should be able to force Cypher
+to produce an adjacency matrix.
+
+88
+00:06:14.370 --> 00:06:15.480
+And this is what we're doing here.
+
+89
+00:06:16.980 --> 00:06:22.010
+So think of a Matrix as a three column
+table, in which, here's one column,
+
+90
+00:06:22.010 --> 00:06:25.220
+here's another column, and the third
+column will be the values that we
+
+91
+00:06:25.220 --> 00:06:30.140
+are calculating when we determine whether
+two nodes have an edge between them.
+
+92
+00:06:30.140 --> 00:06:33.910
+And we're introducing a new
+construct in Cypher called case.
+
+93
+00:06:33.910 --> 00:06:38.320
+This allows us to evaluate conditions and
+return one result, or
+
+94
+00:06:38.320 --> 00:06:41.000
+a different result
+depending on the condition.
+
+95
+00:06:41.000 --> 00:06:46.200
+Here, we're specifying that when
+there is an edge between nodes n and
+
+96
+00:06:46.200 --> 00:06:50.890
+m, then we return a value of 1,
+otherwise return a value of 0.
+
+97
+00:06:50.890 --> 00:06:53.068
+And we'll output those results as a value.
+
+98
+00:06:53.068 --> 00:06:57.748
+And so, when we submit this query,
+we get our three column table in which
+
+99
+00:06:57.748 --> 00:07:01.340
+the first column is
+the name of our first node.
+
+100
+00:07:01.340 --> 00:07:05.077
+The second column is the name of our
+second node and the value is either a 1 or
+
+101
+00:07:05.077 --> 00:07:09.250
+a 1 depending on whether the nodes
+have an edge between them.
+
+102
+00:07:09.250 --> 00:07:12.839
+So in this case we see node A and
+C have an edge,
+
+103
+00:07:12.839 --> 00:07:16.530
+A and L have an edge and
+so on as we would expect.
+
+104
+00:07:20.050 --> 00:07:25.150
+So if we can calculate the adjacency
+matrix then we can calculate any matrix.
+
+105
+00:07:25.150 --> 00:07:29.280
+You might remember from our
+module two lecture where we
+
+106
+00:07:29.280 --> 00:07:32.760
+learned about this complex structure
+called the Normalized Laplacian Matrix.
+
+107
+00:07:33.970 --> 00:07:35.437
+So let's go ahead and calculate that.
+
+108
+00:07:35.437 --> 00:07:41.090
+We'll perform something very similar
+to what we did in the previous example.
+
+109
+00:07:41.090 --> 00:07:44.320
+We'll match all nodes for
+the first column, and all nodes for
+
+110
+00:07:44.320 --> 00:07:46.080
+the second column.
+
+111
+00:07:46.080 --> 00:07:51.390
+We'll return the names of those nodes and
+then we'll use the case structure again
+
+112
+00:07:51.390 --> 00:07:55.280
+to compare the names of each node and
+determine whether we have the same node.
+
+113
+00:07:56.590 --> 00:08:01.160
+If we do have the same node then
+that is a diagonal of the matrix and
+
+114
+00:08:01.160 --> 00:08:01.945
+should get a value of 1.
+
+115
+00:08:03.030 --> 00:08:06.264
+If they are different nodes and
+contain an edge between them,
+
+116
+00:08:06.264 --> 00:08:09.948
+then we calculate the normalized
+Laplacian with this equation here.
+
+117
+00:08:09.948 --> 00:08:14.638
+And you'll also want to notice that here
+we're using the actual degree property
+
+118
+00:08:14.638 --> 00:08:18.210
+that we assigned to the nodes
+in a previous example.
+
+119
+00:08:18.210 --> 00:08:22.080
+This is an example of how that
+can become a convenient option.
+
+120
+00:08:22.080 --> 00:08:25.790
+So when the calculation is performed,
+the value would be returned.
+
+121
+00:08:25.790 --> 00:08:30.030
+If there's no edge between the 2 nodes,
+then the value of 0 will be returned.
+
+122
+00:08:30.030 --> 00:08:32.194
+And these values will end
+up in the value column.
+
+123
+00:08:32.194 --> 00:08:36.780
+So when we submit this query,
+here's the table that get returned.
+
+124
+00:08:36.780 --> 00:08:39.662
+This is the first column
+with the source node.
+
+125
+00:08:39.662 --> 00:08:43.370
+The second column with the target node and
+the values.
+
+126
+00:08:43.370 --> 00:08:47.070
+So in the first row, the first node
+is P and the second node is P, so
+
+127
+00:08:47.070 --> 00:08:50.600
+it's identical, which means it's
+on the diagonal of the matrix.
+
+128
+00:08:50.600 --> 00:08:53.630
+Likewise, for A in this row down here.
+
+129
+00:08:53.630 --> 00:08:58.040
+And then the first value of the Laplacian
+is calculated between nodes A and
+
+130
+00:08:58.040 --> 00:08:59.180
+C, and so on.
+
+131
+00:09:01.310 --> 00:09:06.202
+So that concludes our examples of how
+to perform connectivity analytics
+
+132
+00:09:06.202 --> 00:09:07.815
+in Neo4j with Cypher.

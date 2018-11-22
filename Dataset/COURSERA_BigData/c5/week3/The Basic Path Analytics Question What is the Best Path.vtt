@@ -1,0 +1,291 @@
+WEBVTT
+
+1
+00:00:00.760 --> 00:00:05.528
+The most primitive path analytics
+question one can ask is to find the best
+
+2
+00:00:05.528 --> 00:00:07.570
+path from node one to node two.
+
+3
+00:00:08.980 --> 00:00:11.220
+What does best mean?
+
+4
+00:00:11.220 --> 00:00:13.621
+Well, that depends on the actual
+needs of the application.
+
+5
+00:00:13.621 --> 00:00:16.975
+But in general, to specify the best path,
+
+6
+00:00:16.975 --> 00:00:21.274
+we need to define when one
+path is better than another.
+
+7
+00:00:21.274 --> 00:00:28.010
+This is usually expressed in
+terms of an optimization problem.
+
+8
+00:00:28.010 --> 00:00:32.790
+Where we need to minimize and maximize
+our subfunction subject to constraints.
+
+9
+00:00:32.790 --> 00:00:34.420
+What kind of constraints?
+
+10
+00:00:34.420 --> 00:00:39.280
+Two common criteria for graphs are,
+inclusion and exclusion conditions.
+
+11
+00:00:40.310 --> 00:00:46.860
+Inclusion criteria may specify which
+nodes we have to include in the path.
+
+12
+00:00:46.860 --> 00:00:50.050
+And exclusion criteria
+specifies which nodes and
+
+13
+00:00:50.050 --> 00:00:52.440
+edges should be excluded from the path.
+
+14
+00:00:52.440 --> 00:00:57.390
+In addition,
+one specify a preference criteria
+
+15
+00:00:57.390 --> 00:01:01.030
+that act as a softer or
+less strict constraint.
+
+16
+00:01:01.030 --> 00:01:04.880
+For example, we would like to
+minimize highways on my trip.
+
+17
+00:01:04.880 --> 00:01:05.900
+Or avoid condition.
+
+18
+00:01:06.980 --> 00:01:11.179
+These are soft because although
+the users would like to have them
+
+19
+00:01:11.179 --> 00:01:15.779
+enforced completely, it is all right
+if they are not fully enforced.
+
+20
+00:01:15.779 --> 00:01:20.362
+A good practical use case occurs when I'm
+trying to drive to work in the morning.
+
+21
+00:01:20.362 --> 00:01:25.284
+Ideally, I would like to take a path
+having the shortest distance from my home.
+
+22
+00:01:25.284 --> 00:01:30.620
+For example, node I, to my workplace,
+which is node B in the graph.
+
+23
+00:01:31.850 --> 00:01:35.680
+But I have to drop off my son at school.
+
+24
+00:01:35.680 --> 00:01:39.210
+So my path must include his school,
+the J here.
+
+25
+00:01:41.130 --> 00:01:45.150
+However, I would like to avoid roads
+around the new construction that's
+
+26
+00:01:45.150 --> 00:01:49.580
+happening about five miles from my
+workplace, like the node E in the graph.
+
+27
+00:01:51.140 --> 00:01:55.260
+Because there is usually a huge traffic
+delay around that construction site.
+
+28
+00:01:56.620 --> 00:01:59.210
+I could also add
+a preference criteria like
+
+29
+00:01:59.210 --> 00:02:01.290
+I don't prefer to drive on the highway.
+
+30
+00:02:01.290 --> 00:02:03.982
+But for this discussion,
+we'll skip the preference idea.
+
+31
+00:02:03.982 --> 00:02:06.059
+Too complicated?
+
+32
+00:02:06.059 --> 00:02:10.900
+Okay, let's start with a simpler problem.
+
+33
+00:02:10.900 --> 00:02:15.895
+To start with, let's drop the constraints
+and look at the problem with just
+
+34
+00:02:15.895 --> 00:02:20.280
+the optimization part of the problem,
+having a single variable.
+
+35
+00:02:22.150 --> 00:02:27.115
+In our case, that variable is the sum
+of edge weights from the source,
+
+36
+00:02:27.115 --> 00:02:31.086
+that is the starting node I,
+to the target, which is B.
+
+37
+00:02:33.095 --> 00:02:38.000
+This problem is handled by all mapping and
+road direction software.
+
+38
+00:02:38.000 --> 00:02:41.820
+Here is a Google map screenshot,
+in which I am trying to go from my home
+
+39
+00:02:41.820 --> 00:02:45.450
+in North San Diego,
+to a collision center in a nearby city.
+
+40
+00:02:47.030 --> 00:02:50.760
+Google Maps shows three different routes,
+and
+
+41
+00:02:50.760 --> 00:02:53.040
+highlights one as a preferred solution.
+
+42
+00:02:54.876 --> 00:03:00.170
+You should readily see that the real
+shortest path of 26.6 miles
+
+43
+00:03:00.170 --> 00:03:04.000
+will take the longest time at the time of
+the day when I was looking at the map.
+
+44
+00:03:05.080 --> 00:03:10.980
+So this means the weights here are not
+raw distances but estimated travel time.
+
+45
+00:03:10.980 --> 00:03:13.574
+You should also notice the blue, red, and
+
+46
+00:03:13.574 --> 00:03:17.482
+orange segments in the preferred
+path are presented by Google.
+
+47
+00:03:17.482 --> 00:03:22.731
+The orange and red street segments
+clearly represent congestion areas and
+
+48
+00:03:22.731 --> 00:03:26.570
+therefore have higher weight
+than the blue segments.
+
+49
+00:03:27.840 --> 00:03:32.070
+Therefore, the weights of the street
+segments are not really static but
+
+50
+00:03:32.070 --> 00:03:35.370
+change with many other factors,
+like weather or the time of the day.
+
+51
+00:03:36.510 --> 00:03:41.360
+This is why the least weight path problem
+is an important problem to solve for
+
+52
+00:03:41.360 --> 00:03:42.680
+the benefit of the commuter.
+
+53
+00:03:43.710 --> 00:03:46.960
+A widely applied algorithm
+that is applied for
+
+54
+00:03:46.960 --> 00:03:49.990
+shortest path problems is
+called Dijkstra's algorithm.
+
+55
+00:03:51.360 --> 00:03:56.280
+Originally, Dijkstra considered a variant
+of the problem where the task is
+
+56
+00:03:56.280 --> 00:04:00.580
+to find the shortest path from a single
+source node to all other nodes.
+
+57
+00:04:02.230 --> 00:04:04.110
+We'll go through the algorithm here.
+
+58
+00:04:04.110 --> 00:04:08.290
+However, there are many good online
+resources including tutorials and
+
+59
+00:04:08.290 --> 00:04:10.230
+YouTube videos describing the algorithm.
+
+60
+00:04:11.570 --> 00:04:15.284
+For our discussion, we'll confine
+ourselves to the case where both
+
+61
+00:04:15.284 --> 00:04:18.175
+the source and
+the target nodes are known in advance.

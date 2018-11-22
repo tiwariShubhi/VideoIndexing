@@ -1,0 +1,303 @@
+WEBVTT
+
+1
+00:00:00.008 --> 00:00:05.620
+Now that Maya has explained
+the basics of machine learning,
+
+2
+00:00:05.620 --> 00:00:10.660
+let's remember how big data
+influences analytical applications.
+
+3
+00:00:10.660 --> 00:00:15.020
+And how we can take advantage of
+the existing big data tools and
+
+4
+00:00:15.020 --> 00:00:17.490
+techniques in machine learning.
+
+5
+00:00:17.490 --> 00:00:20.960
+How can machine learning
+algorithms be scaled up
+
+6
+00:00:20.960 --> 00:00:24.010
+to process large volumes of data?
+
+7
+00:00:24.010 --> 00:00:25.120
+Let's talk about that now.
+
+8
+00:00:27.100 --> 00:00:30.395
+After this video, you will be able to
+
+9
+00:00:30.395 --> 00:00:34.665
+explain how machine learning
+techniques can scale up to big data.
+
+10
+00:00:35.685 --> 00:00:40.855
+And discuss the role of distributed
+computing platforms like Hadoop and
+
+11
+00:00:40.855 --> 00:00:43.485
+Spark in applying machine
+learning to big data.
+
+12
+00:00:44.855 --> 00:00:48.605
+With the massive amounts of data
+that need to be processed for
+
+13
+00:00:48.605 --> 00:00:52.775
+applications, such as drug
+effectiveness analysis,
+
+14
+00:00:52.775 --> 00:00:57.200
+climate monitoring, and
+website recommendations to name a few.
+
+15
+00:00:58.420 --> 00:01:03.570
+We need to be able to add scalability
+to machine learning techniques.
+
+16
+00:01:03.570 --> 00:01:05.600
+How do we apply machine learning at scale?
+
+17
+00:01:06.790 --> 00:01:11.770
+One way, is to scale up by
+adding more memory, processors,
+
+18
+00:01:11.770 --> 00:01:17.400
+and storage to our system so
+that it can store and process more data.
+
+19
+00:01:17.400 --> 00:01:19.110
+This is not the big data approach.
+
+20
+00:01:20.270 --> 00:01:25.182
+Specialized hardware such as
+graphical processing units, or
+
+21
+00:01:25.182 --> 00:01:29.536
+GPUs for short,
+can also be added to speed up the miracle
+
+22
+00:01:29.536 --> 00:01:33.730
+operations common in machine
+learning algorithms.
+
+23
+00:01:33.730 --> 00:01:37.300
+Although this is a good approach,
+this is also not the big data approach.
+
+24
+00:01:38.650 --> 00:01:44.510
+As we learned in our introductory course,
+one problem with this approach
+
+25
+00:01:44.510 --> 00:01:48.720
+is that larger specialized
+hardware can be very costly.
+
+26
+00:01:50.180 --> 00:01:55.590
+Another problem is that we
+eventually will hit a limit.
+
+27
+00:01:55.590 --> 00:01:58.830
+There's only so
+much hardware you can add to a machine.
+
+28
+00:01:59.990 --> 00:02:03.100
+An alternative approach is to scale out.
+
+29
+00:02:04.860 --> 00:02:10.260
+This means using many local commodity
+distribution systems together.
+
+30
+00:02:11.310 --> 00:02:16.160
+Data is distributed over these
+systems to gain processing speed up.
+
+31
+00:02:18.030 --> 00:02:25.870
+As shown in this illustration the idea is
+to divide the data into smaller subsets.
+
+32
+00:02:25.870 --> 00:02:31.900
+The same processing is applied to
+each subset, or map, and the results
+
+33
+00:02:31.900 --> 00:02:36.660
+are merged at the end to come up with the
+overall results for the original dataset.
+
+34
+00:02:37.770 --> 00:02:43.700
+Let's consider an example,
+where we want to apply the same operation
+
+35
+00:02:43.700 --> 00:02:48.420
+to all the samples in
+a dataset of N samples.
+
+36
+00:02:48.420 --> 00:02:51.640
+In this case, N is four.
+
+37
+00:02:51.640 --> 00:02:56.150
+If it takes T time units to perform this
+
+38
+00:02:56.150 --> 00:03:01.460
+operation on each sample,
+then with sequential processing
+
+39
+00:03:01.460 --> 00:03:06.350
+the time to apply that operation
+to all samples, is N times T.
+
+40
+00:03:07.470 --> 00:03:10.582
+If we have a cluster of four processors,
+
+41
+00:03:10.582 --> 00:03:14.890
+we can distribute the data
+across the four processors.
+
+42
+00:03:16.770 --> 00:03:23.730
+Each process performs the operation on
+the dataset subset of N over four samples.
+
+43
+00:03:25.230 --> 00:03:30.990
+Processing of the four subsets
+of the data is done in parallel.
+
+44
+00:03:30.990 --> 00:03:34.390
+That is, the subsets
+are processed at the same time.
+
+45
+00:03:36.010 --> 00:03:42.870
+The processing time for the distributed
+approach is approximately N over 4 times T
+
+46
+00:03:44.010 --> 00:03:50.700
+plus any overhead required to merge
+the subset results and maybe shuffle them.
+
+47
+00:03:52.100 --> 00:03:57.050
+This is a speedup of nearly four
+times over the sequential approach.
+
+48
+00:03:59.040 --> 00:04:03.021
+On a distributed computing
+platform such as Spark or Hadoop,
+
+49
+00:04:03.021 --> 00:04:08.610
+scalable machine learning algorithms
+use the same scale out approach.
+
+50
+00:04:08.610 --> 00:04:12.620
+Data is distributed across
+different processors,
+
+51
+00:04:12.620 --> 00:04:17.690
+which operate on the data subsets
+in parallel using map, reduce, and
+
+52
+00:04:17.690 --> 00:04:20.230
+other distributed
+parallel transformations.
+
+53
+00:04:21.480 --> 00:04:22.420
+This allows for
+
+54
+00:04:22.420 --> 00:04:26.050
+machine learning techniques to be
+applied to large volumes of data.
+
+55
+00:04:27.230 --> 00:04:33.300
+In this course, we will use Spark and
+its scalable machine learning library,
+
+56
+00:04:33.300 --> 00:04:38.830
+MLF, to show you how machine
+learning can be applied to big data.
+
+57
+00:04:38.830 --> 00:04:39.640
+And don't forget,
+
+58
+00:04:39.640 --> 00:04:44.890
+this is the processing of the machine
+learning on where the data resides.
+
+59
+00:04:44.890 --> 00:04:47.480
+And we call this, the Big Data Approach.
+
+60
+00:04:48.770 --> 00:04:54.020
+However, you can also imagine
+a scenario where you also
+
+61
+00:04:54.020 --> 00:04:59.070
+update the machine learning
+algorithms to scale up.
+
+62
+00:04:59.070 --> 00:05:03.389
+So you can paralyze the machine
+learning algorithms themselves,
+
+63
+00:05:03.389 --> 00:05:07.644
+and also use processing of big
+data together with this approach.
