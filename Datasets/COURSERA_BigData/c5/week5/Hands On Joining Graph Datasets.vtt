@@ -1,0 +1,440 @@
+WEBVTT
+
+1
+00:00:00.450 --> 00:00:05.380
+Next, we'll create a new dataset,
+join two datasets with JoinVertices,
+
+2
+00:00:05.380 --> 00:00:10.130
+join two datasets with outerJoinVertices,
+and create a new return type for
+
+3
+00:00:10.130 --> 00:00:11.238
+the joined vertices.
+
+4
+00:00:11.238 --> 00:00:13.310
+In this hands-on exercise,
+
+5
+00:00:13.310 --> 00:00:17.370
+we will create a new graph made
+up of five airline flights.
+
+6
+00:00:17.370 --> 00:00:19.720
+The vertices will represent the airports,
+
+7
+00:00:19.720 --> 00:00:23.690
+and the edges will represent
+the departures and the arrivals.
+
+8
+00:00:23.690 --> 00:00:27.180
+Once the graph has been created
+we will add a second dataset
+
+9
+00:00:27.180 --> 00:00:29.670
+with additional airport information and
+
+10
+00:00:29.670 --> 00:00:35.570
+practice using GraphX's join methods to
+create new graphs by joining the datasets.
+
+11
+00:00:35.570 --> 00:00:38.140
+We will start a new spark shell session,
+so
+
+12
+00:00:38.140 --> 00:00:40.460
+we will be opening a new terminal window.
+
+13
+00:00:41.530 --> 00:00:45.000
+Open the new terminal window by
+clicking the terminal icon at the top
+
+14
+00:00:45.000 --> 00:00:45.570
+of the screen.
+
+15
+00:00:47.060 --> 00:00:48.152
+Start the spark shell.
+
+16
+00:00:58.295 --> 00:01:02.955
+Import the log for j classes and
+suppress the notice and info messages.
+
+17
+00:01:04.105 --> 00:01:07.925
+Import sparks graphics and rdd classes.
+
+18
+00:01:07.925 --> 00:01:11.255
+Now we will create the vertices
+ourselves from a list.
+
+19
+00:01:11.255 --> 00:01:15.375
+The list will contain the vertex ID and
+the name of the airport.
+
+20
+00:01:15.375 --> 00:01:17.280
+Now we will create the edges.
+
+21
+00:01:17.280 --> 00:01:20.730
+The edges will represent a flight
+departing from one airport and
+
+22
+00:01:20.730 --> 00:01:22.150
+arriving at another.
+
+23
+00:01:22.150 --> 00:01:25.710
+We will set the edge property
+to a fake flight number.
+
+24
+00:01:25.710 --> 00:01:28.380
+Create the flights graph
+by joining the vertices and
+
+25
+00:01:28.380 --> 00:01:30.690
+the edges using graph
+flexes graph functions.
+
+26
+00:01:31.720 --> 00:01:34.050
+Let us explore the graph so far.
+
+27
+00:01:34.050 --> 00:01:38.430
+Look through each triplet in flights graph
+and print the contents of the graph.
+
+28
+00:01:38.430 --> 00:01:41.690
+We will specify which airport
+the flight departs from,
+
+29
+00:01:41.690 --> 00:01:44.980
+which airport the flight arrives at,
+and the flight number.
+
+30
+00:01:44.980 --> 00:01:47.710
+You'll just put all of
+the vertices in the graph.
+
+31
+00:01:47.710 --> 00:01:51.690
+Now we are willing to create an additional
+dataset to store additional information
+
+32
+00:01:51.690 --> 00:01:53.330
+about each airport.
+
+33
+00:01:53.330 --> 00:01:58.390
+First, we will create a case class called
+airport information with the city and
+
+34
+00:01:58.390 --> 00:02:00.380
+airport code properties.
+
+35
+00:02:00.380 --> 00:02:04.320
+Then we are going to create the airport
+information vertices from a list
+
+36
+00:02:04.320 --> 00:02:05.900
+as we did earlier.
+
+37
+00:02:05.900 --> 00:02:07.830
+We will make sure the vertex ID for
+
+38
+00:02:07.830 --> 00:02:13.930
+the airport information matches the vertex
+ID of the airport defined earlier.
+
+39
+00:02:13.930 --> 00:02:17.810
+Note, there does not have to be a one
+to one relationship between the airport
+
+40
+00:02:17.810 --> 00:02:20.960
+vertices and
+the airport information vertices.
+
+41
+00:02:20.960 --> 00:02:25.640
+Los Angeles International Airport is
+present in the airport vertices, but
+
+42
+00:02:25.640 --> 00:02:28.990
+it is missing from the airport
+information vertices.
+
+43
+00:02:28.990 --> 00:02:33.380
+The airport information vertices contains
+information about airports in London and
+
+44
+00:02:33.380 --> 00:02:34.370
+Hong Kong.
+
+45
+00:02:34.370 --> 00:02:37.984
+But we don't have any flights departing or
+arriving from those airports.
+
+46
+00:02:43.926 --> 00:02:46.540
+Let us complete our first join.
+
+47
+00:02:46.540 --> 00:02:51.050
+A mapping function has to be defined in
+order to join vertices with graphics join
+
+48
+00:02:51.050 --> 00:02:52.890
+vertices method.
+
+49
+00:02:52.890 --> 00:02:56.680
+We are going to define a map function that
+will join the name of the airport from
+
+50
+00:02:56.680 --> 00:03:01.580
+the airport vertices with the city name
+from the airport information vertices.
+
+51
+00:03:01.580 --> 00:03:05.460
+In order to create a new graph with
+the vertices that has the airport name
+
+52
+00:03:05.460 --> 00:03:07.240
+colon city name.
+
+53
+00:03:07.240 --> 00:03:08.957
+After the map function in defined,
+
+54
+00:03:08.957 --> 00:03:12.228
+then we will use the joined vertices
+method to create the new graph.
+
+55
+00:03:12.228 --> 00:03:17.770
+Vertices without a matching value in
+the RDD, retain their original value.
+
+56
+00:03:17.770 --> 00:03:20.540
+Now, print out the vertices
+of the new graph.
+
+57
+00:03:20.540 --> 00:03:23.814
+Notice all of the vertices contain
+the airport and city names,
+
+58
+00:03:23.814 --> 00:03:28.089
+except Los Angeles International Airport,
+which retained its original value.
+
+59
+00:03:33.291 --> 00:03:37.890
+Now we will join the vertices using
+GraphX's outerJoinVertices method.
+
+60
+00:03:38.890 --> 00:03:42.060
+OuterJoinVertices is
+similar to JoinVertices,
+
+61
+00:03:42.060 --> 00:03:46.080
+except that the user-defined map
+function is applied to all vertices and
+
+62
+00:03:46.080 --> 00:03:47.910
+it can change the vertex property type.
+
+63
+00:03:49.740 --> 00:03:53.580
+Here, we are using the OuterJoinVertices
+method to create a new graph where
+
+64
+00:03:53.580 --> 00:03:57.140
+the vertices contain a property
+with the name of the airport and
+
+65
+00:03:57.140 --> 00:04:00.830
+a property makeup of
+the airport information class.
+
+66
+00:04:00.830 --> 00:04:03.010
+Print the vertices once
+the new graph is made.
+
+67
+00:04:04.160 --> 00:04:08.200
+Notice that the type of the second
+vertex property is sum.
+
+68
+00:04:08.200 --> 00:04:11.250
+This is because
+Los Angeles International Airport
+
+69
+00:04:11.250 --> 00:04:14.970
+does not have a corresponding
+vertex in airport information.
+
+70
+00:04:14.970 --> 00:04:18.990
+Therefore GraphX assigned all of
+the properties the sum type so
+
+71
+00:04:18.990 --> 00:04:21.700
+that all of the vertex
+property types are the same.
+
+72
+00:04:22.960 --> 00:04:24.030
+We can use the get or
+
+73
+00:04:24.030 --> 00:04:28.400
+else method to assign a default
+value if one does not exist.
+
+74
+00:04:28.400 --> 00:04:31.240
+Now, let us rerun
+the outer join vertices but
+
+75
+00:04:31.240 --> 00:04:35.930
+this time use the get, get or
+else method to create an airport
+
+76
+00:04:35.930 --> 00:04:41.630
+information class with NA as the values
+for the city and the airport code.
+
+77
+00:04:41.630 --> 00:04:44.140
+Print the vertices once
+the new graph is made.
+
+78
+00:04:45.270 --> 00:04:50.196
+Now, the type of the second vertex
+property is airport information in
+
+79
+00:04:50.196 --> 00:04:54.957
+Los Angeles International Airport,
+airport information class,
+
+80
+00:04:54.957 --> 00:04:57.055
+has the properties NA and NA.
+
+81
+00:05:02.404 --> 00:05:07.295
+Finally, in this last exercise, we will
+create a new case class called Airport
+
+82
+00:05:07.295 --> 00:05:12.490
+that contains property for the name,
+city, and code of the airport.
+
+83
+00:05:12.490 --> 00:05:16.080
+First, we will define the new Airport
+case class with the name, city, and
+
+84
+00:05:16.080 --> 00:05:18.040
+code properties.
+
+85
+00:05:18.040 --> 00:05:21.580
+Then use the outer join vertices
+method to join the data sets, and
+
+86
+00:05:21.580 --> 00:05:22.350
+create the new graph.
+
+87
+00:05:23.380 --> 00:05:28.260
+Create a mapping so if the airport has an
+airport information vertex, the city and
+
+88
+00:05:28.260 --> 00:05:32.250
+code are taken from the instance
+of the airport information class.
+
+89
+00:05:32.250 --> 00:05:34.770
+Otherwise, only include the airport name.
+
+90
+00:05:35.920 --> 00:05:39.370
+Finally, print the vertices
+of the new graph.
+
+91
+00:05:39.370 --> 00:05:44.775
+The new graph has only one vertex property
+which is an instance of the airport class.
+
+92
+00:05:44.775 --> 00:05:48.330
+GraphX has lots of methods for
+joining graph datasets.
+
+93
+00:05:48.330 --> 00:05:52.721
+This hands on example only scratched
+the surface of GraphX's power.

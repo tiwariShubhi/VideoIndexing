@@ -1,0 +1,574 @@
+WEBVTT
+
+1
+00:00:02.250 --> 00:00:06.207
+Next, we will talk about
+Path Analytics using Cypher,
+
+2
+00:00:06.207 --> 00:00:09.100
+the query language for Neo4j.
+
+3
+00:00:09.100 --> 00:00:13.450
+Here's the listing of the various
+queries we will be demonstrating.
+
+4
+00:00:26.288 --> 00:00:30.040
+There are some things that Cypher
+is capable of doing very well.
+
+5
+00:00:30.040 --> 00:00:33.350
+And there are other things that
+require a little bit of creativity
+
+6
+00:00:33.350 --> 00:00:36.230
+in order to get the results
+that you're looking for.
+
+7
+00:00:36.230 --> 00:00:38.450
+And we'll show you some examples of that.
+
+8
+00:00:38.450 --> 00:00:43.718
+It's also important to keep in mind
+that because we're working with paths,
+
+9
+00:00:43.718 --> 00:00:47.285
+which are an official
+structure in graph networks,
+
+10
+00:00:47.285 --> 00:00:50.867
+each one of these examples
+includes a new variable.
+
+11
+00:00:50.867 --> 00:00:54.221
+Which in this case,
+we're using the letter p to represent for
+
+12
+00:00:54.221 --> 00:00:58.410
+the actual path objects that
+we're going to be returning.
+
+13
+00:00:58.410 --> 00:01:03.030
+You may also see the complete word
+path instead of just the single letter
+
+14
+00:01:03.030 --> 00:01:05.580
+p to represent these objects.
+
+15
+00:01:05.580 --> 00:01:09.950
+We're going to continue to use the data
+set of a simple road network that we've
+
+16
+00:01:09.950 --> 00:01:14.970
+already been using in previous
+demonstrations that contains 11 nodes and
+
+17
+00:01:14.970 --> 00:01:16.000
+14 edges.
+
+18
+00:01:18.610 --> 00:01:21.180
+So the first query we're
+going to demonstrate
+
+19
+00:01:21.180 --> 00:01:24.040
+is finding a path between specific nodes.
+
+20
+00:01:24.040 --> 00:01:28.739
+So this would be very much like trying
+to find a root between two different
+
+21
+00:01:28.739 --> 00:01:30.829
+locations in our road network.
+
+22
+00:01:30.829 --> 00:01:35.079
+In this case, we're going to find
+a path between the node named H and
+
+23
+00:01:35.079 --> 00:01:36.210
+the node named P.
+
+24
+00:01:37.980 --> 00:01:41.411
+To do this,
+we'll use the match command and
+
+25
+00:01:41.411 --> 00:01:47.162
+we'll say match p which is a variable
+we're using to represent our path,
+
+26
+00:01:47.162 --> 00:01:50.524
+= node a, going through an edge to node c.
+
+27
+00:01:50.524 --> 00:01:55.766
+There's something slightly different about
+this edge, and that is that we're using
+
+28
+00:01:55.766 --> 00:02:00.573
+a star to represent an arbitrary number
+of edges in sequence between a and c, and
+
+29
+00:02:00.573 --> 00:02:05.980
+we'll be returning all of those edges
+that are necessary to complete the path.
+
+30
+00:02:05.980 --> 00:02:09.530
+And in this case we only want
+to return a single path.
+
+31
+00:02:09.530 --> 00:02:13.440
+So when we submit this query,
+we see this path.
+
+32
+00:02:13.440 --> 00:02:17.240
+It consists of eight nodes and
+seven edges.
+
+33
+00:02:17.240 --> 00:02:19.490
+And it begins with H and ends with P.
+
+34
+00:02:21.600 --> 00:02:25.980
+Now, another common function we
+will use frequently with paths
+
+35
+00:02:25.980 --> 00:02:28.650
+is finding the length
+between two specific nodes.
+
+36
+00:02:29.800 --> 00:02:35.010
+So we'll issue the same two lines of code
+and then we'll use this new command,
+
+37
+00:02:35.010 --> 00:02:37.950
+length, to return an actual value.
+
+38
+00:02:37.950 --> 00:02:41.070
+We want to be returning an actual path.
+
+39
+00:02:41.070 --> 00:02:42.780
+And we just want a single value.
+
+40
+00:02:42.780 --> 00:02:45.820
+And when we submit this query,
+we get the result seven.
+
+41
+00:02:45.820 --> 00:02:49.800
+And we can see that by visually
+inspecting the graph or our seven edges.
+
+42
+00:02:49.800 --> 00:02:52.310
+But because most networks
+are much more complex than this,
+
+43
+00:02:52.310 --> 00:02:56.130
+we would need to understand the necessary
+query to return the length.
+
+44
+00:02:58.005 --> 00:03:00.160
+And ideally,
+in the case of our road network,
+
+45
+00:03:00.160 --> 00:03:04.710
+we would want to find the shortest
+path between those two nodes.
+
+46
+00:03:04.710 --> 00:03:06.220
+So in this case we're introducing yet
+
+47
+00:03:06.220 --> 00:03:10.150
+another new command specific
+to paths called shortestPath.
+
+48
+00:03:10.150 --> 00:03:13.149
+We will use the same variable key, and
+
+49
+00:03:13.149 --> 00:03:18.794
+the same descriptions in our syntax,
+in connecting node a with node c.
+
+50
+00:03:18.794 --> 00:03:23.815
+And in this case, were going to look for
+the shortest path between node a and
+
+51
+00:03:23.815 --> 00:03:29.090
+node p, and we're going to return that
+path as well as the length of that path.
+
+52
+00:03:29.090 --> 00:03:30.680
+And we're just going to
+return a single path.
+
+53
+00:03:31.760 --> 00:03:36.870
+And when we submit this query,
+we get a path that's five nodes and
+
+54
+00:03:36.870 --> 00:03:41.990
+four edges long and if we look at
+the text results that are returned,
+
+55
+00:03:41.990 --> 00:03:46.020
+we'll see a length displayed
+in the length column.
+
+56
+00:03:46.020 --> 00:03:49.980
+And that value is 4, and we can see
+that by visually inspecting our graph.
+
+57
+00:03:52.430 --> 00:03:57.236
+The next query we are going to demonstrate
+is intended to illustrate that
+
+58
+00:03:57.236 --> 00:04:00.010
+there may be more than one shortest path.
+
+59
+00:04:00.010 --> 00:04:04.967
+And so, we may want to know all of the
+possible shortest paths in order to make
+
+60
+00:04:04.967 --> 00:04:08.300
+a choice between which one we prefer.
+
+61
+00:04:08.300 --> 00:04:14.290
+So we'll be using a command that is built
+into Neo4j called, allShortestPaths.
+
+62
+00:04:14.290 --> 00:04:18.580
+We'll be issuing a similar query
+to what we issued previously,
+
+63
+00:04:18.580 --> 00:04:24.610
+we're going to try to find all of the
+shortest paths between node a and node p.
+
+64
+00:04:24.610 --> 00:04:30.160
+And instead of the letters a and c, we're
+using the terms source and destination.
+
+65
+00:04:30.160 --> 00:04:34.640
+But the results that we're going to return
+will actually be in the form of an array.
+
+66
+00:04:34.640 --> 00:04:39.640
+We're using a new term, extract,
+which is based on the following.
+
+67
+00:04:39.640 --> 00:04:44.370
+Assuming we have matched our path p,
+we want to identify
+
+68
+00:04:44.370 --> 00:04:48.670
+all of the nodes in p and
+extract their names.
+
+69
+00:04:48.670 --> 00:04:53.790
+And we'll return these names as a listing,
+which we'll call the variable paths.
+
+70
+00:04:53.790 --> 00:04:59.700
+If there's more than one shortest path,
+we'll get multiple listings of node names.
+
+71
+00:04:59.700 --> 00:05:04.120
+So when we submit this query, the results
+are listed in the rows display and
+
+72
+00:05:04.120 --> 00:05:08.130
+we see there are actually
+two shortest paths.
+
+73
+00:05:08.130 --> 00:05:11.643
+They each have five nodes and four edges.
+
+74
+00:05:13.987 --> 00:05:18.060
+Now, we may want to issue a query
+that finds the shortest path but
+
+75
+00:05:18.060 --> 00:05:22.300
+with particular constraints or
+conditions that we place on them.
+
+76
+00:05:23.640 --> 00:05:28.160
+So in this case we still want
+to find the shortest path, but
+
+77
+00:05:28.160 --> 00:05:33.010
+in this case we may want to constrain
+the path length to be greater
+
+78
+00:05:33.010 --> 00:05:35.530
+than a particular value, in this case 5.
+
+79
+00:05:35.530 --> 00:05:39.050
+And then, we want to return essentially
+the same results that we returned in
+
+80
+00:05:39.050 --> 00:05:40.480
+the previous query.
+
+81
+00:05:40.480 --> 00:05:45.180
+But we'll also want to return the length
+of the resulting path just so
+
+82
+00:05:45.180 --> 00:05:47.610
+we have that information conveniently.
+
+83
+00:05:47.610 --> 00:05:49.310
+So when we issue this command
+
+84
+00:05:50.360 --> 00:05:55.230
+we get a path with length six
+between node A and node P.
+
+85
+00:05:55.230 --> 00:05:59.870
+So it's clearly longer than the shortest
+path that we had found earlier.
+
+86
+00:06:02.710 --> 00:06:06.940
+Now that we are somewhat familiar
+with the two shortest path commands,
+
+87
+00:06:06.940 --> 00:06:09.750
+the shortest path, or a single path and
+
+88
+00:06:09.750 --> 00:06:14.730
+the all shortest paths command or multiple
+shortest paths, we're going to use
+
+89
+00:06:14.730 --> 00:06:20.530
+that in a little bit of a creative way
+to return the diameter of the graph.
+
+90
+00:06:20.530 --> 00:06:22.750
+And if you remember from
+a previous lecture,
+
+91
+00:06:22.750 --> 00:06:25.500
+the definition of
+the diameter of the graph
+
+92
+00:06:25.500 --> 00:06:31.170
+is actually the longest continuous
+path between two nodes in the graph.
+
+93
+00:06:31.170 --> 00:06:37.440
+So by using the shortest path command, but
+returning all possible shortest paths,
+
+94
+00:06:37.440 --> 00:06:42.725
+we're actually going to get the longest
+path included in those results returned.
+
+95
+00:06:42.725 --> 00:06:44.400
+Now, if we look carefully at this script,
+
+96
+00:06:44.400 --> 00:06:47.590
+it is a little different
+than our previous scripts.
+
+97
+00:06:47.590 --> 00:06:52.570
+In this case our match command is
+matching all nodes of type MyNode.
+
+98
+00:06:52.570 --> 00:06:55.272
+We'll assign those to the variable end.
+
+99
+00:06:55.272 --> 00:07:01.001
+We're also matching the all nodes of type
+MyNode and assigning that to variable m.
+
+100
+00:07:01.001 --> 00:07:02.570
+So these matches are the same.
+
+101
+00:07:02.570 --> 00:07:07.543
+But we want to place a constraint
+such that the nodes in n are not
+
+102
+00:07:07.543 --> 00:07:09.933
+the same as the nodes in m, and
+
+103
+00:07:09.933 --> 00:07:15.981
+then we want to find all of the shortest
+paths between unique nodes in n and m.
+
+104
+00:07:15.981 --> 00:07:21.410
+And return the names of those nodes as
+well as the length of that resulting path.
+
+105
+00:07:21.410 --> 00:07:24.470
+And the trick is to use
+the command order by.
+
+106
+00:07:24.470 --> 00:07:29.360
+And so for those of you who are familiar
+already with SQL query language,
+
+107
+00:07:29.360 --> 00:07:31.030
+you'll recognize order by.
+
+108
+00:07:31.030 --> 00:07:34.610
+You'll also recognize the descend command.
+
+109
+00:07:34.610 --> 00:07:40.310
+So if we order the resulting paths
+by their length in descending order,
+
+110
+00:07:40.310 --> 00:07:45.470
+and only return 1, that path should
+actually be the longest path.
+
+111
+00:07:45.470 --> 00:07:47.420
+And that's equal to
+the diameter of the graph.
+
+112
+00:07:48.500 --> 00:07:52.440
+So when we submit this query,
+here's the results that we get.
+
+113
+00:07:52.440 --> 00:07:57.349
+We get a path between node e and
+node l with length severn.
+
+114
+00:07:57.349 --> 00:08:02.809
+Or maybe it occurs to you that maybe this
+is not the only diameter of the graph,
+
+115
+00:08:02.809 --> 00:08:05.340
+the only path with length of seven.
+
+116
+00:08:06.580 --> 00:08:13.488
+So we can modify our query just a little
+bit and change the limit from one to five.
+
+117
+00:08:13.488 --> 00:08:16.029
+And we'll see the results.
+
+118
+00:08:16.029 --> 00:08:18.240
+And sure enough,
+we actually get five paths.
+
+119
+00:08:19.730 --> 00:08:22.650
+And 3 of those have length 7.
+
+120
+00:08:22.650 --> 00:08:26.757
+So there are actually three
+distinct paths which qualify as
+
+121
+00:08:26.757 --> 00:08:29.391
+a diameter of this particular graph.

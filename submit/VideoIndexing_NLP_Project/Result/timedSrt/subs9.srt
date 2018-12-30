@@ -1,0 +1,1456 @@
+1
+00:00:02,950 --> 00:00:07,672
+the hadoop distributed file system a storage system for big data 
+
+2
+00:00:21,994 --> 00:00:28,920
+as a storage layer the hadoop distributed file system or the way we call it hdfs 
+
+3
+00:00:30,070 --> 00:00:33,890
+serves as the foundation for most tools in the hadoop ecosystem 
+
+4
+00:00:35,700 --> 00:00:39,900
+it provides two capabilities that are essential for managing big data 
+
+5
+00:00:40,900 --> 00:00:43,500
+scalability to large data sets 
+
+6
+00:00:43,500 --> 00:00:46,570
+and reliability to cope with hardware failures 
+
+7
+00:00:48,760 --> 00:00:53,060
+hdfs allows you to store and access large datasets 
+
+8
+00:00:53,060 --> 00:00:57,700
+according to hortonworks a leading vendor of hadoop services 
+
+9
+00:00:57,700 --> 00:01:03,950
+hdfs has shown production scalability up to 200 petabytes and
+
+10
+00:01:03,950 --> 00:01:06,980
+a single cluster of 4 500 servers 
+
+11
+00:01:06,980 --> 00:01:09,684
+with close to a billion files and blocks 
+
+12
+00:01:11,504 --> 00:01:16,610
+if you run out of space you can simply add more nodes to increase the space 
+
+13
+00:01:19,000 --> 00:01:22,470
+hdfs achieves scalability by partitioning or
+
+14
+00:01:22,470 --> 00:01:26,630
+splitting large files across multiple computers 
+
+15
+00:01:26,630 --> 00:01:31,040
+this allows parallel access to very large files since the computations run in
+
+16
+00:01:31,040 --> 00:01:34,300
+parallel on each node where the data is stored 
+
+17
+00:01:35,760 --> 00:01:38,920
+typical file size is gigabytes to terabytes 
+
+18
+00:01:40,150 --> 00:01:47,900
+the default chunk size the size of each piece of a file is 64 megabytes 
+
+19
+00:01:47,900 --> 00:01:50,390
+but you can configure this to any size 
+
+20
+00:01:51,950 --> 00:01:55,180
+by spreading the file across many nodes 
+
+21
+00:01:55,180 --> 00:01:59,740
+the chances are increased that a node storing one of the blocks will fail 
+
+22
+00:02:01,650 --> 00:02:03,440
+what happens next 
+
+23
+00:02:03,440 --> 00:02:05,970
+do we lose the information stored in block c 
+
+24
+00:02:09,560 --> 00:02:12,350
+hdfs is designed for full tolerance in such case 
+
+25
+00:02:13,640 --> 00:02:16,080
+hdfs replicates or
+
+26
+00:02:16,080 --> 00:02:21,530
+makes a copy of file blocks on different nodes to prevent data loss 
+
+27
+00:02:23,820 --> 00:02:28,945
+in this example the node that crashed stored block c 
+
+28
+00:02:28,945 --> 00:02:37,270
+but block c was replicated on two other nodes in the cluster 
+
+29
+00:02:39,820 --> 00:02:44,380
+by default hdfs maintains three copies of every block 
+
+30
+00:02:45,760 --> 00:02:47,850
+this is the default replication factor 
+
+31
+00:02:48,890 --> 00:02:52,300
+but you can change it globally for every file or
+
+32
+00:02:52,300 --> 00:02:57,180
+on a per file basis 
+
+33
+00:02:57,180 --> 00:03:01,370
+hdfs is also designed to handle a variety of data types aligned with
+
+34
+00:03:01,370 --> 00:03:02,450
+big data variety 
+
+35
+00:03:04,370 --> 00:03:10,220
+to read a file in hdfs you must specify the input file format 
+
+36
+00:03:10,220 --> 00:03:14,610
+similarly to write the file you must provide the output file format 
+
+37
+00:03:16,885 --> 00:03:21,040
+hdfs provides a set of formats for common data types 
+
+38
+00:03:21,040 --> 00:03:27,310
+but this is extensible and you can provide custom formats for your data types 
+
+39
+00:03:27,310 --> 00:03:30,830
+for example text files can be read 
+
+40
+00:03:32,030 --> 00:03:34,620
+line by line or a word at a time 
+
+41
+00:03:36,950 --> 00:03:42,650
+geospatial data can be read as vectors or rasters 
+
+42
+00:03:43,660 --> 00:03:49,210
+data formats specific to geospatial data or
+
+43
+00:03:49,210 --> 00:03:52,670
+other domain specific data formats 
+
+44
+00:03:52,670 --> 00:03:57,588
+like fasta or fastq formats for sequence data genomics 
+
+45
+00:03:59,660 --> 00:04:02,665
+hdfs is comprised of two components 
+
+46
+00:04:02,665 --> 00:04:06,582
+namenode and datanode 
+
+47
+00:04:06,582 --> 00:04:11,180
+these operate using a master slave relationship 
+
+48
+00:04:12,350 --> 00:04:16,960
+where the namenode issues comments to datanodes across the cluster 
+
+49
+00:04:18,360 --> 00:04:22,110
+the namenode is responsible for metadata 
+
+50
+00:04:22,110 --> 00:04:25,072
+and datanodes provide block storage 
+
+51
+00:04:27,174 --> 00:04:31,064
+there is usually one namenode per cluster 
+
+52
+00:04:31,064 --> 00:04:35,910
+a datanode however runs on each node in the cluster 
+
+53
+00:04:37,920 --> 00:04:42,280
+in some sense the namenode is the administrator or
+
+54
+00:04:42,280 --> 00:04:44,850
+the coordinator of the hdfs cluster 
+
+55
+00:04:46,030 --> 00:04:50,560
+when the file is created the namenode records the name 
+
+56
+00:04:50,560 --> 00:04:54,010
+location in the directory hierarchy and other metadata 
+
+57
+00:04:55,820 --> 00:05:01,730
+the namenode also decides which data nodes to store the contents of the file and
+
+58
+00:05:01,730 --> 00:05:03,370
+remembers this mapping 
+
+59
+00:05:05,420 --> 00:05:08,400
+the datanode runs on each node in the cluster 
+
+60
+00:05:09,460 --> 00:05:12,880
+and is responsible for storing the file blocks 
+
+61
+00:05:14,600 --> 00:05:19,328
+the data node listens to commands from the name node for block creation 
+
+62
+00:05:19,328 --> 00:05:25,980
+deletion and replication 
+
+63
+00:05:25,980 --> 00:05:29,530
+replication provides two key capabilities 
+
+64
+00:05:29,530 --> 00:05:32,260
+fault tolerance and data locality 
+
+65
+00:05:33,390 --> 00:05:38,730
+as discussed earlier when a machine in the cluster has a hardware failure there
+
+66
+00:05:38,730 --> 00:05:43,100
+are two other copies of each block that are stored on that node 
+
+67
+00:05:43,100 --> 00:05:44,470
+so no data is lost 
+
+68
+00:05:45,660 --> 00:05:49,920
+replication also means that the same block will be stored on different nodes on
+
+69
+00:05:49,920 --> 00:05:54,780
+the system which are in different geographical locations 
+
+70
+00:05:56,370 --> 00:06:01,280
+a location may mean a specific rack or a data center in a different town 
+
+71
+00:06:03,140 --> 00:06:07,950
+the location is important since we want to move computation to data and
+
+72
+00:06:07,950 --> 00:06:08,890
+not the other way around 
+
+73
+00:06:11,100 --> 00:06:15,030
+we will talk about what moving computation to data means later in this module 
+
+74
+00:06:16,650 --> 00:06:21,120
+as i mentioned earlier the default replication factor is three but
+
+75
+00:06:21,120 --> 00:06:23,080
+you can change this 
+
+76
+00:06:23,080 --> 00:06:28,370
+a high replication factor means more protection against hardware failures 
+
+77
+00:06:28,370 --> 00:06:31,350
+and better chances for data locality 
+
+78
+00:06:31,350 --> 00:06:34,660
+but it also means increased storage space is used 
+
+79
+00:06:37,190 --> 00:06:40,050
+as a summary hdfs provides
+
+80
+00:06:40,050 --> 00:06:44,440
+scalable big data storage by partitioning files over multiple nodes 
+
+81
+00:06:45,950 --> 00:06:50,160
+this helps to scale big data analytics to large data volumes 
+
+82
+00:06:51,530 --> 00:06:54,730
+the application protects against hardware failures and
+
+83
+00:06:54,730 --> 00:06:59,420
+provides data locality when we move analytical complications to data 
+
+1
+00:07:01,252 --> 00:07:04,592
+the hadoop ecosystem : so much free stuff ! 
+
+2
+00:07:19,275 --> 00:07:23,046
+how did the big data open - source movement begin 
+
+3
+00:07:23,046 --> 00:07:27,492
+in 2004 google published a paper about their
+
+4
+00:07:27,492 --> 00:07:32,811
+in - house processing framework they called mapreduce 
+
+5
+00:07:32,811 --> 00:07:36,699
+the next year yahoo released an open - source
+
+6
+00:07:36,699 --> 00:07:41,369
+implementation based on this framework called hadoop 
+
+7
+00:07:41,369 --> 00:07:44,379
+in the following years other frameworks and
+
+8
+00:07:44,379 --> 00:07:48,650
+tools were released to the community as open - source projects 
+
+9
+00:07:48,650 --> 00:07:52,764
+these frameworks provided new capabilities missing in hadoop 
+
+10
+00:07:52,764 --> 00:07:55,990
+such as sql like querying or high level scripting 
+
+11
+00:07:58,240 --> 00:08:02,220
+today there are over 100 open - source projects for
+
+12
+00:08:02,220 --> 00:08:05,880
+big data and this number continues to grow 
+
+13
+00:08:07,160 --> 00:08:10,181
+many rely on hadoop but some are independent 
+
+14
+00:08:12,711 --> 00:08:17,420
+with so many frameworks and tools available how do we learn what they do 
+
+15
+00:08:18,600 --> 00:08:25,590
+we can organize them with a layer diagram to understand their capabilities 
+
+16
+00:08:25,590 --> 00:08:29,830
+sometimes we also used the term stack instead of a layer diagram 
+
+17
+00:08:31,560 --> 00:08:36,400
+in a layer diagram a component uses the functionality or
+
+18
+00:08:36,400 --> 00:08:40,958
+capabilities of the components in the layer below it 
+
+19
+00:08:40,958 --> 00:08:46,470
+usually components at the same layer do not communicate 
+
+20
+00:08:46,470 --> 00:08:53,669
+and a component never assumes a specific tool or component is above it 
+
+21
+00:08:53,669 --> 00:08:59,901
+in this example component a is in the bottom layer 
+
+22
+00:08:59,901 --> 00:09:03,370
+which components b and c use 
+
+23
+00:09:05,170 --> 00:09:08,390
+component d uses b but not c 
+
+24
+00:09:10,240 --> 00:09:12,790
+and d does not directly use a 
+
+25
+00:09:16,060 --> 00:09:20,630
+let look at one set of tools in the hadoop ecosystem as a layer diagram 
+
+26
+00:09:22,920 --> 00:09:29,795
+this layer diagram is organized vertically based on the interface 
+
+27
+00:09:29,795 --> 00:09:34,054
+low level interfaces so storage and scheduling on the bottom 
+
+28
+00:09:34,054 --> 00:09:38,315
+and high level languages and interactivity at the top 
+
+29
+00:09:40,915 --> 00:09:46,315
+the hadoop distributed file system or hdfs is the foundation for
+
+30
+00:09:46,315 --> 00:09:52,570
+many big data frameworks since it provides scaleable and reliable storage 
+
+31
+00:09:53,740 --> 00:09:59,380
+as the size of your data increases you can add commodity hardware
+
+32
+00:09:59,380 --> 00:10:04,660
+to hdfs to increase storage capacity so
+
+33
+00:10:04,660 --> 00:10:08,250
+it enables scaling out of your resources 
+
+34
+00:10:10,460 --> 00:10:14,388
+hadoop yarn provides flexible scheduling and
+
+35
+00:10:14,388 --> 00:10:18,220
+resource management over the hdfs storage 
+
+36
+00:10:19,910 --> 00:10:24,988
+yarn is used at yahoo to schedule jobs across 40 000 servers 
+
+37
+00:10:27,370 --> 00:10:32,430
+mapreduce is a programming model that simplifies parallel computing 
+
+38
+00:10:33,720 --> 00:10:38,300
+instead of dealing with the complexities of synchronization and scheduling you
+
+39
+00:10:38,300 --> 00:10:44,920
+only need to give mapreduce two functions map and reduce as you heard before 
+
+40
+00:10:47,020 --> 00:10:49,080
+this programming model is so
+
+41
+00:10:49,080 --> 00:10:54,740
+powerful that google previously used it for indexing websites 
+
+42
+00:10:58,450 --> 00:11:04,009
+mapreduce only assume a limited model to express data 
+
+43
+00:11:04,009 --> 00:11:09,094
+hive and pig are two additional programming models on
+
+44
+00:11:09,094 --> 00:11:14,292
+top of mapreduce to augment data modeling of mapreduce
+
+45
+00:11:14,292 --> 00:11:20,398
+with relational algebra and data flow modeling respectively 
+
+46
+00:11:20,398 --> 00:11:24,718
+hive was created at facebook to issue sql - like
+
+47
+00:11:24,718 --> 00:11:29,038
+queries using mapreduce on their data in hdfs 
+
+48
+00:11:29,038 --> 00:11:36,951
+pig was created at yahoo to model data flow based programs using mapreduce 
+
+49
+00:11:36,951 --> 00:11:40,431
+thanks to yarn stability to manage resources 
+
+50
+00:11:40,431 --> 00:11:44,959
+not just for mapreduce but other programming models as well 
+
+51
+00:11:44,959 --> 00:11:49,787
+giraph was built for processing large - scale graphs efficiently 
+
+52
+00:11:49,787 --> 00:11:56,904
+for example facebook uses giraph to analyze the social graphs of its users 
+
+53
+00:11:56,904 --> 00:12:02,196
+similarly storm spark and flink were built for
+
+54
+00:12:02,196 --> 00:12:06,899
+real time and in memory processing of big data on
+
+55
+00:12:06,899 --> 00:12:11,381
+top of the yarn resource scheduler and hdfs 
+
+56
+00:12:11,381 --> 00:12:16,986
+in - memory processing is a powerful way of running big data applications even faster 
+
+57
+00:12:16,986 --> 00:12:20,787
+achieving 100x better performance for some tasks 
+
+58
+00:12:23,446 --> 00:12:27,405
+sometimes your data or processing tasks are not easily or
+
+59
+00:12:27,405 --> 00:12:32,330
+efficiently represented using the file and directory model of storage 
+
+60
+00:12:33,620 --> 00:12:38,810
+examples of this include collections of key - values or large sparse tables 
+
+61
+00:12:40,990 --> 00:12:48,381
+nosql projects such as cassandra mongodb and hbase handle these cases 
+
+62
+00:12:48,381 --> 00:12:53,180
+cassandra was created at facebook but facebook also used hbase for
+
+63
+00:12:53,180 --> 00:12:55,010
+its messaging platform 
+
+64
+00:12:57,320 --> 00:13:02,560
+finally running all of these tools requires a centralized management system
+
+65
+00:13:02,560 --> 00:13:07,490
+for synchronization configuration and to ensure high availability 
+
+66
+00:13:08,860 --> 00:13:12,210
+zookeeper performs these duties 
+
+67
+00:13:12,210 --> 00:13:16,700
+it was created by yahoo to wrangle services named after animals 
+
+68
+00:13:19,060 --> 00:13:21,990
+a major benefit of the hadoop ecosystem
+
+69
+00:13:21,990 --> 00:13:24,340
+is that all these tools are open - source projects 
+
+70
+00:13:25,450 --> 00:13:27,920
+you can download and use them for free 
+
+71
+00:13:29,220 --> 00:13:33,934
+each project has a community of users and developers that
+
+72
+00:13:33,934 --> 00:13:38,756
+answer questions fix bugs and implement new features 
+
+73
+00:13:38,756 --> 00:13:43,370
+you can mix and match to get only the tools you need to achieve your goals 
+
+74
+00:13:45,010 --> 00:13:49,330
+alternatively there are several pre - built stacks of these tools
+
+75
+00:13:49,330 --> 00:13:53,670
+offered by companies such as cloudera mapr and hortonworks 
+
+76
+00:13:55,090 --> 00:13:59,850
+these companies provide the core software stacks for free and
+
+77
+00:13:59,850 --> 00:14:02,740
+offer commercial support for production environments 
+
+78
+00:14:04,800 --> 00:14:08,110
+as a summary the hadoop ecosystem
+
+79
+00:14:08,110 --> 00:14:12,672
+consists of a growing number of open - source tools 
+
+80
+00:14:12,672 --> 00:14:16,502
+providing opportunities to pick the right tool for
+
+81
+00:14:16,502 --> 00:14:20,788
+the right tasks for better performance and lower costs 
+
+82
+00:14:20,788 --> 00:14:24,284
+we will reveal some of these tools in further detail and
+
+83
+00:14:24,284 --> 00:14:28,620
+provide an analysis of when to use which in the next set of lectures 
+
+1
+00:14:28,610 --> 00:14:31,160
+generating value from hadoop and
+
+2
+00:14:31,160 --> 00:14:35,996
+pre - built hadoop images that come as off the shelf products 
+
+3
+00:14:46,576 --> 00:14:51,922
+assembling your own software stack from scratch can be messy and
+
+4
+00:14:51,922 --> 00:14:54,298
+a lot of work for beginners 
+
+5
+00:14:54,298 --> 00:14:59,661
+the task of setting up the whole stack could consume a lot of project time and
+
+6
+00:14:59,661 --> 00:15:03,550
+man power reducing time to deployment 
+
+7
+00:15:03,550 --> 00:15:09,490
+getting pre - built images is similar to buying pre - assembled furniture 
+
+8
+00:15:09,490 --> 00:15:14,701
+you can obtain a ready to go software stack which contains a pre - installed
+
+9
+00:15:14,701 --> 00:15:19,510
+operating system required libraries and application software 
+
+10
+00:15:20,830 --> 00:15:23,380
+it saves you from the trouble of putting the different
+
+11
+00:15:23,380 --> 00:15:26,090
+parts together in the right orientation 
+
+12
+00:15:26,090 --> 00:15:28,030
+you can start using the furniture right away 
+
+13
+00:15:29,600 --> 00:15:33,620
+packaging of these pre - built software images is enabled
+
+14
+00:15:33,620 --> 00:15:36,420
+by virtual machines using virtualization software 
+
+15
+00:15:37,640 --> 00:15:42,380
+without going into too much detail one of the benefits of virtualization
+
+16
+00:15:42,380 --> 00:15:46,710
+software is that it lets you run a ready made software stack within minutes 
+
+17
+00:15:47,890 --> 00:15:51,390
+your software stack comes as a large file 
+
+18
+00:15:51,390 --> 00:15:54,800
+virtualization software provides a platform where your stack can run 
+
+19
+00:15:56,160 --> 00:16:01,240
+many companies provide images for their version of the hadoop platform 
+
+20
+00:16:01,240 --> 00:16:04,100
+including a number of tools of their choice 
+
+21
+00:16:05,100 --> 00:16:09,570
+hortonworks is one of the companies that provides a pre - built software stack for
+
+22
+00:16:09,570 --> 00:16:11,370
+both mac and windows platforms 
+
+23
+00:16:12,520 --> 00:16:16,420
+cloudera is another company that provides pre - installed and
+
+24
+00:16:16,420 --> 00:16:19,120
+assembled software stack images 
+
+25
+00:16:19,120 --> 00:16:22,230
+cloudera image is what we will be working with in this course 
+
+26
+00:16:23,480 --> 00:16:26,020
+many other companies provide similar images 
+
+27
+00:16:27,100 --> 00:16:32,831
+additionally lots of online tutorials for beginners are on vendors websites for
+
+28
+00:16:32,831 --> 00:16:36,740
+self - training of users working with these images and
+
+29
+00:16:36,740 --> 00:16:38,580
+the open source tools they include 
+
+30
+00:16:40,270 --> 00:16:44,200
+once you choose the vendor you can check out their website for
+
+31
+00:16:44,200 --> 00:16:46,550
+tutorials on how to get started quickly 
+
+32
+00:16:47,590 --> 00:16:49,980
+there are plenty of resources online for that 
+
+33
+00:16:51,240 --> 00:16:54,080
+you can deploy pre - built images over the cloud 
+
+34
+00:16:55,110 --> 00:16:58,490
+this would further accelerate your application deployment process 
+
+35
+00:16:59,850 --> 00:17:04,170
+it is always best to evaluate which approach is most cost effective for
+
+36
+00:17:04,170 --> 00:17:06,320
+your business model and organization 
+
+37
+00:17:07,560 --> 00:17:11,485
+companies such as cloudera hortonworks and others 
+
+38
+00:17:11,485 --> 00:17:17,090
+provide step - by - step guides on how to set up pre - built images on the cloud 
+
+39
+00:17:18,180 --> 00:17:23,460
+as a summary using pre - built software packages have a number of benefits and
+
+40
+00:17:23,460 --> 00:17:26,280
+can significantly accelerate your big data projects 
+
+41
+00:17:27,500 --> 00:17:34,558
+even small teams can quickly prototype deploy and validate their project ideas 
+
+42
+00:17:34,558 --> 00:17:39,480
+the developed analytical solutions can be scaled to larger volumes and
+
+43
+00:17:39,480 --> 00:17:43,560
+increase velocities of data in a matter of hours 
+
+44
+00:17:43,560 --> 00:17:48,162
+these companies also provide enterprise level solutions for large 
+
+45
+00:17:48,162 --> 00:17:49,837
+full - fledged applications 
+
+46
+00:17:50,940 --> 00:17:55,395
+an added benefit is that there are plenty of companies which provide
+
+47
+00:17:55,395 --> 00:17:57,250
+ready - made solutions 
+
+48
+00:17:57,250 --> 00:18:03,270
+that means lots of choices for you to pick the one most suited to your project 
+
+1
+00:18:03,540 --> 00:18:05,593
+what is a distributed file system 
+
+2
+00:18:19,485 --> 00:18:22,336
+most of us have file cabinets in our offices or
+
+3
+00:18:22,336 --> 00:18:25,420
+homes that help us store our printed documents 
+
+4
+00:18:27,170 --> 00:18:30,280
+everyone has their own method of organizing files 
+
+5
+00:18:30,280 --> 00:18:34,410
+including the way we bin similar documents into one file or
+
+6
+00:18:34,410 --> 00:18:38,210
+the way we sort them in alphabetical or date order 
+
+7
+00:18:38,210 --> 00:18:41,380
+when computers first came out the information and
+
+8
+00:18:41,380 --> 00:18:43,970
+programs were stored in punch cards 
+
+9
+00:18:45,280 --> 00:18:48,374
+these punch cards were stored in file cabinets 
+
+10
+00:18:48,374 --> 00:18:51,760
+just like the physical file cabinets today 
+
+11
+00:18:51,760 --> 00:18:54,940
+this is where the name file system comes from 
+
+12
+00:18:54,940 --> 00:18:58,970
+the need to store information in files comes from a larger need
+
+13
+00:18:58,970 --> 00:19:01,720
+to store information in the long - term 
+
+14
+00:19:01,720 --> 00:19:06,360
+this way the information lives after the computer program or
+
+15
+00:19:06,360 --> 00:19:10,350
+what we call process that produced it terminates 
+
+16
+00:19:10,350 --> 00:19:15,450
+if we do not have files our access to such information would not be possible
+
+17
+00:19:15,450 --> 00:19:18,560
+once a program using or producing it 
+
+18
+00:19:18,560 --> 00:19:23,430
+even during the process we might need to store large amounts of information
+
+19
+00:19:23,430 --> 00:19:28,240
+that we cannot store within the program components or computer memory 
+
+20
+00:19:28,240 --> 00:19:31,690
+in addition once the data is in a file 
+
+21
+00:19:31,690 --> 00:19:36,120
+multiple processes can access the same information if needed 
+
+22
+00:19:36,120 --> 00:19:41,940
+for all these reasons we store information in files on a hard disk 
+
+23
+00:19:41,940 --> 00:19:44,350
+there are many of these files and
+
+24
+00:19:44,350 --> 00:19:48,750
+they get managed by your operating system like windows or linux 
+
+25
+00:19:48,750 --> 00:19:53,640
+how the operating system manages files is called a file system 
+
+26
+00:19:53,640 --> 00:19:58,930
+how this information is stored on disk drives has high impact
+
+27
+00:19:58,930 --> 00:20:05,090
+on the efficiency and speed of access to data especially in the big data case 
+
+28
+00:20:05,090 --> 00:20:10,420
+while the files have exact addresses for their locations in the drive referring
+
+29
+00:20:10,420 --> 00:20:16,274
+to the data units of sequence of these blocks that called the flat structure 
+
+30
+00:20:16,274 --> 00:20:21,510
+or hierarchy construction of index records that called the database 
+
+31
+00:20:21,510 --> 00:20:27,710
+they also have human readable symbolic names generally followed by an extension 
+
+32
+00:20:28,750 --> 00:20:32,140
+extensions tell what kind of file it is in general 
+
+33
+00:20:32,140 --> 00:20:36,640
+programs and users can access files with their names 
+
+34
+00:20:36,640 --> 00:20:42,010
+the contents of a file can be numeric alphabetic alphanumeric 
+
+35
+00:20:42,010 --> 00:20:43,160
+or binary executables 
+
+36
+00:20:44,180 --> 00:20:48,250
+most computer users work on personal laptops or
+
+37
+00:20:48,250 --> 00:20:51,050
+desktop computers with a single hard drive 
+
+38
+00:20:52,050 --> 00:20:56,780
+in this model the user is limited to the capacity of their hard drive 
+
+39
+00:20:56,780 --> 00:21:00,060
+the capacity of different devices vary 
+
+40
+00:21:00,060 --> 00:21:02,460
+for example while your phone or
+
+41
+00:21:02,460 --> 00:21:07,380
+tablet might have a storage capacity in the order of gigabytes your
+
+42
+00:21:07,380 --> 00:21:13,210
+laptop computer might have a terabyte of storage but what if you have more data 
+
+43
+00:21:13,210 --> 00:21:16,290
+some of you probably had issues in the past with
+
+44
+00:21:16,290 --> 00:21:18,950
+running out of space on your hard drive 
+
+45
+00:21:18,950 --> 00:21:22,250
+a way to solve this is to have an external hard drive and
+
+46
+00:21:22,250 --> 00:21:26,390
+store your files there or you can buy a bigger disk 
+
+47
+00:21:26,390 --> 00:21:31,580
+both options are a bit of a hassle to copy the data to a new disk are not they 
+
+48
+00:21:31,580 --> 00:21:33,520
+they might not even be an option sometimes 
+
+49
+00:21:34,560 --> 00:21:38,620
+now imagine you having two computers and
+
+50
+00:21:38,620 --> 00:21:44,050
+storing some of your data in one and the rest of your data in another 
+
+51
+00:21:44,050 --> 00:21:48,560
+how you organize and partition your data between these computers is up to you 
+
+52
+00:21:49,570 --> 00:21:53,400
+you might want to store your work data in one computer and
+
+53
+00:21:53,400 --> 00:21:56,030
+your personal data in another 
+
+54
+00:21:56,030 --> 00:22:00,120
+distributing data on multiple computers might be an option but
+
+55
+00:22:00,120 --> 00:22:02,030
+it raises new issues 
+
+56
+00:22:02,030 --> 00:22:07,800
+in this situation you need to know where to find the files you need 
+
+57
+00:22:07,800 --> 00:22:09,630
+depending on what you re doing 
+
+58
+00:22:09,630 --> 00:22:13,080
+you can find it manageable if it s just your data 
+
+59
+00:22:13,080 --> 00:22:17,500
+but now imagine having thousands of computers
+
+60
+00:22:17,500 --> 00:22:21,373
+to store your data with big volumes and variety 
+
+61
+00:22:21,373 --> 00:22:26,240
+would not it be good to have a system that can handle the data access and
+
+62
+00:22:26,240 --> 00:22:27,330
+do this for you 
+
+63
+00:22:27,330 --> 00:22:32,450
+this is a case that can be handled by a distributive file system 
+
+64
+00:22:32,450 --> 00:22:36,590
+now let assume that there are racks of these computers 
+
+65
+00:22:36,590 --> 00:22:40,758
+often even distributed across the local or
+
+66
+00:22:40,758 --> 00:22:46,400
+wide area network because such file systems distributed file systems 
+
+67
+00:22:47,910 --> 00:22:51,800
+data sets or parts of a data set 
+
+68
+00:22:51,800 --> 00:22:55,900
+can be replicated across the nodes of a distributed file system 
+
+69
+00:22:56,900 --> 00:23:01,900
+since data is already on these nodes then analysis of parts of the data
+
+70
+00:23:01,900 --> 00:23:08,030
+is needed in a data parallel fashion computation can be moved to these nodes 
+
+71
+00:23:09,500 --> 00:23:14,590
+additionally distributed file systems replicate the data
+
+72
+00:23:14,590 --> 00:23:19,720
+between the racks and also computers distributed across geographical regions 
+
+73
+00:23:21,180 --> 00:23:25,160
+data replication makes the system more fault tolerant 
+
+74
+00:23:26,250 --> 00:23:31,290
+that means if some nodes or a rack goes down 
+
+75
+00:23:31,290 --> 00:23:36,764
+there are other parts of the system the same data can be found and analyzed 
+
+76
+00:23:36,764 --> 00:23:43,080
+data replication also helps with scaling the access to this data by many users 
+
+77
+00:23:44,170 --> 00:23:50,110
+often if the data is popular many reader processes will want access to it 
+
+78
+00:23:51,310 --> 00:23:54,240
+in a highly parallelized replication 
+
+79
+00:23:54,240 --> 00:23:58,680
+each reader can get their own node to access to and analyze data 
+
+80
+00:23:59,920 --> 00:24:02,450
+this increases overall system performance 
+
+81
+00:24:03,935 --> 00:24:08,600
+note that a problem with having such a distributive replication is 
+
+82
+00:24:08,600 --> 00:24:12,490
+that it is hard to make changes to data over time 
+
+83
+00:24:12,490 --> 00:24:18,090
+however in most big data systems the data is written once and
+
+84
+00:24:18,090 --> 00:24:23,570
+the updates to data is maintained as additional data sets over time 
+
+85
+00:24:23,570 --> 00:24:28,500
+as a summary a file system is responsible from the organization of
+
+86
+00:24:28,500 --> 00:24:31,970
+the long term information storage in a computer 
+
+87
+00:24:31,970 --> 00:24:36,991
+when many storage computers are connected through the network 
+
+88
+00:24:36,991 --> 00:24:39,916
+we call it a distributed file system 
+
+89
+00:24:39,916 --> 00:24:45,035
+distributed file systems provide data scalability fault tolerance and
+
+90
+00:24:45,035 --> 00:24:50,321
+high concurrency through partitioning and replication of data on many nodes 
+
+1
+00:24:53,148 --> 00:24:55,208
+when to reconsider hadoop 
+
+2
+00:25:09,098 --> 00:25:12,960
+the hadoop ecosystem is growing at a fast pace 
+
+3
+00:25:13,970 --> 00:25:16,937
+this means a lot of stuff that was difficult or
+
+4
+00:25:16,937 --> 00:25:20,180
+not supportive is becoming possible 
+
+5
+00:25:22,480 --> 00:25:23,990
+in this lecture 
+
+6
+00:25:23,990 --> 00:25:27,730
+we will look at some aspects that clearly make a good match for hadoop 
+
+7
+00:25:29,200 --> 00:25:33,220
+we will also look at several aspects that might motivate you
+
+8
+00:25:33,220 --> 00:25:35,510
+to evaluate hadoop at a deeper level 
+
+9
+00:25:37,060 --> 00:25:41,560
+and does hadoop really make sense for your specific problem 
+
+10
+00:25:44,190 --> 00:25:48,790
+first let look at the key features that make a problem hadoop friendly 
+
+11
+00:25:49,950 --> 00:25:54,390
+if you see a large scale growth in amount of data you will tackle 
+
+12
+00:25:54,390 --> 00:25:56,310
+probably it makes sense to use hadoop 
+
+13
+00:25:57,610 --> 00:26:02,230
+when you want quick access to your old data which would otherwise go on tape
+
+14
+00:26:02,230 --> 00:26:07,180
+drives for archival storage hadoop might provide a good alternative 
+
+15
+00:26:10,080 --> 00:26:12,650
+other hadoop friendly features include
+
+16
+00:26:12,650 --> 00:26:18,020
+scenarios when you want to use multiple applications over the same data store 
+
+17
+00:26:18,020 --> 00:26:21,683
+high volume or high variety are also great indicators for
+
+18
+00:26:21,683 --> 00:26:23,598
+hadoop as a platform choice 
+
+19
+00:26:27,148 --> 00:26:30,860
+small data set processing should raise your eyebrows 
+
+20
+00:26:30,860 --> 00:26:32,410
+do you really need hadoop for that 
+
+21
+00:26:33,560 --> 00:26:39,178
+dig deeper and find out exactly why you want to use hadoop before going ahead 
+
+22
+00:26:43,238 --> 00:26:46,330
+hadoop is good for data parallelism 
+
+23
+00:26:46,330 --> 00:26:51,320
+as you know data parallelism is the simultaneous execution of the same
+
+24
+00:26:51,320 --> 00:26:55,520
+function on multiple nodes across the elements of a dataset 
+
+25
+00:26:56,630 --> 00:27:01,060
+on the other hand task parallelism as you see in this graph 
+
+26
+00:27:02,640 --> 00:27:07,160
+is the simultaneous execution of many different functions
+
+27
+00:27:07,160 --> 00:27:11,260
+on multiple nodes across the same or different data sets 
+
+28
+00:27:12,930 --> 00:27:16,950
+if your problem has task - level parallelism you must do further
+
+29
+00:27:16,950 --> 00:27:20,990
+analysis as to which tools you plan to deploy from the hadoop ecosystem 
+
+30
+00:27:22,910 --> 00:27:26,260
+what are the precise benefits that these tools provide 
+
+31
+00:27:27,790 --> 00:27:28,920
+proceed with caution 
+
+32
+00:27:31,330 --> 00:27:34,330
+not all algorithms are scalable in hadoop or
+
+33
+00:27:34,330 --> 00:27:38,030
+reducible to one of the programming models supported by yarn 
+
+34
+00:27:40,090 --> 00:27:45,590
+hence if you are looking to deploy highly coupled data processing algorithms
+
+35
+00:27:45,590 --> 00:27:46,860
+proceed with caution 
+
+36
+00:27:48,300 --> 00:27:51,270
+do a thorough analysis before using hadoop 
+
+37
+00:27:51,270 --> 00:27:55,680
+are you thinking of
+
+38
+00:27:55,680 --> 00:28:00,350
+throwing away your existing database solutions and replacing them with hadoop 
+
+39
+00:28:00,350 --> 00:28:00,850
+think again 
+
+40
+00:28:02,130 --> 00:28:07,100
+hadoop may be a good platform where your diverse data sets can land and
+
+41
+00:28:07,100 --> 00:28:11,210
+get processed into a form digestible with your database 
+
+42
+00:28:12,660 --> 00:28:17,070
+hadoop may not be the best data store solution for your business case 
+
+43
+00:28:17,070 --> 00:28:19,470
+evaluate and proceed with caution 
+
+44
+00:28:20,960 --> 00:28:25,560
+hdfs stores data in blocks of 64 megabytes or larger 
+
+45
+00:28:25,560 --> 00:28:30,940
+so you may have to read an entire file just to pick one data entry 
+
+46
+00:28:32,580 --> 00:28:35,858
+that makes it a bit harder to perform random data access 
+
+47
+00:28:38,078 --> 00:28:42,370
+the hadoop ecosystem is growing at a faster pace than ever 
+
+48
+00:28:43,820 --> 00:28:47,530
+this slide shows some of the moving targets in the hadoop ecosystem and
+
+49
+00:28:47,530 --> 00:28:50,650
+the additional needs which must be addressed by new tools
+
+50
+00:28:50,650 --> 00:28:52,470
+to the hadoop ecosystem 
+
+51
+00:28:52,470 --> 00:28:55,260
+mainly advanced analytical queries 
+
+52
+00:28:56,270 --> 00:29:00,580
+latency sensitive tasks and cyber security of sensitive data 
+
+53
+00:29:02,050 --> 00:29:06,510
+here we give pointers to tools you might want to look into further
+
+54
+00:29:06,510 --> 00:29:09,090
+to understand the challenges these need tools address 
+
+55
+00:29:11,000 --> 00:29:17,590
+as a summary although hadoop is good with scalability of many algorithms it is just
+
+56
+00:29:17,590 --> 00:29:22,520
+one model and does not solve all issues in managing and processing big data 
+
+57
+00:29:23,630 --> 00:29:28,590
+although it would be possible to find counterexamples we can generally say
+
+58
+00:29:28,590 --> 00:29:33,110
+that the hadoop framework is not the best for working with small data sets 
+
+59
+00:29:33,110 --> 00:29:37,120
+advanced algorithms that require a specific hardware type 
+
+60
+00:29:37,120 --> 00:29:42,190
+task level parallelism infrastructure replacement or random data access 
+

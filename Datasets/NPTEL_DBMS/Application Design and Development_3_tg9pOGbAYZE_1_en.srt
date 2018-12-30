@@ -1,0 +1,1739 @@
+﻿1
+00:00:13,919 --> 00:00:18,089
+.
+Welcome to module 23 of Database Management
+
+2
+00:00:18,089 --> 00:00:23,609
+Systems. We have been discussing about application
+design and development and this is the third
+
+3
+00:00:23,609 --> 00:00:30,890
+and concluding module in that regard.
+In the last module ah we have discussed about
+
+4
+00:00:30,890 --> 00:00:36,859
+different aspects of application architecture
+ah rapid ah development process ah issues
+
+5
+00:00:36,859 --> 00:00:42,549
+and performance and security and took a glimpse
+in terms of, what is required for ah doing
+
+6
+00:00:42,549 --> 00:00:50,000
+a mobile app.
+In this ah module, we will take care ah case
+
+7
+00:00:50,000 --> 00:00:55,088
+study in terms of a library information system.
+We will try to design the schema for that
+
+8
+00:00:55,088 --> 00:01:00,058
+as you have seen that ah for a ah database
+application design there are frontend designs
+
+9
+00:01:00,058 --> 00:01:06,140
+there are ah middle tier business logic design
+and there will be issues in terms of the database
+
+10
+00:01:06,140 --> 00:01:09,379
+design.
+Since ah we are in the DBMS course, I will
+
+11
+00:01:09,379 --> 00:01:14,420
+not focus on the whole aspects of application
+design, but we will focus specifically on
+
+12
+00:01:14,420 --> 00:01:20,820
+the database ah aspect. So, we will ah start
+with a basic requirement specification for
+
+13
+00:01:20,819 --> 00:01:26,919
+a library information system and then from
+the ah starting from that we will try to extract
+
+14
+00:01:26,920 --> 00:01:33,359
+different ah entities and attributes and ah
+their relationships and we will make a relational
+
+15
+00:01:33,359 --> 00:01:41,429
+schema and ah use different notions of dependency
+and ah how to write queries ah we will look
+
+16
+00:01:41,429 --> 00:01:46,929
+into those ah aspects and refine that and
+finalize a ah schema for this problem. So,
+
+17
+00:01:46,929 --> 00:01:53,998
+let us work through that . So, the the ah
+out[line]- the module ah issue is library
+
+18
+00:01:53,998 --> 00:01:59,618
+information system.
+So, let us start with a basic this is a very
+
+19
+00:01:59,618 --> 00:02:06,009
+small ah description. So, ah, but yet ah it
+will give us lot of food for thought ah in
+
+20
+00:02:06,009 --> 00:02:11,689
+this work and ah while you actually go through
+the rest of the video. I would ah suggest
+
+21
+00:02:11,689 --> 00:02:15,890
+that you take a print out of this page or
+keep this page separately because you will
+
+22
+00:02:15,890 --> 00:02:20,939
+frequently need to refer to it.
+So, let me quickly ah go through this ah we
+
+23
+00:02:20,939 --> 00:02:26,340
+are talking about an institute library that
+has ah over 2 lakh books and over 10,000 members
+
+24
+00:02:26,340 --> 00:02:32,140
+who can use ah regularly issue the books on
+loan and return them on the expiry of the
+
+25
+00:02:32,139 --> 00:02:36,849
+period or before that and the library needs
+a library information system to manage the
+
+26
+00:02:36,849 --> 00:02:41,199
+books the members and as well as the issue
+return process. So, we are just looking into
+
+27
+00:02:41,199 --> 00:02:46,649
+these aspects not the procurement of books
+and organization of the books and. So, on
+
+28
+00:02:46,650 --> 00:02:52,599
+now what is given every book has it is title
+author publisher etcetera a number of different
+
+29
+00:02:52,599 --> 00:02:59,039
+attributes ah ISBN number accession number
+in terms of a book I must ah explain to you
+
+30
+00:02:59,039 --> 00:03:06,689
+at this stage that ah any book that you ah
+that is published has an ISBN number which
+
+31
+00:03:06,689 --> 00:03:11,800
+is an international number given ah.
+So, that you can uniquely identify that book.
+
+32
+00:03:11,800 --> 00:03:18,700
+So, if we are talking about the database management
+book we are following here ah then that has
+
+33
+00:03:18,699 --> 00:03:25,449
+a ISBN number, but that does not mean ah that
+number actually is unique for the book would
+
+34
+00:03:25,449 --> 00:03:30,568
+not for a specific copy of the book. So, if
+you buy three copies of the book and ah put
+
+35
+00:03:30,568 --> 00:03:35,500
+it in the library, then these three copies
+need to be identify separately by another
+
+36
+00:03:35,500 --> 00:03:38,259
+number which is typically called the accession
+number.
+
+37
+00:03:38,259 --> 00:03:43,780
+So, ah naturally the LIS need that every book
+has ISBN number which says which book it is
+
+38
+00:03:43,780 --> 00:03:48,449
+and the accession number which says which
+specific copy it is, because they are may
+
+39
+00:03:48,449 --> 00:03:53,729
+be multiple copies of the same book in the
+library ah on the member side. There are 4
+
+40
+00:03:53,729 --> 00:03:59,289
+categories of members ah broadly: students
+and ah teachers, but amongst students if they
+
+41
+00:03:59,289 --> 00:04:05,419
+could be undergraduate postgraduate or research
+students and the faculty members. The student
+
+42
+00:04:05,419 --> 00:04:09,419
+ah are specified by their name, roll number,
+department, gender, mobile number, date of
+
+43
+00:04:09,419 --> 00:04:14,250
+birth, and the degree that they are doing
+and every faculty member also has a name,
+
+44
+00:04:14,250 --> 00:04:20,189
+employee id, department, gender, mobile number.
+And the date of joining the library ah to
+
+45
+00:04:20,189 --> 00:04:25,750
+manage these ah members library also issues
+a unique ah membership number to every member
+
+46
+00:04:25,750 --> 00:04:31,850
+and every member has a maximum quota for the
+number of books that ah she or he can issue
+
+47
+00:04:31,850 --> 00:04:37,640
+and the maximum duration for which ah those
+books can be retain once issued. So, there
+
+48
+00:04:37,639 --> 00:04:42,909
+are different specification for at different
+categories of member can have different quota
+
+49
+00:04:42,910 --> 00:04:49,040
+and different duration ah the general rule
+as specified by this ah libraries the a book
+
+50
+00:04:49,040 --> 00:04:53,480
+may be issues to a member naturally if it
+is not issued to someone else the book has
+
+51
+00:04:53,480 --> 00:04:59,580
+to be available also a book may not be issued
+to a member if another copy of the same book
+
+52
+00:04:59,579 --> 00:05:03,740
+is already issued to the same member.
+So, you cannot issue two copies of the same
+
+53
+00:05:03,740 --> 00:05:08,960
+book at the same time no issue will be done
+to a member if ah he is kind of a default
+
+54
+00:05:08,959 --> 00:05:14,599
+that is the time of at the time of issue one
+or more of the other books already issued
+
+55
+00:05:14,600 --> 00:05:18,150
+by the member has already exceeded the duration
+of the issue.
+
+56
+00:05:18,149 --> 00:05:22,419
+So, they are overdue for return in that case
+no issue will be allowed no issue will; obviously,
+
+57
+00:05:22,420 --> 00:05:28,980
+be allowed if the quota x x and ah it is ah
+also specified that whenever ah we talk about
+
+58
+00:05:28,980 --> 00:05:33,460
+name ah every name will have two parts the
+first name and the last name. So, this is
+
+59
+00:05:33,459 --> 00:05:39,639
+the this is the given ah specification based
+on this we will need to make a good relational
+
+60
+00:05:39,639 --> 00:05:43,839
+schema to represent ah the tables and manage
+the queries.
+
+61
+00:05:43,839 --> 00:05:49,869
+So, let us take a ah quick look into some
+of the sample queries this is just a indicative
+
+62
+00:05:49,870 --> 00:05:55,680
+sample. Now, naturally we need a whole lot
+of ah you know insert delete update kind of
+
+63
+00:05:55,680 --> 00:06:02,490
+ah queries for ah adding or removing members
+categories of ah members shapes the books
+
+64
+00:06:02,490 --> 00:06:09,819
+and so, on adding ah or removing or changing
+the quota of a category of member the duration
+
+65
+00:06:09,819 --> 00:06:13,439
+for that also ah we will have queries like
+to check.
+
+66
+00:06:13,439 --> 00:06:19,019
+If the library has a given book with a given
+title and if it is ah found then the details
+
+67
+00:06:19,019 --> 00:06:26,019
+of those ah should be listed or we need to
+check if library has a book ah ah given it
+
+68
+00:06:26,019 --> 00:06:30,909
+is ah author. So, if I say the author it should
+be possible to locate a book we should ah
+
+69
+00:06:30,910 --> 00:06:36,630
+able to check, if a copy of a book if I specify
+the ISBN number, then whether it is available
+
+70
+00:06:36,629 --> 00:06:41,980
+ah with the library for issue. So, there may
+be as I said multiple copies of the san book.
+
+71
+00:06:41,980 --> 00:06:47,629
+So, given the ISBN number it will ah return
+all the copies the accession number of all
+
+72
+00:06:47,629 --> 00:06:52,279
+the copies and their issue status; whether
+they are issued or they are available ah it
+
+73
+00:06:52,279 --> 00:06:56,779
+should be available it should be possible
+to check ah the quota available free quota
+
+74
+00:06:56,779 --> 00:07:05,309
+of a member ah and certainly it should have
+ah ah features of issuing a book to a member
+
+75
+00:07:05,310 --> 00:07:09,459
+and they should check for the rules of the
+library as stated it should be possible to
+
+76
+00:07:09,459 --> 00:07:13,469
+return a book and so, on. So, these are the
+typical queries against which in the backdrop
+
+77
+00:07:13,470 --> 00:07:18,620
+of which we will try to design the database
+system . So, what we will do?
+
+78
+00:07:18,620 --> 00:07:27,649
+We will ah initially start ah with a ah ah
+with a specification as ah given. So, I hope
+
+79
+00:07:27,649 --> 00:07:33,939
+you already have kept a copy to refer to and
+ah we will try to extract the different entity
+
+80
+00:07:33,939 --> 00:07:40,079
+sets and the attributes. Naturally, the first
+ah entity said that we extract ah we let us
+
+81
+00:07:40,079 --> 00:07:45,180
+call it books which is about books where in
+the beginning I have given the basic statement
+
+82
+00:07:45,180 --> 00:07:53,189
+that is given in the. So, ah in the ah specification.
+So, from that we can see that ah books will
+
+83
+00:07:53,189 --> 00:07:59,250
+be an entity set and it will have a attributes
+like title author name which is a composite
+
+84
+00:07:59,250 --> 00:08:04,050
+one, because it will have two parts ah into
+that the first name and the last name the
+
+85
+00:08:04,050 --> 00:08:08,829
+publisher year ISBN number and accession number.
+So, these are the attributes available for
+
+86
+00:08:08,829 --> 00:08:12,569
+books. So, this is ah my first ah first entity
+set.
+
+87
+00:08:12,569 --> 00:08:18,969
+The second entity set ah are students ah.
+So, this is the statement about the student
+
+88
+00:08:18,970 --> 00:08:26,080
+and from that statement, we can easily extract
+that entity set here is student and ah the
+
+89
+00:08:26,079 --> 00:08:32,509
+attributes are ah member number, because certainly
+in the context of the library system as we
+
+90
+00:08:32,509 --> 00:08:37,240
+said the; ah student has to be a member. So,
+it should be there will be a member number
+
+91
+00:08:37,240 --> 00:08:43,639
+which is has to be unique the composite name
+the student has a role number. So, ah we assuming
+
+92
+00:08:43,639 --> 00:08:48,730
+that the role number is ah is a unique field.
+So, knows to students will have the same roll
+
+93
+00:08:48,730 --> 00:08:54,528
+number, then there is department gender mobile
+number which could be null the; ah date of
+
+94
+00:08:54,528 --> 00:08:59,318
+birth degree that the student has done is
+doing. So, those are the different attributes
+
+95
+00:08:59,318 --> 00:09:03,240
+for this entity set. So, we have books we
+have students similarly.
+
+96
+00:09:03,240 --> 00:09:09,459
+We will have faculty again the there is this
+process will continue by extracting different
+
+97
+00:09:09,458 --> 00:09:14,369
+parts ah from the specification. So, these
+are statement about the faculty and we know
+
+98
+00:09:14,370 --> 00:09:19,600
+that ah there will be a faculty entity set
+with attributes ah like ah member number name
+
+99
+00:09:19,600 --> 00:09:25,909
+id and so, on.
+So, it should be quite obvious library has
+
+100
+00:09:25,909 --> 00:09:32,129
+talked of that it can ah each it will issue
+unique membership number to every member and
+
+101
+00:09:32,129 --> 00:09:39,200
+there are 4 categories of member. So, ah let
+us we are just making attentive you know suggestion
+
+102
+00:09:39,200 --> 00:09:44,800
+that there could be. So, it looks like members
+are in entity which the library has to interact
+
+103
+00:09:44,799 --> 00:09:49,579
+with in terms of issue.
+So, let us create an entity set members which
+
+104
+00:09:49,580 --> 00:09:54,860
+has the member number and the member type.
+So, which can take different types of undergraduate
+
+105
+00:09:54,860 --> 00:10:02,500
+post graduate these different ah one of these
+four specific values let us say.
+
+106
+00:10:02,500 --> 00:10:08,789
+The rules have talked about having a quota.
+So, every member ah will according to it is
+
+107
+00:10:08,789 --> 00:10:14,958
+ah member category we will have different
+quota. So, to represent so, quota becomes
+
+108
+00:10:14,958 --> 00:10:20,739
+an entity set. So, we would like to ah represent
+that ah for different member type which is
+
+109
+00:10:20,740 --> 00:10:24,919
+a category; how many number of maximum books
+can be taken and what could be the maximum
+
+110
+00:10:24,919 --> 00:10:29,659
+duration? So, let us say we will put the maximum
+duration say in terms of months and with these
+
+111
+00:10:29,659 --> 00:10:34,870
+three attributes we will have an entity set
+which is quota.
+
+112
+00:10:34,870 --> 00:10:41,799
+Ah Here, I am I am talking about another entity
+sets staff if you again carefully read the
+
+113
+00:10:41,799 --> 00:10:46,458
+specification you will find that there is
+no mention of this staff in the ah in the
+
+114
+00:10:46,458 --> 00:10:52,778
+total of the specification, but ah if we logically
+think and this is what we often need to do.
+
+115
+00:10:52,778 --> 00:10:58,299
+When we deal with a ah practical ah specification
+like somewhat like, the one that I have given
+
+116
+00:10:58,299 --> 00:11:02,419
+here is that we would need to look little
+beyond the specification.
+
+117
+00:11:02,419 --> 00:11:08,708
+So, think about it if I have the library with
+books students faculty issue process quota
+
+118
+00:11:08,708 --> 00:11:12,879
+and all that then certainly they will have
+to be some staff of the library; that will
+
+119
+00:11:12,879 --> 00:11:18,499
+actually do all this ah operation. So, they
+will be able to ah log in to the database
+
+120
+00:11:18,499 --> 00:11:23,970
+and actually issue a book return a book check
+for validity and so, on. So, let us assume
+
+121
+00:11:23,970 --> 00:11:29,689
+that ah we have a ah entity set staff which
+ah certainly a staff should have name and
+
+122
+00:11:29,688 --> 00:11:35,980
+id which id should be unique, gender, mobile
+number and date of joining. So, ah this is
+
+123
+00:11:35,980 --> 00:11:41,850
+kind of a speculative ah ah addition to the
+design of entity sets and this must be rectified
+
+124
+00:11:41,850 --> 00:11:46,170
+from the customer; when ah the opportunity
+arise, but something like that must be there
+
+125
+00:11:46,169 --> 00:11:52,649
+for to make the design complete.
+So, these are ah; obviously, the the immediately
+
+126
+00:11:52,649 --> 00:11:58,828
+visible entity sets that we see. So, the other
+part that we will now have to ah check on
+
+127
+00:11:58,828 --> 00:12:04,078
+is a relationship. So, again we pick up the
+relevant statement in this regard books are
+
+128
+00:12:04,078 --> 00:12:09,179
+regularly issued by members on loan and returned
+after a period the library needs an LIS to
+
+129
+00:12:09,179 --> 00:12:11,808
+manage the books members and the issue return
+process.
+
+130
+00:12:11,808 --> 00:12:17,600
+So, certainly there will have to be a relationship
+of issue ah between the student or faculty
+
+131
+00:12:17,600 --> 00:12:24,509
+in the books. So, we loosely define this relationship
+ah on one side there has to be the books and
+
+132
+00:12:24,509 --> 00:12:29,990
+the other side ah would be the involved entity
+set would be either student or faculty. So,
+
+133
+00:12:29,990 --> 00:12:35,360
+actually ah though ah I am just noting it
+here as a as a single relationship, but actually
+
+134
+00:12:35,360 --> 00:12:40,509
+there is a relationship of issue between students
+and books and faculty and books.
+
+135
+00:12:40,509 --> 00:12:46,330
+So, we will have to see how to handle these
+kind of situation now certainly the students
+
+136
+00:12:46,330 --> 00:12:51,559
+or faculty are identified by the unique member
+number of the library that has been given
+
+137
+00:12:51,558 --> 00:12:57,179
+books as we have said are identified by the
+accession number. Again please note that we
+
+138
+00:12:57,179 --> 00:13:01,989
+are not talking about the ISBN number, because
+ISBN number could be same for multiple copies
+
+139
+00:13:01,990 --> 00:13:06,610
+of the book, but when you issue you issue
+a specific copy. So, that accession number
+
+140
+00:13:06,610 --> 00:13:10,970
+which is a unique for a specific copy needs
+to be tracked. So, these are the two attributes,
+
+141
+00:13:10,970 --> 00:13:16,059
+which will ah certainly be involved in the
+relationship and ah then ah you would recall
+
+142
+00:13:16,058 --> 00:13:21,558
+that often ah relationships of their own attributes.
+So, here we have one the date of issue needs
+
+143
+00:13:21,558 --> 00:13:28,870
+to be recorded, because ah we want to check
+conditions like; if the ah borrower ah is
+
+144
+00:13:28,870 --> 00:13:33,709
+has issued the book and how many for how many
+months ah he or she is keeping that book.
+
+145
+00:13:33,708 --> 00:13:39,799
+So, if you have to check that we need to know
+when the book was issued. So, this is a ah
+
+146
+00:13:39,799 --> 00:13:45,359
+attribute which does not exist in any of the
+ah entity sets that are involved in this ah
+
+147
+00:13:45,360 --> 00:13:51,499
+relationship ah neither in students or faculty
+nor in books, but this is a attribute of the
+
+148
+00:13:51,499 --> 00:13:57,070
+relationship which needs to be specified.
+And ah of course, ah it is this relationship
+
+149
+00:13:57,070 --> 00:14:01,910
+is a many to many relation; because every
+student or faculty can issue multiple books
+
+150
+00:14:01,909 --> 00:14:08,839
+and every book may be issued by different,
+but we can we can ah in general ah we we can
+
+151
+00:14:08,840 --> 00:14:14,278
+be specific to say that this is many to one
+also if we want to maintain that at a any
+
+152
+00:14:14,278 --> 00:14:19,528
+given instant a book can be issued only by
+one person. So, if you look at it from that
+
+153
+00:14:19,528 --> 00:14:25,009
+perspective this will not be many to many
+this will be treated as many to one.
+
+154
+00:14:25,009 --> 00:14:33,958
+So, having ah done this ah finding having
+found out this entity an attributes and ah
+
+155
+00:14:33,958 --> 00:14:37,929
+the relationships. Let us now ah start with
+a relational schema.
+
+156
+00:14:37,929 --> 00:14:44,979
+So, what I have done here; in terms of the
+relational schema that for each of the entity
+
+157
+00:14:44,980 --> 00:14:50,519
+set. I have created a ah relational schema
+by the same name and have put the attributes
+
+158
+00:14:50,519 --> 00:14:55,688
+as identified as attributes of that relational
+schema. So, this is a very straight forward
+
+159
+00:14:55,688 --> 00:15:01,328
+once we have identi[fication]- made this identification
+process from the ah original specification.
+
+160
+00:15:01,328 --> 00:15:07,269
+This is a more straight forward process where
+you just convert every entity set into a relational
+
+161
+00:15:07,269 --> 00:15:13,360
+schema and also we have converted the relationship
+ah there was a ah there is a relationship
+
+162
+00:15:13,360 --> 00:15:20,430
+ah ah called book issue here as you can see
+the book issue this also we have converted
+
+163
+00:15:20,429 --> 00:15:28,549
+to a relational schema involving the two attributes
+ah of ah member number and the accession number.
+
+164
+00:15:28,549 --> 00:15:37,778
+So, let us see how ah this will span out ah
+later parts so, having done this.
+
+165
+00:15:37,778 --> 00:15:44,480
+The next task would be to work on the refinement
+of the schema. So, now, it is time that the
+
+166
+00:15:44,480 --> 00:15:50,129
+relational schema is available the first schema
+is available. So, now, we have to apply all
+
+167
+00:15:50,129 --> 00:15:55,970
+different ah notions of ah the relational
+design to refine this schema and finalize.
+
+168
+00:15:55,970 --> 00:16:02,129
+So, for what will do; we will take every relational
+schema and we will try to identify the functional
+
+169
+00:16:02,129 --> 00:16:06,370
+dependencies and use that to identify the
+key.
+
+170
+00:16:06,370 --> 00:16:16,328
+So, if I look at the books ah relational schema,
+then we easily know that ah ISBN number will
+
+171
+00:16:16,328 --> 00:16:23,008
+uniquely identify the title, author first
+name; authors last name, publisher and year.
+
+172
+00:16:23,009 --> 00:16:29,438
+So, here here also you you may you may just
+note that since name is stated to be a composite
+
+173
+00:16:29,438 --> 00:16:35,980
+ah attribute I have designed here to use two
+different attributes the first name and the
+
+174
+00:16:35,980 --> 00:16:44,970
+last name. So, ah with that we have ah this
+functional dependency which tells me that
+
+175
+00:16:44,970 --> 00:16:50,028
+given ISBN number, I know these details ah,
+but of course, ah that does not tell me what
+
+176
+00:16:50,028 --> 00:16:54,509
+is the accession number because there could
+be multiple copies, but another functional
+
+177
+00:16:54,509 --> 00:16:58,209
+dependency must hold.
+Because, every copy of the same book must
+
+178
+00:16:58,208 --> 00:17:03,179
+have the same ISBN number. So, given the accession
+number, ISBN number should be determinable.
+
+179
+00:17:03,179 --> 00:17:09,200
+So, accession number functionally determines
+ISBN number. So, if you ah do the sample computation
+
+180
+00:17:09,200 --> 00:17:14,140
+on this you will easily ah figure out that
+a key of this is accession number. So, this
+
+181
+00:17:14,140 --> 00:17:19,620
+is what we we currently have this this is
+what we have done now. So, you can see that
+
+182
+00:17:19,619 --> 00:17:25,289
+if there are ah say ah 5 copies of a book
+having different accession numbers which are
+
+183
+00:17:25,289 --> 00:17:33,210
+the key they are has been ah ah number would
+ah may may all be same.
+
+184
+00:17:33,210 --> 00:17:38,132
+So, if I have the same ISBN number I can multiple
+ah accession numbers and therefore, there
+
+185
+00:17:38,132 --> 00:17:44,009
+are different records, but if that accession
+number of two books are ah I am sorry the
+
+186
+00:17:44,009 --> 00:17:49,529
+ISBN number of two books are same then all
+of that title, author and ah first name ah
+
+187
+00:17:49,529 --> 00:17:55,470
+last name all this attributes will be repeated
+and if there are multiple copies of the book
+
+188
+00:17:55,470 --> 00:17:59,279
+then each one of them will have a separate
+entry because they have a separate accession
+
+189
+00:17:59,279 --> 00:18:02,809
+number.
+But, ah their ah ISBN number and everything
+
+190
+00:18:02,809 --> 00:18:10,399
+else will be redundant. So, we can ah easily
+see that ah the given ah relational schema
+
+191
+00:18:10,400 --> 00:18:17,160
+actually has ah redundancy across ah copies
+of the book and if we want to look at this
+
+192
+00:18:17,160 --> 00:18:24,050
+ah from ah formal theory we can easily check
+that the keys accession number. So, ISBN number
+
+193
+00:18:24,049 --> 00:18:29,659
+determining ah title author etcetera that
+functional dependency ah violates the voice
+
+194
+00:18:29,660 --> 00:18:35,690
+code ah normal form actually this is the also
+not in the third normal form ah right now.
+
+195
+00:18:35,690 --> 00:18:43,580
+So, ah we would do well to reduce ah this
+ah redundancy and it would be good to normalize.
+
+196
+00:18:43,579 --> 00:18:49,230
+So, here ah I have not gone through the actual
+ah steps of normalization, but I am showing
+
+197
+00:18:49,230 --> 00:18:56,210
+you more intuitively as to, how you can normalize;
+because it is a quite obvious that the accession
+
+198
+00:18:56,210 --> 00:19:01,299
+number is involved only with the ISBN number
+and which keeps track of the copies.
+
+199
+00:19:01,299 --> 00:19:10,789
+So, we propose to have under normalization
+we propose to have ah one ah which is ah let
+
+200
+00:19:10,789 --> 00:19:16,659
+me just highlight and show you. So, ah book
+copies where the ISBN number and accession
+
+201
+00:19:16,660 --> 00:19:21,350
+number will be maintained. So, for every accession
+number we will be able to see the ISBN number
+
+202
+00:19:21,349 --> 00:19:27,369
+which will tell you which book it is and rest
+of the book details will be kept in this say
+
+203
+00:19:27,369 --> 00:19:33,349
+another new relational schema called book
+catalogue which will have all of the earlier
+
+204
+00:19:33,349 --> 00:19:39,959
+attributes expect the accession number.
+So, now, if you ah project the; ah this dependency
+
+205
+00:19:39,960 --> 00:19:44,880
+on book catalogue the dependency will be fully
+projected. So, the whole dependency is preserved
+
+206
+00:19:44,880 --> 00:19:51,080
+if you project this ah dependency on the book
+copies it will also be fully preserved. So,
+
+207
+00:19:51,079 --> 00:19:58,679
+this decomposition is a ah dependency preserving
+and ah you can ah easily check that these
+
+208
+00:19:58,680 --> 00:20:08,279
+two can be ah ah joint by a natural joint
+using ISBN number as the common attribute.
+
+209
+00:20:08,279 --> 00:20:13,661
+So, if we take the intersection of the two
+sets of attributes then ISBN number would
+
+210
+00:20:13,661 --> 00:20:19,930
+be the attribute and ISBN number functionally
+determines ah all attributes in the book catalogues.
+
+211
+00:20:19,930 --> 00:20:27,160
+So, our lossless join condition r 1 intersection
+r 2 determines r 1 here. So, this will also
+
+212
+00:20:27,160 --> 00:20:33,290
+give me a lossless join and if you check on
+each one of these ah relational schema then
+
+213
+00:20:33,289 --> 00:20:39,230
+ah this functional dependency the left hand
+side is a key and ah therefore, book catalogue
+
+214
+00:20:39,230 --> 00:20:43,450
+is in voice code normal form and book copies
+is also in voice code normal form.
+
+215
+00:20:43,450 --> 00:20:49,730
+So, ah you can you could come to the same
+ah result by doing the formal process of functional
+
+216
+00:20:49,730 --> 00:20:54,370
+ah voice code normal form decomposition, but
+I have just shown you here as to intuitively
+
+217
+00:20:54,369 --> 00:20:58,989
+how you get this. So, intuitively becomes
+very clear that you have ah details of the
+
+218
+00:20:58,990 --> 00:21:03,519
+book that you keep separate in a separate
+table, ah because that is not change across
+
+219
+00:21:03,519 --> 00:21:09,759
+the copies and we have a separate table to
+maintain the specific information about the
+
+220
+00:21:09,759 --> 00:21:15,670
+copies . So, that takes care of the books
+ah relationship ah moving on ah let us look
+
+221
+00:21:15,670 --> 00:21:20,900
+at the other.
+So, book issue is a ah relational schema which
+
+222
+00:21:20,900 --> 00:21:27,420
+comes from the relationship ah between ah
+the ah now between what now book issue is
+
+223
+00:21:27,420 --> 00:21:34,230
+to happen between ah student faculty and ah
+books. So, it is I mean we cannot have two
+
+224
+00:21:34,230 --> 00:21:40,140
+of them ah of ah these entity sets occurring
+in the same. So, initially let us just put
+
+225
+00:21:40,140 --> 00:21:45,390
+that well ah the library has a concept of
+a member. So, what if the book issue is a
+
+226
+00:21:45,390 --> 00:21:52,300
+relation ah simply between the members and
+the ah and the books of course, we do not
+
+227
+00:21:52,299 --> 00:21:57,169
+know the relationship between members and
+students or members and faculty, but ah we
+
+228
+00:21:57,170 --> 00:22:02,660
+can at least ah refine the book issue to be
+between member and ah the book and therefore,
+
+229
+00:22:02,660 --> 00:22:07,220
+ah member number and accession number together
+becomes the key which determines the date
+
+230
+00:22:07,220 --> 00:22:12,110
+of issue this is already in ah ah normal form
+as you can see.
+
+231
+00:22:12,109 --> 00:22:18,529
+Quota is a simple relational schema where
+member type determines the max books and duration
+
+232
+00:22:18,529 --> 00:22:25,210
+and that is the key in normal form ah The
+members ah I mean we we have identified something
+
+233
+00:22:25,210 --> 00:22:30,230
+like a member which should ah list all the
+members of the library.
+
+234
+00:22:30,230 --> 00:22:36,180
+So, existence of a member number in that list
+will mean that ah someone holding that member
+
+235
+00:22:36,180 --> 00:22:42,009
+number is actually a member and it is should
+also tell me what type of member ah or what
+
+236
+00:22:42,009 --> 00:22:47,369
+category of member he or she is. So, member
+number must determine the member type and
+
+237
+00:22:47,369 --> 00:22:52,309
+the member type will be constrained in terms
+of poss[ible] 4, 1 of the four possible values
+
+238
+00:22:52,309 --> 00:22:56,450
+are stated here now of course, ah we will
+still have to figure out is to where do we
+
+239
+00:22:56,450 --> 00:23:00,950
+get this member type from and so, on and that
+information is not present here. So, further
+
+240
+00:23:00,950 --> 00:23:06,519
+refinements will be required in this regard.
+Ah let us go to the students ah this is the
+
+241
+00:23:06,519 --> 00:23:13,440
+whole ah schema that we had done. So, roll
+number determines all the; ah attributes specifically
+
+242
+00:23:13,440 --> 00:23:17,910
+roll number also determines the member number
+and member number determines the roll number,
+
+243
+00:23:17,910 --> 00:23:23,910
+because every student has a unique roll number
+and; obviously, has a unique member number
+
+244
+00:23:23,910 --> 00:23:25,769
+also number will determine rest of the all
+attrib. So, member number and roll number
+
+245
+00:23:25,769 --> 00:23:30,789
+both will determine each other and ah roll
+utes.
+
+246
+00:23:30,789 --> 00:23:38,490
+Which mean that this ah design this relational
+schema has two keys the roll number and the
+
+247
+00:23:38,490 --> 00:23:44,259
+member number ok now ah are we happy with
+this design that is a question we need to
+
+248
+00:23:44,259 --> 00:23:51,029
+ask. So, we can figure out that member number
+is needed for issue return or queries book
+
+249
+00:23:51,029 --> 00:23:57,190
+issue has member number, that is; what we
+were thinking of; ah now when we want to deal
+
+250
+00:23:57,190 --> 00:24:01,750
+with this book issue issuing a book to a student
+and returning a book from the student and
+
+251
+00:24:01,750 --> 00:24:05,980
+so, on.
+Is it necessary to have all the students details
+
+252
+00:24:05,980 --> 00:24:11,160
+with that one that make every record very
+heavy and if we want to extra connect with
+
+253
+00:24:11,160 --> 00:24:16,550
+that ah do some join or if you want to ah
+do some query unnecessarily we will have to
+
+254
+00:24:16,549 --> 00:24:22,740
+deal with very large units of data and as
+we will see in the ah next couple of modules
+
+255
+00:24:22,740 --> 00:24:27,640
+that ah if a record becomes larger dealing
+with it become naturally becomes more cumbersome.
+
+256
+00:24:27,640 --> 00:24:34,540
+So, there is some kind of discomfort at this
+ah design similarly a member number is not
+
+257
+00:24:34,539 --> 00:24:39,180
+here ah it is the student relation. So, it
+is coming from the student relation, but in
+
+258
+00:24:39,180 --> 00:24:42,480
+general in terms of issue it may also come
+from faculty relations.
+
+259
+00:24:42,480 --> 00:24:49,309
+So, how is that handled we do not know ah
+then ah issue return also needs the member
+
+260
+00:24:49,309 --> 00:24:57,079
+type which is implicit here in terms of the
+ah field ah in terms of the attribute degree
+
+261
+00:24:57,079 --> 00:25:01,740
+which tells you that student is a undergraduate
+postgraduate or research, but it is not explicitly
+
+262
+00:25:01,740 --> 00:25:06,579
+maintained anywhere. So, these are the issues
+in this ah form of the design that we that
+
+263
+00:25:06,579 --> 00:25:10,109
+we came.
+Ah moving on ah look at the faculty we have
+
+264
+00:25:10,109 --> 00:25:17,209
+a very similar ah situation as of the student
+id determines all attributes of the faculty
+
+265
+00:25:17,210 --> 00:25:22,829
+member number is also determine from id member
+number in turn determines id every faculty
+
+266
+00:25:22,829 --> 00:25:28,879
+has two unique numbers two keys. And we have
+similar type of issues as we have seen in
+
+267
+00:25:28,880 --> 00:25:33,620
+terms of ah student. So, we will need to do
+something ah in terms of this.
+
+268
+00:25:33,619 --> 00:25:38,659
+So, what can us; ah I mean what kind of issues
+we will get into. So, let us consider a query
+
+269
+00:25:38,660 --> 00:25:43,890
+that ah the query is to get the name of a
+member ah of the member who has issued a book
+
+270
+00:25:43,890 --> 00:25:48,030
+say having accession number ah some accession
+number 162715.
+
+271
+00:25:48,029 --> 00:25:54,779
+Now, if we have to write a select ah query
+for this we will need to know whether the
+
+272
+00:25:54,779 --> 00:25:59,720
+select query should be written on the student
+or with the faculty. So, if this member is
+
+273
+00:25:59,720 --> 00:26:05,480
+a student then we need the first query where
+we ah do a join between student and book issue
+
+274
+00:26:05,480 --> 00:26:14,400
+to find out the ah student member number who
+is ah issued that book where the accession
+
+275
+00:26:14,400 --> 00:26:18,890
+number gives me the particular book issue
+record from this result will come. Similarly,
+
+276
+00:26:18,890 --> 00:26:25,170
+if the ah member is a faculty I need a different
+query. Now, it is a problem because if I have
+
+277
+00:26:25,170 --> 00:26:30,630
+two possible queries and based on the member
+number I have to decide which query to to
+
+278
+00:26:30,630 --> 00:26:34,990
+fire we have not done any mechanism like that.
+So, this design has problems.
+
+279
+00:26:34,990 --> 00:26:41,519
+So, let us see what ah we can d? So, we again
+ah go back to the specification and see what
+
+280
+00:26:41,519 --> 00:26:45,339
+the specification says; it said that there
+are four categories of members undergraduate,
+
+281
+00:26:45,339 --> 00:26:50,039
+postgraduate, research scholar, and faculty
+members and least to the the that least to
+
+282
+00:26:50,039 --> 00:26:55,759
+the specialization of this relationship and
+we have already done a members concept members
+
+283
+00:26:55,759 --> 00:26:59,910
+entity we did.
+Which has a member number and the member type,
+
+284
+00:26:59,910 --> 00:27:04,630
+but now we have just seen that it actually
+matters as to whether the member is a student
+
+285
+00:27:04,630 --> 00:27:11,130
+or is a faculty is is a is a more unique deciding
+factor in terms of, how we design our query?
+
+286
+00:27:11,130 --> 00:27:17,380
+So, we introduce a new attribute which was
+not ah specified explicitly say; let us call
+
+287
+00:27:17,380 --> 00:27:22,880
+it member class which can take only two values
+either student or faculty and then retain
+
+288
+00:27:22,880 --> 00:27:26,970
+the member type. So, what it will mean that
+the; if the student class is student then
+
+289
+00:27:26,970 --> 00:27:31,259
+the member type could be u g, p g or r s and
+if the member class is faculty.
+
+290
+00:27:31,259 --> 00:27:38,619
+Then the person is a faculty than the member
+type should be only f c and then also ah maintain
+
+291
+00:27:38,619 --> 00:27:45,459
+the roll number and id in in this members
+table ah. So, the roll number ah; obviously,
+
+292
+00:27:45,460 --> 00:27:49,769
+if it is if the member class is student then
+the person is a student and the roll number
+
+293
+00:27:49,769 --> 00:27:55,349
+will exist, but the id which is an employee
+id will be null and at the same time if member
+
+294
+00:27:55,349 --> 00:27:59,639
+class is a faculty for a record then the roll
+number will be null.
+
+295
+00:27:59,640 --> 00:28:05,140
+Because, a faculty cannot have a roll number,
+but ah the id will be present. So, we extend
+
+296
+00:28:05,140 --> 00:28:11,700
+the members entity set in relational schema
+with these attributes and once we do that
+
+297
+00:28:11,700 --> 00:28:17,900
+then we kind of exploit a hidden relationship
+ah which was not very explicitly stated anywhere
+
+298
+00:28:17,900 --> 00:28:24,550
+that; now we can say that students is a members
+faculty is a members, that is; from the perspective
+
+299
+00:28:24,549 --> 00:28:29,129
+of ah issuing books and using the library
+both students and faculty can be consider
+
+300
+00:28:29,130 --> 00:28:34,490
+to be members it is kind of a you know virtual
+entity that we can see here and certainly
+
+301
+00:28:34,490 --> 00:28:38,870
+there will be a one to one relationship between
+the students and members and faculty and members.
+
+302
+00:28:38,869 --> 00:28:44,509
+So, let us see what is a consequence of that;
+ah in terms of the earlier query. So, we look
+
+303
+00:28:44,509 --> 00:28:50,440
+at go back and look at the query again we
+will see that ah problems have got ah significantly
+
+304
+00:28:50,440 --> 00:28:55,680
+solved, because we now still have to find
+that ah member name and this is the basic
+
+305
+00:28:55,680 --> 00:29:00,060
+condition which ah say.
+But, I am sorry ah this is a basic condition
+
+306
+00:29:00,059 --> 00:29:05,649
+which say the specify the member number ah
+who has issued that book, but the actual problem
+
+307
+00:29:05,650 --> 00:29:11,940
+of finding the name can be solved here, because
+I can I write two queries and take a union
+
+308
+00:29:11,940 --> 00:29:17,630
+of the first query runs on faculty the other
+query runs on student. Now, here since I have
+
+309
+00:29:17,630 --> 00:29:24,440
+a member class which tell me whether the member
+is a faculty or the member is a student.
+
+310
+00:29:24,440 --> 00:29:30,190
+So, one of these queries will actually return
+a null result will not written any record
+
+311
+00:29:30,190 --> 00:29:35,390
+because it will not match this condition,
+but the other one we will ah match and will
+
+312
+00:29:35,390 --> 00:29:41,860
+give me the record ah give me the corresponding
+ah ah names first name and last name of the
+
+313
+00:29:41,859 --> 00:29:46,179
+member and ah certainly to ensure that when
+we are looking at the faculty. We need to
+
+314
+00:29:46,180 --> 00:29:53,230
+check the equality of member id between the
+members ah ah relation and the faculty relation
+
+315
+00:29:53,230 --> 00:29:57,269
+and while dealing with the student we need
+to check for the equality of the roll number.
+
+316
+00:29:57,269 --> 00:30:06,049
+So, in this way by ah using ah intelligently
+using the union feature and the you know nested
+
+317
+00:30:06,049 --> 00:30:12,250
+ah query feature we can easily write a query
+and where implicitly. Now, based on the data
+
+318
+00:30:12,250 --> 00:30:18,089
+the switching of which table I am I am actually
+looking the data from will get solved.
+
+319
+00:30:18,089 --> 00:30:24,579
+So, with this refinement my members ah schema
+now turns out to be member number member class
+
+320
+00:30:24,579 --> 00:30:31,189
+member type ah roll number and id member number
+determines ah everything it member type also
+
+321
+00:30:31,190 --> 00:30:35,500
+determines member class, because if I know
+some member type is undergraduate I know member
+
+322
+00:30:35,500 --> 00:30:40,730
+class is student and. So, on key; obviously,
+is one number.
+
+323
+00:30:40,730 --> 00:30:46,120
+So having done that, we again go back to the
+student and ah faculty, because now we do
+
+324
+00:30:46,119 --> 00:30:51,619
+not need member number in that anymore; because
+these will not directly be involved in the
+
+325
+00:30:51,619 --> 00:30:56,909
+issue return, because all that you need is
+ah just the member number which is already
+
+326
+00:30:56,910 --> 00:31:00,800
+there in the members. So, now, it is a roll
+number which determines everything member
+
+327
+00:31:00,799 --> 00:31:04,690
+number is no longer used.
+And member type and member class which we
+
+328
+00:31:04,690 --> 00:31:09,230
+have assumed is exist in the in the in the
+members ah will have to be derived from the
+
+329
+00:31:09,230 --> 00:31:14,730
+degree ah value at the time when a new record
+is created. So, when a new student record
+
+330
+00:31:14,730 --> 00:31:20,299
+is created an entry will happen in this relation
+as well as a corresponding entry we will need
+
+331
+00:31:20,299 --> 00:31:25,750
+happen in the members ah relation where the
+membership number is given and the membership
+
+332
+00:31:25,750 --> 00:31:30,240
+type will be derived from the degree similar
+ah change will happen in terms of the faculty
+
+333
+00:31:30,240 --> 00:31:35,109
+as well.
+So, after refinement ah now we have ah these
+
+334
+00:31:35,109 --> 00:31:42,179
+ah ah 8 ah relational ah schema from book
+catalogue ah to give the details of every
+
+335
+00:31:42,180 --> 00:31:46,940
+book book copies which ah keeps the information
+about, how many; what are the different copies
+
+336
+00:31:46,940 --> 00:31:53,539
+book issue; is the basic ah issuing information.
+We have quota members has the virtual ah kind
+
+337
+00:31:53,539 --> 00:31:59,149
+of relation that we have created to support
+the notion of members of the library and students
+
+338
+00:31:59,150 --> 00:32:04,920
+and faculty are related to this members either
+through roll number or through id in a selective
+
+339
+00:32:04,920 --> 00:32:10,350
+manner and staff we have not touched.
+So, this is the final relational schema.
+
+340
+00:32:10,349 --> 00:32:17,329
+In this ah module I have ah shown you illustrated
+you that how starting from a very simple specification
+
+341
+00:32:17,329 --> 00:32:23,230
+you can ah ah reason and ah work through in
+terms of creating the entity sets attributes
+
+342
+00:32:23,230 --> 00:32:28,440
+and relationships and then get into the relational
+schema ah look at the ah possible functionality
+
+343
+00:32:28,440 --> 00:32:33,620
+dependency and refine that and also look into
+what ah will be the requirements of doing
+
+344
+00:32:33,619 --> 00:32:39,599
+your query and come to a final ah refined
+schema. So, ah various queries that we had
+
+345
+00:32:39,599 --> 00:32:44,579
+talked of and others ah can be can now be
+coded on this, but I leave that as an exercise
+
+346
+00:32:44,579 --> 00:32:50,240
+to you please try out coding those queries
+and you will be able to ah ah learn in terms
+
+347
+00:32:50,240 --> 00:32:56,470
+of how to do that well and ah I will try to
+also supply some supplementary ah information
+
+348
+00:32:56,470 --> 00:32:57,259
+on this ah offline.
+

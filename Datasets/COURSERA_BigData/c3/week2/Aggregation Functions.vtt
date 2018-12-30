@@ -1,0 +1,553 @@
+WEBVTT
+
+1
+00:00:01.250 --> 00:00:03.485
+Next, we'll describe
+aggregation functions.
+
+2
+00:00:04.760 --> 00:00:07.190
+We have seen the first query before.
+
+3
+00:00:07.190 --> 00:00:11.460
+Select count(*) simply
+translates to a count function.
+
+4
+00:00:12.710 --> 00:00:18.351
+Now we could also say
+db.Drinkers.find.count.
+
+5
+00:00:18.351 --> 00:00:20.880
+But using count directly
+is more straightforward.
+
+6
+00:00:23.190 --> 00:00:27.720
+Now, let's ask to count the number
+of unique addresses for drinkers.
+
+7
+00:00:29.160 --> 00:00:32.740
+So, we don't care what the address is.
+
+8
+00:00:32.740 --> 00:00:34.210
+We just care if it exists.
+
+9
+00:00:35.660 --> 00:00:41.605
+This is accomplished through
+the $exists:true expression.
+
+10
+00:00:41.605 --> 00:00:45.590
+Thus, if an address exists for
+a drinker, it will be counted.
+
+11
+00:00:47.740 --> 00:00:52.190
+Another area where we need to count is
+when we have an array valued attribute,
+
+12
+00:00:52.190 --> 00:00:53.040
+like places.
+
+13
+00:00:54.580 --> 00:00:59.200
+If we just want the number
+of elements in the raw list,
+
+14
+00:00:59.200 --> 00:01:05.267
+we'll write db.country.findplaces.length
+and we'll get six.
+
+15
+00:01:05.267 --> 00:01:10.538
+However, if we want distinct values, we'll
+use distinct instead of find and then
+
+16
+00:01:10.538 --> 00:01:15.531
+use the length for counting the number
+of distinct elements, in this case 4.
+
+17
+00:01:17.927 --> 00:01:24.178
+Now, MongoDB uses an internal machinery
+called the aggregation framework,
+
+18
+00:01:24.178 --> 00:01:29.208
+which is modeled on the concept
+of data processing pipelines.
+
+19
+00:01:29.208 --> 00:01:34.840
+That means documents enter
+a multi-stage pipeline which transforms
+
+20
+00:01:34.840 --> 00:01:40.286
+the documents at each stage until
+it becomes an aggregated result.
+
+21
+00:01:40.286 --> 00:01:44.078
+Now we have seeing a similar mechanism for
+relational data.
+
+22
+00:01:44.078 --> 00:01:48.440
+The aggregation pipelines starts
+by using the aggregate primitive.
+
+23
+00:01:49.680 --> 00:01:55.480
+The most basic pipeline stages provides
+filters that operate like queries and
+
+24
+00:01:55.480 --> 00:01:59.130
+the document transformations that
+modify the form of the output document.
+
+25
+00:02:00.310 --> 00:02:06.890
+The primary filter operation is $match,
+which is followed by a query condition.
+
+26
+00:02:06.890 --> 00:02:10.401
+In this case, status is A.
+
+27
+00:02:10.401 --> 00:02:14.652
+And expectedly, the $match operation
+produces a smaller number of documents
+
+28
+00:02:14.652 --> 00:02:16.500
+to be processed at the next stage.
+
+29
+00:02:17.960 --> 00:02:22.730
+This is usually followed
+by the $group operation.
+
+30
+00:02:22.730 --> 00:02:26.040
+Now this operation needs to know which
+attributes should be grouped together.
+
+31
+00:02:27.130 --> 00:02:31.258
+In the example here cust_id
+is the grouping attribute so
+
+32
+00:02:31.258 --> 00:02:35.750
+it is passed as a parameter
+to the $group function.
+
+33
+00:02:35.750 --> 00:02:38.143
+Now notice the syntax.
+
+34
+00:02:38.143 --> 00:02:44.649
+_id:$cust_id says that the grouped
+data will have an _id attribute,
+
+35
+00:02:44.649 --> 00:02:48.573
+and its value will be
+picked from the cust_id
+
+36
+00:02:48.573 --> 00:02:53.128
+attribute from the previous
+stage of computation.
+
+37
+00:02:53.128 --> 00:02:57.466
+Thus, the $ before the cust_id
+is telling the system that
+
+38
+00:02:57.466 --> 00:03:01.990
+cust_id is a known variable in
+the system and not a constant.
+
+39
+00:03:01.990 --> 00:03:04.639
+The $group operation also needs a reducer,
+
+40
+00:03:04.639 --> 00:03:10.250
+which is a function that operates on an
+activity to produce an aggregate result.
+
+41
+00:03:10.250 --> 00:03:13.590
+In this case, the reduce function is sum,
+
+42
+00:03:14.980 --> 00:03:17.720
+which operates on the amount
+attribute from the previous stage.
+
+43
+00:03:18.790 --> 00:03:23.560
+Like $cust_id, we use $amount to
+indicate that it's a variable.
+
+44
+00:03:25.070 --> 00:03:27.590
+As we saw in the relational case,
+
+45
+00:03:27.590 --> 00:03:32.580
+data can be partitioned into chunks on
+the same machine or on different machines.
+
+46
+00:03:32.580 --> 00:03:35.320
+These chunks are called chards.
+
+47
+00:03:35.320 --> 00:03:42.284
+The aggregation pipeline of MongoDB
+can operate on a charded collection.
+
+48
+00:03:42.284 --> 00:03:47.156
+The grouping operation in MongoDB
+can accept multiple attributes like
+
+49
+00:03:47.156 --> 00:03:48.650
+the four shown here.
+
+50
+00:03:48.650 --> 00:03:53.915
+Also shown is a post grouping directive
+to sort on the basis of two attributes.
+
+51
+00:03:55.380 --> 00:04:00.150
+The first is a computed count
+variable in ascending order.
+
+52
+00:04:00.150 --> 00:04:03.728
+So the one designates the ascending order.
+
+53
+00:04:03.728 --> 00:04:05.870
+The next sorting attribute is secondary.
+
+54
+00:04:05.870 --> 00:04:08.966
+That means if two groups have
+the same value for count,
+
+55
+00:04:08.966 --> 00:04:13.110
+then they'll be further sorted
+based on the category value.
+
+56
+00:04:13.110 --> 00:04:18.860
+But this time the order is descending
+because of the -1 directive
+
+57
+00:04:22.207 --> 00:04:27.280
+In course two we have seen Solar,
+a text search engine from Apache.
+
+58
+00:04:28.410 --> 00:04:32.830
+MongoDB has a built in text search engine
+which can be invoked through the same
+
+59
+00:04:32.830 --> 00:04:34.360
+aggregation framework we saw before.
+
+60
+00:04:35.360 --> 00:04:40.006
+Imagine that MongoDB documents in this
+case are really text documents placed in
+
+61
+00:04:40.006 --> 00:04:41.730
+a collection called articles.
+
+62
+00:04:43.270 --> 00:04:48.560
+In this case, the $match directive of
+the aggregate function must be told
+
+63
+00:04:48.560 --> 00:04:51.955
+it's going to perform a text
+function on the article's corpus.
+
+64
+00:04:53.320 --> 00:04:55.884
+The actual text function is $search.
+
+65
+00:04:55.884 --> 00:05:01.080
+We set search terms like "Hillary
+Democrat" such that having
+
+66
+00:05:01.080 --> 00:05:07.210
+either term in a document will
+satisfy the search requirement.
+
+67
+00:05:07.210 --> 00:05:11.260
+As is the case of any text engine,
+
+68
+00:05:11.260 --> 00:05:15.410
+the results of any search returns
+a list of documents, each with a score.
+
+69
+00:05:16.600 --> 00:05:21.780
+The next task is to tell MongDB to
+sort the results based on textScore.
+
+70
+00:05:23.050 --> 00:05:24.290
+What's the $meta here?
+
+71
+00:05:25.420 --> 00:05:29.532
+Meta stands for metadata,
+that is additional information.
+
+72
+00:05:29.532 --> 00:05:33.860
+Remember that the aggregation
+operations are executed in a pipeline.
+
+73
+00:05:35.090 --> 00:05:38.705
+Any step in the pipeline can
+produce some extra data, or
+
+74
+00:05:38.705 --> 00:05:41.780
+metadata, for each processed document.
+
+75
+00:05:41.780 --> 00:05:45.470
+In this example, the metadata
+produced by the search function
+
+76
+00:05:45.470 --> 00:05:48.670
+is a computed attribute called textScore.
+
+77
+00:05:48.670 --> 00:05:54.627
+So this directive tells the system to pick
+up this specific metadata attribute and
+
+78
+00:05:54.627 --> 00:05:59.828
+use it to populate the score attribute
+which would be used for sorting.
+
+79
+00:05:59.828 --> 00:06:04.501
+Finally, the $project class
+does exactly what is expected.
+
+80
+00:06:04.501 --> 00:06:09.006
+It tells the system to output only
+the title of each document and
+
+81
+00:06:09.006 --> 00:06:10.284
+suppress its id.
+
+82
+00:06:14.760 --> 00:06:19.120
+The last item in our
+discussion of MongoDB is join.
+
+83
+00:06:19.120 --> 00:06:22.820
+We have seen that join is a vital
+operation for data management operations.
+
+84
+00:06:25.010 --> 00:06:32.062
+Interestingly, MongoDB introduced this
+equivalent of join only in version 3.2.
+
+85
+00:06:32.062 --> 00:06:36.320
+So, the joining in MongoDB also
+happens in the aggregation framework.
+
+86
+00:06:37.740 --> 00:06:40.420
+There are a few ways of
+expressing joins in MongoDB.
+
+87
+00:06:41.470 --> 00:06:46.980
+We show one here that explicitly performs
+a join to a function called look up.
+
+88
+00:06:48.690 --> 00:06:51.445
+We use an example form
+the MongoDB documentation.
+
+89
+00:06:51.445 --> 00:06:58.380
+Now here are two document collections,
+order and inventory.
+
+90
+00:06:58.380 --> 00:07:03.600
+Notice that the item key in
+orders has values abc, jkl, etc.
+
+91
+00:07:04.830 --> 00:07:10.100
+And the sku key in the inventory has
+comparable values abc, def, etc.
+
+92
+00:07:10.100 --> 00:07:12.270
+So these two are joinable by value.
+
+93
+00:07:13.550 --> 00:07:19.167
+The way to specify this join,
+one can use this query.
+
+94
+00:07:19.167 --> 00:07:24.124
+The db.orders.aggregate
+declaration states that orders is
+
+95
+00:07:24.124 --> 00:07:27.311
+sort of the home, or local collection.
+
+96
+00:07:27.311 --> 00:07:32.592
+Now in the aggregate, the function
+$lookup needs to know what to look up for
+
+97
+00:07:32.592 --> 00:07:34.420
+each document in orders.
+
+98
+00:07:36.050 --> 00:07:41.010
+The from attribute specifies the name
+of the collection as inventory.
+
+99
+00:07:42.590 --> 00:07:44.410
+The next two parameters are the local and
+
+100
+00:07:44.410 --> 00:07:48.591
+foreign matching keys,
+which are item and sku, respectively.
+
+101
+00:07:49.976 --> 00:07:54.760
+The last item, as:,
+is a construction part of
+
+102
+00:07:54.760 --> 00:07:59.380
+the join operation which says how to
+structure the match items into the result.
+
+103
+00:08:00.780 --> 00:08:03.770
+Now before we show you the results,
+let's see what should match.
+
+104
+00:08:05.740 --> 00:08:10.020
+The abc item in order should
+match the abc in sku.
+
+105
+00:08:11.120 --> 00:08:16.050
+Similarly, the jkl item
+should match the jkl in sku.
+
+106
+00:08:17.260 --> 00:08:19.540
+Okay, but there is one more twist.
+
+107
+00:08:21.020 --> 00:08:22.920
+Here is the actual result.
+
+108
+00:08:22.920 --> 00:08:27.090
+The first two records show
+exactly what we expect.
+
+109
+00:08:27.090 --> 00:08:29.760
+There is a new field called
+inventory-docs in the batching record.
+
+110
+00:08:31.640 --> 00:08:34.580
+The third record however,
+shows something interesting.
+
+111
+00:08:36.170 --> 00:08:40.250
+Inventory has two records shown here,
+what do they match?
+
+112
+00:08:41.670 --> 00:08:46.890
+Now they match the empty
+document in orders because
+
+113
+00:08:46.890 --> 00:08:50.700
+orders has a document
+whose item field is null.
+
+114
+00:08:51.980 --> 00:08:57.355
+So it matches documents and
+inventory where the sku item is also null,
+
+115
+00:08:57.355 --> 00:09:02.290
+explicitly as in document 5, or
+implicitly as in document 6.
+
+116
+00:09:04.801 --> 00:09:08.948
+This concludes our discussion of
+queries in the context of MongoDB.

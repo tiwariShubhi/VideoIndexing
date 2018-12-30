@@ -1,0 +1,1809 @@
+﻿1
+00:00:16,969 --> 00:00:21,000
+Welcome to module 18 of Database Management
+Systems.
+
+2
+00:00:21,000 --> 00:00:24,868
+We have been discussing about ah relational
+database design.
+
+3
+00:00:24,868 --> 00:00:27,789
+This is a part 3 of that.
+
+4
+00:00:27,789 --> 00:00:34,140
+In the last module, we discussed about the
+Notion of functional dependency and decomposition
+
+5
+00:00:34,140 --> 00:00:39,819
+based on that in an elementary level and certain
+bit of its ah theory.
+
+6
+00:00:39,819 --> 00:00:46,710
+In this ah current module, we learnt different
+algorithms that use the functional dependencies
+
+7
+00:00:46,710 --> 00:00:52,320
+and can make conclusions about the design
+or make changes to the design.
+
+8
+00:00:52,320 --> 00:01:00,090
+We will also try to understand the characterization
+for lossless, ah join decomposition and the
+
+9
+00:01:00,090 --> 00:01:03,080
+notion of deter dependency preservation.
+
+10
+00:01:03,079 --> 00:01:09,319
+Therefore, this module will have these three
+ah topics ah algorithms for functional dependencies,
+
+11
+00:01:09,319 --> 00:01:13,089
+lossless join decomposition and dependency
+preservation.
+
+12
+00:01:13,090 --> 00:01:19,560
+So, first we start with the algorithms and
+I quickly reproduce what we had ended in the
+
+13
+00:01:19,560 --> 00:01:23,960
+last module in terms of computing the closure
+of a set of attributes.
+
+14
+00:01:23,959 --> 00:01:31,329
+So, if we have ah a relation having these
+attributes and a set of functional dependencies,
+
+15
+00:01:31,329 --> 00:01:37,280
+then for a given subset of attributes, in
+this case AG we can iteratively compute the
+
+16
+00:01:37,280 --> 00:01:44,260
+closure set when no further changes can be
+done, and ah with using that we can make different
+
+17
+00:01:44,260 --> 00:01:45,260
+conclusions.
+
+18
+00:01:45,260 --> 00:01:52,689
+For example, if our question is whether AG
+can be a candidate key, we would first like
+
+19
+00:01:52,689 --> 00:01:57,200
+to check whether it is a super key that is
+whether its closure has all the attributes
+
+20
+00:01:57,200 --> 00:02:02,780
+of art and we would like to check if we have
+taken a subset of AG.
+
+21
+00:02:02,780 --> 00:02:09,649
+If we take just as a attribute A or attribute
+G whether the closure of that will actually
+
+22
+00:02:09,649 --> 00:02:11,590
+work as a key or not.
+
+23
+00:02:11,590 --> 00:02:18,459
+So, this algorithm of ah attribute closure
+turns out to be a very powerful one, where
+
+24
+00:02:18,459 --> 00:02:24,590
+as we have just seen it can be used for checking
+ah super keys, the candidate keys, primary,
+
+25
+00:02:24,590 --> 00:02:26,289
+non-primary attributes and so on.
+
+26
+00:02:26,289 --> 00:02:29,129
+It can be used for checking functional dependencies.
+
+27
+00:02:29,129 --> 00:02:34,590
+For example, let us ah suppose that if we
+have to check that whether if a particular
+
+28
+00:02:34,590 --> 00:02:43,590
+functional dependency alpha determines beta
+holds ah , then rather in other words whether
+
+29
+00:02:43,590 --> 00:02:48,620
+alpha determines beta is in the closure of
+the set of functional dependencies F, then
+
+30
+00:02:48,620 --> 00:02:55,170
+all that we need to do is to compute alpha
+plus that is a closure of the set of attributes
+
+31
+00:02:55,169 --> 00:02:59,348
+on the left hand side of the dependency and
+check if beta is a subset of that.
+
+32
+00:02:59,348 --> 00:03:05,959
+If beta is a subset of that, then I know that
+alpha determines beta actually holds .
+
+33
+00:03:05,959 --> 00:03:15,069
+So, in this manner it can also be used to
+compute the closure of ah the whole set of
+
+34
+00:03:15,068 --> 00:03:21,909
+functional dependencies F. So, if I mean at
+least at A, rudimentary level we can think
+
+35
+00:03:21,909 --> 00:03:22,909
+of that.
+
+36
+00:03:22,909 --> 00:03:30,270
+If we take any subset of ah the set of ah
+attributes and find the closure and then,
+
+37
+00:03:30,270 --> 00:03:36,520
+all attributes that belong to that closure
+set are actually functionally dependent and
+
+38
+00:03:36,520 --> 00:03:39,750
+therefore, those functional dependencies will
+exist.
+
+39
+00:03:39,750 --> 00:03:46,430
+Now, we move forward from there and talk about
+what is known as a canonical cover.
+
+40
+00:03:46,430 --> 00:03:52,269
+A set of functional dependencies may have
+a number of redundant dependencies also.
+
+41
+00:03:52,269 --> 00:03:57,189
+So, we need to understand that because there
+are lot of dependencies which can be inferred
+
+42
+00:03:57,189 --> 00:04:02,189
+from a certain set of dependencies, for example
+if you look into this set, you will easily
+
+43
+00:04:02,189 --> 00:04:09,000
+understand that in this whole set if I actually
+have just this, we will be able to by transitivity,
+
+44
+00:04:09,000 --> 00:04:16,439
+we will be able to conclude about A determining
+C. So, in that way ACA determining C is a
+
+45
+00:04:16,439 --> 00:04:19,029
+redundant dependency.
+
+46
+00:04:19,029 --> 00:04:23,250
+So, here I am just showing you some examples.
+
+47
+00:04:23,250 --> 00:04:34,050
+For example, say I have a set of functional
+dependencies as this set and I want to know
+
+48
+00:04:34,050 --> 00:04:43,120
+whether I can replace it by a simpler set
+here where this particular attribute on the
+
+49
+00:04:43,120 --> 00:04:46,750
+right hand side of this dependency may be
+extraneous.
+
+50
+00:04:46,750 --> 00:04:54,720
+So, if I have to do that, then what we need
+to perform is, we need to show that given
+
+51
+00:04:54,720 --> 00:05:03,610
+the ah set of functional dependencies, the
+original set whether this can imply this set
+
+52
+00:05:03,610 --> 00:05:09,939
+that is from this set of functional dependencies,
+whether I can logically conclude the simplified
+
+53
+00:05:09,939 --> 00:05:11,050
+set.
+
+54
+00:05:11,050 --> 00:05:16,090
+So, using the rules we will need to do that
+I have worked that out here under ah the forward
+
+55
+00:05:16,089 --> 00:05:23,219
+scheme and we would also need to establish
+that if I have the simplified set, then can
+
+56
+00:05:23,220 --> 00:05:27,310
+I go to the original set that was given.
+
+57
+00:05:27,310 --> 00:05:35,209
+So, if the simplified set also logically implies
+the original set, then we can say that these
+
+58
+00:05:35,209 --> 00:05:41,529
+are in a way ah equivalent and therefore,
+I would like to use a simpler set.
+
+59
+00:05:41,529 --> 00:05:55,239
+So, there is another ah example following
+here where I have another set given, where
+
+60
+00:05:55,240 --> 00:06:00,470
+if we look into this, I would like to check
+whether I can get rid of this C on the left
+
+61
+00:06:00,470 --> 00:06:08,831
+hand side and as as it stands, we can actually
+do that and here in this whole process, I
+
+62
+00:06:08,831 --> 00:06:15,620
+have shown it in terms of using the Armstrongs
+Axioms how you can prove this, but what we
+
+63
+00:06:15,620 --> 00:06:26,680
+can do to systematize this whole process,
+we can again make use of the notion of closure
+
+64
+00:06:26,680 --> 00:06:32,980
+of attributes and compute whether these two
+sets are equivalent, whether simplification
+
+65
+00:06:32,980 --> 00:06:33,980
+can be done.
+
+66
+00:06:33,980 --> 00:06:36,789
+So, we will say a cover is canonical.
+
+67
+00:06:36,788 --> 00:06:42,949
+If it is in a sense minimal and still equivalent
+to the original set of dependencies and we
+
+68
+00:06:42,949 --> 00:06:45,728
+will formally introduce what is minimal.
+
+69
+00:06:45,728 --> 00:06:50,269
+Before that let us ah just look at the same
+examples again.
+
+70
+00:06:50,269 --> 00:06:56,008
+So, we are trying to show the forward direction
+in the first case and the reverse direction
+
+71
+00:06:56,009 --> 00:07:00,629
+in the first case, but the only difference
+that I wanted to highlight is in terms of
+
+72
+00:07:00,629 --> 00:07:05,831
+showing that you do not need to really explore
+on the Armstrongs Axioms, but what you can
+
+73
+00:07:05,831 --> 00:07:11,720
+do is, you can simply take the left hand side
+attribute and compute it closure and see whether
+
+74
+00:07:11,720 --> 00:07:13,050
+the right hand side is included.
+
+75
+00:07:13,050 --> 00:07:19,360
+That is basically testing for whether the
+given functional dependency is actually implied.
+
+76
+00:07:19,360 --> 00:07:22,389
+Similar things can be done to simplify the
+left hand side also.
+
+77
+00:07:22,389 --> 00:07:27,399
+So, this is the other example that a short
+and I am just showing you that how you conclude
+
+78
+00:07:27,399 --> 00:07:32,159
+this based on the ah closure of attributes
+algorithm.
+
+79
+00:07:32,160 --> 00:07:37,210
+So, now I can formally define ah these possible
+removals.
+
+80
+00:07:37,209 --> 00:07:41,719
+So, if I can remove an attribute as I have
+shown I can remove it from the right hand
+
+81
+00:07:41,720 --> 00:07:43,940
+side or I can remove it from the left hand
+side.
+
+82
+00:07:43,939 --> 00:07:48,310
+So, if an attribute can be removed, then it
+is called extraneous.
+
+83
+00:07:48,310 --> 00:07:58,870
+So, if I have a functional dependency, let
+us say alpha functionally determines beta
+
+84
+00:07:58,870 --> 00:08:04,519
+and I have an attribute A which belongs to
+alpha, then ah we can check whether it is
+
+85
+00:08:04,519 --> 00:08:07,978
+possible to remove A from alpha.
+
+86
+00:08:07,978 --> 00:08:14,348
+So, to test that what we do is, we form a
+new set by removing the original functional
+
+87
+00:08:14,348 --> 00:08:18,800
+dependency and adding the new functional dependency
+where the left hand side does not have that
+
+88
+00:08:18,800 --> 00:08:27,639
+A and if F logically implies this, then certainly
+we can conclude that ah A on the left hand
+
+89
+00:08:27,639 --> 00:08:31,050
+side of the functional dependency was extraneous.
+
+90
+00:08:31,050 --> 00:08:37,019
+Similar thing can be done for checking if
+there is an extraneous attribute on the right
+
+91
+00:08:37,019 --> 00:08:43,379
+hand side of a dependency and in this case,
+naturally what we will need to do is, we will
+
+92
+00:08:43,379 --> 00:08:52,629
+need to work out the simpler set and then
+check whether F is implied by that because
+
+93
+00:08:52,629 --> 00:09:00,519
+as you can understand that if you are making
+the left hand, if you are removing an attribute
+
+94
+00:09:00,519 --> 00:09:06,220
+from the left hand side, then you are making
+your precondition softer.
+
+95
+00:09:06,220 --> 00:09:11,790
+So, you need to see whether that is implied
+by the original set and on the other hand,
+
+96
+00:09:11,789 --> 00:09:18,059
+if you are removing something on the right
+hand side, then ah you are making your consequence
+
+97
+00:09:18,059 --> 00:09:19,059
+ah simpler.
+
+98
+00:09:19,059 --> 00:09:25,448
+So, you need to understand whether that set
+implies the original set.
+
+99
+00:09:25,448 --> 00:09:32,508
+So, if you look into that and obviously, the
+other directions of this implication is not
+
+100
+00:09:32,509 --> 00:09:38,369
+necessary to be proven because that will automatically
+follow because in the first case when I am
+
+101
+00:09:38,369 --> 00:09:45,110
+removing an attribute, extraneous attribute
+from the left hand side of a functional dependency,
+
+102
+00:09:45,110 --> 00:09:50,308
+naturally the set that I get that will always
+imply the original set because it is always
+
+103
+00:09:50,308 --> 00:09:55,289
+possible to add additional attributes on the
+left hand side and so on.
+
+104
+00:09:55,289 --> 00:09:58,469
+So, here are some examples worked out.
+
+105
+00:09:58,470 --> 00:10:05,949
+So, here where I show that given a set AC
+and AB determining CB is actually extraneous
+
+106
+00:10:05,948 --> 00:10:11,409
+because as you can see if I remove B, then
+I get A determining C which is originally
+
+107
+00:10:11,409 --> 00:10:13,438
+already there in the set.
+
+108
+00:10:13,438 --> 00:10:19,319
+You can establish that by computing the closure
+of the attribute set.
+
+109
+00:10:19,320 --> 00:10:24,619
+Another example where you are trying to see
+an extraneous attribute on the right hand
+
+110
+00:10:24,619 --> 00:10:25,619
+side.
+
+111
+00:10:25,619 --> 00:10:31,600
+So, in this example, C on the right hand side
+of the set AB determining CD is extraneous
+
+112
+00:10:31,600 --> 00:10:37,610
+because it can be inferred even after ah because
+AB determining C can be inferred even after
+
+113
+00:10:37,610 --> 00:10:40,980
+deleting this C from the right hand side.
+
+114
+00:10:40,980 --> 00:10:45,620
+So, these are using this ah notion.
+
+115
+00:10:45,620 --> 00:10:50,769
+We can formalize a test for ah whether an
+attribute is extraneous.
+
+116
+00:10:50,769 --> 00:10:57,549
+So, this is the formal steps of the step are
+given here, but I am sure you have already
+
+117
+00:10:57,549 --> 00:10:59,309
+understood through the example.
+
+118
+00:10:59,309 --> 00:11:06,368
+So, given this A canonical cover of a set
+of functional dependencies F, it is denoted
+
+119
+00:11:06,369 --> 00:11:13,009
+by FC will mean that it is a set which is
+equivalent to F which means F will logically
+
+120
+00:11:13,009 --> 00:11:19,068
+imply all dependencies in FC and FC will logically
+imply all dependencies in F.
+
+121
+00:11:19,068 --> 00:11:23,729
+No functional dependency in FC will contain
+any extraneous attribute.
+
+122
+00:11:23,730 --> 00:11:30,389
+So, all of them will be required attributes
+and each left hand side of the functional
+
+123
+00:11:30,389 --> 00:11:32,119
+dependency in FC must be unique.
+
+124
+00:11:32,119 --> 00:11:35,490
+So, it is a minimal set of functional dependencies.
+
+125
+00:11:35,490 --> 00:11:38,720
+Please note on these two core points.
+
+126
+00:11:38,720 --> 00:11:43,949
+A cover is canonical if it is a minimal set
+and it is an irreducible set.
+
+127
+00:11:43,948 --> 00:11:50,008
+So, neither you can remove any dependancy
+nor you can remove any extraneous attribute
+
+128
+00:11:50,009 --> 00:11:55,259
+from this dependency set . So, here is the
+algorithm.
+
+129
+00:11:55,259 --> 00:11:59,699
+So, I am not going through the steps of the
+algorithm.
+
+130
+00:11:59,698 --> 00:12:05,758
+You can go through that and convince yourself
+that it indeed computes the canonical cover
+
+131
+00:12:05,759 --> 00:12:07,899
+and practice more on that.
+
+132
+00:12:07,899 --> 00:12:13,490
+So, here I have shown an example where ah
+we want to compute the canonical cover here.
+
+133
+00:12:13,490 --> 00:12:24,558
+So, first since all left hand sides have to
+be unique, so first we ah combine ah two,
+
+134
+00:12:24,558 --> 00:12:27,919
+these two into in terms of A determining BC.
+
+135
+00:12:27,919 --> 00:12:29,500
+So, it becomes a simpler set.
+
+136
+00:12:29,500 --> 00:12:43,129
+So, A determining B is removed, then I would
+check for A being extraneous in AB determining
+
+137
+00:12:43,129 --> 00:12:46,778
+C and we find that it indeed is extraneous.
+
+138
+00:12:46,778 --> 00:12:51,669
+So, ah because B determining C is already
+there, you can do the formal test in terms
+
+139
+00:12:51,669 --> 00:12:52,729
+of the closure.
+
+140
+00:12:52,730 --> 00:12:54,759
+So, the set gets even simpler.
+
+141
+00:12:54,759 --> 00:12:58,949
+I will check if C is extraneous in A determining
+BC.
+
+142
+00:12:58,948 --> 00:13:06,278
+I find that it indeed is and again you can
+use transitivity to get here or ah can use
+
+143
+00:13:06,278 --> 00:13:14,600
+ah attribute closure and finally, I get that
+the set of the original set F is covered by
+
+144
+00:13:14,600 --> 00:13:19,329
+a canonical set where just you have A determining
+B and B determining C.
+
+145
+00:13:19,328 --> 00:13:25,988
+So, this set is logically implied by the original
+set and this set can logically imply the original
+
+146
+00:13:25,989 --> 00:13:33,720
+set and we will often use the canonical cover
+for simplicity and for ease of application.
+
+147
+00:13:33,720 --> 00:13:40,220
+Naturally this is strongly using the underlying
+concept of equivalence of two sets of functional
+
+148
+00:13:40,220 --> 00:13:41,269
+dependencies F and G.
+
+149
+00:13:41,269 --> 00:13:49,318
+They are equivalent if there closures are
+equal or in other words, if F covers G and
+
+150
+00:13:49,318 --> 00:13:54,368
+G covers F, that is F logically implies G
+and G logically implies F. So, this table
+
+151
+00:13:54,369 --> 00:14:01,540
+shows you at different conditions where you
+can conclude whether F and G are equivalent
+
+152
+00:14:01,539 --> 00:14:02,678
+sets of functional dependencies.
+
+153
+00:14:02,678 --> 00:14:11,578
+So, they will have to, both covers have to
+be true for the sets to be equivalent.
+
+154
+00:14:11,578 --> 00:14:19,659
+Next what I have done is, we have put a number
+of practice problems for ah various kind of
+
+155
+00:14:19,659 --> 00:14:22,198
+things that you can do with functional dependencies.
+
+156
+00:14:22,198 --> 00:14:23,778
+The first set of problems.
+
+157
+00:14:23,778 --> 00:14:29,578
+Find in first set of problems you have to
+find if a given functional dependency is implied
+
+158
+00:14:29,578 --> 00:14:31,409
+from a set of functional dependencies.
+
+159
+00:14:31,409 --> 00:14:38,509
+So, there are three problems where three sets
+of functional dependencies are given and you
+
+160
+00:14:38,509 --> 00:14:44,778
+are given to check one or more functional
+dependencies if it is implied from that set.
+
+161
+00:14:44,778 --> 00:14:51,009
+So, use the attribute closure and the algorithm
+that we have discussed to practice these problems
+
+162
+00:14:51,009 --> 00:14:55,039
+and become master of that.
+
+163
+00:14:55,039 --> 00:15:00,819
+You can also check if ah you can find candidate
+key using the functional dependencies.
+
+164
+00:15:00,820 --> 00:15:02,100
+The sets are given.
+
+165
+00:15:02,100 --> 00:15:07,069
+Your task would be to find the candidate keys.
+
+166
+00:15:07,068 --> 00:15:12,998
+You can also use the algorithms to find super
+keys for a given set of functional dependencies.
+
+167
+00:15:12,999 --> 00:15:15,769
+So, do practice these problems.
+
+168
+00:15:15,769 --> 00:15:20,399
+You can find prime and non-prime attributes
+using functional dependencies.
+
+169
+00:15:20,399 --> 00:15:27,259
+Prime attributes ah are attributes that belong
+to any candidate key, not necessarily the
+
+170
+00:15:27,259 --> 00:15:28,558
+same candidate key.
+
+171
+00:15:28,558 --> 00:15:34,058
+All attributes that belong to some candidate
+key, you take a set together and you call
+
+172
+00:15:34,058 --> 00:15:41,289
+them as a prime attribute and non prime attributes
+are those that do not belong to any candidate
+
+173
+00:15:41,289 --> 00:15:42,428
+key at all.
+
+174
+00:15:42,428 --> 00:15:48,499
+So, here your task is to find the prime and
+non-prime attributes using the sets of functional
+
+175
+00:15:48,499 --> 00:15:53,798
+dependencies given .
+You can check for equivalents for a pair of
+
+176
+00:15:53,798 --> 00:15:55,278
+sets of functional dependencies.
+
+177
+00:15:55,278 --> 00:15:58,838
+There are couple of problems given on that.
+
+178
+00:15:58,839 --> 00:16:02,850
+So, please ah try them out.
+
+179
+00:16:02,850 --> 00:16:08,459
+For here for the different sets, you have
+to compute the minimal cover or the irreducible
+
+180
+00:16:08,458 --> 00:16:12,919
+set or canonical cover of the set of functional
+dependencies.
+
+181
+00:16:12,919 --> 00:16:19,368
+So, please practice on this ah problem, so
+that you become comfortable with ah using
+
+182
+00:16:19,369 --> 00:16:25,449
+this algorithms for dealing easily with the
+functional dependency sets of functional dependencies,
+
+183
+00:16:25,448 --> 00:16:29,048
+individual functional dependencies and so
+on.
+
+184
+00:16:29,048 --> 00:16:35,750
+So, after this week is closed and your assignments
+are also done, then we will publish the solutions
+
+185
+00:16:35,750 --> 00:16:43,918
+for these practice problems as well next let
+me ah take up a little characterization of
+
+186
+00:16:43,918 --> 00:16:48,399
+the concept that we had introduced earlier
+in terms of the lossless join decomposition.
+
+187
+00:16:48,399 --> 00:16:55,458
+So, in the lossless join decomposition, the
+problem is ah say that you have a relational
+
+188
+00:16:55,458 --> 00:17:02,018
+scheme R and you are trying to divide that
+into two relational schemes R1 and R2.
+
+189
+00:17:02,019 --> 00:17:11,120
+So, both R1 and R2 are ah having a set of
+ah attributes and R naturally has a set of
+
+190
+00:17:11,119 --> 00:17:18,269
+attributes which is a union of the attributes
+of R1 and R2, then is it possible that ah
+
+191
+00:17:18,269 --> 00:17:26,278
+if I take a relation, project it on the attributes
+of R1 and on the attributes of R2, the two
+
+192
+00:17:26,278 --> 00:17:27,278
+relations that we get.
+
+193
+00:17:27,278 --> 00:17:31,460
+If I take a natural join of that, do I get
+back R?
+
+194
+00:17:31,460 --> 00:17:35,860
+If I do, then I say that I have a lossless
+join.
+
+195
+00:17:35,859 --> 00:17:42,888
+If I do not, then I have lost some information
+due to this projection and recomputation of
+
+196
+00:17:42,888 --> 00:17:49,199
+the original ah relation based using the natural
+join.
+
+197
+00:17:49,200 --> 00:17:57,500
+This ah requirement of lossless join decomposition
+ah is determined if at least one of the following
+
+198
+00:17:57,500 --> 00:18:07,109
+dependencies exist in the closure set of F
+which this is saying that if I do R1 intersection
+
+199
+00:18:07,109 --> 00:18:09,139
+R2, that is A attributes which are common.
+
+200
+00:18:09,140 --> 00:18:14,769
+You will recall that when we do natural join,
+it is this set of attributes which take part
+
+201
+00:18:14,769 --> 00:18:21,500
+because these set of attributes will help
+you compute the join between ah projection
+
+202
+00:18:21,500 --> 00:18:23,869
+on R1 and the projection of R2.
+
+203
+00:18:23,869 --> 00:18:31,489
+So, if this intersection set of attributes
+uniquely determines R1 or it uniquely determines
+
+204
+00:18:31,490 --> 00:18:40,970
+R2, that is if the intersection set of attributes
+is a super key either in R1 or in R2 or both
+
+205
+00:18:40,970 --> 00:18:45,808
+then, we say that the lost layer, the join
+will be a lossless join.
+
+206
+00:18:45,808 --> 00:18:52,888
+Note that this is a sufficient condition which
+means that there could be some instances where
+
+207
+00:18:52,888 --> 00:18:58,408
+this property is not satisfied yet the join
+is lossless, but we need guarantees for our
+
+208
+00:18:58,409 --> 00:18:59,409
+design.
+
+209
+00:18:59,409 --> 00:19:05,110
+So, we ah make use of the fact that if one
+of these conditions are satisfied, then it
+
+210
+00:19:05,109 --> 00:19:10,269
+is a sufficient condition to say that the
+join will must, join will necessarily be lossless
+
+211
+00:19:10,269 --> 00:19:15,558
+.
+So, here I give you a quick example ah to
+
+212
+00:19:15,558 --> 00:19:16,829
+show the idea.
+
+213
+00:19:16,829 --> 00:19:22,730
+So, we have a supplier relationship here which
+has five attributes.
+
+214
+00:19:22,730 --> 00:19:29,829
+Here is an instance of that and we know that
+these are the dependencies that hold the supplier
+
+215
+00:19:29,829 --> 00:19:34,808
+number determines ah the supplier name and
+the supplier city and supplier number and
+
+216
+00:19:34,808 --> 00:19:41,599
+product number together determines the quantity
+and we decompose them in this manner, we put
+
+217
+00:19:41,599 --> 00:19:47,449
+a supplier relationship where we have the
+number, name, city and quantity of supplier
+
+218
+00:19:47,450 --> 00:19:52,150
+and then, we have parts relation where we
+just have a product name and the quantity.
+
+219
+00:19:52,150 --> 00:19:56,460
+So, this is ah the projected supplier relation
+instance.
+
+220
+00:19:56,460 --> 00:20:01,240
+This is a projected parts relation instance
+and then, we take a natural join to reconstruct.
+
+221
+00:20:01,240 --> 00:20:05,370
+So, we are taking a natural join to reconstruct
+and we get this relationship.
+
+222
+00:20:05,369 --> 00:20:10,798
+Now, our desire was that we must get back
+the original relation, but if you compare,
+
+223
+00:20:10,798 --> 00:20:13,619
+you will find that ah this is not the case
+here.
+
+224
+00:20:13,619 --> 00:20:18,648
+We have one tuple here and we have another
+tuple here.
+
+225
+00:20:18,648 --> 00:20:23,548
+I have specifically highlighted them in red
+which were not there in the original relation.
+
+226
+00:20:23,548 --> 00:20:31,440
+They have come in because ah when I did the
+join naturally, the join had to be performed
+
+227
+00:20:31,440 --> 00:20:38,070
+on this common attribute quantity and based
+on that value.
+
+228
+00:20:38,069 --> 00:20:56,240
+So, Nick 5 Nick NY , then we have 10 5 Nick
+NY 10, this entry and we have two entries
+
+229
+00:20:56,240 --> 00:21:06,269
+of 10 and 10 here . So, the combination of
+this with this where the product number is
+
+230
+00:21:06,269 --> 00:21:12,769
+20 is actually not present in the original
+ah instance of the relation and that is what
+
+231
+00:21:12,769 --> 00:21:15,710
+shows up here a similar one exists here.
+
+232
+00:21:15,710 --> 00:21:22,710
+So, we get extra tuples and mind you though
+we are actually getting extra tuple, we will
+
+233
+00:21:22,710 --> 00:21:28,019
+say that this join is lossy because if you
+get extra tuple, then you are losing information,
+
+234
+00:21:28,019 --> 00:21:29,019
+you are losing correctness.
+
+235
+00:21:29,019 --> 00:21:31,929
+So, being lossy is actually losing correctness.
+
+236
+00:21:31,929 --> 00:21:41,370
+So, ah even though we have more tuples, we
+say that this is a lossy join and ah you can
+
+237
+00:21:41,369 --> 00:21:42,699
+now go back and analyze it.
+
+238
+00:21:42,700 --> 00:21:48,319
+The common attribute QTY is not a super key
+either in this or in this.
+
+239
+00:21:48,319 --> 00:21:56,058
+So, R1 intersection R2 implying R1 or implying
+R2 does not hold.
+
+240
+00:21:56,058 --> 00:22:02,970
+So, it does not and in addition it also does
+not preserve this functional dependency because
+
+241
+00:22:02,970 --> 00:22:05,909
+these are not, no more determined.
+
+242
+00:22:05,909 --> 00:22:08,799
+Now, let us see it.
+
+243
+00:22:08,798 --> 00:22:15,778
+So, we saw a case where the join decomposition
+that we did and then, the subsequent join
+
+244
+00:22:15,778 --> 00:22:20,669
+that we performed did not prove to be a lossless
+join.
+
+245
+00:22:20,669 --> 00:22:22,220
+We lost information.
+
+246
+00:22:22,220 --> 00:22:31,038
+So, let us take a look as to can we ah actually
+do a decomposition which will be lossless
+
+247
+00:22:31,038 --> 00:22:45,940
+where we will not lose information .
+So, I take the same example the supplier,
+
+248
+00:22:45,940 --> 00:22:52,100
+but the decomposition, the same set of dependencies
+also, but the decomposition is different.
+
+249
+00:22:52,099 --> 00:23:00,579
+Now, we have name number, name and city in
+one ah supplier relation and supplier name,
+
+250
+00:23:00,579 --> 00:23:06,589
+number, product number and quantity in the
+other parts relation and then, we again go
+
+251
+00:23:06,589 --> 00:23:12,589
+back and perform the join .
+Now, we find that from the original relation,
+
+252
+00:23:12,589 --> 00:23:17,490
+this was the original relation, this is the
+projected supplier relation, these are projected
+
+253
+00:23:17,490 --> 00:23:22,130
+parts relation and this is the natural join
+of these two relations.
+
+254
+00:23:22,130 --> 00:23:27,850
+So, this is the natural join of these two
+relations and we find that they exactly match
+
+255
+00:23:27,849 --> 00:23:29,528
+with the original relation.
+
+256
+00:23:29,528 --> 00:23:34,028
+So, we have not lost any information we get
+it back.
+
+257
+00:23:34,028 --> 00:23:39,700
+So, we say that the join is lossless and the
+reason we could guarantee that is because
+
+258
+00:23:39,700 --> 00:23:46,759
+if you look into the set of functional dependencies,
+you will find that S number, the supplier
+
+259
+00:23:46,759 --> 00:23:54,250
+number is a key in the supplier relationship
+because it functionally determines S name
+
+260
+00:23:54,250 --> 00:23:55,480
+as well as S city.
+
+261
+00:23:55,480 --> 00:24:04,569
+So, R1 intersection R2 functionally determining
+R1 is true here and therefore, it actually
+
+262
+00:24:04,569 --> 00:24:07,009
+gives you a lossless join.
+
+263
+00:24:07,009 --> 00:24:12,999
+It also preserves all the dependencies because
+if you look into these dependencies, you can
+
+264
+00:24:12,999 --> 00:24:14,399
+check for this dependency.
+
+265
+00:24:14,398 --> 00:24:19,298
+In this relation, you can check for this dependency
+also in this relation and you can check for
+
+266
+00:24:19,298 --> 00:24:24,940
+this dependency in also in the parts relation
+which is something which we were not able
+
+267
+00:24:24,940 --> 00:24:28,650
+to do in the last decomposition that we have.
+
+268
+00:24:28,650 --> 00:24:36,870
+So, naturally this is a type of decomposition
+that we will prefer . So, here ah we have
+
+269
+00:24:36,869 --> 00:24:42,619
+ah I have given some more examples which you
+can practice and I show that given a very
+
+270
+00:24:42,619 --> 00:24:49,969
+simple ah schema having three attributes and
+two dependencies, one decomposition into AB
+
+271
+00:24:49,970 --> 00:24:58,538
+and BC is lossless join decomposition whereas,
+the other one AB and AC is a lossy decomposotion.
+
+272
+00:24:58,538 --> 00:25:05,019
+I have given a number of practice problems
+on lossless join, so that you can practice
+
+273
+00:25:05,019 --> 00:25:09,359
+and become master of these kind of algorithm.
+
+274
+00:25:09,359 --> 00:25:16,329
+Finally, let me ah quickly go over the dependency
+preservation ah concept.
+
+275
+00:25:16,329 --> 00:25:25,720
+Dependency preservation is if you have a relation
+which you have decomposed ah into n different
+
+276
+00:25:25,720 --> 00:25:31,950
+relations, so if you decompose a relation
+into a number of ah relations, then naturally
+
+277
+00:25:31,950 --> 00:25:38,920
+ah all functional dependencies you cannot
+check on all the relations because a dependency
+
+278
+00:25:38,920 --> 00:25:46,460
+may involve attributes all of which may not
+be present in a particular ah decomposed relation
+
+279
+00:25:46,460 --> 00:25:48,370
+that you have.
+
+280
+00:25:48,369 --> 00:25:51,058
+It may be distributed amongst ah different.
+
+281
+00:25:51,058 --> 00:25:59,079
+So, when you do this decomposition, for every
+relation you get a new set of subset of functional
+
+282
+00:25:59,079 --> 00:26:00,079
+dependencies.
+
+283
+00:26:00,079 --> 00:26:11,548
+So, the decomposed relation R i the ith relation
+will have a set of dependencies F i which
+
+284
+00:26:11,548 --> 00:26:20,538
+is a subset of the original set F and involves
+only the attributes which exist in R i.
+
+285
+00:26:20,538 --> 00:26:27,278
+So, ah the decomposition will be said to be
+dependency preserving if I can take the union
+
+286
+00:26:27,278 --> 00:26:33,859
+of all these functional dependencies, what
+is projected on R 1, on R 2 and R n, F 1,
+
+287
+00:26:33,859 --> 00:26:34,859
+F 2, F n.
+
+288
+00:26:34,859 --> 00:26:43,199
+If we can take union of and if we take F,
+they must be equivalent sets which we know
+
+289
+00:26:43,200 --> 00:26:44,610
+the requirement.
+
+290
+00:26:44,609 --> 00:26:48,788
+So, equivalence mean that their covers will
+have to be equal.
+
+291
+00:26:48,788 --> 00:26:54,028
+If it is not, then some there will be at least
+one dependency which you will not be able
+
+292
+00:26:54,028 --> 00:26:59,288
+to check in any one of the projected relations
+and to be able to check that, you will have
+
+293
+00:26:59,288 --> 00:27:06,339
+to compute the natural join and that is as
+we know is a very expensive process and we
+
+294
+00:27:06,339 --> 00:27:12,378
+would not be able to do that on a regular
+basis .
+
+295
+00:27:12,378 --> 00:27:21,408
+So, here I have ah written down the algorithm
+to test if a decomposition ah actually preserves
+
+296
+00:27:21,409 --> 00:27:23,450
+the dependency or not.
+
+297
+00:27:23,450 --> 00:27:25,590
+So, I will not go through the steps.
+
+298
+00:27:25,589 --> 00:27:31,579
+I will leave that for you to understand, but
+what I will do, I will just show you a simple
+
+299
+00:27:31,579 --> 00:27:35,859
+set of worked out example and reason on that.
+
+300
+00:27:35,859 --> 00:27:40,689
+So, I show you two different methods of doing
+this.
+
+301
+00:27:40,690 --> 00:27:49,249
+So, here we have a set of attributes given
+the dependencies that work in that and a particular
+
+302
+00:27:49,249 --> 00:27:50,399
+decomposition.
+
+303
+00:27:50,398 --> 00:27:58,339
+So, given the set of attributes and the decomposition
+if we project, now if we project the set of
+
+304
+00:27:58,339 --> 00:28:01,759
+functional dependencies and these are the
+sets that we get.
+
+305
+00:28:01,759 --> 00:28:07,058
+So, on R1, we have two dependencies on R2,
+we have three dependence, one dependency and
+
+306
+00:28:07,058 --> 00:28:10,888
+r 3 we have one dependency again.
+
+307
+00:28:10,888 --> 00:28:16,969
+So, if we now think about ah the union of
+these and the closure for that, then we can
+
+308
+00:28:16,970 --> 00:28:25,169
+see that these four dependencies which occur
+here and therefore, I have struck them off
+
+309
+00:28:25,169 --> 00:28:26,659
+in this set.
+
+310
+00:28:26,659 --> 00:28:32,360
+These four dependencies can be checked directly
+on the projected relations.
+
+311
+00:28:32,359 --> 00:28:39,368
+So, that leaves us with three dependencies
+in the original set which cannot be checked
+
+312
+00:28:39,368 --> 00:28:42,519
+on any one of R1 R2 or R3.
+
+313
+00:28:42,519 --> 00:28:51,808
+For example, if you consider BC determining
+E, then B exist on R1 and C also exist on
+
+314
+00:28:51,808 --> 00:28:53,220
+R1, but E is not there.
+
+315
+00:28:53,220 --> 00:28:58,298
+So, you cannot check that dependency on R1,
+you cannot check that on R2 because C and
+
+316
+00:28:58,298 --> 00:29:03,869
+E do not exist and you cannot check them on
+R3, check it on R3,because none of them actually
+
+317
+00:29:03,869 --> 00:29:04,869
+exist.
+
+318
+00:29:04,869 --> 00:29:12,748
+So, what we will need for the dependency preservation
+to hold is the dependencies which are already
+
+319
+00:29:12,749 --> 00:29:20,399
+existing four dependencies that are struck
+off if they collectively can logically imply
+
+320
+00:29:20,398 --> 00:29:23,989
+these dependencies, so that they can be checked.
+
+321
+00:29:23,990 --> 00:29:28,200
+Then, we will be able to say that this is
+dependency preserving.
+
+322
+00:29:28,200 --> 00:29:31,929
+So, what you do is something very simple.
+
+323
+00:29:31,929 --> 00:29:35,538
+You want to say, you want to check whether
+this is preserved.
+
+324
+00:29:35,538 --> 00:29:38,628
+So, we start with the left hand side and compute
+the closure.
+
+325
+00:29:38,628 --> 00:29:43,798
+The only difference you compute the closure
+first with the set of functional dependencies
+
+326
+00:29:43,798 --> 00:29:50,519
+projected on R1, that is F1, the set closure
+set that you get, you take that and compute
+
+327
+00:29:50,519 --> 00:29:56,240
+its closure with respect to the second set
+of functional dependencies F2.
+
+328
+00:29:56,240 --> 00:30:01,859
+The closure that you get, you take that and
+you compute the closure with respect to the
+
+329
+00:30:01,859 --> 00:30:07,969
+third set of functional dependencies which
+is on R3 and that is your final closure set.
+
+330
+00:30:07,970 --> 00:30:14,028
+So, this closure set includes the right hand
+side attribute E. So, we can conclude that
+
+331
+00:30:14,028 --> 00:30:21,038
+BC indeed ah functionally will determine E
+and that relationship will be preserved because
+
+332
+00:30:21,038 --> 00:30:23,240
+we have starting from BC.
+
+333
+00:30:23,240 --> 00:30:28,759
+We have seen that in every projected relation
+what all implied functional dependencies that
+
+334
+00:30:28,759 --> 00:30:34,220
+can be checked which is what the meaning of
+the closure set of attributes R and since
+
+335
+00:30:34,220 --> 00:30:41,100
+that set eventually has E, we will know that
+this can be, this will be preserved.
+
+336
+00:30:41,099 --> 00:30:44,628
+This set also has F. So, the other one will
+also be preserved.
+
+337
+00:30:44,628 --> 00:30:49,918
+So, this is preserved, this is preserved to
+check whether this dependency is preserved.
+
+338
+00:30:49,919 --> 00:30:56,399
+We need to again repeat the process and find
+whether EF ah belongs to the final closure
+
+339
+00:30:56,398 --> 00:31:02,748
+set which it does and therefore, we conclude
+that this decomposition is dependency preserving
+
+340
+00:31:02,749 --> 00:31:06,379
+.
+With the same example I will just ah show
+
+341
+00:31:06,378 --> 00:31:10,339
+you a little different way of ah ah doing
+the same exercise.
+
+342
+00:31:10,339 --> 00:31:16,750
+I have not written down the algorithm for
+this in longhand, but the example should ah
+
+343
+00:31:16,750 --> 00:31:19,089
+be quite illustrative.
+
+344
+00:31:19,089 --> 00:31:27,058
+So, we are what you do when you project, you
+check if some dependency has multiple attributes
+
+345
+00:31:27,058 --> 00:31:33,980
+on the left hand, on the right hand side,
+then you write them in a separately decomposed
+
+346
+00:31:33,980 --> 00:31:34,980
+manner.
+
+347
+00:31:34,980 --> 00:31:40,749
+So, A implies determines BCD is written in
+terms of three dependencies.
+
+348
+00:31:40,749 --> 00:31:46,429
+A implies B, B implies C and C implies D.
+So, you make sure that all dependencies are
+
+349
+00:31:46,429 --> 00:31:52,649
+written in a form where the right hand side
+has a single attribute, then you compute what
+
+350
+00:31:52,648 --> 00:31:59,988
+is known as the reverse functional dependencies
+that is you take the right hand side and compute
+
+351
+00:31:59,989 --> 00:32:04,660
+whether the right hand side can imply the
+left hand side.
+
+352
+00:32:04,660 --> 00:32:07,798
+So, I will just ah show you one.
+
+353
+00:32:07,798 --> 00:32:12,778
+So, in case the right hand side here is B,
+you have AB on the right hand side.
+
+354
+00:32:12,778 --> 00:32:17,419
+So, you compute the closure with respect to
+F. The original set, not the projected set
+
+355
+00:32:17,419 --> 00:32:20,320
+of D and you get BF.
+
+356
+00:32:20,319 --> 00:32:30,839
+So, you know that ah this ah inverse, this
+reverse functional dependency which is AB
+
+357
+00:32:30,839 --> 00:32:37,089
+functionally determines A which is the reverse
+dependency cannot be inferred and you do this
+
+358
+00:32:37,089 --> 00:32:46,118
+ah for each of the right hand side single
+attribute and check if ah some, if the reverse
+
+359
+00:32:46,118 --> 00:32:48,470
+dependencies can be inferred or not.
+
+360
+00:32:48,470 --> 00:32:53,499
+The interesting case occurs here where if
+you try to do the closure of A, you actually
+
+361
+00:32:53,499 --> 00:33:01,819
+find that A determines BC which is a reverse
+of this functional dependency can be inferred,
+
+362
+00:33:01,819 --> 00:33:08,759
+but you do not consider that as a violation
+because it is you already have A determining
+
+363
+00:33:08,759 --> 00:33:13,788
+B and A determining C. So, that logically
+implies that A determines BC.
+
+364
+00:33:13,788 --> 00:33:19,599
+So, it is not a new ah violation that is getting
+imposed.
+
+365
+00:33:19,599 --> 00:33:25,769
+So, with this your test for reverse functional
+dependencies is passed and then, you finally
+
+366
+00:33:25,769 --> 00:33:32,419
+check for whether the three dependencies which
+are not part of the projected set of dependencies,
+
+367
+00:33:32,419 --> 00:33:36,580
+you take the closure of the left hand side
+with respect to in this case.
+
+368
+00:33:36,579 --> 00:33:41,558
+Again the original set of functional dependencies,
+not the projected one and check if the right
+
+369
+00:33:41,558 --> 00:33:42,690
+hand side belongs there.
+
+370
+00:33:42,690 --> 00:33:48,879
+If they do, then combined with these two strategies
+you say that the set of functional dependencies
+
+371
+00:33:48,878 --> 00:33:52,048
+are preserved under this decomposition.
+
+372
+00:33:52,048 --> 00:33:55,619
+So, this is the process to follow.
+
+373
+00:33:55,619 --> 00:33:59,839
+You can follow any one of the two approaches
+to solve.
+
+374
+00:33:59,839 --> 00:34:06,499
+So, given some practice problems on dependency
+preservation which you should practice on
+
+375
+00:34:06,499 --> 00:34:07,499
+to.
+
+376
+00:34:07,499 --> 00:34:12,139
+Summarize we have studied the algorithms for
+properties of functional dependencies and
+
+377
+00:34:12,139 --> 00:34:18,559
+we have understood the characterization and
+determination algorithm for lossless join
+
+378
+00:34:18,559 --> 00:34:23,980
+decomposition and for dependency preservation
+in a decomposition.
+
+379
+00:34:23,980 --> 00:34:29,269
+In the coming module, we will make use of
+these and discuss about how to improve these
+
+380
+00:34:29,269 --> 00:34:34,108
+designs of relational schemas through the
+use of different normal forms.
+

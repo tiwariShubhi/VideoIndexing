@@ -1,0 +1,310 @@
+WEBVTT
+
+1
+00:00:00.230 --> 00:00:03.230
+In this lecture we will use
+Hadoop to run WordCount.
+
+2
+00:00:03.230 --> 00:00:05.487
+First we will open a terminal shell and
+
+3
+00:00:05.487 --> 00:00:08.680
+explore the Hadoop-provided MapReduce
+programs.
+
+4
+00:00:08.680 --> 00:00:12.657
+Next we will verify the input
+file exists in HDFS.
+
+5
+00:00:12.657 --> 00:00:17.130
+We will then run WordCount and
+explore the WordCount output directory.
+
+6
+00:00:17.130 --> 00:00:19.560
+After that we will copy
+the WordCount results
+
+7
+00:00:19.560 --> 00:00:22.556
+from HDFS to the local file system and
+view them.
+
+8
+00:00:22.556 --> 00:00:24.493
+Let's begin.
+
+9
+00:00:24.493 --> 00:00:27.930
+First we'll open a terminal shell by
+
+10
+00:00:27.930 --> 00:00:30.320
+clicking on the icon at
+top of the window here.
+
+11
+00:00:33.430 --> 00:00:36.811
+Next, we'll look at the map produced
+programs that come with Hadoop.
+
+12
+00:00:36.811 --> 00:00:42.961
+We can do this by running Hadoop,
+jars user jars, Hadoop examples .jar.
+
+13
+00:00:46.666 --> 00:00:51.616
+This command says we're going to use
+the jar command to run a program
+
+14
+00:00:51.616 --> 00:00:54.030
+in Hadoop from a jar file.
+
+15
+00:00:54.030 --> 00:00:59.730
+And the jar file that we're running from
+is in /usr/jars/hadoop-examples.jar.
+
+16
+00:00:59.730 --> 00:01:03.510
+Many programs written in Java
+are distributed via jar files.
+
+17
+00:01:03.510 --> 00:01:10.520
+If we run this command We'll see a list of
+different programs that come with Hadoop.
+
+18
+00:01:10.520 --> 00:01:13.090
+So for example, wordcount.
+
+19
+00:01:13.090 --> 00:01:14.780
+Count the words in a text file.
+
+20
+00:01:15.990 --> 00:01:19.350
+Wordmean, count the average
+length of words.
+
+21
+00:01:19.350 --> 00:01:25.220
+And other programs, such as sorting and
+calculating the length of pi.
+
+22
+00:01:27.748 --> 00:01:31.558
+In the previous lecture we downloaded
+the Works of Shakespeare and
+
+23
+00:01:31.558 --> 00:01:32.721
+saved it into HDFS.
+
+24
+00:01:32.721 --> 00:01:37.822
+Let's make sure that file is still
+there by running hadoop fs -ls.
+
+25
+00:01:40.387 --> 00:01:44.734
+We can see that the file is still there,
+and it's called words.txt.
+
+26
+00:01:46.900 --> 00:01:51.390
+We can run wordcount by running hadoop jar
+
+27
+00:01:51.390 --> 00:01:57.180
+/usr/jars/hadoop-examples.jar wordcount.
+
+28
+00:01:57.180 --> 00:01:59.090
+This command says that
+we're going to run a jar,
+
+29
+00:01:59.090 --> 00:02:02.690
+and this is the name of the jar
+containing the program.
+
+30
+00:02:02.690 --> 00:02:05.690
+And the program we're
+going to run is wordcount.
+
+31
+00:02:05.690 --> 00:02:08.450
+When we run it, we see that it
+prints the command line usage for
+
+32
+00:02:08.450 --> 00:02:10.050
+how to run wordcount.
+
+33
+00:02:10.050 --> 00:02:17.310
+This says that wordcount takes one or
+more input files and an output name.
+
+34
+00:02:17.310 --> 00:02:21.837
+Now, both the input and
+the output are located in HDFS.
+
+35
+00:02:21.837 --> 00:02:27.010
+So we have the input file that we
+just listed, words.txt, in HDFS.
+
+36
+00:02:27.010 --> 00:02:27.940
+We can run wordcount.
+
+37
+00:02:29.400 --> 00:02:36.148
+So we'll run hadoop
+jar/usr/jars/hadoop-examples.jar
+
+38
+00:02:36.148 --> 00:02:39.351
+wordcount words.txt out.
+
+39
+00:02:40.390 --> 00:02:45.250
+This is saying we're going to run
+the WordCount program using words.txt
+
+40
+00:02:45.250 --> 00:02:49.170
+as the input and
+put the output in a directory called out.
+
+41
+00:02:50.470 --> 00:02:51.251
+So we'll run it.
+
+42
+00:02:58.381 --> 00:03:01.190
+As wordcount is running,
+your prints progress to the screen.
+
+43
+00:03:03.247 --> 00:03:06.760
+It'll print the percentage of map and
+reduce completed.
+
+44
+00:03:06.760 --> 00:03:10.124
+And when both of these reach 100%,
+then the job is done.
+
+45
+00:03:14.664 --> 00:03:17.440
+Now that the job is complete,
+let's look at the results.
+
+46
+00:03:19.900 --> 00:03:23.220
+We can run Hadoop fs
+-ls to see the output.
+
+47
+00:03:26.220 --> 00:03:30.930
+This shows that out was created and
+this is where our results are stored.
+
+48
+00:03:30.930 --> 00:03:34.580
+Notice that it's
+a directory with a d here.
+
+49
+00:03:34.580 --> 00:03:39.870
+So hadoop word count created
+the directory to contain the output.
+
+50
+00:03:39.870 --> 00:03:44.412
+Let's look inside that directory
+by running Hadoop fs- ls out.
+
+51
+00:03:44.412 --> 00:03:49.580
+[BLANK AUDIO] We can see that there
+are two files in this directory.
+
+52
+00:03:49.580 --> 00:03:55.280
+The first is _SUCCESS, this means that
+the WordCount job completed successfully.
+
+53
+00:03:55.280 --> 00:03:59.279
+The other file part-r-00000 is a text file
+
+54
+00:03:59.279 --> 00:04:03.284
+containing the output from
+the WordCount command
+
+55
+00:04:05.198 --> 00:04:11.260
+Now let's copy this text file to the local
+file system from HDFS and then view it.
+
+56
+00:04:11.260 --> 00:04:18.357
+We could copy it by running
+hadoop fs -copytolocal
+
+57
+00:04:18.357 --> 00:04:23.481
+out/part-r-00000 local.
+
+58
+00:04:25.760 --> 00:04:28.520
+And we'll say local.txt is the name.
+
+59
+00:04:28.520 --> 00:04:33.340
+You can view the results of this.
+
+60
+00:04:33.340 --> 00:04:35.320
+We're running more local.txt.
+
+61
+00:04:38.170 --> 00:04:39.740
+This will view the contents of the file.
+
+62
+00:04:42.700 --> 00:04:44.310
+We can hit spacebar to scroll down.
+
+63
+00:04:47.130 --> 00:04:50.450
+We see the results of
+WordCount in this file.
+
+64
+00:04:50.450 --> 00:04:55.980
+Each line is a particular word and
+the second column is the count
+
+65
+00:04:55.980 --> 00:05:00.020
+of how many words of this particular
+word was found in the input file.
+
+66
+00:05:02.820 --> 00:05:04.159
+You can hit q to quit

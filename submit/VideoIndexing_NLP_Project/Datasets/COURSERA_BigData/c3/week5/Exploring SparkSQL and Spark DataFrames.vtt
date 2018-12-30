@@ -1,0 +1,359 @@
+WEBVTT
+
+1
+00:00:00.770 --> 00:00:04.034
+In this hands on activity we
+will be using SparkSQL to
+
+2
+00:00:04.034 --> 00:00:06.119
+query data from an SQL database.
+
+3
+00:00:07.604 --> 00:00:11.825
+First we will open
+the SparkSQL Jupyter Notebook.
+
+4
+00:00:11.825 --> 00:00:14.080
+We will connect Spark to a Postgres table.
+
+5
+00:00:15.740 --> 00:00:20.214
+And then view the Spark DataFrame
+schema and count the rows.
+
+6
+00:00:20.214 --> 00:00:22.040
+We will view the contents
+of the data frame.
+
+7
+00:00:23.220 --> 00:00:25.110
+See how to filter rows and columns.
+
+8
+00:00:26.130 --> 00:00:29.174
+And finally perform aggregate
+operation on a column.
+
+9
+00:00:33.636 --> 00:00:34.714
+Let's begin.
+
+10
+00:00:34.714 --> 00:00:38.247
+First, click on the browser icon,
+the top of the toolbar.
+
+11
+00:00:38.247 --> 00:00:41.062
+>> [SOUND]
+>> Next,
+
+12
+00:00:41.062 --> 00:00:45.288
+navigate to the Jupyter Notebook server.
+
+13
+00:00:45.288 --> 00:00:48.275
+It's localhost:8889.
+
+14
+00:00:51.117 --> 00:00:54.358
+Go to Downloads,
+
+15
+00:00:54.358 --> 00:00:58.900
+Big Data 3, Spark SQL.
+
+16
+00:01:00.460 --> 00:01:02.040
+To open the SparkSQL Notebook.
+
+17
+00:01:02.040 --> 00:01:07.710
+The first three cells have
+already been entered for you.
+
+18
+00:01:09.760 --> 00:01:16.915
+First, we import the SQLContext, run this.
+
+19
+00:01:16.915 --> 00:01:24.878
+Next, we create an SQLContext
+from the SparkContext run this.
+
+20
+00:01:24.878 --> 00:01:29.676
+And next, we'll create a Spark DataFrame
+from a Postgres table.
+
+21
+00:01:32.980 --> 00:01:34.950
+We used the read attribute format.
+
+22
+00:01:36.820 --> 00:01:40.020
+The jdbc argument means that we're
+using a Java database connection.
+
+23
+00:01:42.180 --> 00:01:44.000
+The next line sets the URL option.
+
+24
+00:01:44.000 --> 00:01:49.081
+It says we're using Postgres
+database running on the local host.
+
+25
+00:01:49.081 --> 00:01:54.287
+The database name is Cloudera and
+the username is Cloudera.
+
+26
+00:01:54.287 --> 00:01:56.048
+The second option, DB table,
+
+27
+00:01:56.048 --> 00:02:00.000
+says we want our data frame
+to be the game clicks table.
+
+28
+00:02:00.000 --> 00:02:01.130
+And finally we call load.
+
+29
+00:02:03.290 --> 00:02:04.400
+Let's execute this.
+
+30
+00:02:06.370 --> 00:02:11.153
+You can see the schema of the data
+frame by calling df.printschema.
+
+31
+00:02:14.602 --> 00:02:17.593
+This shows the name of each
+column along with the data type.
+
+32
+00:02:20.499 --> 00:02:24.253
+We can count the rows in this
+df frame by calling df.count.
+
+33
+00:02:31.512 --> 00:02:35.786
+We can look at the first five
+rows by calling df.show(5)
+
+34
+00:02:39.493 --> 00:02:41.362
+This shows all the columns
+in the data frame.
+
+35
+00:02:43.240 --> 00:02:46.260
+We can select specific columns
+by using the select method.
+
+36
+00:02:48.080 --> 00:02:52.275
+Let's select just the User ID and
+Team Level columns.
+
+37
+00:02:52.275 --> 00:02:57.860
+I'll enter df.select("userid",teamlevel.
+
+38
+00:02:57.860 --> 00:02:58.641
+Parenthesis.
+
+39
+00:03:01.524 --> 00:03:04.610
+And finally we only want to
+see the top five rows.
+
+40
+00:03:04.610 --> 00:03:06.312
+So we'll do .show(5).
+
+41
+00:03:10.870 --> 00:03:15.368
+We can also select rows
+that have a specific value.
+
+42
+00:03:15.368 --> 00:03:19.067
+Let's look for the rows where
+the team level is greater than one.
+
+43
+00:03:19.067 --> 00:03:23.092
+We'll enter df.filter.
+
+44
+00:03:23.092 --> 00:03:27.393
+We'll specify that we want team level
+greater than one by entering df,
+
+45
+00:03:27.393 --> 00:03:30.412
+square bracket, team level,
+greater than one.
+
+46
+00:03:34.336 --> 00:03:38.183
+And again, we only want the user ID and
+team level columns.
+
+47
+00:03:43.078 --> 00:03:45.368
+And finally only the first five rows.
+
+48
+00:03:50.624 --> 00:03:55.366
+We can use the group by method to
+aggregate a particular column.
+
+49
+00:03:55.366 --> 00:03:59.542
+For example, the ishit column
+has a value of zero or one.
+
+50
+00:03:59.542 --> 00:04:04.611
+And we can use group by to count how
+many times each of these values occurs.
+
+51
+00:04:04.611 --> 00:04:12.068
+Or a df.groupby ishit, and
+we'll call count to count the values
+
+52
+00:04:21.520 --> 00:04:25.552
+We can also perform aggregate statistical
+operations on the data in a data frame.
+
+53
+00:04:27.000 --> 00:04:31.140
+Let's compute the mean and
+sum values for ishit.
+
+54
+00:04:31.140 --> 00:04:36.756
+First we need to import
+the statistical functions we'll
+
+55
+00:04:36.756 --> 00:04:41.910
+run from.pyspark.sql.functions
+import star.
+
+56
+00:04:41.910 --> 00:04:47.891
+Next we'll run df.select
+(mean) ishit,sum ishit
+
+57
+00:04:55.375 --> 00:04:58.580
+We can also join two data
+frames on a particular column.
+
+58
+00:04:59.980 --> 00:05:04.740
+Let's join the existing data frame of the
+game clicks table with the adclicks table.
+
+59
+00:05:05.850 --> 00:05:08.410
+First, we need to create data frame for
+the adclicks table.
+
+60
+00:05:09.810 --> 00:05:10.796
+Let's go back up.
+
+61
+00:05:15.286 --> 00:05:16.991
+Copy the content of this cell,
+
+62
+00:05:23.747 --> 00:05:26.795
+Paste it.
+
+63
+00:05:26.795 --> 00:05:31.356
+We put the adclicks table
+the data frame called df2.
+
+64
+00:05:31.356 --> 00:05:34.462
+And we'll change the db table
+option to the adclicks.
+
+65
+00:05:38.376 --> 00:05:39.388
+Run it.
+
+66
+00:05:41.687 --> 00:05:44.117
+Let's print the schema of df2.
+
+67
+00:05:52.283 --> 00:05:56.064
+You can see that it also has
+a column called user id.
+
+68
+00:05:56.064 --> 00:06:00.024
+So let's join the game clicks
+data frame with the add
+
+69
+00:06:00.024 --> 00:06:02.643
+clicks data frame on this column.
+
+70
+00:06:02.643 --> 00:06:06.229
+We put the result in a new
+data frame called merged.
+
+71
+00:06:06.229 --> 00:06:15.490
+We'll say merge = df.join.df2 "userid".
+
+72
+00:06:15.490 --> 00:06:15.990
+We'll run it.
+
+73
+00:06:17.820 --> 00:06:19.163
+Let's look at the schema.
+
+74
+00:06:19.163 --> 00:06:21.193
+We'll call merge.printschema.
+
+75
+00:06:25.763 --> 00:06:29.499
+We can see that this merged data frame
+has the column for both game clicks and
+
+76
+00:06:29.499 --> 00:06:30.105
+adclicks.
+
+77
+00:06:31.780 --> 00:06:35.537
+Finally we'll look at the top five
+rows in this merged data frame.
+
+78
+00:06:35.537 --> 00:06:38.208
+We'll run merge.show.

@@ -1,0 +1,1054 @@
+WEBVTT
+
+1
+00:00:01.500 --> 00:00:06.870
+In a prior course we looked at JSON as
+an example of semi-structured data,
+
+2
+00:00:06.870 --> 00:00:10.020
+and we demonstrated that JSON
+data can be thought of as a tree.
+
+3
+00:00:11.200 --> 00:00:14.180
+In this course,
+we'll focus on querying JSON data.
+
+4
+00:00:15.330 --> 00:00:20.340
+Before we start, lets review
+the details of the JSON structure, and
+
+5
+00:00:20.340 --> 00:00:24.180
+get an initial sense of how
+to query this form of data.
+
+6
+00:00:25.720 --> 00:00:28.590
+Let's consider a simple
+JSON collection and
+
+7
+00:00:28.590 --> 00:00:32.330
+look at the structures,
+substructures actually, it's composed of.
+
+8
+00:00:34.160 --> 00:00:37.990
+The atomic element in the structure
+is a key value pair, for example,
+
+9
+00:00:37.990 --> 00:00:43.520
+name is the key and sue is the value,
+in this case, an atomic string value.
+
+10
+00:00:45.560 --> 00:00:47.178
+To query a key value pair,
+
+11
+00:00:47.178 --> 00:00:52.123
+we should be able perform one basic
+operation given the key, return the value.
+
+12
+00:00:54.140 --> 00:01:00.830
+Now, the value can also be an array,
+an array is a list.
+
+13
+00:01:02.060 --> 00:01:06.940
+So the query operations on it can either
+be on its position in the list or
+
+14
+00:01:06.940 --> 00:01:08.370
+on the value.
+
+15
+00:01:08.370 --> 00:01:12.980
+Thus, we should be able to ask for the
+second element of the array called badges.
+
+16
+00:01:12.980 --> 00:01:17.180
+Or we should be able to seek objects
+of which the key called badges
+
+17
+00:01:17.180 --> 00:01:18.270
+has a value of blue.
+
+18
+00:01:20.130 --> 00:01:25.360
+Notice here that the document
+collection here is itself an array,
+
+19
+00:01:25.360 --> 00:01:29.130
+within square brackets and
+it's just two elements in it.
+
+20
+00:01:29.130 --> 00:01:33.664
+The top level array does not have a key,
+by default it's called db.
+
+21
+00:01:36.820 --> 00:01:41.135
+These key value peers
+are structured as tuples,
+
+22
+00:01:41.135 --> 00:01:44.607
+often with a name In the snippet shown,
+
+23
+00:01:44.607 --> 00:01:48.644
+favorites has a tuple
+of two key value pairs.
+
+24
+00:01:48.644 --> 00:01:53.530
+Now, tuples can be thought of as
+relational records, as the operations
+
+25
+00:01:53.530 --> 00:01:57.800
+would include, projection of an attribute,
+and selection over a set of tables.
+
+26
+00:02:00.330 --> 00:02:03.060
+On the other hand,
+the area called 'points',
+
+27
+00:02:03.060 --> 00:02:07.180
+has two tuples, these two tuples named.
+
+28
+00:02:07.180 --> 00:02:10.880
+As you will see, we'll address
+these tuples by their positions.
+
+29
+00:02:12.570 --> 00:02:16.000
+Finally, this one has nesting,
+
+30
+00:02:16.000 --> 00:02:20.110
+that means a mini structure can be
+embedded within another structure.
+
+31
+00:02:21.250 --> 00:02:24.220
+So we need operations
+that will let us navigate
+
+32
+00:02:24.220 --> 00:02:27.350
+from one structure to any of
+it's embedded structures.
+
+33
+00:02:30.030 --> 00:02:35.180
+Now just like a basic SQL query states,
+which parts of which records from one or
+
+34
+00:02:35.180 --> 00:02:39.840
+more people should be reported,
+a MongoDB query states
+
+35
+00:02:39.840 --> 00:02:43.700
+which parts of which documents from
+a document collection should be returned.
+
+36
+00:02:45.010 --> 00:02:51.088
+The primary query is expressed as a find
+function, which contains two arguments and
+
+37
+00:02:51.088 --> 00:02:56.494
+an optional qualifier, there are four
+things to notice in this function.
+
+38
+00:02:58.142 --> 00:03:00.773
+The first is the term collection,
+
+39
+00:03:00.773 --> 00:03:05.402
+this tells the system which
+document collection to use, and
+
+40
+00:03:05.402 --> 00:03:11.410
+therefore is roughly similar to the From
+clause when restricted to one table.
+
+41
+00:03:11.410 --> 00:03:18.629
+So if the name of the collection is beers,
+the first part would say db.beers.find.
+
+42
+00:03:18.629 --> 00:03:23.098
+The second item is a query filter
+which lists all conditions that
+
+43
+00:03:23.098 --> 00:03:28.159
+the retrieved documents should satisfy,
+so it's like a Where clause.
+
+44
+00:03:30.170 --> 00:03:34.370
+Now, if we want to return everything,
+then this filter is left blank.
+
+45
+00:03:35.550 --> 00:03:39.719
+Otherwise, we'll fill it in a couple
+of ways shown in the next few slides.
+
+46
+00:03:41.330 --> 00:03:45.652
+The third term is a projection class
+which is essentially a list of variables
+
+47
+00:03:45.652 --> 00:03:47.550
+that we want to see in the output.
+
+48
+00:03:49.520 --> 00:03:53.950
+The fourth and last item sits
+after the find function ends and
+
+49
+00:03:53.950 --> 00:03:57.370
+is separated by a dot,
+it's called a cursor modifier.
+
+50
+00:03:58.370 --> 00:04:02.760
+The word cursor relates back
+to SQL where cursor is defined
+
+51
+00:04:02.760 --> 00:04:06.120
+as a block of results that is
+returned to the user in one chunk.
+
+52
+00:04:07.410 --> 00:04:11.357
+This becomes important when the set of
+results is too large to be returned all
+
+53
+00:04:11.357 --> 00:04:14.256
+together, and
+the user may need to specify how much, or
+
+54
+00:04:14.256 --> 00:04:16.614
+what portion of results
+they actually want.
+
+55
+00:04:18.710 --> 00:04:21.776
+So, we'll start out with a few queries,
+
+56
+00:04:21.776 --> 00:04:26.156
+where we show how the same query
+can be expressed in SQL, and
+
+57
+00:04:26.156 --> 00:04:31.220
+in MongoDB The first query
+wants everything from Beers.
+
+58
+00:04:31.220 --> 00:04:34.740
+The SQL query is structured
+on the table Beers, and
+
+59
+00:04:34.740 --> 00:04:37.660
+the SELECT * asks to return all rows.
+
+60
+00:04:38.740 --> 00:04:43.230
+In MongoDB the same query
+is more succincted,
+
+61
+00:04:43.230 --> 00:04:45.830
+since the name of the collection
+is already specified in
+
+62
+00:04:45.830 --> 00:04:49.650
+calling the find function,
+the body of the find function is empty.
+
+63
+00:04:50.650 --> 00:04:55.020
+That means there are no query conditions
+and no projection clauses in it.
+
+64
+00:04:55.020 --> 00:04:59.550
+The second query
+
+65
+00:04:59.550 --> 00:05:04.160
+needs to return the variables beer and
+price for all records.
+
+66
+00:05:05.810 --> 00:05:12.120
+So the find function here needs an empty
+query condition denoted by the open and
+
+67
+00:05:12.120 --> 00:05:17.860
+closed brace symbols, but the projection
+clauses are specifically identified.
+
+68
+00:05:17.860 --> 00:05:21.760
+There is a 1 if an attribute is output and
+a 0 if it is not.
+
+69
+00:05:21.760 --> 00:05:26.500
+As a shortcut,
+only variables with 1 are required.
+
+70
+00:05:28.000 --> 00:05:29.204
+Okay, so when do you use 0?
+
+71
+00:05:30.360 --> 00:05:31.870
+A common situation is the following.
+
+72
+00:05:33.160 --> 00:05:37.548
+Every MongoDB document has
+an identifier named _id.
+
+73
+00:05:40.139 --> 00:05:44.410
+By default every query will
+return the id of the document.
+
+74
+00:05:45.700 --> 00:05:49.150
+If you don't want it to return
+this designated attribute,
+
+75
+00:05:49.150 --> 00:05:55.970
+you should explicitly say, _id:0.
+
+76
+00:05:55.970 --> 00:05:58.630
+Next we will add query conditions.
+
+77
+00:05:58.630 --> 00:06:02.640
+That is the equivalent of
+the Where clause in SQL.
+
+78
+00:06:02.640 --> 00:06:07.490
+Our query number three has the query
+condition where name is equal to a value.
+
+79
+00:06:08.600 --> 00:06:15.020
+In MongoDB, that equal to translate
+to a variable colon value form.
+
+80
+00:06:16.070 --> 00:06:21.135
+Notice the symbol used for
+a string is quotes.
+
+81
+00:06:22.987 --> 00:06:25.720
+Query four is more interesting for
+two reasons.
+
+82
+00:06:26.770 --> 00:06:30.980
+First, we see a way in which
+the distinct operation is specified.
+
+83
+00:06:32.580 --> 00:06:38.670
+Notice here that the primary query
+function is not find any more but
+
+84
+00:06:38.670 --> 00:06:40.310
+a new function called distinct.
+
+85
+00:06:41.790 --> 00:06:45.990
+As we'll see later again in our slides,
+
+86
+00:06:45.990 --> 00:06:49.660
+MongoDB uses a few special query
+functions for some of the operations.
+
+87
+00:06:51.520 --> 00:06:55.620
+So, you need to know, which function
+should be used in what context,
+
+88
+00:06:55.620 --> 00:06:57.270
+when you write MogoDB queries.
+
+89
+00:06:58.640 --> 00:07:03.191
+Secondly, in this query,
+we have a non-equality condition,
+
+90
+00:07:03.191 --> 00:07:06.153
+namely, the price is greater than 15.
+
+91
+00:07:08.370 --> 00:07:12.418
+This example shows MongoDB style
+of using operators in a query.
+
+92
+00:07:12.418 --> 00:07:17.090
+It's always variable:
+
+93
+00:07:17.090 --> 00:07:21.470
+followed by MongoDB's name for the
+operator, and then the comparison value.
+
+94
+00:07:22.580 --> 00:07:24.959
+So where would you find
+MongoDB's operators?
+
+95
+00:07:26.620 --> 00:07:28.890
+Here are some of the operators
+supported in MongoDB.
+
+96
+00:07:30.300 --> 00:07:33.860
+These operators and others are listed
+in the URL shown at the bottom.
+
+97
+00:07:35.210 --> 00:07:37.430
+The operators shown here are color coded.
+
+98
+00:07:38.470 --> 00:07:41.866
+The top blue set
+are the comparison operators.
+
+99
+00:07:41.866 --> 00:07:47.760
+We see the $gt, greater than,
+operation that we used in the last slide.
+
+100
+00:07:50.100 --> 00:07:54.780
+The green colored operations are array
+operations which we'll see shortly.
+
+101
+00:07:54.780 --> 00:07:58.370
+And the yellow operators at the bottom
+are logical operations that
+
+102
+00:07:58.370 --> 00:08:02.070
+combine two conditions in different ways
+like the AND operation we saw in SQL.
+
+103
+00:08:02.070 --> 00:08:07.860
+Now, the last operator $nor,
+is interesting,
+
+104
+00:08:07.860 --> 00:08:13.110
+because it is used to specify queries
+when neither of two conditions must hold.
+
+105
+00:08:13.110 --> 00:08:16.960
+For example, find all beer
+whose name is neither bad nor
+
+106
+00:08:16.960 --> 00:08:20.080
+is the price less than $6 per bottle.
+
+107
+00:08:20.080 --> 00:08:23.021
+Now I would strongly encourage you
+to play with these operators in
+
+108
+00:08:23.021 --> 00:08:24.098
+your hands on session.
+
+109
+00:08:27.220 --> 00:08:29.980
+Now I'm sure you remember
+the like query in SQL.
+
+110
+00:08:31.420 --> 00:08:37.000
+MongoDB uses regular expressions
+to specify partial string matches.
+
+111
+00:08:37.000 --> 00:08:39.120
+Now some of you may not know
+what a regular expression is.
+
+112
+00:08:39.120 --> 00:08:41.660
+Let's first use some examples.
+
+113
+00:08:43.680 --> 00:08:48.150
+The first example is the same query
+we saw before when we're asking for
+
+114
+00:08:48.150 --> 00:08:53.514
+beer manufacturers,
+whose name has a sub string A-M in it,
+
+115
+00:08:53.514 --> 00:08:56.620
+so A-M can appear
+anywhere within the name.
+
+116
+00:08:57.630 --> 00:08:58.550
+To do this,
+
+117
+00:08:58.550 --> 00:09:03.890
+the query condition first states that
+it is going to use a $regex operation.
+
+118
+00:09:04.980 --> 00:09:10.340
+And then we have to give
+the partial string as /am/.
+
+119
+00:09:10.340 --> 00:09:16.250
+Then it gives the directive
+that this match
+
+120
+00:09:16.250 --> 00:09:21.560
+should be case insensitive by placing
+an i after the partial string.
+
+121
+00:09:21.560 --> 00:09:28.070
+And if we just wanted to do names we
+would stop right after the find function.
+
+122
+00:09:28.070 --> 00:09:33.120
+But here we also want to do a count,
+which is a post operation
+
+123
+00:09:33.120 --> 00:09:38.140
+after the find, so we use .count
+at the end of the find function.
+
+124
+00:09:39.860 --> 00:09:46.560
+Now, what if we have the same query,
+but we want the partial string A-m?
+
+125
+00:09:46.560 --> 00:09:49.610
+To appear at the beginning of the name and
+
+126
+00:09:49.610 --> 00:09:52.070
+you'd like the A to really
+be a capital letter.
+
+127
+00:09:53.460 --> 00:09:57.540
+In this case we use
+the caret sign to indicate
+
+128
+00:09:57.540 --> 00:09:59.950
+that the partial string is at
+the beginning of the name.
+
+129
+00:10:01.090 --> 00:10:05.786
+Naturally we also drop the i at the end
+because the match is no longer case
+
+130
+00:10:05.786 --> 00:10:10.389
+insensitive A more complex
+
+131
+00:10:10.389 --> 00:10:15.445
+partial string pattern will be a case
+where our name starts with capital A-m,
+
+132
+00:10:15.445 --> 00:10:19.600
+then has a number of characters
+in the middle and ends with corp.
+
+133
+00:10:20.810 --> 00:10:26.140
+So for the first part,
+the string pattern is ^Am.
+
+134
+00:10:26.140 --> 00:10:31.370
+For the second part, that is,
+any character in the middle, we use dot
+
+135
+00:10:31.370 --> 00:10:37.480
+to represent any character, and star
+to represent zero or more occurrences.
+
+136
+00:10:37.480 --> 00:10:40.090
+For the third part, we say corp but
+
+137
+00:10:40.090 --> 00:10:44.580
+put a dollar at the end to say that it
+must appear at the end of the string.
+
+138
+00:10:45.830 --> 00:10:49.330
+The regular expression pattern is
+a sub-language, in itself, and
+
+139
+00:10:49.330 --> 00:10:52.500
+is supported by most
+programming languages today.
+
+140
+00:10:52.500 --> 00:10:56.530
+We will refer you to the following
+URL to learn more about it.
+
+141
+00:10:58.120 --> 00:11:01.270
+Also, note an example that,
+instead of saying, find.count,
+
+142
+00:11:01.270 --> 00:11:06.200
+we can directly use the count function,
+natively defined in MongoDB.
+
+143
+00:11:08.680 --> 00:11:13.070
+One important feature of JSON is that
+everything contain arrays, as a type of
+
+144
+00:11:13.070 --> 00:11:19.390
+collection objects, this enables us
+to query arrays in multiple ways.
+
+145
+00:11:19.390 --> 00:11:23.460
+One of them,
+is to consider an array as a list and
+
+146
+00:11:23.460 --> 00:11:28.310
+perform intersection operations,
+the first query shows this.
+
+147
+00:11:28.310 --> 00:11:29.840
+The data item is shown on the right.
+
+148
+00:11:31.190 --> 00:11:35.600
+It has the area value attribute
+called tags with three entries.
+
+149
+00:11:35.600 --> 00:11:40.390
+The first query asks if two specific
+strings belong to the array.
+
+150
+00:11:41.660 --> 00:11:46.510
+In other words, it wants to get
+the document whose tagged attribute
+
+151
+00:11:46.510 --> 00:11:48.480
+intersects with the query supplied array.
+
+152
+00:11:49.520 --> 00:11:53.640
+In this case, there is an intersection and
+the document is returned.
+
+153
+00:11:55.250 --> 00:11:57.950
+In the second case, it is asking for
+
+154
+00:11:57.950 --> 00:12:01.570
+a documents who's tags
+attribute has no intersection.
+
+155
+00:12:02.920 --> 00:12:08.880
+Now notice the $nin operator so
+there is no intersection with this list.
+
+156
+00:12:10.730 --> 00:12:14.810
+So in this document there exists and
+intersection so nothing will be returned.
+
+157
+00:12:16.940 --> 00:12:21.560
+A different kind of array query uses
+the positions of the list elements and
+
+158
+00:12:21.560 --> 00:12:23.680
+wants to extract a portion of the array.
+
+159
+00:12:24.950 --> 00:12:28.000
+This is illustrated in
+the third query which asks for
+
+160
+00:12:28.000 --> 00:12:31.140
+the second and third items of the array.
+
+161
+00:12:31.140 --> 00:12:35.890
+To encode this in MongoDB,
+we use the $slice operator
+
+162
+00:12:35.890 --> 00:12:41.890
+which needs two parameters,
+the number of variable limits to skip,
+
+163
+00:12:41.890 --> 00:12:44.370
+and the number of variable limits
+to extract after skipping.
+
+164
+00:12:45.420 --> 00:12:50.910
+In this case, we need to extract items two
+and three, so the skip value is one and
+
+165
+00:12:50.910 --> 00:12:55.130
+the number of items is two,
+thus returning summer and Japanese.
+
+166
+00:12:56.320 --> 00:13:00.990
+Now, we could get the same result if we
+pose the query using the last statement.
+
+167
+00:13:02.080 --> 00:13:06.740
+In this case, the minus says that
+the system should count from the end and
+
+168
+00:13:07.800 --> 00:13:10.360
+the true says that it should
+extract two elements.
+
+169
+00:13:11.990 --> 00:13:16.096
+Now if we omitted the minus sign,
+it will come from the beginning and
+
+170
+00:13:16.096 --> 00:13:17.981
+fetch the first two elements.
+
+171
+00:13:21.300 --> 00:13:27.570
+Finally, we can also ask for a document
+who's second element in tags is summer.
+
+172
+00:13:27.570 --> 00:13:33.529
+In this case we use an array index
+tags.1 to denote the second element.
+
+173
+00:13:37.580 --> 00:13:42.232
+Compound statements are queries
+with multiple query conditions that
+
+174
+00:13:42.232 --> 00:13:45.750
+are combined using logical operations.
+
+175
+00:13:45.750 --> 00:13:51.167
+The query shown here has one condition,
+which is the and,are in terms of MongoDB,
+
+176
+00:13:51.167 --> 00:13:53.640
+the $and of three different clauses.
+
+177
+00:13:54.710 --> 00:13:57.310
+The last clause is
+the most straight forward,
+
+178
+00:13:57.310 --> 00:14:00.368
+it states that the desired
+item should not be Coors.
+
+179
+00:14:00.368 --> 00:14:07.630
+The first clause is an or, that is,
+a $or, between two sub-conditions,
+
+180
+00:14:07.630 --> 00:14:13.622
+A the prices either 3.99, or B it is 4.99.
+
+181
+00:14:13.622 --> 00:14:18.154
+The second clause is also an or
+of two sub conditions,
+
+182
+00:14:18.154 --> 00:14:23.101
+A the rating is good, and
+B the quantity is less than 20.
+
+183
+00:14:24.474 --> 00:14:27.019
+This query shows that the $and and
+
+184
+00:14:27.019 --> 00:14:32.170
+the $or operators need a list
+that is an array of arguments.
+
+185
+00:14:32.170 --> 00:14:34.343
+To draw a quick comparison,
+
+186
+00:14:34.343 --> 00:14:38.609
+here's the example of the same
+query imposed with SQL.
+
+187
+00:14:43.250 --> 00:14:47.612
+Now, an important feature of
+semi-structured data is that
+
+188
+00:14:47.612 --> 00:14:49.070
+it allows nesting.
+
+189
+00:14:50.120 --> 00:14:54.750
+We showed three documents here,
+where there is an area named points,
+
+190
+00:14:54.750 --> 00:14:58.620
+which in turn has two tuples with
+the elements points and bonus.
+
+191
+00:14:58.620 --> 00:15:04.060
+Let's assume that these three
+documents are part of a collection, so
+
+192
+00:15:04.060 --> 00:15:07.630
+they form three items in
+an area called users.
+
+193
+00:15:08.800 --> 00:15:13.060
+Our goal is to show how we can
+write queries to extract data
+
+194
+00:15:13.060 --> 00:15:15.350
+from these documents with nesting.
+
+195
+00:15:16.620 --> 00:15:19.300
+The first query wants
+to find documents for
+
+196
+00:15:19.300 --> 00:15:23.860
+which, the value of points should
+be less than or equal to 80.
+
+197
+00:15:23.860 --> 00:15:26.052
+Now, which ones?
+
+198
+00:15:26.052 --> 00:15:29.120
+Now, points.0,
+
+199
+00:15:29.120 --> 00:15:34.016
+refers to the first tuple
+under the outer points, and
+
+200
+00:15:34.016 --> 00:15:39.800
+points.0.points, refers to
+the first element of that tuple.
+
+201
+00:15:39.800 --> 00:15:42.980
+Clearly, only the second
+documents satisfies this query.
+
+202
+00:15:45.280 --> 00:15:48.150
+Now, what happens if we have
+the same query but we drop the zero?
+
+203
+00:15:49.410 --> 00:15:54.260
+Now, we are looking for points.points
+without specifying the array index.
+
+204
+00:15:54.260 --> 00:15:56.830
+This means that the points element in
+
+205
+00:15:56.830 --> 00:16:00.050
+any of the tuples should
+have a value of 80 or less.
+
+206
+00:16:01.170 --> 00:16:05.403
+So now, the first and the second
+document will satisfy the query.
+
+207
+00:16:07.900 --> 00:16:11.340
+We can put multiple conditions
+as seen in the third query.
+
+208
+00:16:12.490 --> 00:16:16.740
+It looks for a document where the points
+element of a tuple, should be utmost 81,
+
+209
+00:16:16.740 --> 00:16:23.440
+and the bonus should be exactly 20, and
+clearly the second document qualifies.
+
+210
+00:16:23.440 --> 00:16:25.500
+But does the third document qualify?
+
+211
+00:16:26.930 --> 00:16:32.640
+In this case, the first tuple
+satisfies points greater than 81 and
+
+212
+00:16:32.640 --> 00:16:34.870
+the second tuple satisfies
+bonus equal to 20.
+
+213
+00:16:34.870 --> 00:16:41.190
+The answer is no, because the comma
+is treated as an implicit and
+
+214
+00:16:41.190 --> 00:16:45.280
+condition within the same double,
+as shown in the yellow braces.
+
+215
+00:16:47.320 --> 00:16:50.770
+Now remember that we said in course
+two that all semi-structured
+
+216
+00:16:50.770 --> 00:16:52.070
+data can be viewed as a tree.
+
+217
+00:16:53.490 --> 00:16:57.730
+Now, what if I pick a node of a tree and
+ask for all the descendents of that node?
+
+218
+00:16:58.880 --> 00:17:02.660
+That would require the system
+to recursively get chideNodes,
+
+219
+00:17:02.660 --> 00:17:04.510
+over increasing depth from the given node.
+
+220
+00:17:05.820 --> 00:17:11.141
+Unfortunately, at this time,
+MongoDB does not support recursive search.

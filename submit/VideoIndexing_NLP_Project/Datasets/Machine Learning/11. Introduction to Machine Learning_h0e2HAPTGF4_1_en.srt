@@ -1,0 +1,6047 @@
+﻿1
+00:00:00,000 --> 00:00:00,790
+
+
+2
+00:00:00,790 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,570
+at ocw.mit.edu.
+
+9
+00:00:18,570 --> 00:00:30,932
+
+
+10
+00:00:30,931 --> 00:00:31,639
+ERIC GRIMSON: OK.
+
+11
+00:00:31,640 --> 00:00:34,480
+Welcome back.
+
+12
+00:00:34,479 --> 00:00:36,039
+You know, it's that
+time a term when
+
+13
+00:00:36,039 --> 00:00:38,950
+we're all kind of doing this.
+
+14
+00:00:38,950 --> 00:00:41,980
+So let me see if I can get a few
+smiles by simply noting to you
+
+15
+00:00:41,979 --> 00:00:45,716
+that two weeks from
+today is the last class.
+
+16
+00:00:45,716 --> 00:00:48,049
+Should be worth at least a
+little bit of a smile, right?
+
+17
+00:00:48,049 --> 00:00:49,500
+Professor Guttag is smiling.
+
+18
+00:00:49,500 --> 00:00:51,030
+He likes that idea.
+
+19
+00:00:51,030 --> 00:00:53,829
+You're almost there.
+
+20
+00:00:53,829 --> 00:00:56,670
+What are we doing for the
+last couple of lectures?
+
+21
+00:00:56,670 --> 00:00:58,451
+We're talking about
+linear regression.
+
+22
+00:00:58,451 --> 00:00:59,909
+And I just want to
+remind you, this
+
+23
+00:00:59,909 --> 00:01:03,689
+was the idea of I have
+some experimental data.
+
+24
+00:01:03,689 --> 00:01:06,359
+Case of a spring where I put
+different weights on measure
+
+25
+00:01:06,359 --> 00:01:07,620
+displacements.
+
+26
+00:01:07,620 --> 00:01:11,640
+And regression was giving
+us a way of deducing a model
+
+27
+00:01:11,640 --> 00:01:13,495
+to fit that data.
+
+28
+00:01:13,495 --> 00:01:14,947
+And In some cases it was easy.
+
+29
+00:01:14,947 --> 00:01:17,280
+We knew, for example, it was
+going to be a linear model.
+
+30
+00:01:17,280 --> 00:01:19,320
+We found the best line
+that would fit that data.
+
+31
+00:01:19,319 --> 00:01:22,109
+In some cases, we said
+we could use validation
+
+32
+00:01:22,109 --> 00:01:24,959
+to actually let us explore
+to find the best model that
+
+33
+00:01:24,959 --> 00:01:29,579
+would fit it, whether a
+linear, a quadratic, a cubic,
+
+34
+00:01:29,579 --> 00:01:31,500
+some higher order thing.
+
+35
+00:01:31,500 --> 00:01:36,340
+So we'll be using that to
+deduce something about a model.
+
+36
+00:01:36,340 --> 00:01:39,799
+That's a nice segue into
+the topic for the next three
+
+37
+00:01:39,799 --> 00:01:42,679
+lectures, the last big
+topic of the class,
+
+38
+00:01:42,680 --> 00:01:43,897
+which is machine learning.
+
+39
+00:01:43,897 --> 00:01:46,480
+And I'm going to argue, you can
+debate whether that's actually
+
+40
+00:01:46,480 --> 00:01:47,510
+an example of learning.
+
+41
+00:01:47,510 --> 00:01:49,135
+But it has many of
+the elements that we
+
+42
+00:01:49,135 --> 00:01:52,700
+want to talk about when we
+talk about machine learning.
+
+43
+00:01:52,700 --> 00:01:55,210
+So as always, there's
+a reading assignment.
+
+44
+00:01:55,209 --> 00:01:57,500
+Chapter 22 of the book gives
+you a good start on this,
+
+45
+00:01:57,500 --> 00:02:00,159
+and it will follow
+up with other pieces.
+
+46
+00:02:00,159 --> 00:02:03,072
+And I want to start
+by basically outlining
+
+47
+00:02:03,072 --> 00:02:04,030
+what we're going to do.
+
+48
+00:02:04,030 --> 00:02:05,403
+And I'm going to
+begin by saying,
+
+49
+00:02:05,403 --> 00:02:09,129
+as I'm sure you're aware,
+this is a huge topic.
+
+50
+00:02:09,129 --> 00:02:12,759
+I've listed just five
+subjects in course six
+
+51
+00:02:12,759 --> 00:02:14,769
+that all focus on
+machine learning.
+
+52
+00:02:14,770 --> 00:02:16,900
+And that doesn't
+include other subjects
+
+53
+00:02:16,900 --> 00:02:19,030
+where learning is
+a central part.
+
+54
+00:02:19,030 --> 00:02:22,360
+So natural language processing,
+computational biology,
+
+55
+00:02:22,360 --> 00:02:25,390
+computer vision
+robotics all rely today,
+
+56
+00:02:25,389 --> 00:02:27,069
+heavily on machine learning.
+
+57
+00:02:27,069 --> 00:02:30,049
+And you'll see those in
+those subjects as well.
+
+58
+00:02:30,050 --> 00:02:32,560
+So we're not going to
+compress five subjects
+
+59
+00:02:32,560 --> 00:02:34,490
+into three lectures.
+
+60
+00:02:34,490 --> 00:02:36,920
+But what we are going to do
+is give you the introduction.
+
+61
+00:02:36,919 --> 00:02:39,579
+We're going to start by talking
+about the basic concepts
+
+62
+00:02:39,580 --> 00:02:40,810
+of machine learning.
+
+63
+00:02:40,810 --> 00:02:43,780
+The idea of having examples, and
+how do you talk about features
+
+64
+00:02:43,780 --> 00:02:45,610
+representing those
+examples, how do
+
+65
+00:02:45,610 --> 00:02:47,650
+you measure distances
+between them,
+
+66
+00:02:47,650 --> 00:02:50,080
+and use the notion
+of distance to try
+
+67
+00:02:50,080 --> 00:02:52,210
+and group similar
+things together as a way
+
+68
+00:02:52,210 --> 00:02:53,450
+of doing machine learning.
+
+69
+00:02:53,449 --> 00:02:55,329
+And we're going to
+look, as a consequence,
+
+70
+00:02:55,330 --> 00:02:59,530
+of two different standard
+ways of doing learning.
+
+71
+00:02:59,530 --> 00:03:01,555
+One, we call
+classification methods.
+
+72
+00:03:01,555 --> 00:03:02,930
+Example we're
+going to see, there
+
+73
+00:03:02,930 --> 00:03:05,110
+is something called
+"k nearest neighbor"
+
+74
+00:03:05,110 --> 00:03:08,390
+and the second class,
+called clustering methods.
+
+75
+00:03:08,389 --> 00:03:10,750
+Classification works
+well when I have what
+
+76
+00:03:10,750 --> 00:03:12,090
+we would call labeled data.
+
+77
+00:03:12,090 --> 00:03:15,069
+I know labels on my
+examples, and I'm
+
+78
+00:03:15,069 --> 00:03:17,199
+going to use that to
+try and define classes
+
+79
+00:03:17,199 --> 00:03:19,509
+that I can learn, and
+clustering working well,
+
+80
+00:03:19,509 --> 00:03:20,929
+when I don't have labeled data.
+
+81
+00:03:20,930 --> 00:03:23,138
+And we'll see what that
+means in a couple of minutes.
+
+82
+00:03:23,138 --> 00:03:27,500
+But we're going to give
+you an early view of this.
+
+83
+00:03:27,500 --> 00:03:29,360
+Unless Professor Guttag
+changes his mind,
+
+84
+00:03:29,360 --> 00:03:31,760
+we're probably not going to
+show you the current really
+
+85
+00:03:31,759 --> 00:03:33,500
+sophisticated machine
+learning methods
+
+86
+00:03:33,500 --> 00:03:35,870
+like convolutional neural
+nets or deep learning,
+
+87
+00:03:35,870 --> 00:03:37,039
+things you'll read
+about in the news.
+
+88
+00:03:37,039 --> 00:03:38,719
+But you're going to
+get a sense of what's
+
+89
+00:03:38,719 --> 00:03:40,639
+behind those, by looking
+at what we do when we
+
+90
+00:03:40,639 --> 00:03:43,889
+talk about learning algorithms.
+
+91
+00:03:43,889 --> 00:03:45,639
+Before I do it, I want
+to point out to you
+
+92
+00:03:45,639 --> 00:03:47,199
+just how prevalent this is.
+
+93
+00:03:47,199 --> 00:03:49,869
+And I'm going to admit
+with my gray hair,
+
+94
+00:03:49,870 --> 00:03:53,530
+I started working in AI in
+1975 when machine learning was
+
+95
+00:03:53,530 --> 00:03:55,030
+a pretty simple thing to do.
+
+96
+00:03:55,030 --> 00:03:56,469
+And it's been
+fascinating to watch
+
+97
+00:03:56,469 --> 00:03:58,150
+over 40 years, the change.
+
+98
+00:03:58,150 --> 00:04:01,550
+And if you think about it, just
+think about where you see it.
+
+99
+00:04:01,550 --> 00:04:06,730
+AlphaGo, machine learning based
+system from Google that beat
+
+100
+00:04:06,729 --> 00:04:09,039
+a world-class level Go player.
+
+101
+00:04:09,039 --> 00:04:11,979
+Chess has already been conquered
+by computers for a while.
+
+102
+00:04:11,979 --> 00:04:14,019
+Go now belongs to computers.
+
+103
+00:04:14,020 --> 00:04:16,930
+Best Go players in the
+world are computers.
+
+104
+00:04:16,930 --> 00:04:18,519
+I'm sure many of
+you use Netflix.
+
+105
+00:04:18,519 --> 00:04:20,660
+Any recommendation
+system, Netflix,
+
+106
+00:04:20,660 --> 00:04:23,770
+Amazon, pick your favorite, uses
+a machine learning algorithm
+
+107
+00:04:23,769 --> 00:04:25,480
+to suggest things for you.
+
+108
+00:04:25,480 --> 00:04:27,730
+And in fact, you've probably
+seen it on Google, right?
+
+109
+00:04:27,730 --> 00:04:29,560
+The ads that pop
+up on Google are
+
+110
+00:04:29,560 --> 00:04:31,689
+coming from a machine
+learning algorithm that's
+
+111
+00:04:31,689 --> 00:04:33,219
+looking at your preferences.
+
+112
+00:04:33,220 --> 00:04:34,900
+Scary thought.
+
+113
+00:04:34,899 --> 00:04:38,979
+Drug discovery, character
+recognition-- the post office
+
+114
+00:04:38,980 --> 00:04:41,975
+does character recognition of
+handwritten characters using
+
+115
+00:04:41,975 --> 00:04:44,350
+a machine learning algorithm
+and a computer vision system
+
+116
+00:04:44,350 --> 00:04:46,330
+behind it.
+
+117
+00:04:46,329 --> 00:04:48,189
+You probably don't
+know this company.
+
+118
+00:04:48,189 --> 00:04:50,259
+It's actually an MIT
+spin-off called Two Sigma,
+
+119
+00:04:50,259 --> 00:04:52,060
+it's a hedge fund in New York.
+
+120
+00:04:52,060 --> 00:04:54,970
+They heavily use AI and
+machine learning techniques.
+
+121
+00:04:54,970 --> 00:05:01,947
+And two years ago, their
+fund returned a 56% return.
+
+122
+00:05:01,947 --> 00:05:03,280
+I wish I'd invested in the fund.
+
+123
+00:05:03,279 --> 00:05:04,849
+I don't have the kinds
+of millions you need,
+
+124
+00:05:04,850 --> 00:05:06,370
+but that's an impressive return.
+
+125
+00:05:06,370 --> 00:05:09,545
+56% return on your
+money in one year.
+
+126
+00:05:09,545 --> 00:05:11,170
+Last year they didn't
+do quite as well,
+
+127
+00:05:11,170 --> 00:05:14,140
+but they do extremely well using
+machine learning techniques.
+
+128
+00:05:14,139 --> 00:05:16,550
+Siri.
+
+129
+00:05:16,550 --> 00:05:18,680
+Another great MIT
+company called Mobileye
+
+130
+00:05:18,680 --> 00:05:21,110
+that does computer vision
+systems with a heavy machine
+
+131
+00:05:21,110 --> 00:05:24,080
+learning component that is
+used in assistive driving
+
+132
+00:05:24,079 --> 00:05:26,449
+and will be used in
+completely autonomous driving.
+
+133
+00:05:26,449 --> 00:05:28,519
+It will do things like
+kick in your brakes
+
+134
+00:05:28,519 --> 00:05:32,067
+if you're closing too fast
+on the car in front of you,
+
+135
+00:05:32,067 --> 00:05:33,650
+which is going to
+be really bad for me
+
+136
+00:05:33,649 --> 00:05:35,599
+because I drive
+like a Bostonian.
+
+137
+00:05:35,600 --> 00:05:38,030
+And it would be
+kicking in constantly.
+
+138
+00:05:38,029 --> 00:05:39,529
+Face recognition.
+
+139
+00:05:39,529 --> 00:05:42,529
+Facebook uses this,
+many other systems
+
+140
+00:05:42,529 --> 00:05:46,069
+do to both detect
+and recognize faces.
+
+141
+00:05:46,069 --> 00:05:48,719
+IBM Watson-- cancer diagnosis.
+
+142
+00:05:48,720 --> 00:05:50,390
+These are all just
+examples of machine
+
+143
+00:05:50,389 --> 00:05:52,819
+learning being used everywhere.
+
+144
+00:05:52,819 --> 00:05:53,870
+And it really is.
+
+145
+00:05:53,870 --> 00:05:56,720
+I've only picked nine.
+
+146
+00:05:56,720 --> 00:06:00,280
+So what is it?
+
+147
+00:06:00,279 --> 00:06:02,139
+I'm going to make an
+obnoxious statement.
+
+148
+00:06:02,139 --> 00:06:03,694
+You're now used to that.
+
+149
+00:06:03,694 --> 00:06:05,069
+I'm going to claim
+that you could
+
+150
+00:06:05,069 --> 00:06:09,420
+argue that almost every computer
+program learns something.
+
+151
+00:06:09,420 --> 00:06:11,640
+But the level of learning
+really varies a lot.
+
+152
+00:06:11,639 --> 00:06:15,149
+So if you think back to
+the first lecture in 60001,
+
+153
+00:06:15,149 --> 00:06:18,629
+we showed you Newton's method
+for computing square roots.
+
+154
+00:06:18,629 --> 00:06:20,909
+And you could argue,
+you'd have to stretch it,
+
+155
+00:06:20,910 --> 00:06:23,280
+but you could argue
+that that method learns
+
+156
+00:06:23,279 --> 00:06:25,259
+something about how to
+compute square roots.
+
+157
+00:06:25,259 --> 00:06:29,985
+In fact, you could generalize
+it to roots of any order power.
+
+158
+00:06:29,985 --> 00:06:31,110
+But it really didn't learn.
+
+159
+00:06:31,110 --> 00:06:33,439
+I really had to program it.
+
+160
+00:06:33,439 --> 00:06:33,959
+All right.
+
+161
+00:06:33,959 --> 00:06:37,500
+Think about last week when we
+talked about linear regression.
+
+162
+00:06:37,500 --> 00:06:39,810
+Now it starts to feel
+a little bit more
+
+163
+00:06:39,810 --> 00:06:41,040
+like a learning algorithm.
+
+164
+00:06:41,040 --> 00:06:41,998
+Because what did we do?
+
+165
+00:06:41,997 --> 00:06:44,550
+We gave you a set
+of data points,
+
+166
+00:06:44,550 --> 00:06:47,199
+mass displacement data points.
+
+167
+00:06:47,199 --> 00:06:49,649
+And then we showed you how
+the computer could essentially
+
+168
+00:06:49,649 --> 00:06:52,289
+fit a curve to that data point.
+
+169
+00:06:52,290 --> 00:06:56,100
+And it was, in some sense,
+learning a model for that data
+
+170
+00:06:56,100 --> 00:06:58,960
+that it could then use
+to predict behavior.
+
+171
+00:06:58,959 --> 00:07:00,424
+In other situations.
+
+172
+00:07:00,425 --> 00:07:01,800
+And that's getting
+closer to what
+
+173
+00:07:01,800 --> 00:07:03,509
+we would like when we
+think about a machine
+
+174
+00:07:03,509 --> 00:07:04,300
+learning algorithm.
+
+175
+00:07:04,300 --> 00:07:10,459
+We'd like to have program that
+can learn from experience,
+
+176
+00:07:10,459 --> 00:07:14,279
+something that it can then
+use to deduce new facts.
+
+177
+00:07:14,279 --> 00:07:16,979
+Now it's been a problem in
+AI for a very long time.
+
+178
+00:07:16,980 --> 00:07:18,080
+And I love this quote.
+
+179
+00:07:18,079 --> 00:07:21,529
+It's from a gentleman
+named Art Samuel.
+
+180
+00:07:21,529 --> 00:07:24,793
+1959 is the quote
+in which he says,
+
+181
+00:07:24,793 --> 00:07:26,209
+his definition of
+machine learning
+
+182
+00:07:26,209 --> 00:07:28,129
+is the field of study
+that gives computers
+
+183
+00:07:28,129 --> 00:07:32,391
+the ability to learn without
+being explicitly programmed.
+
+184
+00:07:32,391 --> 00:07:33,890
+And I think many
+people would argue,
+
+185
+00:07:33,889 --> 00:07:36,079
+he wrote the first such program.
+
+186
+00:07:36,079 --> 00:07:38,709
+It learned from experience.
+
+187
+00:07:38,709 --> 00:07:40,291
+In his case, it played checkers.
+
+188
+00:07:40,291 --> 00:07:42,250
+Kind of shows you how
+the field has progressed.
+
+189
+00:07:42,250 --> 00:07:45,610
+But we started with checkers,
+we got to chess, we now do Go.
+
+190
+00:07:45,610 --> 00:07:46,569
+But it played checkers.
+
+191
+00:07:46,569 --> 00:07:49,240
+It beat national level
+players, most importantly,
+
+192
+00:07:49,240 --> 00:07:52,569
+it learned to
+improve its methods
+
+193
+00:07:52,569 --> 00:07:55,629
+by watching how it did in games
+and then inferring something
+
+194
+00:07:55,629 --> 00:07:58,492
+to change what it thought
+about as it did that.
+
+195
+00:07:58,492 --> 00:07:59,950
+Samuel did a bunch
+of other things.
+
+196
+00:07:59,949 --> 00:08:00,939
+I just highlighted one.
+
+197
+00:08:00,939 --> 00:08:02,170
+You may see in a
+follow on course,
+
+198
+00:08:02,170 --> 00:08:04,295
+he invented what's called
+Alpha-Beta Pruning, which
+
+199
+00:08:04,295 --> 00:08:06,896
+is a really useful
+technique for doing search.
+
+200
+00:08:06,896 --> 00:08:10,390
+But the idea is, how can
+we have the computer learn
+
+201
+00:08:10,389 --> 00:08:13,443
+without being
+explicitly programmed?
+
+202
+00:08:13,444 --> 00:08:14,860
+And one way to
+think about this is
+
+203
+00:08:14,860 --> 00:08:17,439
+to think about the difference
+between how we would normally
+
+204
+00:08:17,439 --> 00:08:19,870
+program and what we would
+like from a machine learning
+
+205
+00:08:19,870 --> 00:08:21,692
+algorithm.
+
+206
+00:08:21,692 --> 00:08:23,650
+Normal programming, I
+know you're not convinced
+
+207
+00:08:23,649 --> 00:08:25,440
+there's such a thing
+as normal programming,
+
+208
+00:08:25,440 --> 00:08:27,819
+but if you think of
+traditional programming,
+
+209
+00:08:27,819 --> 00:08:30,099
+what's the process?
+
+210
+00:08:30,100 --> 00:08:33,610
+I write a program that
+I input to the computer
+
+211
+00:08:33,610 --> 00:08:36,340
+so that it can then
+take data and produce
+
+212
+00:08:36,340 --> 00:08:38,408
+some appropriate output.
+
+213
+00:08:38,408 --> 00:08:40,750
+And the square root finder
+really sits there, right?
+
+214
+00:08:40,750 --> 00:08:43,480
+I wrote code for using Newton
+method to find a square root,
+
+215
+00:08:43,480 --> 00:08:47,000
+and then it gave me the
+process of given any number,
+
+216
+00:08:47,000 --> 00:08:48,250
+I'll give you the square root.
+
+217
+00:08:48,250 --> 00:08:50,799
+
+
+218
+00:08:50,799 --> 00:08:52,779
+But if you think about
+what we did last time,
+
+219
+00:08:52,779 --> 00:08:53,862
+it was a little different.
+
+220
+00:08:53,863 --> 00:08:56,900
+And in fact, in a machine
+learning approach,
+
+221
+00:08:56,899 --> 00:09:01,600
+the idea is that I'm going
+to give the computer output.
+
+222
+00:09:01,600 --> 00:09:05,920
+I'm going to give it examples of
+what I want the program to do,
+
+223
+00:09:05,919 --> 00:09:08,379
+labels on data,
+characterizations
+
+224
+00:09:08,379 --> 00:09:10,379
+of different classes of things.
+
+225
+00:09:10,379 --> 00:09:11,860
+And what I want
+the computer to do
+
+226
+00:09:11,860 --> 00:09:15,580
+is, given that characterization
+of output and data,
+
+227
+00:09:15,580 --> 00:09:17,500
+I wanted that machine
+learning algorithm
+
+228
+00:09:17,500 --> 00:09:20,480
+to actually produce
+for me a program,
+
+229
+00:09:20,480 --> 00:09:23,330
+a program that I can
+then use to infer
+
+230
+00:09:23,330 --> 00:09:25,370
+new information about things.
+
+231
+00:09:25,370 --> 00:09:29,442
+And that creates, if you
+like, a really nice loop
+
+232
+00:09:29,442 --> 00:09:31,399
+where I can have the
+machine learning algorithm
+
+233
+00:09:31,399 --> 00:09:34,189
+learn the program
+which I can then use
+
+234
+00:09:34,190 --> 00:09:36,190
+to solve some other problem.
+
+235
+00:09:36,190 --> 00:09:38,260
+That would be really
+great if we could do it.
+
+236
+00:09:38,259 --> 00:09:40,340
+And as I suggested, that
+curve-fitting algorithm
+
+237
+00:09:40,340 --> 00:09:41,870
+is a simple version of that.
+
+238
+00:09:41,870 --> 00:09:44,690
+It learned a model for the
+data, which I could then
+
+239
+00:09:44,690 --> 00:09:46,820
+use to label any other
+instances of the data
+
+240
+00:09:46,820 --> 00:09:49,670
+or predict what I would see in
+terms of spring displacement
+
+241
+00:09:49,669 --> 00:09:52,099
+as I changed the masses.
+
+242
+00:09:52,100 --> 00:09:54,850
+So that's the kind of idea
+we're going to explore.
+
+243
+00:09:54,850 --> 00:09:57,050
+If we want to learn
+things, we could also
+
+244
+00:09:57,049 --> 00:09:59,199
+ask, so how do you learn?
+
+245
+00:09:59,200 --> 00:10:02,537
+And how should a computer learn?
+
+246
+00:10:02,537 --> 00:10:05,120
+Well, for you as a human, there
+are a couple of possibilities.
+
+247
+00:10:05,120 --> 00:10:06,139
+This is the boring one.
+
+248
+00:10:06,139 --> 00:10:08,899
+This is the old style
+way of doing it, right?
+
+249
+00:10:08,899 --> 00:10:10,909
+Memorize facts.
+
+250
+00:10:10,909 --> 00:10:13,629
+Memorize as many facts as you
+can and hope that we ask you
+
+251
+00:10:13,629 --> 00:10:16,189
+on the final exam
+instances of those facts,
+
+252
+00:10:16,190 --> 00:10:19,100
+as opposed to some other
+facts you haven't memorized.
+
+253
+00:10:19,100 --> 00:10:22,580
+This is, if you think way
+back to the first lecture,
+
+254
+00:10:22,580 --> 00:10:26,840
+an example of declarative
+knowledge, statements of truth.
+
+255
+00:10:26,840 --> 00:10:28,370
+Memorize as many as you can.
+
+256
+00:10:28,370 --> 00:10:31,620
+Have Wikipedia in
+your back pocket.
+
+257
+00:10:31,620 --> 00:10:35,279
+Better way to learn is to
+be able to infer, to deduce
+
+258
+00:10:35,279 --> 00:10:37,980
+new information from old.
+
+259
+00:10:37,980 --> 00:10:39,629
+And if you think
+about this, this
+
+260
+00:10:39,629 --> 00:10:42,870
+gets closer to what we
+called imperative knowledge--
+
+261
+00:10:42,870 --> 00:10:46,370
+ways to deduce new things.
+
+262
+00:10:46,370 --> 00:10:48,100
+Now, in the first
+cases, we built
+
+263
+00:10:48,100 --> 00:10:51,509
+that in when we wrote that
+program to do square roots.
+
+264
+00:10:51,509 --> 00:10:53,429
+But what we'd like in
+a learning algorithm
+
+265
+00:10:53,429 --> 00:10:56,759
+is to have much more like
+that generalization idea.
+
+266
+00:10:56,759 --> 00:10:59,879
+We're interested in
+extending our capabilities
+
+267
+00:10:59,879 --> 00:11:03,840
+to write programs that can
+infer useful information
+
+268
+00:11:03,840 --> 00:11:06,030
+from implicit
+patterns in the data.
+
+269
+00:11:06,029 --> 00:11:08,309
+So not something
+explicitly built
+
+270
+00:11:08,309 --> 00:11:11,099
+like that comparison of
+weights and displacements,
+
+271
+00:11:11,100 --> 00:11:13,350
+but actually implicit
+patterns in the data,
+
+272
+00:11:13,350 --> 00:11:16,740
+and have the algorithm figure
+out what those patterns are,
+
+273
+00:11:16,740 --> 00:11:18,779
+and use those to
+generate a program you
+
+274
+00:11:18,779 --> 00:11:22,169
+can use to infer new
+data about objects,
+
+275
+00:11:22,169 --> 00:11:24,299
+about string
+displacements, whatever
+
+276
+00:11:24,299 --> 00:11:27,400
+it is you're trying to do.
+
+277
+00:11:27,400 --> 00:11:27,899
+OK.
+
+278
+00:11:27,899 --> 00:11:30,199
+So the idea then,
+the basic paradigm
+
+279
+00:11:30,200 --> 00:11:32,480
+that we're going
+to see, is we're
+
+280
+00:11:32,480 --> 00:11:35,090
+going to give the
+system some training
+
+281
+00:11:35,090 --> 00:11:37,129
+data, some observations.
+
+282
+00:11:37,129 --> 00:11:41,299
+We did that last time with
+just the spring displacements.
+
+283
+00:11:41,299 --> 00:11:43,043
+We're going to then
+try and have a way
+
+284
+00:11:43,043 --> 00:11:44,960
+to figure out, how do
+we write code, how do we
+
+285
+00:11:44,960 --> 00:11:47,509
+write a program, a system
+that will infer something
+
+286
+00:11:47,509 --> 00:11:51,289
+about the process that
+generated the data?
+
+287
+00:11:51,289 --> 00:11:53,269
+And then from
+that, we want to be
+
+288
+00:11:53,269 --> 00:11:55,310
+able to use that to make
+predictions about things
+
+289
+00:11:55,309 --> 00:11:57,859
+we haven't seen before.
+
+290
+00:11:57,860 --> 00:11:59,610
+So again, I want to
+drive home this point.
+
+291
+00:11:59,610 --> 00:12:04,830
+If you think about it, the
+spring example fit that model.
+
+292
+00:12:04,830 --> 00:12:08,340
+I gave you a set of
+data, spatial deviations
+
+293
+00:12:08,340 --> 00:12:09,720
+relative to mass displacements.
+
+294
+00:12:09,720 --> 00:12:12,040
+For different masses, how
+far did the spring move?
+
+295
+00:12:12,039 --> 00:12:16,549
+I then inferred something
+about the underlying process.
+
+296
+00:12:16,549 --> 00:12:18,659
+In the first case, I
+said I know it's linear,
+
+297
+00:12:18,659 --> 00:12:21,480
+but let me figure out what
+the actual linear equation is.
+
+298
+00:12:21,480 --> 00:12:24,149
+What's the spring constant
+associated with it?
+
+299
+00:12:24,149 --> 00:12:26,819
+And based on that result,
+I got a piece of code
+
+300
+00:12:26,820 --> 00:12:30,120
+I could use to predict
+new displacements.
+
+301
+00:12:30,120 --> 00:12:32,860
+So it's got all of those
+elements, training data,
+
+302
+00:12:32,860 --> 00:12:35,190
+an inference engine,
+and then the ability
+
+303
+00:12:35,190 --> 00:12:38,140
+to use that to make
+new predictions.
+
+304
+00:12:38,139 --> 00:12:40,330
+But that's a very simple
+kind of learning setting.
+
+305
+00:12:40,330 --> 00:12:41,920
+So the more common
+one is one I'm
+
+306
+00:12:41,919 --> 00:12:43,449
+going to use as
+an example, which
+
+307
+00:12:43,450 --> 00:12:47,210
+is, when I give you
+a set of examples,
+
+308
+00:12:47,210 --> 00:12:49,360
+those examples have some
+data associated with them,
+
+309
+00:12:49,360 --> 00:12:52,330
+some features and some labels.
+
+310
+00:12:52,330 --> 00:12:53,980
+For each example,
+I might say this
+
+311
+00:12:53,980 --> 00:12:55,960
+is a particular kind of thing.
+
+312
+00:12:55,960 --> 00:12:58,102
+This other one is
+another kind of thing.
+
+313
+00:12:58,101 --> 00:12:59,559
+And what I want to
+do is figure out
+
+314
+00:12:59,559 --> 00:13:01,929
+how to do inference on
+labeling new things.
+
+315
+00:13:01,929 --> 00:13:04,524
+So it's not just, what's the
+displacement of the mass,
+
+316
+00:13:04,524 --> 00:13:05,440
+it's actually a label.
+
+317
+00:13:05,440 --> 00:13:07,540
+And I'm going to use one
+of my favorite examples.
+
+318
+00:13:07,539 --> 00:13:09,969
+I'm a big New
+England Patriots fan,
+
+319
+00:13:09,970 --> 00:13:11,507
+if you're not, my apologies.
+
+320
+00:13:11,506 --> 00:13:13,089
+But I'm going to use
+football players.
+
+321
+00:13:13,090 --> 00:13:15,040
+So I'm going to show
+you in a second,
+
+322
+00:13:15,039 --> 00:13:17,829
+I'm going to give you a set of
+examples of football players.
+
+323
+00:13:17,830 --> 00:13:20,222
+The label is the
+position they play.
+
+324
+00:13:20,221 --> 00:13:22,179
+And the data, well, it
+could be lots of things.
+
+325
+00:13:22,179 --> 00:13:23,919
+We're going to use
+height and weight.
+
+326
+00:13:23,919 --> 00:13:25,659
+But what we want
+to do is then see
+
+327
+00:13:25,659 --> 00:13:29,079
+how would we come up with
+a way of characterizing
+
+328
+00:13:29,080 --> 00:13:32,170
+the implicit pattern of how
+does weight and height predict
+
+329
+00:13:32,169 --> 00:13:34,629
+the kind of position
+this player could play.
+
+330
+00:13:34,629 --> 00:13:36,289
+And then come up
+with an algorithm
+
+331
+00:13:36,289 --> 00:13:38,514
+that will predict the
+position of new players.
+
+332
+00:13:38,514 --> 00:13:39,939
+We'll do the draft
+for next year.
+
+333
+00:13:39,940 --> 00:13:42,670
+Where do we want them to play?
+
+334
+00:13:42,669 --> 00:13:44,500
+That's the paradigm.
+
+335
+00:13:44,500 --> 00:13:48,909
+Set of observations, potentially
+labeled, potentially not.
+
+336
+00:13:48,909 --> 00:13:51,519
+Think about how do we do
+inference to find a model.
+
+337
+00:13:51,519 --> 00:13:55,000
+And then how do we use that
+model to make predictions.
+
+338
+00:13:55,000 --> 00:13:56,428
+What we're going
+to see, and we're
+
+339
+00:13:56,428 --> 00:13:57,970
+going to see multiple
+examples today,
+
+340
+00:13:57,970 --> 00:13:59,500
+is that that
+learning can be done
+
+341
+00:13:59,500 --> 00:14:02,870
+in one of two very broad ways.
+
+342
+00:14:02,870 --> 00:14:05,460
+The first one is called
+supervised learning.
+
+343
+00:14:05,460 --> 00:14:08,139
+And in that case,
+for every new example
+
+344
+00:14:08,139 --> 00:14:09,850
+I give you as part
+of the training data,
+
+345
+00:14:09,850 --> 00:14:11,470
+I have a label on it.
+
+346
+00:14:11,470 --> 00:14:13,553
+I know the kind of thing it is.
+
+347
+00:14:13,553 --> 00:14:15,220
+And what I'm going
+to do is look for how
+
+348
+00:14:15,220 --> 00:14:18,399
+do I find a rule that would
+predict the label associated
+
+349
+00:14:18,399 --> 00:14:21,610
+with unseen input based
+on those examples.
+
+350
+00:14:21,610 --> 00:14:25,009
+It's supervised because I
+know what the labeling is.
+
+351
+00:14:25,009 --> 00:14:26,750
+Second kind, if
+this is supervised,
+
+352
+00:14:26,750 --> 00:14:28,820
+the obvious other one
+is called unsupervised.
+
+353
+00:14:28,820 --> 00:14:32,210
+In that case, I'm just going to
+give you a bunch of examples.
+
+354
+00:14:32,210 --> 00:14:34,550
+But I don't know the labels
+associated with them.
+
+355
+00:14:34,549 --> 00:14:36,139
+I'm going to just
+try and find what
+
+356
+00:14:36,139 --> 00:14:39,019
+are the natural ways
+to group those examples
+
+357
+00:14:39,019 --> 00:14:41,679
+together into different models.
+
+358
+00:14:41,679 --> 00:14:44,089
+And in some cases, I may know
+how many models are there.
+
+359
+00:14:44,090 --> 00:14:45,923
+In some cases, I may
+want to just say what's
+
+360
+00:14:45,923 --> 00:14:48,769
+the best grouping I can find.
+
+361
+00:14:48,769 --> 00:14:50,759
+OK.
+
+362
+00:14:50,759 --> 00:14:52,928
+What I'm going to do today
+is not a lot of code.
+
+363
+00:14:52,928 --> 00:14:55,470
+I was expecting cheers for that,
+John, but I didn't get them.
+
+364
+00:14:55,470 --> 00:14:57,240
+Not a lot of code.
+
+365
+00:14:57,240 --> 00:14:59,250
+What I'm going to do
+is show you basically,
+
+366
+00:14:59,250 --> 00:15:01,059
+the intuitions behind
+doing this learning.
+
+367
+00:15:01,059 --> 00:15:03,559
+And I"m going to start with my
+New England Patriots example.
+
+368
+00:15:03,559 --> 00:15:06,879
+So here are some data points
+about current Patriots players.
+
+369
+00:15:06,879 --> 00:15:09,120
+And I've got two
+kinds of positions.
+
+370
+00:15:09,120 --> 00:15:12,240
+I've got receivers,
+and I have linemen.
+
+371
+00:15:12,240 --> 00:15:15,090
+And each one is just labeled by
+the name, the height in inches,
+
+372
+00:15:15,090 --> 00:15:16,649
+and the weight in pounds.
+
+373
+00:15:16,649 --> 00:15:17,699
+OK?
+
+374
+00:15:17,700 --> 00:15:20,590
+Five of each.
+
+375
+00:15:20,590 --> 00:15:24,370
+If I plot those on a
+two dimensional plot,
+
+376
+00:15:24,370 --> 00:15:26,259
+this is what I get.
+
+377
+00:15:26,259 --> 00:15:26,860
+OK?
+
+378
+00:15:26,860 --> 00:15:29,320
+No big deal.
+
+379
+00:15:29,320 --> 00:15:30,490
+What am I trying to do?
+
+380
+00:15:30,490 --> 00:15:33,370
+I'm trying to learn, are
+their characteristics
+
+381
+00:15:33,370 --> 00:15:36,220
+that distinguish the two
+classes from one another?
+
+382
+00:15:36,220 --> 00:15:38,200
+And in the unlabeled
+case, all I have
+
+383
+00:15:38,200 --> 00:15:40,240
+are just a set of examples.
+
+384
+00:15:40,240 --> 00:15:42,220
+So what I want to
+do is decide what
+
+385
+00:15:42,220 --> 00:15:46,240
+makes two players similar
+with the goal of seeing,
+
+386
+00:15:46,240 --> 00:15:50,259
+can I separate this
+distribution into two or more
+
+387
+00:15:50,259 --> 00:15:52,429
+natural groups.
+
+388
+00:15:52,429 --> 00:15:54,120
+Similar is a distance measure.
+
+389
+00:15:54,120 --> 00:15:56,118
+It says how do I take
+two examples with values
+
+390
+00:15:56,118 --> 00:15:57,493
+or features
+associated, and we're
+
+391
+00:15:57,493 --> 00:15:59,500
+going to decide how
+far apart are they?
+
+392
+00:15:59,500 --> 00:16:03,769
+And in the unlabeled case, the
+simple way to do it is to say,
+
+393
+00:16:03,769 --> 00:16:06,216
+if I know that there are
+at least k groups there--
+
+394
+00:16:06,216 --> 00:16:08,090
+in this case, I'm going
+to tell you there are
+
+395
+00:16:08,090 --> 00:16:09,800
+two different groups there--
+
+396
+00:16:09,799 --> 00:16:12,829
+how could I decide how
+best to cluster things
+
+397
+00:16:12,830 --> 00:16:15,470
+together so that all the
+examples in one group
+
+398
+00:16:15,470 --> 00:16:18,410
+are close to each other, all
+the examples in the other group
+
+399
+00:16:18,409 --> 00:16:22,189
+are close to each other, and
+they're reasonably far apart.
+
+400
+00:16:22,190 --> 00:16:23,780
+There are many ways to do it.
+
+401
+00:16:23,779 --> 00:16:25,259
+I'm going to show you one.
+
+402
+00:16:25,259 --> 00:16:29,919
+It's a very standard way, and
+it works, basically, as follows.
+
+403
+00:16:29,919 --> 00:16:32,339
+If all I know is that
+there are two groups there,
+
+404
+00:16:32,340 --> 00:16:34,080
+I'm going to start
+by just picking
+
+405
+00:16:34,080 --> 00:16:37,497
+two examples as my exemplars.
+
+406
+00:16:37,496 --> 00:16:38,329
+Pick them at random.
+
+407
+00:16:38,330 --> 00:16:39,410
+Actually at random is not great.
+
+408
+00:16:39,409 --> 00:16:40,819
+I don't want to pick too
+closely to each other.
+
+409
+00:16:40,820 --> 00:16:42,528
+I'm going to try and
+pick them far apart.
+
+410
+00:16:42,528 --> 00:16:44,920
+But I pick two examples
+as my exemplars.
+
+411
+00:16:44,919 --> 00:16:47,539
+And for all the other
+examples in the training data,
+
+412
+00:16:47,539 --> 00:16:50,861
+I say which one
+is it closest to.
+
+413
+00:16:50,861 --> 00:16:52,819
+What I'm going to try
+and do is create clusters
+
+414
+00:16:52,820 --> 00:16:54,590
+with the property
+that the distances
+
+415
+00:16:54,590 --> 00:16:57,860
+between all of the examples
+of that cluster are small.
+
+416
+00:16:57,860 --> 00:16:59,932
+The average distance is small.
+
+417
+00:16:59,932 --> 00:17:01,389
+And see if I can
+find clusters that
+
+418
+00:17:01,389 --> 00:17:03,250
+gets the average distance
+for both clusters
+
+419
+00:17:03,250 --> 00:17:05,380
+as small as possible.
+
+420
+00:17:05,380 --> 00:17:08,099
+This algorithm works by
+picking two examples,
+
+421
+00:17:08,098 --> 00:17:10,289
+clustering all the other
+examples by simply saying
+
+422
+00:17:10,289 --> 00:17:15,480
+put it in the group to which
+it's closest to that example.
+
+423
+00:17:15,480 --> 00:17:17,368
+Once I've got
+those clusters, I'm
+
+424
+00:17:17,368 --> 00:17:20,159
+going to find the median
+element of that group.
+
+425
+00:17:20,160 --> 00:17:24,060
+Not mean, but median, what's
+the one closest to the center?
+
+426
+00:17:24,059 --> 00:17:28,057
+And treat those as exemplars
+and repeat the process.
+
+427
+00:17:28,057 --> 00:17:30,015
+And I'll just do it either
+some number of times
+
+428
+00:17:30,015 --> 00:17:33,570
+or until I don't get any
+change in the process.
+
+429
+00:17:33,569 --> 00:17:35,490
+So it's clustering
+based on distance.
+
+430
+00:17:35,490 --> 00:17:38,733
+And we'll come back to
+distance in a second.
+
+431
+00:17:38,733 --> 00:17:40,649
+So here's what would
+have my football players.
+
+432
+00:17:40,650 --> 00:17:43,769
+If I just did this
+based on weight,
+
+433
+00:17:43,769 --> 00:17:45,400
+there's the natural
+dividing line.
+
+434
+00:17:45,400 --> 00:17:46,865
+And it kind of makes sense.
+
+435
+00:17:46,865 --> 00:17:47,500
+All right?
+
+436
+00:17:47,500 --> 00:17:49,193
+These three are
+obviously clustered,
+
+437
+00:17:49,193 --> 00:17:50,609
+and again, it's
+just on this axis.
+
+438
+00:17:50,609 --> 00:17:51,990
+They're all down here.
+
+439
+00:17:51,990 --> 00:17:53,579
+These seven are at
+a different place.
+
+440
+00:17:53,579 --> 00:17:56,529
+There's a natural
+dividing line there.
+
+441
+00:17:56,529 --> 00:18:01,789
+If I were to do it based
+on height, not as clean.
+
+442
+00:18:01,789 --> 00:18:03,409
+This is what my
+algorithm came up
+
+443
+00:18:03,410 --> 00:18:05,360
+with as the best
+dividing line here,
+
+444
+00:18:05,359 --> 00:18:09,139
+meaning that these four,
+again, just based on this axis
+
+445
+00:18:09,140 --> 00:18:10,550
+are close together.
+
+446
+00:18:10,549 --> 00:18:12,169
+These six are close together.
+
+447
+00:18:12,170 --> 00:18:13,900
+But it's not nearly as clean.
+
+448
+00:18:13,900 --> 00:18:15,650
+And that's part of the
+issue we'll look at
+
+449
+00:18:15,650 --> 00:18:18,350
+is how do I find
+the best clusters.
+
+450
+00:18:18,349 --> 00:18:22,439
+If I use both
+height and weight, I
+
+451
+00:18:22,440 --> 00:18:25,570
+get that, which was actually
+kind of nice, right?
+
+452
+00:18:25,569 --> 00:18:28,779
+Those three cluster together.
+they're near each other,
+
+453
+00:18:28,779 --> 00:18:30,910
+in terms of just
+distance in the plane.
+
+454
+00:18:30,910 --> 00:18:32,830
+Those seven are near each other.
+
+455
+00:18:32,829 --> 00:18:36,549
+There's a nice, natural
+dividing line through here.
+
+456
+00:18:36,549 --> 00:18:40,240
+And in fact, that
+gives me a classifier.
+
+457
+00:18:40,240 --> 00:18:43,359
+This line is the
+equidistant line
+
+458
+00:18:43,359 --> 00:18:45,459
+between the centers
+of those two clusters.
+
+459
+00:18:45,460 --> 00:18:47,650
+Meaning, any point
+along this line
+
+460
+00:18:47,650 --> 00:18:49,750
+is the same distance to
+the center of that group
+
+461
+00:18:49,750 --> 00:18:51,569
+as it is to that group.
+
+462
+00:18:51,569 --> 00:18:53,619
+And so any new example,
+if it's above the line,
+
+463
+00:18:53,619 --> 00:18:56,079
+I would say gets that label,
+if it's below the line,
+
+464
+00:18:56,079 --> 00:18:58,211
+gets that label.
+
+465
+00:18:58,211 --> 00:18:59,710
+In a second, we'll
+come back to look
+
+466
+00:18:59,710 --> 00:19:01,168
+at how do we measure
+the distances,
+
+467
+00:19:01,167 --> 00:19:02,829
+but the idea here
+is pretty simple.
+
+468
+00:19:02,829 --> 00:19:05,529
+I want to find groupings
+near each other
+
+469
+00:19:05,529 --> 00:19:09,109
+and far apart from
+the other group.
+
+470
+00:19:09,109 --> 00:19:13,889
+Now suppose I actually knew
+the labels on these players.
+
+471
+00:19:13,890 --> 00:19:16,790
+
+
+472
+00:19:16,789 --> 00:19:18,980
+These are the receivers.
+
+473
+00:19:18,980 --> 00:19:21,059
+Those are the linemen.
+
+474
+00:19:21,059 --> 00:19:22,879
+And for those of you
+who are football fans,
+
+475
+00:19:22,880 --> 00:19:23,710
+you can figure it out, right?
+
+476
+00:19:23,710 --> 00:19:24,918
+Those are the two tight ends.
+
+477
+00:19:24,917 --> 00:19:26,126
+They are much bigger.
+
+478
+00:19:26,126 --> 00:19:28,460
+I think that's Bennett and
+that's Gronk if you're really
+
+479
+00:19:28,460 --> 00:19:29,306
+a big Patriots fan.
+
+480
+00:19:29,306 --> 00:19:31,430
+But those are tight ends,
+those are wide receivers,
+
+481
+00:19:31,430 --> 00:19:33,096
+and it's going to
+come back in a second,
+
+482
+00:19:33,096 --> 00:19:34,400
+but there are the labels.
+
+483
+00:19:34,400 --> 00:19:36,830
+Now what I want to do is say,
+if I could take advantage
+
+484
+00:19:36,829 --> 00:19:40,279
+of knowing the labels, how
+would I divide these groups up?
+
+485
+00:19:40,279 --> 00:19:42,769
+And that's kind of easy to see.
+
+486
+00:19:42,769 --> 00:19:44,869
+Basic idea, in this
+case, is if I've
+
+487
+00:19:44,869 --> 00:19:46,639
+got labeled groups
+in that feature
+
+488
+00:19:46,640 --> 00:19:51,080
+space, what I want to do is
+find a subsurface that naturally
+
+489
+00:19:51,079 --> 00:19:52,220
+divides that space.
+
+490
+00:19:52,220 --> 00:19:53,809
+Now subsurface is a fancy word.
+
+491
+00:19:53,809 --> 00:19:55,460
+It says, in the
+two-dimensional case,
+
+492
+00:19:55,460 --> 00:19:58,279
+I want to know
+what's the best line,
+
+493
+00:19:58,279 --> 00:20:01,069
+if I can find a single line,
+that separates all the examples
+
+494
+00:20:01,069 --> 00:20:04,819
+with one label from all the
+examples of the second label.
+
+495
+00:20:04,819 --> 00:20:07,559
+We'll see that, if the
+examples are well separated,
+
+496
+00:20:07,559 --> 00:20:09,889
+this is easy to
+do, and it's great.
+
+497
+00:20:09,890 --> 00:20:11,600
+But in some cases,
+it's going to be
+
+498
+00:20:11,599 --> 00:20:13,789
+more complicated because
+some of the examples
+
+499
+00:20:13,789 --> 00:20:15,872
+may be very close
+to one another.
+
+500
+00:20:15,872 --> 00:20:17,330
+And that's going
+to raise a problem
+
+501
+00:20:17,329 --> 00:20:19,039
+that you saw last lecture.
+
+502
+00:20:19,039 --> 00:20:20,899
+I want to avoid overfitting.
+
+503
+00:20:20,900 --> 00:20:23,509
+I don't want to create a
+really complicated surface
+
+504
+00:20:23,509 --> 00:20:24,869
+to separate things.
+
+505
+00:20:24,869 --> 00:20:27,559
+And so we may have to
+tolerate a few incorrectly
+
+506
+00:20:27,559 --> 00:20:30,715
+labeled things, if
+we can't pull it out.
+
+507
+00:20:30,715 --> 00:20:32,589
+And as you already
+figured out, in this case,
+
+508
+00:20:32,589 --> 00:20:35,019
+with the labeled data,
+there's the best fitting line
+
+509
+00:20:35,019 --> 00:20:36,460
+right there.
+
+510
+00:20:36,460 --> 00:20:40,090
+Anybody over 280 pounds is
+going to be a great lineman.
+
+511
+00:20:40,089 --> 00:20:45,250
+Anybody under 280 pounds is
+more likely to be a receiver.
+
+512
+00:20:45,250 --> 00:20:45,788
+OK.
+
+513
+00:20:45,788 --> 00:20:47,829
+So I've got two different
+ways of trying to think
+
+514
+00:20:47,829 --> 00:20:48,913
+about doing this labeling.
+
+515
+00:20:48,913 --> 00:20:52,160
+I'm going to come back to
+both of them in a second.
+
+516
+00:20:52,160 --> 00:20:55,490
+Now suppose I add
+in some new data.
+
+517
+00:20:55,490 --> 00:20:57,878
+I want to label new instances.
+
+518
+00:20:57,878 --> 00:21:00,169
+Now these are actually players
+of a different position.
+
+519
+00:21:00,170 --> 00:21:01,230
+These are running backs.
+
+520
+00:21:01,230 --> 00:21:04,529
+But I say, all I know about
+is receivers and linemen.
+
+521
+00:21:04,529 --> 00:21:06,509
+I get these two new data points.
+
+522
+00:21:06,509 --> 00:21:08,609
+I'd like to know, are
+they more likely to be
+
+523
+00:21:08,609 --> 00:21:11,429
+a receiver or a linemen?
+
+524
+00:21:11,430 --> 00:21:14,130
+And there's the data
+for these two gentlemen.
+
+525
+00:21:14,130 --> 00:21:17,640
+So if I go back to
+now plotting them,
+
+526
+00:21:17,640 --> 00:21:19,210
+oh you notice one of the issues.
+
+527
+00:21:19,210 --> 00:21:22,110
+So there are my linemen, the
+red ones are my receivers,
+
+528
+00:21:22,109 --> 00:21:25,859
+the two black dots are
+the two running backs.
+
+529
+00:21:25,859 --> 00:21:28,500
+And notice right here.
+
+530
+00:21:28,500 --> 00:21:31,549
+It's going to be really
+hard to separate those two
+
+531
+00:21:31,549 --> 00:21:32,706
+examples from one another.
+
+532
+00:21:32,707 --> 00:21:34,040
+They are so close to each other.
+
+533
+00:21:34,039 --> 00:21:35,705
+And that's going to
+be one of the things
+
+534
+00:21:35,705 --> 00:21:37,039
+we have to trade off.
+
+535
+00:21:37,039 --> 00:21:41,240
+But if I think about using
+what I learned as a classifier
+
+536
+00:21:41,240 --> 00:21:46,029
+with unlabeled data, there
+were my two clusters.
+
+537
+00:21:46,029 --> 00:21:48,420
+Now you see, oh, I've got
+an interesting example.
+
+538
+00:21:48,420 --> 00:21:51,690
+This new example I would
+say is clearly more
+
+539
+00:21:51,690 --> 00:21:54,240
+like a receiver than a lineman.
+
+540
+00:21:54,240 --> 00:21:57,660
+But that one there, unclear.
+
+541
+00:21:57,660 --> 00:22:00,180
+Almost exactly lies
+along that dividing line
+
+542
+00:22:00,180 --> 00:22:02,310
+between those two clusters.
+
+543
+00:22:02,309 --> 00:22:04,859
+And I would either say, I
+want to rethink the clustering
+
+544
+00:22:04,859 --> 00:22:06,609
+or I want to say, you know what?
+
+545
+00:22:06,609 --> 00:22:09,269
+As I know, maybe there
+aren't two clusters here.
+
+546
+00:22:09,269 --> 00:22:10,559
+Maybe there are three.
+
+547
+00:22:10,559 --> 00:22:13,269
+And I want to classify
+them a little differently.
+
+548
+00:22:13,269 --> 00:22:15,569
+So I'll come back to that.
+
+549
+00:22:15,569 --> 00:22:18,539
+On the other hand, if I
+had used the labeled data,
+
+550
+00:22:18,539 --> 00:22:20,339
+there was my dividing line.
+
+551
+00:22:20,339 --> 00:22:21,959
+This is really easy.
+
+552
+00:22:21,960 --> 00:22:24,150
+Both of those new
+examples are clearly
+
+553
+00:22:24,150 --> 00:22:25,320
+below the dividing line.
+
+554
+00:22:25,319 --> 00:22:27,240
+They are clearly
+examples that I would
+
+555
+00:22:27,240 --> 00:22:29,910
+categorize as being
+more like receivers
+
+556
+00:22:29,910 --> 00:22:32,380
+than they are like linemen.
+
+557
+00:22:32,380 --> 00:22:33,880
+And I know it's a
+football example.
+
+558
+00:22:33,880 --> 00:22:36,130
+If you don't like football,
+pick another example.
+
+559
+00:22:36,130 --> 00:22:38,080
+But you get the
+sense of why I can
+
+560
+00:22:38,079 --> 00:22:41,500
+use the data in a labeled
+case and the unlabeled case
+
+561
+00:22:41,500 --> 00:22:45,771
+to come up with different
+ways of building the clusters.
+
+562
+00:22:45,771 --> 00:22:47,480
+So what we're going
+to do over the next 2
+
+563
+00:22:47,480 --> 00:22:50,190
+and 1/2 lectures is
+look at how can we
+
+564
+00:22:50,190 --> 00:22:54,549
+write code to learn that way
+of separating things out?
+
+565
+00:22:54,549 --> 00:22:57,058
+We're going to learn models
+based on unlabeled data.
+
+566
+00:22:57,058 --> 00:22:59,349
+That's the case where I don't
+know what the labels are,
+
+567
+00:22:59,349 --> 00:23:02,889
+by simply trying to find ways
+to cluster things together
+
+568
+00:23:02,890 --> 00:23:05,830
+nearby, and then use the
+clusters to assign labels
+
+569
+00:23:05,829 --> 00:23:07,019
+to new data.
+
+570
+00:23:07,019 --> 00:23:09,819
+And we're going to learn models
+by looking at labeled data
+
+571
+00:23:09,819 --> 00:23:13,509
+and seeing how do we best come
+up with a way of separating
+
+572
+00:23:13,509 --> 00:23:17,230
+with a line or a plane or a
+collection of lines, examples
+
+573
+00:23:17,230 --> 00:23:20,319
+from one group, from
+examples of the other group.
+
+574
+00:23:20,319 --> 00:23:23,463
+With the acknowledgment that
+we want to avoid overfitting,
+
+575
+00:23:23,463 --> 00:23:25,629
+we don't want to create a
+really complicated system.
+
+576
+00:23:25,630 --> 00:23:27,127
+And as a consequence,
+we're going
+
+577
+00:23:27,126 --> 00:23:28,960
+to have to make some
+trade-offs between what
+
+578
+00:23:28,960 --> 00:23:32,200
+we call false positives
+and false negatives.
+
+579
+00:23:32,200 --> 00:23:34,779
+But the resulting classifier
+can then label any new data
+
+580
+00:23:34,779 --> 00:23:36,730
+by just deciding where
+you are with respect
+
+581
+00:23:36,730 --> 00:23:37,730
+to that separating line.
+
+582
+00:23:37,730 --> 00:23:40,360
+
+
+583
+00:23:40,359 --> 00:23:43,019
+So here's what you're going
+to see over the next 2
+
+584
+00:23:43,019 --> 00:23:44,930
+and 1/2 lectures.
+
+585
+00:23:44,930 --> 00:23:49,509
+Every machine learning method
+has five essential components.
+
+586
+00:23:49,509 --> 00:23:51,309
+We need to decide what's
+the training data,
+
+587
+00:23:51,309 --> 00:23:54,369
+and how are we going to evaluate
+the success of that system.
+
+588
+00:23:54,369 --> 00:23:56,899
+We've already seen
+some examples of that.
+
+589
+00:23:56,900 --> 00:23:58,600
+We need to decide
+how are we going
+
+590
+00:23:58,599 --> 00:24:02,559
+to represent each instance
+that we're giving it.
+
+591
+00:24:02,559 --> 00:24:05,190
+I happened to choose height and
+weight for football players.
+
+592
+00:24:05,190 --> 00:24:08,200
+But I might have been better
+off to pick average speed
+
+593
+00:24:08,200 --> 00:24:10,210
+or, I don't know, arm
+length, something else.
+
+594
+00:24:10,210 --> 00:24:12,670
+How do I figure out what
+are the right features.
+
+595
+00:24:12,670 --> 00:24:15,820
+And associated with that,
+how do I measure distances
+
+596
+00:24:15,819 --> 00:24:17,319
+between those features?
+
+597
+00:24:17,319 --> 00:24:20,096
+How do I decide what's
+close and what's not close?
+
+598
+00:24:20,096 --> 00:24:22,720
+Maybe it should be different, in
+terms of weight versus height,
+
+599
+00:24:22,720 --> 00:24:23,289
+for example.
+
+600
+00:24:23,289 --> 00:24:24,733
+I need to make that decision.
+
+601
+00:24:24,733 --> 00:24:26,149
+And those are the
+two things we're
+
+602
+00:24:26,150 --> 00:24:30,030
+going to show you examples of
+today, how to go through that.
+
+603
+00:24:30,029 --> 00:24:31,529
+Starting next week,
+Professor Guttag
+
+604
+00:24:31,529 --> 00:24:34,430
+is going to show you how you
+take those and actually start
+
+605
+00:24:34,430 --> 00:24:38,259
+building more detailed versions
+of measuring clustering,
+
+606
+00:24:38,259 --> 00:24:41,559
+measuring similarities to find
+an objective function that you
+
+607
+00:24:41,559 --> 00:24:44,829
+want to minimize to decide what
+is the best cluster to use.
+
+608
+00:24:44,829 --> 00:24:47,230
+And then what is the best
+optimization method you want
+
+609
+00:24:47,230 --> 00:24:50,349
+to use to learn that model.
+
+610
+00:24:50,349 --> 00:24:54,079
+So let's start talking
+about features.
+
+611
+00:24:54,079 --> 00:24:56,960
+I've got a set of
+examples, labeled or not.
+
+612
+00:24:56,960 --> 00:24:59,450
+I need to decide what is it
+about those examples that's
+
+613
+00:24:59,450 --> 00:25:02,660
+useful to use when I
+want to decide what's
+
+614
+00:25:02,660 --> 00:25:05,350
+close to another thing or not.
+
+615
+00:25:05,349 --> 00:25:07,469
+And one of the problems
+is, if it was really easy,
+
+616
+00:25:07,470 --> 00:25:09,600
+it would be really easy.
+
+617
+00:25:09,599 --> 00:25:12,509
+Features don't always
+capture what you want.
+
+618
+00:25:12,509 --> 00:25:14,490
+I'm going to belabor
+that football analogy,
+
+619
+00:25:14,490 --> 00:25:16,049
+but why did I pick
+height and weight.
+
+620
+00:25:16,049 --> 00:25:18,307
+Because it was easy to find.
+
+621
+00:25:18,307 --> 00:25:20,640
+You know, if you work for the
+New England Patriots, what
+
+622
+00:25:20,640 --> 00:25:22,900
+is the thing that you really
+look for when you're asking,
+
+623
+00:25:22,900 --> 00:25:23,660
+what's the right feature?
+
+624
+00:25:23,660 --> 00:25:25,660
+It's probably some other
+combination of things.
+
+625
+00:25:25,660 --> 00:25:27,810
+So you, as a designer,
+have to say what
+
+626
+00:25:27,809 --> 00:25:29,951
+are the features I want to use.
+
+627
+00:25:29,951 --> 00:25:31,410
+That quote, by the
+way, is from one
+
+628
+00:25:31,410 --> 00:25:33,618
+of the great statisticians
+of the 20th century, which
+
+629
+00:25:33,617 --> 00:25:35,639
+I think captures it well.
+
+630
+00:25:35,640 --> 00:25:39,630
+So feature engineering,
+as you, as a programmer,
+
+631
+00:25:39,630 --> 00:25:42,030
+comes down to deciding
+both what are the features
+
+632
+00:25:42,029 --> 00:25:45,480
+I want to measure in that vector
+that I'm going to put together,
+
+633
+00:25:45,480 --> 00:25:49,339
+and how do I decide
+relative ways to weight it?
+
+634
+00:25:49,339 --> 00:25:55,519
+So John, and Ana, and I
+could have made our job
+
+635
+00:25:55,519 --> 00:25:57,900
+this term really easy
+if we had sat down
+
+636
+00:25:57,900 --> 00:25:59,900
+at the beginning of the
+term and said, you know,
+
+637
+00:25:59,900 --> 00:26:01,269
+we've taught this
+course many times.
+
+638
+00:26:01,269 --> 00:26:02,685
+We've got data
+from, I don't know,
+
+639
+00:26:02,685 --> 00:26:05,649
+John, thousands of students,
+probably over this time.
+
+640
+00:26:05,650 --> 00:26:07,640
+Let's just build a
+little learning algorithm
+
+641
+00:26:07,640 --> 00:26:11,127
+that takes a set of data and
+predicts your final grade.
+
+642
+00:26:11,126 --> 00:26:12,710
+You don't have to
+come to class, don't
+
+643
+00:26:12,710 --> 00:26:13,670
+have to go through
+all the problems,
+
+644
+00:26:13,670 --> 00:26:15,440
+because we'll just
+predict your final grade.
+
+645
+00:26:15,440 --> 00:26:16,355
+Wouldn't that be nice?
+
+646
+00:26:16,355 --> 00:26:18,950
+Make our job a little easier,
+and you may or may not
+
+647
+00:26:18,950 --> 00:26:20,930
+like that idea.
+
+648
+00:26:20,930 --> 00:26:23,203
+But I could think about
+predicting that grade?
+
+649
+00:26:23,203 --> 00:26:24,619
+Now why am I telling
+this example.
+
+650
+00:26:24,619 --> 00:26:26,619
+I was trying to see if I
+could get a few smiles.
+
+651
+00:26:26,619 --> 00:26:28,750
+I saw a couple of them there.
+
+652
+00:26:28,750 --> 00:26:30,779
+But think about the features.
+
+653
+00:26:30,779 --> 00:26:31,961
+What I measure?
+
+654
+00:26:31,961 --> 00:26:34,210
+Actually, I'll put this on
+John because it's his idea.
+
+655
+00:26:34,210 --> 00:26:35,930
+What would he measure?
+
+656
+00:26:35,930 --> 00:26:41,090
+Well, GPA is probably not a
+bad predictor of performance.
+
+657
+00:26:41,089 --> 00:26:42,649
+You do well in other
+classes, you're
+
+658
+00:26:42,650 --> 00:26:45,140
+likely to do well in this class.
+
+659
+00:26:45,140 --> 00:26:47,000
+I'm going to use this
+one very carefully.
+
+660
+00:26:47,000 --> 00:26:50,839
+Prior programming experience
+is at least a predictor,
+
+661
+00:26:50,839 --> 00:26:53,548
+but it is not a
+perfect predictor.
+
+662
+00:26:53,548 --> 00:26:55,339
+Those of you who haven't
+programmed before,
+
+663
+00:26:55,339 --> 00:26:57,319
+in this class, you can still
+do really well in this class.
+
+664
+00:26:57,319 --> 00:26:59,694
+But it's an indication that
+you've seen other programming
+
+665
+00:26:59,694 --> 00:27:01,579
+languages.
+
+666
+00:27:01,579 --> 00:27:04,250
+On the other hand, I don't
+believe in astrology.
+
+667
+00:27:04,250 --> 00:27:06,890
+So I don't think the month
+in which you're born,
+
+668
+00:27:06,890 --> 00:27:09,470
+the astrological sign
+under which you were born
+
+669
+00:27:09,470 --> 00:27:12,500
+has probably anything to do
+with how well you'd program.
+
+670
+00:27:12,500 --> 00:27:14,304
+I doubt that eye color
+has anything to do
+
+671
+00:27:14,304 --> 00:27:15,470
+with how well you'd program.
+
+672
+00:27:15,470 --> 00:27:16,178
+You get the idea.
+
+673
+00:27:16,178 --> 00:27:19,730
+Some features
+matter, others don't.
+
+674
+00:27:19,730 --> 00:27:23,029
+Now I could just throw all
+the features in and hope that
+
+675
+00:27:23,029 --> 00:27:25,609
+the machine learning algorithm
+sorts out those it wants
+
+676
+00:27:25,609 --> 00:27:27,919
+to keep from those it doesn't.
+
+677
+00:27:27,920 --> 00:27:30,560
+But I remind you of that
+idea of overfitting.
+
+678
+00:27:30,559 --> 00:27:32,569
+If I do that,
+there is the danger
+
+679
+00:27:32,569 --> 00:27:35,899
+that it will find some
+correlation between birth
+
+680
+00:27:35,900 --> 00:27:39,200
+month, eye color, and GPA.
+
+681
+00:27:39,200 --> 00:27:41,029
+And that's going to
+lead to a conclusion
+
+682
+00:27:41,029 --> 00:27:43,162
+that we really don't like.
+
+683
+00:27:43,162 --> 00:27:44,620
+By the way, in case
+you're worried,
+
+684
+00:27:44,619 --> 00:27:46,059
+I can assure you
+that Stu Schmill
+
+685
+00:27:46,059 --> 00:27:47,859
+in the dean of
+admissions department
+
+686
+00:27:47,859 --> 00:27:50,436
+does not use machine
+learning to pick you.
+
+687
+00:27:50,436 --> 00:27:52,269
+He actually looks at a
+whole bunch of things
+
+688
+00:27:52,269 --> 00:27:55,180
+because it's not easy to
+replace him with a machine--
+
+689
+00:27:55,180 --> 00:27:56,765
+yet.
+
+690
+00:27:56,765 --> 00:27:57,370
+All right.
+
+691
+00:27:57,369 --> 00:28:00,013
+So what this says is
+we need to think about
+
+692
+00:28:00,013 --> 00:28:01,179
+how do we pick the features.
+
+693
+00:28:01,180 --> 00:28:02,638
+And mostly, what
+we're trying to do
+
+694
+00:28:02,637 --> 00:28:05,829
+is to maximize something called
+the signal to noise ratio.
+
+695
+00:28:05,829 --> 00:28:09,669
+Maximize those features that
+carry the most information,
+
+696
+00:28:09,670 --> 00:28:12,580
+and remove the ones that don't.
+
+697
+00:28:12,579 --> 00:28:14,409
+So I want to show
+you an example of how
+
+698
+00:28:14,410 --> 00:28:17,529
+you might think about this.
+
+699
+00:28:17,529 --> 00:28:19,964
+I want to label reptiles.
+
+700
+00:28:19,964 --> 00:28:22,859
+I want to come up with a
+way of labeling animals as,
+
+701
+00:28:22,859 --> 00:28:25,067
+are they a reptile or not.
+
+702
+00:28:25,067 --> 00:28:26,400
+And I give you a single example.
+
+703
+00:28:26,400 --> 00:28:28,560
+With a single example,
+you can't really do much.
+
+704
+00:28:28,559 --> 00:28:32,759
+But from this example, I know
+that a cobra, it lays eggs,
+
+705
+00:28:32,759 --> 00:28:35,129
+it has scales, it's
+poisonous, it's cold blooded,
+
+706
+00:28:35,130 --> 00:28:37,200
+it has no legs,
+and it's a reptile.
+
+707
+00:28:37,200 --> 00:28:39,834
+So I could say my model
+of a reptile is well,
+
+708
+00:28:39,834 --> 00:28:40,500
+I'm not certain.
+
+709
+00:28:40,500 --> 00:28:42,990
+I don't have enough data yet.
+
+710
+00:28:42,990 --> 00:28:45,329
+But if I give you
+a second example,
+
+711
+00:28:45,329 --> 00:28:47,069
+and it also happens
+to be egg-laying,
+
+712
+00:28:47,069 --> 00:28:49,740
+have scales, poisonous,
+cold blooded, no legs.
+
+713
+00:28:49,740 --> 00:28:51,720
+There is my model, right?
+
+714
+00:28:51,720 --> 00:28:53,959
+Perfectly reasonable
+model, whether I design it
+
+715
+00:28:53,959 --> 00:28:55,500
+or a machine learning
+algorithm would
+
+716
+00:28:55,500 --> 00:29:00,210
+do it says, if all of these are
+true, label it as a reptile.
+
+717
+00:29:00,210 --> 00:29:02,110
+OK?
+
+718
+00:29:02,109 --> 00:29:05,365
+And now I give you
+a boa constrictor.
+
+719
+00:29:05,365 --> 00:29:07,259
+Ah.
+
+720
+00:29:07,259 --> 00:29:08,789
+It's a reptile.
+
+721
+00:29:08,789 --> 00:29:11,119
+But it doesn't fit the model.
+
+722
+00:29:11,119 --> 00:29:14,759
+And in particular,
+it's not egg-laying,
+
+723
+00:29:14,759 --> 00:29:16,906
+and it's not poisonous.
+
+724
+00:29:16,906 --> 00:29:18,240
+So I've got to refine the model.
+
+725
+00:29:18,240 --> 00:29:19,990
+Or the algorithm has
+got to refine the model.
+
+726
+00:29:19,990 --> 00:29:21,960
+And this, I want to remind you,
+is looking at the features.
+
+727
+00:29:21,960 --> 00:29:23,910
+So I started out
+with five features.
+
+728
+00:29:23,910 --> 00:29:25,870
+This doesn't fit.
+
+729
+00:29:25,869 --> 00:29:28,729
+So probably what I
+should do is reduce it.
+
+730
+00:29:28,730 --> 00:29:29,970
+I'm going to look at scales.
+
+731
+00:29:29,970 --> 00:29:31,385
+I'm going to look
+at cold blooded.
+
+732
+00:29:31,385 --> 00:29:32,789
+I'm going to look at legs.
+
+733
+00:29:32,789 --> 00:29:34,411
+That captures all
+three examples.
+
+734
+00:29:34,411 --> 00:29:36,660
+Again, if you think about
+this in terms of clustering,
+
+735
+00:29:36,660 --> 00:29:39,621
+all three of them
+would fit with that.
+
+736
+00:29:39,621 --> 00:29:40,120
+OK.
+
+737
+00:29:40,119 --> 00:29:42,679
+Now I give you another example--
+
+738
+00:29:42,680 --> 00:29:44,070
+chicken.
+
+739
+00:29:44,069 --> 00:29:45,534
+I don't think it's a reptile.
+
+740
+00:29:45,535 --> 00:29:48,600
+In fact, I'm pretty
+sure it's not a reptile.
+
+741
+00:29:48,599 --> 00:29:53,349
+And it nicely still
+fits this model, right?
+
+742
+00:29:53,349 --> 00:29:56,309
+Because, while it has scales,
+which you may or not realize,
+
+743
+00:29:56,309 --> 00:29:58,500
+it's not cold blooded,
+and it has legs.
+
+744
+00:29:58,500 --> 00:30:02,380
+So it is a negative example
+that reinforces the model.
+
+745
+00:30:02,380 --> 00:30:04,644
+Sounds good.
+
+746
+00:30:04,644 --> 00:30:07,740
+And now I'll give
+you an alligator.
+
+747
+00:30:07,740 --> 00:30:09,720
+It's a reptile.
+
+748
+00:30:09,720 --> 00:30:11,460
+And oh fudge, right?
+
+749
+00:30:11,460 --> 00:30:14,370
+It doesn't satisfy the model.
+
+750
+00:30:14,369 --> 00:30:19,169
+Because while it does have
+scales and it is cold blooded,
+
+751
+00:30:19,170 --> 00:30:21,154
+it has legs.
+
+752
+00:30:21,154 --> 00:30:22,529
+I'm almost done
+with the example.
+
+753
+00:30:22,529 --> 00:30:23,445
+But you see the point.
+
+754
+00:30:23,445 --> 00:30:25,649
+Again, I've got to think
+about how do I refine this.
+
+755
+00:30:25,650 --> 00:30:28,500
+And I could by
+saying, all right.
+
+756
+00:30:28,500 --> 00:30:30,930
+Let's make it a little more
+complicated-- has scales,
+
+757
+00:30:30,930 --> 00:30:32,787
+cold blooded, 0 or four legs--
+
+758
+00:30:32,787 --> 00:30:34,120
+I'm going to say it's a reptile.
+
+759
+00:30:34,119 --> 00:30:36,669
+
+
+760
+00:30:36,670 --> 00:30:38,860
+I'll give you the dart frog.
+
+761
+00:30:38,859 --> 00:30:40,779
+Not a reptile,
+it's an amphibian.
+
+762
+00:30:40,779 --> 00:30:43,000
+And that's nice because
+it still satisfies this.
+
+763
+00:30:43,000 --> 00:30:45,730
+So it's an example outside
+of the cluster that
+
+764
+00:30:45,730 --> 00:30:50,211
+says no scales,
+not cold blooded,
+
+765
+00:30:50,211 --> 00:30:51,460
+but happens to have four legs.
+
+766
+00:30:51,460 --> 00:30:52,250
+It's not a reptile.
+
+767
+00:30:52,250 --> 00:30:53,779
+That's good.
+
+768
+00:30:53,779 --> 00:30:55,112
+And then I give you--
+
+769
+00:30:55,112 --> 00:30:56,570
+I have to give you
+a python, right?
+
+770
+00:30:56,569 --> 00:30:58,931
+I mean, there has to
+be a python in here.
+
+771
+00:30:58,931 --> 00:30:59,430
+Oh come on.
+
+772
+00:30:59,430 --> 00:31:01,130
+At least grown at
+me when I say that.
+
+773
+00:31:01,130 --> 00:31:02,990
+There has to be a python here.
+
+774
+00:31:02,990 --> 00:31:05,470
+And I give you
+that and a salmon.
+
+775
+00:31:05,470 --> 00:31:08,620
+And now I am in trouble.
+
+776
+00:31:08,619 --> 00:31:14,809
+Because look at scales, look
+at cold blooded, look at legs.
+
+777
+00:31:14,809 --> 00:31:16,609
+I can't separate them.
+
+778
+00:31:16,609 --> 00:31:18,229
+On those features,
+there's no way
+
+779
+00:31:18,230 --> 00:31:20,509
+to come up with a way
+that will correctly
+
+780
+00:31:20,509 --> 00:31:24,576
+say that the python is a
+reptile and the salmon is not.
+
+781
+00:31:24,576 --> 00:31:28,370
+And so there's no easy
+way to add in that rule.
+
+782
+00:31:28,369 --> 00:31:30,559
+And probably my best
+thing is to simply go back
+
+783
+00:31:30,559 --> 00:31:34,490
+to just two features,
+scales and cold blooded.
+
+784
+00:31:34,490 --> 00:31:35,960
+And basically say,
+if something has
+
+785
+00:31:35,960 --> 00:31:38,786
+scales and it's cold blooded,
+I'm going to call it a reptile.
+
+786
+00:31:38,786 --> 00:31:40,160
+If it doesn't have
+both of those,
+
+787
+00:31:40,160 --> 00:31:42,170
+I'm going to say
+it's not a reptile.
+
+788
+00:31:42,170 --> 00:31:44,009
+It won't be perfect.
+
+789
+00:31:44,009 --> 00:31:45,799
+It's going to incorrectly
+label the salmon.
+
+790
+00:31:45,799 --> 00:31:49,309
+But I've made a design
+choice here that's important.
+
+791
+00:31:49,309 --> 00:31:54,230
+And the design choice is that
+I will have no false negatives.
+
+792
+00:31:54,230 --> 00:31:55,730
+What that means is
+there's not going
+
+793
+00:31:55,730 --> 00:31:59,240
+to be any instance of something
+that's not a reptile that I'm
+
+794
+00:31:59,240 --> 00:32:01,380
+going to call a reptile.
+
+795
+00:32:01,380 --> 00:32:04,114
+I may have some false positives.
+
+796
+00:32:04,114 --> 00:32:05,279
+So I did that the wrong way.
+
+797
+00:32:05,279 --> 00:32:06,720
+A false negative
+says, everything
+
+798
+00:32:06,720 --> 00:32:10,019
+that's not a reptile I'm going
+to categorize that direction.
+
+799
+00:32:10,019 --> 00:32:11,759
+I may have some false
+positives, in that,
+
+800
+00:32:11,759 --> 00:32:13,920
+I may have a few things
+that I will incorrectly
+
+801
+00:32:13,920 --> 00:32:15,690
+label as a reptile.
+
+802
+00:32:15,690 --> 00:32:17,700
+And in particular,
+salmon is going
+
+803
+00:32:17,700 --> 00:32:19,620
+to be an instance of that.
+
+804
+00:32:19,619 --> 00:32:22,098
+This trade off of false
+positives and false negatives
+
+805
+00:32:22,098 --> 00:32:24,389
+is something that we worry
+about, as we think about it.
+
+806
+00:32:24,390 --> 00:32:26,690
+Because there's no perfect
+way, in many cases,
+
+807
+00:32:26,690 --> 00:32:28,391
+to separate out the data.
+
+808
+00:32:28,391 --> 00:32:30,640
+And if you think back to my
+example of the New England
+
+809
+00:32:30,640 --> 00:32:33,876
+Patriots, that running back
+and that wide receiver were
+
+810
+00:32:33,875 --> 00:32:35,500
+so close together in
+height and weight,
+
+811
+00:32:35,500 --> 00:32:38,256
+there was no way I'm going to
+be able to separate them apart.
+
+812
+00:32:38,256 --> 00:32:39,880
+And I just have to
+be willing to decide
+
+813
+00:32:39,880 --> 00:32:42,320
+how many false positives
+or false negatives
+
+814
+00:32:42,319 --> 00:32:45,369
+do I want to tolerate.
+
+815
+00:32:45,369 --> 00:32:49,979
+Once I've figured out what
+features to use, which is good,
+
+816
+00:32:49,980 --> 00:32:52,210
+then I have to decide
+about distance.
+
+817
+00:32:52,210 --> 00:32:53,960
+How do I compare
+two feature vectors?
+
+818
+00:32:53,960 --> 00:32:54,960
+I'm going to say vector
+because there could
+
+819
+00:32:54,960 --> 00:32:56,640
+be multiple dimensions to it.
+
+820
+00:32:56,640 --> 00:32:58,259
+How do I decide how
+to compare them?
+
+821
+00:32:58,259 --> 00:33:01,349
+Because I want to use the
+distances to figure out either
+
+822
+00:33:01,349 --> 00:33:03,959
+how to group things together
+or how to find a dividing line
+
+823
+00:33:03,960 --> 00:33:05,940
+that separates things apart.
+
+824
+00:33:05,940 --> 00:33:09,470
+So one of the things I have
+to decide is which features.
+
+825
+00:33:09,470 --> 00:33:10,970
+I also have to
+decide the distance.
+
+826
+00:33:10,970 --> 00:33:12,710
+And finally, I
+may want to decide
+
+827
+00:33:12,710 --> 00:33:16,660
+how to weigh relative importance
+of different dimensions
+
+828
+00:33:16,660 --> 00:33:17,990
+in the feature vector.
+
+829
+00:33:17,990 --> 00:33:21,400
+Some may be more valuable than
+others in making that decision.
+
+830
+00:33:21,400 --> 00:33:24,570
+And I want to show you
+an example of that.
+
+831
+00:33:24,569 --> 00:33:27,908
+So let's go back to my animals.
+
+832
+00:33:27,909 --> 00:33:29,950
+I started off with a
+feature vector that actually
+
+833
+00:33:29,950 --> 00:33:31,390
+had five dimensions to it.
+
+834
+00:33:31,390 --> 00:33:36,305
+It was egg-laying, cold
+blooded, has scales,
+
+835
+00:33:36,305 --> 00:33:39,700
+I forget what the other one
+was, and number of legs.
+
+836
+00:33:39,700 --> 00:33:41,559
+So one of the ways I
+could think about this
+
+837
+00:33:41,559 --> 00:33:46,179
+is saying I've got four binary
+features and one integer
+
+838
+00:33:46,180 --> 00:33:48,910
+feature associated
+with each animal.
+
+839
+00:33:48,910 --> 00:33:52,000
+And one way to learn to separate
+out reptiles from non reptiles
+
+840
+00:33:52,000 --> 00:33:56,590
+is to measure the distance
+between pairs of examples
+
+841
+00:33:56,590 --> 00:33:58,839
+and use that distance to
+decide what's near each other
+
+842
+00:33:58,839 --> 00:33:59,663
+and what's not.
+
+843
+00:33:59,663 --> 00:34:01,329
+And as we've said
+before, it will either
+
+844
+00:34:01,329 --> 00:34:04,210
+be used to cluster things or to
+find a classifier surface that
+
+845
+00:34:04,210 --> 00:34:06,620
+separates them.
+
+846
+00:34:06,619 --> 00:34:09,069
+So here's a simple way to do it.
+
+847
+00:34:09,070 --> 00:34:11,470
+For each of these examples,
+I'm going to just let true
+
+848
+00:34:11,469 --> 00:34:13,059
+be 1, false be 0.
+
+849
+00:34:13,059 --> 00:34:15,309
+So the first four
+are either 0s or 1s.
+
+850
+00:34:15,309 --> 00:34:17,708
+And the last one is
+the number of legs.
+
+851
+00:34:17,708 --> 00:34:19,000
+And now I could say, all right.
+
+852
+00:34:19,000 --> 00:34:22,539
+How do I measure
+distances between animals
+
+853
+00:34:22,539 --> 00:34:25,884
+or anything else, but these
+kinds of feature vectors?
+
+854
+00:34:25,884 --> 00:34:27,300
+Here, we're going
+to use something
+
+855
+00:34:27,300 --> 00:34:30,750
+called the Minkowski Metric
+or the Minkowski difference.
+
+856
+00:34:30,750 --> 00:34:34,079
+Given two vectors
+and a power, p,
+
+857
+00:34:34,079 --> 00:34:36,299
+we basically take
+the absolute value
+
+858
+00:34:36,300 --> 00:34:38,429
+of the difference between
+each of the components
+
+859
+00:34:38,429 --> 00:34:43,969
+of the vector, raise it to
+the p-th power, take the sum,
+
+860
+00:34:43,969 --> 00:34:46,840
+and take the p-th route of that.
+
+861
+00:34:46,840 --> 00:34:48,460
+So let's do the two
+obvious examples.
+
+862
+00:34:48,460 --> 00:34:51,699
+If p is equal to 1, I just
+measure the absolute distance
+
+863
+00:34:51,699 --> 00:34:56,469
+between each component, add
+them up, and that's my distance.
+
+864
+00:34:56,469 --> 00:34:58,715
+It's called the
+Manhattan metric.
+
+865
+00:34:58,715 --> 00:35:00,840
+The one you've seen more,
+the one we saw last time,
+
+866
+00:35:00,840 --> 00:35:03,900
+if p is equal to 2, this is
+Euclidean distance, right?
+
+867
+00:35:03,900 --> 00:35:05,990
+It's the sum of the
+squares of the differences
+
+868
+00:35:05,989 --> 00:35:07,049
+of the components.
+
+869
+00:35:07,050 --> 00:35:08,149
+Take the square root.
+
+870
+00:35:08,148 --> 00:35:09,690
+Take the square root
+because it makes
+
+871
+00:35:09,690 --> 00:35:12,420
+it have certain
+properties of a distance.
+
+872
+00:35:12,420 --> 00:35:16,539
+That's the Euclidean distance.
+
+873
+00:35:16,539 --> 00:35:20,239
+So now if I want to measure
+difference between these two,
+
+874
+00:35:20,239 --> 00:35:22,750
+here's the question.
+
+875
+00:35:22,750 --> 00:35:27,780
+Is this circle closer to the
+star or closer to the cross?
+
+876
+00:35:27,780 --> 00:35:30,310
+Unfortunately, I put
+the answer up here.
+
+877
+00:35:30,309 --> 00:35:33,259
+But it differs, depending
+on the metric I use.
+
+878
+00:35:33,260 --> 00:35:33,760
+Right?
+
+879
+00:35:33,760 --> 00:35:37,000
+Euclidean distance, well,
+that's square root of 2 times 2,
+
+880
+00:35:37,000 --> 00:35:38,692
+so it's about 2.8.
+
+881
+00:35:38,692 --> 00:35:39,400
+And that's three.
+
+882
+00:35:39,400 --> 00:35:42,579
+So in terms of just standard
+distance in the plane,
+
+883
+00:35:42,579 --> 00:35:46,679
+we would say that these two
+are closer than those two are.
+
+884
+00:35:46,679 --> 00:35:48,429
+Manhattan distance,
+why is it called that?
+
+885
+00:35:48,429 --> 00:35:52,039
+Because you can only walk along
+the avenues and the streets.
+
+886
+00:35:52,039 --> 00:35:53,500
+Manhattan distance
+would basically
+
+887
+00:35:53,500 --> 00:35:56,500
+say this is one, two,
+three, four units away.
+
+888
+00:35:56,500 --> 00:35:59,170
+This is one, two,
+three units away.
+
+889
+00:35:59,170 --> 00:36:02,019
+And under Manhattan
+distance, this is closer,
+
+890
+00:36:02,019 --> 00:36:05,847
+this pairing is closer
+than that pairing is.
+
+891
+00:36:05,847 --> 00:36:07,430
+Now you're used to
+thinking Euclidean.
+
+892
+00:36:07,429 --> 00:36:08,219
+We're going to use that.
+
+893
+00:36:08,219 --> 00:36:09,594
+But this is going
+to be important
+
+894
+00:36:09,594 --> 00:36:12,079
+when we think about how
+are we comparing distances
+
+895
+00:36:12,079 --> 00:36:15,360
+between these different pieces.
+
+896
+00:36:15,360 --> 00:36:16,912
+So typically, we'll
+use Euclidean.
+
+897
+00:36:16,911 --> 00:36:19,119
+We're going to see Manhattan
+actually has some value.
+
+898
+00:36:19,119 --> 00:36:20,960
+So if I go back to my three
+examples-- boy, that's
+
+899
+00:36:20,960 --> 00:36:21,960
+a gross slide, isn't it?
+
+900
+00:36:21,960 --> 00:36:22,789
+But there we go--
+
+901
+00:36:22,789 --> 00:36:25,570
+rattlesnake, boa
+constrictor, and dart frog.
+
+902
+00:36:25,570 --> 00:36:26,870
+There is the representation.
+
+903
+00:36:26,869 --> 00:36:29,456
+I can ask, what's the
+distance between them?
+
+904
+00:36:29,456 --> 00:36:31,789
+In the handout for today,
+we've given you a little piece
+
+905
+00:36:31,789 --> 00:36:32,913
+of code that would do that.
+
+906
+00:36:32,914 --> 00:36:36,050
+And if I actually run
+through it, I get,
+
+907
+00:36:36,050 --> 00:36:38,510
+actually, a nice
+little result. Here
+
+908
+00:36:38,510 --> 00:36:43,199
+are the distances between those
+vectors using Euclidean metric.
+
+909
+00:36:43,199 --> 00:36:44,490
+I'm going to come back to them.
+
+910
+00:36:44,489 --> 00:36:48,349
+But you can see the
+two snakes, nicely, are
+
+911
+00:36:48,349 --> 00:36:50,029
+reasonably close to each other.
+
+912
+00:36:50,030 --> 00:36:54,220
+Whereas, the dart frog is a
+fair distance away from that.
+
+913
+00:36:54,219 --> 00:36:54,909
+Nice, right?
+
+914
+00:36:54,909 --> 00:36:56,739
+That's a nice separation
+that says there's
+
+915
+00:36:56,739 --> 00:36:58,479
+a difference between these two.
+
+916
+00:36:58,480 --> 00:37:00,219
+OK.
+
+917
+00:37:00,219 --> 00:37:03,159
+Now I throw in the alligator.
+
+918
+00:37:03,159 --> 00:37:04,809
+Sounds like a Dungeons
+& Dragons game.
+
+919
+00:37:04,809 --> 00:37:09,480
+I throw in the alligator, and I
+want to do the same comparison.
+
+920
+00:37:09,480 --> 00:37:14,719
+And I don't get nearly as nice
+a result. Because now it says,
+
+921
+00:37:14,719 --> 00:37:19,319
+as before, the two snakes
+are close to each other.
+
+922
+00:37:19,320 --> 00:37:21,700
+But it says that the dart
+frog and the alligator
+
+923
+00:37:21,699 --> 00:37:24,639
+are much closer, under
+this measurement,
+
+924
+00:37:24,639 --> 00:37:27,184
+than either of them
+is to the other.
+
+925
+00:37:27,184 --> 00:37:30,219
+And to remind you, right,
+the alligator and the two
+
+926
+00:37:30,219 --> 00:37:33,250
+snakes I would like to be close
+to one another and a distance
+
+927
+00:37:33,250 --> 00:37:34,639
+away from the frog.
+
+928
+00:37:34,639 --> 00:37:38,469
+Because I'm trying to
+classify reptiles versus not.
+
+929
+00:37:38,469 --> 00:37:41,014
+So what happened here?
+
+930
+00:37:41,014 --> 00:37:43,139
+Well, this is a place where
+the feature engineering
+
+931
+00:37:43,139 --> 00:37:44,639
+is going to be important.
+
+932
+00:37:44,639 --> 00:37:47,819
+Because in fact, the alligator
+differs from the frog
+
+933
+00:37:47,820 --> 00:37:49,120
+in three features.
+
+934
+00:37:49,119 --> 00:37:51,809
+
+
+935
+00:37:51,809 --> 00:37:55,299
+And only in two features from,
+say, the boa constrictor.
+
+936
+00:37:55,300 --> 00:37:57,590
+But one of those features
+is the number of legs.
+
+937
+00:37:57,590 --> 00:37:59,650
+And there, while
+on the binary axes,
+
+938
+00:37:59,650 --> 00:38:01,539
+the difference is
+between a 0 and 1,
+
+939
+00:38:01,539 --> 00:38:05,619
+here it can be between 0 and 4.
+
+940
+00:38:05,619 --> 00:38:09,099
+So that is weighing the distance
+a lot more than we would like.
+
+941
+00:38:09,099 --> 00:38:13,519
+The legs dimension is
+too large, if you like.
+
+942
+00:38:13,519 --> 00:38:15,416
+How would I fix this?
+
+943
+00:38:15,416 --> 00:38:18,019
+This is actually, I would
+argue, a natural place
+
+944
+00:38:18,019 --> 00:38:20,690
+to use Manhattan distance.
+
+945
+00:38:20,690 --> 00:38:22,519
+Why should I think
+that the difference
+
+946
+00:38:22,519 --> 00:38:26,159
+in the number of legs or the
+number of legs difference
+
+947
+00:38:26,159 --> 00:38:30,399
+is more important than
+whether it has scales or not?
+
+948
+00:38:30,400 --> 00:38:32,619
+Why should I think that
+measuring that distance
+
+949
+00:38:32,619 --> 00:38:34,299
+Euclidean-wise makes sense?
+
+950
+00:38:34,300 --> 00:38:36,590
+They are really completely
+different measurements.
+
+951
+00:38:36,590 --> 00:38:38,090
+And in fact, I'm
+not going to do it,
+
+952
+00:38:38,090 --> 00:38:39,880
+but if I ran Manhattan
+metric on this,
+
+953
+00:38:39,880 --> 00:38:43,160
+it would get the alligator
+much closer to the snakes,
+
+954
+00:38:43,159 --> 00:38:48,159
+exactly because it differs only
+in two features, not three.
+
+955
+00:38:48,159 --> 00:38:49,899
+The other way I
+could fix it would
+
+956
+00:38:49,900 --> 00:38:52,510
+be to say I'm letting too
+much weight be associated
+
+957
+00:38:52,510 --> 00:38:54,430
+with the difference
+in the number of legs.
+
+958
+00:38:54,429 --> 00:38:56,799
+So let's just make
+it a binary feature.
+
+959
+00:38:56,800 --> 00:39:00,310
+Either it doesn't have
+legs or it does have legs.
+
+960
+00:39:00,309 --> 00:39:03,039
+Run the same classification.
+
+961
+00:39:03,039 --> 00:39:07,449
+And now you see the
+snakes and the alligator
+
+962
+00:39:07,449 --> 00:39:09,509
+are all close to each other.
+
+963
+00:39:09,510 --> 00:39:13,290
+Whereas the dart frog, not
+as far away as it was before,
+
+964
+00:39:13,289 --> 00:39:15,480
+but there's a pretty natural
+separation, especially
+
+965
+00:39:15,480 --> 00:39:18,449
+using that number between them.
+
+966
+00:39:18,449 --> 00:39:20,179
+What's my point?
+
+967
+00:39:20,179 --> 00:39:22,609
+Choice of features matters.
+
+968
+00:39:22,610 --> 00:39:24,710
+Throwing too many
+features in may, in fact,
+
+969
+00:39:24,710 --> 00:39:27,449
+give us some overfitting.
+
+970
+00:39:27,449 --> 00:39:29,299
+And in particular,
+deciding the weights
+
+971
+00:39:29,300 --> 00:39:32,090
+that I want on those
+features has a real impact.
+
+972
+00:39:32,090 --> 00:39:33,829
+And you, as a designer
+or a programmer,
+
+973
+00:39:33,829 --> 00:39:37,340
+have a lot of influence in how
+you think about using those.
+
+974
+00:39:37,340 --> 00:39:38,930
+So feature engineering
+really matters.
+
+975
+00:39:38,929 --> 00:39:40,609
+How you pick the
+features, what you use
+
+976
+00:39:40,610 --> 00:39:43,579
+is going to be important.
+
+977
+00:39:43,579 --> 00:39:44,880
+OK.
+
+978
+00:39:44,880 --> 00:39:47,740
+The last piece of
+this then is we're
+
+979
+00:39:47,739 --> 00:39:51,369
+going to look at some examples
+where we give you data, got
+
+980
+00:39:51,369 --> 00:39:53,179
+features associated with them.
+
+981
+00:39:53,179 --> 00:39:55,179
+We're going to, in some
+cases have them labeled,
+
+982
+00:39:55,179 --> 00:39:56,119
+in other cases not.
+
+983
+00:39:56,119 --> 00:39:57,969
+And we know how now to
+think about how do we
+
+984
+00:39:57,969 --> 00:39:59,260
+measure distances between them.
+
+985
+00:39:59,260 --> 00:40:00,425
+John.
+
+986
+00:40:00,425 --> 00:40:02,050
+JOHN GUTTAG: You
+probably didn't intend
+
+987
+00:40:02,050 --> 00:40:03,460
+to say weights of features.
+
+988
+00:40:03,460 --> 00:40:04,780
+You intended to say
+how they're scaled.
+
+989
+00:40:04,780 --> 00:40:04,990
+ERIC GRIMSON: Sorry.
+
+990
+00:40:04,989 --> 00:40:06,529
+The scales and not
+the-- thank you, John.
+
+991
+00:40:06,530 --> 00:40:07,028
+No, I did.
+
+992
+00:40:07,028 --> 00:40:07,849
+I take that back.
+
+993
+00:40:07,849 --> 00:40:09,599
+I did not mean to say
+weights of features.
+
+994
+00:40:09,599 --> 00:40:11,650
+I meant to say the
+scale of the dimension
+
+995
+00:40:11,650 --> 00:40:12,900
+is going to be important here.
+
+996
+00:40:12,900 --> 00:40:15,210
+Thank you, for the
+amplification and correction.
+
+997
+00:40:15,210 --> 00:40:16,210
+You're absolutely right.
+
+998
+00:40:16,210 --> 00:40:18,081
+JOHN GUTTAG: Weights, we
+use in a different way,
+
+999
+00:40:18,081 --> 00:40:19,019
+as we'll see next time.
+
+1000
+00:40:19,019 --> 00:40:19,590
+ERIC GRIMSON: And
+we're going to see
+
+1001
+00:40:19,590 --> 00:40:21,450
+next time why we're going to
+use weights in different ways.
+
+1002
+00:40:21,449 --> 00:40:22,403
+So rephrase it.
+
+1003
+00:40:22,403 --> 00:40:23,570
+Block that out of your mind.
+
+1004
+00:40:23,570 --> 00:40:26,070
+We're going to talk about
+scales and the scale on the axes
+
+1005
+00:40:26,070 --> 00:40:27,536
+as being important here.
+
+1006
+00:40:27,536 --> 00:40:29,159
+And we already said
+we're going to look
+
+1007
+00:40:29,159 --> 00:40:31,739
+at two different
+kinds of learning,
+
+1008
+00:40:31,739 --> 00:40:34,919
+labeled and unlabeled,
+clustering and classifying.
+
+1009
+00:40:34,920 --> 00:40:37,530
+And I want to just
+finish up by showing you
+
+1010
+00:40:37,530 --> 00:40:38,940
+two examples of that.
+
+1011
+00:40:38,940 --> 00:40:41,309
+How we would think about
+them algorithmically,
+
+1012
+00:40:41,309 --> 00:40:44,003
+and we'll look at them
+in more detail next time.
+
+1013
+00:40:44,003 --> 00:40:45,420
+As we look at it,
+I want to remind
+
+1014
+00:40:45,420 --> 00:40:48,530
+you the things that are
+going to be important to you.
+
+1015
+00:40:48,530 --> 00:40:50,930
+How do I measure distance
+between examples?
+
+1016
+00:40:50,929 --> 00:40:53,059
+What's the right
+way to design that?
+
+1017
+00:40:53,059 --> 00:40:57,059
+What is the right set of
+features to use in that vector?
+
+1018
+00:40:57,059 --> 00:41:01,519
+And then, what constraints do
+I want to put on the model?
+
+1019
+00:41:01,519 --> 00:41:03,019
+In the case of
+unlabelled data, how
+
+1020
+00:41:03,019 --> 00:41:06,423
+do I decide how many
+clusters I want to have?
+
+1021
+00:41:06,423 --> 00:41:08,840
+Because I can give you a really
+easy way to do clustering.
+
+1022
+00:41:08,840 --> 00:41:12,110
+If I give you 100 examples,
+I say build 100 clusters.
+
+1023
+00:41:12,110 --> 00:41:14,250
+Every example is
+its own cluster.
+
+1024
+00:41:14,250 --> 00:41:15,469
+Distance is really good.
+
+1025
+00:41:15,469 --> 00:41:18,109
+It's really close to itself,
+but it does a lousy job
+
+1026
+00:41:18,110 --> 00:41:19,240
+of labeling things on it.
+
+1027
+00:41:19,239 --> 00:41:20,655
+So I have to think
+about, how do I
+
+1028
+00:41:20,655 --> 00:41:23,525
+decide how many clusters,
+what's the complexity
+
+1029
+00:41:23,525 --> 00:41:24,649
+of that separating service?
+
+1030
+00:41:24,650 --> 00:41:27,710
+How do I basically avoid
+the overfitting problem,
+
+1031
+00:41:27,710 --> 00:41:30,840
+which I don't want to have?
+
+1032
+00:41:30,840 --> 00:41:32,850
+So just to remind
+you, we've already
+
+1033
+00:41:32,849 --> 00:41:36,239
+seen a little version of
+this, the clustering method.
+
+1034
+00:41:36,239 --> 00:41:39,275
+This is a standard way to
+do it, simply repeating what
+
+1035
+00:41:39,275 --> 00:41:40,399
+we had on an earlier slide.
+
+1036
+00:41:40,400 --> 00:41:42,420
+If I want to cluster
+it into groups,
+
+1037
+00:41:42,420 --> 00:41:45,409
+I start by saying how many
+clusters am I looking for?
+
+1038
+00:41:45,409 --> 00:41:48,589
+Pick an example I take as
+my early representation.
+
+1039
+00:41:48,590 --> 00:41:50,640
+For every other example
+in the training data,
+
+1040
+00:41:50,639 --> 00:41:53,210
+put it to the closest cluster.
+
+1041
+00:41:53,210 --> 00:41:57,079
+Once I've got those, find the
+median, repeat the process.
+
+1042
+00:41:57,079 --> 00:42:01,819
+And that led to that separation.
+
+1043
+00:42:01,820 --> 00:42:03,930
+Now once I've got it,
+I like to validate it.
+
+1044
+00:42:03,929 --> 00:42:05,779
+And in fact, I should
+have said this better.
+
+1045
+00:42:05,780 --> 00:42:09,980
+Those two clusters came without
+looking at the two black dots.
+
+1046
+00:42:09,980 --> 00:42:11,630
+Once I put the
+black dots in, I'd
+
+1047
+00:42:11,630 --> 00:42:14,510
+like to validate, how well
+does this really work?
+
+1048
+00:42:14,510 --> 00:42:17,780
+And that example there is
+really not very encouraging.
+
+1049
+00:42:17,780 --> 00:42:19,590
+It's too close.
+
+1050
+00:42:19,590 --> 00:42:22,019
+So that's a natural place to
+say, OK, what if I did this
+
+1051
+00:42:22,019 --> 00:42:25,360
+with three clusters?
+
+1052
+00:42:25,360 --> 00:42:27,970
+That's what I get.
+
+1053
+00:42:27,969 --> 00:42:29,239
+I like the that.
+
+1054
+00:42:29,239 --> 00:42:29,859
+All right?
+
+1055
+00:42:29,860 --> 00:42:33,460
+That has a really
+nice cluster up here.
+
+1056
+00:42:33,460 --> 00:42:35,630
+The fact that the algorithm
+didn't know the labeling
+
+1057
+00:42:35,630 --> 00:42:36,213
+is irrelevant.
+
+1058
+00:42:36,213 --> 00:42:37,720
+There's a nice grouping of five.
+
+1059
+00:42:37,719 --> 00:42:39,709
+There's a nice grouping of four.
+
+1060
+00:42:39,710 --> 00:42:42,619
+And there's a nice grouping
+of three in between.
+
+1061
+00:42:42,619 --> 00:42:45,980
+And in fact, if I looked
+at the average distance
+
+1062
+00:42:45,980 --> 00:42:48,199
+between examples in
+each of these clusters,
+
+1063
+00:42:48,199 --> 00:42:52,439
+it is much tighter
+than in that example.
+
+1064
+00:42:52,440 --> 00:42:56,550
+And so that leads to, then,
+the question of should I
+
+1065
+00:42:56,550 --> 00:42:57,642
+look for four clusters?
+
+1066
+00:42:57,641 --> 00:42:58,349
+Question, please.
+
+1067
+00:42:58,349 --> 00:43:01,019
+AUDIENCE: Is that overlap
+between the two clusters
+
+1068
+00:43:01,019 --> 00:43:01,690
+not an issue?
+
+1069
+00:43:01,690 --> 00:43:02,440
+ERIC GRIMSON: Yes.
+
+1070
+00:43:02,440 --> 00:43:04,599
+The question is, is the overlap
+between the two clusters
+
+1071
+00:43:04,599 --> 00:43:05,098
+a problem?
+
+1072
+00:43:05,099 --> 00:43:05,824
+No.
+
+1073
+00:43:05,824 --> 00:43:07,240
+I just drew it
+here so I could let
+
+1074
+00:43:07,239 --> 00:43:09,009
+you see where those pieces are.
+
+1075
+00:43:09,010 --> 00:43:13,090
+But in fact, if you like,
+the center is there.
+
+1076
+00:43:13,090 --> 00:43:15,550
+Those three points are
+all closer to that center
+
+1077
+00:43:15,550 --> 00:43:16,780
+than they are to that center.
+
+1078
+00:43:16,780 --> 00:43:18,260
+So the fact that they
+overlap is a good question.
+
+1079
+00:43:18,260 --> 00:43:20,020
+It's just the way I
+happened to draw them.
+
+1080
+00:43:20,019 --> 00:43:21,489
+I should really
+draw these, not as
+
+1081
+00:43:21,489 --> 00:43:25,103
+circles, but as some little
+bit more convoluted surface.
+
+1082
+00:43:25,103 --> 00:43:26,049
+OK?
+
+1083
+00:43:26,050 --> 00:43:28,900
+Having done three, I could
+say should I look for four?
+
+1084
+00:43:28,900 --> 00:43:31,918
+Well, those points down
+there, as I've already said,
+
+1085
+00:43:31,918 --> 00:43:33,460
+are an example where
+it's going to be
+
+1086
+00:43:33,460 --> 00:43:34,750
+hard to separate them out.
+
+1087
+00:43:34,750 --> 00:43:35,920
+And I don't want to overfit.
+
+1088
+00:43:35,920 --> 00:43:37,720
+Because the only way
+to separate those out
+
+1089
+00:43:37,719 --> 00:43:40,899
+is going to be to come up with
+a really convoluted cluster,
+
+1090
+00:43:40,900 --> 00:43:41,950
+which I don't like.
+
+1091
+00:43:41,949 --> 00:43:43,579
+All right?
+
+1092
+00:43:43,579 --> 00:43:46,480
+Let me finish with showing
+you one other example
+
+1093
+00:43:46,480 --> 00:43:47,650
+from the other direction.
+
+1094
+00:43:47,650 --> 00:43:52,010
+Which is, suppose I give
+you labeled examples.
+
+1095
+00:43:52,010 --> 00:43:54,200
+So again, the goal
+is I've got features
+
+1096
+00:43:54,199 --> 00:43:55,469
+associated with each example.
+
+1097
+00:43:55,469 --> 00:43:57,469
+They're going to have
+multiple dimensions on it.
+
+1098
+00:43:57,469 --> 00:43:59,449
+But I also know the label
+associated with them.
+
+1099
+00:43:59,449 --> 00:44:01,879
+And I want to learn
+what is the best
+
+1100
+00:44:01,880 --> 00:44:04,760
+way to come up with a rule that
+will let me take new examples
+
+1101
+00:44:04,760 --> 00:44:07,301
+and assign them to
+the right group.
+
+1102
+00:44:07,300 --> 00:44:08,909
+A number of ways to do this.
+
+1103
+00:44:08,909 --> 00:44:12,019
+You can simply say I'm looking
+for the simplest surface that
+
+1104
+00:44:12,019 --> 00:44:13,927
+will separate those examples.
+
+1105
+00:44:13,927 --> 00:44:16,010
+In my football case that
+were in the plane, what's
+
+1106
+00:44:16,010 --> 00:44:17,660
+the best line that
+separates them,
+
+1107
+00:44:17,659 --> 00:44:19,609
+which turns out to be easy.
+
+1108
+00:44:19,610 --> 00:44:21,724
+I might look for a more
+complicated surface.
+
+1109
+00:44:21,724 --> 00:44:23,599
+And we're going to see
+an example in a second
+
+1110
+00:44:23,599 --> 00:44:26,260
+where maybe it's a
+sequence of line segments
+
+1111
+00:44:26,260 --> 00:44:27,259
+that separates them out.
+
+1112
+00:44:27,260 --> 00:44:30,920
+Because there's not just one
+line that does the separation.
+
+1113
+00:44:30,920 --> 00:44:32,789
+As before, I want to be careful.
+
+1114
+00:44:32,789 --> 00:44:34,369
+If I make it too
+complicated, I may
+
+1115
+00:44:34,369 --> 00:44:38,054
+get a really good separator,
+but I overfit to the data.
+
+1116
+00:44:38,054 --> 00:44:39,470
+And you're going
+to see next time.
+
+1117
+00:44:39,469 --> 00:44:40,519
+I'm going to just
+highlight it here.
+
+1118
+00:44:40,519 --> 00:44:42,018
+There's a third
+way, which will lead
+
+1119
+00:44:42,018 --> 00:44:43,909
+to almost the same
+kind of result
+
+1120
+00:44:43,909 --> 00:44:46,159
+called k nearest neighbors.
+
+1121
+00:44:46,159 --> 00:44:49,549
+And the idea here is I've
+got a set of labeled data.
+
+1122
+00:44:49,550 --> 00:44:52,100
+And what I'm going to do
+is, for every new example,
+
+1123
+00:44:52,099 --> 00:44:57,250
+say find the k, say the five
+closest labeled examples.
+
+1124
+00:44:57,250 --> 00:44:58,599
+And take a vote.
+
+1125
+00:44:58,599 --> 00:45:01,869
+If 3 out of 5 or 4 out of 5
+or 5 out of 5 of those labels
+
+1126
+00:45:01,869 --> 00:45:04,605
+are the same, I'm going to
+say it's part of that group.
+
+1127
+00:45:04,605 --> 00:45:05,980
+And if I have less
+than that, I'm
+
+1128
+00:45:05,980 --> 00:45:07,510
+going to leave it
+as unclassified.
+
+1129
+00:45:07,510 --> 00:45:09,259
+And that's a nice way
+of actually thinking
+
+1130
+00:45:09,259 --> 00:45:10,869
+about how to learn them.
+
+1131
+00:45:10,869 --> 00:45:12,940
+And let me just finish by
+showing you an example.
+
+1132
+00:45:12,940 --> 00:45:14,813
+Now I won't use football
+players on this one.
+
+1133
+00:45:14,813 --> 00:45:17,379
+I'll use a different example.
+
+1134
+00:45:17,380 --> 00:45:20,019
+I'm going to give
+you some voting data.
+
+1135
+00:45:20,019 --> 00:45:21,800
+I think this is
+actually simulated data.
+
+1136
+00:45:21,800 --> 00:45:25,974
+But these are a set of
+voters in the United States
+
+1137
+00:45:25,974 --> 00:45:26,890
+with their preference.
+
+1138
+00:45:26,889 --> 00:45:28,135
+They tend to vote Republican.
+
+1139
+00:45:28,135 --> 00:45:29,259
+They tend to vote Democrat.
+
+1140
+00:45:29,260 --> 00:45:32,800
+And the two categories are
+their age and how far away
+
+1141
+00:45:32,800 --> 00:45:34,441
+they live from Boston.
+
+1142
+00:45:34,440 --> 00:45:36,439
+Whether those are relevant
+or not, I don't know,
+
+1143
+00:45:36,440 --> 00:45:39,063
+but they are just two things I'm
+going to use to classify them.
+
+1144
+00:45:39,063 --> 00:45:41,750
+And I'd like to say,
+how would I fit a curve
+
+1145
+00:45:41,750 --> 00:45:46,110
+to separate those two classes?
+
+1146
+00:45:46,110 --> 00:45:48,690
+I'm going to keep
+half the data to test.
+
+1147
+00:45:48,690 --> 00:45:50,909
+I'm going to use half
+the data to train.
+
+1148
+00:45:50,909 --> 00:45:52,589
+So if this is my
+training data, I
+
+1149
+00:45:52,590 --> 00:45:57,039
+can say what's the best
+line that separates these?
+
+1150
+00:45:57,039 --> 00:46:00,199
+I don't know about best,
+but here are two examples.
+
+1151
+00:46:00,199 --> 00:46:03,879
+This solid line has the
+property that all the Democrats
+
+1152
+00:46:03,880 --> 00:46:05,619
+are on one side.
+
+1153
+00:46:05,619 --> 00:46:07,539
+Everything on the other
+side is a Republican,
+
+1154
+00:46:07,539 --> 00:46:10,000
+but there are some Republicans
+on this side of the line.
+
+1155
+00:46:10,000 --> 00:46:12,309
+I can't find a line that
+completely separates these,
+
+1156
+00:46:12,309 --> 00:46:14,259
+as I did with the
+football players.
+
+1157
+00:46:14,260 --> 00:46:17,659
+But there is a decent
+line to separate them.
+
+1158
+00:46:17,659 --> 00:46:18,700
+Here's another candidate.
+
+1159
+00:46:18,699 --> 00:46:22,694
+That dash line has the
+property that on the right side
+
+1160
+00:46:22,695 --> 00:46:24,820
+you've got-- boy, I don't
+think this is deliberate,
+
+1161
+00:46:24,820 --> 00:46:26,480
+John, right-- but
+on the right side,
+
+1162
+00:46:26,480 --> 00:46:28,195
+you've got almost
+all Republicans.
+
+1163
+00:46:28,195 --> 00:46:30,730
+It seems perfectly appropriate.
+
+1164
+00:46:30,730 --> 00:46:34,000
+One Democrat, but there's a
+pretty good separation there.
+
+1165
+00:46:34,000 --> 00:46:36,130
+And on the left side,
+you've got a mix of things.
+
+1166
+00:46:36,130 --> 00:46:39,980
+But most of the Democrats are
+on the left side of that line.
+
+1167
+00:46:39,980 --> 00:46:40,480
+All right?
+
+1168
+00:46:40,480 --> 00:46:42,103
+The fact that left
+and right correlates
+
+1169
+00:46:42,103 --> 00:46:44,469
+with distance from Boston is
+completely irrelevant here.
+
+1170
+00:46:44,469 --> 00:46:46,619
+But it has a nice punch to it.
+
+1171
+00:46:46,619 --> 00:46:48,369
+JOHN GUTTAG: Relevant,
+but not accidental.
+
+1172
+00:46:48,369 --> 00:46:49,744
+ERIC GRIMSON: But
+not accidental.
+
+1173
+00:46:49,744 --> 00:46:50,569
+Thank you.
+
+1174
+00:46:50,570 --> 00:46:51,070
+All right.
+
+1175
+00:46:51,070 --> 00:46:53,193
+So now the question is,
+how would I evaluate these?
+
+1176
+00:46:53,193 --> 00:46:55,306
+How do I decide
+which one is better?
+
+1177
+00:46:55,306 --> 00:46:56,679
+And I'm simply
+going to show you,
+
+1178
+00:46:56,679 --> 00:46:58,879
+very quickly, some examples.
+
+1179
+00:46:58,880 --> 00:47:02,747
+First one is to look at what's
+called the confusion matrix.
+
+1180
+00:47:02,746 --> 00:47:03,579
+What does that mean?
+
+1181
+00:47:03,579 --> 00:47:07,090
+It says for this, one of
+these classifiers for example,
+
+1182
+00:47:07,090 --> 00:47:07,760
+the solid line.
+
+1183
+00:47:07,760 --> 00:47:10,260
+Here are the predictions,
+based on the solid line
+
+1184
+00:47:10,260 --> 00:47:12,010
+of whether they would
+be more likely to be
+
+1185
+00:47:12,010 --> 00:47:13,540
+Democrat or Republican.
+
+1186
+00:47:13,539 --> 00:47:16,090
+And here is the actual label.
+
+1187
+00:47:16,090 --> 00:47:17,410
+Same thing for the dashed line.
+
+1188
+00:47:17,409 --> 00:47:21,279
+And that diagonal is
+important because those are
+
+1189
+00:47:21,280 --> 00:47:23,740
+the correctly labeled results.
+
+1190
+00:47:23,739 --> 00:47:24,539
+Right?
+
+1191
+00:47:24,539 --> 00:47:27,460
+It correctly, in
+the solid line case,
+
+1192
+00:47:27,460 --> 00:47:30,400
+gets all of the correct
+labelings of the Democrats.
+
+1193
+00:47:30,400 --> 00:47:32,079
+It gets half of the
+Republicans right.
+
+1194
+00:47:32,079 --> 00:47:35,079
+But it has some where
+it's actually Republican,
+
+1195
+00:47:35,079 --> 00:47:37,699
+but it labels it as a Democrat.
+
+1196
+00:47:37,699 --> 00:47:40,579
+That, we'd like to
+be really large.
+
+1197
+00:47:40,579 --> 00:47:43,069
+And in fact, it leads
+to a natural measure
+
+1198
+00:47:43,070 --> 00:47:44,880
+called the accuracy.
+
+1199
+00:47:44,880 --> 00:47:46,519
+Which is, just to
+go back to that,
+
+1200
+00:47:46,519 --> 00:47:48,650
+we say that these
+are true positives.
+
+1201
+00:47:48,650 --> 00:47:52,070
+Meaning, I labeled it as being
+an instance, and it really is.
+
+1202
+00:47:52,070 --> 00:47:53,330
+These are true negatives.
+
+1203
+00:47:53,329 --> 00:47:56,329
+I label it as not being an
+instance, and it really isn't.
+
+1204
+00:47:56,329 --> 00:47:59,449
+And then these are
+the false positives.
+
+1205
+00:47:59,449 --> 00:48:01,423
+I labeled it as being an
+instance and it's not,
+
+1206
+00:48:01,423 --> 00:48:02,840
+and these are the
+false negatives.
+
+1207
+00:48:02,840 --> 00:48:05,680
+I labeled it as not being
+an instance, and it is.
+
+1208
+00:48:05,679 --> 00:48:09,619
+And an easy way to measure it
+is to look at the correct labels
+
+1209
+00:48:09,619 --> 00:48:11,289
+over all of the labels.
+
+1210
+00:48:11,289 --> 00:48:13,039
+The true positives and
+the true negatives,
+
+1211
+00:48:13,039 --> 00:48:14,820
+the ones I got right.
+
+1212
+00:48:14,820 --> 00:48:19,862
+And in that case, both models
+come up with a value of 0.7.
+
+1213
+00:48:19,862 --> 00:48:20,820
+So which one is better?
+
+1214
+00:48:20,820 --> 00:48:21,900
+Well, I should validate that.
+
+1215
+00:48:21,900 --> 00:48:23,398
+And I'm going to
+do that in a second
+
+1216
+00:48:23,398 --> 00:48:25,510
+by looking at other data.
+
+1217
+00:48:25,510 --> 00:48:27,259
+We could also ask,
+could we find something
+
+1218
+00:48:27,260 --> 00:48:28,660
+with less training error?
+
+1219
+00:48:28,659 --> 00:48:31,309
+This is only getting 70% right.
+
+1220
+00:48:31,309 --> 00:48:33,250
+Not great.
+
+1221
+00:48:33,250 --> 00:48:35,692
+Well, here is a more
+complicated model.
+
+1222
+00:48:35,692 --> 00:48:37,150
+And this is where
+you start getting
+
+1223
+00:48:37,150 --> 00:48:38,139
+worried about overfitting.
+
+1224
+00:48:38,139 --> 00:48:39,597
+Now what I've done,
+is I've come up
+
+1225
+00:48:39,597 --> 00:48:42,429
+with a sequence of lines
+that separate them.
+
+1226
+00:48:42,429 --> 00:48:45,259
+So everything above this
+line, I'm going to say
+
+1227
+00:48:45,260 --> 00:48:46,080
+is a Republican.
+
+1228
+00:48:46,079 --> 00:48:48,909
+Everything below this line,
+I'm going to say is a Democrat.
+
+1229
+00:48:48,909 --> 00:48:50,349
+So I'm avoiding that one.
+
+1230
+00:48:50,349 --> 00:48:51,309
+I'm avoiding that one.
+
+1231
+00:48:51,309 --> 00:48:54,340
+I'm still capturing
+many of the same things.
+
+1232
+00:48:54,340 --> 00:48:59,140
+And in this case, I get 12 true
+positives, 13 true negatives,
+
+1233
+00:48:59,139 --> 00:49:02,999
+and only 5 false positives.
+
+1234
+00:49:02,001 --> 00:49:03,000
+And that's kind of nice.
+
+1235
+00:49:03,000 --> 00:49:03,789
+You can see the 5.
+
+1236
+00:49:03,789 --> 00:49:06,039
+It's those five red
+ones down there.
+
+1237
+00:49:06,039 --> 00:49:09,360
+It's accuracy is 0.833.
+
+1238
+00:49:09,360 --> 00:49:15,596
+And now, if I apply that to the
+test data, I get an OK result.
+
+1239
+00:49:15,596 --> 00:49:19,440
+It has an accuracy of about 0.6.
+
+1240
+00:49:19,440 --> 00:49:21,929
+I could use this idea to try
+and generalize to say could I
+
+1241
+00:49:21,929 --> 00:49:23,099
+come up with a better model.
+
+1242
+00:49:23,099 --> 00:49:25,860
+And you're going to
+see that next time.
+
+1243
+00:49:25,860 --> 00:49:28,050
+There could be other ways
+in which I measure this.
+
+1244
+00:49:28,050 --> 00:49:29,860
+And I want to use this
+as the last example.
+
+1245
+00:49:29,860 --> 00:49:34,740
+Another good measure we use is
+called PPV, Positive Predictive
+
+1246
+00:49:34,739 --> 00:49:39,289
+Value which is how many true
+positives do I come up with out
+
+1247
+00:49:39,289 --> 00:49:42,579
+of all the things I
+labeled positively.
+
+1248
+00:49:42,579 --> 00:49:45,630
+And in this solid model,
+in the dashed line,
+
+1249
+00:49:45,630 --> 00:49:48,119
+I can get values about 0.57.
+
+1250
+00:49:48,119 --> 00:49:50,500
+The complex model on the
+training data is better.
+
+1251
+00:49:50,500 --> 00:49:53,960
+And then the testing
+data is even stronger.
+
+1252
+00:49:53,960 --> 00:49:55,820
+And finally, two other
+examples are called
+
+1253
+00:49:55,820 --> 00:49:58,850
+sensitivity and specificity.
+
+1254
+00:49:58,849 --> 00:50:01,489
+Sensitivity basically
+tells you what percentage
+
+1255
+00:50:01,489 --> 00:50:03,609
+did I correctly find.
+
+1256
+00:50:03,610 --> 00:50:05,510
+And specificity
+said what percentage
+
+1257
+00:50:05,510 --> 00:50:07,700
+did I correctly reject.
+
+1258
+00:50:07,699 --> 00:50:09,289
+And I show you this
+because this is
+
+1259
+00:50:09,289 --> 00:50:12,239
+where the trade-off comes in.
+
+1260
+00:50:12,239 --> 00:50:14,209
+If sensitivity is how
+many did I correctly
+
+1261
+00:50:14,210 --> 00:50:16,400
+label out of those
+that I both correctly
+
+1262
+00:50:16,400 --> 00:50:20,382
+labeled and incorrectly
+labeled as being negative,
+
+1263
+00:50:20,382 --> 00:50:21,840
+how many them did
+I correctly label
+
+1264
+00:50:21,840 --> 00:50:23,980
+as being the kind that I want?
+
+1265
+00:50:23,980 --> 00:50:27,309
+I can make sensitivity 1.
+
+1266
+00:50:27,309 --> 00:50:30,090
+Label everything is the
+thing I'm looking for.
+
+1267
+00:50:30,090 --> 00:50:30,710
+Great.
+
+1268
+00:50:30,710 --> 00:50:32,139
+Everything is correct.
+
+1269
+00:50:32,139 --> 00:50:35,739
+But the specificity will be 0.
+
+1270
+00:50:35,739 --> 00:50:39,019
+Because I'll have a bunch of
+things incorrectly labeled.
+
+1271
+00:50:39,019 --> 00:50:43,460
+I could make the specificity
+1, reject everything.
+
+1272
+00:50:43,460 --> 00:50:45,409
+Say nothing as an instance.
+
+1273
+00:50:45,409 --> 00:50:52,069
+True negatives goes to 1, and
+I'm in a great place there,
+
+1274
+00:50:52,070 --> 00:50:55,170
+but my sensitivity goes to 0.
+
+1275
+00:50:55,170 --> 00:50:56,130
+I've got a trade-off.
+
+1276
+00:50:56,130 --> 00:50:58,680
+As I think about the machine
+learning algorithm I'm using
+
+1277
+00:50:58,679 --> 00:51:01,163
+and my choice of
+that classifier,
+
+1278
+00:51:01,164 --> 00:51:02,580
+I'm going to see
+a trade off where
+
+1279
+00:51:02,579 --> 00:51:07,259
+I can increase specificity at
+the cost of sensitivity or vice
+
+1280
+00:51:07,260 --> 00:51:08,310
+versa.
+
+1281
+00:51:08,309 --> 00:51:11,429
+And you'll see a nice technique
+called ROC or Receiver Operator
+
+1282
+00:51:11,429 --> 00:51:14,576
+Curve that gives you a sense of
+how you want to deal with that.
+
+1283
+00:51:14,576 --> 00:51:16,199
+And with that, we'll
+see you next time.
+
+1284
+00:51:16,199 --> 00:51:17,179
+We'll take your
+question off line
+
+1285
+00:51:17,179 --> 00:51:18,679
+if you don't mind, because
+I've run over time.
+
+1286
+00:51:18,679 --> 00:51:20,762
+But we'll see you next
+time where Professor Guttag
+
+1287
+00:51:20,762 --> 00:51:22,929
+will show you examples of this.
+
+1288
+00:51:22,929 --> 00:51:30,295
+
+

@@ -1,0 +1,518 @@
+WEBVTT
+
+1
+00:00:01.730 --> 00:00:05.250
+We've already learned a little
+about the Neo4j interface.
+
+2
+00:00:05.250 --> 00:00:08.200
+And we've learned how to create
+a relatively simple graph with it.
+
+3
+00:00:09.390 --> 00:00:10.240
+In this lecture,
+
+4
+00:00:10.240 --> 00:00:14.660
+we're going to learn how to add
+another node and an edge to the graph.
+
+5
+00:00:16.210 --> 00:00:19.880
+We'll also go through
+the process of adding a node and
+
+6
+00:00:19.880 --> 00:00:21.230
+edge incorrectly to the graph.
+
+7
+00:00:22.360 --> 00:00:24.710
+And we'll learn how to
+correct that mistake.
+
+8
+00:00:24.710 --> 00:00:28.874
+And finally we'll learn how to modify
+an existing node's information.
+
+9
+00:00:34.748 --> 00:00:39.275
+Okay, so here's our network that we
+created in the previous lecture.
+
+10
+00:00:39.275 --> 00:00:41.790
+The first modification
+that we want to make,
+
+11
+00:00:41.790 --> 00:00:43.980
+is adding a single node to the network.
+
+12
+00:00:45.080 --> 00:00:49.440
+So let's say that Julian has a fiance and
+
+13
+00:00:49.440 --> 00:00:53.380
+her name is Joyce and
+she works as a store clerk.
+
+14
+00:00:53.380 --> 00:00:57.090
+So let's look at the code that we're
+going to use to make that modification.
+
+15
+00:00:58.340 --> 00:01:01.940
+So this process involves two steps or
+two separate commands.
+
+16
+00:01:01.940 --> 00:01:06.780
+First command requires you to find the
+node that you want to add the new node to.
+
+17
+00:01:06.780 --> 00:01:12.689
+So we use the match command and
+we specify the ToyNode named Julian.
+
+18
+00:01:12.689 --> 00:01:17.716
+Once that command is issued then
+we'll use the merge command and
+
+19
+00:01:17.716 --> 00:01:22.370
+define the relation between Julian and
+the new node.
+
+20
+00:01:22.370 --> 00:01:25.385
+And it's going to be fiancee.
+
+21
+00:01:25.385 --> 00:01:28.920
+And then the new node
+will also be a ToyNode.
+
+22
+00:01:28.920 --> 00:01:32.680
+And the name is Joyce, and
+her job is store clerk.
+
+23
+00:01:32.680 --> 00:01:36.537
+So let's go ahead and
+copy both these lines of code.
+
+24
+00:01:36.537 --> 00:01:41.430
+And we'll paste them into our command
+line, and we'll run these commands.
+
+25
+00:01:41.430 --> 00:01:44.112
+And the results that
+are returned look good.
+
+26
+00:01:44.112 --> 00:01:50.057
+Neo4j says that it has added 1 label,
+created 1 node, set 3 properties,
+
+27
+00:01:50.057 --> 00:01:56.102
+created 1 relationship, and
+it's required 55 milliseconds to execute.
+
+28
+00:01:56.102 --> 00:01:58.240
+So let's look at that network.
+
+29
+00:01:58.240 --> 00:02:00.110
+Maybe the easiest way to
+view an existing network,
+
+30
+00:02:00.110 --> 00:02:04.900
+if it's the only one you're working on and
+you know the constraints involved,
+
+31
+00:02:04.900 --> 00:02:10.290
+just ToyNodes, is to expand the panel on
+the left and just click the ToyNode node.
+
+32
+00:02:10.290 --> 00:02:13.550
+And you'll easily see the new network.
+
+33
+00:02:13.550 --> 00:02:16.600
+And we can confirm that Joyce
+has been successfully added, and
+
+34
+00:02:16.600 --> 00:02:21.220
+when we select that,
+we can see that her job is store clerk.
+
+35
+00:02:21.220 --> 00:02:26.090
+The command that was issued automatically
+by clicking the ToyNode button in
+
+36
+00:02:26.090 --> 00:02:31.270
+the panel Is a little different than what
+we've been using to view our networks.
+
+37
+00:02:31.270 --> 00:02:34.310
+But they both work essentially
+the same with this particular network.
+
+38
+00:02:35.340 --> 00:02:38.888
+So next let's see what happens if
+we do something incorrectly, and
+
+39
+00:02:38.888 --> 00:02:40.389
+how to correct the mistake.
+
+40
+00:02:45.521 --> 00:02:46.313
+So to do this,
+
+41
+00:02:46.313 --> 00:02:50.282
+we'll need to get back to our original
+network without the added node.
+
+42
+00:02:50.282 --> 00:02:54.198
+And maybe the easiest way to do
+this is to delete everything and
+
+43
+00:02:54.198 --> 00:02:56.320
+recreate our original network.
+
+44
+00:02:57.370 --> 00:02:59.470
+So first I'm going to copy and
+
+45
+00:02:59.470 --> 00:03:03.060
+paste command to delete all
+of the nodes and edges.
+
+46
+00:03:03.060 --> 00:03:08.440
+You'll find this command in the getting
+started video supplementary resources.
+
+47
+00:03:09.600 --> 00:03:13.260
+It involves the match command and
+I'm matching all nodes and
+
+48
+00:03:13.260 --> 00:03:17.620
+all relationships and I'm deleting
+those nodes and relationships.
+
+49
+00:03:17.620 --> 00:03:22.173
+So let's issue that command,
+which should say it's deleted 6 nodes and
+
+50
+00:03:22.173 --> 00:03:24.532
+6 relationships, and sure enough.
+
+51
+00:03:24.532 --> 00:03:30.109
+Neo4J's command line has a nice feature of
+maintaining a history of the commands and
+
+52
+00:03:30.109 --> 00:03:34.910
+so in OSX we can use the command+up
+arrow to cycle through the commands and
+
+53
+00:03:34.910 --> 00:03:39.160
+find the original create command
+that created our network.
+
+54
+00:03:39.160 --> 00:03:41.950
+On Windows, it's a CTRL+up arrow command.
+
+55
+00:03:41.950 --> 00:03:46.320
+So here I've found that command and
+I'm going to re-execute it.
+
+56
+00:03:46.320 --> 00:03:49.100
+And we have our original
+network back again.
+
+57
+00:03:49.100 --> 00:03:50.390
+Let's view that network.
+
+58
+00:03:52.931 --> 00:03:53.810
+And there it is.
+
+59
+00:03:55.220 --> 00:04:00.480
+So let's say for whatever reason I am
+not quite fully understanding how to add
+
+60
+00:04:00.480 --> 00:04:05.380
+an additional node to an existing network,
+and I want to use the create command.
+
+61
+00:04:07.190 --> 00:04:09.870
+For example, I might be thinking that
+
+62
+00:04:09.870 --> 00:04:13.370
+this statement right here will
+accomplish the same kind of thing.
+
+63
+00:04:13.370 --> 00:04:18.930
+By using the create command and
+by specifying a ToyNode named Julian.
+
+64
+00:04:20.070 --> 00:04:23.370
+Well, if we go ahead and
+give that a try let's see what happens.
+
+65
+00:04:23.370 --> 00:04:29.700
+So I'll copy this command and I will paste
+it into my command line and execute it.
+
+66
+00:04:31.500 --> 00:04:36.530
+And it says it's added 2 labels and
+created 2 nodes and set 4 properties.
+
+67
+00:04:37.680 --> 00:04:42.806
+And if we look at this, We
+
+68
+00:04:42.806 --> 00:04:49.240
+see we've actually got another node named
+Julian who has a relationship with Joyce.
+
+69
+00:04:49.240 --> 00:04:54.970
+So that much is correct, but it's not
+the same Julian from the original network.
+
+70
+00:04:54.970 --> 00:04:56.110
+So how do we undo this?
+
+71
+00:04:57.200 --> 00:05:03.200
+Well, we'll need to specify the Julian
+that has a relationship with Joyce and
+
+72
+00:05:03.200 --> 00:05:05.760
+delete both the Julian and
+the Joyce notes.
+
+73
+00:05:08.750 --> 00:05:12.160
+So here we'll use the match
+command once again.
+
+74
+00:05:12.160 --> 00:05:18.400
+And we'll identify the node, the ToyNode,
+with the name Joyce and any relationship
+
+75
+00:05:18.400 --> 00:05:24.540
+she has with any other node should be
+deleted in addition to that other node.
+
+76
+00:05:24.540 --> 00:05:26.665
+Let's go ahead and copy this.
+
+77
+00:05:26.665 --> 00:05:32.000
+And we'll paste it into our
+command line and execute.
+
+78
+00:05:32.000 --> 00:05:34.840
+And it says it deleted 2 nodes and
+deleted 1 relationship.
+
+79
+00:05:35.920 --> 00:05:37.740
+Let's view our network again.
+
+80
+00:05:39.850 --> 00:05:41.660
+And it's back to normal.
+
+81
+00:05:41.660 --> 00:05:46.416
+So that's one example of how you can
+intuitively figure out how to correct
+
+82
+00:05:46.416 --> 00:05:47.731
+certain mistakes.
+
+83
+00:05:53.826 --> 00:05:58.400
+Next we're going to modify
+information of an existing node.
+
+84
+00:05:58.400 --> 00:06:04.790
+So if you remember when we first created
+our network, Harry didn't have a job.
+
+85
+00:06:04.790 --> 00:06:08.370
+So let's go ahead and add a job to Harry.
+
+86
+00:06:08.370 --> 00:06:08.910
+First of all,
+
+87
+00:06:08.910 --> 00:06:13.700
+we'll need to actually select
+the node by using the match command.
+
+88
+00:06:14.810 --> 00:06:16.520
+So we'll issue that here and
+
+89
+00:06:16.520 --> 00:06:20.760
+we'll specify that that node
+name must be equal to Harry.
+
+90
+00:06:22.070 --> 00:06:25.540
+And then we're going to
+use the set command and
+
+91
+00:06:25.540 --> 00:06:30.210
+specify that job will be equal to drummer.
+
+92
+00:06:30.210 --> 00:06:31.430
+So let's go ahead and copy that.
+
+93
+00:06:33.450 --> 00:06:35.958
+And we'll paste it and execute it.
+
+94
+00:06:37.954 --> 00:06:42.410
+And the results that are returned
+says that one property has been set.
+
+95
+00:06:42.410 --> 00:06:45.400
+But let's say that Harry does
+more than just play drums.
+
+96
+00:06:45.400 --> 00:06:48.740
+Let's say that he can
+also play lead guitar.
+
+97
+00:06:48.740 --> 00:06:52.810
+So in this case we will be
+adding an additional property
+
+98
+00:06:52.810 --> 00:06:57.050
+to a property that already exists and
+we'll see how Neo4J handles that.
+
+99
+00:06:57.050 --> 00:07:02.150
+It's a relatively simple modification
+we make, in which we're setting
+
+100
+00:07:02.150 --> 00:07:06.535
+the job key equal to the existing job key
+
+101
+00:07:06.535 --> 00:07:12.620
++ an additional value to that key,
+in this case, lead guitarist.
+
+102
+00:07:12.620 --> 00:07:14.303
+So let's copy that statement.
+
+103
+00:07:16.729 --> 00:07:19.730
+And we'll paste it and execute it.
+
+104
+00:07:19.730 --> 00:07:24.229
+And we get a similar result returned and
+then let's look at our network.
+
+105
+00:07:27.771 --> 00:07:33.480
+And when we select Harry, sure enough
+now we see that he has two jobs.
+
+106
+00:07:33.480 --> 00:07:34.890
+They're separated by a comma.
+
+107
+00:07:34.890 --> 00:07:37.660
+One is drummer and one is lead guitarist.
+
+108
+00:07:37.660 --> 00:07:40.474
+There's much more you can do with Neo4j,
+but
+
+109
+00:07:40.474 --> 00:07:44.373
+we'll want to move on and
+learn some more advanced capabilities
+
+110
+00:07:44.373 --> 00:07:48.212
+that work us closer towards
+managing our big data challenges.

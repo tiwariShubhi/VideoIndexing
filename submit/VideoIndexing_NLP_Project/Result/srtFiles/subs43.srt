@@ -1,0 +1,2711 @@
+
+1
+00:00:08.130 --> 00:00:12.340
+So up until now we've been
+calculating path length
+
+2
+00:00:12.340 --> 00:00:16.710
+based on the number of hops between
+our beginning node and our end node.
+
+3
+00:00:16.710 --> 00:00:21.590
+This is roughly equivalent to counting
+the number of towns between one town and
+
+4
+00:00:21.590 --> 00:00:22.820
+another town.
+
+5
+00:00:22.820 --> 00:00:25.710
+But it doesn't really get at
+the value that is usually of
+
+6
+00:00:25.710 --> 00:00:27.110
+greatest importance to us.
+
+7
+00:00:27.110 --> 00:00:32.220
+And that is the actual distance between
+one location and another location.
+
+8
+00:00:32.220 --> 00:00:37.220
+Which is found in the values that we've
+assigned to the edges between the nodes.
+
+9
+00:00:37.220 --> 00:00:41.980
+So in this next example, we're going
+to perform that kind of a calculation.
+
+10
+00:00:41.980 --> 00:00:45.430
+So the first two lines of code
+we're already fairly familiar with.
+
+11
+00:00:45.430 --> 00:00:49.312
+We're matching a path between node a and
+node c,
+
+12
+00:00:49.312 --> 00:00:53.396
+where the first node is H,
+and the second node is P.
+
+13
+00:00:53.396 --> 00:00:56.950
+And this third line of code
+is also fairly familiar.
+
+14
+00:00:56.950 --> 00:01:01.940
+We're extracting the names of the nodes
+and the path that's been returned, and
+
+15
+00:01:01.940 --> 00:01:06.140
+we're returning a listing of those
+names as well as a length of the path.
+
+16
+00:01:07.470 --> 00:01:10.870
+All of that is being returned
+as the variable pathLength.
+
+17
+00:01:10.870 --> 00:01:14.680
+We've added a third element
+to our return statement, and
+
+18
+00:01:14.680 --> 00:01:16.820
+that is using the reduce statement.
+
+19
+00:01:16.820 --> 00:01:21.130
+So what we're doing here is,
+the purpose of the reduce statement,
+
+20
+00:01:21.130 --> 00:01:25.070
+takes a set of values and
+reduces them down to a single value.
+
+21
+00:01:26.270 --> 00:01:31.900
+So in this line of code we begin by
+setting a variable s equal to 0.
+
+22
+00:01:31.900 --> 00:01:36.200
+And then we define a variable E, which
+represents the set of relationships in
+
+23
+00:01:36.200 --> 00:01:39.389
+a path that's returned, or
+in other words, the edges.
+
+24
+00:01:39.389 --> 00:01:42.842
+And we pass that into this variable s,
+and add to it,
+
+25
+00:01:42.842 --> 00:01:46.860
+the value of the distance that
+we've assigned to that edge.
+
+26
+00:01:48.540 --> 00:01:53.060
+So we're performing
+an aggregate calculation.
+
+27
+00:01:53.060 --> 00:01:58.340
+And returning the final results
+to a variable called pathDist.
+
+28
+00:01:58.340 --> 00:02:00.193
+And we're limiting that
+results to a single value.
+
+29
+00:02:00.193 --> 00:02:05.573
+And so when we do this, we should
+get a value that is more indicative
+
+30
+00:02:05.573 --> 00:02:11.460
+of the actual distance between
+our source and our destination.
+
+31
+00:02:11.460 --> 00:02:12.959
+And so here's the results.
+
+32
+00:02:12.959 --> 00:02:15.977
+The path itself, as we know,
+begins in H and ends in P.
+
+33
+00:02:15.977 --> 00:02:21.376
+And it has a pathLength of 7,
+but it has a pathDist of 39.
+
+34
+00:02:21.376 --> 00:02:25.864
+So we could interpret this to mean
+that even though there are 6 towns
+
+35
+00:02:25.864 --> 00:02:29.408
+between the source town and
+the destination town, or
+
+36
+00:02:29.408 --> 00:02:34.310
+a pathLength of 7, the actual distance
+in miles would be a value of 39.
+
+37
+00:02:36.446 --> 00:02:38.860
+So with that we can apply
+Dijkstra's algorithm.
+
+38
+00:02:39.950 --> 00:02:46.690
+So here I'm going to match the node with
+the name A, and the node with the name P.
+
+39
+00:02:46.690 --> 00:02:52.461
+And we're going to find the shortest
+path in terms of hops from A to P.
+
+40
+00:02:52.461 --> 00:02:56.050
+And we'll set that equal
+to the variable path.
+
+41
+00:02:56.050 --> 00:03:01.722
+Then we'll perform a reduce command,
+and set the variable dist = 0.
+
+42
+00:03:01.722 --> 00:03:03.602
+And we'll go through, and
+
+43
+00:03:03.602 --> 00:03:08.960
+sum all of the distances of each
+of the edges in our shortest path.
+
+44
+00:03:08.960 --> 00:03:11.480
+And return that value as a distance.
+
+45
+00:03:11.480 --> 00:03:15.060
+And we'll also return the path variable.
+
+46
+00:03:15.060 --> 00:03:20.870
+So remember, this is not the path in
+our network with the least weights.
+
+47
+00:03:20.870 --> 00:03:27.260
+It is the weight of the shortest
+path based on numbers of hops.
+
+48
+00:03:27.260 --> 00:03:31.940
+Now that's an inherent feature of
+the shortest path command in Cipher.
+
+49
+00:03:31.940 --> 00:03:33.470
+So here is the path that's returned.
+
+50
+00:03:33.470 --> 00:03:37.006
+It's a five node path with four edges and
+
+51
+00:03:37.006 --> 00:03:42.730
+the total sum of the weights of
+those edges sums to a value of 22.
+
+52
+00:03:44.243 --> 00:03:48.493
+So in our previous query,
+we specified that we wanted a match for
+
+53
+00:03:48.493 --> 00:03:52.240
+the source node and the destination node.
+
+54
+00:03:52.240 --> 00:03:57.670
+But if I don't specify my destination
+node, I can apply Dijkstra's single
+
+55
+00:03:57.670 --> 00:04:02.730
+source shortest path algorithm
+from node A to any other node.
+
+56
+00:04:03.870 --> 00:04:08.637
+So when we apply this query,
+the results displayed consist of
+
+57
+00:04:08.637 --> 00:04:13.233
+the actual original path from
+A to P with a distance of 22.
+
+58
+00:04:13.233 --> 00:04:18.318
+And we'll see a display of all of
+the intermediate paths generated in
+
+59
+00:04:18.318 --> 00:04:23.240
+the process, all the way down to
+a single edge path between A and C.
+
+60
+00:04:24.750 --> 00:04:30.830
+So just to reiterate, what we've
+calculated is the shortest hop path
+
+61
+00:04:30.830 --> 00:04:36.000
+with the weights added, the sum of
+the weights of the edges in that path.
+
+62
+00:04:36.000 --> 00:04:39.310
+This is not the least weight
+path of the entire network.
+
+63
+00:04:42.730 --> 00:04:45.470
+Okay, so let's switch gears for a moment.
+
+64
+00:04:45.470 --> 00:04:50.320
+As we learned in one of our previous
+lectures, we can extract a subset
+
+65
+00:04:50.320 --> 00:04:55.070
+of nodes and edges from a particular
+graph for various reasons.
+
+66
+00:04:55.070 --> 00:04:59.210
+Let's say for example that we want
+to avoid a particular town or
+
+67
+00:04:59.210 --> 00:05:01.680
+a particular area where
+there might be congestion.
+
+68
+00:05:01.680 --> 00:05:05.040
+And this would be represented
+by one of our nodes.
+
+69
+00:05:05.040 --> 00:05:08.110
+So we're going to perform a similar
+match as we've done in the past,
+
+70
+00:05:08.110 --> 00:05:14.960
+where we're going to match any node n with
+any node m, with a two edge between them.
+
+71
+00:05:14.960 --> 00:05:19.243
+But we want to apply an additional
+constrained in which none of the n nodes
+
+72
+00:05:19.243 --> 00:05:21.150
+are going to include the node D.
+
+73
+00:05:21.150 --> 00:05:26.920
+And none of the m nodes are going
+to include the node D as well.
+
+74
+00:05:26.920 --> 00:05:29.030
+And then we'll return the resulting graph.
+
+75
+00:05:30.290 --> 00:05:34.500
+So when we do that, we get a graph but
+looks very much as we might expect.
+
+76
+00:05:34.500 --> 00:05:38.958
+Very similar to our previous graph,
+but it is missing node D, so
+
+77
+00:05:38.958 --> 00:05:43.183
+it only has ten nodes and
+it's now been reduced to ten edges.
+
+78
+00:05:46.005 --> 00:05:50.659
+So now let's say we want to calculate
+the shortest path over there graph that we
+
+79
+00:05:50.659 --> 00:05:53.590
+just returned in the previous query.
+
+80
+00:05:53.590 --> 00:05:59.690
+So in this case, we're going to match the
+shortest path between node A and node P.
+
+81
+00:05:59.690 --> 00:06:03.830
+But in the second line, we want to
+issue sort of a negative statement
+
+82
+00:06:03.830 --> 00:06:08.530
+in which the resulting list of
+node names that we extract using
+
+83
+00:06:08.530 --> 00:06:12.780
+the extract statement
+cannot contain the node D.
+
+84
+00:06:14.020 --> 00:06:17.710
+And then we'll return that path and
+the length of that path.
+
+85
+00:06:17.710 --> 00:06:22.190
+So when we issue this command,
+here's our resulting path.
+
+86
+00:06:22.190 --> 00:06:25.730
+It's a five node path of length four.
+
+87
+00:06:25.730 --> 00:06:29.540
+As we recall from one of our earlier
+queries where we were trying to calculate
+
+88
+00:06:29.540 --> 00:06:33.500
+all of the shortest paths,
+we returned two paths.
+
+89
+00:06:33.500 --> 00:06:37.594
+One path that contained D, and this is
+the second path, which did not contain D.
+
+90
+00:06:40.008 --> 00:06:43.538
+So we can make this a little complicated.
+
+91
+00:06:43.538 --> 00:06:48.728
+Instead of avoiding a single node in
+our resulting path, we're looking for
+
+92
+00:06:48.728 --> 00:06:54.090
+a graph that doesn't contain the immediate
+neighborhood of a specific node.
+
+93
+00:06:54.090 --> 00:06:58.770
+This means all of the nearest, or
+the first neighbors of a specific node.
+
+94
+00:06:58.770 --> 00:07:03.390
+So in this case we're going
+to match the same node D, and
+
+95
+00:07:03.390 --> 00:07:07.010
+all edges between D, and any other node.
+
+96
+00:07:07.010 --> 00:07:11.590
+And then we are going to issue
+a collect command to collect all of
+
+97
+00:07:11.590 --> 00:07:13.758
+the distinct neighbors of D.
+
+98
+00:07:13.758 --> 00:07:18.654
+And we'll apply a constraint to that,
+in which the returned
+
+99
+00:07:18.654 --> 00:07:23.960
+list of neighbors cannot contain
+the node with the name D.
+
+100
+00:07:23.960 --> 00:07:27.050
+Likewise, the neighbors list for
+
+101
+00:07:27.050 --> 00:07:31.070
+the target nodes,
+can also not contain the node D.
+
+102
+00:07:31.070 --> 00:07:35.800
+And when we submit this command,
+we see a network that looks like this.
+
+103
+00:07:35.800 --> 00:07:38.010
+Five nodes and four edges.
+
+104
+00:07:38.010 --> 00:07:40.130
+And that seems to makes sense.
+
+105
+00:07:40.130 --> 00:07:45.170
+Node D isn't in the network,
+nor are its first neighbors.
+
+106
+00:07:45.170 --> 00:07:47.590
+But if you recall the original network,
+
+107
+00:07:47.590 --> 00:07:53.080
+there may be a peculiar result that you
+might find a little bit disconcerting.
+
+108
+00:07:53.080 --> 00:07:56.112
+So let's look at our original network.
+
+109
+00:07:56.112 --> 00:07:59.720
+Now here's the node D, and
+here are all it's nearest neighbors.
+
+110
+00:07:59.720 --> 00:08:02.360
+So these are the forbidden
+neighbors that we want to
+
+111
+00:08:02.360 --> 00:08:04.040
+remove from our resulting graph.
+
+112
+00:08:05.100 --> 00:08:07.360
+And we seemed to have
+done that successfully.
+
+113
+00:08:07.360 --> 00:08:11.700
+These are the five nodes that
+are retained in the resulting graph, but
+
+114
+00:08:11.700 --> 00:08:12.890
+there's a node out here.
+
+115
+00:08:12.890 --> 00:08:19.440
+The node p, which seems to be neglected or
+not handled in the results.
+
+116
+00:08:19.440 --> 00:08:21.520
+It's not a first neighbor of D.
+
+117
+00:08:22.620 --> 00:08:26.730
+So it, in some ways arguably should
+be returned in our results, but
+
+118
+00:08:26.730 --> 00:08:30.750
+it's not part of the connected
+graph that we saw returned.
+
+119
+00:08:30.750 --> 00:08:36.580
+This is one area in which Cipher does
+not handle these situations by default.
+
+120
+00:08:36.580 --> 00:08:41.640
+So we'll need to supplement our
+query with an additional query.
+
+121
+00:08:41.640 --> 00:08:46.848
+In this case, the node P was a leaf node,
+so we want to make sure that
+
+122
+00:08:46.848 --> 00:08:52.340
+not only matching the nodes that
+conform to these constraints above.
+
+123
+00:08:53.400 --> 00:08:58.890
+But we also want to include the node or
+any nodes which are leaf nodes,
+
+124
+00:08:58.890 --> 00:09:04.200
+which may also be arguably part of the
+results that you expect to be returned.
+
+125
+00:09:04.200 --> 00:09:07.120
+Now in our network,
+we do have one root node,
+
+126
+00:09:07.120 --> 00:09:10.990
+but it doesn't impact the results
+in this particular query.
+
+127
+00:09:10.990 --> 00:09:13.420
+In the interests of being complete, for
+
+128
+00:09:13.420 --> 00:09:18.002
+any network, most networks being much more
+complex than the one we're working with.
+
+129
+00:09:18.002 --> 00:09:23.450
+We'd want to take into account not only
+those leaf nodes that might be left out,
+
+130
+00:09:23.450 --> 00:09:25.700
+but also any root notes
+that might be left out.
+
+131
+00:09:28.300 --> 00:09:33.400
+And finally, our last query
+example extends the previous query
+
+132
+00:09:33.400 --> 00:09:37.670
+to find the graph which doesn't
+contain a selective neighborhood,
+
+133
+00:09:37.670 --> 00:09:42.050
+in this case,
+the two neighborhood of a particular node.
+
+134
+00:09:42.050 --> 00:09:43.571
+In this example we're
+going to use the node F.
+
+135
+00:09:43.571 --> 00:09:50.020
+And we want to eliminate all of
+the second neighbors of that node.
+
+136
+00:09:50.020 --> 00:09:54.590
+So initially we match all of those
+nodes that are second neighbors of F,
+
+137
+00:09:54.590 --> 00:09:56.400
+including F itself.
+
+138
+00:09:56.400 --> 00:10:00.750
+And we'll place those in
+a variable called MyList.
+
+139
+00:10:00.750 --> 00:10:03.850
+Then we go back through the network and
+match all of the nodes and
+
+140
+00:10:03.850 --> 00:10:08.690
+edges, where the source nodes are not
+part of the nodes in the MyList and
+
+141
+00:10:08.690 --> 00:10:11.740
+the target nodes are not
+contained in MyList.
+
+142
+00:10:11.740 --> 00:10:13.940
+And then we return those nodes and edges.
+
+143
+00:10:15.580 --> 00:10:16.990
+And here's the resulting graph.
+
+144
+00:10:19.020 --> 00:10:24.490
+It does not contain F or
+its first or second neighbors.
+
+145
+00:10:24.490 --> 00:10:31.574
+If we scroll down to look at the original
+graph, here's node F, nodes H,
+
+146
+00:10:31.574 --> 00:10:37.080
+J, C, A and L are all the first and
+second neighbors of F.
+
+147
+00:10:37.080 --> 00:10:42.070
+So those should be eliminated from the
+graph that gets returned from our results.
+
+148
+00:10:42.070 --> 00:10:43.600
+And sure enough,
+
+149
+00:10:43.600 --> 00:10:49.520
+this subset of nodes represents the
+results that were returned from our query.
+
+150
+00:10:49.520 --> 00:10:54.040
+It consists of nodes B, D, E, G, and P.
+
+151
+00:10:54.040 --> 00:10:57.440
+And so this concludes our review
+of some of the more advanced
+
+152
+00:10:57.440 --> 00:10:59.490
+path analytics queries.
+
+153
+00:10:59.490 --> 00:11:01.645
+We were using a simple network, but
+
+154
+00:11:01.645 --> 00:11:05.310
+we're providing additional data
+sets that are much larger and
+
+155
+00:11:05.310 --> 00:11:09.770
+present a more realistic challenge
+in applying pathanalythics queries.
+
+1
+00:00:00.750 --> 00:00:05.130
+Hello everyone and welcome to this week's
+module on graph analytics with Neo4j
+
+2
+00:00:05.130 --> 00:00:07.460
+using the Cypher query language.
+
+3
+00:00:07.460 --> 00:00:10.950
+I'm Jeff Sale and I'll be your
+instructor for this series of lessons.
+
+4
+00:00:10.950 --> 00:00:14.360
+I've been an instructional designer at
+the San Diego Supercomputer Center for
+
+5
+00:00:14.360 --> 00:00:19.090
+more than ten years, but I've also had
+a passion for scientific visualization and
+
+6
+00:00:19.090 --> 00:00:22.940
+visual analytics in one form or
+another for over two decades.
+
+7
+00:00:22.940 --> 00:00:26.010
+And I'm very excited about this
+opportunity to introduce you to this
+
+8
+00:00:26.010 --> 00:00:29.590
+free and very powerful graph
+analytics tool called Neo4j.
+
+9
+00:00:30.770 --> 00:00:33.990
+First we realized that many of you
+may not have the systems capable of
+
+10
+00:00:33.990 --> 00:00:37.190
+pushing the boundaries of
+Neo4j's performance limits.
+
+11
+00:00:37.190 --> 00:00:40.620
+Plus the fact that many of you are fitting
+this course into your already busy
+
+12
+00:00:40.620 --> 00:00:45.680
+schedules means we'll be working with data
+sets, which will load into Neo4j and can
+
+13
+00:00:45.680 --> 00:00:51.690
+be analyze in a reasonable length of time,
+on the order of minutes not hours or days.
+
+14
+00:00:51.690 --> 00:00:55.020
+However you can be sure that Neo4j
+is capable of processing and
+
+15
+00:00:55.020 --> 00:00:59.730
+analyzing extremely complex graph networks
+consisting of millions of nodes and
+
+16
+00:00:59.730 --> 00:01:00.360
+relationships.
+
+17
+00:01:01.580 --> 00:01:05.650
+This module consists of a series of
+hands-on demonstrations with Neo4j,
+
+18
+00:01:05.650 --> 00:01:08.780
+which begin with examples of
+some basic cypher queries
+
+19
+00:01:08.780 --> 00:01:12.590
+that soon progress to some of
+the more advanced cypher queries.
+
+20
+00:01:12.590 --> 00:01:16.440
+We'll begin by using a relatively simple
+graph representing a road network, but
+
+21
+00:01:16.440 --> 00:01:19.260
+we'll also use much larger and
+more complex data sets,
+
+22
+00:01:19.260 --> 00:01:23.280
+including sociological data on
+global terrorist groups and
+
+23
+00:01:23.280 --> 00:01:27.340
+genetics data on associations and
+interactions between genes.
+
+24
+00:01:27.340 --> 00:01:30.910
+These data sets are in fact sub
+sets of much larger data sets and
+
+25
+00:01:30.910 --> 00:01:35.290
+we're making both of the sub sets and
+complete data sets available for download.
+
+26
+00:01:35.290 --> 00:01:38.250
+Once you become comfortable working
+with the smaller data sets,
+
+27
+00:01:38.250 --> 00:01:40.760
+we encourage you to explore
+the larger sets on your own.
+
+28
+00:01:41.810 --> 00:01:45.020
+Finally you'll notice that each
+video is accompanied by a text file
+
+29
+00:01:45.020 --> 00:01:48.560
+containing all of the code used
+in the video demonstrations.
+
+30
+00:01:48.560 --> 00:01:52.680
+These files include dozens of sample
+scripts, written in cypher, designed to
+
+31
+00:01:52.680 --> 00:01:57.250
+make it easy for you to learn, not only
+basic cypher cards, but also queries which
+
+32
+00:01:57.250 --> 00:02:01.858
+focus on more advanced methods such
+pathenoids and connectivity analytics.
+
+33
+00:02:03.040 --> 00:02:06.690
+When you're finished with this module
+you'll be able to write cypher scripts to
+
+34
+00:02:06.690 --> 00:02:10.900
+import and
+analyze your own data using Neo4j.
+
+35
+00:02:10.900 --> 00:02:13.682
+So thank you for
+enrolling in this course and let's get
+
+36
+00:02:13.682 --> 00:02:17.991
+started doing some real graph analytics
+with Neo4j and the Cypher query language.
+
+1
+00:00:00.570 --> 00:00:03.984
+A parallel computation is at
+the heart of big data computing.
+
+2
+00:00:03.984 --> 00:00:08.427
+However, to specify what becomes parallel,
+we usually think of a conceptual model
+
+3
+00:00:08.427 --> 00:00:11.760
+of parallel computation often called,
+a programming model.
+
+4
+00:00:13.630 --> 00:00:16.990
+A parallel programming model is
+a way to specify abstractly,
+
+5
+00:00:16.990 --> 00:00:18.280
+how a parallel program will run.
+
+6
+00:00:19.310 --> 00:00:21.720
+Naturally for a program to be parallel,
+
+7
+00:00:21.720 --> 00:00:26.040
+there must be a number of
+concurrently operating processes.
+
+8
+00:00:26.040 --> 00:00:28.540
+But how do these processes communicate and
+exchange data?
+
+9
+00:00:29.760 --> 00:00:32.280
+How do they decide,
+when to communicate with each other?
+
+10
+00:00:33.560 --> 00:00:35.320
+Further, what exactly is done in parallel?
+
+11
+00:00:36.550 --> 00:00:38.870
+To think of the first question.
+
+12
+00:00:38.870 --> 00:00:42.870
+Two processes communicate
+data by sharing memory.
+
+13
+00:00:44.490 --> 00:00:48.150
+Indeed, there are architectures in which
+all memory in multiple machines can be
+
+14
+00:00:48.150 --> 00:00:51.480
+made to virtually look like,
+one large addressable memory space.
+
+15
+00:00:52.990 --> 00:00:54.840
+However, two processes,
+
+16
+00:00:54.840 --> 00:00:58.570
+we also communicate by passing
+messages to one another.
+
+17
+00:00:58.570 --> 00:01:01.210
+Either, directly from one
+process to another, or
+
+18
+00:01:01.210 --> 00:01:04.690
+through a common message carrying pipe,
+often called a message bus.
+
+19
+00:01:06.750 --> 00:01:09.130
+The second question can
+also have multiple answers.
+
+20
+00:01:10.250 --> 00:01:15.050
+Two of the most common ways of achieving
+parallelism are pass parallelism and
+
+21
+00:01:15.050 --> 00:01:16.790
+data parallels.
+
+22
+00:01:16.790 --> 00:01:21.860
+In task parallelism, a large task can
+be decomposed into multiple sub-tasks,
+
+23
+00:01:21.860 --> 00:01:23.380
+each of which can be run concurrently.
+
+24
+00:01:24.460 --> 00:01:29.690
+In data parallelism, the data can be
+partitioned into many smaller fragments
+
+25
+00:01:29.690 --> 00:01:32.850
+and operation can run on each partition,
+independent of the others.
+
+26
+00:01:34.480 --> 00:01:38.040
+Typically, these partial operations
+have then synchronized and
+
+27
+00:01:38.040 --> 00:01:41.500
+partially process data combined
+to produce a full answer.
+
+28
+00:01:42.770 --> 00:01:44.870
+Many parallel data management systems,
+
+29
+00:01:44.870 --> 00:01:46.760
+operate a partition due
+to parallel manner.
+
+30
+00:01:48.240 --> 00:01:51.490
+We need to remember that task
+parallelism is somewhat independent of
+
+31
+00:01:51.490 --> 00:01:52.780
+data parallelism.
+
+32
+00:01:52.780 --> 00:01:56.440
+And it is possible to have both problems
+of parallelism in a programming model.
+
+33
+00:01:57.540 --> 00:02:00.650
+It is important to emphasize
+the issue of a programming model,
+
+34
+00:02:00.650 --> 00:02:04.320
+should be not be confused with
+the issue of a programming language.
+
+35
+00:02:05.405 --> 00:02:08.295
+A programming language is independent
+of the programming model.
+
+36
+00:02:08.295 --> 00:02:10.765
+And therefore,
+a programming model can be implemented
+
+37
+00:02:10.765 --> 00:02:12.185
+in several different languages.
+
+38
+00:02:13.425 --> 00:02:17.155
+As I mentioned, the programming model
+we are going to consider is BSP.
+
+39
+00:02:18.425 --> 00:02:22.350
+BSP wasn't initially created for
+graph computation.
+
+40
+00:02:22.350 --> 00:02:24.550
+It was thought of as
+a parallel computing model,
+
+41
+00:02:24.550 --> 00:02:28.740
+that will bridge the gap between software
+models of parallel computation, and
+
+42
+00:02:28.740 --> 00:02:31.890
+hardware capabilities for
+supporting parallelism.
+
+43
+00:02:31.890 --> 00:02:34.100
+The basic idea of BSP is as follows.
+
+44
+00:02:35.430 --> 00:02:37.880
+There are number of processors.
+
+45
+00:02:37.880 --> 00:02:41.860
+Each processor can perform local
+computation, using its own local memory.
+
+46
+00:02:43.640 --> 00:02:49.020
+There's a router, which can serve to pass
+a message from any processor to any other.
+
+47
+00:02:50.090 --> 00:02:53.080
+When one pair of nodes
+are exchanging messages,
+
+48
+00:02:53.080 --> 00:02:55.420
+another third node can
+still perform computation.
+
+49
+00:02:58.000 --> 00:03:01.060
+There's a facility that can
+synchronize the state of
+
+50
+00:03:01.060 --> 00:03:02.860
+all auto-substative processes.
+
+51
+00:03:04.010 --> 00:03:06.880
+This synchronize may either
+happen periodically,
+
+52
+00:03:06.880 --> 00:03:12.100
+at intervals of L time units or
+there may be another way of specifying,
+
+53
+00:03:12.100 --> 00:03:14.490
+when this synchronization
+is going to happen.
+
+54
+00:03:14.490 --> 00:03:19.270
+But when it does, all processors affected
+by it, will come to a consistent state.
+
+55
+00:03:20.490 --> 00:03:25.420
+When synchronization is performed,
+a fresh round of computation can start.
+
+56
+00:03:25.420 --> 00:03:26.905
+We call this.
+
+57
+00:03:26.905 --> 00:03:28.105
+Synchronization point.
+
+58
+00:03:28.105 --> 00:03:29.815
+Barrier synchronization.
+
+59
+00:03:29.815 --> 00:03:33.575
+Because all executed processes
+must reach this barrier point,
+
+60
+00:03:33.575 --> 00:03:36.935
+before the next step of
+processing can continue.
+
+61
+00:03:36.935 --> 00:03:40.935
+A BSP program is broken up into
+a sequence stop supersteps.
+
+62
+00:03:42.325 --> 00:03:46.540
+In each superstep, each processor
+will get the data, if needed.
+
+63
+00:03:46.540 --> 00:03:49.040
+Performance computation if needed and
+
+64
+00:03:49.040 --> 00:03:51.180
+then, exchange data
+with the right partner.
+
+65
+00:03:52.360 --> 00:03:56.260
+Once all the nodes are done,
+the system helps to synchronize.
+
+66
+00:03:56.260 --> 00:03:57.680
+Then, the next round starts.
+
+67
+00:03:58.760 --> 00:04:03.140
+Each processor can determine,
+if it needs to compute or exchange data.
+
+68
+00:04:03.140 --> 00:04:05.300
+If not, it will make itself inactive.
+
+69
+00:04:06.760 --> 00:04:10.540
+If required later, a processor can
+be woken up to be active again.
+
+70
+00:04:12.390 --> 00:04:15.700
+When all processors are inactive,
+the computation stops.
+
+71
+00:04:17.320 --> 00:04:20.720
+In applying BSP model to graphs,
+we make a few assumptions.
+
+72
+00:04:21.830 --> 00:04:24.850
+We assume that a processor
+is synonymous with a vertex.
+
+73
+00:04:26.100 --> 00:04:30.130
+So for
+a processor can only send messages to or
+
+74
+00:04:30.130 --> 00:04:32.810
+receive from, its neighboring processes.
+
+75
+00:04:34.170 --> 00:04:39.920
+We also assume, a vertex has an ID and
+possibly a complex value.
+
+76
+00:04:39.920 --> 00:04:42.270
+And an edge,
+we also have an idea and fact.
+
+77
+00:04:43.570 --> 00:04:46.170
+Each vertex knows,
+which edges it's connected to.
+
+78
+00:04:48.630 --> 00:04:52.918
+We cannot think of a computation
+as a vertex centered task.
+
+79
+00:04:52.918 --> 00:04:55.260
+We shall [INAUDIBLE] what this means.
+
+80
+00:04:57.640 --> 00:04:59.760
+In a now famous paper from Google.
+
+81
+00:04:59.760 --> 00:05:03.030
+This programming model was called,
+think like a vertex.
+
+82
+00:05:04.120 --> 00:05:07.620
+Well to think like a vertex,
+we need to know what a vertex can do.
+
+83
+00:05:08.970 --> 00:05:10.950
+Here's a list of actions,
+a vertex can take.
+
+84
+00:05:13.030 --> 00:05:14.460
+The first one is easy.
+
+85
+00:05:14.460 --> 00:05:16.020
+A vertex can find its own identifier.
+
+86
+00:05:17.680 --> 00:05:22.010
+The second operation is to get or
+set the value of the node.
+
+87
+00:05:22.010 --> 00:05:26.450
+This operation may be a little involved,
+if the value is a complex data object.
+
+88
+00:05:26.450 --> 00:05:29.060
+For our purposes,
+we'll assume the value is a scalar.
+
+89
+00:05:30.490 --> 00:05:32.620
+Next, a node can ask for
+
+90
+00:05:32.620 --> 00:05:36.370
+its own edges, the result of
+the operation is a set of edge objects.
+
+91
+00:05:37.740 --> 00:05:39.720
+A node may also count its edges.
+
+92
+00:05:40.780 --> 00:05:43.650
+Since we are referring to
+outgoing edges throughout,
+
+93
+00:05:43.650 --> 00:05:45.160
+this is the out degree of the vertex.
+
+94
+00:05:46.390 --> 00:05:47.170
+Recognize that,
+
+95
+00:05:47.170 --> 00:05:52.210
+this means a vertex does not natively
+have access to its incident notes.
+
+96
+00:05:54.220 --> 00:05:57.830
+However, it does have control
+of the outgoing edges.
+
+97
+00:05:57.830 --> 00:05:59.990
+So it can get inside the edge values.
+
+98
+00:06:01.620 --> 00:06:04.470
+There may be two different
+ways of specifying an edge.
+
+99
+00:06:04.470 --> 00:06:07.280
+The edge we have an ID
+that the node can get.
+
+100
+00:06:07.280 --> 00:06:11.460
+Passively, more commonly, an edge is
+identified the vertex of targets.
+
+101
+00:06:12.500 --> 00:06:16.520
+So in our diagram V1 lasts for
+the edge, targeting V4.
+
+102
+00:06:18.950 --> 00:06:24.240
+So in the situation like v3 and v5, we're
+there are multiple edges between v3 and
+
+103
+00:06:24.240 --> 00:06:30.370
+v5, the source v3 can ask for
+the values of all edges going to v5.
+
+104
+00:06:32.520 --> 00:06:35.990
+The operate operation can add or
+remove an edge of a vertex.
+
+105
+00:06:37.270 --> 00:06:43.240
+Finally, since the vertices are processes,
+they can start or stop computing.
+
+106
+00:06:43.240 --> 00:06:46.890
+Typically a node wakes up, if it
+receives a message from another node.
+
+107
+00:06:46.890 --> 00:06:51.450
+Now in comparison to a vertex,
+an edge can do far less.
+
+108
+00:06:52.760 --> 00:06:57.220
+It can get its own ID if the system
+allows edge ID's, it can set and
+
+109
+00:06:57.220 --> 00:07:02.380
+retrieve its own values, and it can get
+the ID of the node its pointing to.
+
+110
+00:07:02.380 --> 00:07:02.880
+That's it.
+
+111
+00:07:04.080 --> 00:07:07.500
+Now, we still have not defined,
+how to think like a vertex.
+
+112
+00:07:07.500 --> 00:07:09.470
+That's what we'll do next,
+
+113
+00:07:09.470 --> 00:07:13.330
+using an example that we have
+seen several times before.
+
+114
+00:07:13.330 --> 00:07:17.700
+It's Dijkstra's single source
+shortest path, SSSP, algorithm.
+
+115
+00:07:19.000 --> 00:07:21.120
+We have seen this algorithm before.
+
+116
+00:07:21.120 --> 00:07:25.710
+But now, we'll show how to compute
+it in a parallel setting using BSP.
+
+117
+00:07:27.140 --> 00:07:30.320
+Here is the edge value,
+that's the weight of the edge.
+
+118
+00:07:31.710 --> 00:07:33.830
+This is known before the algorithm starts.
+
+119
+00:07:35.010 --> 00:07:39.180
+Each vertex,
+runs the exact same routine concurrently.
+
+120
+00:07:40.200 --> 00:07:41.530
+Each vertex asks.
+
+121
+00:07:41.530 --> 00:07:44.500
+1, is it super step zero?
+
+122
+00:07:44.500 --> 00:07:47.810
+2, if yes,
+
+123
+00:07:47.810 --> 00:07:52.810
+then if this is a source vertex,
+it sets the value to zero.
+
+124
+00:07:53.870 --> 00:07:56.930
+Else, it sets the value to infinity,
+which is a large number.
+
+125
+00:07:58.310 --> 00:07:59.610
+The source vertex,
+
+126
+00:07:59.610 --> 00:08:03.450
+propagates its edge value to the nodes
+at the other end of the edges.
+
+127
+00:08:03.450 --> 00:08:04.250
+Just the source vertex.
+
+128
+00:08:05.380 --> 00:08:06.650
+All other vertices are quiet.
+
+129
+00:08:08.300 --> 00:08:11.170
+The propagation process works like this.
+
+130
+00:08:11.170 --> 00:08:15.710
+A vertex gets its own value,
+which for the source vertex is zero.
+
+131
+00:08:15.710 --> 00:08:21.990
+It gets its edges, for each edge,
+it gets the value of the edge,
+
+132
+00:08:21.990 --> 00:08:27.020
+adds it to its own value and sends
+the result to the end point of the edge.
+
+133
+00:08:28.080 --> 00:08:31.840
+The blue numbers indicate
+that the messages are sent.
+
+134
+00:08:31.840 --> 00:08:33.410
+All vertices go to halt.
+
+135
+00:08:33.410 --> 00:08:37.180
+That is, they now have hit
+a synchronization barrier.
+
+136
+00:08:38.290 --> 00:08:41.590
+Notice, that the receiving nodes
+do not look at the messages yet.
+
+137
+00:08:42.590 --> 00:08:46.860
+It's the system's job to ensure that
+the messages are available to these nodes
+
+138
+00:08:46.860 --> 00:08:47.810
+at the next superstep.
+
+139
+00:08:49.690 --> 00:08:54.520
+All nodes who have received messages
+wake up and read the messages.
+
+140
+00:08:54.520 --> 00:08:58.530
+If a node receives multiple messages,
+it picks the minimum.
+
+141
+00:08:58.530 --> 00:09:04.140
+In our case, the two active nodes
+have received only one value each.
+
+142
+00:09:04.140 --> 00:09:08.720
+We have for the sake of convenience,
+colored the processed edges in yellow.
+
+143
+00:09:08.720 --> 00:09:11.250
+This is just for
+visualization purposes in this example.
+
+144
+00:09:12.470 --> 00:09:17.690
+Now, it compares this band for
+a minimum value, to its own value.
+
+145
+00:09:17.690 --> 00:09:24.790
+And if its own value is greater, it sets
+its own value with the minimum value.
+
+146
+00:09:24.790 --> 00:09:29.480
+In our case, both notes set their value
+to that, of the incoming message.
+
+147
+00:09:30.800 --> 00:09:33.400
+The same propagation routine works again.
+
+148
+00:09:33.400 --> 00:09:36.320
+So, each note completes the new distance.
+
+149
+00:09:37.680 --> 00:09:41.830
+And sends the message along an edge
+to the other endpoint, then halts.
+
+150
+00:09:42.990 --> 00:09:46.030
+The same step is repeated
+in the next superstep.
+
+151
+00:09:47.700 --> 00:09:51.690
+At this point,
+the nodes have updated their values.
+
+152
+00:09:51.690 --> 00:09:53.320
+The node with the value 6,
+
+153
+00:09:53.320 --> 00:09:58.089
+has received our message,
+just along one of the three edges on it.
+
+154
+00:09:59.120 --> 00:09:59.680
+Continuing.
+
+155
+00:10:01.030 --> 00:10:02.860
+At the end of superstep 2,
+
+156
+00:10:02.860 --> 00:10:07.690
+all nodes are ready to receive messages
+from all their incident edges.
+
+157
+00:10:09.150 --> 00:10:13.210
+The node with a value 6, received a value
+which is lower than its current value.
+
+158
+00:10:14.290 --> 00:10:18.020
+Now the active nodes,
+have no more messages to send.
+
+159
+00:10:18.020 --> 00:10:20.010
+So each vertex, votes to halt.
+
+160
+00:10:21.020 --> 00:10:25.300
+The vertex ID and the value
+are read out from each vertex, and
+
+161
+00:10:25.300 --> 00:10:27.600
+then the process starts.
+
+162
+00:10:27.600 --> 00:10:31.110
+If these nodes are in different
+machines of a cluster,
+
+163
+00:10:31.110 --> 00:10:35.320
+the system will rely on
+the underlying platform like YARN.
+
+164
+00:10:35.320 --> 00:10:37.960
+Or sparks underlying
+infrastructure to ensure,
+
+165
+00:10:37.960 --> 00:10:41.770
+that the edges going across machines can
+send and receive messages effectively.
+
+166
+00:10:42.880 --> 00:10:46.698
+This should give you a sense of the speed
+of this process for a large scale network.
+
+1
+00:00:00.670 --> 00:00:05.260
+As we said earlier,
+while the Giraph paradigm implements BSB,
+
+2
+00:00:05.260 --> 00:00:07.220
+it must also be pragmatic.
+
+3
+00:00:08.590 --> 00:00:12.590
+One such point of pragmatism is
+the computation of aggregate values.
+
+4
+00:00:13.820 --> 00:00:16.550
+In the think like a vertex paradigm,
+
+5
+00:00:16.550 --> 00:00:20.360
+operations local to a vertex can
+be performed in parallel, and
+
+6
+00:00:20.360 --> 00:00:24.220
+each vertex only has to work
+with its immediate neighborhood.
+
+7
+00:00:24.220 --> 00:00:28.260
+This is very useful, but
+it isn't sufficient at times.
+
+8
+00:00:28.260 --> 00:00:32.450
+For example, we need to know and use
+the total number of edges in the graph.
+
+9
+00:00:33.470 --> 00:00:37.720
+This will be computed by adding
+edges connected to each vertex, but
+
+10
+00:00:37.720 --> 00:00:41.140
+once aggregated,
+it does not belong to any specific vertex.
+
+11
+00:00:42.440 --> 00:00:45.170
+So whom does this vertex
+send the aggregate to?
+
+12
+00:00:46.750 --> 00:00:50.500
+Also suppose, a vertex creates some
+edges as part of its compute step.
+
+13
+00:00:51.630 --> 00:00:54.060
+When does this information get sent out?
+
+14
+00:00:55.260 --> 00:00:57.000
+Let's answer the first question first.
+
+15
+00:00:58.240 --> 00:01:03.337
+The class in charge of these aggregates
+is called the DefaultMasterCompute class.
+
+16
+00:01:04.580 --> 00:01:07.250
+This class specializes MasterCompute.
+
+17
+00:01:09.070 --> 00:01:12.460
+How does the DefaultMasterCompute
+relate to the basic vertex computation?
+
+18
+00:01:14.430 --> 00:01:19.150
+We have seen that all vertex programs are
+created by first defining a vertex class.
+
+19
+00:01:20.450 --> 00:01:25.314
+This class has a compute function that
+performs like the think like a vertex
+
+20
+00:01:25.314 --> 00:01:25.860
+logic.
+
+21
+00:01:27.000 --> 00:01:32.665
+Now let's add to it a basic vertex
+function and an aggregate function.
+
+22
+00:01:32.665 --> 00:01:33.530
+Now this function, for
+
+23
+00:01:33.530 --> 00:01:38.580
+our example of all the total number
+of aggregate edges looks like this.
+
+24
+00:01:40.460 --> 00:01:42.070
+The name of the function is aggregate.
+
+25
+00:01:43.270 --> 00:01:47.990
+As you can see in yellow, it just gets
+the number of edges off this vertex.
+
+26
+00:01:49.470 --> 00:01:55.003
+What's a little strange is that the first
+argument of this aggregation has
+
+27
+00:01:55.003 --> 00:01:59.690
+an id of something whose
+name is total number edges.
+
+28
+00:02:01.180 --> 00:02:03.740
+What really happens is as follows.
+
+29
+00:02:03.740 --> 00:02:08.302
+The defaltMasterCompute class, which
+is in charge of this global aggregate
+
+30
+00:02:08.302 --> 00:02:11.610
+operations, is specialized
+by your aggregate class.
+
+31
+00:02:12.730 --> 00:02:14.482
+This class has an ID, and
+
+32
+00:02:14.482 --> 00:02:20.080
+the aggregator gets registered with
+Giraph's defaultMasterCompute class.
+
+33
+00:02:21.630 --> 00:02:28.220
+The ID we saw before refers to your
+registered aggregator's classes ID.
+
+34
+00:02:28.220 --> 00:02:32.085
+The MasterCompute class performs
+the centralized computation between
+
+35
+00:02:32.085 --> 00:02:33.830
+supersteps.
+
+36
+00:02:33.830 --> 00:02:37.110
+This class is initiated
+on the master node and
+
+37
+00:02:37.110 --> 00:02:41.560
+will run every superstep
+before the workers do.
+
+38
+00:02:41.560 --> 00:02:45.550
+Communication with the workers
+should be performed via aggregators.
+
+39
+00:02:47.260 --> 00:02:50.080
+The values of the aggregators
+are broadcast to the workers before
+
+40
+00:02:50.080 --> 00:02:52.380
+the vertex compute is called.
+
+41
+00:02:52.380 --> 00:02:56.670
+And collected by the master before
+the master compute is called.
+
+42
+00:02:56.670 --> 00:03:01.550
+This means the aggregator values
+used by the workers are consistent
+
+43
+00:03:01.550 --> 00:03:06.000
+with the aggregator values from
+the master from the same superstep.
+
+44
+00:03:06.000 --> 00:03:08.750
+And the aggregator used by
+the master are consistent
+
+45
+00:03:08.750 --> 00:03:12.330
+with the aggregator values from
+the workers from the previous superstep.
+
+46
+00:03:13.630 --> 00:03:16.430
+Now let's go back to the big picture for
+a second.
+
+47
+00:03:16.430 --> 00:03:17.980
+Giraph is a big data software.
+
+48
+00:03:19.090 --> 00:03:24.390
+Why not implement the Giraph system
+with a set of MapReduce jobs?
+
+49
+00:03:24.390 --> 00:03:25.863
+Too much disk requirement.
+
+50
+00:03:25.863 --> 00:03:28.077
+No in-memory caching.
+
+51
+00:03:28.077 --> 00:03:30.950
+Every superstep becomes a job.
+
+52
+00:03:30.950 --> 00:03:34.680
+So all intermediate steps
+are written to files, and
+
+53
+00:03:34.680 --> 00:03:38.750
+that is not a very scalable solution for
+iterative operations.
+
+54
+00:03:38.750 --> 00:03:42.370
+However, it will be incorrect
+to think that Giraph works
+
+55
+00:03:42.370 --> 00:03:44.041
+only in an in memory process.
+
+56
+00:03:45.180 --> 00:03:48.220
+It can always have less
+memory than it needs.
+
+57
+00:03:48.220 --> 00:03:52.740
+There are two broad categories of
+what's called out-of-core computation.
+
+58
+00:03:54.000 --> 00:03:57.650
+The first situation occurs when the graph
+is really large compared to the capacity
+
+59
+00:03:57.650 --> 00:03:58.680
+of the cluster it's running on.
+
+60
+00:03:59.980 --> 00:04:04.020
+Each worker stores the vertices assigned
+to it inside a set of partitions.
+
+61
+00:04:05.300 --> 00:04:09.150
+Inside a partition are a subset of
+vertices together with their data.
+
+62
+00:04:10.430 --> 00:04:13.700
+During a superstep, the worker node
+
+63
+00:04:13.700 --> 00:04:18.610
+processes multiple partitions
+concurrently, one per thread.
+
+64
+00:04:18.610 --> 00:04:23.700
+If a graph is large, then not all
+partitions are stored in memory.
+
+65
+00:04:23.700 --> 00:04:28.120
+Typically only N partitions
+are kept in memory at all times and
+
+66
+00:04:28.120 --> 00:04:31.180
+the rest of the partitions
+are swapped into disk.
+
+67
+00:04:32.980 --> 00:04:37.110
+The second situation occurs when
+the number of messages becomes high.
+
+68
+00:04:38.570 --> 00:04:41.530
+Normally, vertices are processed
+in the order of their IDs.
+
+69
+00:04:42.710 --> 00:04:45.840
+A large number of messages
+is handled by creating
+
+70
+00:04:45.840 --> 00:04:49.950
+temporary message stores which
+are sorted by their destination IDs.
+
+71
+00:04:51.100 --> 00:04:54.930
+All messages going to the same
+vertex are placed together.
+
+72
+00:04:54.930 --> 00:04:59.210
+To do this, messages are sorted
+in memory periodically.
+
+73
+00:04:59.210 --> 00:05:02.220
+The message store files
+are accessed based on
+
+74
+00:05:02.220 --> 00:05:04.170
+which vertices are being
+processed at this moment.
+
+75
+00:05:05.240 --> 00:05:09.271
+This whole system is managed by
+Giraph's out of core message processor.
+
+1
+00:00:00.600 --> 00:00:04.830
+In this lesson, we'll talk about
+two dominant systems developed for
+
+2
+00:00:04.830 --> 00:00:06.030
+large scale graph processing.
+
+3
+00:00:07.270 --> 00:00:10.630
+The first one, called Giraph,
+is from Apache and
+
+4
+00:00:10.630 --> 00:00:13.340
+implements a BSP model on Hadoop.
+
+5
+00:00:14.510 --> 00:00:19.440
+The second system is called Graphx,
+is developed on the Spark platform,
+
+6
+00:00:19.440 --> 00:00:24.450
+which as you know, emphasizes on
+interactive in memory computations.
+
+7
+00:00:24.450 --> 00:00:27.560
+While BSP is a popular
+graph processing model,
+
+8
+00:00:27.560 --> 00:00:32.200
+the actual implementation of
+BSP in an infrastructure needs
+
+9
+00:00:32.200 --> 00:00:35.230
+additional programmability beyond
+what we have discussed so far.
+
+10
+00:00:36.680 --> 00:00:41.390
+In Giraph, several additional capabilities
+are added to make it more practical.
+
+11
+00:00:42.760 --> 00:00:47.470
+A thorough coverage of the Giraph platform
+is beyond the scoop of these lectures.
+
+12
+00:00:47.470 --> 00:00:50.464
+However, we'll touch upon
+a few of these capabilities.
+
+13
+00:00:51.862 --> 00:00:57.126
+We'll first consider graph IO,
+that is how graphs can come into a system
+
+14
+00:00:57.126 --> 00:01:02.870
+represented inside the system, and
+when completed are written out.
+
+15
+00:01:02.870 --> 00:01:07.510
+Next, we'll describe how Giraph
+interacts with external data sources.
+
+16
+00:01:07.510 --> 00:01:10.600
+Some of these data sources
+use a different data model,
+
+17
+00:01:10.600 --> 00:01:12.070
+other sources include databases.
+
+18
+00:01:14.310 --> 00:01:16.100
+Once a graph is imported,
+
+19
+00:01:16.100 --> 00:01:18.900
+it is important to make sure that
+the system runs efficiently.
+
+20
+00:01:20.490 --> 00:01:25.070
+We will look at a method that uses a
+special kind of global aggregate operation
+
+21
+00:01:25.070 --> 00:01:28.400
+which saves time by reducing
+the amount of messaging
+
+22
+00:01:28.400 --> 00:01:30.730
+to compute aggregate functions
+like sum and products.
+
+23
+00:01:33.200 --> 00:01:37.000
+Finally, we'll recognize that
+even if Giraph is designed for
+
+24
+00:01:37.000 --> 00:01:40.150
+performing iterative,
+in memory computation,
+
+25
+00:01:40.150 --> 00:01:44.000
+there are times where it is absolutely
+necessary to store data on disk.
+
+26
+00:01:45.340 --> 00:01:49.490
+We'll briefly touch upon Giraph's
+ability to handle out of core graphs and
+
+27
+00:01:49.490 --> 00:01:50.820
+out of core messages.
+
+28
+00:01:51.920 --> 00:01:54.621
+A graph can be written in many ways.
+
+29
+00:01:54.621 --> 00:02:00.354
+For Neo4J, we saw how graphs can be
+important to the database from a CSV file.
+
+30
+00:02:00.354 --> 00:02:06.340
+In Giraph, two of the most common input
+formats are Adjacency List and Edge List.
+
+31
+00:02:08.010 --> 00:02:12.720
+For an Adjacency List,
+each line has the node ID, a node value
+
+32
+00:02:12.720 --> 00:02:16.200
+which is a single number here, and
+a list of destination, weight pairs.
+
+33
+00:02:18.050 --> 00:02:22.950
+Thus, in line one,
+A has a value of 10 and 2 neighbors B and
+
+34
+00:02:22.950 --> 00:02:25.970
+F with edge weights 2 and 5, respectively.
+
+35
+00:02:27.300 --> 00:02:30.850
+Since G has no outgoing edge,
+the adjacency list is empty.
+
+36
+00:02:32.350 --> 00:02:35.570
+The current way of representing
+graphs is in terms of triplets.
+
+37
+00:02:35.570 --> 00:02:40.880
+Containing the source and destination
+nodes followed by an [INAUDIBLE].
+
+38
+00:02:40.880 --> 00:02:42.580
+Notice the way we have shown it here.
+
+39
+00:02:43.620 --> 00:02:45.160
+And the node values is not represented.
+
+40
+00:02:46.280 --> 00:02:49.170
+Let us simplify the Adjacency List
+representation of it.
+
+41
+00:02:50.930 --> 00:02:54.400
+We remove the colons, commas, braces, and
+
+42
+00:02:54.400 --> 00:02:58.650
+parenthesis, and
+get a space separated set of lines.
+
+43
+00:02:58.650 --> 00:02:59.810
+One line for each vertex.
+
+44
+00:03:00.880 --> 00:03:05.210
+We further replace the node IDs A,
+B, C, etc., with 1, 2, 3, etc.,
+
+45
+00:03:05.210 --> 00:03:08.710
+so that these IDs are integers.
+
+46
+00:03:09.810 --> 00:03:13.700
+So what do we need to specify
+to parse this for Giraph?
+
+47
+00:03:13.700 --> 00:03:20.136
+One, the graph is a text subject and
+not, let's say, a database subject.
+
+48
+00:03:20.136 --> 00:03:25.170
+Two, it is a vertex based representation,
+each line is a vertex.
+
+49
+00:03:26.500 --> 00:03:27.800
+This splitter here is a space.
+
+50
+00:03:29.450 --> 00:03:31.830
+The idea of the node is a first value for
+each line.
+
+51
+00:03:33.220 --> 00:03:35.250
+The value is a second token.
+
+52
+00:03:36.740 --> 00:03:40.120
+The next pair of items you find an edge
+with the target and the weight,
+
+53
+00:03:40.120 --> 00:03:41.590
+respectively.
+
+54
+00:03:41.590 --> 00:03:45.420
+And lastly, there is a list of these
+pairs until the end of the line.
+
+55
+00:03:46.820 --> 00:03:51.124
+Therefore, each line would typically
+lead to the creation of both notes and
+
+56
+00:03:51.124 --> 00:03:52.006
+a set of edges.
+
+57
+00:03:53.687 --> 00:03:58.020
+This shows a typical reader formula
+decency matrix written in Java.
+
+58
+00:03:58.020 --> 00:04:01.770
+Again, you don't have to know Java
+to get the elements of this program.
+
+59
+00:04:03.280 --> 00:04:06.300
+Our reader is clearly customized for
+your specific input.
+
+60
+00:04:07.500 --> 00:04:12.020
+Very often the starting point is
+a basic reader provided by Giraph.
+
+61
+00:04:14.140 --> 00:04:18.181
+Like the reader that knows how to read
+vertices from each line of a text swipe.
+
+62
+00:04:19.330 --> 00:04:24.070
+To customize it, you extend it and
+create your own version.
+
+63
+00:04:25.350 --> 00:04:27.870
+Now, you need to define
+how to get the ID and
+
+64
+00:04:27.870 --> 00:04:31.430
+value of the vertex by writing
+separate message for them.
+
+65
+00:04:31.430 --> 00:04:36.455
+Notice that the ID comes from
+the zeroth item of each line after
+
+66
+00:04:36.455 --> 00:04:42.390
+the split by white space, and
+the value comes from the next open,
+
+67
+00:04:42.390 --> 00:04:45.170
+the second term, marked by 1 for
+the 0 base of the light.
+
+68
+00:04:46.370 --> 00:04:48.640
+The next code element is this block here.
+
+69
+00:04:50.000 --> 00:04:54.210
+This specifies how to create edges
+by iterating through every line.
+
+70
+00:04:55.390 --> 00:04:59.377
+To keep the short, we'll remove
+the part that gets the edges here.
+
+71
+00:04:59.377 --> 00:05:03.202
+As Giraph as mature it has
+included many specialized
+
+72
+00:05:03.202 --> 00:05:06.130
+to interoperate with compatible resources.
+
+73
+00:05:07.190 --> 00:05:10.410
+This diagram is from Giraph where
+the show some of these sources.
+
+74
+00:05:11.780 --> 00:05:14.690
+We can group them into
+three different categories.
+
+75
+00:05:16.210 --> 00:05:20.520
+Group one interoperates with Hive and
+HBase.
+
+76
+00:05:20.520 --> 00:05:24.360
+You possibly remember these
+systems from a prior course.
+
+77
+00:05:24.360 --> 00:05:27.290
+These systems are designed to give
+a higher level of data access on
+
+78
+00:05:27.290 --> 00:05:28.870
+interface on top of MapReduce.
+
+79
+00:05:30.170 --> 00:05:34.880
+Group two accesses relational
+systems like MySQL and Cassandra.
+
+80
+00:05:35.970 --> 00:05:40.150
+But these systems have accessed indirectly
+through a software module called Gora.
+
+81
+00:05:41.570 --> 00:05:46.164
+Gora uses a JSON schema to map
+the relation schema of the SQL database
+
+82
+00:05:46.164 --> 00:05:48.675
+to a structure that Giraph can read.
+
+83
+00:05:48.675 --> 00:05:52.864
+Group three accesses graph
+databases like Neo4J and DEX,
+
+84
+00:05:52.864 --> 00:05:55.050
+which is now called Sparksee.
+
+85
+00:05:56.370 --> 00:05:59.190
+These systems are all taxes indirectly.
+
+86
+00:05:59.190 --> 00:06:01.750
+Using the [INAUDIBLE]
+service of Tinkerpop.
+
+87
+00:06:01.750 --> 00:06:04.440
+Which is a graph API layer that can use
+
+88
+00:06:04.440 --> 00:06:07.800
+many different Giraph stores including
+[INAUDIBLE] graph and Titan.
+
+89
+00:06:09.130 --> 00:06:11.190
+Consider a relational
+table stored in Hive.
+
+90
+00:06:12.270 --> 00:06:15.280
+The table shown here is extracted
+from the bio grid data source that
+
+91
+00:06:15.280 --> 00:06:16.290
+we mentioned in module two.
+
+92
+00:06:17.330 --> 00:06:21.340
+Each row of the table represents
+a molecule interaction.
+
+93
+00:06:21.340 --> 00:06:25.190
+We can create a network from here just
+by considering the first two columns.
+
+94
+00:06:26.250 --> 00:06:30.207
+The first column represents the source
+node of an edge colored red.
+
+95
+00:06:30.207 --> 00:06:33.300
+And the second column represents
+the target node of the edge colored blue.
+
+96
+00:06:34.640 --> 00:06:37.820
+The label on the edge comes from
+the fifth column of the table
+
+97
+00:06:37.820 --> 00:06:39.670
+which is a black bold font.
+
+98
+00:06:41.100 --> 00:06:43.578
+Let's assume that these predict items,
+
+99
+00:06:43.578 --> 00:06:47.560
+these are items that we want to
+pick up from the Hive table.
+
+100
+00:06:48.730 --> 00:06:51.460
+The simplest way to get a record from hive
+
+101
+00:06:51.460 --> 00:06:56.195
+to Giraph is to extend the class
+called SimpleHiveRowToEdge.
+
+102
+00:06:57.970 --> 00:07:02.790
+For this class, we need to specify
+the source node, the target node, and
+
+103
+00:07:02.790 --> 00:07:05.580
+the edge value using three
+methods as shown here.
+
+104
+00:07:07.160 --> 00:07:10.325
+My extension is called MyHiveRowToEdge.
+
+105
+00:07:11.390 --> 00:07:15.440
+It shows the implementation of these
+methods where we just pick up the first,
+
+106
+00:07:16.850 --> 00:07:20.430
+second, and fifth columns,
+as we described before.
+
+107
+00:07:22.390 --> 00:07:26.640
+Now, as mentioned before,
+Giraph interacts with Neo4J through
+
+108
+00:07:26.640 --> 00:07:30.080
+the Gremlin API provided by Tinkerpop.
+
+109
+00:07:30.080 --> 00:07:34.470
+One can think of Gremlin as
+a traversal API, which means,
+
+110
+00:07:34.470 --> 00:07:39.220
+it allows one to start from some node and
+walk the graph step by step.
+
+111
+00:07:39.220 --> 00:07:43.280
+To show this,
+consider disease gene graph on the right.
+
+112
+00:07:43.280 --> 00:07:45.050
+Let's call this graph G.
+
+113
+00:07:46.210 --> 00:07:50.407
+So g.V represents all the vertices of G.
+
+114
+00:07:50.407 --> 00:07:55.524
+Therefore g.V has name
+MC4R selects the node that
+
+115
+00:07:55.524 --> 00:08:00.410
+has a property called
+name whose value is MC4R.
+
+116
+00:08:01.900 --> 00:08:06.010
+Let's add to this path the condition .out,
+
+117
+00:08:06.010 --> 00:08:09.640
+which chooses the out
+edges of the MC4R node and
+
+118
+00:08:09.640 --> 00:08:14.050
+then traverses the associatedWith edge
+to the orange node called obesity.
+
+119
+00:08:15.150 --> 00:08:17.250
+For this call, returns the vertex only.
+
+120
+00:08:18.940 --> 00:08:25.780
+Now, adding the path to values
+means gives us obesity.
+
+121
+00:08:25.780 --> 00:08:28.170
+We can also expand differently
+from the obesity node.
+
+122
+00:08:29.480 --> 00:08:33.600
+When we say inV() we refer
+to all nodes that have
+
+123
+00:08:33.600 --> 00:08:36.050
+incoming edges to the current node.
+
+124
+00:08:36.050 --> 00:08:38.400
+In this case, there is only one.
+
+125
+00:08:38.400 --> 00:08:39.000
+The LEPR node.
+
+126
+00:08:40.500 --> 00:08:44.190
+To this, we add the traversal out beam and
+
+127
+00:08:44.190 --> 00:08:48.320
+thus we get back the out going edge from
+the LEPR node highlighted in together.
+
+128
+00:08:49.550 --> 00:08:52.660
+We can also look at the Giraph Gremlin
+near project connection
+
+129
+00:08:52.660 --> 00:08:53.760
+from Tinkerpop's viewpoint.
+
+130
+00:08:55.050 --> 00:08:58.990
+Tinkerpop is trying to create
+a standard language for graph reversal,
+
+131
+00:08:58.990 --> 00:09:03.750
+just like Neo4J is trying to create Open
+Cypher as a standard query language for
+
+132
+00:09:03.750 --> 00:09:04.470
+graph databases.
+
+133
+00:09:05.960 --> 00:09:10.020
+In trying to create the standard,
+Tinkerpop recognizes that the actual
+
+134
+00:09:10.020 --> 00:09:14.019
+storage management for graph databases
+should be provided by another vendor.
+
+135
+00:09:15.050 --> 00:09:17.950
+The vendor needs to implement
+the Gremlin API for access.
+
+136
+00:09:19.310 --> 00:09:24.560
+Similarly for graphic processing,
+including expensive analytic operations
+
+137
+00:09:24.560 --> 00:09:27.460
+should be performed by what
+they call a graph computer.
+
+138
+00:09:28.460 --> 00:09:31.630
+This is the role played by
+Giraph as well as Spark.
+
+139
+00:09:31.630 --> 00:09:33.677
+Both of which interface with Tinkerpop.

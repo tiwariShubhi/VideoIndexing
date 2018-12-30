@@ -1,0 +1,327 @@
+WEBVTT
+
+1
+00:00:01.140 --> 00:00:04.910
+Next, we'll count the number of
+vertices and edges, define a min and
+
+2
+00:00:04.910 --> 00:00:10.140
+max function for Spark's reduce method,
+computer the min and max degrees,
+
+3
+00:00:10.140 --> 00:00:14.390
+and compute the histogram data
+of the degree of connectedness.
+
+4
+00:00:16.490 --> 00:00:19.320
+In this hands on,
+we will cover the degree distribution of
+
+5
+00:00:19.320 --> 00:00:22.810
+the metros graph from
+the first hands on exercise.
+
+6
+00:00:22.810 --> 00:00:27.110
+This will help you practice finding
+the degrees of connectedness in a graph.
+
+7
+00:00:27.110 --> 00:00:28.310
+These numbers will be used for
+
+8
+00:00:28.310 --> 00:00:31.780
+plotting the visualizations in
+the next hands on exercises.
+
+9
+00:00:34.330 --> 00:00:36.650
+The degree of a vertex is
+the number of edges or
+
+10
+00:00:36.650 --> 00:00:39.810
+connections the vertex has to
+other vertices in the graph.
+
+11
+00:00:40.880 --> 00:00:44.460
+In directed graphs,
+each vertex has an in degree,
+
+12
+00:00:44.460 --> 00:00:47.555
+the number of edges
+directed to the vertex.
+
+13
+00:00:47.555 --> 00:00:52.797
+In and out degree, the number of
+edges directed away from the vertex.
+
+14
+00:00:52.797 --> 00:00:55.580
+The metros graph is an example
+of a directed graph.
+
+15
+00:00:57.080 --> 00:01:01.650
+Each metropolis vertex has one
+outgoing edge to a country vertex.
+
+16
+00:01:02.700 --> 00:01:08.460
+Each country vertex has one or more
+incoming edges from metropolis vertices.
+
+17
+00:01:08.460 --> 00:01:09.725
+This will be a quiz question.
+
+18
+00:01:16.366 --> 00:01:20.976
+Starting again where we left off from
+the previous hands-on exercise, first,
+
+19
+00:01:20.976 --> 00:01:23.280
+ensure your Cloudera VM is started, and
+
+20
+00:01:23.280 --> 00:01:27.430
+that you downloaded the dataset
+examples of analytics.
+
+21
+00:01:27.430 --> 00:01:29.110
+The link is in the content for this week.
+
+22
+00:01:30.460 --> 00:01:34.662
+Use the numEdges attribute to print
+the number of edges in metrosGraph.
+
+23
+00:01:34.662 --> 00:01:37.385
+As you can see the result is 65,
+
+24
+00:01:37.385 --> 00:01:42.360
+which matches the number of
+lines in metro_country.csv.
+
+25
+00:01:42.360 --> 00:01:46.178
+Now use the numVertices
+attribute to print the number
+
+26
+00:01:46.178 --> 00:01:48.258
+of vertices in metrosGraph.
+
+27
+00:01:48.258 --> 00:01:53.344
+As you can see the result is 93,
+which matches the number of
+
+28
+00:01:53.344 --> 00:01:59.655
+lines in metro.csv65 plus the number
+of lines in country.csv, 28.
+
+29
+00:02:06.666 --> 00:02:11.061
+Define the max and the min reduce
+operation to compute the highest and
+
+30
+00:02:11.061 --> 00:02:12.586
+lowest degree vertex.
+
+31
+00:02:15.929 --> 00:02:20.725
+Let us find the vertex with
+the most outgoing edges or
+
+32
+00:02:20.725 --> 00:02:25.848
+the vertex with the largest
+out degree by passing the max
+
+33
+00:02:25.848 --> 00:02:32.065
+function to a reduced operation on
+the out degrees of metrosGraph.
+
+34
+00:02:33.190 --> 00:02:38.310
+The result in this case is vertex
+ID five with one outgoing edge.
+
+35
+00:02:38.310 --> 00:02:42.680
+The result could have been any metropolis
+because every metropolis in this graph
+
+36
+00:02:42.680 --> 00:02:45.600
+has one outgoing edge to its country.
+
+37
+00:02:45.600 --> 00:02:48.890
+Let us find the vertex with
+the most incoming edges, or
+
+38
+00:02:48.890 --> 00:02:51.620
+the vertex with the largest inDegree.
+
+39
+00:02:51.620 --> 00:02:54.620
+This is done the same way
+as the previous example,
+
+40
+00:02:54.620 --> 00:02:59.170
+except you'll run the reduce operation
+on the inDegrees of metrosGraph.
+
+41
+00:02:59.170 --> 00:03:04.350
+The result is VertexId 108
+with 14 incoming edges.
+
+42
+00:03:05.390 --> 00:03:11.640
+Apply a filter to the metrosGraph
+vertices to find out which vertex is 108.
+
+43
+00:03:11.640 --> 00:03:14.280
+The answer is the United States.
+
+44
+00:03:14.280 --> 00:03:20.860
+This means that the United States has
+14 metropolises in the metros.csvfile.
+
+45
+00:03:20.860 --> 00:03:25.500
+We can also compute how many vertices have
+one out going edge by applying a filter of
+
+46
+00:03:25.500 --> 00:03:28.530
+one to the outgoing degrees and
+counting the results.
+
+47
+00:03:29.550 --> 00:03:36.160
+The result is 65 because there are 65
+metropolises with one outgoing degree.
+
+48
+00:03:36.160 --> 00:03:38.520
+None of the countries have
+any outgoing degrees.
+
+49
+00:03:39.790 --> 00:03:42.850
+Let us ignore whether or
+not the edge is in or out, and
+
+50
+00:03:42.850 --> 00:03:45.850
+just find which vertex has the most edges.
+
+51
+00:03:45.850 --> 00:03:49.460
+Again, we will run the reduce
+operation with the max function.
+
+52
+00:03:49.460 --> 00:03:52.310
+But this time we will run it on
+metrosGraph's degrees attribute.
+
+53
+00:03:53.340 --> 00:03:56.960
+The result is 108 again
+with 14 connections.
+
+54
+00:03:56.960 --> 00:04:01.239
+This means that the United States is
+the most connected vertex in metrosGraph.
+
+55
+00:04:08.252 --> 00:04:11.910
+Finally, let us calculate
+the histogram data of the degrees for
+
+56
+00:04:11.910 --> 00:04:13.750
+the countries in metrosGraph.
+
+57
+00:04:14.880 --> 00:04:18.010
+First, create a map that
+only includes countries.
+
+58
+00:04:18.010 --> 00:04:22.640
+So create a filter to only include
+the vertices with the vertex ID that is
+
+59
+00:04:22.640 --> 00:04:24.815
+greater than or equal to 100.
+
+60
+00:04:24.815 --> 00:04:27.888
+Then you will group the map
+by the size of the degree and
+
+61
+00:04:27.888 --> 00:04:30.430
+sort the map from lowest
+to highest degree.
+
+62
+00:04:32.310 --> 00:04:36.620
+The output shows six pairs in an array.
+
+63
+00:04:36.620 --> 00:04:39.020
+The first number is the number of edges,
+and
+
+64
+00:04:39.020 --> 00:04:43.810
+the second number is the number of
+vertices that have that number of edges.
+
+65
+00:04:43.810 --> 00:04:48.462
+In other words, the result of
+the query shows that there are 18
+
+66
+00:04:48.462 --> 00:04:53.461
+countries with 1 metropolis,
+4 countries with 2 metropolises,
+
+67
+00:04:53.461 --> 00:04:58.805
+2 countries with 3 metropolises,
+2 countries with 5 metropolises,
+
+68
+00:04:58.805 --> 00:05:04.260
+1 country with 9 metropolises, and
+1 country with 14 metropolises.

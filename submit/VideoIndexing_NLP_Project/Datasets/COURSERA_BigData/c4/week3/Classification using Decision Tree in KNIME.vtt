@@ -1,0 +1,433 @@
+WEBVTT
+
+1
+00:00:01.640 --> 00:00:04.850
+In this activity, we will be
+performing classification in KNIME,
+
+2
+00:00:05.900 --> 00:00:09.830
+first we will create a new workflow and
+import our weather data.
+
+3
+00:00:09.830 --> 00:00:14.990
+Next, we will remove the missing data and
+then create a categorical value for
+
+4
+00:00:14.990 --> 00:00:16.260
+the humidity measurements.
+
+5
+00:00:17.540 --> 00:00:21.490
+We will then examine summary
+statistics of the data before and
+
+6
+00:00:21.490 --> 00:00:26.710
+after the missing data was removed, and
+finally build a decision tree workflow.
+
+7
+00:00:30.203 --> 00:00:31.570
+Let's begin.
+
+8
+00:00:31.570 --> 00:00:33.450
+First, let's create a New Workflow.
+
+9
+00:00:37.330 --> 00:00:38.990
+We'll call it Classification.
+
+10
+00:00:41.650 --> 00:00:46.010
+Next, we'll import the daily weather data,
+using the File Reader node.
+
+11
+00:00:49.495 --> 00:00:56.429
+Configure the file reader node,
+to use daily_weather.csv.
+
+12
+00:00:56.429 --> 00:01:01.250
+Next, we'll add a missing value node,
+
+13
+00:01:01.250 --> 00:01:04.020
+to remove the missing values
+in the daily weather data.
+
+14
+00:01:09.872 --> 00:01:13.480
+We'll configure missing value to
+remove all the missing values.
+
+15
+00:01:21.112 --> 00:01:26.072
+Next we'll use a numeric binner node
+to create a categorical variable for
+
+16
+00:01:26.072 --> 00:01:27.595
+the humidity at 3pm.
+
+17
+00:01:29.090 --> 00:01:32.530
+We'll add the numeric binner node,
+we'll connect it to missing value.
+
+18
+00:01:32.530 --> 00:01:38.170
+We'll select the relative
+humidity 3pm column.
+
+19
+00:01:39.320 --> 00:01:45.144
+We'll create two bins,
+the first bin we'll call humidity_low.
+
+20
+00:01:49.696 --> 00:01:51.450
+And that value will go up to 25.
+
+21
+00:01:51.450 --> 00:01:56.885
+The second bin, we'll
+
+22
+00:01:56.885 --> 00:02:03.411
+call humidity_not_low.
+
+23
+00:02:03.411 --> 00:02:06.274
+We'll check the Append new column and
+
+24
+00:02:06.274 --> 00:02:10.045
+we'll call the new
+column low_humidity_day.
+
+25
+00:02:19.286 --> 00:02:23.435
+Next, we'll examine some summary
+statistics, both before, and
+
+26
+00:02:23.435 --> 00:02:26.940
+after we've removed the missing values.
+
+27
+00:02:26.940 --> 00:02:29.649
+We'll add the statistics
+node to the canvas.
+
+28
+00:02:34.914 --> 00:02:38.130
+We'll connect the first one to
+the output of the File Reader actor.
+
+29
+00:02:39.740 --> 00:02:42.590
+We'll add another one to
+the output of Numeric Binner.
+
+30
+00:02:47.550 --> 00:02:51.540
+We'll change the name of the first
+one to be BEFORE filtering.
+
+31
+00:02:55.630 --> 00:02:58.660
+And change the name of the second
+one to AFTER filtering.
+
+32
+00:03:02.440 --> 00:03:03.650
+Lets configure the first one.
+
+33
+00:03:05.650 --> 00:03:10.114
+We'll change the maximum number of
+possible values per column to 1500.
+
+34
+00:03:12.400 --> 00:03:14.090
+We'll also add all the columns.
+
+35
+00:03:18.130 --> 00:03:20.670
+Let's configure the second statistics now.
+
+36
+00:03:20.670 --> 00:03:24.210
+Again, we'll change the maximum number of
+possible values per column to 1500, and
+
+37
+00:03:24.210 --> 00:03:25.950
+we'll add all the columns.
+
+38
+00:03:29.165 --> 00:03:30.360
+Now let's run our workflow.
+
+39
+00:03:34.983 --> 00:03:38.680
+Let's view both Statistic
+nodes to compare the outputs.
+
+40
+00:03:42.971 --> 00:03:47.240
+In the BEFORE filtering statistics,
+we can see that there are missing values.
+
+41
+00:03:49.770 --> 00:03:54.519
+However, there are no missing values
+in the AFTER filtering statistics.
+
+42
+00:03:58.890 --> 00:04:02.050
+We can also compare the summary
+statistics, for different measurements,
+
+43
+00:04:02.050 --> 00:04:04.450
+to see that they are similar values.
+
+44
+00:04:04.450 --> 00:04:07.810
+For example,
+let's take a look at air_temp_9am.
+
+45
+00:04:18.505 --> 00:04:21.065
+We could see that most of
+the statistics are the same.
+
+46
+00:04:22.435 --> 00:04:24.325
+As well as the distribution of values.
+
+47
+00:04:26.365 --> 00:04:30.210
+In the AFTER filtering statistics,
+click on the Nominal tab,
+
+48
+00:04:30.210 --> 00:04:35.610
+and we'll look at the low humidity
+day categorical variable we created.
+
+49
+00:04:43.759 --> 00:04:47.719
+We can see that the samples are equally
+distributed between the two values.
+
+50
+00:04:51.140 --> 00:04:53.290
+Let's close these Statistics views.
+
+51
+00:04:54.740 --> 00:04:56.720
+Next, let's add a Column Filter node.
+
+52
+00:05:04.100 --> 00:05:07.441
+We'll connect this to
+the output of Numeric Binner.
+
+53
+00:05:07.441 --> 00:05:09.390
+Double-click to configure the node.
+
+54
+00:05:09.390 --> 00:05:15.141
+And we will exclude
+relative_humidity_9am and
+
+55
+00:05:15.141 --> 00:05:20.770
+relative_humidity_3pm columns, click OK.
+
+56
+00:05:20.770 --> 00:05:24.329
+Next, we'll add a Color Manager
+node to the canvas.
+
+57
+00:05:28.940 --> 00:05:33.850
+Will connect this to the output of Column
+Filter, double-click to configure it.
+
+58
+00:05:35.350 --> 00:05:42.450
+We will make sure the humidly_low is red,
+and humidity_not_low is blue.
+
+59
+00:05:42.450 --> 00:05:44.317
+Click OK to close.
+
+60
+00:05:44.317 --> 00:05:49.710
+Next, we'll add the Partitioning
+node to the campus.
+
+61
+00:05:54.380 --> 00:05:57.800
+We'll connect this to
+the output of Color Manager.
+
+62
+00:05:57.800 --> 00:05:58.990
+Double-click to configure.
+
+63
+00:05:58.990 --> 00:06:03.060
+We want to split the data
+into two partitions.
+
+64
+00:06:03.060 --> 00:06:05.920
+The first partition should
+have 80% of the data.
+
+65
+00:06:05.920 --> 00:06:07.890
+The second partition should have 20%.
+
+66
+00:06:07.890 --> 00:06:12.560
+To do this click on Relative[%] and
+change this to 80.
+
+67
+00:06:12.560 --> 00:06:16.870
+We'll make sure Draw randomly is selected.
+
+68
+00:06:19.030 --> 00:06:25.390
+And check Use random seed and
+change the seed to 12345.
+
+69
+00:06:25.390 --> 00:06:28.700
+Normally we would not
+specific the random seed.
+
+70
+00:06:28.700 --> 00:06:33.040
+However, since we want repeatable results,
+we use a specific seed value here.
+
+71
+00:06:34.260 --> 00:06:35.520
+Click OK to continue.
+
+72
+00:06:36.830 --> 00:06:39.770
+Next, we'll add a Decision Tree Learner
+to the work flow.
+
+73
+00:06:42.790 --> 00:06:45.950
+We'll connect this to the top
+output of the Partitioning node.
+
+74
+00:06:47.248 --> 00:06:50.580
+Double-click to configure, and
+
+75
+00:06:50.580 --> 00:06:55.090
+change the Min number of
+records per node to 20.
+
+76
+00:06:55.090 --> 00:06:56.480
+Click OK.
+
+77
+00:06:58.330 --> 00:07:03.410
+Next, we'll add a Decision Tree Predictor
+node to the canvas, and we will connect
+
+78
+00:07:03.410 --> 00:07:08.310
+the bottom output of Partitioning to
+the bottom input of the predictor.
+
+79
+00:07:09.660 --> 00:07:13.760
+Next we'll connect the output
+of Decision Tree Learner
+
+80
+00:07:13.760 --> 00:07:16.420
+to the top input of
+Decision Tree Predictor.
+
+81
+00:07:17.530 --> 00:07:19.190
+Now let's execute our workflow.
+
+82
+00:07:20.250 --> 00:07:23.000
+We can view the resulting
+classification rules
+
+83
+00:07:23.000 --> 00:07:25.190
+by right clicking on
+Decision Tree Predictor.
+
+84
+00:07:27.130 --> 00:07:32.040
+And choosing either View: Decision Tree
+View or View: Decision Tree View (simple).
+
+85
+00:07:33.800 --> 00:07:34.610
+Let's do the first one.
+
+86
+00:07:35.650 --> 00:07:39.100
+This shows the first two
+splits in our decision tree.
+
+87
+00:07:39.100 --> 00:07:41.300
+We can expand each branch
+by clicking on the plus.
+
+88
+00:07:41.300 --> 00:07:43.343
+Let's close this.
+
+89
+00:07:43.343 --> 00:07:47.910
+Now let's look at the simplified view.
+
+90
+00:07:49.980 --> 00:07:53.160
+Again, we can expand the branches to
+see the splits in the Decision Tree.
+
+91
+00:07:54.910 --> 00:07:59.250
+Close this,
+finally let's save this workflow.
+
+92
+00:08:00.310 --> 00:08:05.150
+We'll analyze the results of the Decision
+Tree model in the next KNIME Hands On.
+
+93
+00:08:05.150 --> 00:08:07.388
+Save the workflow by
+clicking on the disk icon.

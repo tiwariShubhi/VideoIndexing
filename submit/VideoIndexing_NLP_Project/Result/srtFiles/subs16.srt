@@ -1,0 +1,1559 @@
+
+1
+00:00:02.265 --> 00:00:06.497
+Next, we'll look at a data model
+that has been successfully used to
+
+2
+00:00:06.497 --> 00:00:10.150
+retrieve data from large
+collections of text and images.
+
+3
+00:00:11.170 --> 00:00:12.230
+Let's stay with text for now.
+
+4
+00:00:13.590 --> 00:00:17.490
+Text is often thought of
+as unstructured data.
+
+5
+00:00:17.490 --> 00:00:20.315
+Primarily because it doesn't really
+have attributes and relationships.
+
+6
+00:00:21.530 --> 00:00:25.740
+Instead, it is a sequence of strings
+punctuated by line and parent of breaks.
+
+7
+00:00:27.810 --> 00:00:34.370
+So one is to think of a different
+way to find and analyze text data.
+
+8
+00:00:34.370 --> 00:00:39.130
+In this video, we'll describe that
+finding text from a huge collection of
+
+9
+00:00:39.130 --> 00:00:42.880
+text data is a little different from
+the data modules we have seen so far.
+
+10
+00:00:44.080 --> 00:00:48.710
+To find text,
+we not only need the text data itself, but
+
+11
+00:00:48.710 --> 00:00:53.810
+we need a different structure that
+is computed from the text data.
+
+12
+00:00:53.810 --> 00:00:55.020
+To create the structure,
+
+13
+00:00:55.020 --> 00:01:01.000
+we'll introduce the notion of the document
+vector model which we call a vector model.
+
+14
+00:01:02.760 --> 00:01:05.510
+Further you will see
+that finding a document
+
+15
+00:01:05.510 --> 00:01:08.090
+is not really an exact search problem.
+
+16
+00:01:09.380 --> 00:01:13.090
+Here, we'll give a query document and
+
+17
+00:01:13.090 --> 00:01:17.130
+ask the system to find all
+documents that are similar to it.
+
+18
+00:01:18.440 --> 00:01:20.990
+After this video,
+you'll be able to describe
+
+19
+00:01:20.990 --> 00:01:25.380
+how the similarity is computed and
+how it is used to search documents.
+
+20
+00:01:26.930 --> 00:01:31.770
+Finally, you will see that search engines
+use some form of vector models and
+
+21
+00:01:31.770 --> 00:01:33.850
+similarity search to locate text data.
+
+22
+00:01:35.480 --> 00:01:39.970
+And you will see that the same principle
+can be use for finding similar images.
+
+23
+00:01:42.740 --> 00:01:45.410
+Let us describe the concept
+of a document to an example.
+
+24
+00:01:46.540 --> 00:01:49.170
+So lets consider three types
+of document shown here.
+
+25
+00:01:51.040 --> 00:01:52.470
+Now we'll create a matrix.
+
+26
+00:01:56.040 --> 00:01:57.790
+The rows of the matrix stand for
+
+27
+00:01:57.790 --> 00:02:02.950
+the documents and columns represent
+the words in the documents.
+
+28
+00:02:02.950 --> 00:02:05.770
+We put the number of occurrences
+of returning the document in
+
+29
+00:02:05.770 --> 00:02:07.400
+the appropriate cell of the matrix.
+
+30
+00:02:08.630 --> 00:02:14.380
+In this case, the count of each term
+in each document happens to be one.
+
+31
+00:02:14.380 --> 00:02:16.700
+This is called the term frequency matrix.
+
+32
+00:02:19.340 --> 00:02:22.620
+So now that we have created
+the term frequency matrix,
+
+33
+00:02:22.620 --> 00:02:24.540
+which we call tf for short.
+
+34
+00:02:25.595 --> 00:02:30.350
+We'll create a new vector called the
+inverse document frequency for each term.
+
+35
+00:02:31.810 --> 00:02:34.990
+We'll explain why we need this
+vector on the next slide.
+
+36
+00:02:34.990 --> 00:02:37.160
+First, let's see how it's computed.
+
+37
+00:02:39.280 --> 00:02:43.435
+The number of documents n here is 3.
+
+38
+00:02:43.435 --> 00:02:46.270
+The term new occurs
+twice in the collection.
+
+39
+00:02:47.520 --> 00:02:52.950
+So the inverse document frequency or
+IDF of the term new
+
+40
+00:02:52.950 --> 00:02:57.810
+is log to the base 2,
+n divided by term count.
+
+41
+00:02:57.810 --> 00:03:04.464
+That is, log to the base 2,
+3 divided by 2, which is 0.584.
+
+42
+00:03:05.980 --> 00:03:09.210
+We'll show the ideal score for
+all six terms here.
+
+43
+00:03:10.770 --> 00:03:15.735
+Now some of you may wonder why we use
+log to the base 2 instead of let's
+
+44
+00:03:15.735 --> 00:03:17.540
+say log to the base 10.
+
+45
+00:03:17.540 --> 00:03:20.350
+There is no deep scientific reason for it.
+
+46
+00:03:20.350 --> 00:03:23.970
+It's more of a convention in
+many areas of Computer Science
+
+47
+00:03:23.970 --> 00:03:26.110
+when many important
+numbers are powers of two.
+
+48
+00:03:27.150 --> 00:03:32.153
+In reality,
+log to the base two of x is the same
+
+49
+00:03:32.153 --> 00:03:39.156
+number as log to the base ten of x
+times log to the base two of ten.
+
+50
+00:03:39.156 --> 00:03:44.340
+The second number, that is log to
+the base two of ten is a constant.
+
+51
+00:03:44.340 --> 00:03:50.080
+So the relative score of IDF does not
+change regardless of the base we use.
+
+52
+00:03:50.080 --> 00:03:52.170
+Now let's understand this
+number one more time.
+
+53
+00:03:53.400 --> 00:03:57.829
+The document frequency of a term is
+the count of that term in the whole
+
+54
+00:03:57.829 --> 00:04:01.029
+collection divided by
+the number of documents.
+
+55
+00:04:02.748 --> 00:04:07.168
+Here, we take the inverse of
+the document frequency, so
+
+56
+00:04:07.168 --> 00:04:11.510
+that n, the number of documents,
+is in the numerator.
+
+57
+00:04:13.580 --> 00:04:18.270
+Now before we continue, let's understand
+the intuition behind the IDF vector.
+
+58
+00:04:19.500 --> 00:04:25.210
+Now suppose you have 100
+random newspaper articles and
+
+59
+00:04:25.210 --> 00:04:28.110
+let's say 10 of them cover elections.
+
+60
+00:04:29.210 --> 00:04:33.710
+Which means all the others
+cover all other subjects.
+
+61
+00:04:33.710 --> 00:04:39.730
+Now in this article, let's say we'll find
+the term election 50 times in total.
+
+62
+00:04:41.660 --> 00:04:46.000
+How often do you think you'll find
+the term is as in the verb is?
+
+63
+00:04:47.320 --> 00:04:50.440
+You can imagine that it will
+occur in all hundred of them and
+
+64
+00:04:50.440 --> 00:04:52.160
+that too, multiple times.
+
+65
+00:04:53.370 --> 00:04:57.240
+We can safely assume that
+the number of occurrences of is
+
+66
+00:04:57.240 --> 00:04:59.700
+will be 300 at the very least.
+
+67
+00:05:01.000 --> 00:05:06.940
+Thus the document frequency of is is six
+times the document frequency of election.
+
+68
+00:05:07.940 --> 00:05:10.460
+But that doesn't sound right, does it?
+
+69
+00:05:10.460 --> 00:05:15.030
+Is is such a common word that it's
+prevalence has a negative impact
+
+70
+00:05:15.030 --> 00:05:17.240
+on its informativeness.
+
+71
+00:05:17.240 --> 00:05:21.520
+So, now if you want to
+compute the IDF of is and
+
+72
+00:05:21.520 --> 00:05:24.990
+election, the IDF of is will be far lower.
+
+73
+00:05:26.170 --> 00:05:29.930
+So, IDF acts like a penalty factor for
+
+74
+00:05:29.930 --> 00:05:33.570
+terms which are too widely used
+to be considered informative.
+
+75
+00:05:36.340 --> 00:05:39.890
+Now that we have understood
+that IDF is a penalty factor,
+
+76
+00:05:39.890 --> 00:05:45.800
+we will multiply the tf numbers through
+the IDF numbers giving us this.
+
+77
+00:05:48.610 --> 00:05:53.550
+This is a column-wise multiplication
+of the tf numbers with the IDF
+
+78
+00:05:53.550 --> 00:05:57.677
+numbers giving us what we
+call the tf-idf matrix.
+
+79
+00:05:59.120 --> 00:06:06.070
+Therefore for each document, we have
+a vector represented here as a row.
+
+80
+00:06:06.070 --> 00:06:10.910
+So that row represents the relative
+importance of each term in the vocabulary.
+
+81
+00:06:10.910 --> 00:06:14.370
+Vocabulary means the collection of all
+words that appear in this collection.
+
+82
+00:06:16.160 --> 00:06:20.800
+If the vocabulary has 3 million entries,
+then this vector can get quite long.
+
+83
+00:06:22.150 --> 00:06:26.890
+Also, if the number of document
+grows let's just say to 1 billion,
+
+84
+00:06:26.890 --> 00:06:28.720
+then it becomes a big data problem.
+
+85
+00:06:30.460 --> 00:06:33.660
+Now the last column after
+each document of vector here
+
+86
+00:06:33.660 --> 00:06:35.180
+is the length of the document vector.
+
+87
+00:06:36.300 --> 00:06:41.060
+Which is really the square root of the sum
+of squares of the individual term scores
+
+88
+00:06:41.060 --> 00:06:42.060
+as shown in the formula.
+
+89
+00:06:45.560 --> 00:06:48.170
+To perform a search in the vector space,
+
+90
+00:06:48.170 --> 00:06:52.010
+we write a query just like
+we type terms in Google.
+
+91
+00:06:52.010 --> 00:06:55.170
+Here, the number of terms is three.
+
+92
+00:06:55.170 --> 00:06:57.910
+Out of which the term
+new appears two times.
+
+93
+00:06:59.260 --> 00:07:03.049
+In fact, this is the maximum frequency
+out of all terms in the query.
+
+94
+00:07:04.220 --> 00:07:08.660
+So we take the document vector of
+the query and multiply each term
+
+95
+00:07:08.660 --> 00:07:14.570
+by the number of occurrences divided by
+two which is the maximum term frequency.
+
+96
+00:07:14.570 --> 00:07:18.090
+Now in this case,
+it gives us two non-zero terms.
+
+97
+00:07:18.090 --> 00:07:20.950
+0.584 and
+
+98
+00:07:20.950 --> 00:07:26.460
+0.292 for new and york.
+
+99
+00:07:26.460 --> 00:07:30.726
+Then we compute the length of
+the query vector just like we did for
+
+100
+00:07:30.726 --> 00:07:33.730
+the document vectors
+on the previous slide.
+
+101
+00:07:33.730 --> 00:07:39.443
+Next, we will compute the similarity
+between the query vector and each document
+
+102
+00:07:39.443 --> 00:07:45.170
+with the idea that we'll measure how far
+the query vector is from each document.
+
+103
+00:07:47.730 --> 00:07:53.150
+Now there are many similar functions
+defined and used for different things.
+
+104
+00:07:53.150 --> 00:07:56.940
+A popular similarity measure
+is the cosine function,
+
+105
+00:07:56.940 --> 00:08:03.200
+which measures the cosine function of
+the angle between these two vectors.
+
+106
+00:08:03.200 --> 00:08:07.080
+The mathematical formula for
+computing the function is given here.
+
+107
+00:08:07.080 --> 00:08:11.250
+The intuition is that if
+the vectors are identical,
+
+108
+00:08:11.250 --> 00:08:14.330
+then the angle between them is zero.
+
+109
+00:08:14.330 --> 00:08:16.230
+And therefore,
+the cosine function evaluates to one.
+
+110
+00:08:18.250 --> 00:08:20.910
+As the angle increases,
+
+111
+00:08:20.910 --> 00:08:25.450
+the value of the cosine function
+decreases to make them more dissimilar.
+
+112
+00:08:26.780 --> 00:08:30.694
+The way to compute the function is to
+multiply the corresponding elements of
+
+113
+00:08:30.694 --> 00:08:32.170
+the two vectors.
+
+114
+00:08:32.170 --> 00:08:34.850
+That is the first element
+of one with the first
+
+115
+00:08:34.850 --> 00:08:37.340
+element of the second one and so forth.
+
+116
+00:08:37.340 --> 00:08:38.790
+And then sum of these products.
+
+117
+00:08:39.960 --> 00:08:45.610
+Here, the only contributing
+terms are from new and
+
+118
+00:08:45.610 --> 00:08:49.230
+york because, these are the only two
+non-zero terms in the query vector.
+
+119
+00:08:50.660 --> 00:08:55.630
+This sum is then divided by
+the product of the document length and
+
+120
+00:08:55.630 --> 00:08:58.040
+the query length that we
+have computed earlier.
+
+121
+00:08:59.310 --> 00:09:02.650
+Look at the result of the distance
+function and you will notice that
+
+122
+00:09:02.650 --> 00:09:07.570
+the document 1 is much more similar
+to the query than the other two.
+
+123
+00:09:08.810 --> 00:09:13.640
+So while similarity scoring and document
+ranking process working effectively,
+
+124
+00:09:13.640 --> 00:09:16.100
+the method is a little cotton dry.
+
+125
+00:09:16.100 --> 00:09:19.920
+More often than not users would
+like a little more control
+
+126
+00:09:19.920 --> 00:09:20.910
+over the ranking of terms.
+
+127
+00:09:22.270 --> 00:09:27.450
+One way of accomplishing this is to put
+different weights on each query term.
+
+128
+00:09:27.450 --> 00:09:33.460
+And in this example, the query term
+york has a default weight of one,
+
+129
+00:09:33.460 --> 00:09:36.530
+times has a weight of two.
+
+130
+00:09:36.530 --> 00:09:40.340
+And post has a weight of five
+as specified by the user.
+
+131
+00:09:41.350 --> 00:09:43.662
+So relatively speaking,
+
+132
+00:09:43.662 --> 00:09:49.765
+york has a weight of 1 divided
+by 1 + 5 + 2 is equal to 0.125.
+
+133
+00:09:49.765 --> 00:09:55.630
+Times has a weight of 0.25 and
+post has a weight of 0.625.
+
+134
+00:09:55.630 --> 00:09:59.280
+Now the scoring method we showed
+before will change a bit.
+
+135
+00:09:59.280 --> 00:10:04.091
+The query of vector and its length
+were exactly as computed before.
+
+136
+00:10:04.091 --> 00:10:08.777
+However, now each term in the query
+vector is further multiplied by these
+
+137
+00:10:08.777 --> 00:10:10.810
+relative weights.
+
+138
+00:10:10.810 --> 00:10:14.490
+In our case,
+the term york now has a much higher rate.
+
+139
+00:10:15.500 --> 00:10:21.237
+So as expected, this will change
+the ranking of the documents and
+
+140
+00:10:21.237 --> 00:10:24.900
+new york post will have the highest rank.
+
+141
+00:10:24.900 --> 00:10:30.580
+Now similarity search is often used for
+images using a vector space model.
+
+142
+00:10:30.580 --> 00:10:33.210
+One can compute futures from images.
+
+143
+00:10:33.210 --> 00:10:36.180
+And one common feature
+is a scatter histogram.
+
+144
+00:10:36.180 --> 00:10:38.000
+Consider the image here.
+
+145
+00:10:38.000 --> 00:10:40.820
+One can create the histogram of the red,
+green and
+
+146
+00:10:40.820 --> 00:10:46.170
+blue channels where histogram is the count
+of pixels having a certain density value.
+
+147
+00:10:47.360 --> 00:10:52.600
+This picture is mostly bright, so the
+count of dark pixels is relatively small.
+
+148
+00:10:53.690 --> 00:10:56.746
+Now one can think of
+histograms like a vector.
+
+149
+00:10:56.746 --> 00:11:01.430
+Very often the pixel values will
+be bend before creating a vector.
+
+150
+00:11:01.430 --> 00:11:06.424
+The table shown is a feature vector
+where the numbers for each row have been
+
+151
+00:11:06.424 --> 00:11:10.960
+normalized with the size of the image
+to make the row sum equal to one.
+
+152
+00:11:10.960 --> 00:11:15.320
+Similar vectors can be computed of
+the image texture, shapes of objects and
+
+153
+00:11:15.320 --> 00:11:16.790
+any other properties.
+
+154
+00:11:16.790 --> 00:11:20.700
+Thus making a vector space model
+significant for unstructured data.
+
+1
+00:00:01.646 --> 00:00:06.170
+In our experience as educators
+we have observed that
+
+2
+00:00:06.170 --> 00:00:10.940
+learners often make the assumption
+that the format of the data
+
+3
+00:00:10.940 --> 00:00:15.820
+is the same as the logical model of the
+data in the way that you operate on it.
+
+4
+00:00:15.820 --> 00:00:18.740
+The goal of this very
+short lecture is to ensure
+
+5
+00:00:18.740 --> 00:00:21.590
+that we can clearly
+distinguish between the two.
+
+6
+00:00:21.590 --> 00:00:26.550
+So, after watching this video you will be
+able to explain the difference between
+
+7
+00:00:26.550 --> 00:00:31.460
+format, which is a serialized
+representation of the data, as opposed to
+
+8
+00:00:31.460 --> 00:00:35.010
+data model which we have discussed
+at length in the previous months.
+
+9
+00:00:36.930 --> 00:00:41.050
+Perhaps the simplest example of a data
+format is a csv file, so here is
+
+10
+00:00:41.050 --> 00:00:45.359
+a snippet of a csv file from the global
+terrorism database we discussed earlier.
+
+11
+00:00:46.640 --> 00:00:50.520
+We know that CSV or
+common separative values means
+
+12
+00:00:50.520 --> 00:00:53.910
+that the term between two commas
+is the value of an attribute.
+
+13
+00:00:53.910 --> 00:00:54.740
+But what is this value?
+
+14
+00:00:56.200 --> 00:01:00.110
+The common notion is that it's
+a content of a single relation
+
+15
+00:01:01.280 --> 00:01:04.870
+where each line is a record
+that's a tuple and
+
+16
+00:01:04.870 --> 00:01:09.030
+the iod value in the CSV corresponds
+to the iod attribute as shown here.
+
+17
+00:01:10.340 --> 00:01:14.850
+Now that might very well be true but
+let's look at a different example.
+
+18
+00:01:14.850 --> 00:01:17.440
+Let's say this snippet
+here is my CSV file.
+
+19
+00:01:18.790 --> 00:01:21.960
+There is no difference between
+the previous file and this one.
+
+20
+00:01:21.960 --> 00:01:24.780
+However, here is how I
+like to see the data.
+
+21
+00:01:26.630 --> 00:01:28.600
+As you can see this is a graph,
+
+22
+00:01:28.600 --> 00:01:33.190
+and the data model is the same
+although the format is still CSV.
+
+1
+00:00:00.870 --> 00:00:03.200
+This is the second hands on exercise for
+sensor data.
+
+2
+00:00:03.200 --> 00:00:06.220
+In the first we looked at
+static data in a text file.
+
+3
+00:00:06.220 --> 00:00:10.410
+In this one we'll be looking at
+real-time streaming measurements.
+
+4
+00:00:10.410 --> 00:00:12.675
+First, we will open a terminal window, and
+
+5
+00:00:12.675 --> 00:00:15.770
+cd into the directory containing
+the data and the scripts.
+
+6
+00:00:15.770 --> 00:00:18.110
+Next we'll connect to
+the weather station and
+
+7
+00:00:18.110 --> 00:00:20.990
+look at the real-time
+data as it streams in.
+
+8
+00:00:20.990 --> 00:00:25.280
+After that, we will look at the key to
+remind ourselves what the fields mean.
+
+9
+00:00:25.280 --> 00:00:28.140
+And finally, we will plot the data
+streaming from the weather station.
+
+10
+00:00:29.400 --> 00:00:30.490
+Let's begin.
+
+11
+00:00:30.490 --> 00:00:33.830
+First, open a terminal window,
+by clicking on the terminal icon.
+
+12
+00:00:33.830 --> 00:00:34.861
+Top of the toolbar.
+
+13
+00:00:36.498 --> 00:00:42.919
+[NOISE] Let's run cd
+Downloads/big-data-2/sensor.
+
+14
+00:00:51.421 --> 00:00:54.021
+You can run ls to see
+the name of the scripts.
+
+15
+00:00:57.772 --> 00:01:02.114
+Let's run stream-data.py
+to see the real-time data.
+
+16
+00:01:10.240 --> 00:01:15.860
+This shows us the real-time measurements
+coming from the weather station.
+
+17
+00:01:15.860 --> 00:01:17.738
+By looking at the time stamps,
+
+18
+00:01:17.738 --> 00:01:22.733
+we can see that each measurement arrives
+about one second after the previous one.
+
+19
+00:01:25.078 --> 00:01:28.439
+Additionally, we can see
+that R1 comes fairly often,
+
+20
+00:01:28.439 --> 00:01:32.172
+whereas other measurements,
+such as R2, are not as often.
+
+21
+00:01:37.361 --> 00:01:38.880
+We can open another terminal and
+
+22
+00:01:38.880 --> 00:01:42.040
+look at the key to remind ourselves
+what these measurements mean.
+
+23
+00:01:53.639 --> 00:01:58.875
+The key is in wxt-520-format.txt.
+
+24
+00:01:58.875 --> 00:02:03.693
+We could run more
+wxt-520-format.txt to view it.
+
+25
+00:02:14.792 --> 00:02:19.535
+If we go back to our live data,
+we can see that the 19th
+
+26
+00:02:19.535 --> 00:02:24.500
+measurement here says Ta
+was 22.5 degrees Celsius.
+
+27
+00:02:25.930 --> 00:02:30.116
+And look up here,
+see that Ta is the air temperature.
+
+28
+00:02:30.116 --> 00:02:34.737
+The next measure we can see
+that Dn was equal to 255D.
+
+29
+00:02:34.737 --> 00:02:39.340
+According to our key,
+Dn is the wind direction minimum, and
+
+30
+00:02:39.340 --> 00:02:41.157
+the units are degrees.
+
+31
+00:02:46.417 --> 00:02:51.316
+We can also plot specific measurements
+streaming live from the weather station.
+
+32
+00:02:54.056 --> 00:02:55.740
+Let's plot the wind speed average.
+
+33
+00:02:57.300 --> 00:03:02.819
+If we look at our key,
+we see that the wind speed average is Sm.
+
+34
+00:03:02.819 --> 00:03:08.554
+So we can plot this by running
+stream-plot-data.py sm.
+
+35
+00:03:20.501 --> 00:03:23.659
+This plots the data as the weather
+station sends it to us.
+
+36
+00:03:27.501 --> 00:03:28.843
+If we look at the x-axis,
+
+37
+00:03:28.843 --> 00:03:31.960
+we can see that one measurement
+comes in about every second.
+
+38
+00:03:43.199 --> 00:03:46.620
+We can plot other measurements by
+choosing different fields from the key.
+
+39
+00:03:47.650 --> 00:03:56.350
+For example, we can plot the air pressure
+by running stream-plot-data.py Pa.
+
+40
+00:03:56.350 --> 00:03:58.289
+Since Pa is the air pressure.
+
+41
+00:04:14.810 --> 00:04:18.720
+First thing we notice is that there's
+only one measurement so far in the graph.
+
+42
+00:04:20.950 --> 00:04:23.710
+This means that the air pressure
+measurements are not coming as
+
+43
+00:04:23.710 --> 00:04:25.840
+fast as the wind measurements.
+
+44
+00:04:25.840 --> 00:04:27.127
+In fact, we only got one.
+
+1
+00:00:00.008 --> 00:00:01.736
+In this hands-on activity,
+
+2
+00:00:01.736 --> 00:00:05.270
+we'll be looking at real time
+data streaming from Twitter.
+
+3
+00:00:06.360 --> 00:00:08.750
+First, we'll open a terminal window and
+
+4
+00:00:08.750 --> 00:00:12.520
+cd into the directory containing
+Python scripts to access this data.
+
+5
+00:00:13.880 --> 00:00:17.750
+Next, we'll look at the contents
+of tweets streaming from Twitter
+
+6
+00:00:17.750 --> 00:00:19.220
+containing specific words.
+
+7
+00:00:20.400 --> 00:00:23.230
+Finally, we will plot the frequency
+of these streaming tweets.
+
+8
+00:00:24.500 --> 00:00:25.810
+Let's begin.
+
+9
+00:00:25.810 --> 00:00:29.259
+First, click on the terminal
+icon at the top of the toolbar.
+
+10
+00:00:33.485 --> 00:00:38.414
+Let cd into the directory containing
+the python scripts to access the real time
+
+11
+00:00:38.414 --> 00:00:40.400
+data from Twitter.
+
+12
+00:00:40.400 --> 00:00:45.473
+We'll run CD downloads big-data-2 json.
+
+13
+00:00:52.538 --> 00:00:55.828
+We can run ls to see
+the files in this directory.
+
+14
+00:01:01.678 --> 00:01:07.200
+The file auth should be created containing
+your Twitter authentication information.
+
+15
+00:01:08.200 --> 00:01:11.434
+You could see the separate reading for
+how to setup the Twitter app and
+
+16
+00:01:11.434 --> 00:01:12.617
+how to create this file.
+
+17
+00:01:16.023 --> 00:01:20.958
+Next, let's run the script live tweets
+to view tweets in real time containing
+
+18
+00:01:20.958 --> 00:01:22.093
+a specific word.
+
+19
+00:01:22.093 --> 00:01:27.819
+Let's run LiveTweets.py president.
+
+20
+00:01:33.534 --> 00:01:36.267
+This will show the real time tweets
+containing the word president.
+
+21
+00:01:42.171 --> 00:01:45.280
+[INAUDIBLE] Runs, in the first column,
+you can see the time stamp of the tweet.
+
+22
+00:01:45.280 --> 00:01:48.500
+In the second column,
+you can see the text.
+
+23
+00:01:54.220 --> 00:01:56.471
+When you're done, hit Ctrl + C.
+
+24
+00:02:01.208 --> 00:02:04.836
+Let's run LiveTweet again using
+a different keyword that appear more
+
+25
+00:02:04.836 --> 00:02:06.260
+frequently.
+
+26
+00:02:06.260 --> 00:02:10.448
+Let's use the word time,
+we'll run LiveTweet time
+
+27
+00:02:24.118 --> 00:02:30.780
+When we're done, hit Ctrl + C.
+
+28
+00:02:30.780 --> 00:02:34.900
+We can plot the frequency of these Tweets
+by running the script plot Tweets.
+
+29
+00:02:37.390 --> 00:02:41.373
+Let's run plot, tweet, president to see
+the frequency for the word president.
+
+30
+00:02:57.849 --> 00:03:01.466
+As this runs, we could see
+the frequency changes over time.
+
+31
+00:03:19.557 --> 00:03:21.960
+I can see that the maximum was one.
+
+32
+00:03:23.130 --> 00:03:25.540
+And a few times,
+there were just one tweet in that second.
+
+33
+00:03:29.380 --> 00:03:31.180
+When you're done looking at the graph,
+
+34
+00:03:31.180 --> 00:03:32.930
+click in the terminal window and
+hit Enter.
+
+35
+00:03:35.940 --> 00:03:38.010
+Now, let's plot the frequency for
+the word time.
+
+36
+00:03:39.040 --> 00:03:42.645
+Run PlotTweets.py time.
+
+37
+00:03:58.468 --> 00:04:02.500
+This plot shows that the word time appears
+a lot more frequently than president.
+
+38
+00:04:03.800 --> 00:04:09.514
+We can see spikes in the frequency
+of 40 and a maximum of around 65.
+
+39
+00:04:09.514 --> 00:04:12.663
+When you're done looking at the graph,
+
+40
+00:04:12.663 --> 00:04:16.840
+click on the terminal window and
+press enter to quit.
+
+1
+00:00:01.000 --> 00:00:05.890
+With big data streaming from different
+sources in varying formats, models, and
+
+2
+00:00:05.890 --> 00:00:10.650
+speeds it is no surprise that we
+need to be able to ingest this data
+
+3
+00:00:10.650 --> 00:00:13.970
+into a fast and scalable storage system
+
+4
+00:00:13.970 --> 00:00:18.900
+that is flexible enough to serve many
+current and future analytical processes.
+
+5
+00:00:20.410 --> 00:00:25.730
+This is when traditional data warehouses
+with strict data models and data
+
+6
+00:00:25.730 --> 00:00:31.160
+formats don't fit the big data challenges
+for streaming and batch applications.
+
+7
+00:00:32.760 --> 00:00:38.700
+The concept of a data lake was created in
+response of these data big storage and
+
+8
+00:00:38.700 --> 00:00:39.890
+processing challenges.
+
+9
+00:00:41.140 --> 00:00:45.460
+After this video you
+will be able to describe
+
+10
+00:00:45.460 --> 00:00:48.880
+how data lakes enable batch
+processing of streaming data.
+
+11
+00:00:50.410 --> 00:00:55.390
+Explain the difference between
+schema on write and schema on read.
+
+12
+00:00:56.680 --> 00:01:00.320
+Organize data streams and data lakes and
+
+13
+00:01:00.320 --> 00:01:04.720
+data warehouses on a spectrum of
+big data management and storage.
+
+14
+00:01:07.080 --> 00:01:08.080
+What is a data lake?
+
+15
+00:01:09.140 --> 00:01:15.450
+Simply speaking, a data lake is
+a part of a big data infrastructure
+
+16
+00:01:15.450 --> 00:01:20.270
+that many streams can flow into and
+
+17
+00:01:20.270 --> 00:01:23.680
+get stored for
+processing in their original form.
+
+18
+00:01:23.680 --> 00:01:28.140
+We can think of it as a massive
+storage depository with huge
+
+19
+00:01:28.140 --> 00:01:33.560
+processing power and ability to handle
+a very large number of concurrence,
+
+20
+00:01:33.560 --> 00:01:35.970
+data management and analytical tasks.
+
+21
+00:01:37.370 --> 00:01:42.660
+In 2010,
+the Pentaho Corporation's CTO James Dixon
+
+22
+00:01:42.660 --> 00:01:44.510
+defined a data link as follows.
+
+23
+00:01:45.930 --> 00:01:50.830
+If you think of a datamart as a store
+of bottled water, cleansed and
+
+24
+00:01:50.830 --> 00:01:54.090
+packaged and structured for
+easy consumption,
+
+25
+00:01:54.090 --> 00:01:59.320
+the data lake is a large body of
+water in a more natural state.
+
+26
+00:01:59.320 --> 00:02:04.940
+The contents of the data lake stream
+in from a source to fill the lake,
+
+27
+00:02:04.940 --> 00:02:11.980
+and various users of the lake can come
+to examine it, dive in, or take samples.
+
+28
+00:02:11.980 --> 00:02:14.000
+A data lake works as follows.
+
+29
+00:02:15.140 --> 00:02:17.600
+The data gets loaded from its source,
+
+30
+00:02:19.160 --> 00:02:22.140
+stored in its native
+format until it is needed
+
+31
+00:02:23.330 --> 00:02:28.240
+at which time the applications can freely
+read the data and add structure to it.
+
+32
+00:02:29.500 --> 00:02:33.250
+This is what we call schema on read.
+
+33
+00:02:33.250 --> 00:02:38.070
+In a traditional data warehouse,
+the data is loaded into the warehouse
+
+34
+00:02:38.070 --> 00:02:42.670
+after transforming it into a well
+defined and structured format.
+
+35
+00:02:42.670 --> 00:02:45.398
+This is what we call schema on write.
+
+36
+00:02:45.398 --> 00:02:51.078
+Any application using the data needs to
+know this format in order to retrieve and
+
+37
+00:02:51.078 --> 00:02:52.110
+use the data.
+
+38
+00:02:53.330 --> 00:02:54.990
+In this approach,
+
+39
+00:02:54.990 --> 00:02:58.882
+data is not loaded into the warehouse
+unless there is a use for it.
+
+40
+00:02:58.882 --> 00:03:04.030
+However, schema on read
+approach of data lakes ensures
+
+41
+00:03:04.030 --> 00:03:09.040
+all data is stored for
+a potentially unknown use at a later time.
+
+42
+00:03:09.040 --> 00:03:12.110
+So how is a data lake
+from a data warehouse?
+
+43
+00:03:13.540 --> 00:03:18.650
+A traditional data warehouse
+stores data in a hierarchical file
+
+44
+00:03:19.820 --> 00:03:22.973
+system with a well-defined structure.
+
+45
+00:03:22.973 --> 00:03:29.590
+However, a data lake stores data as
+flat files with a unique identifier.
+
+46
+00:03:29.590 --> 00:03:33.550
+This often gets referred to as
+object storage in big data systems.
+
+47
+00:03:36.250 --> 00:03:42.330
+In data lakes each data is stored
+as a binary large object or
+
+48
+00:03:42.330 --> 00:03:45.460
+BLOB and is assigned a unique identifier.
+
+49
+00:03:46.460 --> 00:03:53.620
+In addition, each data object is
+tagged with a number of metadata tags.
+
+50
+00:03:54.860 --> 00:03:58.230
+The data can be searched
+using these metadata tags
+
+51
+00:03:58.230 --> 00:04:00.400
+to retrieve it when there
+is a need to access it.
+
+52
+00:04:01.820 --> 00:04:03.405
+From a users perspective,
+
+53
+00:04:03.405 --> 00:04:08.672
+metadata is stored is not a problem as
+long as it is accessible when needed.
+
+54
+00:04:08.672 --> 00:04:15.780
+In Hadoop data architectures,
+data is loaded into HDFS and processed
+
+55
+00:04:15.780 --> 00:04:20.410
+using the appropriate data management and
+analytical systems on commodity clusters.
+
+56
+00:04:21.860 --> 00:04:27.080
+The selection of the tools is based on the
+nature of the problem being solved, and
+
+57
+00:04:27.080 --> 00:04:28.540
+the data format being accessed.
+
+58
+00:04:30.090 --> 00:04:32.920
+We will talk more about
+the processing of data streams and
+
+59
+00:04:32.920 --> 00:04:35.820
+data lakes in the next course
+in this specialization.
+
+60
+00:04:37.520 --> 00:04:43.250
+To summarize a data lake is
+a storage architecture for
+
+61
+00:04:43.250 --> 00:04:45.190
+big data collection and processing.
+
+62
+00:04:46.670 --> 00:04:50.060
+It enables collection of
+all data suitable for
+
+63
+00:04:50.060 --> 00:04:53.060
+analysis today and
+potentially in the future.
+
+64
+00:04:54.410 --> 00:04:57.450
+Regardless of the data source,
+structure, and
+
+65
+00:04:57.450 --> 00:05:03.120
+format it supports storage of data and
+transforms it only when it is needed.
+
+66
+00:05:04.500 --> 00:05:09.940
+A data lake ideally supports all parts
+of the user base to benefit from
+
+67
+00:05:09.940 --> 00:05:15.790
+this architecture, including business,
+storage, analytics and computing experts.
+
+68
+00:05:17.240 --> 00:05:21.310
+Finally, And perhaps most importantly,
+
+69
+00:05:21.310 --> 00:05:25.790
+data lakes are infrastructure components
+within a big data architecture
+
+70
+00:05:25.790 --> 00:05:29.980
+that can evolve over time based
+on application-specific needs.

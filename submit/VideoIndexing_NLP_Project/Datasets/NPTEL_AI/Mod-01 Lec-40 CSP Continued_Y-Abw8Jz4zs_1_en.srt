@@ -1,0 +1,2211 @@
+﻿1
+00:00:10,599 --> 00:00:17,019
+So, in the last class, we saw the definition
+of constrain satisfaction problems and we
+
+2
+00:00:17,019 --> 00:00:23,500
+made this observation that solving the C S
+P basically allows co-operation between two
+
+3
+00:00:23,500 --> 00:00:28,960
+kinds of algorithm, one, which the search
+over possible assignments and the other which
+
+4
+00:00:28,960 --> 00:00:34,320
+does some kind of reasoning which we will
+call as propagation. So, we have this notion
+
+5
+00:00:34,320 --> 00:00:35,579
+of consistency.
+
+6
+00:00:35,579 --> 00:00:36,579
+.
+
+7
+00:00:36,579 --> 00:00:51,948
+We are, this notion of I consistency, so we
+say that a C S P or a network is I consistence,
+
+8
+00:00:51,948 --> 00:01:01,409
+if every consistence assignment to I minus
+1 variables can be extended to I variable
+
+9
+00:01:01,409 --> 00:01:06,530
+which means that, if we have found values
+for I minus for 1 variables any I minus
+
+10
+00:01:06,530 --> 00:01:12,909
+variables. Then, you can always take any I
+variable, any next variable and extend find
+
+11
+00:01:12,909 --> 00:01:23,890
+the consistent value for that. So, of course
+not all networks will be I consistence, but
+
+12
+00:01:23,890 --> 00:01:30,010
+the
+general effort in reasoning is to enforce
+
+13
+00:01:30,010 --> 00:01:32,710
+consistency in some manner essentially.
+
+14
+00:01:32,709 --> 00:01:39,389
+So, we can start with the very simplest notion
+of consistency, which is called node
+
+15
+00:01:39,390 --> 00:01:50,700
+.consistency or one consistency, when you
+say one consistency then we use the term note.
+
+16
+00:01:50,700 --> 00:01:56,929
+So, it basically means that you take any variable
+and you will find one value which is
+
+17
+00:01:56,929 --> 00:02:01,359
+consistent. What do we mean by consistence
+with one variable? That if there happens to
+
+18
+00:02:01,358 --> 00:02:11,430
+be a constraints over only that variable,
+a unary constraint then all the variables
+
+19
+00:02:11,430 --> 00:02:15,870
+satisfy
+that. So, we can enforce node consistency
+
+20
+00:02:15,870 --> 00:02:20,810
+by simply saying that if there is some value
+which does not satisfy constraint, remove
+
+21
+00:02:20,810 --> 00:02:22,240
+it from the domain.
+
+22
+00:02:22,240 --> 00:02:29,280
+So, in general node consistency and there
+is one consistency, two consistency will
+
+23
+00:02:29,280 --> 00:02:38,020
+domain which essentially. So, two consistency,
+what we will look at it cal A R C
+
+24
+00:02:38,020 --> 00:02:48,920
+consistency 
+and what two consistency says that you take
+
+25
+00:02:48,919 --> 00:02:55,119
+a assign a value 2, any variable
+which is node consistence which means that
+
+26
+00:02:55,120 --> 00:03:01,770
+values satisfy any unary constraint that there
+might be, you take any other variable and
+
+27
+00:03:01,770 --> 00:03:07,409
+you will be able to find a value for that
+variable which is, which. So, that there is
+
+28
+00:03:07,409 --> 00:03:09,949
+a 2 values, for the first variable and second
+variable are together consistence essentially.
+
+29
+00:03:09,949 --> 00:03:10,949
+.
+
+30
+00:03:10,949 --> 00:03:21,699
+So, to talk about A R C consistence is often
+useful to draw, what we call is a matching
+
+31
+00:03:21,699 --> 00:03:35,449
+diagram, and the matching diagram basically
+does something like this, that it creates
+
+32
+00:03:35,449 --> 00:03:40,369
+a
+domain for each variable. So, this is X 1,
+
+33
+00:03:40,370 --> 00:03:44,390
+this is X 2 and then you have variables inside
+is
+
+34
+00:03:44,389 --> 00:03:55,819
+domains, so these are the values that this
+variable can take and edge represents the
+
+35
+00:03:55,819 --> 00:03:56,819
+fact
+
+36
+00:03:56,819 --> 00:04:04,900
+.that this value, let us call it A 1 and this
+value let us call it B 1 belongs to the relation
+
+37
+00:04:04,900 --> 00:04:10,780
+essentially. So, basically it is a depiction
+of relation essentially, so I whatever the
+
+38
+00:04:10,780 --> 00:04:18,620
+relation
+is something like this, so such a diagram
+
+39
+00:04:18,620 --> 00:04:20,680
+column is matching diagram.
+
+40
+00:04:20,680 --> 00:04:30,870
+So, what we want to do in our consistency
+over these two variables is to keep only those
+
+41
+00:04:30,870 --> 00:04:35,939
+values in the domain, for which there is a
+corresponding value in the other domain
+
+42
+00:04:35,939 --> 00:04:40,139
+essentially. So, for example we do not want
+to keep this value because there is no
+
+43
+00:04:40,139 --> 00:04:45,539
+matching value in the other domain, we do
+not want to keep this value, we do not want
+
+44
+00:04:45,540 --> 00:04:49,850
+to
+keep this value. So, to implement this, we
+
+45
+00:04:49,850 --> 00:04:52,490
+have a simple procedure called revise and
+this
+
+46
+00:04:52,490 --> 00:05:08,470
+is kind a standard name for it D X D Y or
+X Y it takes. So, we say that we are going
+
+47
+00:05:08,470 --> 00:05:13,570
+to
+prune the values of D X to only those values
+
+48
+00:05:13,569 --> 00:05:16,399
+which have a value corresponding value for
+this R X Y.
+
+49
+00:05:16,399 --> 00:05:27,569
+So, if this is X and that is Y we can prune
+in this essentially, so for each A belonging
+
+50
+00:05:27,569 --> 00:05:47,129
+to d
+X, if there is no B belonging to D Y, remove
+
+51
+00:05:47,129 --> 00:06:05,310
+A from D X very simple procedure which
+looks at each value. So, this is A, this is
+
+52
+00:06:05,310 --> 00:06:08,589
+a procedure which is only pruning the domain
+D
+
+53
+00:06:08,589 --> 00:06:17,529
+X, so it looks for each value this is A X
+and that is Y, and it looks each value of
+
+54
+00:06:17,529 --> 00:06:24,629
+X. If
+there is no value in Y, if there is no B belong
+
+55
+00:06:24,629 --> 00:06:28,680
+with D Y, I should have add it first, that
+A
+
+56
+00:06:28,680 --> 00:06:43,581
+B belongs to R X Y. In other words, if we
+have a binary constrain over X and Y, then
+
+57
+00:06:43,581 --> 00:06:52,580
+every value of X should have a matching value
+in Y and this procedure revise is pruning
+
+58
+00:06:52,579 --> 00:06:55,009
+this domain X domain of X.
+
+59
+00:06:55,009 --> 00:07:00,399
+So, it looks at all these values and for A,
+every value where there is no matching value,
+
+60
+00:07:00,399 --> 00:07:04,168
+on the other side this one, this one has two
+values. So, it, this one has no values, so
+
+61
+00:07:04,168 --> 00:07:06,009
+it will
+remove this from the domain, it will keep
+
+62
+00:07:06,009 --> 00:07:08,060
+this, it will keep this and will remove this.
+So,
+
+63
+00:07:08,060 --> 00:07:18,959
+it will remove 2 values and keep one essentially,
+so the process of doing our consistency,
+
+64
+00:07:18,959 --> 00:07:26,719
+basically doing this repeatedly so that all
+pairs of variables are our consistency
+
+65
+00:07:26,720 --> 00:07:27,720
+essentially.
+
+66
+00:07:27,720 --> 00:07:28,720
+..
+
+67
+00:07:28,720 --> 00:07:37,270
+So, the simplest algorithm for doing that
+is call A C 1, so and, so our consistency
+
+68
+00:07:37,269 --> 00:07:52,719
+1, and
+it does basically the following for each 
+
+69
+00:07:52,720 --> 00:07:59,639
+X Y, such that R X Y is the domain, R X Y
+is the
+
+70
+00:07:59,639 --> 00:08:34,139
+real, is a constrain, call revise D X D Y,
+R X Y and call revise in both directions D
+
+71
+00:08:34,139 --> 00:08:40,848
+Y D
+X R X Y. So, we will assume that R X Y contains
+
+72
+00:08:40,849 --> 00:08:52,610
+the relation between them, so I instead
+of writing R Y X, I am just writing R X Y,
+
+73
+00:08:52,610 --> 00:08:59,509
+for each pair X Y of variable we want do this
+which means if I have 3 variables.
+
+74
+00:08:59,509 --> 00:09:22,879
+Let us see this one, and let us say I have
+something like this, so this is X Y and Z,
+
+75
+00:09:22,879 --> 00:09:25,879
+so I
+have 3 variables, 2 relations between X and
+
+76
+00:09:25,879 --> 00:09:35,649
+Y, Y and Z and I want to make this network
+our consistence which means that every assignment
+
+77
+00:09:35,649 --> 00:09:41,970
+one of these variables can be
+extended to an assignment of 2 variables?
+
+78
+00:09:41,970 --> 00:09:51,589
+Notice that, in the constrate network diagram
+that we had drawn earlier, we would have drawn
+
+79
+00:09:51,589 --> 00:10:00,829
+this like this, this is Y, this is Z and this
+is X. So, there is A between these two, this
+
+80
+00:10:00,828 --> 00:10:05,729
+is called a network from same network, it
+basically a constrate graph which says which
+
+81
+00:10:05,730 --> 00:10:10,438
+variable is constrain, by which variable and
+we are talking about binary constrain.
+
+82
+00:10:10,438 --> 00:10:14,889
+So, we have only edges, otherwise you would
+have hyper edges, the constrain of,
+
+83
+00:10:14,889 --> 00:10:18,869
+basically identifies which variables are related
+to each other. The matching diagram tells
+
+84
+00:10:18,869 --> 00:10:24,230
+you which values of variables, our participating
+in those constrains, when we say
+
+85
+00:10:24,230 --> 00:10:30,459
+.something like, this that, this is a constrain
+graph. So, if you remember this map coloring
+
+86
+00:10:30,458 --> 00:10:35,958
+example that we saw, we said that if this
+is, if the domains of all 3 are red, blue
+
+87
+00:10:35,958 --> 00:10:38,609
+and this
+is not equal to this, and this is not equal
+
+88
+00:10:38,610 --> 00:10:44,050
+to this. So, that is a constrain given to
+first,
+
+89
+00:10:44,049 --> 00:10:50,240
+implicitly we have a constrain between this
+and this which says that anything is allowed.
+
+90
+00:10:50,240 --> 00:11:05,209
+So, R B is allowed R, R is allowed, D B is
+allowed, and B R is allowed, if we have not
+
+91
+00:11:05,208 --> 00:11:13,458
+specified, if we have not specified a constrain,
+that means implicitly it is a universal
+
+92
+00:11:13,458 --> 00:11:18,979
+relation. It means anything allowed to anything
+which means, what that our back
+
+93
+00:11:18,980 --> 00:11:23,069
+trekking algorithm said that if you first
+want to give a value for X, and if you want
+
+94
+00:11:23,068 --> 00:11:26,368
+to
+give a value for Z, it is not putting constraint
+
+95
+00:11:26,369 --> 00:11:34,519
+which means you can choose. If we choose
+R for X, you can choose B for Z, it does not
+
+96
+00:11:34,519 --> 00:11:39,810
+care because it does not know any constrain
+essentially.
+
+97
+00:11:39,809 --> 00:11:47,159
+So, there is the universal relations, but
+of course this not expressed, it simply sit,
+
+98
+00:11:47,159 --> 00:11:49,259
+so it
+does not participate in the matching diagram
+
+99
+00:11:49,259 --> 00:11:51,720
+here and it does not participate in this.
+So,
+
+100
+00:11:51,720 --> 00:11:56,480
+when you say R X Y is the constrain, remain
+it is an expressive constrain mention in the
+
+101
+00:11:56,480 --> 00:11:59,168
+C S P essentially.
+
+102
+00:11:59,168 --> 00:12:00,168
+.
+
+103
+00:12:00,168 --> 00:12:09,409
+So, before I come back to this, we have a
+notion of 3 consistency which is known as
+
+104
+00:12:09,409 --> 00:12:10,409
+path
+
+105
+00:12:10,409 --> 00:12:20,009
+.consistency, remember the notion of I consistency
+which is the generic notion. So, 3
+
+106
+00:12:20,009 --> 00:12:27,919
+consistencies say that any pair of values
+which are constraint can be a extended to
+
+107
+00:12:27,919 --> 00:12:30,909
+a third
+value. So, if I choose 2 values for this,
+
+108
+00:12:30,909 --> 00:12:34,059
+I should be able to extend to a third value,
+so if I
+
+109
+00:12:34,059 --> 00:12:46,149
+choose Z for this and blue for this, I can
+extend it to blue for this.
+
+110
+00:12:46,149 --> 00:12:53,808
+If I X, if I choose blue for this and red
+for this, I can choose blue for that, but
+
+111
+00:12:53,808 --> 00:12:58,208
+if I choose
+these two values first, if I choose red for
+
+112
+00:12:58,208 --> 00:13:01,609
+this and red for this then I can extend this
+two
+
+113
+00:13:01,610 --> 00:13:09,829
+blue for this variable Y. But, if I go to
+choose red for X and blue for Z, then I cannot
+
+114
+00:13:09,828 --> 00:13:17,458
+extend to Y, so this network is given to us
+is node 3 consistence or is node path
+
+115
+00:13:17,458 --> 00:13:22,518
+consistence. What path consistency would do,
+would to prune this relation in this
+
+116
+00:13:22,519 --> 00:13:23,519
+example?
+
+117
+00:13:23,519 --> 00:13:28,188
+So, what we do? It do that it will say that
+you choose red for this and blue for this
+
+118
+00:13:28,188 --> 00:13:30,480
+and it
+cannot extend it to the value. So, this red
+
+119
+00:13:30,480 --> 00:13:35,009
+blue must be removed from this relation you
+choose blue for this and red for this and
+
+120
+00:13:35,009 --> 00:13:41,100
+you cannot extended to a value, so you must
+prune this from the relation. So, enforcing
+
+121
+00:13:41,100 --> 00:13:46,519
+path consistency prunes relations the moment
+you have pruning a universal relation, you
+
+122
+00:13:46,519 --> 00:13:49,678
+have making a express it, so in fact it adds
+a
+
+123
+00:13:49,678 --> 00:13:58,259
+new relation. So, when you do path consistency
+you get a new network, it looks like this,
+
+124
+00:13:58,259 --> 00:14:03,829
+it adds the relation in some sense, in the
+sense that earlier it was a universal relation,
+
+125
+00:14:03,828 --> 00:14:05,708
+but
+now it is not a universal relation.
+
+126
+00:14:05,708 --> 00:14:10,719
+So, you have to express it, represented which
+means X is not related Z, so these two are
+
+127
+00:14:10,720 --> 00:14:19,829
+not equal to, but this one is equal to, so
+we have new network. So, the general idea
+
+128
+00:14:19,828 --> 00:14:25,138
+of
+enforcing consistency is to limit the choice
+
+129
+00:14:25,139 --> 00:14:29,470
+is a available to a search algorithm, to only
+those which are like you to participating
+
+130
+00:14:29,470 --> 00:14:38,999
+and solutions. But, since an N variable problem
+will have N variable, so we, to really achieve
+
+131
+00:14:38,999 --> 00:14:46,440
+full consistency you would have to achieve
+N consistency, which off course is you can
+
+132
+00:14:46,440 --> 00:14:48,319
+take it from me is a hard task.
+
+133
+00:14:48,318 --> 00:14:55,339
+So, which is why we do not often do it, so
+very often algorithms will do ache, some
+
+134
+00:14:55,340 --> 00:15:01,680
+degree of consistency, either node consistency
+or path consistency, consistency or path
+
+135
+00:15:01,679 --> 00:15:05,449
+consistency, or some higher order consistency
+depending on how much, how complex
+
+136
+00:15:05,450 --> 00:15:10,600
+the problem is. Then leave the rest to search
+and leave the rest to those other kinds of
+
+137
+00:15:10,600 --> 00:15:13,989
+things that we just briefly mentioned in the
+passing like dependency direct is back
+
+138
+00:15:13,989 --> 00:15:15,528
+.tracking or loop a heading search.
+
+139
+00:15:15,528 --> 00:15:20,939
+So, there are various tools in the, of a C
+S P solver consistency enforcement is one
+
+140
+00:15:20,940 --> 00:15:22,910
+of
+those which is what we are trying to look
+
+141
+00:15:22,909 --> 00:15:31,860
+at today. So, coming back to arch consistency,
+I want to make this network arch consistence,
+
+142
+00:15:31,860 --> 00:15:38,818
+which means if I choose any value in any
+variable, I should get the allowed to by the
+
+143
+00:15:38,818 --> 00:15:41,458
+consistency, given to me choose value for
+the
+
+144
+00:15:41,458 --> 00:15:48,349
+next variable. So, obviously as you saw, when
+we call, what will we do? We will call
+
+145
+00:15:48,350 --> 00:15:54,600
+revise with X and Y with Y and X with X and
+Z with Z and X with Y and Z and Z and
+
+146
+00:15:54,600 --> 00:15:59,149
+Y. So, at least 6 calls to revise, we will
+have to make remember, revise is the directional
+
+147
+00:15:59,149 --> 00:16:03,019
+call it prunes only the domain of the first
+one.
+
+148
+00:16:03,019 --> 00:16:08,659
+That if for each X and D X, there is no corresponding
+value in Y, remove this A from D
+
+149
+00:16:08,659 --> 00:16:14,208
+X, that is what revise does for this. So,
+we have to make at least 6 calls to revise
+
+150
+00:16:14,208 --> 00:16:17,958
+the other
+6 call, enough is a question I want to ask
+
+151
+00:16:17,958 --> 00:16:22,778
+you. If I say revise X Y, revise Y X, revise
+X Z,
+
+152
+00:16:22,778 --> 00:16:30,828
+revise Z X, revise Y Z, revise Z Y, am I done,
+and do I get a network which is our
+
+153
+00:16:30,828 --> 00:16:39,748
+consistence? Let us try it on this, so let
+us call revise X Y first, which means we are
+
+154
+00:16:39,749 --> 00:16:45,649
+going to throw this away and we are going
+to throw this away from this essentially.
+
+155
+00:16:45,649 --> 00:16:50,389
+Then
+that is called revise Y X, which means we
+
+156
+00:16:50,389 --> 00:17:00,579
+are going to throw this away from the domain
+of Y, so let me actually circle it.
+
+157
+00:17:00,578 --> 00:17:07,669
+So, the N cross it, so we know that those
+things are not there essentially, then next
+
+158
+00:17:07,670 --> 00:17:12,470
+called
+X Z, X Z we do not have a constraint at all,
+
+159
+00:17:12,470 --> 00:17:17,939
+the constraint given to us is this. This
+constraint diagram which turns anything about,
+
+160
+00:17:17,939 --> 00:17:23,189
+which means it is a universal relation
+which means there is no constraint, on choosing
+
+161
+00:17:23,189 --> 00:17:27,721
+any value from there. So, this revise call
+will not do anything, but we have a constraint
+
+162
+00:17:27,721 --> 00:17:32,548
+between Y and Z, so let us try that. For
+this, we have this value, for this we do not
+
+163
+00:17:32,548 --> 00:17:36,720
+have this value, so we have to delete this
+for
+
+164
+00:17:36,720 --> 00:17:41,079
+this, we have this value for this, we have
+this value, anyway this is not there, for
+
+165
+00:17:41,079 --> 00:17:42,720
+this we
+do not have this value, so we have to delete
+
+166
+00:17:42,720 --> 00:17:50,179
+this. So, this 
+is gone, now let us see what
+
+167
+00:17:50,179 --> 00:17:52,940
+happen the moment I have deleted this, this
+value
+
+168
+00:17:52,940 --> 00:18:07,710
+Well, this has one left here, but this related
+this value this one does not have a matching
+
+169
+00:18:07,710 --> 00:18:18,159
+value, so I read something revise X Y. But,
+now when I did revise wise it, I deleted the
+
+170
+00:18:18,159 --> 00:18:22,620
+value of Y and this value of X does not have
+anything left, so at least one more to call
+
+171
+00:18:22,619 --> 00:18:23,619
+to
+
+172
+00:18:23,619 --> 00:18:28,219
+.revise, I will have to make essentially.
+So, if you do this, then this one has this,
+
+173
+00:18:28,220 --> 00:18:32,470
+this one
+does not have this, so this goes away, this
+
+174
+00:18:32,470 --> 00:18:43,159
+one has does not have this of this goes away
+this one has this.
+
+175
+00:18:43,159 --> 00:18:51,909
+So, it is almost our consistence except for
+this value, here this value does not have
+
+176
+00:18:51,909 --> 00:18:56,330
+corresponding value, here this value has,
+this value here and then this value has that
+
+177
+00:18:56,329 --> 00:19:00,379
+value there, this value has this value here,
+and that is that, but this one does not have
+
+178
+00:19:00,380 --> 00:19:08,420
+value here. So, I must make another call to
+X Y, so which means I must put this into a
+
+179
+00:19:08,420 --> 00:19:23,558
+loop. What is the safest thing to do until
+no more changes, until no domain changes?
+
+180
+00:19:23,558 --> 00:19:32,859
+I
+will keep doing this, revise all these, revise
+
+181
+00:19:32,859 --> 00:19:37,019
+at the very outside, we can see calling revise
+X Z does not really make a sense.
+
+182
+00:19:37,019 --> 00:19:40,690
+But, of course we are not calling revise X
+Z, because the condition says for each were
+
+183
+00:19:40,690 --> 00:19:43,278
+X
+Y. So, set R X Y is constraint, so R X Z is
+
+184
+00:19:43,278 --> 00:19:52,788
+not a constraint. So, it is we will make calls
+revise X Y, Y X, Y Z and Z Y repeatedly, till
+
+185
+00:19:52,788 --> 00:19:56,879
+we come to a condition where no domains
+as change because then we are show that it
+
+186
+00:19:56,880 --> 00:20:09,740
+is our consistence essentially. So, is this
+algorithm, is it nice, is it a good algorithm?
+
+187
+00:20:09,740 --> 00:20:18,400
+The answer is no, because it can be argued
+that the number of calls number of calls revise
+
+188
+00:20:18,400 --> 00:20:25,620
+that you make is actually very large that
+in the worst case in every cycle you will
+
+189
+00:20:25,619 --> 00:20:27,739
+remove only one value from one domain.
+
+190
+00:20:27,740 --> 00:20:33,038
+In the worst case, you can construct a network
+like there, so that in one cycle which
+
+191
+00:20:33,038 --> 00:20:37,929
+means a complete set up revise calls, you
+will remove only one value from one domain,
+
+192
+00:20:37,929 --> 00:20:43,000
+and in the next cycle, you will remove one
+value from one domain. So, if there are N
+
+193
+00:20:43,000 --> 00:20:47,630
+domains, and let us say all of them are connected
+and each of them has K value, then you
+
+194
+00:20:47,630 --> 00:21:01,490
+will make N into K cycles which is obliviously
+not in efficient things to do. The reason
+
+195
+00:21:01,490 --> 00:21:08,778
+for that is that, why should we do this route
+force call to all combinations of revise.
+
+196
+00:21:08,778 --> 00:21:19,710
+Now, if we look at what is happening here,
+what we should have done is the following
+
+197
+00:21:19,710 --> 00:21:28,980
+that when we made this revise at call, and
+then we deleted this value from the domain
+
+198
+00:21:28,980 --> 00:21:34,190
+of
+Y, we should we have said Y has change. So,
+
+199
+00:21:34,190 --> 00:21:41,000
+therefore any constraint participating in
+relation in which Y is there, look at that
+
+200
+00:21:41,000 --> 00:21:46,819
+relation again because Y has change any X
+Y
+
+201
+00:21:46,819 --> 00:21:56,409
+participating in this thing, so look at that
+relation again. So, which means when we delete
+
+202
+00:21:56,410 --> 00:22:06,409
+a value from a domain then we should for future,
+revise call only those relations which
+
+203
+00:22:06,409 --> 00:22:16,830
+.are participating with that variable essentially.
+
+204
+00:22:16,829 --> 00:22:29,759
+So, that actually leads just in algorithm
+which I will not describing any more details
+
+205
+00:22:29,759 --> 00:22:36,059
+here
+which is called A C 3, which was describe
+
+206
+00:22:36,059 --> 00:22:43,950
+a who is consider by many, to be in some
+sense, the big boss of constrain satisfaction.
+
+207
+00:22:43,950 --> 00:22:48,009
+If you want to meet him, we can go to of
+Ireland, where there is the big constrain
+
+208
+00:22:48,009 --> 00:22:53,669
+center and it probable the place which the
+largest
+
+209
+00:22:53,669 --> 00:22:59,130
+population of the constrain researches essentially.
+So, there are algorithms for some AC
+
+210
+00:22:59,130 --> 00:23:07,130
+3, there is no, there is A C 2 is missing
+lost essentially, but this A C D 3 algorithm
+
+211
+00:23:07,130 --> 00:23:09,278
+,what
+I will just refreeze describe. What we does
+
+212
+00:23:09,278 --> 00:23:12,230
+is that initially it maintain the cube of
+all
+
+213
+00:23:12,230 --> 00:23:18,298
+possible revise called, but then it removes
+elements from the and it makes a call it add
+
+214
+00:23:18,298 --> 00:23:21,079
+to
+the queue only if it beans it necessary that
+
+215
+00:23:21,079 --> 00:23:22,648
+I need to check this relation again.
+
+216
+00:23:22,648 --> 00:23:27,518
+Essentially, which means if I deleted something
+from Y then let I should check this
+
+217
+00:23:27,519 --> 00:23:34,319
+revise X Y call, again make this at least
+time as loop again if I did it something from
+
+218
+00:23:34,319 --> 00:23:36,210
+in
+this case it is only Y. So, if I did something
+
+219
+00:23:36,210 --> 00:23:42,019
+from y in a call from y to x then I must make
+a revise call to Z, Z Y again essentially.
+
+220
+00:23:42,019 --> 00:23:46,019
+So, only if there is a danger of having lost
+some
+
+221
+00:23:46,019 --> 00:23:50,278
+matching value I will make a call to revise
+again. So, I will put that particular revise
+
+222
+00:23:50,278 --> 00:23:54,778
+call
+in the queue which means only where changes
+
+223
+00:23:54,778 --> 00:23:59,659
+are matter are happening this constraint
+will it propagated in that sense that is why
+
+224
+00:23:59,659 --> 00:24:04,179
+we call this constraint propagation.
+
+225
+00:24:04,179 --> 00:24:13,080
+We have to another algorithm which of course
+we will not discuss call A C 4 does not
+
+226
+00:24:13,079 --> 00:24:18,638
+even make generic calls to revise, again it
+says this value has change in this thing.
+
+227
+00:24:18,638 --> 00:24:21,308
+So, if
+this value was a matching value for some this
+
+228
+00:24:21,308 --> 00:24:27,879
+thing some other, so let us say this value
+was a matching value. For this value in X,
+
+229
+00:24:27,880 --> 00:24:32,028
+let me go and check if X still has a matching
+value or not, otherwise I will remove X from
+
+230
+00:24:32,028 --> 00:24:33,909
+that. So, I does not even make this revise
+X
+
+231
+00:24:33,909 --> 00:24:38,789
+Y call, again it is only looks at this particular
+value to see if there is a corresponding
+
+232
+00:24:38,788 --> 00:24:41,200
+matching value left because it could have
+another value.
+
+233
+00:24:41,200 --> 00:24:44,759
+But, in which case, of course we do not have
+to delete it simply, because it does not have
+
+234
+00:24:44,759 --> 00:24:49,398
+any value remaining after this has been deleted,
+this should be deleted. So, that is the still
+
+235
+00:24:49,398 --> 00:24:53,949
+final level detail algorithm A C 4 and, obviously
+the complexity decrease as you go from
+
+236
+00:24:53,950 --> 00:25:01,519
+here to here representation increases, we
+have to represent more things essentially.
+
+237
+00:25:01,519 --> 00:25:09,399
+So, I
+want to talk about one particular constrain
+
+238
+00:25:09,398 --> 00:25:11,808
+satisfaction problem where an algorithm,
+
+239
+00:25:11,808 --> 00:25:15,638
+.which his claim to be some were between A
+C 1 and A C 2 or close to. What would have
+
+240
+00:25:15,638 --> 00:25:17,998
+been A C 2? If it has been describe is use.
+
+241
+00:25:17,999 --> 00:25:18,999
+.
+
+242
+00:25:18,999 --> 00:25:34,548
+This is a famous problem know as Huffman close
+labeling and there is a well know
+
+243
+00:25:34,548 --> 00:25:42,190
+algorithm call Waltz algorithm which is some
+were like is A C 2, one more less, so it is
+
+244
+00:25:42,190 --> 00:25:50,919
+not officially called like that. So, let me
+first describe the problem, the problem is
+
+245
+00:25:50,919 --> 00:25:54,700
+for
+scene labeling and when you say seen labeling
+
+246
+00:25:54,700 --> 00:26:01,330
+we mean that we have a line drawing to
+available to us and you must label it is essentially.
+
+247
+00:26:01,329 --> 00:26:31,058
+So, for example you have a figure like
+this, so we will look at a variation which
+
+248
+00:26:31,058 --> 00:26:37,299
+talks of simple figures though Waltz algorithm
+actually applies to more complex figures the
+
+249
+00:26:37,299 --> 00:26:45,069
+simple figure that we will talk about a
+trihedral which have 3 faces.
+
+250
+00:26:45,069 --> 00:27:00,619
+So, each vertices has 3 faces and faces of
+planer, so any object which is made up of
+
+251
+00:27:00,619 --> 00:27:08,589
+planers, whether surface of planer and where
+every edge every vertices is made up of
+
+252
+00:27:08,589 --> 00:27:15,019
+exactly 3 edges. So, all this vertices qualify,
+so these are 3 edges three edges and 3 faces
+
+253
+00:27:15,019 --> 00:27:22,679
+coming to meet there, these vertices 1, 2
+and 3. Then every vertices made up 3 faces,
+
+254
+00:27:22,679 --> 00:27:28,509
+such object are called trihedral object and
+certain object, for example if I am able to
+
+255
+00:27:28,509 --> 00:27:47,099
+draw
+something like this, if you can imagine this
+
+256
+00:27:47,099 --> 00:28:18,849
+over this let me object like this. You would
+not be trihedral object even if equal to be
+
+257
+00:28:18,849 --> 00:28:23,298
+object, so anyway this is not a, cana of object
+
+258
+00:28:23,298 --> 00:28:26,410
+.we are dealing with and interested in these
+cana of object.
+
+259
+00:28:26,410 --> 00:28:32,080
+Now, it is a labeling problem which means
+you have to label every edge and labels are
+
+260
+00:28:32,079 --> 00:28:38,960
+as
+follows, class labels for stands for convex
+
+261
+00:28:38,960 --> 00:28:48,490
+edge. Remember, we are talking about an edge
+by convex, we mean that the matter or material
+
+262
+00:28:48,490 --> 00:28:55,509
+is inside, in some sense I would label this
+edges plus because it is a convex edge. As
+
+263
+00:28:55,509 --> 00:29:05,460
+when seen from outside, minus edge is a
+concave and I would label this and this edge,
+
+264
+00:29:05,460 --> 00:29:11,940
+for example as minus because it made up of
+a concave, so corner of a room between the
+
+265
+00:29:11,940 --> 00:29:13,400
+walls and roof.
+
+266
+00:29:13,400 --> 00:29:23,620
+For example, these are out concave edges essentially
+and various books used different
+
+267
+00:29:23,619 --> 00:29:33,089
+some people use notion fold and blade. But,
+we will use the notion of arrow, either
+
+268
+00:29:33,089 --> 00:29:38,240
+pointing this way or that way we will distinguish
+between them, but the general idea is
+
+269
+00:29:38,240 --> 00:29:50,929
+matter on right side. What you mean by right
+side? That if we are following the direction
+
+270
+00:29:50,929 --> 00:29:56,440
+of the arrow the matter is on the right side
+and the other side is blank arrows of whatever.
+
+271
+00:29:56,440 --> 00:30:04,139
+So, if I went to look at this figure matter
+is this side, so I must label it this side
+
+272
+00:30:04,138 --> 00:30:11,199
+and like
+this and so on. So, this Huffman close labeling
+
+273
+00:30:11,200 --> 00:30:16,058
+task is to label a line drawing with these
+4
+
+274
+00:30:16,058 --> 00:30:21,369
+kinds of labels, in a more general case there
+are other kinds of labels that we use.
+
+275
+00:30:21,369 --> 00:30:25,879
+For example, we have shadows, then if we have
+cracks in objects or if we have more
+
+276
+00:30:25,880 --> 00:30:32,080
+than 4, 3 edges, 3 phases meeting at vertex.
+So, all kinds of edges in be there and they
+
+277
+00:30:32,079 --> 00:30:36,609
+could be other kinds of labels, but for this
+very simple class of object which is trihedral
+
+278
+00:30:36,609 --> 00:30:42,248
+objects which are made up of planer where
+each vertex made up of 3 faces, there are
+
+279
+00:30:42,249 --> 00:30:45,788
+the
+4 kind of objects we can use to label. So,
+
+280
+00:30:45,788 --> 00:30:53,898
+object in the task is to find this labels
+essentially, now this space for this problem
+
+281
+00:30:53,898 --> 00:31:01,878
+you can see is that each edge can be label
+in
+
+282
+00:31:01,878 --> 00:31:06,168
+4 ways essentially and we in vertices.
+
+283
+00:31:06,169 --> 00:31:13,259
+So, when we look at a line, the line, the
+drawing like this, we can distinguish between
+
+284
+00:31:13,259 --> 00:31:17,200
+4
+kinds of verities, one which we call is the
+
+285
+00:31:17,200 --> 00:31:19,038
+Y vertices which look like this, which is
+made
+
+286
+00:31:19,038 --> 00:31:24,750
+up of 3 vertices which are looking something
+like this. One, we sometime call as a W
+
+287
+00:31:24,750 --> 00:31:29,429
+vertex which look like this, one we call as
+a T vertex which look like this, so this is
+
+288
+00:31:29,429 --> 00:31:32,870
+3
+edges, so this is the vertex, but the view
+
+289
+00:31:32,869 --> 00:31:35,489
+point is like this. So, if go to seat from
+here,
+
+290
+00:31:35,490 --> 00:31:42,249
+exactly it should look like a tea essentially
+and the 4 is an L vertex where you cannot
+
+291
+00:31:42,249 --> 00:31:46,058
+see
+the third edge, which is coming to that.
+
+292
+00:31:46,058 --> 00:31:54,019
+.So, for A, these are the only 4 kinds of
+vertex that we can see and we are assuming
+
+293
+00:31:54,019 --> 00:31:59,730
+here
+that these are generic views and these vertex.
+
+294
+00:31:59,730 --> 00:32:04,402
+You know it is not as if we have 2 objects
+and somehow by placement of 2 object it is
+
+295
+00:32:04,402 --> 00:32:06,669
+looks like it is a straight line, we avoid
+such
+
+296
+00:32:06,669 --> 00:32:10,889
+views essentially where the little bit of
+align change of camera, if you want to call
+
+297
+00:32:10,888 --> 00:32:13,428
+it will
+change the view. So, we assume these are cana
+
+298
+00:32:13,429 --> 00:32:22,460
+of generic views essentially and the task
+is to label 
+
+299
+00:32:22,460 --> 00:32:30,470
+drawing like this, so if you go back to this
+original drawing you want to find
+
+300
+00:32:30,470 --> 00:32:32,298
+this set of label for this.
+
+301
+00:32:32,298 --> 00:32:43,759
+Now, any vertex with 3 edges coming to it
+in principle can be label in 4 into 4 into
+
+302
+00:32:43,759 --> 00:32:54,579
+4, 64
+ways, so, 64 plus 64 plus 64 plus 16. But,
+
+303
+00:32:54,579 --> 00:33:04,000
+because these objects are trihedral, we know
+that they can be ladled in less than 4 ways,
+
+304
+00:33:04,000 --> 00:33:09,359
+so let me take this example this W vertex,
+it
+
+305
+00:33:09,359 --> 00:33:18,829
+can be label as. So, I will label it from
+left to right, it can label, this can be minus,
+
+306
+00:33:18,829 --> 00:33:24,740
+this
+can be plus and this can be plus, as we can
+
+307
+00:33:24,740 --> 00:33:39,118
+see here minus plus and plus that is one
+possibilities or it can be 
+
+308
+00:33:39,118 --> 00:33:52,849
+matter on. So, let me just label it, it can
+be like this as you can
+
+309
+00:33:52,849 --> 00:34:06,019
+see here this is plus this is like this 
+or it can be plus minus.
+
+310
+00:34:06,019 --> 00:34:22,119
+We have an example, we have one here this
+is plus this is minus and this is minus, now
+
+311
+00:34:22,119 --> 00:34:27,989
+it
+turns out that for this W kind of vertex,
+
+312
+00:34:27,989 --> 00:34:31,149
+these are the only 3 physically possible set
+of
+
+313
+00:34:31,150 --> 00:34:38,220
+labels. So, from 64, we have broaden it down
+to 3, can we, this information is the
+
+314
+00:34:38,219 --> 00:34:44,609
+question we ask in this labeling problem and
+I will leave this is an exercise. This is
+
+315
+00:34:44,610 --> 00:34:49,039
+broaden down 6, this is broaden down 6 and
+this is also broaden down 6, there are only
+
+316
+00:34:49,039 --> 00:34:52,739
+6
+base of labeling base T joints and so on.
+
+317
+00:34:52,739 --> 00:34:56,459
+So, this T can be, for example part of a table,
+so
+
+318
+00:34:56,460 --> 00:35:00,869
+you have a table and this is a leg or something
+like that.
+
+319
+00:35:00,869 --> 00:35:04,739
+You could see a T joint here in which case
+you can imagine this will be like this, this
+
+320
+00:35:04,739 --> 00:35:11,009
+will
+be like this and this will be like this. This
+
+321
+00:35:11,010 --> 00:35:16,350
+is one of the 6 base and there are 6 different
+ways you can label it T joint and it should
+
+322
+00:35:16,349 --> 00:35:19,119
+be a interesting exercise for you to try and
+find
+
+323
+00:35:19,119 --> 00:35:37,279
+this out. So, how can be exploit this information?
+The one simple piece, the one simple
+
+324
+00:35:37,280 --> 00:35:43,140
+pack we should exploit is at one edge can
+be labeled only in one way at both the end.
+
+325
+00:35:43,139 --> 00:35:45,809
+So,
+every edge has 2 ends it participates in every
+
+326
+00:35:45,809 --> 00:35:50,559
+edge participates in 2 vertices, so it
+participate it must be label does a same in
+
+327
+00:35:50,559 --> 00:35:51,929
+both the ways.
+
+328
+00:35:51,929 --> 00:36:06,239
+So, for example, once I have label this edges
+plus it means, it plus at this end it is also
+
+329
+00:36:06,239 --> 00:36:10,939
+.plus at this end, obviously it is same edge
+essentially it is a simple trihedral object,
+
+330
+00:36:10,940 --> 00:36:13,099
+we
+are talking about. Essentially, once I know
+
+331
+00:36:13,099 --> 00:36:16,069
+that this particular edge is plus here, this
+part
+
+332
+00:36:16,070 --> 00:36:22,780
+is plus I have constrains on this part, so
+I can look up a table for this out of the
+
+333
+00:36:22,780 --> 00:36:25,740
+6 possible
+relations which of them has a plus in the
+
+334
+00:36:25,739 --> 00:36:28,399
+middle. What are the 2 other things on the
+side?
+
+335
+00:36:28,400 --> 00:36:37,160
+So, I can prune the domain of that particular
+those 2 edges exactly like we prune the
+
+336
+00:36:37,159 --> 00:36:44,849
+domains for arithmetic puzzles when we got
+some valuable prune values for the domain
+
+337
+00:36:44,849 --> 00:36:46,049
+essentially.
+
+338
+00:36:46,050 --> 00:36:51,870
+So, what Waltz algorithm essentially does
+is that it does a, it first does a scan of
+
+339
+00:36:51,869 --> 00:36:57,139
+this
+entire set of 9, drawing it makes an assumption
+
+340
+00:36:57,139 --> 00:37:05,119
+that this is a solid objects which means
+that was edge is are the boundaries which
+
+341
+00:37:05,119 --> 00:37:07,759
+means matter lies inside them. So, it can
+start
+
+342
+00:37:07,760 --> 00:37:17,090
+up by labeling this then labeling this then
+labeling this then labeling this and so on
+
+343
+00:37:17,090 --> 00:37:21,630
+and
+then it does propagation. Essentially, that
+
+344
+00:37:21,630 --> 00:37:25,630
+once we have this outer label they will
+constrain the inner label, for example if
+
+345
+00:37:25,630 --> 00:37:31,710
+we look at this place here it allow only a
+positive
+
+346
+00:37:31,710 --> 00:37:39,139
+label to be given here because in the W joint
+we have only these three are possible.
+
+347
+00:37:39,139 --> 00:37:47,029
+So, we are, fix this variable we can propagate
+to plus here and this is plus you will see
+
+348
+00:37:47,030 --> 00:37:53,540
+that this plus, plus, plus is the one of the
+queue combination that is allowed essentially.
+
+349
+00:37:53,539 --> 00:37:59,550
+So, this is the idea of propagation, essentially
+once you know a value at some place you
+
+350
+00:37:59,550 --> 00:38:05,900
+propagated to the next one and prune the domain
+for the next one. Exactly, like what we
+
+351
+00:38:05,900 --> 00:38:12,630
+talked about here revise the domain of the
+particular variable and these up to waltz
+
+352
+00:38:12,630 --> 00:38:25,010
+algorithm does essentially. So, let me give
+another example where whole same
+
+353
+00:38:25,010 --> 00:38:33,420
+satisfaction has been use as a mechanism for
+doing something.
+
+354
+00:38:33,420 --> 00:38:34,420
+..
+
+355
+00:38:34,420 --> 00:38:54,430
+This example comes from, what we call is consistency
+base diagnosis, so let me use one
+
+356
+00:38:54,429 --> 00:38:59,469
+standard example which we use in this thing,
+let say we have a small device made up of
+
+357
+00:38:59,469 --> 00:39:15,329
+3 multiplier. This is M 1, this is M 2, this
+is M 3, it takes to inputs, let us say the
+
+358
+00:39:15,329 --> 00:39:25,119
+inputs
+are fix, so let say I 1 I 2, I 3 I 3 I 4,
+
+359
+00:39:25,119 --> 00:39:32,109
+I 5 I 6, it produces, each produces one output.
+Let us
+
+360
+00:39:32,110 --> 00:39:46,019
+say this output is to an adder, and 
+this output is produced, spread to another
+
+361
+00:39:46,019 --> 00:39:52,539
+adder and we
+have 2 values, here is a small device which
+
+362
+00:39:52,539 --> 00:39:54,289
+does something from add an addition.
+
+363
+00:39:54,289 --> 00:40:04,449
+So, multiplication combination consistency
+base diagnosis is kind of also called as model
+
+364
+00:40:04,449 --> 00:40:11,000
+base diagnosis. So, model base consistency
+base diagnosis got it says is that you
+
+365
+00:40:11,000 --> 00:40:16,380
+construct a model of the system and a model
+that we build is a constrain model. How do
+
+366
+00:40:16,380 --> 00:40:29,880
+we do that? We say that multiplier is defined
+as follows that if it is, then I will use
+
+367
+00:40:29,880 --> 00:40:37,289
+this
+for implications sine output of M equal to
+
+368
+00:40:37,289 --> 00:40:52,590
+input 1 into 2. So, I am defining a multiplier
+which works I, saying that if the multiplies
+
+369
+00:40:52,590 --> 00:40:59,200
+is then this relation must old which is the
+constrain between through variables, 3 variables
+
+370
+00:40:59,199 --> 00:41:04,559
+of that M is equal 2 I 1 into I 2, I N, so
+on.
+
+371
+00:41:04,559 --> 00:41:13,559
+For the others, we can define then we can
+talk about the connectivity, we can say that
+
+372
+00:41:13,559 --> 00:41:25,489
+the
+output of M 1 is equal to input one of a,
+
+373
+00:41:25,489 --> 00:41:30,449
+one in some notation we can say this. So,
+we are
+
+374
+00:41:30,449 --> 00:41:36,329
+saying essentially that this output is connected
+to these input and that is the express by
+
+375
+00:41:36,329 --> 00:41:42,329
+.this con this also constraint between 2 variables
+that this value must be the same as this
+
+376
+00:41:42,329 --> 00:41:51,349
+value that is all we are saying. So, by we,
+so we describe these 3 multipliers plus 2
+
+377
+00:41:51,349 --> 00:41:56,250
+addressing constraint like this, this is the
+logic constraint is the logical statement,
+
+378
+00:41:56,250 --> 00:41:58,829
+this
+implies this essentially we can converted
+
+379
+00:41:58,829 --> 00:42:06,779
+in to a constraint which this being a statement
+some sort.
+
+380
+00:42:06,780 --> 00:42:14,300
+So, we describe the whole device by saying
+this, this part tells you what the connectivity
+
+381
+00:42:14,300 --> 00:42:20,030
+is, this part tells you what the behavior
+of individual component is, and between these
+
+382
+00:42:20,030 --> 00:42:22,180
+2,
+we have describe the whole device essentially.
+
+383
+00:42:22,179 --> 00:42:34,529
+So, now what supposing we get this input
+2 input, 3, here what do we expect? We can
+
+384
+00:42:34,530 --> 00:42:37,290
+predict that what this device will produced
+is
+
+385
+00:42:37,289 --> 00:42:44,029
+2 into 3 is 6, here 2 into 3 is 6, here 2
+into 3 is 6, here and then 6 plus 6, it should
+
+386
+00:42:44,030 --> 00:42:50,220
+give us
+12 and should give a 12, that is the expected
+
+387
+00:42:50,219 --> 00:42:56,659
+output essentially.
+
+388
+00:42:56,659 --> 00:43:09,399
+But, what happens if O A 2 is equal to 12,
+as expected this is the real value real constrain
+
+389
+00:43:09,400 --> 00:43:15,329
+or observation some people would call it.
+But, anyway in the C S P notation, it is a
+
+390
+00:43:15,329 --> 00:43:27,269
+constrain and O A 1 equal to 10, now supposing
+I give you this problem I H, what is it?
+
+391
+00:43:27,269 --> 00:43:41,391
+It is a constrain satisfaction problem where
+these is the variable, in variable it is a
+
+392
+00:43:41,391 --> 00:43:45,039
+either
+true or it is falls and this whole statement
+
+393
+00:43:45,039 --> 00:43:47,650
+is also in variable it is either true or it
+is falls
+
+394
+00:43:47,650 --> 00:43:51,710
+which can be from the mathematics. So, let
+us not get in to the details here, but there
+
+395
+00:43:51,710 --> 00:43:56,139
+is
+basically a set of constrains which as description
+
+396
+00:43:56,139 --> 00:44:01,539
+of the aiders predicts, what the output
+should be?
+
+397
+00:44:01,539 --> 00:44:07,989
+But, the system given to us is at the inputs
+are these 2, 3, 2, 3, 2, 3, this is a multiplier,
+
+398
+00:44:07,989 --> 00:44:11,709
+this is a multiplier, this is a multiplier,
+this is an adder, this is an adder, the outputs
+
+399
+00:44:11,710 --> 00:44:16,019
+that
+you seeing is output here is 10, the output
+
+400
+00:44:16,019 --> 00:44:22,530
+here is 12. So, what is happening? So, this
+approach to diagnosis the task have diagnosis
+
+401
+00:44:22,530 --> 00:44:30,900
+here is to identify of faulty component and,
+so we assume that connections are never faulty.
+
+402
+00:44:30,900 --> 00:44:35,329
+So, this is a simplified, we have looking
+at things that one of these either the multiplier
+
+403
+00:44:35,329 --> 00:44:41,029
+or the adder has become faulty. So, how
+do we do this?
+
+404
+00:44:41,030 --> 00:44:54,681
+So, that is has a description level, we say
+that this is a C S P, each of these, the 3
+
+405
+00:44:54,681 --> 00:44:58,590
+inputs
+are variables, this is constrain between those
+
+406
+00:44:58,590 --> 00:45:01,519
+variables 3 inputs and a this multiplier.
+So,
+
+407
+00:45:01,519 --> 00:45:07,730
+M 1, I 1, I 2 and O 1, 4 variables, this is
+a constrain between 4 variable, so if M 1,
+
+408
+00:45:07,730 --> 00:45:08,730
+if the
+
+409
+00:45:08,730 --> 00:45:13,079
+.multiplier is the then the output of multiplier
+should be equal to the product of the 2
+
+410
+00:45:13,079 --> 00:45:18,779
+inputs for the adder, then the multiplier
+of the multiplier. So, I have these constrains
+
+411
+00:45:18,780 --> 00:45:23,019
+I
+have the constrains that I 1 equal to 2, I
+
+412
+00:45:23,019 --> 00:45:29,469
+2 equal to and so on and I simply say give
+me a
+
+413
+00:45:29,469 --> 00:45:33,239
+solution for this C S P.
+
+414
+00:45:33,239 --> 00:45:37,729
+What are the variables which are missing the
+variables, which are missing are that? So,
+
+415
+00:45:37,730 --> 00:45:39,510
+I
+know, I know the input variables, I know the
+
+416
+00:45:39,510 --> 00:45:46,480
+output variables, I do not know the
+intermediate variables and I do not know whether
+
+417
+00:45:46,480 --> 00:45:59,380
+all the devices are working or not. So,
+without going into to the details of how this
+
+418
+00:45:59,380 --> 00:46:04,720
+C S P is search and it is quiet a domain in
+itself and there is a whole community which
+
+419
+00:46:04,719 --> 00:46:12,309
+does model base diagnosis, the idea is to
+find the solution to this C S P.
+
+420
+00:46:12,309 --> 00:46:15,949
+What will be the solution look like? The solution
+will basically say some of these things
+
+421
+00:46:15,949 --> 00:46:25,189
+of fault essentially for the C S P, P to be
+satisfiable some device. Some component must
+
+422
+00:46:25,190 --> 00:46:31,990
+be faulty, some component, some statement
+which says this component is must be faults
+
+423
+00:46:31,989 --> 00:46:37,959
+and that will be discovered in the solution
+which the solution remember must contain this
+
+424
+00:46:37,960 --> 00:46:53,280
+at this output is 10. So, which means I making
+a statement like 10 is equal to 6 plus 6,
+
+425
+00:46:53,280 --> 00:46:59,960
+that is what the adder is saying, so obliviously
+this is the faults statement.
+
+426
+00:46:59,960 --> 00:47:06,320
+Now, whether the fault is with the adder or
+whether the fault which is the 2 inputs,
+
+427
+00:47:06,320 --> 00:47:11,309
+because nobody, Y is told me that the input
+is 6, the input is hidden from me, it could
+
+428
+00:47:11,309 --> 00:47:14,969
+be
+something else essentially. So, is this adder
+
+429
+00:47:14,969 --> 00:47:19,289
+faulty? Is this multiplier for faulty? May
+be
+
+430
+00:47:19,289 --> 00:47:24,300
+these two multiplier is a faulty, which possible
+that these two a faulty, in such a way or
+
+431
+00:47:24,300 --> 00:47:28,490
+not that these two are faulty in such a way
+that this is doing something and this is
+
+432
+00:47:28,489 --> 00:47:34,889
+undoing that and producing 10. What this is
+doing? Wrong is being reflected here which
+
+433
+00:47:34,889 --> 00:47:40,789
+possible, so diagnosis of course there is
+no clear cut answer to this question, has
+
+434
+00:47:40,789 --> 00:47:43,269
+to why
+are we seeing this 10 here.
+
+435
+00:47:43,269 --> 00:47:49,360
+But, the algorithms are given towards finding
+minimal diagnosis which kind of is a laser
+
+436
+00:47:49,360 --> 00:47:54,800
+that you must heard out the simplest solution
+are the best which says that all though
+
+437
+00:47:54,800 --> 00:48:00,730
+diagnosis in which only component as faulty
+is other preferred diagnosis. Then we can
+
+438
+00:48:00,730 --> 00:48:06,199
+see it must be A 1 or M 1 and the algorithm
+actually find that essentially that either
+
+439
+00:48:06,199 --> 00:48:11,629
+A 1
+is not or M 1 is not and that is why we are
+
+440
+00:48:11,630 --> 00:48:15,829
+seeing 10 there. So, what I wanted to show
+
+441
+00:48:15,829 --> 00:48:22,659
+.here was that this is the another example
+where the problem can be as a C S P, N solved
+
+442
+00:48:22,659 --> 00:48:26,769
+has a C S P essentially, and this is problem
+of diagnosis essentially.
+
+443
+00:48:26,769 --> 00:48:33,900
+So, I will stop with constrain satisfaction
+here because we do not have too much time
+
+444
+00:48:33,900 --> 00:48:36,300
+left
+in the course and in the remaining part of
+
+445
+00:48:36,300 --> 00:48:42,789
+course I want to look at knowledge
+representations which is really a core of
+
+446
+00:48:42,789 --> 00:48:47,960
+A I. We should not finish and course without
+acknowledge in presentation. So, next will
+
+447
+00:48:47,960 --> 00:48:52,280
+lecture will focus on logic as a language
+for
+
+448
+00:48:52,280 --> 00:48:55,420
+representation and listening essentially.
+
+449
+00:48:55,420 --> 00:48:56,909
+Thank you.
+
+450
+00:48:56,909 --> 00:49:06,909
+.
+

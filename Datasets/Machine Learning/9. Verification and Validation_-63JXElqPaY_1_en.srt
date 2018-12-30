@@ -1,0 +1,9855 @@
+﻿1
+00:00:00,000 --> 00:00:00,120
+
+
+2
+00:00:00,120 --> 00:00:02,459
+The following content is
+provided under a Creative
+
+3
+00:00:02,459 --> 00:00:03,879
+Commons license.
+
+4
+00:00:03,879 --> 00:00:06,089
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,089 --> 00:00:10,179
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,179 --> 00:00:12,719
+To make a donation or to
+view additional materials
+
+7
+00:00:12,720 --> 00:00:16,650
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:16,649 --> 00:00:17,899
+at ocw.mit.edu.
+
+9
+00:00:17,899 --> 00:00:26,460
+
+
+10
+00:00:26,460 --> 00:00:29,760
+OLIVIER DE WECK: OK so
+let's start on the material.
+
+11
+00:00:29,760 --> 00:00:33,630
+We're following the
+V-model and the empty boxes
+
+12
+00:00:33,630 --> 00:00:36,340
+are getting fewer and
+fewer every week here.
+
+13
+00:00:36,340 --> 00:00:40,380
+So we're on the
+right side moving up
+
+14
+00:00:40,380 --> 00:00:42,900
+toward lifecycle
+management and operations.
+
+15
+00:00:42,899 --> 00:00:47,070
+And today's topic is via
+V&V, verification validation.
+
+16
+00:00:47,070 --> 00:00:49,460
+And I also want
+to discuss the FRR
+
+17
+00:00:49,460 --> 00:00:54,120
+as one of the key milestones,
+and that's the flight readiness
+
+18
+00:00:54,119 --> 00:00:54,689
+review.
+
+19
+00:00:54,689 --> 00:00:56,729
+If you're not building
+something that flies,
+
+20
+00:00:56,729 --> 00:01:00,209
+this is your launch to market,
+right launch to market review.
+
+21
+00:01:00,210 --> 00:01:04,299
+Are you ready to launch your
+project or product to market?
+
+22
+00:01:04,299 --> 00:01:07,359
+The outline is-- we have
+quite a few things to cover.
+
+23
+00:01:07,359 --> 00:01:10,929
+So first of all, I want
+to drill into verification
+
+24
+00:01:10,930 --> 00:01:11,920
+and validation.
+
+25
+00:01:11,920 --> 00:01:13,239
+What's the difference?
+
+26
+00:01:13,239 --> 00:01:14,049
+What is their role?
+
+27
+00:01:14,049 --> 00:01:16,340
+What's their position
+in the lifecycle?
+
+28
+00:01:16,340 --> 00:01:20,409
+Then we'll spend quite a bit of
+time on the issue of testing.
+
+29
+00:01:20,409 --> 00:01:22,149
+What kind of testing is done?
+
+30
+00:01:22,150 --> 00:01:23,560
+Why is it done?
+
+31
+00:01:23,560 --> 00:01:26,170
+We'll talk about aircraft
+testing, flight testing,
+
+32
+00:01:26,170 --> 00:01:29,680
+we'll talk about spacecraft
+testing, but also some caveats.
+
+33
+00:01:29,680 --> 00:01:33,130
+Testing is not always the--
+
+34
+00:01:33,129 --> 00:01:36,489
+it's not free of challenges
+and difficulties.
+
+35
+00:01:36,489 --> 00:01:39,519
+Then I want to talk about
+technical risk management,
+
+36
+00:01:39,519 --> 00:01:43,219
+which is often covered in
+classes on project management,
+
+37
+00:01:43,219 --> 00:01:45,760
+but I think it's essential
+here as well as a system
+
+38
+00:01:45,760 --> 00:01:49,060
+engineer to have a good grasp
+on technical risk management.
+
+39
+00:01:49,060 --> 00:01:52,900
+So I'll cover the risk
+matrix, the Iron Triangle,
+
+40
+00:01:52,900 --> 00:01:55,240
+cost, schedule, scope,
+and risk, and then
+
+41
+00:01:55,239 --> 00:01:59,289
+I added a small section
+on system safety, which is
+
+42
+00:01:59,290 --> 00:02:01,100
+a very important topic as well.
+
+43
+00:02:01,099 --> 00:02:04,329
+And we'll finish up with
+discussing the FRR, the flight
+
+44
+00:02:04,329 --> 00:02:06,659
+readiness review.
+
+45
+00:02:06,659 --> 00:02:08,689
+So the readings
+related to this lecture
+
+46
+00:02:08,689 --> 00:02:13,189
+are sections 5.3 and 5.4
+in the handbook, the System
+
+47
+00:02:13,189 --> 00:02:14,870
+Engineering Handbook,
+and then there's
+
+48
+00:02:14,870 --> 00:02:17,990
+a couple of appendices
+there, Appendix E And I
+
+49
+00:02:17,990 --> 00:02:19,730
+that are very, very helpful.
+
+50
+00:02:19,729 --> 00:02:22,399
+And at least one of these
+I'll mention in the lecture.
+
+51
+00:02:22,400 --> 00:02:27,349
+Plus one of the papers, and this
+is a paper about a decade old--
+
+52
+00:02:27,349 --> 00:02:30,259
+and I know a lot of work has
+been done on this since then,
+
+53
+00:02:30,259 --> 00:02:34,849
+but this is a paper
+by Professor Leveson.
+
+54
+00:02:34,849 --> 00:02:36,680
+Nancy Leveson was
+a colleague of mine
+
+55
+00:02:36,680 --> 00:02:41,189
+here at MIT who's really an
+expert in systems safety.
+
+56
+00:02:41,189 --> 00:02:45,550
+So the system safety
+model that she's developed
+
+57
+00:02:45,550 --> 00:02:49,680
+is the subject of that paper.
+
+58
+00:02:49,680 --> 00:02:53,990
+OK, so let's talk about V&V,
+verification and validation,
+
+59
+00:02:53,990 --> 00:02:55,189
+and how they fit together.
+
+60
+00:02:55,189 --> 00:02:57,650
+You've seen this diagram
+before, but I just
+
+61
+00:02:57,650 --> 00:03:01,170
+want to talk through it
+in some detail again.
+
+62
+00:03:01,169 --> 00:03:03,469
+So the idea is you
+start your project,
+
+63
+00:03:03,469 --> 00:03:05,509
+you're undertaking,
+in the upper left.
+
+64
+00:03:05,509 --> 00:03:07,340
+You do your
+stakeholder analysis.
+
+65
+00:03:07,340 --> 00:03:10,700
+Who are the stakeholders,
+the customers, beneficiaries,
+
+66
+00:03:10,699 --> 00:03:16,369
+the regulators, the suppliers,
+the partners on the project?
+
+67
+00:03:16,370 --> 00:03:18,830
+So you really have to do a
+good job doing your stakeholder
+
+68
+00:03:18,830 --> 00:03:23,030
+analysis then in order to
+write your requirements.
+
+69
+00:03:23,030 --> 00:03:25,879
+And I do have to say I've
+been very pleased, especially
+
+70
+00:03:25,879 --> 00:03:28,039
+with your assignment A-2.
+
+71
+00:03:28,039 --> 00:03:31,519
+You really dug into those 47
+requirements for canned set.
+
+72
+00:03:31,520 --> 00:03:35,900
+You grouped them, you scrubbed
+them, you did a great job.
+
+73
+00:03:35,900 --> 00:03:38,599
+And the idea is that for
+each of these requirements,
+
+74
+00:03:38,599 --> 00:03:40,199
+you also have target values.
+
+75
+00:03:40,199 --> 00:03:42,709
+There are certain
+thresholds or target values
+
+76
+00:03:42,710 --> 00:03:44,659
+that have to be achieved.
+
+77
+00:03:44,659 --> 00:03:47,359
+And then you actually
+do the development.
+
+78
+00:03:47,360 --> 00:03:50,150
+You do the conceptual
+design, the detailed design,
+
+79
+00:03:50,150 --> 00:03:52,550
+and that's written here
+as functional deployment.
+
+80
+00:03:52,550 --> 00:03:55,490
+In other words, especially
+for the functional
+
+81
+00:03:55,490 --> 00:03:57,140
+and the performance
+requirements,
+
+82
+00:03:57,139 --> 00:03:59,279
+how will you actually
+implement those,
+
+83
+00:03:59,280 --> 00:04:02,090
+embody those, in technology,
+hardware, software,
+
+84
+00:04:02,090 --> 00:04:03,300
+and so forth.
+
+85
+00:04:03,300 --> 00:04:06,380
+So that's your intended
+function, your concept,
+
+86
+00:04:06,379 --> 00:04:09,769
+and then you're implemented
+design solution.
+
+87
+00:04:09,770 --> 00:04:13,700
+Now the question
+is, do you actually
+
+88
+00:04:13,699 --> 00:04:16,969
+satisfy A, the
+requirements, and do you
+
+89
+00:04:16,970 --> 00:04:18,980
+satisfy your stakeholders?
+
+90
+00:04:18,980 --> 00:04:21,500
+And it is possible that you
+satisfy the requirements,
+
+91
+00:04:21,500 --> 00:04:23,180
+but not the stakeholders.
+
+92
+00:04:23,180 --> 00:04:24,949
+So the way to
+think about this is
+
+93
+00:04:24,949 --> 00:04:26,810
+we're going to close the loop.
+
+94
+00:04:26,810 --> 00:04:28,689
+In fact, we're going
+to close two loops.
+
+95
+00:04:28,689 --> 00:04:32,810
+An inner loop-- and
+I put testing here.
+
+96
+00:04:32,810 --> 00:04:34,579
+Testing is really
+one of the ways
+
+97
+00:04:34,579 --> 00:04:37,579
+to verify whether you
+meet requirements.
+
+98
+00:04:37,579 --> 00:04:39,979
+There's other ways too,
+but testing is often
+
+99
+00:04:39,980 --> 00:04:41,600
+the most important.
+
+100
+00:04:41,600 --> 00:04:43,650
+So we close this inner loop.
+
+101
+00:04:43,649 --> 00:04:45,949
+So what we ask is--
+
+102
+00:04:45,949 --> 00:04:48,810
+we test our
+implemented solution,
+
+103
+00:04:48,810 --> 00:04:53,060
+our implemented design, and ask
+the question, did we deliver?
+
+104
+00:04:53,060 --> 00:04:55,699
+Did we actually satisfy
+the requirements
+
+105
+00:04:55,699 --> 00:04:57,709
+as they were written?
+
+106
+00:04:57,709 --> 00:05:00,979
+Do we satisfy the requirements
+as they were written?
+
+107
+00:05:00,980 --> 00:05:02,540
+And are these attainable?
+
+108
+00:05:02,540 --> 00:05:04,490
+Were these requirements
+attainable?
+
+109
+00:05:04,490 --> 00:05:07,819
+So this loop here, this inner
+loop, is the verification loop.
+
+110
+00:05:07,819 --> 00:05:12,500
+You verify whether you design
+as implemented satisfies
+
+111
+00:05:12,500 --> 00:05:14,360
+the requirements as written.
+
+112
+00:05:14,360 --> 00:05:16,759
+That's what verification is.
+
+113
+00:05:16,759 --> 00:05:18,469
+And then there's
+an outer loop where
+
+114
+00:05:18,470 --> 00:05:21,710
+you take your implemented
+design solution,
+
+115
+00:05:21,709 --> 00:05:26,029
+and you essentially
+bring it all the way back
+
+116
+00:05:26,029 --> 00:05:27,649
+to the stakeholders.
+
+117
+00:05:27,649 --> 00:05:30,529
+And usually that also
+means you're employing it
+
+118
+00:05:30,529 --> 00:05:33,769
+in a realistic environment,
+like in the environment
+
+119
+00:05:33,769 --> 00:05:36,469
+that the stakeholders will
+actually use the system,
+
+120
+00:05:36,470 --> 00:05:40,130
+not in a pristine
+lab environment.
+
+121
+00:05:40,129 --> 00:05:45,199
+And you have the stakeholders
+try out your system
+
+122
+00:05:45,199 --> 00:05:47,599
+and see whether they're
+satisfied, whether this
+
+123
+00:05:47,600 --> 00:05:49,550
+meets their original intent.
+
+124
+00:05:49,550 --> 00:05:52,189
+You remember the CONOPS,
+concept of operations?
+
+125
+00:05:52,189 --> 00:05:54,110
+Can you actually do
+the CONOPS the way
+
+126
+00:05:54,110 --> 00:05:57,230
+you had envisioned it in
+a realistic environment?
+
+127
+00:05:57,230 --> 00:06:00,259
+And that's what we
+call validation.
+
+128
+00:06:00,259 --> 00:06:01,849
+And that's the outer loop.
+
+129
+00:06:01,850 --> 00:06:03,420
+You see the difference?
+
+130
+00:06:03,420 --> 00:06:06,270
+So a lot of people who don't
+know system engineering who
+
+131
+00:06:06,269 --> 00:06:08,839
+have never been exposed to this
+when they hear verification
+
+132
+00:06:08,839 --> 00:06:12,949
+and validation, they think it's
+basically two different words
+
+133
+00:06:12,949 --> 00:06:14,339
+for the same thing.
+
+134
+00:06:14,339 --> 00:06:18,139
+It is it is different,
+it's not the same thing.
+
+135
+00:06:18,139 --> 00:06:21,469
+And then if you successfully
+verify and validate,
+
+136
+00:06:21,470 --> 00:06:25,920
+you end the SE process and
+you deliver, which is good.
+
+137
+00:06:25,920 --> 00:06:28,550
+So this is something
+I pulled out
+
+138
+00:06:28,550 --> 00:06:30,560
+from the handbook,
+which is the differences
+
+139
+00:06:30,560 --> 00:06:32,509
+between verification
+and validation.
+
+140
+00:06:32,509 --> 00:06:34,430
+And I'm just
+summarizing this here.
+
+141
+00:06:34,430 --> 00:06:39,560
+So one way to ask is, was the
+end product realized right?
+
+142
+00:06:39,560 --> 00:06:42,290
+Meaning, did you
+do the right thing?
+
+143
+00:06:42,290 --> 00:06:44,189
+Or did you implement
+it correctly?
+
+144
+00:06:44,189 --> 00:06:47,579
+So verification is often
+done during development,
+
+145
+00:06:47,579 --> 00:06:50,719
+so you verify
+components, subsystems,
+
+146
+00:06:50,720 --> 00:06:52,760
+you check if the
+requirements are met.
+
+147
+00:06:52,759 --> 00:06:56,050
+Typically, verification is done
+in a laboratory environment,
+
+148
+00:06:56,050 --> 00:07:00,710
+or on a test stand, or
+some environment that
+
+149
+00:07:00,709 --> 00:07:05,180
+allows you to very carefully
+control the test conditions.
+
+150
+00:07:05,180 --> 00:07:08,389
+And verification tends to
+be component and subsystem
+
+151
+00:07:08,389 --> 00:07:09,719
+centric.
+
+152
+00:07:09,720 --> 00:07:12,560
+OK, and then validation
+is the question
+
+153
+00:07:12,560 --> 00:07:15,470
+was the right end
+product realized?
+
+154
+00:07:15,470 --> 00:07:17,900
+Did you actually
+build the right thing?
+
+155
+00:07:17,899 --> 00:07:20,129
+Did you deploy the
+right solution?
+
+156
+00:07:20,129 --> 00:07:21,920
+This is often
+done-- so validation
+
+157
+00:07:21,920 --> 00:07:26,240
+focuses more on during or
+after system integration.
+
+158
+00:07:26,240 --> 00:07:30,050
+It's typically done in a real or
+simulated mission environment.
+
+159
+00:07:30,050 --> 00:07:32,810
+You check if your
+stakeholder intent is met.
+
+160
+00:07:32,810 --> 00:07:35,480
+And it's often done
+using the full-up system.
+
+161
+00:07:35,480 --> 00:07:40,730
+It's difficult to do validation
+on a subsystem basis alone.
+
+162
+00:07:40,730 --> 00:07:42,950
+Typically, validation
+implies you've
+
+163
+00:07:42,949 --> 00:07:46,519
+got to use the whole
+system to do it.
+
+164
+00:07:46,519 --> 00:07:50,240
+Or, you basically
+use dummy subsystems.
+
+165
+00:07:50,240 --> 00:07:52,790
+You basically replace
+the actual subsystems
+
+166
+00:07:52,790 --> 00:07:54,800
+you're going to
+have with something
+
+167
+00:07:54,800 --> 00:07:58,129
+temporary so that you can
+go back to the stakeholder
+
+168
+00:07:58,129 --> 00:08:01,550
+and give them as close
+to the real experience
+
+169
+00:08:01,550 --> 00:08:03,720
+as they'll have with
+the actual system.
+
+170
+00:08:03,720 --> 00:08:07,880
+OK, so that's essentially
+the distinction here.
+
+171
+00:08:07,879 --> 00:08:10,879
+So I want to do a quick
+concept question on this
+
+172
+00:08:10,879 --> 00:08:14,540
+to see whether this point,
+this distinction, came across.
+
+173
+00:08:14,540 --> 00:08:20,370
+So here's a link, SE9VV,
+these are all caps.
+
+174
+00:08:20,370 --> 00:08:23,750
+And what I'm listing here
+is different test activities
+
+175
+00:08:23,750 --> 00:08:26,420
+or different type of activities.
+
+176
+00:08:26,420 --> 00:08:29,540
+And I'd like you to
+check the box here
+
+177
+00:08:29,540 --> 00:08:31,819
+whether you think
+this is verification,
+
+178
+00:08:31,819 --> 00:08:35,740
+whether this is validation,
+or you're not sure.
+
+179
+00:08:35,740 --> 00:08:40,019
+All right, testing and handling
+of a new car in snow conditions
+
+180
+00:08:40,019 --> 00:08:40,710
+in Alaska.
+
+181
+00:08:40,710 --> 00:08:45,450
+90% of you said
+this is validation,
+
+182
+00:08:45,450 --> 00:08:48,300
+and I would agree with this.
+
+183
+00:08:48,299 --> 00:08:52,439
+So many car companies, I
+think all car companies,
+
+184
+00:08:52,440 --> 00:08:56,160
+once the vehicle has been
+finished essentially,
+
+185
+00:08:56,159 --> 00:09:00,629
+the design, it doesn't
+go to market right away.
+
+186
+00:09:00,629 --> 00:09:02,519
+There's a very
+extensive-- usually
+
+187
+00:09:02,519 --> 00:09:06,090
+it's at least six months of
+field testing of a new vehicle.
+
+188
+00:09:06,090 --> 00:09:10,769
+And you go to the desert
+where it's very sandy and hot,
+
+189
+00:09:10,769 --> 00:09:14,129
+test your air conditioning
+systems right at the limit.
+
+190
+00:09:14,129 --> 00:09:16,500
+And then you go to
+really cold climates.
+
+191
+00:09:16,500 --> 00:09:21,000
+In Europe they go up
+to Sweden and Norway.
+
+192
+00:09:21,000 --> 00:09:24,120
+And here we tend to go up
+to Michigan, Minnesota.
+
+193
+00:09:24,120 --> 00:09:26,250
+And so the idea
+is that you really
+
+194
+00:09:26,250 --> 00:09:29,399
+utilize the vehicle in
+a extreme environment,
+
+195
+00:09:29,399 --> 00:09:32,250
+but that's realistic
+of actual operation.
+
+196
+00:09:32,250 --> 00:09:33,899
+So I agree with this.
+
+197
+00:09:33,899 --> 00:09:38,069
+Frontal crash test in the lab.
+
+198
+00:09:38,070 --> 00:09:40,410
+Most of you said
+it's verification,
+
+199
+00:09:40,409 --> 00:09:41,559
+and I would agree with.
+
+200
+00:09:41,559 --> 00:09:44,129
+So those very
+standardized crash tests
+
+201
+00:09:44,129 --> 00:09:46,960
+that you've seen in
+some of the commercials.
+
+202
+00:09:46,960 --> 00:09:50,080
+The vehicle is
+prepared, instrumented,
+
+203
+00:09:50,080 --> 00:09:52,230
+you have the crash test dummies.
+
+204
+00:09:52,230 --> 00:09:54,180
+And then you have,
+typically, there's
+
+205
+00:09:54,179 --> 00:09:56,129
+at least three different
+kinds of crash tests.
+
+206
+00:09:56,129 --> 00:09:58,740
+There's frontal,
+there's side impact--
+
+207
+00:09:58,740 --> 00:10:01,909
+like the T crash--
+and then there's
+
+208
+00:10:01,909 --> 00:10:05,100
+a rollover tests, that are
+more and more standardized.
+
+209
+00:10:05,100 --> 00:10:08,970
+And the test conditions
+in these are there
+
+210
+00:10:08,970 --> 00:10:11,009
+they're highly stylized tests.
+
+211
+00:10:11,009 --> 00:10:14,850
+They're very prescribed
+exactly the speeds, the angles,
+
+212
+00:10:14,850 --> 00:10:16,259
+everything is prescribed.
+
+213
+00:10:16,259 --> 00:10:22,049
+And real accidents, the
+variability of conditions
+
+214
+00:10:22,049 --> 00:10:23,909
+is much, much bigger
+than in these tests.
+
+215
+00:10:23,909 --> 00:10:28,740
+So I agree because the test
+conditions are so tightly
+
+216
+00:10:28,740 --> 00:10:34,320
+defined and constrained, this
+is verification, not validation.
+
+217
+00:10:34,320 --> 00:10:36,700
+Testing of a new toy
+in a kindergarten.
+
+218
+00:10:36,700 --> 00:10:39,060
+OK, so here you're--
+
+219
+00:10:39,059 --> 00:10:43,500
+and this is the toy companies,
+and they essentially--
+
+220
+00:10:43,500 --> 00:10:46,159
+
+
+221
+00:10:46,159 --> 00:10:48,899
+before, again, they make
+a big million or billion
+
+222
+00:10:48,899 --> 00:10:52,470
+dollar decision to
+mass manufacture toys,
+
+223
+00:10:52,470 --> 00:10:54,990
+they will actually have
+kids play with them
+
+224
+00:10:54,990 --> 00:10:56,639
+in realistic environments.
+
+225
+00:10:56,639 --> 00:11:00,590
+And so I agree with
+that this is validation.
+
+226
+00:11:00,590 --> 00:11:02,009
+Vehicle emission testing.
+
+227
+00:11:02,009 --> 00:11:07,980
+Obviously, this was the big
+Volkswagen scandal that we had.
+
+228
+00:11:07,980 --> 00:11:12,629
+So basically, what this
+cheating that happened
+
+229
+00:11:12,629 --> 00:11:18,090
+is essentially software that was
+embedded in the vehicle, such
+
+230
+00:11:18,090 --> 00:11:20,879
+that when the vehicle
+experienced exactly the test
+
+231
+00:11:20,879 --> 00:11:24,519
+conditions of these drive
+cycles that are very well known,
+
+232
+00:11:24,519 --> 00:11:27,240
+very well defined, the
+vehicle would internally
+
+233
+00:11:27,240 --> 00:11:32,730
+switch or reconfigure
+to a verification mode
+
+234
+00:11:32,730 --> 00:11:35,909
+and really emphasize
+low emissions
+
+235
+00:11:35,909 --> 00:11:38,909
+at the expense of fuel economy.
+
+236
+00:11:38,909 --> 00:11:40,589
+And as soon as the
+vehicle would detect
+
+237
+00:11:40,590 --> 00:11:44,250
+that it's in a more
+general driving conditions,
+
+238
+00:11:44,250 --> 00:11:46,919
+it would essentially
+switch that mode off.
+
+239
+00:11:46,919 --> 00:11:52,139
+So verification, again,
+is on a dynamo in the lab.
+
+240
+00:11:52,139 --> 00:11:55,409
+Satellite vibration
+testing on a shake table.
+
+241
+00:11:55,409 --> 00:11:56,414
+We'll talk about this.
+
+242
+00:11:56,414 --> 00:12:00,269
+This is often-- we refer
+to this as shake and bake
+
+243
+00:12:00,269 --> 00:12:02,399
+in the spacecraft business.
+
+244
+00:12:02,399 --> 00:12:04,559
+The spectra, the
+load spectra, that
+
+245
+00:12:04,559 --> 00:12:06,689
+are put into these
+shaking tables
+
+246
+00:12:06,690 --> 00:12:08,760
+are, again, very
+stylized and different
+
+247
+00:12:08,759 --> 00:12:10,350
+for each launch vehicle.
+
+248
+00:12:10,350 --> 00:12:14,190
+So here we can debate
+a little bit whether--
+
+249
+00:12:14,190 --> 00:12:17,310
+is it closer to validation,
+because the actual test
+
+250
+00:12:17,309 --> 00:12:21,149
+conditions are so much adapted
+to each launch vehicle.
+
+251
+00:12:21,149 --> 00:12:24,929
+But I agree, this is primarily
+a verification activity.
+
+252
+00:12:24,929 --> 00:12:28,309
+And then the field testing
+of the Google glasses.
+
+253
+00:12:28,309 --> 00:12:31,799
+So you basically produce an
+initial batch of your product
+
+254
+00:12:31,799 --> 00:12:34,219
+and then you give it
+to like lead users.
+
+255
+00:12:34,220 --> 00:12:36,480
+You have them try it
+and give you feedback.
+
+256
+00:12:36,480 --> 00:12:39,570
+This is much closer
+to validation.
+
+257
+00:12:39,570 --> 00:12:43,710
+So I think by and large your
+answers here are very good.
+
+258
+00:12:43,710 --> 00:12:45,810
+And the real
+distinguishing factor
+
+259
+00:12:45,809 --> 00:12:49,799
+is whether this activity
+happens in a lab,
+
+260
+00:12:49,799 --> 00:12:51,269
+in a very controlled
+environment,
+
+261
+00:12:51,269 --> 00:12:54,000
+under stylized conditions,
+or whether you're actually
+
+262
+00:12:54,000 --> 00:12:56,700
+going out in the field,
+in a realistic mission
+
+263
+00:12:56,700 --> 00:13:00,600
+environment with real users
+or real potential users that
+
+264
+00:13:00,600 --> 00:13:03,629
+are not especially knowledgeable
+or not specially trained
+
+265
+00:13:03,629 --> 00:13:05,240
+about the system.
+
+266
+00:13:05,240 --> 00:13:07,769
+So, very good job.
+
+267
+00:13:07,769 --> 00:13:12,290
+I think most of you really
+understand that distinction.
+
+268
+00:13:12,291 --> 00:13:12,790
+OK.
+
+269
+00:13:12,789 --> 00:13:16,209
+So let me talk
+briefly about the--
+
+270
+00:13:16,210 --> 00:13:18,220
+yes, please, Veronica?
+
+271
+00:13:18,220 --> 00:13:20,889
+AUDIENCE: Got it today.
+
+272
+00:13:20,889 --> 00:13:22,600
+OK, are there any
+has that really
+
+273
+00:13:22,600 --> 00:13:25,206
+bridged the gap that really
+could be seen as both.
+
+274
+00:13:25,206 --> 00:13:27,039
+So I'm thinking about
+products in particular
+
+275
+00:13:27,039 --> 00:13:30,069
+that are to be used in a
+lab setting where you have
+
+276
+00:13:30,070 --> 00:13:33,820
+a very specific kind of user,
+where meeting the requirements
+
+277
+00:13:33,820 --> 00:13:36,580
+is more about how
+the tool is employed,
+
+278
+00:13:36,580 --> 00:13:39,527
+and I see the user in that
+sense is part of the system.
+
+279
+00:13:39,527 --> 00:13:41,360
+So I'm wondering if in
+a more clinical sense
+
+280
+00:13:41,360 --> 00:13:44,090
+there's an action that is both
+validation and verification.
+
+281
+00:13:44,090 --> 00:13:46,090
+OLIVIER DE WECK: Yeah,
+and so you said clinical.
+
+282
+00:13:46,090 --> 00:13:50,889
+So I think there are situations
+where the distinction is not
+
+283
+00:13:50,889 --> 00:13:52,580
+as sharp, not as clear.
+
+284
+00:13:52,580 --> 00:13:55,030
+You said clinical, so
+I think in hospital,
+
+285
+00:13:55,029 --> 00:13:56,980
+you know for medical
+equipment, like if you
+
+286
+00:13:56,980 --> 00:13:59,860
+think about surgical equipment
+and things like this,
+
+287
+00:13:59,860 --> 00:14:02,850
+where it's very hard to really--
+
+288
+00:14:02,850 --> 00:14:07,290
+it's very hard to do
+verification in a stylized way.
+
+289
+00:14:07,289 --> 00:14:09,120
+The only way to
+really check it is
+
+290
+00:14:09,120 --> 00:14:13,570
+to have the equipment embedded
+and used in a pilot study,
+
+291
+00:14:13,570 --> 00:14:15,400
+for example, in a hospital.
+
+292
+00:14:15,399 --> 00:14:19,319
+And in that case, because
+the human is so involved,
+
+293
+00:14:19,320 --> 00:14:21,640
+and it's not a general
+consumer product,
+
+294
+00:14:21,639 --> 00:14:25,470
+but it's really a
+tool for specialists,
+
+295
+00:14:25,470 --> 00:14:28,470
+the only way to really
+check your requirements
+
+296
+00:14:28,470 --> 00:14:31,170
+is to actually embed it
+in a realistic environment
+
+297
+00:14:31,169 --> 00:14:32,490
+to begin with.
+
+298
+00:14:32,490 --> 00:14:35,700
+So whenever it's very
+difficult to design,
+
+299
+00:14:35,700 --> 00:14:37,800
+very specific,
+isolated tests where
+
+300
+00:14:37,799 --> 00:14:41,969
+you can check for each of
+these requirements one by one,
+
+301
+00:14:41,970 --> 00:14:44,610
+you almost have to move
+straight into validation.
+
+302
+00:14:44,610 --> 00:14:48,840
+And I think in medical
+equipment that's often the case.
+
+303
+00:14:48,840 --> 00:14:50,879
+Yeah, go ahead.
+
+304
+00:14:50,879 --> 00:14:53,210
+AUDIENCE: Would you say
+that for a spacecraft
+
+305
+00:14:53,210 --> 00:14:57,250
+really true validation
+isn't possible?
+
+306
+00:14:57,250 --> 00:15:00,009
+You have to recreate the
+conditions in some way,
+
+307
+00:15:00,009 --> 00:15:02,032
+in some kind of a laboratory.
+
+308
+00:15:02,032 --> 00:15:03,490
+OLIVIER DE WECK:
+I think it depends
+
+309
+00:15:03,490 --> 00:15:05,230
+on the novelty of
+the spacecraft.
+
+310
+00:15:05,230 --> 00:15:08,080
+If you're launching something
+like a standard communications
+
+311
+00:15:08,080 --> 00:15:11,420
+satellite where you've
+launched dozens before,
+
+312
+00:15:11,419 --> 00:15:14,740
+and you know the actual pitfalls
+and the operating conditions,
+
+313
+00:15:14,740 --> 00:15:17,379
+you've experienced
+failure modes in the past
+
+314
+00:15:17,379 --> 00:15:20,259
+and eradicated
+most of them, I do
+
+315
+00:15:20,259 --> 00:15:24,340
+think that you can do
+a lot in verification.
+
+316
+00:15:24,340 --> 00:15:25,990
+But then I'll show
+you one example
+
+317
+00:15:25,990 --> 00:15:28,789
+of a spacecraft we've
+actually talked about before,
+
+318
+00:15:28,789 --> 00:15:31,480
+where there's going to be
+a lot of residual risk.
+
+319
+00:15:31,480 --> 00:15:33,519
+And the first time
+it's deployed,
+
+320
+00:15:33,519 --> 00:15:37,509
+people are going to sweat,
+because there's still
+
+321
+00:15:37,509 --> 00:15:41,129
+a lot of unknowns
+to be resolved.
+
+322
+00:15:41,129 --> 00:15:45,429
+OK, so let's look at the
+product verification process
+
+323
+00:15:45,429 --> 00:15:46,179
+in particular.
+
+324
+00:15:46,179 --> 00:15:47,859
+This is from the--
+
+325
+00:15:47,860 --> 00:15:50,110
+so this is the product
+verification process
+
+326
+00:15:50,110 --> 00:15:53,200
+from the NASA System
+Engineering Handbook.
+
+327
+00:15:53,200 --> 00:15:54,940
+So what are the inputs?
+
+328
+00:15:54,940 --> 00:15:56,740
+The end product to be verified.
+
+329
+00:15:56,740 --> 00:16:00,519
+So you have to have the artifact
+that you're going to verify.
+
+330
+00:16:00,519 --> 00:16:03,250
+The specified
+requirements baseline,
+
+331
+00:16:03,250 --> 00:16:04,809
+you need this as a reference.
+
+332
+00:16:04,809 --> 00:16:06,579
+What are you going
+to check against?
+
+333
+00:16:06,580 --> 00:16:09,160
+The product
+verification plan which
+
+334
+00:16:09,159 --> 00:16:11,439
+is essentially your test plan.
+
+335
+00:16:11,440 --> 00:16:13,330
+What test cases are
+you going to run?
+
+336
+00:16:13,330 --> 00:16:14,889
+How long are you
+going to run them?
+
+337
+00:16:14,889 --> 00:16:17,080
+How many repetitions
+will you do?
+
+338
+00:16:17,080 --> 00:16:19,570
+And then product verification
+enabling products,
+
+339
+00:16:19,570 --> 00:16:23,080
+which would be test
+software, test equipment,
+
+340
+00:16:23,080 --> 00:16:25,180
+things that are not part
+of the product itself,
+
+341
+00:16:25,179 --> 00:16:28,769
+but our enabling of the
+verification process.
+
+342
+00:16:28,769 --> 00:16:31,329
+You then, essentially,
+go through this process,
+
+343
+00:16:31,330 --> 00:16:32,879
+and what are the outputs?
+
+344
+00:16:32,879 --> 00:16:37,720
+The verified end product, the
+product verification results,
+
+345
+00:16:37,720 --> 00:16:39,670
+so these would be
+test protocols,
+
+346
+00:16:39,669 --> 00:16:43,299
+things like this, product
+verification report, and then
+
+347
+00:16:43,299 --> 00:16:45,609
+product verification,
+any other work products
+
+348
+00:16:45,610 --> 00:16:46,899
+that come out of it.
+
+349
+00:16:46,899 --> 00:16:49,779
+So you could have, for
+example, discrepancy reports.
+
+350
+00:16:49,779 --> 00:16:51,429
+You failed some tests.
+
+351
+00:16:51,429 --> 00:16:53,289
+Well, that would be
+an important output.
+
+352
+00:16:53,289 --> 00:16:55,719
+And then the question is,
+is this significant enough
+
+353
+00:16:55,720 --> 00:16:58,660
+that you have to go
+redesign or retest?
+
+354
+00:16:58,659 --> 00:17:02,079
+Or is it a minor issue that
+you can waive essentially
+
+355
+00:17:02,080 --> 00:17:05,348
+to move to the next stage?
+
+356
+00:17:05,348 --> 00:17:07,509
+So let me just give
+you a quick example
+
+357
+00:17:07,509 --> 00:17:11,200
+here from my own experience
+about this verified end
+
+358
+00:17:11,200 --> 00:17:11,809
+product.
+
+359
+00:17:11,809 --> 00:17:15,009
+One of the things on the
+Swiss F18 program that we did
+
+360
+00:17:15,009 --> 00:17:18,039
+is not just by airplanes
+and equipment, but also
+
+361
+00:17:18,039 --> 00:17:19,930
+models of the plane itself.
+
+362
+00:17:19,930 --> 00:17:23,200
+In particular, finite
+element models, very detailed
+
+363
+00:17:23,200 --> 00:17:25,838
+finite element models
+of the structure.
+
+364
+00:17:25,838 --> 00:17:29,129
+And these models
+were very expensive.
+
+365
+00:17:29,130 --> 00:17:32,140
+Like, some of these models
+were millions of dollars.
+
+366
+00:17:32,140 --> 00:17:34,780
+And so I got a phone call,
+I was a liaison engineer
+
+367
+00:17:34,779 --> 00:17:36,029
+at the time in St. Louis.
+
+368
+00:17:36,029 --> 00:17:39,319
+I got a phone call from
+Switzerland saying,
+
+369
+00:17:39,319 --> 00:17:40,429
+this is crazy.
+
+370
+00:17:40,430 --> 00:17:42,820
+How can we be charged
+millions of dollars
+
+371
+00:17:42,819 --> 00:17:45,339
+for this particular
+set of models?
+
+372
+00:17:45,339 --> 00:17:48,189
+And I said, yeah, that seems
+pretty expensive, so I'm
+
+373
+00:17:48,190 --> 00:17:50,710
+going to go negotiate this.
+
+374
+00:17:50,710 --> 00:17:53,740
+And so I started
+negotiating, and I
+
+375
+00:17:53,740 --> 00:17:55,660
+guess either I'm
+a bad negotiator
+
+376
+00:17:55,660 --> 00:17:59,800
+or it was really, really clear
+why these were so expensive.
+
+377
+00:17:59,799 --> 00:18:01,629
+The reason these models
+were so expensive
+
+378
+00:18:01,630 --> 00:18:06,050
+because they were on the right
+side not on the left side.
+
+379
+00:18:06,049 --> 00:18:10,419
+So every one of these models
+that we were purchasing
+
+380
+00:18:10,420 --> 00:18:14,890
+had been verified using
+actual physical tests.
+
+381
+00:18:14,890 --> 00:18:19,480
+So every location was guaranteed
+under the load conditions
+
+382
+00:18:19,480 --> 00:18:22,720
+to produce a stress
+and strain prediction
+
+383
+00:18:22,720 --> 00:18:25,900
+at that location that was
+guaranteed to be correct within
+
+384
+00:18:25,900 --> 00:18:27,890
+plus or minus 5%.
+
+385
+00:18:27,890 --> 00:18:31,000
+So the model had been very
+carefully calibrated and tuned
+
+386
+00:18:31,000 --> 00:18:34,569
+against physical reality as
+opposed to a finite element
+
+387
+00:18:34,569 --> 00:18:38,859
+model that's just
+anybody can make a model
+
+388
+00:18:38,859 --> 00:18:41,859
+and put some load cases
+and boundary conditions on.
+
+389
+00:18:41,859 --> 00:18:44,449
+And you don't know how
+closely does this mean.
+
+390
+00:18:44,450 --> 00:18:47,410
+So there's a huge
+difference in value
+
+391
+00:18:47,410 --> 00:18:52,490
+between a product, a model that
+has gone through verification
+
+392
+00:18:52,490 --> 00:18:55,299
+where at the end of it
+there's actually a report,
+
+393
+00:18:55,299 --> 00:18:57,190
+there's a protocol,
+there are data
+
+394
+00:18:57,190 --> 00:19:00,789
+that says all these features,
+all these requirements
+
+395
+00:19:00,789 --> 00:19:03,339
+that you had against it
+have actually been checked.
+
+396
+00:19:03,339 --> 00:19:06,289
+This is a certified product.
+
+397
+00:19:06,289 --> 00:19:09,619
+And that's the main
+reason for the price,
+
+398
+00:19:09,619 --> 00:19:12,559
+because the actual
+process of verification
+
+399
+00:19:12,559 --> 00:19:15,029
+is very, very
+resource intensive.
+
+400
+00:19:15,029 --> 00:19:18,349
+So even though when you look at
+it physically, you might say,
+
+401
+00:19:18,349 --> 00:19:21,799
+I can't tell the difference
+between pre-verification
+
+402
+00:19:21,799 --> 00:19:25,129
+and post-verification because
+physically it's the same.
+
+403
+00:19:25,130 --> 00:19:27,740
+But in actuality,
+there's a huge difference
+
+404
+00:19:27,740 --> 00:19:32,420
+because once it's been
+verified and certified
+
+405
+00:19:32,420 --> 00:19:34,009
+against a set of
+requirements, it's
+
+406
+00:19:34,009 --> 00:19:35,720
+a much more valuable asset.
+
+407
+00:19:35,720 --> 00:19:37,339
+Does that make sense?
+
+408
+00:19:37,339 --> 00:19:41,029
+So keep that in mind when you
+think about these products
+
+409
+00:19:41,029 --> 00:19:42,200
+on the right side.
+
+410
+00:19:42,200 --> 00:19:44,720
+Now what are the
+types of verification?
+
+411
+00:19:44,720 --> 00:19:48,049
+So tests we'll talk about,
+so you're physically testing.
+
+412
+00:19:48,049 --> 00:19:50,659
+But there's other ways to
+do it through analysis,
+
+413
+00:19:50,660 --> 00:19:53,420
+through demonstration,
+and through inspection.
+
+414
+00:19:53,420 --> 00:19:59,029
+So analysis essentially means
+you're doing a calculation
+
+415
+00:19:59,029 --> 00:20:03,500
+with a mathematical calculation
+or a simulation that
+
+416
+00:20:03,500 --> 00:20:06,529
+satisfies you that this
+requirement is met.
+
+417
+00:20:06,529 --> 00:20:09,740
+And you're doing this
+with the input parameters
+
+418
+00:20:09,740 --> 00:20:12,859
+into the simulation are
+as accurate as possible
+
+419
+00:20:12,859 --> 00:20:15,769
+based on the physical reality
+of the system you have.
+
+420
+00:20:15,769 --> 00:20:17,660
+But for whatever reason,
+either because you
+
+421
+00:20:17,660 --> 00:20:19,430
+don't have the
+funds for it, or you
+
+422
+00:20:19,430 --> 00:20:23,330
+can't simulate the operating
+conditions well enough,
+
+423
+00:20:23,329 --> 00:20:26,179
+you have to do it
+through analysis.
+
+424
+00:20:26,180 --> 00:20:30,920
+Demonstration essentially means
+you're operating the system,
+
+425
+00:20:30,920 --> 00:20:33,620
+you're demonstrating the
+functions that you need,
+
+426
+00:20:33,619 --> 00:20:37,429
+but you don't necessarily
+have a lot of instrumentation
+
+427
+00:20:37,430 --> 00:20:38,660
+on the system.
+
+428
+00:20:38,660 --> 00:20:41,690
+And you don't certainly
+do destructive testing.
+
+429
+00:20:41,690 --> 00:20:44,000
+In other words, a
+demonstration simply
+
+430
+00:20:44,000 --> 00:20:47,089
+means you're operating
+the system as intended
+
+431
+00:20:47,089 --> 00:20:51,379
+and demonstrating physically
+that it performs its purpose.
+
+432
+00:20:51,380 --> 00:20:54,290
+Inspection essentially
+means you are
+
+433
+00:20:54,289 --> 00:20:56,839
+physically inspecting
+the artifact
+
+434
+00:20:56,839 --> 00:20:58,909
+either visually inspecting--
+
+435
+00:20:58,910 --> 00:21:00,650
+there's also a lot
+of techniques called
+
+436
+00:21:00,650 --> 00:21:05,810
+NDI, nondestructive inspection
+through with X-rays or eddy
+
+437
+00:21:05,809 --> 00:21:07,549
+current sensors.
+
+438
+00:21:07,549 --> 00:21:12,529
+You're checking for the
+lack of manufacturing flaws
+
+439
+00:21:12,529 --> 00:21:14,599
+or [INAUDIBLE], whatever it is.
+
+440
+00:21:14,599 --> 00:21:18,349
+But inspection
+essentially is you're not
+
+441
+00:21:18,349 --> 00:21:20,269
+physically operating
+the system, but you're
+
+442
+00:21:20,269 --> 00:21:23,329
+inspecting the artifact to
+make sure that it satisfies
+
+443
+00:21:23,329 --> 00:21:25,079
+a certain set of requirements.
+
+444
+00:21:25,079 --> 00:21:29,149
+And then testing typically means
+that you're putting a stimulus
+
+445
+00:21:29,150 --> 00:21:30,530
+into the system.
+
+446
+00:21:30,529 --> 00:21:33,889
+You're operating the system
+under some test conditions.
+
+447
+00:21:33,890 --> 00:21:35,870
+You're recording
+data, which you then
+
+448
+00:21:35,869 --> 00:21:39,289
+analyze in terms of comparing
+that to your prediction
+
+449
+00:21:39,289 --> 00:21:40,889
+or expected behaviors.
+
+450
+00:21:40,890 --> 00:21:43,370
+So these are analysis,
+demonstration, inspection,
+
+451
+00:21:43,369 --> 00:21:44,399
+and tests.
+
+452
+00:21:44,400 --> 00:21:47,440
+They are all different
+ways of verification.
+
+453
+00:21:47,440 --> 00:21:49,765
+Yeah?
+
+454
+00:21:49,765 --> 00:21:52,400
+AUDIENCE: How do I
+know when I'm supposed
+
+455
+00:21:52,400 --> 00:21:54,950
+to use more than one
+type at the same time?
+
+456
+00:21:54,950 --> 00:21:57,719
+I mean in and or or.
+
+457
+00:21:57,719 --> 00:21:59,509
+OLIVIER DE WECK: Yeah,
+that's a good point.
+
+458
+00:21:59,509 --> 00:22:01,460
+There's no real
+general rule of this,
+
+459
+00:22:01,460 --> 00:22:05,900
+but in general, I would say the
+more crucial, the more critical
+
+460
+00:22:05,900 --> 00:22:10,009
+a particular requirement is to
+the operation of the system,
+
+461
+00:22:10,009 --> 00:22:13,009
+the more intense the
+verification will be.
+
+462
+00:22:13,009 --> 00:22:15,529
+Whether that's just
+using one of these types,
+
+463
+00:22:15,529 --> 00:22:18,829
+you know you just run more
+tests or more different tests,
+
+464
+00:22:18,829 --> 00:22:23,359
+or you doing a combination
+of inspection and testing.
+
+465
+00:22:23,359 --> 00:22:28,189
+There's no there's no
+general rule in terms of two
+
+466
+00:22:28,190 --> 00:22:30,470
+out of three, or
+two out of four,
+
+467
+00:22:30,470 --> 00:22:35,779
+but the purpose of the V&V plan,
+the verification and validation
+
+468
+00:22:35,779 --> 00:22:37,200
+plan is--
+
+469
+00:22:37,200 --> 00:22:39,052
+and you did a little
+bit of this in A2.
+
+470
+00:22:39,051 --> 00:22:41,509
+You did a little bit of thinking
+into how would we actually
+
+471
+00:22:41,509 --> 00:22:43,490
+verify this requirement.
+
+472
+00:22:43,490 --> 00:22:48,680
+The purpose of a V&V plan is to
+say for each requirement which
+
+473
+00:22:48,680 --> 00:22:53,120
+of these four methods are we
+going to use for verification,
+
+474
+00:22:53,119 --> 00:22:54,949
+and then actually
+write down each test
+
+475
+00:22:54,950 --> 00:22:57,289
+that you're going to perform,
+what kind of equipment
+
+476
+00:22:57,289 --> 00:22:59,690
+you'll use, what kind
+of test conditions.
+
+477
+00:22:59,690 --> 00:23:01,140
+It's a lot of work.
+
+478
+00:23:01,140 --> 00:23:03,980
+In fact, I think
+it's fair to say
+
+479
+00:23:03,980 --> 00:23:06,500
+that the people that do this
+kind of work, verification
+
+480
+00:23:06,500 --> 00:23:10,490
+and validation, are
+typically different people
+
+481
+00:23:10,490 --> 00:23:14,000
+than the people that do the
+writing of the requirements
+
+482
+00:23:14,000 --> 00:23:16,069
+or that do the
+actual design work.
+
+483
+00:23:16,069 --> 00:23:18,649
+This is a pretty
+specialized activity
+
+484
+00:23:18,650 --> 00:23:20,480
+and the people are
+a little different.
+
+485
+00:23:20,480 --> 00:23:24,349
+If you've met people who
+would do testing or quality
+
+486
+00:23:24,349 --> 00:23:27,230
+inspection, they're
+quite different.
+
+487
+00:23:27,230 --> 00:23:29,130
+It's a different mind set up.
+
+488
+00:23:29,130 --> 00:23:31,201
+Go ahead.
+
+489
+00:23:31,201 --> 00:23:33,980
+AUDIENCE: According to
+what's happening in ESA,
+
+490
+00:23:33,980 --> 00:23:39,019
+actually this ADIT will be
+imposed in the specification
+
+491
+00:23:39,019 --> 00:23:41,479
+prior to your proposal.
+
+492
+00:23:41,479 --> 00:23:43,394
+And it will give you to
+a minimum requirements
+
+493
+00:23:43,394 --> 00:23:45,109
+to just test against.
+
+494
+00:23:45,109 --> 00:23:48,049
+And they will give you a rough
+matrix for every requirement
+
+495
+00:23:48,049 --> 00:23:50,519
+line, whether it's
+[? ABIT, ?] and then
+
+496
+00:23:50,519 --> 00:23:53,430
+you have to answer with a
+validation intense plan,
+
+497
+00:23:53,430 --> 00:23:56,180
+usually, unless your
+agency and you are defining
+
+498
+00:23:56,180 --> 00:23:58,320
+the specification and
+you have to do it,
+
+499
+00:23:58,319 --> 00:24:01,450
+and it's mostly
+based on experience.
+
+500
+00:24:01,450 --> 00:24:04,190
+And it's some people that have
+really lots of knowledge that
+
+501
+00:24:04,190 --> 00:24:06,289
+then make these specifications.
+
+502
+00:24:06,289 --> 00:24:08,654
+But I think for all
+of you engineers
+
+503
+00:24:08,654 --> 00:24:11,519
+here in the next
+10 years, you'll
+
+504
+00:24:11,519 --> 00:24:16,001
+be just hoping that not so many
+of these ADITS in the specs
+
+505
+00:24:16,001 --> 00:24:17,460
+you will get,
+because you will have
+
+506
+00:24:17,460 --> 00:24:20,337
+to answer as part of the
+specification actually.
+
+507
+00:24:20,337 --> 00:24:21,712
+OLIVIER DE WECK:
+Yeah, and what--
+
+508
+00:24:21,712 --> 00:24:23,424
+AUDIENCE: I'll just
+demonstrate it.
+
+509
+00:24:23,424 --> 00:24:25,549
+OLIVIER DE WECK: Well, and
+the point you're making,
+
+510
+00:24:25,549 --> 00:24:28,339
+Voelcker, is that this is
+a contractual requirement.
+
+511
+00:24:28,339 --> 00:24:29,945
+This is not optional.
+
+512
+00:24:29,945 --> 00:24:30,839
+AUDIENCE: [INAUDIBLE]
+
+513
+00:24:30,839 --> 00:24:31,069
+OLIVIER DE WECK: Yeah.
+
+514
+00:24:31,069 --> 00:24:33,689
+AUDIENCE: It's not optional
+and it has to be followed,
+
+515
+00:24:33,690 --> 00:24:38,400
+the pricing, right in
+front of [INAUDIBLE]
+
+516
+00:24:38,400 --> 00:24:40,259
+OLIVIER DE WECK: Yes,
+very good points.
+
+517
+00:24:40,259 --> 00:24:44,879
+So the outputs of all of
+this are discrepancy reports,
+
+518
+00:24:44,880 --> 00:24:48,390
+if there's any discrepancy
+reports, waivers,
+
+519
+00:24:48,390 --> 00:24:51,090
+the verified product
+itself, and then
+
+520
+00:24:51,089 --> 00:24:52,949
+the compliance
+documentation, which
+
+521
+00:24:52,950 --> 00:24:55,180
+is essentially your test
+protocols, et cetera,
+
+522
+00:24:55,180 --> 00:24:56,220
+et cetera.
+
+523
+00:24:56,220 --> 00:25:01,470
+And as you can imagine now
+if you had 47 requirements
+
+524
+00:25:01,470 --> 00:25:03,569
+with can set, and then
+by the end-- [? Uonna ?],,
+
+525
+00:25:03,569 --> 00:25:06,450
+what would you say the
+number of requirements
+
+526
+00:25:06,450 --> 00:25:09,720
+that we ended up with at the
+end in A2 were closer to 100,
+
+527
+00:25:09,720 --> 00:25:10,710
+right?
+
+528
+00:25:10,710 --> 00:25:13,259
+Most people were around 80, 90.
+
+529
+00:25:13,259 --> 00:25:17,819
+OK, now imagine--
+the good thing is
+
+530
+00:25:17,819 --> 00:25:19,559
+if you can do
+tests that actually
+
+531
+00:25:19,559 --> 00:25:23,879
+check multiple requirements
+at once, that's a good thing.
+
+532
+00:25:23,880 --> 00:25:26,430
+If you can do tests
+that help you verify
+
+533
+00:25:26,430 --> 00:25:29,100
+multiple requirements
+through the same tests,
+
+534
+00:25:29,099 --> 00:25:30,179
+you can save some money.
+
+535
+00:25:30,180 --> 00:25:34,259
+But the whole testing strategy,
+the contractual requirements
+
+536
+00:25:34,259 --> 00:25:38,950
+that Volcker was mentioning,
+it's a big, big, big deal.
+
+537
+00:25:38,950 --> 00:25:42,920
+It's a really critical
+part of system engineering.
+
+538
+00:25:42,920 --> 00:25:43,420
+OK.
+
+539
+00:25:43,420 --> 00:25:46,000
+So in terms of the
+lifecycle phases
+
+540
+00:25:46,000 --> 00:25:50,200
+where this fits in,
+most of this activity
+
+541
+00:25:50,200 --> 00:25:53,200
+happens during phase D.
+
+542
+00:25:53,200 --> 00:25:57,789
+So you remember this was
+the NASA lifecycle model,
+
+543
+00:25:57,789 --> 00:26:01,659
+and so phase D is system
+assembly, integration, test,
+
+544
+00:26:01,660 --> 00:26:02,620
+and launch.
+
+545
+00:26:02,619 --> 00:26:05,319
+So much of the testing that
+we talked about happens
+
+546
+00:26:05,319 --> 00:26:08,769
+during phase D. So the system
+has been fully designed,
+
+547
+00:26:08,769 --> 00:26:10,960
+it's been assembled,
+it's been integrated
+
+548
+00:26:10,960 --> 00:26:12,789
+the way we talked
+about last week,
+
+549
+00:26:12,789 --> 00:26:16,359
+and now you're really putting
+this system through its paces.
+
+550
+00:26:16,359 --> 00:26:22,359
+And so this phase D is
+intense, it's expensive.
+
+551
+00:26:22,359 --> 00:26:25,569
+And if something goes
+wrong, it sends you back
+
+552
+00:26:25,569 --> 00:26:27,609
+to the drawing board often.
+
+553
+00:26:27,609 --> 00:26:28,959
+And you have to do--
+
+554
+00:26:28,960 --> 00:26:32,230
+you have to figure out whether
+a failed test, a failed
+
+555
+00:26:32,230 --> 00:26:36,099
+verification, is a showstopper.
+
+556
+00:26:36,099 --> 00:26:39,219
+If it is, then you have
+to redesign the system,
+
+557
+00:26:39,220 --> 00:26:41,680
+you have to retest.
+
+558
+00:26:41,680 --> 00:26:43,570
+But if it's a minor
+thing, then you
+
+559
+00:26:43,569 --> 00:26:45,559
+might be able to
+request a waiver
+
+560
+00:26:45,559 --> 00:26:50,950
+and you can say, OK, we didn't
+achieve this requirement,
+
+561
+00:26:50,950 --> 00:26:54,400
+or we failed this test, but
+we think it's a minor issue.
+
+562
+00:26:54,400 --> 00:26:57,370
+And instead of holding
+up the program,
+
+563
+00:26:57,369 --> 00:26:59,139
+we're going to get a
+waiver for it, which
+
+564
+00:26:59,140 --> 00:27:01,030
+means you get an
+exemption essentially,
+
+565
+00:27:01,029 --> 00:27:02,440
+and you can move on.
+
+566
+00:27:02,440 --> 00:27:06,430
+And whether or not a waiver can
+or cannot be granted is a big
+
+567
+00:27:06,430 --> 00:27:09,080
+deal and that goes
+under risk management,
+
+568
+00:27:09,079 --> 00:27:11,149
+which we'll talk about
+in a few minutes.
+
+569
+00:27:11,150 --> 00:27:11,990
+Yes?
+
+570
+00:27:11,990 --> 00:27:14,589
+AUDIENCE: I had a question on--
+
+571
+00:27:14,589 --> 00:27:16,209
+so if you're a
+system integrator,
+
+572
+00:27:16,210 --> 00:27:19,990
+and you created statements
+of work for other people
+
+573
+00:27:19,990 --> 00:27:25,000
+to procure a large
+optic, or something,
+
+574
+00:27:25,000 --> 00:27:27,980
+they go and build that
+[INAUDIBLE] requirements,
+
+575
+00:27:27,980 --> 00:27:31,250
+and then they do all the
+verification and testing,
+
+576
+00:27:31,250 --> 00:27:33,609
+and then they provide
+all that documentation.
+
+577
+00:27:33,609 --> 00:27:38,579
+And then like from my experience
+with anything like procurement
+
+578
+00:27:38,579 --> 00:27:41,769
+out stuff, that comes
+back in your in house,
+
+579
+00:27:41,769 --> 00:27:46,299
+and you go to assemble
+it, and you essentially
+
+580
+00:27:46,299 --> 00:27:49,569
+do a lot of that
+verification and testing
+
+581
+00:27:49,569 --> 00:27:53,750
+again to double
+check that supplier.
+
+582
+00:27:53,750 --> 00:27:55,750
+There is a little bit of
+a conflict of interest,
+
+583
+00:27:55,750 --> 00:27:59,769
+obviously, with that
+supplier doing the work
+
+584
+00:27:59,769 --> 00:28:01,660
+and also verifying
+their own work.
+
+585
+00:28:01,660 --> 00:28:04,320
+Is there any good way
+to get around that?
+
+586
+00:28:04,319 --> 00:28:08,259
+So it seems like a
+very expensive process.
+
+587
+00:28:08,259 --> 00:28:10,629
+OLIVIER DE WECK: So my
+experience-- basically,
+
+588
+00:28:10,630 --> 00:28:15,840
+you're talking about
+separation of powers.
+
+589
+00:28:15,839 --> 00:28:19,059
+The good suppliers, they
+will have internally
+
+590
+00:28:19,059 --> 00:28:20,001
+separation of powers.
+
+591
+00:28:20,001 --> 00:28:21,460
+In other words,
+the people that are
+
+592
+00:28:21,460 --> 00:28:23,620
+doing the testing
+and the Q&A, they're
+
+593
+00:28:23,619 --> 00:28:27,129
+usually people who really enjoy
+finding mistakes and faults.
+
+594
+00:28:27,130 --> 00:28:28,480
+And that's why when I'm saying--
+
+595
+00:28:28,480 --> 00:28:31,630
+I'm trying to be diplomatic
+when I said it, but people even
+
+596
+00:28:31,630 --> 00:28:35,120
+in software, people who
+do software verification,
+
+597
+00:28:35,119 --> 00:28:36,939
+they love to find bugs.
+
+598
+00:28:36,940 --> 00:28:40,480
+They love to find problems,
+because that's their job.
+
+599
+00:28:40,480 --> 00:28:46,390
+And so the good suppliers,
+it's in their own self-interest
+
+600
+00:28:46,390 --> 00:28:48,759
+not to do shortcuts.
+
+601
+00:28:48,759 --> 00:28:50,740
+Now if you don't
+trust that, and you
+
+602
+00:28:50,740 --> 00:28:53,710
+do all your same
+testing and Q&A again,
+
+603
+00:28:53,710 --> 00:28:55,600
+that's a duplication of effort.
+
+604
+00:28:55,599 --> 00:28:57,369
+The way I've seen
+that done effectively
+
+605
+00:28:57,369 --> 00:29:00,009
+is that you, as a
+customer, say you're
+
+606
+00:29:00,009 --> 00:29:02,289
+going to buy the subsystem
+or the engine for,
+
+607
+00:29:02,289 --> 00:29:03,549
+example, from it.
+
+608
+00:29:03,549 --> 00:29:06,369
+What you do is you
+send liasion people,
+
+609
+00:29:06,369 --> 00:29:07,750
+you send
+representatives, who are
+
+610
+00:29:07,750 --> 00:29:11,230
+knowledgeable people to the
+supplier while the testing is
+
+611
+00:29:11,230 --> 00:29:12,610
+being done.
+
+612
+00:29:12,609 --> 00:29:14,979
+And so they're present when
+the testing has been done.
+
+613
+00:29:14,980 --> 00:29:16,750
+They're very involved with it.
+
+614
+00:29:16,750 --> 00:29:19,819
+And therefore, you don't
+have to do it twice.
+
+615
+00:29:19,819 --> 00:29:22,990
+So there are ways around this.
+
+616
+00:29:22,990 --> 00:29:28,839
+OK, so what I did here is
+just search for the word test
+
+617
+00:29:28,839 --> 00:29:31,426
+and the list of milestones.
+
+618
+00:29:31,426 --> 00:29:32,509
+And where does it come up?
+
+619
+00:29:32,509 --> 00:29:35,859
+So the first time it really
+comes up in a major fashion
+
+620
+00:29:35,859 --> 00:29:39,609
+is at the CDR. OK, so let
+me just read this to you.
+
+621
+00:29:39,609 --> 00:29:43,329
+So the CDR demonstrates
+the maturity of the design
+
+622
+00:29:43,329 --> 00:29:45,519
+and is appropriate
+to support proceeding
+
+623
+00:29:45,519 --> 00:29:48,139
+with full scale fabrication,
+assembly, integration,
+
+624
+00:29:48,140 --> 00:29:49,180
+and tests.
+
+625
+00:29:49,180 --> 00:29:52,820
+So in other words,
+even at the CDR
+
+626
+00:29:52,819 --> 00:29:55,069
+you're blessing
+the final design,
+
+627
+00:29:55,069 --> 00:29:57,399
+you should say
+something at the CDR
+
+628
+00:29:57,400 --> 00:29:59,390
+about how the
+testing will be done.
+
+629
+00:29:59,390 --> 00:30:02,770
+In fact, test planning
+often is way before the CDR.
+
+630
+00:30:02,769 --> 00:30:04,809
+But at the CDR, you
+should you should really
+
+631
+00:30:04,809 --> 00:30:06,700
+talk about the testing.
+
+632
+00:30:06,700 --> 00:30:09,309
+Then we have
+so-called TRR, which
+
+633
+00:30:09,309 --> 00:30:11,470
+is a test readiness review.
+
+634
+00:30:11,470 --> 00:30:15,265
+And so for each major test,
+you would have a separate TRR.
+
+635
+00:30:15,265 --> 00:30:18,910
+The TRR ensures that the test
+article, hardware software,
+
+636
+00:30:18,910 --> 00:30:22,990
+the facilities, the support
+personnel, the test procedures
+
+637
+00:30:22,990 --> 00:30:26,890
+are ready for testing data
+acquisition reduction, meaning
+
+638
+00:30:26,890 --> 00:30:29,680
+data post-processing
+and control.
+
+639
+00:30:29,680 --> 00:30:34,289
+And then at the system
+acceptance review, the SAR,
+
+640
+00:30:34,289 --> 00:30:35,980
+that's when you
+essentially transfer
+
+641
+00:30:35,980 --> 00:30:38,289
+the ownership of the asset.
+
+642
+00:30:38,289 --> 00:30:40,779
+And that's at the SAR,
+at the system acceptance
+
+643
+00:30:40,779 --> 00:30:42,730
+review, that you're
+going to review,
+
+644
+00:30:42,730 --> 00:30:44,700
+not just the product
+and its documentation,
+
+645
+00:30:44,700 --> 00:30:46,860
+but all the test
+data, the analyses
+
+646
+00:30:46,859 --> 00:30:48,740
+that support verification.
+
+647
+00:30:48,740 --> 00:30:54,400
+So at CDR, you say this
+is the testing we'll do.
+
+648
+00:30:54,400 --> 00:30:58,300
+At the test review
+itself, you say
+
+649
+00:30:58,299 --> 00:31:01,200
+everything is ready for
+the tests to happen,
+
+650
+00:31:01,200 --> 00:31:02,359
+and then you do them.
+
+651
+00:31:02,358 --> 00:31:03,899
+And at the system
+requirements review
+
+652
+00:31:03,900 --> 00:31:07,780
+you look backwards and you say,
+what tests actually happen?
+
+653
+00:31:07,779 --> 00:31:09,000
+What's the documentation?
+
+654
+00:31:09,000 --> 00:31:10,589
+What were the results?
+
+655
+00:31:10,589 --> 00:31:13,538
+Are we ready to
+own the asset now?
+
+656
+00:31:13,538 --> 00:31:14,829
+Does that does that make sense?
+
+657
+00:31:14,829 --> 00:31:18,189
+
+
+658
+00:31:18,190 --> 00:31:22,509
+OK, so with that in mind, let's
+talk about testing itself.
+
+659
+00:31:22,509 --> 00:31:24,940
+What kind of testing
+there are, and so testing
+
+660
+00:31:24,940 --> 00:31:27,100
+is one of the four
+methods of verification.
+
+661
+00:31:27,099 --> 00:31:31,509
+And it's the one that we
+often spend the most money on.
+
+662
+00:31:31,509 --> 00:31:35,200
+So this is from the
+handbook, section 5.3.
+
+663
+00:31:35,200 --> 00:31:40,569
+This is basically an
+alphabetic list of the testing
+
+664
+00:31:40,569 --> 00:31:42,339
+that we typically do.
+
+665
+00:31:42,339 --> 00:31:44,980
+And I'll just
+highlight a few here,
+
+666
+00:31:44,980 --> 00:31:47,890
+and then I have a
+group exercise for you.
+
+667
+00:31:47,890 --> 00:31:50,450
+So aerodynamic testing,
+burn-in testing,
+
+668
+00:31:50,450 --> 00:31:52,630
+which is often done
+with electronics.
+
+669
+00:31:52,630 --> 00:31:56,450
+Make sure that you use you
+burn-in your electronics,
+
+670
+00:31:56,450 --> 00:32:00,910
+you get them running at the
+right conditions, drop testing,
+
+671
+00:32:00,910 --> 00:32:04,529
+pressure testing, pressure
+limits, thermal testing,
+
+672
+00:32:04,529 --> 00:32:11,529
+G-loading, human factors
+testing, thermal testing,
+
+673
+00:32:11,529 --> 00:32:13,579
+manufacturing random defects--
+
+674
+00:32:13,579 --> 00:32:18,069
+that's when you do
+nondestructive inspection--
+
+675
+00:32:18,069 --> 00:32:20,899
+thermal cycling, vibration
+testing, and so forth.
+
+676
+00:32:20,900 --> 00:32:24,430
+So this is 20 or 30
+types of testing.
+
+677
+00:32:24,430 --> 00:32:26,759
+And then within each
+there's even subtypes,
+
+678
+00:32:26,759 --> 00:32:28,720
+so there's a lot of
+different-- and there's
+
+679
+00:32:28,720 --> 00:32:32,529
+a whole industry actually
+that is primarily
+
+680
+00:32:32,529 --> 00:32:36,039
+focused on providing
+test equipment, sensors,
+
+681
+00:32:36,039 --> 00:32:37,899
+data logging equipment.
+
+682
+00:32:37,900 --> 00:32:43,500
+It's a big industry not just
+in aerospace, but throughout.
+
+683
+00:32:43,500 --> 00:32:47,369
+OK, so I'd like to do a little
+turn to your partner exercise.
+
+684
+00:32:47,369 --> 00:32:51,839
+And the question is I want to
+ask you what kind of testing
+
+685
+00:32:51,839 --> 00:32:54,509
+have you been
+involved in the past.
+
+686
+00:32:54,509 --> 00:32:58,619
+And if this was like in product
+design, product development,
+
+687
+00:32:58,619 --> 00:32:59,279
+that's fine.
+
+688
+00:32:59,279 --> 00:33:02,369
+If it was for an internship,
+but even at the University
+
+689
+00:33:02,369 --> 00:33:05,519
+itself, if you did
+some experimental work
+
+690
+00:33:05,519 --> 00:33:10,059
+and experimental testing as part
+of research, that's fine too.
+
+691
+00:33:10,059 --> 00:33:11,289
+You can talk about that too.
+
+692
+00:33:11,289 --> 00:33:14,559
+So what kind of testing have
+you been involved in the past?
+
+693
+00:33:14,559 --> 00:33:16,539
+What was the purpose
+of the testing?
+
+694
+00:33:16,539 --> 00:33:17,589
+What were the challenges?
+
+695
+00:33:17,589 --> 00:33:18,549
+What went well?
+
+696
+00:33:18,549 --> 00:33:19,659
+What were the results?
+
+697
+00:33:19,660 --> 00:33:23,380
+Maybe if it didn't go
+well, talk about that too.
+
+698
+00:33:23,380 --> 00:33:25,330
+All right, good.
+
+699
+00:33:25,329 --> 00:33:28,329
+So let's see, we're going
+to go back and forth.
+
+700
+00:33:28,329 --> 00:33:30,699
+So who wants to
+start here at MIT?
+
+701
+00:33:30,700 --> 00:33:32,110
+Who has a good story to tell?
+
+702
+00:33:32,109 --> 00:33:33,639
+Go ahead.
+
+703
+00:33:33,640 --> 00:33:36,250
+AUDIENCE: So I worked
+on the ground station
+
+704
+00:33:36,250 --> 00:33:38,650
+side of the Lunar Laser
+Communication Demonstration
+
+705
+00:33:38,650 --> 00:33:41,259
+program that recently flew.
+
+706
+00:33:41,259 --> 00:33:44,900
+So I was involved in
+assembling an integration,
+
+707
+00:33:44,900 --> 00:33:47,350
+but also doing verification
+testing in the lab
+
+708
+00:33:47,349 --> 00:33:49,149
+and at our field
+site, but then we
+
+709
+00:33:49,150 --> 00:33:51,640
+did validation when we
+be moved out to the field
+
+710
+00:33:51,640 --> 00:33:53,050
+site in New Mexico.
+
+711
+00:33:53,049 --> 00:33:57,220
+So I was involved in the whole
+process and it was neat to see.
+
+712
+00:33:57,220 --> 00:33:58,720
+And we had to go
+into the clean room
+
+713
+00:33:58,720 --> 00:34:00,553
+a few times to adjust
+the optics, because we
+
+714
+00:34:00,553 --> 00:34:02,670
+saw that there weren't
+meeting requirements.
+
+715
+00:34:02,670 --> 00:34:03,670
+OLIVIER DE WECK:
+The reflector that
+
+716
+00:34:03,670 --> 00:34:05,239
+was left by the
+astronauts, are you
+
+717
+00:34:05,239 --> 00:34:07,279
+using the reflector that
+was left on the surface?
+
+718
+00:34:07,279 --> 00:34:09,579
+AUDIENCE: No, this was--
+
+719
+00:34:09,579 --> 00:34:11,909
+we were using just
+like [INAUDIBLE]
+
+720
+00:34:11,909 --> 00:34:15,429
+like optical alignment
+stuff in the lab.
+
+721
+00:34:15,429 --> 00:34:19,480
+And then when we were
+out at the field site,
+
+722
+00:34:19,480 --> 00:34:23,590
+we were utilizing
+guidestars to align optics.
+
+723
+00:34:23,590 --> 00:34:25,449
+OLIVIER DE WECK: So what was--
+
+724
+00:34:25,449 --> 00:34:26,139
+what went well?
+
+725
+00:34:26,139 --> 00:34:28,829
+Was there a big difference
+between indoor and outdoor?
+
+726
+00:34:28,829 --> 00:34:31,360
+What surprised you
+in these tests?
+
+727
+00:34:31,360 --> 00:34:33,861
+AUDIENCE: Yeah,
+so once you can do
+
+728
+00:34:33,860 --> 00:34:35,859
+the alignment of the
+individual telescopes which
+
+729
+00:34:35,860 --> 00:34:38,349
+were 20 inches in
+diameter, you can
+
+730
+00:34:38,349 --> 00:34:40,809
+do that well in the laboratory,
+but then every time you
+
+731
+00:34:40,809 --> 00:34:42,400
+assemble and
+disassemble the system,
+
+732
+00:34:42,400 --> 00:34:45,860
+you change the alignment of
+them relative to each other.
+
+733
+00:34:45,860 --> 00:34:47,739
+So there was a lot
+of attention paid
+
+734
+00:34:47,739 --> 00:34:52,179
+to making sure that we could
+replicate the alignment
+
+735
+00:34:52,179 --> 00:34:53,349
+to a certain extent.
+
+736
+00:34:53,349 --> 00:34:57,039
+So that was very difficult in a
+laboratory setting to get done,
+
+737
+00:34:57,039 --> 00:34:58,916
+but once we did that,
+we were able to have
+
+738
+00:34:58,916 --> 00:35:01,000
+fair confidence that when
+we were out in the field
+
+739
+00:35:01,000 --> 00:35:02,559
+that we could match that.
+
+740
+00:35:02,559 --> 00:35:04,929
+OLIVIER DE WECK:
+Very good, very good.
+
+741
+00:35:04,929 --> 00:35:05,710
+What about EPFL?
+
+742
+00:35:05,710 --> 00:35:10,019
+
+
+743
+00:35:10,019 --> 00:35:13,210
+AUDIENCE: Well, I
+did an internship
+
+744
+00:35:13,210 --> 00:35:17,121
+in an aluminum-roll
+product factory.
+
+745
+00:35:17,121 --> 00:35:19,119
+So basically, I was doing
+natural science there.
+
+746
+00:35:19,119 --> 00:35:22,949
+And there was a whole
+bunch of tests to do.
+
+747
+00:35:22,949 --> 00:35:28,019
+And well, all the tests
+was about heat treatments
+
+748
+00:35:28,019 --> 00:35:30,960
+and different tempering.
+
+749
+00:35:30,960 --> 00:35:34,440
+And actually, the alloy that was
+already produced in the factory
+
+750
+00:35:34,440 --> 00:35:38,773
+was not the best of
+what we can have of it.
+
+751
+00:35:38,773 --> 00:35:40,690
+And it [? applied ?] to
+change the [INAUDIBLE]
+
+752
+00:35:40,690 --> 00:35:43,139
+with the heat treatment
+for a few seconds,
+
+753
+00:35:43,139 --> 00:35:45,943
+naturally, on the
+line of production.
+
+754
+00:35:45,943 --> 00:35:49,529
+Adding this amount of
+time was totally critical
+
+755
+00:35:49,530 --> 00:35:52,019
+because it was continuous.
+
+756
+00:35:52,019 --> 00:35:55,230
+And the rolled
+aluminum, if it spends
+
+757
+00:35:55,230 --> 00:35:59,559
+a bit more time in the
+oven, it would melt.
+
+758
+00:35:59,559 --> 00:36:04,769
+And that's a bit like for
+the Swiss plane, actually.
+
+759
+00:36:04,769 --> 00:36:06,469
+Like I discussed
+with my boss, saying
+
+760
+00:36:06,469 --> 00:36:09,909
+that we should maybe change
+the original power meter.
+
+761
+00:36:09,909 --> 00:36:12,626
+But at the end, it was really
+critical to change something
+
+762
+00:36:12,626 --> 00:36:15,657
+on the line because it
+could have cost a lot,
+
+763
+00:36:15,657 --> 00:36:19,995
+like in the modification of the
+oven or the general machine.
+
+764
+00:36:19,994 --> 00:36:22,619
+PROFESSOR: So were
+those tests successful?
+
+765
+00:36:22,619 --> 00:36:24,489
+Were these
+heat-treatment changes
+
+766
+00:36:24,489 --> 00:36:26,219
+eventually implemented
+on the line?
+
+767
+00:36:26,219 --> 00:36:29,685
+Or did the tests reveal that
+it would be too difficult?
+
+768
+00:36:29,686 --> 00:36:31,800
+AUDIENCE: Unfortunately,
+I don't know because I
+
+769
+00:36:31,800 --> 00:36:33,049
+finished my internship before.
+
+770
+00:36:33,050 --> 00:36:34,360
+PROFESSOR: OK.
+
+771
+00:36:34,360 --> 00:36:37,240
+Well, you should find
+out whether it worked out
+
+772
+00:36:37,239 --> 00:36:37,839
+in the end.
+
+773
+00:36:37,840 --> 00:36:39,940
+Very good.
+
+774
+00:36:39,940 --> 00:36:44,159
+Back to MIT, any other examples
+people want to mention?
+
+775
+00:36:44,159 --> 00:36:45,210
+Test experiences?
+
+776
+00:36:45,210 --> 00:36:47,230
+Yes please, go ahead.
+
+777
+00:36:47,230 --> 00:36:49,599
+AUDIENCE: We bought
+the CASA-295.
+
+778
+00:36:49,599 --> 00:36:52,190
+It's a small cargo aircraft.
+
+779
+00:36:52,190 --> 00:36:55,139
+And we get we got involved
+in the development
+
+780
+00:36:55,139 --> 00:36:57,275
+of its simulator.
+
+781
+00:36:57,275 --> 00:36:58,899
+It was pretty different,
+the simulator.
+
+782
+00:36:58,900 --> 00:37:01,960
+Because as the aircraft
+has no fly-by wiring,
+
+783
+00:37:01,960 --> 00:37:03,099
+it is pretty light.
+
+784
+00:37:03,099 --> 00:37:06,909
+So lots of hydraulics
+to de-motion.
+
+785
+00:37:06,909 --> 00:37:09,699
+And they brought the flight
+model from the factory.
+
+786
+00:37:09,699 --> 00:37:11,829
+And we applied the flight
+model to the simulator.
+
+787
+00:37:11,829 --> 00:37:13,840
+But it was not real enough.
+
+788
+00:37:13,840 --> 00:37:18,850
+So we had to go for flying,
+like 60 test flying points.
+
+789
+00:37:18,849 --> 00:37:22,269
+And we have to go
+back to the simulator
+
+790
+00:37:22,269 --> 00:37:27,079
+to apply these points to tailor
+the simulator to meet reality.
+
+791
+00:37:27,079 --> 00:37:27,799
+PROFESSOR: I see.
+
+792
+00:37:27,800 --> 00:37:30,700
+So the purpose of this
+testing-- because the plane
+
+793
+00:37:30,699 --> 00:37:32,919
+itself had already been
+certified, it sounds like.
+
+794
+00:37:32,920 --> 00:37:33,289
+AUDIENCE: Yes.
+
+795
+00:37:33,289 --> 00:37:34,210
+PROFESSOR: It's Spanish, right?
+
+796
+00:37:34,210 --> 00:37:35,110
+Spanish airplane?
+
+797
+00:37:35,110 --> 00:37:35,720
+AUDIENCE: Yes.
+
+798
+00:37:35,719 --> 00:37:38,859
+PROFESSOR: You tested
+it specifically
+
+799
+00:37:38,860 --> 00:37:41,920
+to get flight dynamics
+and other data to then
+
+800
+00:37:41,920 --> 00:37:44,320
+tune the simulator to be
+more reflective of reality.
+
+801
+00:37:44,320 --> 00:37:45,070
+AUDIENCE: Exactly.
+
+802
+00:37:45,070 --> 00:37:46,870
+Because the flight
+model from the factory
+
+803
+00:37:46,869 --> 00:37:49,255
+was not close to reality at all,
+
+804
+00:37:49,255 --> 00:37:51,730
+PROFESSOR: Very, very
+cool, very interesting.
+
+805
+00:37:51,730 --> 00:37:56,800
+So different purpose, of not
+testing for certification
+
+806
+00:37:56,800 --> 00:38:00,140
+of the first airplane, because
+it had already been certified,
+
+807
+00:38:00,139 --> 00:38:02,672
+but to get the simulator to
+be matching more closely.
+
+808
+00:38:02,672 --> 00:38:04,630
+AUDIENCE: It was development
+for the simulator.
+
+809
+00:38:04,630 --> 00:38:08,920
+Because it was sold afterwards
+as a type delta simulator.
+
+810
+00:38:08,920 --> 00:38:13,320
+So it was the development
+of the simulator.
+
+811
+00:38:13,320 --> 00:38:15,110
+PROFESSOR: OK.
+
+812
+00:38:15,110 --> 00:38:18,579
+Great, thank you
+for that example.
+
+813
+00:38:18,579 --> 00:38:20,590
+This all sounds pretty good.
+
+814
+00:38:20,590 --> 00:38:23,070
+Anybody involved
+in test failures?
+
+815
+00:38:23,070 --> 00:38:24,820
+You know, things
+that didn't go well?
+
+816
+00:38:24,820 --> 00:38:26,820
+Yes, [? Narik? ?]
+
+817
+00:38:26,820 --> 00:38:29,110
+AUDIENCE: Well, it was an
+interesting experience.
+
+818
+00:38:29,110 --> 00:38:31,750
+We were designing a
+wind turbine that we
+
+819
+00:38:31,750 --> 00:38:34,179
+were 3-D printing in undergrad.
+
+820
+00:38:34,179 --> 00:38:36,909
+And we had certain requirements
+on the wind turbine.
+
+821
+00:38:36,909 --> 00:38:39,969
+And we were supposed to test
+in the wind tunnel afterwards.
+
+822
+00:38:39,969 --> 00:38:44,379
+What happened was that the wind
+turbine matched our performance
+
+823
+00:38:44,380 --> 00:38:46,550
+prediction fairly closely.
+
+824
+00:38:46,550 --> 00:38:48,670
+But the generator and the
+electrical power system
+
+825
+00:38:48,670 --> 00:38:51,970
+that the test
+operators consisted of
+
+826
+00:38:51,969 --> 00:38:53,949
+wasn't designed to
+handle the current
+
+827
+00:38:53,949 --> 00:38:54,949
+that we were outputting.
+
+828
+00:38:54,949 --> 00:38:56,779
+So we caused a small fire.
+
+829
+00:38:56,780 --> 00:38:57,440
+PROFESSOR: OK.
+
+830
+00:38:57,440 --> 00:39:00,110
+[LAUGHS]
+
+831
+00:39:00,110 --> 00:39:02,662
+So this was the test
+equipment itself?
+
+832
+00:39:02,661 --> 00:39:03,869
+AUDIENCE: The test equipment.
+
+833
+00:39:03,869 --> 00:39:05,259
+PROFESSOR: Not the artifact
+you were testing failed--
+
+834
+00:39:05,260 --> 00:39:05,885
+AUDIENCE: Yeah.
+
+835
+00:39:05,885 --> 00:39:07,840
+PROFESSOR: --but the
+test equipment around it,
+
+836
+00:39:07,840 --> 00:39:08,745
+because overload.
+
+837
+00:39:08,744 --> 00:39:10,569
+AUDIENCE: The
+interesting point was
+
+838
+00:39:10,570 --> 00:39:13,140
+that we had no control
+over the test equipment.
+
+839
+00:39:13,139 --> 00:39:14,920
+It was managed by
+the university.
+
+840
+00:39:14,920 --> 00:39:18,190
+So within the requirements
+that they gave us,
+
+841
+00:39:18,190 --> 00:39:22,990
+the power output possible
+didn't match what they had.
+
+842
+00:39:22,989 --> 00:39:24,159
+PROFESSOR: OK, great.
+
+843
+00:39:24,159 --> 00:39:25,190
+Great example.
+
+844
+00:39:25,190 --> 00:39:27,579
+So the test equipment
+and the test artifact
+
+845
+00:39:27,579 --> 00:39:30,759
+need to be matched to
+the test conditions.
+
+846
+00:39:30,760 --> 00:39:32,950
+Excellent, good.
+
+847
+00:39:32,949 --> 00:39:35,199
+I do hope that you those
+of you that have not
+
+848
+00:39:35,199 --> 00:39:38,739
+had a lot of test experience,
+that you get to experience it.
+
+849
+00:39:38,739 --> 00:39:41,739
+It's a lot of work,
+slow, tedious.
+
+850
+00:39:41,739 --> 00:39:46,509
+But in many cases, despite
+modeling and simulation,
+
+851
+00:39:46,510 --> 00:39:50,410
+there's still a big role
+to play for actual testing.
+
+852
+00:39:50,409 --> 00:39:54,339
+OK, so let's talk
+about aircraft testing.
+
+853
+00:39:54,340 --> 00:39:56,950
+Typically we distinguish
+between ground testing
+
+854
+00:39:56,949 --> 00:39:58,480
+and flight testing.
+
+855
+00:39:58,480 --> 00:40:01,630
+Weights and balance,
+I had some experience
+
+856
+00:40:01,630 --> 00:40:03,309
+with this on the F-18 program.
+
+857
+00:40:03,309 --> 00:40:07,119
+You think this is the most
+trivial testing there could
+
+858
+00:40:07,119 --> 00:40:10,630
+possibly be, you just put
+an airplane on a scale
+
+859
+00:40:10,630 --> 00:40:12,010
+and that's it.
+
+860
+00:40:12,010 --> 00:40:15,070
+Well, it turns out it's actually
+more involved than you think.
+
+861
+00:40:15,070 --> 00:40:16,690
+First of all,
+airplanes are very big.
+
+862
+00:40:16,690 --> 00:40:18,940
+They're heavy, multi-tons.
+
+863
+00:40:18,940 --> 00:40:21,579
+And typically it's
+not just one scale.
+
+864
+00:40:21,579 --> 00:40:25,059
+You have several scales you
+put on the landing gear.
+
+865
+00:40:25,059 --> 00:40:28,420
+So the scales need to
+be properly calibrated.
+
+866
+00:40:28,420 --> 00:40:30,490
+If you have differences
+in calibration
+
+867
+00:40:30,489 --> 00:40:32,889
+of the different scales,
+you have an issue.
+
+868
+00:40:32,889 --> 00:40:35,299
+You need to determine the mass.
+
+869
+00:40:35,300 --> 00:40:37,420
+Not just the mass, but the CG.
+
+870
+00:40:37,420 --> 00:40:39,099
+And then the most
+difficult thing
+
+871
+00:40:39,099 --> 00:40:42,610
+to experimentally determine,
+at least in a 1G field,
+
+872
+00:40:42,610 --> 00:40:46,570
+is the inertia matrix, if you
+need to experimentally get
+
+873
+00:40:46,570 --> 00:40:47,490
+the inertia matrix.
+
+874
+00:40:47,489 --> 00:40:51,569
+Do you remember
+your Ixx, Ixy, Iyy?
+
+875
+00:40:51,570 --> 00:40:55,052
+The inertia matrix is tricky
+because you typically then
+
+876
+00:40:55,052 --> 00:40:56,260
+have to suspend the airplane.
+
+877
+00:40:56,260 --> 00:40:59,350
+
+
+878
+00:40:59,349 --> 00:41:02,739
+And just the presence of the
+cables and the suspension
+
+879
+00:41:02,739 --> 00:41:05,649
+will pollute the
+real inertia matrix.
+
+880
+00:41:05,650 --> 00:41:08,750
+And you have to subtract out
+the effect of the suspension
+
+881
+00:41:08,750 --> 00:41:09,250
+system.
+
+882
+00:41:09,250 --> 00:41:13,179
+So something that seems super
+trivial, weights and balances--
+
+883
+00:41:13,179 --> 00:41:17,919
+you just stand on the scale
+in the morning, there it is--
+
+884
+00:41:17,920 --> 00:41:19,300
+is actually very tricky.
+
+885
+00:41:19,300 --> 00:41:21,850
+And there are people,
+that's all they do.
+
+886
+00:41:21,849 --> 00:41:23,650
+They do weights
+and balance testing
+
+887
+00:41:23,650 --> 00:41:26,170
+for spacecraft, aircraft.
+
+888
+00:41:26,170 --> 00:41:30,240
+And it's basically a science.
+
+889
+00:41:30,239 --> 00:41:32,729
+Engine testing, I'll
+show you some pictures.
+
+890
+00:41:32,730 --> 00:41:35,550
+This is done in what's
+called the Hush House.
+
+891
+00:41:35,550 --> 00:41:40,080
+So Hush House is
+heavily insulated.
+
+892
+00:41:40,079 --> 00:41:42,900
+You run an engine through
+all of its test conditions,
+
+893
+00:41:42,900 --> 00:41:44,740
+its operational conditions.
+
+894
+00:41:44,739 --> 00:41:46,679
+And then you integrate
+it into the airplane
+
+895
+00:41:46,679 --> 00:41:48,399
+and you run it outdoors.
+
+896
+00:41:48,400 --> 00:41:52,980
+Fatigue testing, this has been
+a big issue on the Swiss F-18.
+
+897
+00:41:52,980 --> 00:41:55,469
+But in general, making
+sure that the airplane
+
+898
+00:41:55,469 --> 00:41:59,069
+can satisfy all the static
+and dynamic structural load
+
+899
+00:41:59,070 --> 00:42:00,120
+conditions.
+
+900
+00:42:00,119 --> 00:42:03,239
+Avionics checkout, this
+is very, very involved.
+
+901
+00:42:03,239 --> 00:42:06,239
+As we get more
+and more displays,
+
+902
+00:42:06,239 --> 00:42:10,859
+mission-control computers,
+all of the avionic suite
+
+903
+00:42:10,860 --> 00:42:11,940
+needs to be checked out.
+
+904
+00:42:11,940 --> 00:42:16,530
+Essentially every function,
+every button, every menu item
+
+905
+00:42:16,530 --> 00:42:17,970
+needs to be tested.
+
+906
+00:42:17,969 --> 00:42:20,276
+And the tricky thing
+is interactions
+
+907
+00:42:20,277 --> 00:42:21,735
+among different
+pieces of avionics.
+
+908
+00:42:21,735 --> 00:42:25,710
+So you can't just test
+each box in isolation.
+
+909
+00:42:25,710 --> 00:42:29,550
+You also have to look
+at the interactions
+
+910
+00:42:29,550 --> 00:42:34,769
+of different pieces of
+avionics, the flight control
+
+911
+00:42:34,769 --> 00:42:36,780
+software, or the
+flight software that
+
+912
+00:42:36,780 --> 00:42:39,480
+is loaded in each of these
+avionics boxes needs to be
+
+913
+00:42:39,480 --> 00:42:41,280
+in the right configuration.
+
+914
+00:42:41,280 --> 00:42:43,860
+It's a very big
+combinatorial challenge
+
+915
+00:42:43,860 --> 00:42:46,260
+to do avionics
+checkout these days.
+
+916
+00:42:46,260 --> 00:42:48,450
+And then finally,
+pre-flight testing.
+
+917
+00:42:48,449 --> 00:42:53,129
+So this is everything you can do
+on the ground, run the engines,
+
+918
+00:42:53,130 --> 00:42:56,039
+taxi with the
+airplanes, basically
+
+919
+00:42:56,039 --> 00:43:00,179
+turn all the equipment on,
+turn it off, do the cycling.
+
+920
+00:43:00,179 --> 00:43:03,779
+You could do a lot of testing
+before you actually fly.
+
+921
+00:43:03,780 --> 00:43:07,150
+Flight testing itself falls
+into different categories.
+
+922
+00:43:07,150 --> 00:43:10,650
+So flight performance
+testing, rate of climb,
+
+923
+00:43:10,650 --> 00:43:16,050
+range, can you meet each point
+in your prescribed performance
+
+924
+00:43:16,050 --> 00:43:17,160
+envelope?
+
+925
+00:43:17,159 --> 00:43:21,659
+Stability and control, this
+is where test pilots typically
+
+926
+00:43:21,659 --> 00:43:24,315
+earn their living
+putting airplanes
+
+927
+00:43:24,315 --> 00:43:29,369
+into stall conditions,
+recovering from stalls,
+
+928
+00:43:29,369 --> 00:43:30,779
+trimming.
+
+929
+00:43:30,780 --> 00:43:32,519
+Flutter testing is a big deal.
+
+930
+00:43:32,519 --> 00:43:36,090
+So flutter is a phenomenon
+whereby at high speeds
+
+931
+00:43:36,090 --> 00:43:40,650
+you have a coupling between
+the structural deformations
+
+932
+00:43:40,650 --> 00:43:44,099
+of the airplane and the actual
+excitation of, for example,
+
+933
+00:43:44,099 --> 00:43:45,119
+the wings.
+
+934
+00:43:45,119 --> 00:43:46,769
+Flutter can be very dangerous.
+
+935
+00:43:46,769 --> 00:43:49,750
+If you hit a resonance
+at high speed
+
+936
+00:43:49,750 --> 00:43:51,389
+you can actually
+destroy the airplane
+
+937
+00:43:51,389 --> 00:43:53,219
+because of an instability.
+
+938
+00:43:53,219 --> 00:43:58,259
+So flutter testing is also
+very, very interesting
+
+939
+00:43:58,260 --> 00:43:59,490
+and very tricky.
+
+940
+00:43:59,489 --> 00:44:00,959
+And then finally,
+this is primarily
+
+941
+00:44:00,960 --> 00:44:05,909
+for military airplanes, weapons
+testing, both guns, missiles,
+
+942
+00:44:05,909 --> 00:44:09,359
+bombs, live fire testing--
+
+943
+00:44:09,360 --> 00:44:15,210
+sometimes also using
+airplanes that are towed--
+
+944
+00:44:15,210 --> 00:44:19,590
+simulated targets, and then LO
+stands for a Low Observability.
+
+945
+00:44:19,590 --> 00:44:22,829
+So this is essentially
+all the new generation
+
+946
+00:44:22,829 --> 00:44:25,920
+of military airplanes have
+measures to reduce their radar
+
+947
+00:44:25,920 --> 00:44:29,700
+signature, or even make them
+invisible or quasi-invisible
+
+948
+00:44:29,699 --> 00:44:31,199
+to radar.
+
+949
+00:44:31,199 --> 00:44:36,329
+And you know, a lot of
+this stuff is classified.
+
+950
+00:44:36,329 --> 00:44:39,779
+But actually checking that an
+airplane is invisible on radar
+
+951
+00:44:39,780 --> 00:44:42,060
+or has truly low
+observability, there's
+
+952
+00:44:42,059 --> 00:44:43,860
+a lot of testing
+involved in that.
+
+953
+00:44:43,860 --> 00:44:47,760
+And that's also quite
+expensive and very involved.
+
+954
+00:44:47,760 --> 00:44:50,940
+So let me show you
+just some pictures
+
+955
+00:44:50,940 --> 00:44:52,539
+that I've collected
+over the years.
+
+956
+00:44:52,539 --> 00:44:54,730
+This is a wind
+tunnel test model.
+
+957
+00:44:54,730 --> 00:44:57,780
+This is a model
+that was developed
+
+958
+00:44:57,780 --> 00:44:59,880
+as part of the F-18 program.
+
+959
+00:44:59,880 --> 00:45:03,210
+This is about 1995, vintage.
+
+960
+00:45:03,210 --> 00:45:09,012
+This model, it's a
+subsonic wind tunnel model.
+
+961
+00:45:09,012 --> 00:45:10,470
+And you can see in
+yellow, you have
+
+962
+00:45:10,469 --> 00:45:15,179
+all these probes and radomes
+and things like this.
+
+963
+00:45:15,179 --> 00:45:19,009
+So it's basically to check
+whether any modifications you
+
+964
+00:45:19,010 --> 00:45:22,110
+make to the airplane will affect
+its performance in airflow.
+
+965
+00:45:22,110 --> 00:45:24,390
+This is for wind tunnel testing.
+
+966
+00:45:24,389 --> 00:45:27,089
+This model, by the way,
+just building this model
+
+967
+00:45:27,090 --> 00:45:29,820
+is about half a million dollars.
+
+968
+00:45:29,820 --> 00:45:30,840
+It's very accurate.
+
+969
+00:45:30,840 --> 00:45:33,380
+It's very precise.
+
+970
+00:45:33,380 --> 00:45:34,460
+This is a picture--
+
+971
+00:45:34,460 --> 00:45:35,679
+yes?
+
+972
+00:45:35,679 --> 00:45:36,254
+Go ahead?
+
+973
+00:45:36,255 --> 00:45:39,110
+AUDIENCE: Is that model
+full scale or half scale?
+
+974
+00:45:39,110 --> 00:45:43,010
+PROFESSOR: No it's, I want to
+say, like 1/8 scale, something
+
+975
+00:45:43,010 --> 00:45:43,740
+like this.
+
+976
+00:45:43,739 --> 00:45:45,579
+Yeah.
+
+977
+00:45:45,579 --> 00:45:47,860
+OK, here's the Hush House
+that I was talking about.
+
+978
+00:45:47,860 --> 00:45:49,480
+This is in St. Louis.
+
+979
+00:45:49,480 --> 00:45:53,469
+So you can see that the
+airplane is not painted yet.
+
+980
+00:45:53,469 --> 00:45:56,919
+And only one engine at a time.
+
+981
+00:45:56,920 --> 00:46:00,400
+So the engine is being, in this
+case, with full afterburner,
+
+982
+00:46:00,400 --> 00:46:05,320
+you can see the airplane itself
+is secured with these chokes
+
+983
+00:46:05,320 --> 00:46:06,430
+here.
+
+984
+00:46:06,429 --> 00:46:08,710
+And there's load
+cells in these chokes.
+
+985
+00:46:08,710 --> 00:46:11,079
+So as you fire up
+the engine, you
+
+986
+00:46:11,079 --> 00:46:14,230
+can measure the thrust by
+the load cells that are
+
+987
+00:46:14,230 --> 00:46:19,990
+attached to these chokes here.
+
+988
+00:46:19,989 --> 00:46:23,019
+You also see that there's
+these cables running
+
+989
+00:46:23,019 --> 00:46:24,599
+in and out of the airplane.
+
+990
+00:46:24,599 --> 00:46:27,730
+So all the sensors,
+everything, and the engine
+
+991
+00:46:27,730 --> 00:46:32,800
+is put through its full
+different operating profiles.
+
+992
+00:46:32,800 --> 00:46:36,039
+And a lot of sensor
+data is recorded
+
+993
+00:46:36,039 --> 00:46:39,519
+to make sure that the engine
+responds appropriately,
+
+994
+00:46:39,519 --> 00:46:42,400
+it has the right thrust for
+the right throttle setting,
+
+995
+00:46:42,400 --> 00:46:46,480
+the fuel consumption, all the
+temperatures in the engine,
+
+996
+00:46:46,480 --> 00:46:51,340
+that everything is
+nominal, essentially.
+
+997
+00:46:51,340 --> 00:46:55,390
+Live Fire Testing, this is a
+Maverick missile being fired,
+
+998
+00:46:55,389 --> 00:46:58,029
+an air-to-ground missile.
+
+999
+00:46:58,030 --> 00:47:01,900
+As you can imagine, there are
+special ranges and test sites
+
+1000
+00:47:01,900 --> 00:47:03,139
+for doing this kind of work.
+
+1001
+00:47:03,139 --> 00:47:07,269
+So in the US, one of the most
+well known as China Lake,
+
+1002
+00:47:07,269 --> 00:47:09,679
+out in California.
+
+1003
+00:47:09,679 --> 00:47:13,599
+You have to reserve months
+and sometimes years ahead.
+
+1004
+00:47:13,599 --> 00:47:16,659
+So if you want to do like
+a live fire test campaign,
+
+1005
+00:47:16,659 --> 00:47:20,319
+you have to reserve the
+range at least 18 months
+
+1006
+00:47:20,320 --> 00:47:22,210
+to 2 years ahead of time.
+
+1007
+00:47:22,210 --> 00:47:25,389
+Because a lot of other services,
+a lot of other programs
+
+1008
+00:47:25,389 --> 00:47:28,029
+are using the same facilities.
+
+1009
+00:47:28,030 --> 00:47:29,950
+In Europe, it's a little harder.
+
+1010
+00:47:29,949 --> 00:47:32,299
+Definitely in Switzerland,
+because the country
+
+1011
+00:47:32,300 --> 00:47:36,460
+is so small and dense
+and highly populated,
+
+1012
+00:47:36,460 --> 00:47:38,980
+you can't test live
+missiles in Switzerland.
+
+1013
+00:47:38,980 --> 00:47:41,829
+You can do guns, air to ground.
+
+1014
+00:47:41,829 --> 00:47:44,500
+But in order to do
+missile testing, typically
+
+1015
+00:47:44,500 --> 00:47:48,130
+that's done here in the US,
+or in a more limited fashion,
+
+1016
+00:47:48,130 --> 00:47:51,400
+in Scandinavia, like in
+Sweden, in northern Sweden,
+
+1017
+00:47:51,400 --> 00:47:54,550
+there are some test
+ranges up there.
+
+1018
+00:47:54,550 --> 00:47:58,000
+This is the most expensive
+kind of testing you can do.
+
+1019
+00:47:58,000 --> 00:48:00,789
+So a single test like
+the one shown here,
+
+1020
+00:48:00,789 --> 00:48:02,829
+a single test like
+this will probably
+
+1021
+00:48:02,829 --> 00:48:06,219
+cost several million dollars.
+
+1022
+00:48:06,219 --> 00:48:09,189
+Not just the airplane
+and the weapon itself,
+
+1023
+00:48:09,190 --> 00:48:12,460
+but all the test
+procedures, the protocols,
+
+1024
+00:48:12,460 --> 00:48:16,780
+airplanes that observe it
+from all kinds of angles.
+
+1025
+00:48:16,780 --> 00:48:18,430
+It's very, very involved.
+
+1026
+00:48:18,429 --> 00:48:20,529
+And because it's
+so expensive, you
+
+1027
+00:48:20,530 --> 00:48:23,222
+will typically only do
+it for something new
+
+1028
+00:48:23,222 --> 00:48:24,430
+that you haven't done before.
+
+1029
+00:48:24,429 --> 00:48:26,440
+Either a new weapon,
+or a new weapon
+
+1030
+00:48:26,440 --> 00:48:29,090
+integrated on a new
+platform and so forth.
+
+1031
+00:48:29,090 --> 00:48:31,660
+And obviously, it's
+very interesting.
+
+1032
+00:48:31,659 --> 00:48:34,649
+But it's very involved.
+
+1033
+00:48:34,650 --> 00:48:35,702
+Yes?
+
+1034
+00:48:35,702 --> 00:48:37,720
+AUDIENCE: Are they
+just testing accuracy,
+
+1035
+00:48:37,719 --> 00:48:40,439
+Or that the two
+things work together?
+
+1036
+00:48:40,440 --> 00:48:42,480
+What are they
+looking for, really?
+
+1037
+00:48:42,480 --> 00:48:44,050
+PROFESSOR: The
+first thing you look
+
+1038
+00:48:44,050 --> 00:48:46,030
+for is does the weapon fire?
+
+1039
+00:48:46,030 --> 00:48:49,150
+So do you have all
+the electronics?
+
+1040
+00:48:49,150 --> 00:48:50,019
+All the signals?
+
+1041
+00:48:50,019 --> 00:48:51,605
+The wire bundles?
+
+1042
+00:48:51,605 --> 00:48:52,480
+Did you get it right?
+
+1043
+00:48:52,480 --> 00:48:54,369
+Is there an end-to-end
+functionality?
+
+1044
+00:48:54,369 --> 00:48:55,569
+That's number one.
+
+1045
+00:48:55,570 --> 00:48:57,550
+Number two, safety.
+
+1046
+00:48:57,550 --> 00:49:00,730
+Does the weapon separate
+properly from the aircraft?
+
+1047
+00:49:00,730 --> 00:49:02,380
+The worst thing that
+can happen to you
+
+1048
+00:49:02,380 --> 00:49:06,519
+is if you release the weapon and
+it collides with the airplane.
+
+1049
+00:49:06,519 --> 00:49:10,599
+And so you can see, the various
+angles and release conditions
+
+1050
+00:49:10,599 --> 00:49:12,579
+are very tightly prescribed.
+
+1051
+00:49:12,579 --> 00:49:17,110
+And so there's a separation,
+has to be proper.
+
+1052
+00:49:17,110 --> 00:49:20,680
+And then the third, of
+course, is accuracy.
+
+1053
+00:49:20,679 --> 00:49:22,629
+So within each of
+these tests, there
+
+1054
+00:49:22,630 --> 00:49:25,690
+are multiple sub-objectives
+that you would test for.
+
+1055
+00:49:25,690 --> 00:49:29,079
+But safety always comes first.
+
+1056
+00:49:29,079 --> 00:49:30,909
+OK, any questions?
+
+1057
+00:49:30,909 --> 00:49:34,629
+This was a little bit
+military-aviation heavy.
+
+1058
+00:49:34,630 --> 00:49:39,160
+If you're testing, whether it's
+a CASA airplane or a new Airbus
+
+1059
+00:49:39,159 --> 00:49:44,079
+or Boeing commercial airplane,
+many, many months of testing.
+
+1060
+00:49:44,079 --> 00:49:46,029
+They actually fly the routes.
+
+1061
+00:49:46,030 --> 00:49:49,510
+You'll fly New York to
+Singapore, to London.
+
+1062
+00:49:49,510 --> 00:49:51,700
+You would actually
+fly the real routes.
+
+1063
+00:49:51,699 --> 00:49:53,799
+You would record
+fuel consumption,
+
+1064
+00:49:53,800 --> 00:49:56,170
+a lot of parameters.
+
+1065
+00:49:56,170 --> 00:49:59,450
+Some of this testing
+is not very exciting.
+
+1066
+00:49:59,449 --> 00:50:02,169
+It's many, many, many,
+many hours in the air.
+
+1067
+00:50:02,170 --> 00:50:05,440
+But the key is that you have a
+lot of instruments and sensors
+
+1068
+00:50:05,440 --> 00:50:08,110
+during these tests that you may
+not have during regular flight
+
+1069
+00:50:08,110 --> 00:50:11,710
+operations, to really make
+sure there's no surprises.
+
+1070
+00:50:11,710 --> 00:50:16,570
+The airplane flies at least
+as good as the requirements
+
+1071
+00:50:16,570 --> 00:50:18,640
+that you promised
+your customers.
+
+1072
+00:50:18,639 --> 00:50:21,789
+And even then, when
+you think about what
+
+1073
+00:50:21,789 --> 00:50:24,039
+happened to the
+Dreamliner, the 787
+
+1074
+00:50:24,039 --> 00:50:26,110
+had a lot of battery problems.
+
+1075
+00:50:26,110 --> 00:50:29,710
+Because they used a lot
+of lithium ion batteries.
+
+1076
+00:50:29,710 --> 00:50:31,929
+There were overheating issues.
+
+1077
+00:50:31,929 --> 00:50:34,359
+Some of these problems
+didn't show up in testing.
+
+1078
+00:50:34,360 --> 00:50:37,690
+They only showed up
+in early operations,
+
+1079
+00:50:37,690 --> 00:50:38,970
+once you had a fleet going.
+
+1080
+00:50:38,969 --> 00:50:41,063
+So it's not a guarantee
+because you're
+
+1081
+00:50:41,063 --> 00:50:42,730
+doing a lot of testing
+that you're going
+
+1082
+00:50:42,730 --> 00:50:45,940
+to catch all the problems.
+
+1083
+00:50:45,940 --> 00:50:47,980
+But you want to catch
+as many as you can.
+
+1084
+00:50:47,980 --> 00:50:49,081
+Yes?
+
+1085
+00:50:49,081 --> 00:50:50,969
+AUDIENCE: So my question
+was about the risk
+
+1086
+00:50:50,969 --> 00:50:57,359
+posture for larger airliners,
+for Boeing, the Airbuses.
+
+1087
+00:50:57,360 --> 00:50:59,829
+So for military aircraft,
+there is an escape method
+
+1088
+00:50:59,829 --> 00:51:01,259
+for the pilot.
+
+1089
+00:51:01,260 --> 00:51:04,200
+But for these larger
+aircraft, how much analysis
+
+1090
+00:51:04,199 --> 00:51:06,329
+do they do before they
+decide to go ahead and put
+
+1091
+00:51:06,329 --> 00:51:08,099
+a person inside?
+
+1092
+00:51:08,099 --> 00:51:10,219
+They do fly by wire beforehand?
+
+1093
+00:51:10,219 --> 00:51:11,969
+Is that possible. for
+such large aircraft?
+
+1094
+00:51:11,969 --> 00:51:16,889
+PROFESSOR: So that's
+where the ground testing,
+
+1095
+00:51:16,889 --> 00:51:19,659
+pre-flight testing
+becomes very important.
+
+1096
+00:51:19,659 --> 00:51:22,409
+So you basically taxi
+for many, many hours.
+
+1097
+00:51:22,409 --> 00:51:25,099
+All the flight control
+surfaces, all the engine,
+
+1098
+00:51:25,099 --> 00:51:26,699
+you have the Hush House testing.
+
+1099
+00:51:26,699 --> 00:51:28,739
+So you essentially
+try to do as much
+
+1100
+00:51:28,739 --> 00:51:32,339
+as you can on the ground before
+you do the maiden flight.
+
+1101
+00:51:32,340 --> 00:51:34,800
+All right, let's
+move to spacecraft.
+
+1102
+00:51:34,800 --> 00:51:36,230
+And it's kind of
+a similar thing.
+
+1103
+00:51:36,230 --> 00:51:37,980
+You can distinguish
+the ground testing
+
+1104
+00:51:37,980 --> 00:51:39,949
+versus on-orbit testing.
+
+1105
+00:51:39,949 --> 00:51:43,199
+So the ground testing is really
+not that different, weights
+
+1106
+00:51:43,199 --> 00:51:45,179
+and balance.
+
+1107
+00:51:45,179 --> 00:51:47,519
+The biggest thing is if
+your satellite is heavier
+
+1108
+00:51:47,519 --> 00:51:49,559
+than the launch capability
+of the launcher,
+
+1109
+00:51:49,559 --> 00:51:51,000
+you have a real problem.
+
+1110
+00:51:51,000 --> 00:51:55,230
+So the mass constraint is
+even tighter in spacecraft.
+
+1111
+00:51:55,230 --> 00:51:58,079
+Then, a lot of testing on
+antenna and communications.
+
+1112
+00:51:58,079 --> 00:52:00,750
+This is typically done
+in anechoic chambers
+
+1113
+00:52:00,750 --> 00:52:05,460
+in the near field, and then
+later in the far field.
+
+1114
+00:52:05,460 --> 00:52:07,800
+Vibration testing,
+that's the shake part.
+
+1115
+00:52:07,800 --> 00:52:11,220
+Thermal and vacuum-chamber
+testing, that's the bake part.
+
+1116
+00:52:11,219 --> 00:52:14,069
+And then you also have
+pre-launch testing,
+
+1117
+00:52:14,070 --> 00:52:16,309
+so off-pad and on-pad.
+
+1118
+00:52:16,309 --> 00:52:19,349
+Off-pad testing is the
+satellite or the spacecraft
+
+1119
+00:52:19,349 --> 00:52:21,779
+has already been shipped
+to the launch site,
+
+1120
+00:52:21,780 --> 00:52:22,890
+and it's hooked up.
+
+1121
+00:52:22,889 --> 00:52:25,739
+Like a patient in
+the hospital, it's
+
+1122
+00:52:25,739 --> 00:52:31,329
+hooked up to a lot of cables and
+power and cooling and so forth.
+
+1123
+00:52:31,329 --> 00:52:34,110
+And then when it's on the
+pad, it's pretty limited.
+
+1124
+00:52:34,110 --> 00:52:36,750
+So on the pad means the
+satellite or the spacecraft
+
+1125
+00:52:36,750 --> 00:52:39,780
+is already integrated
+into the launch vehicle.
+
+1126
+00:52:39,780 --> 00:52:41,519
+It's on the launchpad.
+
+1127
+00:52:41,519 --> 00:52:46,210
+And then that amount of testing
+you can do is very limited.
+
+1128
+00:52:46,210 --> 00:52:48,690
+So that's when we say
+off-pad, on-pad is,
+
+1129
+00:52:48,690 --> 00:52:50,820
+is the spacecraft
+already been integrated
+
+1130
+00:52:50,820 --> 00:52:53,080
+on the launcher or not?
+
+1131
+00:52:53,079 --> 00:52:55,679
+Once you launch to orbit,
+you got your eight minutes
+
+1132
+00:52:55,679 --> 00:52:56,969
+of terror.
+
+1133
+00:52:56,969 --> 00:52:59,309
+And hopefully the
+launch goes well
+
+1134
+00:52:59,309 --> 00:53:05,070
+and the spacecraft is released
+into its initial target orbit.
+
+1135
+00:53:05,070 --> 00:53:08,309
+And then you do a lot of other
+tests, like thruster testing.
+
+1136
+00:53:08,309 --> 00:53:09,929
+Can you do station keeping?
+
+1137
+00:53:09,929 --> 00:53:12,059
+Can you turn on and
+off the thrusters?
+
+1138
+00:53:12,059 --> 00:53:16,019
+You deploy all of your
+mechanisms, your antennas,
+
+1139
+00:53:16,019 --> 00:53:19,860
+your scientific instruments,
+and then your communications,
+
+1140
+00:53:19,860 --> 00:53:21,789
+communication and instruments.
+
+1141
+00:53:21,789 --> 00:53:25,019
+And we'll talk more next
+week, but this typically
+
+1142
+00:53:25,019 --> 00:53:26,659
+is called commissioning.
+
+1143
+00:53:26,659 --> 00:53:30,869
+You're commissioning a
+spacecraft before you actually
+
+1144
+00:53:30,869 --> 00:53:32,243
+turn it over to the users.
+
+1145
+00:53:32,244 --> 00:53:33,660
+And that commissioning
+phase could
+
+1146
+00:53:33,659 --> 00:53:37,829
+be anywhere from a few days
+to several weeks, or even
+
+1147
+00:53:37,829 --> 00:53:39,989
+a couple months.
+
+1148
+00:53:39,989 --> 00:53:43,669
+And again, you don't want
+to randomly put commands
+
+1149
+00:53:43,670 --> 00:53:44,630
+into your spacecraft.
+
+1150
+00:53:44,630 --> 00:53:47,599
+These test sequences,
+deployment sequences,
+
+1151
+00:53:47,599 --> 00:53:50,509
+are very, very, very
+carefully worked out.
+
+1152
+00:53:50,510 --> 00:53:52,400
+Every command,
+the order in which
+
+1153
+00:53:52,400 --> 00:53:55,760
+you send the commands have
+been worked out ahead of time.
+
+1154
+00:53:55,760 --> 00:53:57,890
+They've been simulated.
+
+1155
+00:53:57,889 --> 00:54:01,069
+And all you want to see
+here is confirmation
+
+1156
+00:54:01,070 --> 00:54:04,890
+that the spacecraft
+behaves as planned.
+
+1157
+00:54:04,889 --> 00:54:08,789
+Some pictures, so this is what
+typical spacecraft integration
+
+1158
+00:54:08,789 --> 00:54:10,570
+testing looks like.
+
+1159
+00:54:10,570 --> 00:54:13,200
+So this is in a
+cleanroom environment.
+
+1160
+00:54:13,199 --> 00:54:17,609
+You have people in bunny suits.
+
+1161
+00:54:17,610 --> 00:54:22,860
+And the idea is to not
+damage the spacecraft
+
+1162
+00:54:22,860 --> 00:54:25,640
+while you're doing the testing.
+
+1163
+00:54:25,639 --> 00:54:30,139
+This is a picture of the
+Clementine spacecraft.
+
+1164
+00:54:30,139 --> 00:54:34,599
+This is a radio frequency
+anechoic chamber testing.
+
+1165
+00:54:34,599 --> 00:54:36,670
+So you see these
+funny cones here.
+
+1166
+00:54:36,670 --> 00:54:39,130
+These are essentially
+foam cones.
+
+1167
+00:54:39,130 --> 00:54:43,210
+And the idea is to
+prevent multipath
+
+1168
+00:54:43,210 --> 00:54:46,010
+to prevent echoes
+in the test chamber,
+
+1169
+00:54:46,010 --> 00:54:49,450
+to test all of
+the antennas, EMI,
+
+1170
+00:54:49,449 --> 00:54:53,649
+electromagnetic interference
+and compatibility,
+
+1171
+00:54:53,650 --> 00:54:56,036
+charging and discharging
+of the spacecraft.
+
+1172
+00:54:56,036 --> 00:54:57,409
+This is one of
+the failure modes,
+
+1173
+00:54:57,409 --> 00:55:00,099
+is that you have high
+electrostatic charges that
+
+1174
+00:55:00,099 --> 00:55:01,929
+build up on a
+spacecraft, create a lot
+
+1175
+00:55:01,929 --> 00:55:05,649
+large voltage potential
+across the spacecraft.
+
+1176
+00:55:05,650 --> 00:55:09,230
+Some spacecraft have
+failed because of that.
+
+1177
+00:55:09,230 --> 00:55:14,230
+So all of these things you want
+to test in a very controlled
+
+1178
+00:55:14,230 --> 00:55:17,280
+environment.
+
+1179
+00:55:17,280 --> 00:55:20,640
+James Webb Space Telescope,
+I'll send you a link.
+
+1180
+00:55:20,639 --> 00:55:23,369
+I'll send you a
+link through email.
+
+1181
+00:55:23,369 --> 00:55:27,239
+There's a simulation of
+this on-orbit deployment.
+
+1182
+00:55:27,239 --> 00:55:30,059
+It truly is amazing.
+
+1183
+00:55:30,059 --> 00:55:34,799
+This spacecraft will be
+launched in a box, essentially.
+
+1184
+00:55:34,800 --> 00:55:39,120
+And the deployment sequence is
+very carefully choreographed.
+
+1185
+00:55:39,119 --> 00:55:42,449
+First, typically, you
+deploy your solar panels
+
+1186
+00:55:42,449 --> 00:55:43,889
+because you need power.
+
+1187
+00:55:43,889 --> 00:55:46,480
+Because you're only running
+on battery initially.
+
+1188
+00:55:46,480 --> 00:55:49,320
+So if your battery
+runs out before you've
+
+1189
+00:55:49,320 --> 00:55:51,450
+had a chance to deploy
+your solar panels
+
+1190
+00:55:51,449 --> 00:55:54,429
+and get fresh power into
+it, you're in big trouble.
+
+1191
+00:55:54,429 --> 00:55:56,879
+So typically,
+solar panels first.
+
+1192
+00:55:56,880 --> 00:55:59,280
+Then communications.
+
+1193
+00:55:59,280 --> 00:56:01,950
+And then you start deploying
+the other subsystems.
+
+1194
+00:56:01,949 --> 00:56:04,349
+So for James Webb,
+also very tricky,
+
+1195
+00:56:04,349 --> 00:56:07,139
+is this-- this is
+called the Sunshield.
+
+1196
+00:56:07,139 --> 00:56:12,269
+It's essentially thin
+layers of insulation.
+
+1197
+00:56:12,269 --> 00:56:16,139
+And the geometry
+is very important.
+
+1198
+00:56:16,139 --> 00:56:18,509
+The primary mirror,
+the secondary mirror,
+
+1199
+00:56:18,510 --> 00:56:20,160
+all these things
+need to be deployed
+
+1200
+00:56:20,159 --> 00:56:23,000
+with very, very high precision.
+
+1201
+00:56:23,000 --> 00:56:27,510
+And it's even to the point where
+this particular spacecraft is
+
+1202
+00:56:27,510 --> 00:56:31,530
+so lightweight that it cannot
+support its own weight in a 1G
+
+1203
+00:56:31,530 --> 00:56:32,860
+gravity field.
+
+1204
+00:56:32,860 --> 00:56:35,280
+So there is no way
+to test, end-to-end,
+
+1205
+00:56:35,280 --> 00:56:37,890
+the full deployment
+sequence on Earth.
+
+1206
+00:56:37,889 --> 00:56:40,569
+The first time it will
+happen is in orbit.
+
+1207
+00:56:40,570 --> 00:56:44,460
+Now, they've tested sub
+sequences or scaled models.
+
+1208
+00:56:44,460 --> 00:56:46,230
+For example, the
+Sunshield has actually
+
+1209
+00:56:46,230 --> 00:56:49,440
+been deployed at a smaller
+scale in a 1G field,
+
+1210
+00:56:49,440 --> 00:56:51,119
+but never the full thing.
+
+1211
+00:56:51,119 --> 00:56:55,859
+So this will be kind of scary,
+after an $8 billion investment.
+
+1212
+00:56:55,860 --> 00:56:59,360
+So let's hope for
+the best, 2018.
+
+1213
+00:56:59,360 --> 00:57:02,840
+So testing is good,
+testing, testing, testing.
+
+1214
+00:57:02,840 --> 00:57:05,960
+But testing also
+has its caveats.
+
+1215
+00:57:05,960 --> 00:57:11,190
+So caveat means
+limitations, essentially.
+
+1216
+00:57:11,190 --> 00:57:15,590
+So testing is critical,
+but it's very expensive.
+
+1217
+00:57:15,590 --> 00:57:19,000
+Think about test rigs,
+test chambers, sensors,
+
+1218
+00:57:19,000 --> 00:57:21,349
+DAQ is Data
+Acquisition Equipment.
+
+1219
+00:57:21,349 --> 00:57:23,579
+All this stuff is
+very expensive.
+
+1220
+00:57:23,579 --> 00:57:26,690
+And if you can reuse things
+between different programs,
+
+1221
+00:57:26,690 --> 00:57:27,320
+that helps.
+
+1222
+00:57:27,320 --> 00:57:30,769
+But still, how much testing
+should you do of components?
+
+1223
+00:57:30,769 --> 00:57:33,559
+So one of the
+comments, who mentioned
+
+1224
+00:57:33,559 --> 00:57:36,110
+the vendor, the supplier?
+
+1225
+00:57:36,110 --> 00:57:37,070
+One of you.
+
+1226
+00:57:37,070 --> 00:57:38,519
+You talked about it.
+
+1227
+00:57:38,519 --> 00:57:40,159
+And this is a key question.
+
+1228
+00:57:40,159 --> 00:57:42,929
+Do you trust the parts that
+come from your vendors?
+
+1229
+00:57:42,929 --> 00:57:45,409
+Or do you retest
+everything yourself?
+
+1230
+00:57:45,409 --> 00:57:47,779
+Calibration of
+sensors and equipment,
+
+1231
+00:57:47,780 --> 00:57:49,430
+if you've done some
+testing and you
+
+1232
+00:57:49,429 --> 00:57:53,269
+forgot to calibrate your
+displacement sensors,
+
+1233
+00:57:53,269 --> 00:57:55,880
+your thrust sensors,
+you didn't calibrate
+
+1234
+00:57:55,880 --> 00:57:58,460
+them or they're
+out of calibration,
+
+1235
+00:57:58,460 --> 00:58:00,230
+that's a big problem.
+
+1236
+00:58:00,230 --> 00:58:01,251
+That's a big problem.
+
+1237
+00:58:01,251 --> 00:58:02,960
+So before you start
+your tests, make sure
+
+1238
+00:58:02,960 --> 00:58:05,780
+that all your sensors
+are properly calibrated,
+
+1239
+00:58:05,780 --> 00:58:08,840
+or you can get the
+wrong conclusions.
+
+1240
+00:58:08,840 --> 00:58:10,900
+This is a mantra
+that's well-known.
+
+1241
+00:58:10,900 --> 00:58:13,930
+Test as you fly,
+fly as you test.
+
+1242
+00:58:13,929 --> 00:58:17,500
+Fundamentally, this means
+that the configuration
+
+1243
+00:58:17,500 --> 00:58:18,750
+of your item--
+
+1244
+00:58:18,750 --> 00:58:23,170
+a spacecraft, aircraft,
+medical device--
+
+1245
+00:58:23,170 --> 00:58:26,139
+the one that you test should be
+the same configuration as what
+
+1246
+00:58:26,139 --> 00:58:27,759
+you're actually going to fly.
+
+1247
+00:58:27,760 --> 00:58:32,200
+And it's often failures occur
+when the test went well,
+
+1248
+00:58:32,199 --> 00:58:34,089
+but then somebody
+tinkered with it
+
+1249
+00:58:34,090 --> 00:58:36,640
+and modified it before
+it actually flew.
+
+1250
+00:58:36,639 --> 00:58:39,889
+And that change actually
+caused a big problem.
+
+1251
+00:58:39,889 --> 00:58:43,179
+So make sure that
+your test conditions
+
+1252
+00:58:43,179 --> 00:58:46,569
+reflect the actual operations
+as closely as possible.
+
+1253
+00:58:46,570 --> 00:58:48,880
+Simulated tests, what
+do we mean by this?
+
+1254
+00:58:48,880 --> 00:58:52,059
+So simulated tests
+use dummy components.
+
+1255
+00:58:52,059 --> 00:58:55,840
+Maybe your full spacecraft
+or aircraft isn't ready yet,
+
+1256
+00:58:55,840 --> 00:58:57,460
+you don't have all the pieces.
+
+1257
+00:58:57,460 --> 00:58:59,500
+So you can still
+start testing, but you
+
+1258
+00:58:59,500 --> 00:59:03,610
+have to replace the missing
+pieces with dummy components.
+
+1259
+00:59:03,610 --> 00:59:07,030
+At least, they should reflect
+the right mass distribution.
+
+1260
+00:59:07,030 --> 00:59:09,310
+But maybe you can do more.
+
+1261
+00:59:09,309 --> 00:59:12,639
+Simulated operations,
+so the 0G versus 1G,
+
+1262
+00:59:12,639 --> 00:59:14,289
+is it representative?
+
+1263
+00:59:14,289 --> 00:59:19,250
+And then, what's often true is
+that you pass all your tests
+
+1264
+00:59:19,250 --> 00:59:21,219
+and then you still have
+failures in practice.
+
+1265
+00:59:21,219 --> 00:59:24,459
+And the failures often happen
+outside of the test scenarios
+
+1266
+00:59:24,460 --> 00:59:25,659
+that you had tested.
+
+1267
+00:59:25,659 --> 00:59:28,219
+So you have to be
+ready for that.
+
+1268
+00:59:28,219 --> 00:59:30,349
+But try to avoid that.
+
+1269
+00:59:30,349 --> 00:59:34,049
+So here's from Appendix E.
+This is called a Validation
+
+1270
+00:59:34,050 --> 00:59:35,700
+Requirements Matrix.
+
+1271
+00:59:35,699 --> 00:59:40,250
+Essentially what this
+is, is an organized way
+
+1272
+00:59:40,250 --> 00:59:42,920
+to organize your V&V
+activities, in terms
+
+1273
+00:59:42,920 --> 00:59:44,510
+of what's the activity?
+
+1274
+00:59:44,510 --> 00:59:45,650
+What's the objective?
+
+1275
+00:59:45,650 --> 00:59:49,250
+Which facility or lab
+will you do it in?
+
+1276
+00:59:49,250 --> 00:59:49,849
+What phase?
+
+1277
+00:59:49,849 --> 00:59:50,849
+Who's in charge?
+
+1278
+00:59:50,849 --> 00:59:52,579
+And what are the
+expected results?
+
+1279
+00:59:52,579 --> 00:59:53,789
+It's pretty straightforward.
+
+1280
+00:59:53,789 --> 00:59:57,559
+It's just a table to
+organize these activities.
+
+1281
+00:59:57,559 --> 01:00:01,730
+And then appendix I is
+your more formal V&V plan.
+
+1282
+01:00:01,730 --> 01:00:04,280
+This is a suggested
+outline for it.
+
+1283
+01:00:04,280 --> 01:00:05,780
+And I'll just say this.
+
+1284
+01:00:05,780 --> 01:00:08,780
+The degree to which you take
+Verification and Validation
+
+1285
+01:00:08,780 --> 01:00:11,240
+seriously and the
+resource you make
+
+1286
+01:00:11,239 --> 01:00:14,339
+available for it are
+critical for success.
+
+1287
+01:00:14,340 --> 01:00:18,260
+So how many dedicated
+Q&A personnel?
+
+1288
+01:00:18,260 --> 01:00:21,770
+What is the interaction
+in working with suppliers?
+
+1289
+01:00:21,769 --> 01:00:24,500
+Are you planning
+ahead for these tests?
+
+1290
+01:00:24,500 --> 01:00:27,320
+How close are you getting to
+actual end-to-end functional
+
+1291
+01:00:27,320 --> 01:00:28,550
+testing?
+
+1292
+01:00:28,550 --> 01:00:31,760
+Can you piggyback on existing
+facilities and equipment?
+
+1293
+01:00:31,760 --> 01:00:34,070
+How well do you document
+all the outcomes
+
+1294
+01:00:34,070 --> 01:00:36,590
+and follow up with
+discrepancies?
+
+1295
+01:00:36,590 --> 01:00:41,300
+And my last comment here is this
+work is often not glamorous,
+
+1296
+01:00:41,300 --> 01:00:44,210
+except for some of the
+very cool flight testing
+
+1297
+01:00:44,210 --> 01:00:45,860
+that I showed you.
+
+1298
+01:00:45,860 --> 01:00:48,269
+Most of this work
+is really hard work.
+
+1299
+01:00:48,269 --> 01:00:50,030
+It's very detail-oriented.
+
+1300
+01:00:50,030 --> 01:00:51,410
+It's not glamorous.
+
+1301
+01:00:51,409 --> 01:00:52,519
+But it's essential.
+
+1302
+01:00:52,519 --> 01:00:58,259
+If you cut corners, you
+often pay the price for it.
+
+1303
+01:00:58,260 --> 01:01:02,430
+So any comments or questions?
+
+1304
+01:01:02,429 --> 01:01:05,639
+We'll take a short break,
+like a five-minute break.
+
+1305
+01:01:05,639 --> 01:01:11,349
+But any questions about testing,
+verification, validation?
+
+1306
+01:01:11,349 --> 01:01:11,980
+Yes, go ahead.
+
+1307
+01:01:11,980 --> 01:01:13,840
+AUDIENCE: Not really
+a question, but I
+
+1308
+01:01:13,840 --> 01:01:16,780
+wanted to say that also,
+flight testing is not so fancy.
+
+1309
+01:01:16,780 --> 01:01:20,330
+I mean, many people think it is.
+
+1310
+01:01:20,329 --> 01:01:22,869
+Well, if they actually
+fly, maybe it's fun.
+
+1311
+01:01:22,869 --> 01:01:24,099
+But there are not that many.
+
+1312
+01:01:24,099 --> 01:01:26,809
+And you need to prepare
+them weeks and weeks ahead.
+
+1313
+01:01:26,809 --> 01:01:28,889
+And it's actually
+very, very boring.
+
+1314
+01:01:28,889 --> 01:01:31,180
+Because you need to make sure
+that you don't waste time
+
+1315
+01:01:31,179 --> 01:01:31,699
+at all.
+
+1316
+01:01:31,699 --> 01:01:33,969
+Well, at least you can
+waste a little bit more time
+
+1317
+01:01:33,969 --> 01:01:35,049
+in the lab.
+
+1318
+01:01:35,050 --> 01:01:39,600
+So it's very stressing
+and not so fun to fly.
+
+1319
+01:01:39,599 --> 01:01:41,297
+PROFESSOR: Do have
+experience with this?
+
+1320
+01:01:41,297 --> 01:01:42,880
+AUDIENCE: I wasn't
+flying, because you
+
+1321
+01:01:42,880 --> 01:01:43,755
+need to be certified.
+
+1322
+01:01:43,755 --> 01:01:46,329
+But I was preparing.
+
+1323
+01:01:46,329 --> 01:01:48,893
+And I think it's even worse
+than testing in the lab.
+
+1324
+01:01:48,893 --> 01:01:49,809
+PROFESSOR: Yeah, yeah.
+
+1325
+01:01:49,809 --> 01:01:52,500
+Which airplane, or which
+system were you involved with?
+
+1326
+01:01:52,500 --> 01:01:54,925
+AUDIENCE: I was in with
+the power plane system
+
+1327
+01:01:54,925 --> 01:01:57,190
+for [? Airbus, ?] particularly.
+
+1328
+01:01:57,190 --> 01:01:58,940
+And the aircraft was an A330.
+
+1329
+01:01:58,940 --> 01:02:00,940
+PROFESSOR: A330, OK.
+
+1330
+01:02:00,940 --> 01:02:02,920
+Great.
+
+1331
+01:02:02,920 --> 01:02:05,380
+But I think it's healthy
+to have this experience.
+
+1332
+01:02:05,380 --> 01:02:07,869
+It really makes you humble.
+
+1333
+01:02:07,869 --> 01:02:13,659
+And you also see, for the things
+in design, did you design well?
+
+1334
+01:02:13,659 --> 01:02:16,299
+Did you design for testability?
+
+1335
+01:02:16,300 --> 01:02:19,630
+Really, I highly recommend
+for every one of you
+
+1336
+01:02:19,630 --> 01:02:22,130
+to try to get on some
+kind of test campaign,
+
+1337
+01:02:22,130 --> 01:02:25,519
+at least once in your career,
+because it's eye opening.
+
+1338
+01:02:25,519 --> 01:02:27,070
+So thank you for that comment.
+
+1339
+01:02:27,070 --> 01:02:29,440
+Any comments at EPFL?
+
+1340
+01:02:29,440 --> 01:02:30,686
+Any of the students?
+
+1341
+01:02:30,686 --> 01:02:32,559
+[? Voelker? ?] Did you
+want to add something?
+
+1342
+01:02:32,559 --> 01:02:33,250
+Katya?
+
+1343
+01:02:33,250 --> 01:02:35,398
+Go ahead.
+
+1344
+01:02:35,398 --> 01:02:37,600
+AUDIENCE: Yeah, I
+guess the comment is,
+
+1345
+01:02:37,599 --> 01:02:39,769
+it seems like
+sometimes you can meet
+
+1346
+01:02:39,769 --> 01:02:43,411
+all of the requirements in
+the verification process.
+
+1347
+01:02:43,411 --> 01:02:45,209
+But when you get to
+the validation part,
+
+1348
+01:02:45,210 --> 01:02:48,599
+for example, maybe the
+customer has some expectation
+
+1349
+01:02:48,599 --> 01:02:51,949
+that the range for
+the time of flight
+
+1350
+01:02:51,949 --> 01:02:54,739
+would have been on
+the maximum edge
+
+1351
+01:02:54,739 --> 01:02:56,789
+and you were on
+the minimum edge.
+
+1352
+01:02:56,789 --> 01:02:59,387
+But actually, it seems
+like sometimes you
+
+1353
+01:02:59,387 --> 01:03:01,345
+can meet all the requirements
+but they're still
+
+1354
+01:03:01,344 --> 01:03:02,350
+not going to be happy.
+
+1355
+01:03:02,351 --> 01:03:03,849
+When do you find
+that middle ground?
+
+1356
+01:03:03,849 --> 01:03:06,679
+And it's going to be constant,
+to continue iterating this
+
+1357
+01:03:06,679 --> 01:03:07,699
+over and over again.
+
+1358
+01:03:07,699 --> 01:03:11,779
+Do you try to involve them
+earlier on, during the testing
+
+1359
+01:03:11,780 --> 01:03:12,620
+process too?
+
+1360
+01:03:12,619 --> 01:03:14,935
+How do you handle
+that, that difference?
+
+1361
+01:03:14,936 --> 01:03:16,910
+PROFESSOR: Yeah, it's
+tricky, you know?
+
+1362
+01:03:16,909 --> 01:03:20,059
+So that's when you do need
+contractual agreements
+
+1363
+01:03:20,059 --> 01:03:20,929
+in place.
+
+1364
+01:03:20,929 --> 01:03:23,509
+You need to have the
+requirements, baseline.
+
+1365
+01:03:23,510 --> 01:03:25,820
+You need to have the
+contractual agreements.
+
+1366
+01:03:25,820 --> 01:03:29,030
+And hopefully, any
+problems that occur
+
+1367
+01:03:29,030 --> 01:03:32,090
+will not lead to some
+kind of legal dispute.
+
+1368
+01:03:32,090 --> 01:03:33,769
+But sometimes
+that's unavoidable.
+
+1369
+01:03:33,769 --> 01:03:37,369
+But as a designer, as a
+manufacturer, unless you
+
+1370
+01:03:37,369 --> 01:03:40,699
+have agreements in place
+and clear baseline,
+
+1371
+01:03:40,699 --> 01:03:43,399
+how do you decide in the
+end, is it successful
+
+1372
+01:03:43,400 --> 01:03:44,990
+or is it not successful?
+
+1373
+01:03:44,989 --> 01:03:48,259
+And if there's problems, try
+to isolate these problems
+
+1374
+01:03:48,260 --> 01:03:51,540
+and say, OK here, by and
+large, the testing went well.
+
+1375
+01:03:51,539 --> 01:03:54,460
+But we have like,
+three, four, five issues
+
+1376
+01:03:54,460 --> 01:03:56,960
+that need to be addressed.
+
+1377
+01:03:56,960 --> 01:03:59,780
+And you can tackle
+these issues one by one.
+
+1378
+01:03:59,780 --> 01:04:02,330
+But if you don't have a
+contract in place that's
+
+1379
+01:04:02,329 --> 01:04:05,480
+really a good contract, if you
+don't have a clear requirements
+
+1380
+01:04:05,480 --> 01:04:07,219
+baseline, and then
+if you don't have
+
+1381
+01:04:07,219 --> 01:04:10,069
+a good relationship
+with your customer,
+
+1382
+01:04:10,070 --> 01:04:13,970
+you're setting yourself
+up for big, big problems.
+
+1383
+01:04:13,969 --> 01:04:15,414
+[? Voelker? ?] Go ahead.
+
+1384
+01:04:15,414 --> 01:04:16,039
+AUDIENCE: Yeah.
+
+1385
+01:04:16,039 --> 01:04:18,679
+There is also the
+one big difference
+
+1386
+01:04:18,679 --> 01:04:22,319
+between commercial operators
+or commercial customers
+
+1387
+01:04:22,320 --> 01:04:24,700
+that are becoming
+more and more frequent
+
+1388
+01:04:24,699 --> 01:04:27,710
+compared to the
+institutional ones.
+
+1389
+01:04:27,710 --> 01:04:31,639
+And often I remember, for some
+of the [? Global ?] [? Store ?]
+
+1390
+01:04:31,639 --> 01:04:36,409
+[? Iridium ?] series, the
+customer was only accepting
+
+1391
+01:04:36,409 --> 01:04:39,929
+the hardware six months after
+they had been commissioned
+
+1392
+01:04:39,929 --> 01:04:41,210
+in orbit.
+
+1393
+01:04:41,210 --> 01:04:43,135
+So there you have a
+validation that is still
+
+1394
+01:04:43,135 --> 01:04:45,987
+your responsibility in orbit.
+
+1395
+01:04:45,987 --> 01:04:48,070
+You can't go and fix it,
+but it still has to work.
+
+1396
+01:04:48,070 --> 01:04:52,550
+And he was retaining up to
+10% of the full contact value,
+
+1397
+01:04:52,550 --> 01:04:56,539
+even up to the N
+minus-2-tier-level suppliers,
+
+1398
+01:04:56,539 --> 01:04:59,779
+until he was satisfied
+it was working in orbit.
+
+1399
+01:04:59,780 --> 01:05:06,320
+So these considerations, it's
+really the proof of the pudding
+
+1400
+01:05:06,320 --> 01:05:09,990
+when you have to test this
+up there and can't fix it.
+
+1401
+01:05:09,989 --> 01:05:11,474
+So there's no recall
+of a satellite
+
+1402
+01:05:11,474 --> 01:05:14,724
+constellation, like, sorry we
+messed up with the software.
+
+1403
+01:05:14,724 --> 01:05:15,920
+It's not possible there.
+
+1404
+01:05:15,920 --> 01:05:17,539
+PROFESSOR: Yeah.
+
+1405
+01:05:17,539 --> 01:05:19,969
+And of course, those
+terms and conditions
+
+1406
+01:05:19,969 --> 01:05:22,463
+you've probably
+negotiated years before.
+
+1407
+01:05:22,463 --> 01:05:23,630
+So you've got to be careful.
+
+1408
+01:05:23,630 --> 01:05:28,150
+That's where risk management,
+which is actually--
+
+1409
+01:05:28,150 --> 01:05:30,410
+thank you, [? Voelker, ?]
+for that comment.
+
+1410
+01:05:30,409 --> 01:05:31,549
+Let's take a short break.
+
+1411
+01:05:31,550 --> 01:05:34,070
+And then we'll talk about risk
+management, which is really
+
+1412
+01:05:34,070 --> 01:05:36,530
+what this ends up being.
+
+1413
+01:05:36,530 --> 01:05:41,510
+So let me talk about
+risk management.
+
+1414
+01:05:41,510 --> 01:05:44,720
+And this is actually quite
+prominent in the System
+
+1415
+01:05:44,719 --> 01:05:45,929
+Engineering Handbook.
+
+1416
+01:05:45,929 --> 01:05:49,219
+This is right in the middle
+here of your System Engineering
+
+1417
+01:05:49,219 --> 01:05:53,869
+Engine, Technical Risk
+Management, Section 13.
+
+1418
+01:05:53,869 --> 01:05:55,920
+Why is it important?
+
+1419
+01:05:55,920 --> 01:05:57,700
+So first of all, what is risk?
+
+1420
+01:05:57,699 --> 01:06:01,549
+So risk is the probability
+that a program or project
+
+1421
+01:06:01,550 --> 01:06:04,700
+will experience some
+undesired effect or event.
+
+1422
+01:06:04,699 --> 01:06:07,549
+And then the consequences
+or impact or severity
+
+1423
+01:06:07,550 --> 01:06:10,769
+of that undesired
+event should occur.
+
+1424
+01:06:10,769 --> 01:06:14,090
+And so think of risk as the
+product of probability times
+
+1425
+01:06:14,090 --> 01:06:15,200
+impact.
+
+1426
+01:06:15,199 --> 01:06:19,009
+And the undesired events could
+come from a number of things,
+
+1427
+01:06:19,010 --> 01:06:20,430
+technical, programmatic.
+
+1428
+01:06:20,429 --> 01:06:22,879
+So cost overruns,
+schedules slippage,
+
+1429
+01:06:22,880 --> 01:06:27,190
+safety mishaps, health
+problems, malicious activities--
+
+1430
+01:06:27,190 --> 01:06:29,659
+cybersecurity is a
+big thing these days--
+
+1431
+01:06:29,659 --> 01:06:33,019
+environmental impact,
+failure to achieve
+
+1432
+01:06:33,019 --> 01:06:38,039
+the scientific or technological
+objectives or success criteria.
+
+1433
+01:06:38,039 --> 01:06:40,579
+And so technical
+risk management is,
+
+1434
+01:06:40,579 --> 01:06:43,789
+therefore, an organized
+systematic risk-informed
+
+1435
+01:06:43,789 --> 01:06:47,840
+activity centered around
+decision making to proactively
+
+1436
+01:06:47,840 --> 01:06:53,900
+identify, analyze, plan, track,
+control, communicate risks
+
+1437
+01:06:53,900 --> 01:06:58,220
+to increase the likelihood
+of success of a program.
+
+1438
+01:06:58,219 --> 01:07:01,099
+And so what risk really
+does is measure the future
+
+1439
+01:07:01,099 --> 01:07:05,000
+uncertainties of achieving
+your program goals-- technical,
+
+1440
+01:07:05,000 --> 01:07:06,769
+cost, schedule goals--
+
+1441
+01:07:06,769 --> 01:07:10,190
+and think of risks
+in a holistic way,
+
+1442
+01:07:10,190 --> 01:07:13,280
+all aspects of the
+technical effort,
+
+1443
+01:07:13,280 --> 01:07:16,340
+technology maturity,
+supplier capabilities,
+
+1444
+01:07:16,340 --> 01:07:19,200
+performing against
+plan, and so forth.
+
+1445
+01:07:19,199 --> 01:07:24,859
+And so the idea of risks is
+that risks have some root cause.
+
+1446
+01:07:24,860 --> 01:07:28,190
+There's something that
+gives rise to risks.
+
+1447
+01:07:28,190 --> 01:07:30,619
+And then the actual
+quantification of risks
+
+1448
+01:07:30,619 --> 01:07:34,130
+happens in terms of
+likelihood and consequences,
+
+1449
+01:07:34,130 --> 01:07:38,240
+which are kept separate,
+separate dimensions.
+
+1450
+01:07:38,239 --> 01:07:40,219
+So the first thing
+to think about
+
+1451
+01:07:40,219 --> 01:07:43,099
+is where do risks come from?
+
+1452
+01:07:43,099 --> 01:07:45,400
+Where is the source of risks?
+
+1453
+01:07:45,400 --> 01:07:47,539
+And I want to show
+you a couple of models
+
+1454
+01:07:47,539 --> 01:07:48,690
+for thinking about this.
+
+1455
+01:07:48,690 --> 01:07:55,000
+The first one is this
+idea of layers of risk,
+
+1456
+01:07:55,000 --> 01:07:57,219
+that there are layers of risk.
+
+1457
+01:07:57,219 --> 01:07:59,079
+And I want to credit
+one of my colleagues
+
+1458
+01:07:59,079 --> 01:08:02,829
+here at MIT, Don Lessard from
+the Sloan School, who really
+
+1459
+01:08:02,829 --> 01:08:04,809
+developed this
+Layer of Risk Model
+
+1460
+01:08:04,809 --> 01:08:06,489
+and applied it to
+different industries.
+
+1461
+01:08:06,489 --> 01:08:09,639
+So there's a version of this
+for the oil and gas industry.
+
+1462
+01:08:09,639 --> 01:08:13,690
+You could make a version for
+medical, medical technologies.
+
+1463
+01:08:13,690 --> 01:08:17,529
+So this is the version
+for Mars missions,
+
+1464
+01:08:17,529 --> 01:08:21,189
+so if you're designing a new
+Mars mission, a new Mars Rover.
+
+1465
+01:08:21,189 --> 01:08:23,079
+So you have, in
+the bullseye here,
+
+1466
+01:08:23,079 --> 01:08:26,119
+the narrow interpretation is
+technical or project risk.
+
+1467
+01:08:26,119 --> 01:08:28,220
+So the airbag technology.
+
+1468
+01:08:28,220 --> 01:08:30,850
+If you're using airbags for
+deployment, will it work?
+
+1469
+01:08:30,850 --> 01:08:33,640
+The rover/motor
+performance, are you
+
+1470
+01:08:33,640 --> 01:08:35,140
+going to have software bugs?
+
+1471
+01:08:35,140 --> 01:08:39,050
+Those are the risks we
+typically think about.
+
+1472
+01:08:39,050 --> 01:08:40,720
+And the idea is you
+have high influence
+
+1473
+01:08:40,720 --> 01:08:45,670
+over these risks as a system
+engineer, as a project manager.
+
+1474
+01:08:45,670 --> 01:08:48,609
+Then you have a layer
+around it, which we call
+
+1475
+01:08:48,609 --> 01:08:50,620
+industry or competitive risks.
+
+1476
+01:08:50,619 --> 01:08:52,689
+Will your contractors perform?
+
+1477
+01:08:52,689 --> 01:08:54,579
+Will you have budget stability?
+
+1478
+01:08:54,579 --> 01:08:57,340
+And then there's sort of
+more country and fiscal risk.
+
+1479
+01:08:57,340 --> 01:09:00,810
+So in the US, we
+have a budget cycle.
+
+1480
+01:09:00,810 --> 01:09:03,010
+We have four-year
+administrations.
+
+1481
+01:09:03,010 --> 01:09:05,420
+Will you get your budget?
+
+1482
+01:09:05,420 --> 01:09:08,859
+What is the priorities between
+human and robotic space
+
+1483
+01:09:08,859 --> 01:09:09,970
+exploration?
+
+1484
+01:09:09,970 --> 01:09:12,760
+And then working with
+international partners.
+
+1485
+01:09:12,760 --> 01:09:15,609
+And then there's
+another layer of risk,
+
+1486
+01:09:15,609 --> 01:09:17,569
+which are called market risks.
+
+1487
+01:09:17,569 --> 01:09:20,109
+So if you think in Mars
+missions, who's your market?
+
+1488
+01:09:20,109 --> 01:09:23,289
+Well, the science community
+and maybe the public.
+
+1489
+01:09:23,289 --> 01:09:27,310
+So will these missions
+hold their attention?
+
+1490
+01:09:27,310 --> 01:09:29,020
+Are there new
+science requirements?
+
+1491
+01:09:29,020 --> 01:09:33,260
+We discovered there's water,
+probably flowing water on Mars,
+
+1492
+01:09:33,260 --> 01:09:36,340
+maybe with a lot of
+perchlorates in it.
+
+1493
+01:09:36,340 --> 01:09:37,569
+It's not pristine water.
+
+1494
+01:09:37,569 --> 01:09:41,979
+But that could change the
+priorities for your mission.
+
+1495
+01:09:41,979 --> 01:09:46,609
+And then finally, the most outer
+is what we call natural risk.
+
+1496
+01:09:46,609 --> 01:09:49,270
+So this would be things
+like cosmic radiation,
+
+1497
+01:09:49,270 --> 01:09:53,380
+micrometeorites, uncertainties
+in the atmospheric density
+
+1498
+01:09:53,380 --> 01:09:56,690
+of Mars as you're doing
+entry descent and landing.
+
+1499
+01:09:56,689 --> 01:09:59,649
+And you have very low influence.
+
+1500
+01:09:59,649 --> 01:10:03,159
+That doesn't mean you can't
+protect yourself or take
+
+1501
+01:10:03,159 --> 01:10:05,380
+measures to deal
+with these risks.
+
+1502
+01:10:05,380 --> 01:10:08,800
+But fundamentally, the
+occurrence or the probability
+
+1503
+01:10:08,800 --> 01:10:11,470
+is something you can't
+really do much about.
+
+1504
+01:10:11,470 --> 01:10:13,539
+So that's one way to
+think about risks.
+
+1505
+01:10:13,539 --> 01:10:17,649
+And the seeds of risks
+is in these layers.
+
+1506
+01:10:17,649 --> 01:10:19,839
+I know this is very high
+level, but I find this
+
+1507
+01:10:19,840 --> 01:10:21,699
+to be a pretty useful model.
+
+1508
+01:10:21,699 --> 01:10:22,639
+Yeah, go ahead.
+
+1509
+01:10:22,640 --> 01:10:25,660
+AUDIENCE: So this
+references the influence
+
+1510
+01:10:25,659 --> 01:10:30,069
+you have, not necessarily
+the amount that each of these
+
+1511
+01:10:30,069 --> 01:10:31,465
+are a risk to the program?
+
+1512
+01:10:31,465 --> 01:10:32,690
+PROFESSOR: That's correct.
+
+1513
+01:10:32,689 --> 01:10:35,109
+And That will be
+program specific.
+
+1514
+01:10:35,109 --> 01:10:38,349
+Just the stuff that's
+in the bullseye here,
+
+1515
+01:10:38,350 --> 01:10:42,760
+you can do a lot
+about it, and perhaps
+
+1516
+01:10:42,760 --> 01:10:45,250
+both in terms of
+probability and impact.
+
+1517
+01:10:45,250 --> 01:10:47,739
+And then as you
+move further out,
+
+1518
+01:10:47,739 --> 01:10:51,099
+there's less and less influence
+you have as a system engineer,
+
+1519
+01:10:51,100 --> 01:10:53,539
+as a project manager.
+
+1520
+01:10:53,539 --> 01:10:58,710
+Here's another way to organize
+your thinking around risks.
+
+1521
+01:10:58,710 --> 01:11:00,590
+And this is around
+the "Iron" Triangle
+
+1522
+01:11:00,590 --> 01:11:01,909
+and project management.
+
+1523
+01:11:01,909 --> 01:11:03,500
+We talk about the
+"Iron" Triangle
+
+1524
+01:11:03,500 --> 01:11:05,390
+of cost, schedule, and risk.
+
+1525
+01:11:05,390 --> 01:11:07,760
+And we call it "Iron"
+because the idea
+
+1526
+01:11:07,760 --> 01:11:14,449
+is that if you constrain
+all three too tightly,
+
+1527
+01:11:14,449 --> 01:11:17,389
+it can be very difficult.
+
+1528
+01:11:17,390 --> 01:11:20,360
+And it's also referred to
+as the triple constraint
+
+1529
+01:11:20,359 --> 01:11:21,829
+in project management.
+
+1530
+01:11:21,829 --> 01:11:25,340
+So the three dimensions here
+are technical risks, cost risks,
+
+1531
+01:11:25,340 --> 01:11:26,869
+and schedule risk.
+
+1532
+01:11:26,869 --> 01:11:29,090
+And in the center we
+have programmatic risk,
+
+1533
+01:11:29,090 --> 01:11:32,060
+which means it's kind of the
+combination of all three.
+
+1534
+01:11:32,060 --> 01:11:35,030
+And the idea that even if
+you do a great job on keeping
+
+1535
+01:11:35,029 --> 01:11:37,369
+your budget under
+control, schedule,
+
+1536
+01:11:37,369 --> 01:11:39,710
+and you're meeting your
+technical objectives,
+
+1537
+01:11:39,710 --> 01:11:42,680
+you can still fail because
+the program as a whole
+
+1538
+01:11:42,680 --> 01:11:44,570
+isn't doing the right thing.
+
+1539
+01:11:44,569 --> 01:11:46,489
+Or the market that
+you had been targeting
+
+1540
+01:11:46,489 --> 01:11:50,750
+is no longer really attractive
+by the time you launch.
+
+1541
+01:11:50,750 --> 01:11:54,020
+The key idea here is that
+these risk categories are not
+
+1542
+01:11:54,020 --> 01:11:55,770
+independent of each other.
+
+1543
+01:11:55,770 --> 01:11:58,830
+So let me mention a
+couple of examples.
+
+1544
+01:11:58,829 --> 01:12:01,819
+So cost risk might
+limit your funds.
+
+1545
+01:12:01,819 --> 01:12:04,849
+And that could, in itself,
+induce technical problems which
+
+1546
+01:12:04,850 --> 01:12:07,100
+cause you further cost risk.
+
+1547
+01:12:07,100 --> 01:12:11,840
+So one of the big initiatives
+at NASA in the '90s
+
+1548
+01:12:11,840 --> 01:12:14,210
+was the faster, better,
+cheaper program.
+
+1549
+01:12:14,210 --> 01:12:17,630
+We're going to launch
+more missions, cheaper.
+
+1550
+01:12:17,630 --> 01:12:21,800
+And out of 10 missions,
+maybe 2 or 3 will fail.
+
+1551
+01:12:21,800 --> 01:12:23,360
+And then seven will succeed.
+
+1552
+01:12:23,359 --> 01:12:26,210
+But we'll get more value
+out of this as a portfolio.
+
+1553
+01:12:26,210 --> 01:12:27,949
+Unfortunately, it
+didn't work very well.
+
+1554
+01:12:27,949 --> 01:12:30,829
+Because when the one,
+two, or three missions
+
+1555
+01:12:30,829 --> 01:12:34,789
+fail out of your portfolio,
+the media and the public
+
+1556
+01:12:34,789 --> 01:12:38,329
+focuses on the failures rather
+than the aggregate value
+
+1557
+01:12:38,329 --> 01:12:39,470
+of the whole portfolio.
+
+1558
+01:12:39,470 --> 01:12:42,289
+And eventually, that's
+probably the main reason
+
+1559
+01:12:42,289 --> 01:12:45,170
+why faster, better,
+cheaper was abandoned.
+
+1560
+01:12:45,170 --> 01:12:48,199
+So for example, we just
+talked about testing.
+
+1561
+01:12:48,199 --> 01:12:50,569
+If you have a very
+limited budget,
+
+1562
+01:12:50,569 --> 01:12:54,989
+what is the first thing
+people typically cut out?
+
+1563
+01:12:54,989 --> 01:12:56,969
+What's the first thing to go?
+
+1564
+01:12:56,970 --> 01:12:57,960
+Testing.
+
+1565
+01:12:57,960 --> 01:12:59,189
+Testing is very important.
+
+1566
+01:12:59,189 --> 01:13:00,750
+Sam asked me during
+the break, what's
+
+1567
+01:13:00,750 --> 01:13:03,829
+your typical budget for
+testing in V&V activities?
+
+1568
+01:13:03,829 --> 01:13:06,119
+And in many programs,
+it's very substantial,
+
+1569
+01:13:06,119 --> 01:13:08,550
+you know, 40% of the
+budget, maybe 30%,
+
+1570
+01:13:08,550 --> 01:13:12,039
+40% of the budget easily.
+
+1571
+01:13:12,039 --> 01:13:14,159
+And so you start
+cutting out tests.
+
+1572
+01:13:14,159 --> 01:13:17,899
+Well, what you do is you
+introduce technical risk.
+
+1573
+01:13:17,899 --> 01:13:20,969
+And if you have failures
+because you didn't test,
+
+1574
+01:13:20,970 --> 01:13:25,800
+that could cause you additional
+rework and more cost.
+
+1575
+01:13:25,800 --> 01:13:30,659
+Similar, schedule slips
+can induce cost risk.
+
+1576
+01:13:30,659 --> 01:13:33,930
+So as you slow down,
+you have what's
+
+1577
+01:13:33,930 --> 01:13:36,630
+known as the standing
+army cost, right?
+
+1578
+01:13:36,630 --> 01:13:38,789
+People are going to
+charge to your program,
+
+1579
+01:13:38,789 --> 01:13:42,069
+even if it's at a reduced level.
+
+1580
+01:13:42,069 --> 01:13:44,529
+And that will also
+increase your cost.
+
+1581
+01:13:44,529 --> 01:13:49,000
+So lots of coupling here
+between risk categories.
+
+1582
+01:13:49,000 --> 01:13:51,750
+This is a very useful
+Risk Management Framework.
+
+1583
+01:13:51,750 --> 01:13:54,239
+It's essentially a
+controls framework.
+
+1584
+01:13:54,239 --> 01:13:56,729
+And the idea is you
+start in the upper right.
+
+1585
+01:13:56,729 --> 01:13:59,829
+You anticipate what can
+go wrong in your program.
+
+1586
+01:13:59,829 --> 01:14:02,279
+So that's risk identification.
+
+1587
+01:14:02,279 --> 01:14:07,469
+You then analyze these risks,
+in terms of prioritizing them,
+
+1588
+01:14:07,470 --> 01:14:08,940
+which of these are important?
+
+1589
+01:14:08,939 --> 01:14:10,529
+You plan to take action.
+
+1590
+01:14:10,529 --> 01:14:12,989
+This is often called
+risk mitigation.
+
+1591
+01:14:12,989 --> 01:14:14,819
+You track these actions.
+
+1592
+01:14:14,819 --> 01:14:17,939
+And then you correct any
+deviations from your plan
+
+1593
+01:14:17,939 --> 01:14:21,389
+and you communicate throughout,
+and you cycle through this.
+
+1594
+01:14:21,390 --> 01:14:23,369
+So typically, risk
+management will
+
+1595
+01:14:23,369 --> 01:14:27,180
+happen on a weekly basis,
+a monthly basis, at least
+
+1596
+01:14:27,180 --> 01:14:29,430
+quarterly basis
+for big programs.
+
+1597
+01:14:29,430 --> 01:14:32,119
+
+
+1598
+01:14:32,119 --> 01:14:34,430
+Now, how do you
+actually do this?
+
+1599
+01:14:34,430 --> 01:14:37,220
+First of all, the risk
+ID and the assessment.
+
+1600
+01:14:37,220 --> 01:14:40,740
+So the risks are
+typically brainstormed.
+
+1601
+01:14:40,739 --> 01:14:43,250
+So you think about risks.
+
+1602
+01:14:43,250 --> 01:14:47,149
+You have to imagine all the bad
+stuff that could happen to you
+
+1603
+01:14:47,149 --> 01:14:50,420
+and your program,
+the probability
+
+1604
+01:14:50,420 --> 01:14:52,130
+that these things
+will happen, and then
+
+1605
+01:14:52,130 --> 01:14:53,750
+the impact or
+consequence if they
+
+1606
+01:14:53,750 --> 01:14:57,590
+do happen based on the
+requirements, the cost,
+
+1607
+01:14:57,590 --> 01:15:01,140
+the schedule, the product
+and its environment.
+
+1608
+01:15:01,140 --> 01:15:02,750
+And this is where
+actually having
+
+1609
+01:15:02,750 --> 01:15:07,220
+a mix of younger engineers
+and more experienced engineers
+
+1610
+01:15:07,220 --> 01:15:08,909
+really comes in handy.
+
+1611
+01:15:08,909 --> 01:15:11,180
+The experienced
+engineers, they will have
+
+1612
+01:15:11,180 --> 01:15:12,650
+been through several programs.
+
+1613
+01:15:12,649 --> 01:15:15,049
+They will have seen
+failures in the past.
+
+1614
+01:15:15,050 --> 01:15:20,329
+They will really be able
+to point to potential risks
+
+1615
+01:15:20,329 --> 01:15:27,079
+that less-experienced people may
+ignore or just not understand
+
+1616
+01:15:27,079 --> 01:15:28,729
+how important they could be.
+
+1617
+01:15:28,729 --> 01:15:30,769
+So the next step, then,
+is to aggregate these
+
+1618
+01:15:30,770 --> 01:15:35,630
+into categories, typically not
+more than 20-or-so categories
+
+1619
+01:15:35,630 --> 01:15:38,390
+or risk items.
+
+1620
+01:15:38,390 --> 01:15:41,810
+Projects often keep so-called
+risk registers, which is just
+
+1621
+01:15:41,810 --> 01:15:44,210
+a database or a list of risks.
+
+1622
+01:15:44,210 --> 01:15:46,609
+If you have hundreds and
+hundreds of risks in the risk
+
+1623
+01:15:46,609 --> 01:15:50,359
+register, it's too much.
+
+1624
+01:15:50,359 --> 01:15:52,519
+It's just a long
+list and really it's
+
+1625
+01:15:52,520 --> 01:15:55,250
+just a check-the-box exercise.
+
+1626
+01:15:55,250 --> 01:15:57,199
+To really take risk
+management seriously,
+
+1627
+01:15:57,199 --> 01:16:00,019
+you have to focus
+on few of the risks
+
+1628
+01:16:00,020 --> 01:16:01,460
+that you think are important.
+
+1629
+01:16:01,460 --> 01:16:03,590
+You score them based
+on a combination
+
+1630
+01:16:03,590 --> 01:16:05,300
+of opinions and data.
+
+1631
+01:16:05,300 --> 01:16:08,000
+And you try to involve all
+the stakeholders in the risk
+
+1632
+01:16:08,000 --> 01:16:09,079
+management.
+
+1633
+01:16:09,079 --> 01:16:13,010
+And eventually, risks
+are placed on this matrix
+
+1634
+01:16:13,010 --> 01:16:15,110
+of uncertainty and consequence.
+
+1635
+01:16:15,109 --> 01:16:17,179
+So let me zoom in on the matrix.
+
+1636
+01:16:17,180 --> 01:16:20,220
+There are many, many different
+versions of the risk matrix.
+
+1637
+01:16:20,220 --> 01:16:23,360
+This is one that
+NASA typically uses.
+
+1638
+01:16:23,359 --> 01:16:27,349
+And I like this particular
+version for several reasons
+
+1639
+01:16:27,350 --> 01:16:28,760
+that I'll explain.
+
+1640
+01:16:28,760 --> 01:16:30,260
+But basically, the
+way it works is
+
+1641
+01:16:30,260 --> 01:16:33,610
+you have the two dimensions,
+impact and probability.
+
+1642
+01:16:33,609 --> 01:16:36,979
+So probability is how
+likely is this to occur?
+
+1643
+01:16:36,979 --> 01:16:39,939
+And then impact, if it does
+occur, what will happen?
+
+1644
+01:16:39,939 --> 01:16:43,739
+What's the consequence of that?
+
+1645
+01:16:43,739 --> 01:16:46,119
+So of the two things that
+I really like about it,
+
+1646
+01:16:46,119 --> 01:16:48,300
+the first one is that
+each of these levels,
+
+1647
+01:16:48,300 --> 01:16:51,480
+there's actually some
+definition behind it.
+
+1648
+01:16:51,479 --> 01:16:54,709
+Not just guessing at the level,
+but there's some criteria.
+
+1649
+01:16:54,710 --> 01:16:58,109
+So for probability,
+a level 3 means
+
+1650
+01:16:58,109 --> 01:17:02,039
+it's about equally likely that
+it will happen and not happen.
+
+1651
+01:17:02,039 --> 01:17:04,710
+So a level 3 means
+it's about 50/50,
+
+1652
+01:17:04,710 --> 01:17:07,020
+whether this will
+happen in your program.
+
+1653
+01:17:07,020 --> 01:17:09,310
+And then 4 is very likely.
+
+1654
+01:17:09,310 --> 01:17:13,289
+So maybe that's,
+I don't know, 75%.
+
+1655
+01:17:13,289 --> 01:17:16,710
+And then near-certainty
+is like 90% or more.
+
+1656
+01:17:16,710 --> 01:17:19,140
+Improbable is like 10%.
+
+1657
+01:17:19,140 --> 01:17:24,210
+Unlikely is 20% to 30%,
+something like this.
+
+1658
+01:17:24,210 --> 01:17:27,659
+And then more importantly,
+the impact so a level 1 impact
+
+1659
+01:17:27,659 --> 01:17:29,170
+is negligible.
+
+1660
+01:17:29,170 --> 01:17:31,449
+It has almost no impact.
+
+1661
+01:17:31,449 --> 01:17:35,250
+A level 2 means your
+mission performance margins
+
+1662
+01:17:35,250 --> 01:17:37,380
+are reduced on the
+technical side.
+
+1663
+01:17:37,380 --> 01:17:39,949
+
+
+1664
+01:17:39,949 --> 01:17:41,639
+Do you remember margins?
+
+1665
+01:17:41,640 --> 01:17:45,030
+I asked you to assign
+margins in assignment A2?
+
+1666
+01:17:45,029 --> 01:17:47,460
+So it means you're eating
+into your reserves.
+
+1667
+01:17:47,460 --> 01:17:50,250
+But you should still be able
+to meet all your performance.
+
+1668
+01:17:50,250 --> 01:17:52,470
+There should be
+no visible impact.
+
+1669
+01:17:52,470 --> 01:17:54,240
+Your safety cushion is less.
+
+1670
+01:17:54,239 --> 01:17:56,639
+That's what level 2 means.
+
+1671
+01:17:56,640 --> 01:17:59,579
+Number 3 means your
+mission is degraded.
+
+1672
+01:17:59,579 --> 01:18:01,710
+So you can still do the mission.
+
+1673
+01:18:01,710 --> 01:18:04,520
+But you're not going to
+hit all your targets.
+
+1674
+01:18:04,520 --> 01:18:09,550
+4 is you lose the mission, but
+the asset is still recoverable.
+
+1675
+01:18:09,550 --> 01:18:11,970
+So maybe you could try
+again in the future.
+
+1676
+01:18:11,970 --> 01:18:15,240
+And then level 5 is a
+catastrophic failure
+
+1677
+01:18:15,239 --> 01:18:19,949
+that involves a loss of
+mission and/or loss of crew.
+
+1678
+01:18:19,949 --> 01:18:23,550
+On the cost side, you have
+some thresholds for cost.
+
+1679
+01:18:23,550 --> 01:18:25,800
+Obviously these numbers
+have to be adjusted
+
+1680
+01:18:25,800 --> 01:18:27,860
+for different programs.
+
+1681
+01:18:27,859 --> 01:18:31,689
+A $10-million loss is a
+huge thing in some program
+
+1682
+01:18:31,689 --> 01:18:35,939
+and almost like pocket
+change in other programs.
+
+1683
+01:18:35,939 --> 01:18:40,049
+And then schedule, so a level
+1 milestone would, for example,
+
+1684
+01:18:40,050 --> 01:18:42,960
+be launch.
+
+1685
+01:18:42,960 --> 01:18:45,779
+Good example of this was
+the Mars Science Laboratory,
+
+1686
+01:18:45,779 --> 01:18:47,309
+their Curiosity mission.
+
+1687
+01:18:47,310 --> 01:18:50,340
+Originally it was supposed
+to launch in 2009.
+
+1688
+01:18:50,340 --> 01:18:52,079
+They missed that
+deadline, mainly due
+
+1689
+01:18:52,079 --> 01:18:55,079
+to problems with
+cryogenic actuators.
+
+1690
+01:18:55,079 --> 01:18:57,119
+They took a lot of the
+blames, the actuators.
+
+1691
+01:18:57,119 --> 01:18:59,819
+But there were a lot of
+problems across the board.
+
+1692
+01:18:59,819 --> 01:19:01,859
+They missed that launch window.
+
+1693
+01:19:01,859 --> 01:19:03,869
+And they had to launch in 2011.
+
+1694
+01:19:03,869 --> 01:19:06,515
+So that was considered, from
+a programmatic standpoint,
+
+1695
+01:19:06,515 --> 01:19:08,280
+a level 5 failure.
+
+1696
+01:19:08,279 --> 01:19:11,250
+Because you missed your
+main launch window and you
+
+1697
+01:19:11,250 --> 01:19:15,739
+had to wait 26 months
+for the next one.
+
+1698
+01:19:15,739 --> 01:19:16,619
+So that's good.
+
+1699
+01:19:16,619 --> 01:19:20,579
+Because now when you assign
+a probability and impact,
+
+1700
+01:19:20,579 --> 01:19:22,529
+you can really look
+at these criteria.
+
+1701
+01:19:22,529 --> 01:19:26,639
+And it's easier to do that
+in a repeatable fashion.
+
+1702
+01:19:26,640 --> 01:19:30,390
+The other thing is if you look
+at the colors on the matrix,
+
+1703
+01:19:30,390 --> 01:19:32,500
+you can see it
+goes from 1, blue,
+
+1704
+01:19:32,500 --> 01:19:35,720
+which means low risk, to 12,
+which is the highest risk.
+
+1705
+01:19:35,720 --> 01:19:37,570
+So there's 12 risk levels.
+
+1706
+01:19:37,569 --> 01:19:39,299
+But when you look at
+the matrix, there's
+
+1707
+01:19:39,300 --> 01:19:41,369
+something peculiar about it.
+
+1708
+01:19:41,369 --> 01:19:43,359
+So look closely at the colors.
+
+1709
+01:19:43,359 --> 01:19:48,899
+And you'll see something
+special about this matrix.
+
+1710
+01:19:48,899 --> 01:19:51,189
+Anybody notice what
+I'm talking about?
+
+1711
+01:19:51,189 --> 01:19:54,029
+Let's see at EPFL, do you guys,
+when you look at those colors,
+
+1712
+01:19:54,029 --> 01:19:56,634
+at the matrix, do
+you notice something?
+
+1713
+01:19:56,635 --> 01:20:00,460
+
+
+1714
+01:20:00,460 --> 01:20:02,822
+Go ahead.
+
+1715
+01:20:02,822 --> 01:20:04,859
+AUDIENCE: It goes
+from blue to red,
+
+1716
+01:20:04,859 --> 01:20:11,284
+which is a light spectrum,
+with the blue the lowest radio
+
+1717
+01:20:11,284 --> 01:20:13,840
+waves, waves, and
+red the highest ones.
+
+1718
+01:20:13,840 --> 01:20:14,869
+PROFESSOR: Right.
+
+1719
+01:20:14,869 --> 01:20:15,849
+AUDIENCE: [INAUDIBLE].
+
+1720
+01:20:15,850 --> 01:20:24,829
+
+
+1721
+01:20:24,829 --> 01:20:27,289
+PROFESSOR: Go ahead.
+
+1722
+01:20:27,289 --> 01:20:31,876
+AUDIENCE: It's due to impact is
+more serious than probability.
+
+1723
+01:20:31,876 --> 01:20:32,690
+PROFESSOR: Right.
+
+1724
+01:20:32,689 --> 01:20:34,009
+So it's asymmetric.
+
+1725
+01:20:34,010 --> 01:20:34,670
+You see that?
+
+1726
+01:20:34,670 --> 01:20:35,970
+It's asymmetric.
+
+1727
+01:20:35,970 --> 01:20:39,770
+So the high-impact,
+low-probability corner
+
+1728
+01:20:39,770 --> 01:20:43,250
+is weighted more heavily
+than the low-impact,
+
+1729
+01:20:43,250 --> 01:20:44,960
+high-probability.
+
+1730
+01:20:44,960 --> 01:20:48,260
+And that's intentional because
+it's been shown in the past
+
+1731
+01:20:48,260 --> 01:20:52,909
+that things that are not likely
+to happen but if they happen,
+
+1732
+01:20:52,909 --> 01:20:55,699
+they're really bad,
+in the past, people
+
+1733
+01:20:55,699 --> 01:20:58,159
+have sort of pushed that
+away and ignored those.
+
+1734
+01:20:58,159 --> 01:21:01,010
+So the purpose of this
+asymmetry in this matrix
+
+1735
+01:21:01,010 --> 01:21:05,000
+is to elevate the
+low-probability, high-impact
+
+1736
+01:21:05,000 --> 01:21:08,239
+events to be higher
+in the risk level
+
+1737
+01:21:08,239 --> 01:21:10,353
+so that people pay
+more attention to it.
+
+1738
+01:21:10,353 --> 01:21:12,720
+OK?
+
+1739
+01:21:12,720 --> 01:21:17,159
+So most risk matrices don't
+have that asymmetry in them,
+
+1740
+01:21:17,159 --> 01:21:17,960
+but this one does.
+
+1741
+01:21:17,960 --> 01:21:18,460
+[SNEEZES]
+
+1742
+01:21:18,460 --> 01:21:21,100
+And I like it because of that.
+
+1743
+01:21:21,100 --> 01:21:21,599
+Bless you.
+
+1744
+01:21:21,600 --> 01:21:24,870
+So the question then is,
+what do you do with this?
+
+1745
+01:21:24,869 --> 01:21:27,189
+The idea is you do
+your risk management.
+
+1746
+01:21:27,189 --> 01:21:28,859
+You identify your risks.
+
+1747
+01:21:28,859 --> 01:21:31,019
+You place them on this matrix.
+
+1748
+01:21:31,020 --> 01:21:34,810
+And then you track each of
+these risk items over time.
+
+1749
+01:21:34,810 --> 01:21:39,539
+So here's your 12 risk
+levels, between 1 and 12.
+
+1750
+01:21:39,539 --> 01:21:42,000
+That's the y-axis.
+
+1751
+01:21:42,000 --> 01:21:44,010
+And then on your
+x-axis there's Time.
+
+1752
+01:21:44,010 --> 01:21:47,970
+And for each of your risk
+items, people might disagree.
+
+1753
+01:21:47,970 --> 01:21:50,760
+Some people on your team
+might say, hey, look,
+
+1754
+01:21:50,760 --> 01:21:52,409
+this is not a big deal.
+
+1755
+01:21:52,409 --> 01:21:54,090
+We've seen this before.
+
+1756
+01:21:54,090 --> 01:21:55,340
+The impact is not big.
+
+1757
+01:21:55,340 --> 01:21:57,190
+We have a quick fix for this.
+
+1758
+01:21:57,189 --> 01:21:58,439
+We know how to deal with this.
+
+1759
+01:21:58,439 --> 01:22:01,559
+And other people
+disagree and say no, this
+
+1760
+01:22:01,560 --> 01:22:02,850
+is very, very serious.
+
+1761
+01:22:02,850 --> 01:22:04,630
+You have to take it seriously.
+
+1762
+01:22:04,630 --> 01:22:07,409
+So the idea is that
+for each risk item,
+
+1763
+01:22:07,409 --> 01:22:10,260
+you have this
+optimistic, expected,
+
+1764
+01:22:10,260 --> 01:22:14,110
+and pessimistic estimate of
+what is the true level of risk.
+
+1765
+01:22:14,109 --> 01:22:15,719
+That's what these bars are.
+
+1766
+01:22:15,720 --> 01:22:18,539
+And then you track it over time.
+
+1767
+01:22:18,539 --> 01:22:24,180
+And depending on whether
+you're before PDR or CDR,
+
+1768
+01:22:24,180 --> 01:22:26,400
+you could have very
+substantial risks.
+
+1769
+01:22:26,399 --> 01:22:29,579
+And that's, I guess,
+OK still, as long
+
+1770
+01:22:29,579 --> 01:22:32,579
+as you find ways to
+reduce the level of risk.
+
+1771
+01:22:32,579 --> 01:22:34,949
+For example, by
+doing extra testing,
+
+1772
+01:22:34,949 --> 01:22:39,029
+by changing your design to
+put in extra power margins,
+
+1773
+01:22:39,029 --> 01:22:42,479
+bigger solar panels,
+redundancy, for example.
+
+1774
+01:22:42,479 --> 01:22:44,399
+There's a lot of
+things you can do
+
+1775
+01:22:44,399 --> 01:22:49,210
+to affect both the probability
+and the impact, radiation,
+
+1776
+01:22:49,210 --> 01:22:51,630
+extra shielding.
+
+1777
+01:22:51,630 --> 01:22:54,569
+And so the idea is
+that over time you're
+
+1778
+01:22:54,569 --> 01:22:58,840
+going to reduce these risks
+gradually below some threshold.
+
+1779
+01:22:58,840 --> 01:23:01,920
+So this red line here is
+like the acceptable threshold
+
+1780
+01:23:01,920 --> 01:23:04,850
+of risks at that
+point in the program.
+
+1781
+01:23:04,850 --> 01:23:08,100
+And then as you get
+closer to launch,
+
+1782
+01:23:08,100 --> 01:23:11,289
+things should be
+below the threshold.
+
+1783
+01:23:11,289 --> 01:23:13,800
+And if it's below
+this watch domain,
+
+1784
+01:23:13,800 --> 01:23:15,690
+then you even don't track it.
+
+1785
+01:23:15,689 --> 01:23:17,799
+You don't pay much
+attention to it.
+
+1786
+01:23:17,800 --> 01:23:20,730
+If it's above this red line,
+you have a big problem.
+
+1787
+01:23:20,729 --> 01:23:25,289
+You might have to stop the
+program or do a major redesign,
+
+1788
+01:23:25,289 --> 01:23:28,079
+or repeat a major milestone.
+
+1789
+01:23:28,079 --> 01:23:31,769
+And some programs have been
+canceled because they just
+
+1790
+01:23:31,770 --> 01:23:33,970
+couldn't get these
+risks under control.
+
+1791
+01:23:33,970 --> 01:23:36,869
+So the idea is that
+gradually you transition.
+
+1792
+01:23:36,869 --> 01:23:40,229
+And you do this by actually
+doing risk mitigation
+
+1793
+01:23:40,229 --> 01:23:42,419
+around that risk
+management cycle.
+
+1794
+01:23:42,420 --> 01:23:44,579
+Now, the last thing
+I will say here
+
+1795
+01:23:44,579 --> 01:23:52,319
+is that every mission
+that is worthwhile doing
+
+1796
+01:23:52,319 --> 01:23:56,369
+is still going to have some
+residual risk at the end.
+
+1797
+01:23:56,369 --> 01:23:58,949
+The requirement is not
+that all the risks are
+
+1798
+01:23:58,949 --> 01:24:01,449
+at 0 in the lower-left corner.
+
+1799
+01:24:01,449 --> 01:24:04,109
+You will launch, and you're
+going to have residual risks.
+
+1800
+01:24:04,109 --> 01:24:05,819
+And you just have
+to accept those.
+
+1801
+01:24:05,819 --> 01:24:07,949
+But you have to be
+cognisant of this.
+
+1802
+01:24:07,949 --> 01:24:10,679
+And this is really no different
+in the automotive industry,
+
+1803
+01:24:10,680 --> 01:24:13,200
+for example.
+
+1804
+01:24:13,199 --> 01:24:16,139
+When you're developing a
+new car or a medical device
+
+1805
+01:24:16,140 --> 01:24:18,690
+and you're going to
+launch it to the market,
+
+1806
+01:24:18,689 --> 01:24:22,649
+if your requirement is 0 risk,
+you will never sell anything.
+
+1807
+01:24:22,649 --> 01:24:24,899
+You will never launch anything.
+
+1808
+01:24:24,899 --> 01:24:27,149
+Because you will always
+think of something bad
+
+1809
+01:24:27,149 --> 01:24:28,489
+that could happen.
+
+1810
+01:24:28,489 --> 01:24:33,420
+And there will always be
+people saying it's too risky.
+
+1811
+01:24:33,420 --> 01:24:34,409
+We can't do it.
+
+1812
+01:24:34,409 --> 01:24:37,649
+So knowing how
+much residual risk
+
+1813
+01:24:37,649 --> 01:24:41,189
+you should be willing
+to carry is a big part
+
+1814
+01:24:41,189 --> 01:24:44,549
+of being a leader, being
+a system engineer, really
+
+1815
+01:24:44,550 --> 01:24:45,869
+understanding things.
+
+1816
+01:24:45,869 --> 01:24:47,460
+And in the automotive
+industry, there
+
+1817
+01:24:47,460 --> 01:24:51,869
+are people whose primary job
+they have is to do this work.
+
+1818
+01:24:51,869 --> 01:24:54,689
+And they're called Quality
+Engineers or Warranty
+
+1819
+01:24:54,689 --> 01:24:55,799
+Engineers.
+
+1820
+01:24:55,800 --> 01:24:59,820
+So the Warranty Engineers,
+their job is twofold.
+
+1821
+01:24:59,819 --> 01:25:02,019
+Before you launch a
+vehicle to market,
+
+1822
+01:25:02,020 --> 01:25:07,270
+it's actually ranking on this
+particular vehicle or program,
+
+1823
+01:25:07,270 --> 01:25:10,980
+what are the top 10 things that
+could cause warranty planes
+
+1824
+01:25:10,979 --> 01:25:12,279
+and problems in the future?
+
+1825
+01:25:12,279 --> 01:25:14,759
+We don't know that they
+will, but they might.
+
+1826
+01:25:14,760 --> 01:25:16,239
+Right?
+
+1827
+01:25:16,239 --> 01:25:19,199
+And then once a
+vehicle goes to market
+
+1828
+01:25:19,199 --> 01:25:23,519
+and reports are coming back
+from users and from the fleet,
+
+1829
+01:25:23,520 --> 01:25:25,540
+actually tracking
+what these issues are
+
+1830
+01:25:25,539 --> 01:25:29,010
+and then knowing when has
+it hit a threshold where
+
+1831
+01:25:29,010 --> 01:25:32,369
+you do need to do a recall,
+you do need to do a retrofit,
+
+1832
+01:25:32,369 --> 01:25:33,930
+this is a big part of it.
+
+1833
+01:25:33,930 --> 01:25:35,710
+And it's really a big deal.
+
+1834
+01:25:35,710 --> 01:25:39,149
+I mean, the amount of money that
+automotive companies spend on
+
+1835
+01:25:39,149 --> 01:25:44,069
+recalls every year is about the
+same as what their profits are.
+
+1836
+01:25:44,069 --> 01:25:46,799
+So if you could eliminate
+recalls and warranty
+
+1837
+01:25:46,800 --> 01:25:51,390
+claims altogether, you'd
+basically double your profit.
+
+1838
+01:25:51,390 --> 01:25:53,550
+And so depending
+on what industry
+
+1839
+01:25:53,550 --> 01:25:56,260
+you're in, whether it's
+automotive, medical,
+
+1840
+01:25:56,260 --> 01:26:01,619
+spacecraft, how much risk
+and safety is involved,
+
+1841
+01:26:01,619 --> 01:26:04,319
+this is more or less
+emphasized in the industry.
+
+1842
+01:26:04,319 --> 01:26:06,539
+But it's a big part, I
+think, of system engineering
+
+1843
+01:26:06,539 --> 01:26:10,239
+job, is to understand this.
+
+1844
+01:26:10,239 --> 01:26:14,170
+This is, again, a flow diagram
+for how to do this risk
+
+1845
+01:26:14,170 --> 01:26:15,380
+management properly.
+
+1846
+01:26:15,380 --> 01:26:18,730
+You have a Risk Management
+Plan, your technical risk issues
+
+1847
+01:26:18,729 --> 01:26:22,569
+that are placed on the
+matrix, any measurements
+
+1848
+01:26:22,569 --> 01:26:23,519
+or data you have.
+
+1849
+01:26:23,520 --> 01:26:25,480
+And then how do you report this?
+
+1850
+01:26:25,479 --> 01:26:28,359
+And then out of it
+comes a mitigation plan,
+
+1851
+01:26:28,359 --> 01:26:31,719
+a set of actions, technical
+risk reports, and then
+
+1852
+01:26:31,720 --> 01:26:34,630
+any work product from the
+technical risk management.
+
+1853
+01:26:34,630 --> 01:26:36,940
+And the idea is that
+you repeat this process
+
+1854
+01:26:36,939 --> 01:26:38,109
+on a regular basis.
+
+1855
+01:26:38,109 --> 01:26:43,089
+And it's a big part of your
+milestone reviews as well.
+
+1856
+01:26:43,090 --> 01:26:47,569
+OK, so I'd like to spend a
+few minutes on system safety.
+
+1857
+01:26:47,569 --> 01:26:50,420
+I am not going to do this
+justice because there's
+
+1858
+01:26:50,420 --> 01:26:53,899
+a whole class here at MIT on
+this, taught by Professor Nancy
+
+1859
+01:26:53,899 --> 01:26:54,421
+Leveson.
+
+1860
+01:26:54,421 --> 01:26:55,879
+By the way, who's
+taken that class?
+
+1861
+01:26:55,880 --> 01:26:58,159
+Or who's been thinking
+about taking it?
+
+1862
+01:26:58,159 --> 01:26:59,960
+About three, four of you.
+
+1863
+01:26:59,960 --> 01:27:03,170
+So I'm just going to give you
+a very quick exposure to this.
+
+1864
+01:27:03,170 --> 01:27:07,850
+So this is a book that Professor
+Leveson wrote several years
+
+1865
+01:27:07,850 --> 01:27:08,820
+ago.
+
+1866
+01:27:08,819 --> 01:27:13,579
+And she basically distinguishes
+two kinds of failures.
+
+1867
+01:27:13,579 --> 01:27:16,369
+Component failures, which
+most people think about,
+
+1868
+01:27:16,369 --> 01:27:23,239
+an axle broke or there
+was a battery caught fire.
+
+1869
+01:27:23,239 --> 01:27:25,880
+And clearly, component
+failures are real
+
+1870
+01:27:25,880 --> 01:27:29,000
+and they happen, single or
+multiple component failures.
+
+1871
+01:27:29,000 --> 01:27:31,399
+And usually there's
+some randomness to them.
+
+1872
+01:27:31,399 --> 01:27:34,309
+So most of the classic
+accident investigation
+
+1873
+01:27:34,310 --> 01:27:38,810
+techniques and safety techniques
+focus on component failures.
+
+1874
+01:27:38,810 --> 01:27:41,780
+But there's also component
+interaction accidents
+
+1875
+01:27:41,779 --> 01:27:44,359
+or failures which are
+trickier, in a sense,
+
+1876
+01:27:44,359 --> 01:27:46,489
+because you could
+have a system that
+
+1877
+01:27:46,489 --> 01:27:49,130
+has no single component
+that's failed.
+
+1878
+01:27:49,130 --> 01:27:51,430
+And yet, you had
+a system failure.
+
+1879
+01:27:51,430 --> 01:27:54,500
+And so it's the interactions
+among components.
+
+1880
+01:27:54,500 --> 01:27:58,550
+And this could be related
+to interactive complexity
+
+1881
+01:27:58,550 --> 01:28:02,329
+in coupling, more and more
+computers and software,
+
+1882
+01:28:02,329 --> 01:28:04,289
+and then the role of
+humans and systems.
+
+1883
+01:28:04,289 --> 01:28:08,960
+And this is really what
+a lot of this is about.
+
+1884
+01:28:08,960 --> 01:28:12,250
+So the traditional
+safety thinking
+
+1885
+01:28:12,250 --> 01:28:15,310
+is that component
+failures, you need
+
+1886
+01:28:15,310 --> 01:28:18,220
+to worry about the
+component failures only.
+
+1887
+01:28:18,220 --> 01:28:24,289
+So here's a classic example
+of a sequence of events.
+
+1888
+01:28:24,289 --> 01:28:26,300
+This is for a tank failure.
+
+1889
+01:28:26,300 --> 01:28:28,390
+So in this case, we have a tank.
+
+1890
+01:28:28,390 --> 01:28:34,460
+And there's moisture that
+builds up in the tank.
+
+1891
+01:28:34,460 --> 01:28:37,480
+And then corrosion,
+essentially, as a result.
+
+1892
+01:28:37,479 --> 01:28:39,429
+The metal gets weakened.
+
+1893
+01:28:39,430 --> 01:28:43,300
+And under the operating
+pressure of the tank, the tank
+
+1894
+01:28:43,300 --> 01:28:45,800
+itself has been weakened
+due to corrosion.
+
+1895
+01:28:45,800 --> 01:28:49,000
+The operating pressure
+causes a tank rupture.
+
+1896
+01:28:49,000 --> 01:28:52,390
+And the tank rupture
+then causes, essentially,
+
+1897
+01:28:52,390 --> 01:28:53,380
+an explosion.
+
+1898
+01:28:53,380 --> 01:28:55,569
+And fragments or
+shrapnel from the tank
+
+1899
+01:28:55,569 --> 01:28:58,989
+will be projected and then
+cause equipment damage
+
+1900
+01:28:58,989 --> 01:29:01,420
+or personnel injury.
+
+1901
+01:29:01,420 --> 01:29:05,409
+And so in this linear
+chain-of-events model,
+
+1902
+01:29:05,409 --> 01:29:09,000
+the way you think about
+safety is putting in barriers.
+
+1903
+01:29:09,000 --> 01:29:12,760
+This is often also referred
+as the Swiss cheese model.
+
+1904
+01:29:12,760 --> 01:29:15,460
+if you take layers
+of Swiss cheese--
+
+1905
+01:29:15,460 --> 01:29:18,399
+and I guess it has to
+be Emmentaler, right?
+
+1906
+01:29:18,399 --> 01:29:21,369
+You guys know the
+Emmentaler at EPFL?
+
+1907
+01:29:21,369 --> 01:29:24,609
+Emmentaler is the one,
+it's got the big holes.
+
+1908
+01:29:24,609 --> 01:29:25,255
+AUDIENCE: Yes.
+
+1909
+01:29:25,255 --> 01:29:27,579
+PROFESSOR: So you take
+these slices of cheese.
+
+1910
+01:29:27,579 --> 01:29:30,850
+And if you can
+look at the cheese,
+
+1911
+01:29:30,850 --> 01:29:33,340
+and there's actually
+a hole right through,
+
+1912
+01:29:33,340 --> 01:29:35,409
+then the accident can happen.
+
+1913
+01:29:35,409 --> 01:29:38,380
+But if you put another
+barrier in between,
+
+1914
+01:29:38,380 --> 01:29:41,710
+you can't see through the cheese
+and the accident is prevented.
+
+1915
+01:29:41,710 --> 01:29:45,449
+That's the classical
+thinking around system safety
+
+1916
+01:29:45,449 --> 01:29:47,349
+is chain of events.
+
+1917
+01:29:47,350 --> 01:29:50,820
+And then put barriers
+between these.
+
+1918
+01:29:50,819 --> 01:29:56,559
+And this is, I think, valid
+for a very particular kind
+
+1919
+01:29:56,560 --> 01:30:00,650
+of accidents, which are
+these component accidents.
+
+1920
+01:30:00,649 --> 01:30:04,819
+What Professor Leveson says in
+her STAMP and STPA Framework
+
+1921
+01:30:04,819 --> 01:30:07,409
+is a little different.
+
+1922
+01:30:07,409 --> 01:30:10,760
+This is based on essentially
+thinking about safety
+
+1923
+01:30:10,760 --> 01:30:16,460
+as a lack of control of a
+system, lack of control-ability
+
+1924
+01:30:16,460 --> 01:30:17,819
+of a system.
+
+1925
+01:30:17,819 --> 01:30:19,849
+And so if you think
+about it this way,
+
+1926
+01:30:19,850 --> 01:30:21,650
+I'm showing you
+here a control loop.
+
+1927
+01:30:21,649 --> 01:30:24,170
+
+
+1928
+01:30:24,170 --> 01:30:28,609
+In this case, you have
+the actual system,
+
+1929
+01:30:28,609 --> 01:30:31,399
+the actual process
+that you're executing.
+
+1930
+01:30:31,399 --> 01:30:33,649
+The controlled process is here.
+
+1931
+01:30:33,649 --> 01:30:37,579
+You're sensing things about
+that process, so temperature,
+
+1932
+01:30:37,579 --> 01:30:41,789
+pressure, proper alignment.
+
+1933
+01:30:41,789 --> 01:30:44,750
+And so one problem could be
+your sensors are inadequate.
+
+1934
+01:30:44,750 --> 01:30:47,420
+You're sensing the
+wrong information.
+
+1935
+01:30:47,420 --> 01:30:49,489
+And then here's your
+controller model,
+
+1936
+01:30:49,489 --> 01:30:51,409
+how should you
+control the system?
+
+1937
+01:30:51,409 --> 01:30:54,829
+So you have the wrong controller
+or the wrong process model.
+
+1938
+01:30:54,829 --> 01:30:57,500
+And then here's your actuators.
+
+1939
+01:30:57,500 --> 01:31:01,819
+Are you issuing commands
+at the right time?
+
+1940
+01:31:01,819 --> 01:31:03,979
+Are you issuing
+the right commands?
+
+1941
+01:31:03,979 --> 01:31:06,349
+Or are you not
+issuing commands when
+
+1942
+01:31:06,350 --> 01:31:08,420
+you should be to the system?
+
+1943
+01:31:08,420 --> 01:31:13,289
+And that feeds back into
+the control process itself.
+
+1944
+01:31:13,289 --> 01:31:16,550
+And so process inputs
+could be wrong or missing.
+
+1945
+01:31:16,550 --> 01:31:19,100
+You could have disturbances
+into the process that are
+
+1946
+01:31:19,100 --> 01:31:21,410
+unidentified or out of range.
+
+1947
+01:31:21,409 --> 01:31:25,130
+And then eventually, if
+this process goes unstable,
+
+1948
+01:31:25,130 --> 01:31:27,109
+then you have a
+failure or an accident.
+
+1949
+01:31:27,109 --> 01:31:28,314
+So it's quite different.
+
+1950
+01:31:28,314 --> 01:31:29,689
+It's essentially
+thinking of this
+
+1951
+01:31:29,689 --> 01:31:33,079
+as a control problem instead
+of a chain-of-events problem.
+
+1952
+01:31:33,079 --> 01:31:39,019
+And the argument here is
+that for safety or failures
+
+1953
+01:31:39,020 --> 01:31:43,640
+that involve a combination of
+hardware, software and humans,
+
+1954
+01:31:43,640 --> 01:31:47,780
+often this model is able
+to be more complete,
+
+1955
+01:31:47,779 --> 01:31:50,929
+in terms of identifying hazards
+and potential mitigation
+
+1956
+01:31:50,930 --> 01:31:52,920
+actions.
+
+1957
+01:31:52,920 --> 01:31:55,730
+So I think we're out of time.
+
+1958
+01:31:55,729 --> 01:31:59,299
+But I want I want to give
+this to you as a homework
+
+1959
+01:31:59,300 --> 01:32:01,525
+for thinking about this.
+
+1960
+01:32:01,525 --> 01:32:06,590
+This is an accident that
+happened earlier this year,
+
+1961
+01:32:06,590 --> 01:32:08,720
+I guess, in July.
+
+1962
+01:32:08,720 --> 01:32:14,659
+And this is the Virgin
+Galactic crash that happened.
+
+1963
+01:32:14,659 --> 01:32:18,979
+Virgin Galactic is one of
+the space tourism companies.
+
+1964
+01:32:18,979 --> 01:32:21,829
+And during a test
+flight, the airplane
+
+1965
+01:32:21,829 --> 01:32:26,269
+crashed because the copilot
+unlocked the brake system.
+
+1966
+01:32:26,270 --> 01:32:29,930
+So it has a kind of
+feathering mechanism.
+
+1967
+01:32:29,930 --> 01:32:32,090
+And the pilot
+unlocked it too early
+
+1968
+01:32:32,090 --> 01:32:35,600
+during a high-speed
+flight phase.
+
+1969
+01:32:35,600 --> 01:32:37,910
+So what I'd like you to
+do, the link is here.
+
+1970
+01:32:37,909 --> 01:32:39,559
+Just read the story.
+
+1971
+01:32:39,560 --> 01:32:43,160
+There's a more lengthy accident
+report that's come out.
+
+1972
+01:32:43,159 --> 01:32:46,519
+I'd like you to just read this
+quickly and then think about
+
+1973
+01:32:46,520 --> 01:32:48,500
+how does this relate to risks?
+
+1974
+01:32:48,500 --> 01:32:50,567
+How does it relate to
+this particular model
+
+1975
+01:32:50,567 --> 01:32:51,274
+of system safety?
+
+1976
+01:32:51,274 --> 01:32:54,299
+
+
+1977
+01:32:54,300 --> 01:32:56,610
+So the System's
+Theoretic View of Safety
+
+1978
+01:32:56,609 --> 01:33:00,539
+is then that safety is an
+emergent system property.
+
+1979
+01:33:00,539 --> 01:33:02,369
+Accidents arise
+from interactions
+
+1980
+01:33:02,369 --> 01:33:04,569
+among system components--
+
+1981
+01:33:04,569 --> 01:33:09,689
+physical, human, social--
+constraint violation.
+
+1982
+01:33:09,689 --> 01:33:12,179
+Losses are the result
+of complex processes,
+
+1983
+01:33:12,180 --> 01:33:14,100
+not simple chain of events.
+
+1984
+01:33:14,100 --> 01:33:16,800
+And that most
+accidents arise from--
+
+1985
+01:33:16,800 --> 01:33:19,409
+you could have a system
+that's quite safe when
+
+1986
+01:33:19,409 --> 01:33:20,859
+you start operating it.
+
+1987
+01:33:20,859 --> 01:33:24,000
+But over time it migrates
+to an unsafe state.
+
+1988
+01:33:24,000 --> 01:33:26,279
+Because sensors fail.
+
+1989
+01:33:26,279 --> 01:33:29,159
+People start bypassing
+safety procedures.
+
+1990
+01:33:29,159 --> 01:33:33,489
+And gradually, it
+migrates to high risk.
+
+1991
+01:33:33,489 --> 01:33:34,369
+OK.
+
+1992
+01:33:34,369 --> 01:33:36,260
+So the last thing I want
+to talk about-- just
+
+1993
+01:33:36,260 --> 01:33:39,710
+for a minute or two-- is the
+FRR, the Flight Readiness
+
+1994
+01:33:39,710 --> 01:33:42,739
+Review, which is one of
+the later milestones.
+
+1995
+01:33:42,739 --> 01:33:45,840
+And what happens
+at the flight FRR?
+
+1996
+01:33:45,840 --> 01:33:50,090
+Essentially, this is your last
+chance to raise a red flag.
+
+1997
+01:33:50,090 --> 01:33:52,880
+This is the last
+milestone before launch.
+
+1998
+01:33:52,880 --> 01:33:55,970
+Have all the V&V activities
+been passed successfully?
+
+1999
+01:33:55,970 --> 01:33:58,610
+Are there any waivers
+that need to be granted?
+
+2000
+01:33:58,609 --> 01:34:01,529
+What are the residual
+risks we just talked about?
+
+2001
+01:34:01,529 --> 01:34:04,219
+And then after the
+FRR has passed,
+
+2002
+01:34:04,220 --> 01:34:07,920
+you actually start
+the countdown--
+
+2003
+01:34:07,920 --> 01:34:11,329
+T minus X days, Y
+hours, Z seconds--
+
+2004
+01:34:11,329 --> 01:34:15,689
+to an actual launch, or a
+product launch, whatever it is.
+
+2005
+01:34:15,689 --> 01:34:17,899
+And then here's from the
+handbook, the entrance
+
+2006
+01:34:17,899 --> 01:34:19,579
+and success criteria for FRR.
+
+2007
+01:34:19,579 --> 01:34:23,059
+
+
+2008
+01:34:23,060 --> 01:34:25,370
+Everything should have
+been done at this point.
+
+2009
+01:34:25,369 --> 01:34:29,809
+Your design, your
+integration, your testing,
+
+2010
+01:34:29,810 --> 01:34:33,350
+your operating procedure,
+your people should be trained.
+
+2011
+01:34:33,350 --> 01:34:35,810
+This is your last chance
+to raise a red flag.
+
+2012
+01:34:35,810 --> 01:34:39,200
+After the FRR, you're
+essentially go for launch.
+
+2013
+01:34:39,199 --> 01:34:42,189
+So the stakes are high.
+
+2014
+01:34:42,189 --> 01:34:44,169
+OK, so a quick summary.
+
+2015
+01:34:44,170 --> 01:34:47,230
+Verification and
+validation are critical.
+
+2016
+01:34:47,229 --> 01:34:50,069
+There's a distinction
+between the two.
+
+2017
+01:34:50,069 --> 01:34:52,599
+Verification is against the
+requirements as written.
+
+2018
+01:34:52,600 --> 01:34:55,329
+Validation is you go
+back to your customer
+
+2019
+01:34:55,329 --> 01:34:57,609
+and you test in a
+real environment.
+
+2020
+01:34:57,609 --> 01:35:00,189
+Testing, many different
+kinds of testing.
+
+2021
+01:35:00,189 --> 01:35:02,500
+It's a fundamentally
+Q&A activity,
+
+2022
+01:35:02,500 --> 01:35:05,710
+and it's really expensive,
+but it needs to be done right.
+
+2023
+01:35:05,710 --> 01:35:08,079
+Risk management, we
+have different tools
+
+2024
+01:35:08,079 --> 01:35:11,997
+like the risk matrix, risk
+identification, mitigation.
+
+2025
+01:35:11,997 --> 01:35:14,079
+And that's really where
+the rubber meets the road,
+
+2026
+01:35:14,079 --> 01:35:16,869
+in terms of the tension
+between cost, scope, schedule,
+
+2027
+01:35:16,869 --> 01:35:18,609
+and risk in projects.
+
+2028
+01:35:18,609 --> 01:35:22,670
+System safety, think about not
+just the chain of events model,
+
+2029
+01:35:22,670 --> 01:35:25,779
+but this control's view as well.
+
+2030
+01:35:25,779 --> 01:35:28,670
+STAMP/STPA is a particular
+framework for this.
+
+2031
+01:35:28,670 --> 01:35:31,666
+And if you're interested,
+there's a whole class.
+
+2032
+01:35:31,666 --> 01:35:33,039
+There's a whole
+set of things you
+
+2033
+01:35:33,039 --> 01:35:35,109
+can learn about just safety.
+
+2034
+01:35:35,109 --> 01:35:37,750
+And then finally, FRR
+is your last chance
+
+2035
+01:35:37,750 --> 01:35:39,789
+to raise the red flag.
+
+2036
+01:35:39,789 --> 01:35:43,180
+It's sort of the big
+milestone before you go live
+
+2037
+01:35:43,180 --> 01:35:44,680
+with your system.
+
+2038
+01:35:44,680 --> 01:35:45,970
+OK?
+
+2039
+01:35:45,970 --> 01:35:49,006
+So any last questions
+or comments?
+
+2040
+01:35:49,006 --> 01:35:50,680
+EPFL?
+
+2041
+01:35:50,680 --> 01:35:53,200
+Yes, please go ahead.
+
+2042
+01:35:53,199 --> 01:35:57,380
+AUDIENCE: So after the
+FRR you should have
+
+2043
+01:35:57,380 --> 01:35:59,000
+finished your tests, right?
+
+2044
+01:35:59,000 --> 01:36:00,699
+It's the limit?
+
+2045
+01:36:00,699 --> 01:36:02,829
+PROFESSOR: Yes, you should
+have finished your tests
+
+2046
+01:36:02,829 --> 01:36:05,590
+except for the ones that you're
+going to do, say, on orbit,
+
+2047
+01:36:05,590 --> 01:36:06,744
+right?
+
+2048
+01:36:06,743 --> 01:36:09,139
+AUDIENCE: Because I was
+wondering, in the list
+
+2049
+01:36:09,140 --> 01:36:12,619
+there is the go, no-go test.
+
+2050
+01:36:12,619 --> 01:36:15,114
+And I'm wondering if it's
+not related to the launch,
+
+2051
+01:36:15,114 --> 01:36:16,371
+actually?
+
+2052
+01:36:16,372 --> 01:36:20,270
+PROFESSOR: Yeah, so the actual
+launch itself, of course,
+
+2053
+01:36:20,270 --> 01:36:23,450
+has the actual launch countdown.
+
+2054
+01:36:23,449 --> 01:36:26,090
+And you can stop the launch.
+
+2055
+01:36:26,090 --> 01:36:27,529
+So this is a review.
+
+2056
+01:36:27,529 --> 01:36:29,509
+The FRR is more like a CDR.
+
+2057
+01:36:29,510 --> 01:36:33,500
+So the countdown hasn't
+actually started yet.
+
+2058
+01:36:33,500 --> 01:36:36,079
+But if you successfully
+pass the FRR,
+
+2059
+01:36:36,079 --> 01:36:38,029
+that's when you
+begin the countdown.
+
+2060
+01:36:38,029 --> 01:36:41,269
+The official countdown starts.
+
+2061
+01:36:41,270 --> 01:36:44,930
+And then you still have
+a possibility, of course,
+
+2062
+01:36:44,930 --> 01:36:46,400
+of stopping the launch.
+
+2063
+01:36:46,399 --> 01:36:48,829
+But in terms of a formal
+programmatic review,
+
+2064
+01:36:48,829 --> 01:36:50,939
+this is your last chance.
+
+2065
+01:36:50,939 --> 01:36:54,561
+AUDIENCE: I think the point
+here is more about the what
+
+2066
+01:36:54,561 --> 01:36:55,519
+is the system boundary?
+
+2067
+01:36:55,520 --> 01:36:58,390
+If you consider the
+system boundary being
+
+2068
+01:36:58,390 --> 01:37:00,770
+the whole mission,
+including the launch,
+
+2069
+01:37:00,770 --> 01:37:05,085
+then obviously the
+system will only
+
+2070
+01:37:05,085 --> 01:37:07,221
+be finished when the mission
+has finished phase EF.
+
+2071
+01:37:07,221 --> 01:37:07,929
+PROFESSOR: Right.
+
+2072
+01:37:07,930 --> 01:37:11,615
+AUDIENCE: And this FRR,
+Flight Readiness Review,
+
+2073
+01:37:11,614 --> 01:37:16,069
+is linked to the panel or
+to the whole satellite,
+
+2074
+01:37:16,069 --> 01:37:18,469
+specifically that you are
+allowed to go forward and now
+
+2075
+01:37:18,470 --> 01:37:19,740
+start the countdown issues.
+
+2076
+01:37:19,739 --> 01:37:21,219
+And then all the other things.
+
+2077
+01:37:21,220 --> 01:37:24,310
+Like, you'd extend the mission
+boundaries to the whole space
+
+2078
+01:37:24,310 --> 01:37:26,820
+program or to the whole
+colonization of Mars,
+
+2079
+01:37:26,819 --> 01:37:29,269
+it will be, obviously, later.
+
+2080
+01:37:29,270 --> 01:37:48,633
+
+

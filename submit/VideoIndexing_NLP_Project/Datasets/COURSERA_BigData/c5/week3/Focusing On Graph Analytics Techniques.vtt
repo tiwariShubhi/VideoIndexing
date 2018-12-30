@@ -1,0 +1,703 @@
+WEBVTT
+
+1
+00:00:03.940 --> 00:00:06.930
+Welcome back to the second
+module of the course.
+
+2
+00:00:08.000 --> 00:00:11.480
+In this module, we will cover
+a number of basic principles and
+
+3
+00:00:11.480 --> 00:00:12.780
+techniques of graph analytics.
+
+4
+00:00:14.340 --> 00:00:18.400
+As we mentioned in the last module,
+the goal of graph analytics
+
+5
+00:00:18.400 --> 00:00:23.200
+is to utilize the mathematical
+properties of data and provide
+
+6
+00:00:23.200 --> 00:00:27.710
+efficient algorithmic solutions for large
+and complex graph structure problems.
+
+7
+00:00:28.970 --> 00:00:33.870
+As I said, in this module, we'll learn a
+number of basic graph analytic techniques.
+
+8
+00:00:35.080 --> 00:00:38.580
+After this module,
+you'll be able to identify the right
+
+9
+00:00:38.580 --> 00:00:42.160
+class of techniques to apply for
+a graph analytics problem.
+
+10
+00:00:42.160 --> 00:00:46.630
+To be more specific,
+in this module we will consider
+
+11
+00:00:46.630 --> 00:00:50.380
+the mathematical and
+algorithmic aspects, and not so
+
+12
+00:00:50.380 --> 00:00:53.050
+much the computing frameworks
+to implement these methods.
+
+13
+00:00:54.590 --> 00:00:59.210
+In Modules 3 and 4, we will look at
+two different kinds of computing
+
+14
+00:00:59.210 --> 00:01:03.190
+platforms that are used for implementing
+the techniques discussed in this module.
+
+15
+00:01:04.330 --> 00:01:06.110
+Here is the lesson plan for the module.
+
+16
+00:01:07.320 --> 00:01:10.800
+First, we'll discuss a few basic terms and
+
+17
+00:01:10.800 --> 00:01:13.850
+their definition which we'll use for
+the rest of the course.
+
+18
+00:01:16.030 --> 00:01:18.980
+Of course, they are not the only terms and
+concepts we will learn.
+
+19
+00:01:20.200 --> 00:01:23.520
+As we go through each technique,
+we will add more terms and
+
+20
+00:01:23.520 --> 00:01:25.026
+definitions in our vocabulary.
+
+21
+00:01:25.026 --> 00:01:29.838
+Now following these definitions we
+will consider four categories of
+
+22
+00:01:29.838 --> 00:01:32.060
+graph analytic procedures.
+
+23
+00:01:32.060 --> 00:01:37.300
+The first, called Path Analytics,
+is centered around the Analytic Techniques
+
+24
+00:01:37.300 --> 00:01:40.250
+where the primary objective involves
+traversing to the nodes and
+
+25
+00:01:40.250 --> 00:01:41.170
+edges of the ground.
+
+26
+00:01:42.820 --> 00:01:45.260
+The second analytic technique inquires and
+
+27
+00:01:45.260 --> 00:01:48.010
+explores the connectivity
+pattern of the gaps.
+
+28
+00:01:48.010 --> 00:01:52.160
+Where the term connectivity pattern
+refers to the structure and
+
+29
+00:01:52.160 --> 00:01:54.510
+organizations of the edges of the graph.
+
+30
+00:01:56.070 --> 00:01:59.230
+The third analytics category
+involves the discovery and
+
+31
+00:01:59.230 --> 00:02:03.820
+behavior of communities which are closely
+interacting entities in a network.
+
+32
+00:02:04.970 --> 00:02:10.210
+The fourth category, termed Centrality
+Analytics, detects and characterizes
+
+33
+00:02:10.210 --> 00:02:14.670
+significant nodes of a network with
+respect to a specific analysis problem.
+
+34
+00:02:15.750 --> 00:02:19.570
+Of course there are many more types of
+graph analytic techniques that we'll cover
+
+35
+00:02:19.570 --> 00:02:20.710
+in the course.
+
+36
+00:02:20.710 --> 00:02:24.000
+We'll provide some additional reading
+material for those who are interested.
+
+37
+00:02:24.000 --> 00:02:27.590
+But we start by recapitulating
+our definition of graphs
+
+38
+00:02:27.590 --> 00:02:32.225
+as a collection of vertices and edges,
+which represent ordered pairs of nodes.
+
+39
+00:02:33.580 --> 00:02:36.880
+While this mathematical
+definition is indeed correct,
+
+40
+00:02:36.880 --> 00:02:41.430
+in practice it needs to be extended to
+give you other information elements.
+
+41
+00:02:43.040 --> 00:02:44.540
+Let us consider a single Tweet.
+
+42
+00:02:46.090 --> 00:02:51.040
+As we have mentioned previously,
+a Tweet is a complex information output
+
+43
+00:02:51.040 --> 00:02:53.970
+because it is a graph in itself
+with several nodes and edges.
+
+44
+00:02:55.120 --> 00:02:57.870
+But over and about the structure, a Tweet
+
+45
+00:02:57.870 --> 00:03:01.880
+actually contains much more information
+and code inside the nodes and edges.
+
+46
+00:03:04.320 --> 00:03:07.560
+First, there several kinds
+of nodes in a Tweet.
+
+47
+00:03:08.680 --> 00:03:12.810
+For example it has a Tweet node,
+a User node, a Media node,
+
+48
+00:03:12.810 --> 00:03:15.335
+a URL node, a hashtag node and so forth.
+
+49
+00:03:16.750 --> 00:03:22.115
+This assignment of kinds or labels to
+nodes is often called node typing.
+
+50
+00:03:23.710 --> 00:03:27.352
+Every graph application will
+have its own set of types.
+
+51
+00:03:27.352 --> 00:03:32.350
+And it'll assign one or more types to
+a node but it is not mandatory for
+
+52
+00:03:32.350 --> 00:03:33.840
+an application to use node types.
+
+53
+00:03:36.140 --> 00:03:41.280
+Mathematically we can extend our original
+definition with two more elements.
+
+54
+00:03:41.280 --> 00:03:46.760
+The set of node types and the mapping
+function that assigns types to nodes.
+
+55
+00:03:46.760 --> 00:03:49.360
+That means it associates
+a type to every node.
+
+56
+00:03:50.430 --> 00:03:56.950
+However, not all nodes need to have
+a type but in many applications they do.
+
+57
+00:03:59.370 --> 00:04:03.250
+In addition to types,
+a node also has attributes and values.
+
+58
+00:04:04.680 --> 00:04:05.910
+In our Tweet example,
+
+59
+00:04:07.090 --> 00:04:11.740
+text is the name of an attribute that
+refers to the textual body of the Tweet
+
+60
+00:04:11.740 --> 00:04:16.910
+whose value is a character string
+written by the author of the Tweet.
+
+61
+00:04:17.980 --> 00:04:20.620
+For a specific kind of data like a Tweet,
+
+62
+00:04:20.620 --> 00:04:23.770
+one has a fixed set of attributes
+as decided by Twitter.
+
+63
+00:04:24.970 --> 00:04:27.800
+This collection of attributes
+is called a node schema.
+
+64
+00:04:29.080 --> 00:04:30.480
+For a general graph,
+
+65
+00:04:30.480 --> 00:04:33.700
+a node schema may have an arbitrary
+number of attribute value pairs.
+
+66
+00:04:34.810 --> 00:04:39.330
+We will revisit this in module 3
+when we discuss graphing the models.
+
+67
+00:04:40.690 --> 00:04:45.290
+Similarly, at edge of a graph, we have
+an edge type, also called an edge label.
+
+68
+00:04:46.390 --> 00:04:47.508
+Also just like a node,
+
+69
+00:04:47.508 --> 00:04:52.026
+an edge may have an edge schema
+consisting of attribute value pierce.
+
+70
+00:04:52.026 --> 00:04:57.590
+Here, Interaction Type is
+an attribute in our biological
+
+71
+00:04:57.590 --> 00:05:01.260
+network that describes the modality of
+interaction between a pair of genes.
+
+72
+00:05:03.550 --> 00:05:06.100
+For the specific edge we have highlighted,
+
+73
+00:05:06.100 --> 00:05:09.470
+the genes interact through
+biochemical activity.
+
+74
+00:05:09.470 --> 00:05:12.040
+Because they are party to
+some biochemical process.
+
+75
+00:05:14.830 --> 00:05:18.130
+Clearly, there are different kinds
+of interaction between these
+
+76
+00:05:18.130 --> 00:05:18.910
+genes or proteins.
+
+77
+00:05:19.930 --> 00:05:24.684
+That means an attribute called
+interaction type can have a set of
+
+78
+00:05:24.684 --> 00:05:28.570
+possible values like physical,
+genetic and so on.
+
+79
+00:05:30.410 --> 00:05:35.055
+This set of possible values is
+called the domain of the attribute.
+
+80
+00:05:37.850 --> 00:05:40.670
+Putting these elements back
+into our mathematical model,
+
+81
+00:05:40.670 --> 00:05:45.040
+we get a more concrete specification of
+what a real live graph would contain.
+
+82
+00:05:46.340 --> 00:05:50.450
+We have already discussed edge types
+as well as node and edge properties.
+
+83
+00:05:52.450 --> 00:05:54.090
+Take a minute to look through this again.
+
+84
+00:05:55.910 --> 00:06:01.880
+Whenever you consider an application that
+needs graph analytics, the first task
+
+85
+00:06:01.880 --> 00:06:05.800
+should be to determine the informational
+model of the graph your application needs.
+
+86
+00:06:06.850 --> 00:06:10.630
+It's always a good exercise to
+document the information model,
+
+87
+00:06:10.630 --> 00:06:13.280
+in terms of the elements
+described on the slide.
+
+88
+00:06:15.365 --> 00:06:17.890
+Let's see a little more on
+the topic of edge properties.
+
+89
+00:06:19.468 --> 00:06:23.650
+Many application encode different
+kids of numeric knowledge
+
+90
+00:06:23.650 --> 00:06:26.370
+into edges of a graph in
+the form of edge points.
+
+91
+00:06:27.850 --> 00:06:31.050
+If we do not put weights
+in an adjacency metrics,
+
+92
+00:06:31.050 --> 00:06:36.290
+an edge is just represented by
+placing a one in the appropriate cell.
+
+93
+00:06:36.290 --> 00:06:38.800
+However, if we do use a weight,
+
+94
+00:06:38.800 --> 00:06:43.070
+the weight value can be placed in
+the adjacency matrix to facilitate
+
+95
+00:06:43.070 --> 00:06:45.939
+down stream computation as
+we'll show in the next lesson.
+
+96
+00:06:47.330 --> 00:06:48.130
+What do the weights mean?
+
+97
+00:06:49.440 --> 00:06:51.920
+That depends on the application.
+
+98
+00:06:51.920 --> 00:06:52.720
+Let's see some examples.
+
+99
+00:06:54.530 --> 00:07:00.440
+The most obvious example is a road map
+where the nodes are road intersections and
+
+100
+00:07:00.440 --> 00:07:02.960
+the edges represent
+stretches of the street or
+
+101
+00:07:02.960 --> 00:07:04.380
+highway between these intersections.
+
+102
+00:07:05.520 --> 00:07:09.200
+The edge weight can represent the distance
+of a particular segment of the road.
+
+103
+00:07:12.070 --> 00:07:16.500
+In a personal communication network,
+for example an email network,
+
+104
+00:07:16.500 --> 00:07:22.520
+we can count the average number of emails
+per week sent from John to Jill and
+
+105
+00:07:22.520 --> 00:07:25.700
+use it as a proxy for
+the strength of their connection.
+
+106
+00:07:25.700 --> 00:07:30.049
+So more emails means
+a stronger connection.
+
+107
+00:07:30.049 --> 00:07:34.276
+In a biological network, one often has
+to assess whether an interaction that
+
+108
+00:07:34.276 --> 00:07:38.699
+can occur is actually likely to occur
+given the concentration of the reactants,
+
+109
+00:07:38.699 --> 00:07:43.330
+the chemical environment at the site
+of the reaction and so forth.
+
+110
+00:07:43.330 --> 00:07:47.520
+This is represented as a weight that
+designates the likelihood of interaction.
+
+111
+00:07:48.930 --> 00:07:51.610
+Finally, consider a knowledge network
+
+112
+00:07:51.610 --> 00:07:55.830
+where nodes represent entities
+like people, places and events.
+
+113
+00:07:55.830 --> 00:08:00.920
+And edges represent relationships
+like a person visited a place or
+
+114
+00:08:00.920 --> 00:08:04.460
+movie actor Tom is dating
+movie actress Kim.
+
+115
+00:08:04.460 --> 00:08:07.780
+Now this kind of information may
+be important for some news media.
+
+116
+00:08:07.780 --> 00:08:12.716
+However, if the information does
+not come from an authentic source,
+
+117
+00:08:12.716 --> 00:08:17.200
+itself, it is more prudent to
+put a certainty value on it.
+
+118
+00:08:17.200 --> 00:08:20.150
+This certainty value may be
+treated as a weight on the edge.
+
+119
+00:08:21.530 --> 00:08:24.280
+Moving on from the information
+model of the graph,
+
+120
+00:08:24.280 --> 00:08:28.200
+the structure of the graph often
+contains valuable insights to a graph.
+
+121
+00:08:29.270 --> 00:08:32.060
+Many of the graph analytic techniques
+we will discuss in this section
+
+122
+00:08:33.130 --> 00:08:36.338
+will consider these structural
+properties of graphs.
+
+123
+00:08:36.338 --> 00:08:43.130
+One such structure is a loop,
+which is an edge from a node to itself.
+
+124
+00:08:43.130 --> 00:08:44.570
+In the example here,
+
+125
+00:08:44.570 --> 00:08:48.410
+you can see that a protein can interact
+with another protein of the same kind.
+
+126
+00:08:49.440 --> 00:08:51.420
+Many other examples abound.
+
+127
+00:08:51.420 --> 00:08:53.997
+People send emails to themselves.
+
+128
+00:08:53.997 --> 00:08:56.630
+A road segment circles back
+to the same intersection.
+
+129
+00:08:57.800 --> 00:09:00.814
+A website has a link to its own URL.
+
+130
+00:09:00.814 --> 00:09:05.578
+The existence of loops and the nodes that
+have such loops can be very informative
+
+131
+00:09:05.578 --> 00:09:09.790
+in some applications and
+can be problematic for other applications.
+
+132
+00:09:11.160 --> 00:09:14.910
+Another structure property of a graph
+is the occurrence of multiple
+
+133
+00:09:14.910 --> 00:09:17.230
+edges between the same node pair.
+
+134
+00:09:17.230 --> 00:09:21.170
+The graphs with this feature
+are called multi-graphs.
+
+135
+00:09:21.170 --> 00:09:25.330
+In this example, the two map kinase
+genes have five edges between them.
+
+136
+00:09:27.030 --> 00:09:28.396
+Why multiple edges?
+
+137
+00:09:28.396 --> 00:09:35.130
+It's because each edge has
+a different information content.
+
+138
+00:09:35.130 --> 00:09:35.760
+In this case,
+
+139
+00:09:35.760 --> 00:09:40.100
+these two genes can have five different
+types of interactions between them.
+
+140
+00:09:40.100 --> 00:09:44.540
+Where each interaction has a different
+value for the attribute interaction type.
+
+141
+00:09:45.830 --> 00:09:48.500
+We see this all the time
+in human networks too.
+
+142
+00:09:48.500 --> 00:09:53.080
+A person can be my spouse,
+a co-performer in music and
+
+143
+00:09:53.080 --> 00:09:55.050
+my financial adviser,
+all at the same time.
+
+144
+00:09:56.140 --> 00:10:00.100
+Many analytics algorithms
+are not natively designed for
+
+145
+00:10:00.100 --> 00:10:05.040
+multigraphs, and often need a little
+customization to handle them.
+
+146
+00:10:05.040 --> 00:10:09.130
+We will mention some of these
+customizations as we go forward and walk
+
+147
+00:10:09.130 --> 00:10:13.791
+through the different kinds of analytics
+applications preformed on graphs.

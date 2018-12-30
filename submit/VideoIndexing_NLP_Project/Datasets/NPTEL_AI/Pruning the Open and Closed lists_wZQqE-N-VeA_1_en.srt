@@ -1,0 +1,2166 @@
+﻿1
+00:00:10,589 --> 00:00:18,449
+Our space saving versions of a star and today
+we want to first look at pruning the close
+
+2
+00:00:18,449 --> 00:00:30,049
+list. So, just to recap assuming that you
+are working with a heuristic function which
+
+3
+00:00:30,050 --> 00:00:35,558
+satisfies the monotone criteria or the consistency
+criteria we are worried about two things
+
+4
+00:00:35,558 --> 00:00:59,670
+1 is that as a community, now calls it stop
+the search from leaking back. This means
+
+5
+00:00:59,670 --> 00:01:06,469
+basically just imagine the search frontier
+being pushed out into the search piece the
+
+6
+00:01:06,469 --> 00:01:08,500
+open
+node should not come back from inside the
+
+7
+00:01:08,500 --> 00:01:11,650
+search piece whatever what could have been
+in the closed list.
+
+8
+00:01:11,650 --> 00:01:16,700
+Essentially, that is the first objective and
+the second objective would be of course to
+
+9
+00:01:16,700 --> 00:01:22,228
+reconstruct the path. So, let us first worry
+about the first objective is it how can you
+
+10
+00:01:22,228 --> 00:01:27,478
+stop
+the search from going backwards. So, in 2000
+
+11
+00:01:27,478 --> 00:01:37,569
+or so Koror old friend who is been
+working on this for a while and his student
+
+12
+00:01:37,569 --> 00:01:46,618
+Zhang.
+They devise the salary sum which I will name
+
+13
+00:01:46,618 --> 00:01:57,420
+in a little while, but it work has follows
+that imagine that you have this node x and
+
+14
+00:01:57,420 --> 00:02:02,129
+you generate its children; let us only look
+at
+
+15
+00:02:02,129 --> 00:02:14,539
+the forward children. So, let us say we expanding
+the search frontier here and let us just
+
+16
+00:02:14,539 --> 00:02:27,949
+.call them a b c essentially now what Korf
+and Zhang suggested was that you store along
+
+17
+00:02:27,949 --> 00:02:37,828
+with these nodes. So, this is open this is
+only be the new open, so with every node in
+
+18
+00:02:37,829 --> 00:02:51,799
+open you store it is parents list of its parents.
+So, with a for example, we will store x here
+
+19
+00:02:51,799 --> 00:02:56,269
+with b also we will store x with c also we
+will store x what is the idea the idea is
+
+20
+00:02:56,269 --> 00:03:01,080
+it this
+list forms a kind of a list essentially.
+
+21
+00:03:01,080 --> 00:03:08,090
+This means that when we in turn were to pick
+a or b or c for expansion we would not
+
+22
+00:03:08,090 --> 00:03:13,770
+generate those children which we have listed
+in this list here. So, it is a very simple
+
+23
+00:03:13,770 --> 00:03:20,599
+mechanism for search to be pushed only in
+the forward directions essentially. Now, for
+
+24
+00:03:20,598 --> 00:03:27,979
+example, if there was a y here which was related
+to x and let us say this y also connected
+
+25
+00:03:27,979 --> 00:03:35,199
+to this c and b essentially. So, either point
+when y was expanded then this x this could
+
+26
+00:03:35,199 --> 00:03:42,848
+come x comma y this also will become x comma
+y. So, with every node in open, we
+
+27
+00:03:42,848 --> 00:03:54,348
+maintain a list of nodes which will not be
+generated when that node is when this is called
+
+28
+00:03:54,348 --> 00:03:58,938
+with that node essentially. So, it is like
+at abort list with every node essentially.
+
+29
+00:03:58,938 --> 00:04:06,229
+So, with this simple mechanism we can see
+it has a effect if you think about this that
+
+30
+00:04:06,229 --> 00:04:12,888
+every edge is diverged only once while searching.
+So, this edge from x to a is only
+
+31
+00:04:12,889 --> 00:04:18,060
+diverged in this direction or in other words
+a back pointer is put only in this direction
+
+32
+00:04:18,060 --> 00:04:22,389
+a x
+can never become a child of a x can never
+
+33
+00:04:22,389 --> 00:04:27,750
+become a child of b x can never become a
+child of c and. So, when a is generated some
+
+34
+00:04:27,750 --> 00:04:39,300
+new nodes where we generated may be
+even b may be generated, but x would not be
+
+35
+00:04:39,300 --> 00:04:49,579
+generated. So, that the children of a are
+going to be these nodes. So, this is 1 mechanism
+
+36
+00:04:49,579 --> 00:05:00,060
+for stopping the search from leaking
+back which means that, so let us say this
+
+37
+00:05:00,060 --> 00:05:02,970
+source is somewhere here and search frontier
+expanding.
+
+38
+00:05:02,970 --> 00:05:08,550
+So, when we when we generate children of a
+it will only be the forward looking children
+
+39
+00:05:08,550 --> 00:05:13,280
+after a if we generate b then a will not be
+generated, but some other children of b would
+
+40
+00:05:13,279 --> 00:05:17,489
+be generated and the search will only push
+in the forward direction. So, one task of
+
+41
+00:05:17,490 --> 00:05:24,389
+getting into loops is taken care of by modifying
+the nodes in open list by them with extra
+
+42
+00:05:24,389 --> 00:05:27,110
+information as to which nodes should not be
+generated.
+
+43
+00:05:27,110 --> 00:05:28,110
+..
+
+44
+00:05:28,110 --> 00:05:36,819
+A little bit later 3 or 4 years later, another
+Chinese student Zhou working with Hansen
+
+45
+00:05:36,819 --> 00:05:43,699
+supervisor produced a different algorithm
+in which they had a slightly different
+
+46
+00:05:43,699 --> 00:05:50,280
+mechanism for search from leaking back. Their
+mechanism always follows that the set
+
+47
+00:05:50,279 --> 00:06:12,439
+closed is partitioned into 2 sets 1 is called,
+the kernel and the other is called the boundary
+
+48
+00:06:12,439 --> 00:06:17,660
+and the way to distinguish between the kernel
+and the boundary is that this has no
+
+49
+00:06:17,660 --> 00:06:42,349
+children on open. This is a negation of this
+which means at least 1child; this is
+
+50
+00:06:42,348 --> 00:06:48,839
+remembered this is the close list essentially.
+So, if I want to draw the close list if this
+
+51
+00:06:48,839 --> 00:06:55,750
+is a
+start node then everything inside this is
+
+52
+00:06:55,750 --> 00:07:01,319
+on the close list and everything on this frontier
+is
+
+53
+00:07:01,319 --> 00:07:09,438
+open.
+So, the boundary nodes which are if I can
+
+54
+00:07:09,439 --> 00:07:20,240
+draw in this colour would be these nodes
+which are which have at least one child in
+
+55
+00:07:20,240 --> 00:07:25,970
+open and all other nodes. So, let draw them
+as
+
+56
+00:07:25,970 --> 00:07:37,360
+a numbers which has children which are all
+on closed would be the kernel essentially.
+
+57
+00:07:37,360 --> 00:07:47,900
+So, they distinguished between closed and
+open and the idea here is that when you
+
+58
+00:07:47,899 --> 00:07:54,258
+generate children of open you only need to
+look at the boundary and boundary serves the
+
+59
+00:07:54,259 --> 00:07:59,038
+old function of closed which has to avoid
+the search from looping essentially. So, if
+
+60
+00:07:59,038 --> 00:08:01,728
+a
+child is present in the boundary, then you
+
+61
+00:08:01,728 --> 00:08:04,199
+do not generate it, otherwise you generate
+it.
+
+62
+00:08:04,199 --> 00:08:08,680
+It has a same function of pushing the search
+in the forward direction, so this boundary
+
+63
+00:08:08,680 --> 00:08:19,650
+layer this intermediate layer of nodes the
+boundary layer and it basically stops the
+
+64
+00:08:19,649 --> 00:08:21,649
+search
+from coming back any node will not generate
+
+65
+00:08:21,649 --> 00:08:23,758
+a child in boundary and the boundary list.
+
+66
+00:08:23,759 --> 00:08:24,759
+..
+
+67
+00:08:24,759 --> 00:08:32,259
+So, now let us address the second function
+of closed which is to reconstruct the path
+
+68
+00:08:32,259 --> 00:08:42,360
+because 
+it allows us to reconstruct the path from
+
+69
+00:08:42,360 --> 00:08:50,750
+the start to the goal know how do we
+how to Korf and Zhang handle this. So, I hope
+
+70
+00:08:50,750 --> 00:08:54,350
+this is clear this mechanism for pushing
+the search only in the forward direction and
+
+71
+00:08:54,350 --> 00:08:56,060
+taking care of the first path because there
+is
+
+72
+00:08:56,059 --> 00:09:00,399
+no looping which is going to take place taking
+care in this case by modifying.
+
+73
+00:09:00,399 --> 00:09:07,629
+The open list allows only successes, which
+are not in the closed, in this case why actually
+
+74
+00:09:07,629 --> 00:09:13,450
+storing a pruned, closed list. They will see
+that this kernel is not necessarily stored,
+
+75
+00:09:13,450 --> 00:09:15,970
+but
+the boundary has to be stored and the boundary
+
+76
+00:09:15,970 --> 00:09:20,259
+is going to be only the edge of the closed
+essentially in some senses. Hence, if you
+
+77
+00:09:20,259 --> 00:09:26,809
+only store those then you can stop the search
+from coming back, so let us look at the other
+
+78
+00:09:26,809 --> 00:09:38,539
+problem of how to reconstruct the path. So,
+Korf and Zhang’s algorithm actually maintains
+
+79
+00:09:38,539 --> 00:09:46,620
+only the open list it does not maintain the
+close list at all essentially.
+
+80
+00:09:46,620 --> 00:09:47,620
+..
+
+81
+00:09:47,620 --> 00:09:53,470
+So, the algorithm the search face that this
+algorithm generates something like this, so
+
+82
+00:09:53,470 --> 00:09:57,560
+I
+have this start list and i have this open
+
+83
+00:09:57,559 --> 00:10:05,949
+list. I have a gold node here and that is
+all I have,
+
+84
+00:10:05,950 --> 00:10:13,470
+only nodes on the open observe that these
+nodes are modified they store information
+
+85
+00:10:13,470 --> 00:10:20,590
+about what nodes I do not want to generate.
+So, basically it has some extra information
+
+86
+00:10:20,590 --> 00:10:28,450
+for every node there will be a list of few
+nodes which are tabor for it to be generated
+
+87
+00:10:28,450 --> 00:10:35,720
+as
+children. Now, instead of closed what they
+
+88
+00:10:35,720 --> 00:10:40,590
+maintain is a layer of nodes another layer
+of
+
+89
+00:10:40,590 --> 00:10:56,250
+nodes which is roughly like this and this
+is called the relay layer 
+
+90
+00:10:56,250 --> 00:10:58,639
+and the relay layer is a
+list of nodes.
+
+91
+00:10:58,639 --> 00:11:06,149
+So, let me draw the relay with these numbers
+this time and we will keep it for the relay
+
+92
+00:11:06,149 --> 00:11:22,519
+nodes only and every node on the open. So,
+remember that I a star we maintain the
+
+93
+00:11:22,519 --> 00:11:27,949
+parent pointer that every node had a parent
+which we would if necessary if we found a
+
+94
+00:11:27,950 --> 00:11:31,790
+better path around. Now, we are saying we
+will never find a better path anyway, so we
+
+95
+00:11:31,789 --> 00:11:37,870
+do not need to worry about that, but we still
+and the function that the parent pointer did
+
+96
+00:11:37,870 --> 00:11:43,960
+for us was to allow us to reconstruct the
+path when we found the goal now in this
+
+97
+00:11:43,960 --> 00:11:52,530
+algorithm by Zhang and Korf. Every node on
+open maintains a pointer to earn ancestor
+
+98
+00:11:52,529 --> 00:11:59,759
+which is in the relay layer.
+So, every node will have 1 ancestor in the
+
+99
+00:11:59,759 --> 00:12:14,129
+relay layer and so on essentially, so of course
+it is not pruning the close completely it
+
+100
+00:12:14,129 --> 00:12:19,570
+is replacing close by a another layer essentially
+which is a relay layer essentially.
+
+101
+00:12:19,570 --> 00:12:27,080
+.It is pruned everything else essentially
+now what it tries to do is that the relay
+
+102
+00:12:27,080 --> 00:12:33,700
+layer is
+roughly at the half way mark I will just write
+
+103
+00:12:33,700 --> 00:12:44,370
+half way mark here. So, I am not writing
+the details here we will give pointers to
+
+104
+00:12:44,370 --> 00:12:48,169
+the papers as well as you can refer to my
+book
+
+105
+00:12:48,169 --> 00:12:58,179
+and I have described the algorithm there initially
+when the search starts it, you do not
+
+106
+00:12:58,179 --> 00:13:02,549
+maintain any pointer or you can say figuratively.
+You maintain a pointer to the source node
+
+107
+00:13:02,549 --> 00:13:08,759
+essentially an ancestor point know which do
+not really have to, but at some point it decides
+
+108
+00:13:08,759 --> 00:13:16,319
+that a given node is at the half way
+marked from the start to the goal essentially.
+
+109
+00:13:16,320 --> 00:13:21,570
+It says I will make this node to the relay
+layer, so the first question is relay node
+
+110
+00:13:21,570 --> 00:13:23,720
+the first question is how you decide that
+the node
+
+111
+00:13:23,720 --> 00:13:43,500
+is at the half way mark it does not have to
+be exact. Roughly, at the half way mark you
+
+112
+00:13:43,500 --> 00:13:52,139
+look at its values what would happen at the
+half way mark at the f value g and h should
+
+113
+00:13:52,139 --> 00:14:00,429
+be roughly equally. So, I will say g of n
+is roughly equal to h of n if your function
+
+114
+00:14:00,429 --> 00:14:04,889
+is
+good, then it will be closer to me equal if
+
+115
+00:14:04,889 --> 00:14:10,429
+the function is very conservative.
+Then, it will end up setting up relay layer
+
+116
+00:14:10,429 --> 00:14:12,819
+little bit earlier than actually it is requires,
+so
+
+117
+00:14:12,820 --> 00:14:17,430
+maybe you can have a factor or something,
+but let us not get into those details
+
+118
+00:14:17,429 --> 00:14:30,609
+essentially. So, this is how algorithm works
+it maintains one boundary sorry it maintains
+
+119
+00:14:30,610 --> 00:14:40,889
+1 search frontier or the open list and after
+a certain point in the search it maintains
+
+120
+00:14:40,889 --> 00:14:44,169
+a layer
+relay layer essentially. Initially, you can
+
+121
+00:14:44,169 --> 00:14:45,729
+imagine when the open is here there is no
+need
+
+122
+00:14:45,730 --> 00:14:51,009
+for relay only when it has pushed beyond roughly
+the half way mark which is here. It
+
+123
+00:14:51,009 --> 00:14:56,779
+starts constructing a relay layer and then
+it pushes forward essentially, so that is
+
+124
+00:14:56,779 --> 00:15:01,199
+a basic
+search algorithm no closed, but this thing.
+
+125
+00:15:01,200 --> 00:15:06,620
+So, you can imagine that when a child when
+this node is expanded into these 2 nodes
+
+126
+00:15:06,620 --> 00:15:12,879
+then this will be deleted this node will be
+deleted and the parent pointer would be pointed
+
+127
+00:15:12,879 --> 00:15:20,519
+to this essentially. So, it will it will pass
+on the pointer to its children and so on,
+
+128
+00:15:20,519 --> 00:15:25,870
+so at
+some point to the goal is picked essentially
+
+129
+00:15:25,870 --> 00:15:32,030
+at some point the goal is picked and the goal
+will have some pointer to some relay node
+
+130
+00:15:32,030 --> 00:15:40,099
+here. So, when you pick that goal you know
+what is the cost of reaching that goal and
+
+131
+00:15:40,100 --> 00:15:45,389
+the optimal cost of reaching the goal because
+you know its g value because we are we are
+
+132
+00:15:45,389 --> 00:15:54,019
+shown that a star finds an optimal path. So,
+when you pick the goal node you have you know
+
+133
+00:15:54,019 --> 00:15:59,840
+the cause of the optimal path to the
+goal, but you do not know the path only know
+
+134
+00:15:59,840 --> 00:16:00,840
+is that.
+
+135
+00:16:00,840 --> 00:16:10,509
+.There is one relay node let us call it r
+which is an ancestor of the goal node on the
+
+136
+00:16:10,509 --> 00:16:12,909
+path it
+is on the path and it is an ancestor of the
+
+137
+00:16:12,909 --> 00:16:23,730
+goal node. Now, how what do you do you want
+the whole path you want all the nodes which
+
+138
+00:16:23,730 --> 00:16:28,920
+take you from the start node to the goal
+node essentially. All we have is 1, it is
+
+139
+00:16:28,919 --> 00:16:31,219
+like somebody tells you that if you are going
+from
+
+140
+00:16:31,220 --> 00:16:36,680
+here to Delhi, then Bhopal is a relay node
+or something like that I do not know what
+
+141
+00:16:36,679 --> 00:16:43,500
+distance is. Let us see that that you have
+to go to you have to first go to Bhopal, then
+
+142
+00:16:43,500 --> 00:16:49,179
+you
+go to Delhi and you will get the optimal path,
+
+143
+00:16:49,179 --> 00:17:01,049
+so let us first reveal the name of this
+algorithm it is called d c f s.
+
+144
+00:17:01,049 --> 00:17:02,049
+.
+
+145
+00:17:02,049 --> 00:17:24,778
+The expansion is divide and conquer frontier
+search, this will give you clue as to how
+
+146
+00:17:24,778 --> 00:17:28,308
+do
+you reconstruct the path.
+
+147
+00:17:28,308 --> 00:17:29,308
+..
+
+148
+00:17:29,308 --> 00:17:47,658
+So, to reconstruct the path you make two recursive
+calls 
+
+149
+00:17:47,659 --> 00:17:54,980
+to divide and conquer frontier
+search 1 call goes from s to r and the 2nd
+
+150
+00:17:54,980 --> 00:18:02,250
+call goes from r to you make 2 recursive calls
+and what would that give you?
+
+151
+00:18:02,250 --> 00:18:03,250
+.
+
+152
+00:18:03,250 --> 00:18:12,650
+That would give you two more nodes somewhere
+here and somewhere here then you
+
+153
+00:18:12,650 --> 00:18:18,629
+make 4 recursive calls from here to here and
+here to here, so all of this and you keep
+
+154
+00:18:18,628 --> 00:18:26,019
+doing that till the problem has just become
+an edge that.
+
+155
+00:18:26,019 --> 00:18:31,490
+.The next node is just a child of first node
+essentially that a base clause when you
+
+156
+00:18:31,490 --> 00:18:45,230
+terminate the questions essentially. So, remember
+that once you have solved the first
+
+157
+00:18:45,230 --> 00:18:49,380
+once you made the first call to divide and
+conquer frontier search you finish with all
+
+158
+00:18:49,380 --> 00:18:52,320
+your
+memory requirements. All you know is that
+
+159
+00:18:52,319 --> 00:18:54,079
+there is a start node there is a relay node
+and
+
+160
+00:18:54,079 --> 00:18:59,259
+there is a gold node and then you making a
+fresh call which is to a smaller problem or
+
+161
+00:18:59,259 --> 00:19:06,710
+roughly of half a size provided this is this
+holds that g is roughly equal to h. Otherwise,
+
+162
+00:19:06,710 --> 00:19:10,899
+there may be a unequal number of size which
+means a as you can imagine it is like
+
+163
+00:19:10,898 --> 00:19:16,699
+working with a unbalanced binary rather than
+a balance binary you may do more work in
+
+164
+00:19:16,700 --> 00:19:20,110
+1 half and less.
+In the other half, but as long as you can
+
+165
+00:19:20,109 --> 00:19:24,000
+divide it roughly half you will split the
+work half
+
+166
+00:19:24,000 --> 00:19:28,869
+and half and you will keep doing that till
+f eventually reconstructed the path the full
+
+167
+00:19:28,869 --> 00:19:32,589
+path.
+So, that is why this name divides and conquer
+
+168
+00:19:32,589 --> 00:19:41,109
+frontier search, so this space requirement
+of the algorithm is only to maintain the open
+
+169
+00:19:41,109 --> 00:19:48,069
+list or the frontier and a relay layer
+essentially and that is all it needs to do
+
+170
+00:19:48,069 --> 00:19:51,308
+essentially. So, we are thrown away most of
+the
+
+171
+00:19:51,308 --> 00:19:55,670
+close list and in the kind of problems that
+we discussed the sequence alignment problems
+
+172
+00:19:55,670 --> 00:20:01,470
+it is close which is going faster. Then, essentially
+open is only going linearly close is
+
+173
+00:20:01,470 --> 00:20:09,140
+going as quadratic of the size of the problem
+what would be the complexity of this.
+
+174
+00:20:09,140 --> 00:20:10,140
+.
+
+175
+00:20:10,140 --> 00:20:20,759
+So, you can say that if the original problem
+of depth could be sized solved with prime
+
+176
+00:20:20,759 --> 00:20:26,960
+complexity d whatever d is, it depends on
+the function rarely. Exponential function
+
+177
+00:20:26,960 --> 00:20:27,960
+in
+
+178
+00:20:27,960 --> 00:20:35,960
+.general plus the extra work that you are
+doing what is the extra work 2 into to f d
+
+179
+00:20:35,960 --> 00:20:44,579
+by 2
+plus 4 into t of d by 4 of depth 4 depth d
+
+180
+00:20:44,579 --> 00:20:47,769
+by 4 and soon and so on till you solve this
+small
+
+181
+00:20:47,769 --> 00:20:58,589
+problem of depth 1. Essentially, for some
+value x into c of depth 1, so all that is
+
+182
+00:20:58,589 --> 00:21:04,980
+extra
+work you are doing, all the extra work is
+
+183
+00:21:04,980 --> 00:21:21,599
+done to reconstruct the path essentially how
+much is the extra work.
+
+184
+00:21:21,599 --> 00:21:36,369
+So, you can solve this 
+
+185
+00:21:36,369 --> 00:21:41,878
+its multiplied by log to the base 2 from the
+depth of the complexity
+
+186
+00:21:41,878 --> 00:21:48,980
+of td multiply take the log of that. So, if
+the td were to be exponential in nature be
+
+187
+00:21:48,980 --> 00:21:51,630
+there
+as to d then this would be d times 6 log,
+
+188
+00:21:51,630 --> 00:21:53,679
+so you are doing if you are finding a path
+of
+
+189
+00:21:53,679 --> 00:22:00,500
+length then essentially you are doing d times
+extra work. So, if the path is of length 50,
+
+190
+00:22:00,500 --> 00:22:04,538
+then you are having 50 times extra work to
+reconstruct the path, but in the process you
+
+191
+00:22:04,538 --> 00:22:10,859
+are saving on space essentially let us see
+what Zhou and Hansen do.
+
+192
+00:22:10,859 --> 00:22:23,869
+What they say is why do we breakup the problem
+into half what is the rational for
+
+193
+00:22:23,869 --> 00:22:27,949
+breaking up the problem into half. Of course,
+we know that divide and conquer strategy
+
+194
+00:22:27,950 --> 00:22:34,610
+says that if you break it up into half then
+you can know solve it using this complexity.
+
+195
+00:22:34,609 --> 00:22:38,928
+In
+this era of increasing memory available they
+
+196
+00:22:38,929 --> 00:22:46,788
+say that you should do this pruning of
+closed only if you are running out of memory
+
+197
+00:22:46,788 --> 00:22:47,788
+essentially.
+.
+
+198
+00:22:47,788 --> 00:23:09,169
+So, their algorithm is called SMGS and it
+expands to smart memory graph search. So,
+
+199
+00:23:09,169 --> 00:23:14,830
+what do Zhou and Hansen do they say you just
+learn it like a star do not worry about
+
+200
+00:23:14,829 --> 00:23:19,230
+pruning or something. You keep track of how
+many how much memory your algorithm
+
+201
+00:23:19,230 --> 00:23:25,470
+.is using somehow and if you can at some point
+realize that you are running out of
+
+202
+00:23:25,470 --> 00:23:39,909
+memory, then you prune essentially. What do
+you prune you prune the kernel 
+
+203
+00:23:39,909 --> 00:23:46,059
+you keep
+the boundary because you need it, in fact
+
+204
+00:23:46,058 --> 00:23:57,398
+when you prune the kernel at that same very
+time you convert this into a relay. So, initially
+
+205
+00:23:57,398 --> 00:24:01,989
+this algorithm is working with this layer
+boundary layer and the open layer going neck
+
+206
+00:24:01,990 --> 00:24:06,440
+to neck open layer is moving forward the
+boundary layer is just following it at some
+
+207
+00:24:06,440 --> 00:24:07,440
+point.
+.
+
+208
+00:24:07,440 --> 00:24:18,500
+So let us say this is a situation this is
+a boundary layer this is the open layer. So,
+
+209
+00:24:18,500 --> 00:24:20,898
+the
+outside 1 is the boundary layer the inner
+
+210
+00:24:20,898 --> 00:24:23,168
+1 is the sorry the outside 1 is the open layer
+and
+
+211
+00:24:23,169 --> 00:24:27,100
+the inner 1 is the boundary layer and whatever
+inside the boundary layer is closed all the
+
+212
+00:24:27,099 --> 00:24:33,439
+kernel. So, your counter something tells you
+that you are running out of memory, so
+
+213
+00:24:33,440 --> 00:24:42,740
+what do you do you prune the entire closed
+and convert this into 
+
+214
+00:24:42,740 --> 00:24:57,950
+a relay layer and search
+progresses from there as before, so let us
+
+215
+00:24:57,950 --> 00:25:05,440
+say its con here. It is got another boundary
+layer following it essentially, so at all
+
+216
+00:25:05,440 --> 00:25:10,871
+points a boundary layer just follows this
+search
+
+217
+00:25:10,871 --> 00:25:14,059
+frontier because it needs keep the search
+from leaking back.
+
+218
+00:25:14,058 --> 00:25:17,990
+Essentially, every time you generate children
+of open you check on the boundary layer if
+
+219
+00:25:17,990 --> 00:25:22,450
+they are children or not and then this is
+the area between this curve and this curve
+
+220
+00:25:22,450 --> 00:25:25,519
+is the
+kernel which you have not pruned essentially.
+
+221
+00:25:25,519 --> 00:25:31,339
+Then, again some somebody tells you are
+running out of memory, so again you covert
+
+222
+00:25:31,339 --> 00:25:37,959
+this into another layer. So, that is why it
+is
+
+223
+00:25:37,960 --> 00:25:45,740
+called smart memory in the sense it is aware
+of how much memory it is using and
+
+224
+00:25:45,740 --> 00:25:53,659
+.whether it is running out of memory essentially.
+So, unlike divide and conquer frontier
+
+225
+00:25:53,659 --> 00:26:00,490
+search this maintains one relay layer roughly
+along the half way mark smart memory
+
+226
+00:26:00,490 --> 00:26:06,038
+graph.Search maintains as many layers as required
+it could be 0 it could be 1, it could be
+
+227
+00:26:06,038 --> 00:26:11,279
+2, it could be 4 depending on how big the
+problem is and how much memory is available
+
+228
+00:26:11,279 --> 00:26:16,548
+to you.
+At some point, when it finds the goal it would
+
+229
+00:26:16,548 --> 00:26:29,499
+have some path up to some relay layer
+which they call as a dense path 
+
+230
+00:26:29,499 --> 00:26:33,850
+and from this layer to another layer by a
+mechanism. You
+
+231
+00:26:33,849 --> 00:26:38,740
+can workout it would have a series of ancestor
+pointers which they call it as a sparse
+
+232
+00:26:38,740 --> 00:26:50,259
+path. So, in their terminology divide and
+conquer frontier search has 2 sparse paths
+
+233
+00:26:50,259 --> 00:26:54,149
+1
+from start to relay and 1 form relay to goal
+
+234
+00:26:54,148 --> 00:26:57,898
+in smart memory graph search if you are
+solving a very large problem, you may have
+
+235
+00:26:57,898 --> 00:27:03,099
+a bigger sparse path. Then, of course you
+have to make that many recursive calls to
+
+236
+00:27:03,099 --> 00:27:08,199
+solve each of them, so it may be the case
+that
+
+237
+00:27:08,200 --> 00:27:17,379
+the first time around you make 5 relay layers.
+So, from start to 1, 1 to 2, 2 to 3, 3 to
+
+238
+00:27:17,378 --> 00:27:22,099
+4 and 4 to 5, so you will make 5 recursive
+calls, but
+
+239
+00:27:22,099 --> 00:27:26,990
+for each of the recursive calls is possible
+because it is a smart algorithm. You may not
+
+240
+00:27:26,990 --> 00:27:29,919
+do
+many more recursive calls because you can
+
+241
+00:27:29,919 --> 00:27:35,629
+imagine that it is close to what this memory
+can tolerate essentially. So, it is a little
+
+242
+00:27:35,628 --> 00:27:38,168
+bit different from this in that sense that
+its aware
+
+243
+00:27:38,169 --> 00:27:46,230
+of how much memory it can use and only prunes
+kernel when it is running out of
+
+244
+00:27:46,230 --> 00:27:51,440
+memory. Remember that pruning kernel incurs
+this cost of reconstructing the path
+
+245
+00:27:51,440 --> 00:27:56,058
+because once you are thrown away all these
+nodes you have to do all this recursive calls
+
+246
+00:27:56,058 --> 00:28:00,249
+to reconstruct this path. You have to do recursive
+calls to reconstruct this path, but here
+
+247
+00:28:00,249 --> 00:28:03,298
+you are not thrown away.
+So, you just have to follow the back pointers
+
+248
+00:28:03,298 --> 00:28:05,829
+and you can just get the path from there,
+so
+
+249
+00:28:05,829 --> 00:28:12,970
+depending on the how much memory available
+this behaves in a mode smart way
+
+250
+00:28:12,970 --> 00:28:30,999
+essentially now. So, let us move on to now
+pruning the close list essentially which is
+
+251
+00:28:30,999 --> 00:28:34,038
+the
+work, in fact, carried these two groups all
+
+252
+00:28:34,038 --> 00:28:54,069
+over again, so how does one prune the close
+list. What Zhou and Hansen showed and this
+
+253
+00:28:54,069 --> 00:29:01,808
+was around 2004, so it is not so back in
+time compared to looking at.
+
+254
+00:29:01,808 --> 00:29:02,808
+..
+
+255
+00:29:02,808 --> 00:29:14,558
+They give some idea some which is called sounds
+like a curious name, but you can see
+
+256
+00:29:14,558 --> 00:29:29,428
+what they are doing breadth first heuristic
+search it is it is sound like contradiction
+
+257
+00:29:29,429 --> 00:29:34,528
+in
+terms. So, the basic idea behind breadth first
+
+258
+00:29:34,528 --> 00:29:48,048
+and we are talking about pruning open, now
+most algorithms which prune the open list
+
+259
+00:29:48,048 --> 00:30:07,769
+relay on getting some upper bound on the cost
+essentially. So, compute U upper bound on
+
+260
+00:30:07,769 --> 00:30:17,359
+f of the problem that you are trying to solve
+what is the maximum possible value that the
+
+261
+00:30:17,359 --> 00:30:24,219
+cost of solving the solution can be.
+Essentially, how do you compute an upper bound,
+
+262
+00:30:24,220 --> 00:30:28,558
+one way is to use some ready
+algorithm to try to find the solution.
+
+263
+00:30:28,558 --> 00:30:33,641
+So, you do some beam search with very thick
+beam based and hopefully you will get
+
+264
+00:30:33,641 --> 00:30:37,470
+some solution it may not be optimal, but it
+will give upper bound. Essentially if you
+
+265
+00:30:37,470 --> 00:30:40,950
+know one solution the solution can be made
+the upper bound and that is a theme which
+
+266
+00:30:40,950 --> 00:30:46,740
+runs in too many variations of these algorithms
+that we are going to see either as and
+
+267
+00:30:46,740 --> 00:30:55,599
+when you find better solutions. You reduce
+the upper bound essentially and then what
+
+268
+00:30:55,599 --> 00:31:00,368
+they say is the following that if this is
+your start goal.
+
+269
+00:31:00,368 --> 00:31:22,538
+This is a goal node and if you have a boundary
+which is the upper bound well that is not
+
+270
+00:31:22,538 --> 00:31:31,908
+quite correct. So, the upper bound serves
+as a boundary which means that any node with
+
+271
+00:31:31,909 --> 00:31:39,030
+f value greater than this value u you will
+not expand. So, if you generate a child here
+
+272
+00:31:39,029 --> 00:31:41,658
+for
+example, then you will never expand these
+
+273
+00:31:41,659 --> 00:31:45,660
+two children essentially, so that is the purpose
+that this boundary is serving.
+
+274
+00:31:45,660 --> 00:31:49,899
+.So, we are only going to search within this
+hypothetical boundary, which is determined
+
+275
+00:31:49,898 --> 00:31:55,469
+by the f value essentially. So, before expanding
+a node from open check whether it is less
+
+276
+00:31:55,470 --> 00:32:03,019
+than u only then you expand it essentially
+now if you want to do a star like search.
+
+277
+00:32:03,019 --> 00:32:05,548
+Then,
+the open at some point would look like this
+
+278
+00:32:05,548 --> 00:32:18,950
+the node that you would, whereas if you do
+breadth first search keeping this upper bound
+
+279
+00:32:18,950 --> 00:32:26,038
+in mind. Now, if you want to do blind
+breadth first search your search boundary
+
+280
+00:32:26,038 --> 00:32:32,839
+would look like this. Assuming that you now
+costs are roughly equal for every edge essentially
+
+281
+00:32:32,839 --> 00:32:38,888
+thus visualise the problem, but if you
+are doing this breadth first heuristic search
+
+282
+00:32:38,888 --> 00:32:42,648
+which means you are guided by this upper
+bound which you have generated by some heuristic
+
+283
+00:32:42,648 --> 00:32:56,619
+algorithm.
+Then, your open is only going to be this much,
+
+284
+00:32:56,619 --> 00:33:07,768
+so this is a open for this algorithm and
+basically empirically one can observe that
+
+285
+00:33:07,769 --> 00:33:13,950
+the size of open for this breadth first heuristic
+search is smaller than the size of open for
+
+286
+00:33:13,950 --> 00:33:18,470
+a star which is roughly like this. So, this
+should give a visual intuition, but this is
+
+287
+00:33:18,470 --> 00:33:22,589
+do not take it at face value, but it just
+to allow
+
+288
+00:33:22,589 --> 00:33:34,329
+you to give an intuition essentially now another
+variation.
+
+289
+00:33:34,329 --> 00:33:35,329
+.
+
+290
+00:33:35,329 --> 00:33:48,808
+This is to prune this even for which is to
+keep it of constant width and you can imagine
+
+291
+00:33:48,808 --> 00:33:59,888
+the algorithm is beam search. So, beam search
+and we have explode beam search earlier
+
+292
+00:33:59,888 --> 00:34:05,019
+is the variation of beam search in the sense
+that you keep searching till you find the
+
+293
+00:34:05,019 --> 00:34:08,280
+goal
+rather than hill climbing like beam search
+
+294
+00:34:08,280 --> 00:34:12,639
+where you stop. If you do not find a better
+node here, meaning of beam search is that
+
+295
+00:34:12,639 --> 00:34:15,440
+you maintain an open list of constant width.
+
+296
+00:34:15,440 --> 00:34:30,610
+.Then, you search towards the goal now; obviously,
+it is not complete 
+
+297
+00:34:30,610 --> 00:34:34,360
+because you are
+throwing away other nodes, see breadth first
+
+298
+00:34:34,360 --> 00:34:36,750
+heuristic search is complete. It will find
+a
+
+299
+00:34:36,750 --> 00:34:41,329
+path for the goal but beam search go off in
+this direction away from the goal and we
+
+300
+00:34:41,329 --> 00:34:48,230
+never actually give you a path. So, it is
+not complete, so how can we make beam search
+
+301
+00:34:48,230 --> 00:34:56,480
+complete before we do that Zhou and Hansen
+also gave us.
+
+302
+00:34:56,480 --> 00:34:57,480
+.
+
+303
+00:34:57,480 --> 00:35:07,889
+So, this is Breadth first heuristic search
+and you can convert this into divide and conquer
+
+304
+00:35:07,889 --> 00:35:14,039
+breadth first heuristic search by using a
+divide and conquer mechanism of which we are
+
+305
+00:35:14,039 --> 00:35:22,039
+by now familiar which means that along with.
+
+306
+00:35:22,039 --> 00:35:23,039
+..
+
+307
+00:35:23,039 --> 00:35:31,829
+So, in general if you want to draw this graph
+you would have an open which is to be seen
+
+308
+00:35:31,829 --> 00:35:44,029
+like this followed by a closed not closed
+a boundary layer which is just behind it.
+
+309
+00:35:44,030 --> 00:35:50,000
+So, you
+can imagine the search you know progressing
+
+310
+00:35:50,000 --> 00:35:54,110
+in this direction and this open will slowly
+get converted into a boundary and the new
+
+311
+00:35:54,110 --> 00:36:09,910
+open will move forward and also 1 layer
+somewhere in between. So, this is a relay,
+
+312
+00:36:09,909 --> 00:36:19,940
+this is a boundary 
+and this is open, so if you
+
+313
+00:36:19,940 --> 00:36:26,429
+maintain this 3 layers of node you can convert
+breadth first heuristic search into divide
+
+314
+00:36:26,429 --> 00:36:30,879
+and conquer breadth first heuristic search
+and you will have to do the same mechanism
+
+315
+00:36:30,880 --> 00:36:36,650
+of reconstructing the path.
+So, even algorithm which is not only saves
+
+316
+00:36:36,650 --> 00:36:44,220
+on open it also saves on closed because you
+are no longer keeping the close you only keeping
+
+317
+00:36:44,219 --> 00:36:49,419
+the boundary and then relay layers
+essentially exactly like what smart memory
+
+318
+00:36:49,420 --> 00:36:58,550
+graph search would have done. Now, you
+can of course do the same thing with beam
+
+319
+00:36:58,550 --> 00:37:33,500
+search beam stack search. So, we will
+visualise this 
+
+320
+00:37:33,500 --> 00:37:54,139
+algorithm as a search tree because it is easier
+to do it like that. So, just
+
+321
+00:37:54,139 --> 00:37:59,029
+imagine that this is a search tree that that
+search same search algorithm generates and
+
+322
+00:37:59,030 --> 00:38:01,370
+we
+saw this mapping.
+
+323
+00:38:01,369 --> 00:38:13,099
+Earlier, we assume that the search tree is
+ordered, so the lowest heuristic values are
+
+324
+00:38:13,099 --> 00:38:15,420
+from
+the left and the right and the highest at
+
+325
+00:38:15,420 --> 00:38:21,579
+each layer is ordered. So, that this is increasing
+h
+
+326
+00:38:21,579 --> 00:38:36,429
+just for the sake of visualization we assume
+that this tree is ordered by increasing h
+
+327
+00:38:36,429 --> 00:38:37,429
+values.
+
+328
+00:38:37,429 --> 00:38:45,659
+.In this case, the boundary that we are talking
+about their given by the u upper bound on
+
+329
+00:38:45,659 --> 00:38:51,149
+would look something like this. So, you have
+to think a little bit about this and convince
+
+330
+00:38:51,150 --> 00:39:09,090
+yourself that this is how a u value. Remember
+that this side is values lesser than u and
+
+331
+00:39:09,090 --> 00:39:15,280
+that side is values greater than you and because
+u is on upper bound on cause that we
+
+332
+00:39:15,280 --> 00:39:18,921
+have somehow figured out we know that we do
+not have to search that part of the tree.
+
+333
+00:39:18,920 --> 00:39:25,079
+So, we have to only search this part of the
+tree essentially because it is a heuristic
+
+334
+00:39:25,079 --> 00:39:28,409
+search.
+We can now assume that since we assuming that
+
+335
+00:39:28,409 --> 00:39:34,460
+in this visualization the tree is draw in
+such a that heuristic values are increasing
+
+336
+00:39:34,460 --> 00:39:38,050
+from left to right, so you can imagine the
+heuristic search also progress from left to
+
+337
+00:39:38,050 --> 00:39:50,310
+right essentially.
+So, the divide and the beam search is essentially
+
+338
+00:39:50,309 --> 00:40:08,190
+beam search in this space, first of all it
+is a beam search. Now, the beam of course
+
+339
+00:40:08,190 --> 00:40:09,490
+start searching from the left node that I
+have
+
+340
+00:40:09,489 --> 00:40:17,329
+drawn it in the middle just to show what happen
+now beam search is incomplete we has
+
+341
+00:40:17,329 --> 00:40:22,159
+observed essentially. So, you can make it
+complete by introducing back tracking that
+
+342
+00:40:22,159 --> 00:40:24,359
+a
+little bit like what recursive best for search
+
+343
+00:40:24,360 --> 00:40:30,059
+would have done no we are not talking about
+the backed up values just back trucking and
+
+344
+00:40:30,059 --> 00:40:37,579
+retry. So, if it runs into this upper bound
+it
+
+345
+00:40:37,579 --> 00:40:40,119
+back tracks and try something backtracks and
+try something.
+
+346
+00:40:40,119 --> 00:40:44,279
+So, something like back trucking behaviour
+we want to stimulate except that keep in
+
+347
+00:40:44,280 --> 00:40:49,540
+mind that in this visualization which is actually
+my own idea, you would not find it in
+
+348
+00:40:49,539 --> 00:40:55,130
+that paper this heuristic values are ordered
+from left to right. So, it is like a on this
+
+349
+00:40:55,130 --> 00:40:57,500
+space
+it is like doing that first search from left
+
+350
+00:40:57,500 --> 00:41:00,079
+to right, but how do we do this back trucking
+in
+
+351
+00:41:00,079 --> 00:41:03,509
+how do we n practice implement that.
+
+352
+00:41:03,510 --> 00:41:04,510
+..
+
+353
+00:41:04,510 --> 00:41:15,690
+We do it by maintaining another data structure
+called the beam stack, where at each layer
+
+354
+00:41:15,690 --> 00:41:30,269
+we store 2 values 1 is f min and the other
+is f max and it is a open interval on the
+
+355
+00:41:30,269 --> 00:41:33,769
+right
+hand side and close interval on the left hand
+
+356
+00:41:33,769 --> 00:41:42,230
+side. So, these two values are telling us
+as to
+
+357
+00:41:42,230 --> 00:41:50,880
+where in this space you are searching, so
+the value of f min is here and the value of
+
+358
+00:41:50,880 --> 00:41:56,110
+f max
+is here. So, it tells algorithm which part
+
+359
+00:41:56,110 --> 00:42:02,440
+of the search space you are searching essentially
+and this it does.
+
+360
+00:42:02,440 --> 00:42:21,460
+For every layer, we have f min these two values,
+so what is that mean that if you are back
+
+361
+00:42:21,460 --> 00:42:27,690
+tracking and you are coming back to this point
+in this layer you not found the solution.
+
+362
+00:42:27,690 --> 00:42:32,710
+You have to come back to this layer you want
+to start a second search here, and then
+
+363
+00:42:32,710 --> 00:42:45,010
+essentially these are the value f min at this
+level and f max at this level you go back
+
+364
+00:42:45,010 --> 00:42:52,520
+to
+this layer and reset this value. So, let us
+
+365
+00:42:52,519 --> 00:43:01,369
+say this is 100 and this is 1 50 let us say
+in some
+
+366
+00:43:01,369 --> 00:43:08,789
+domain you replace it with 1, 50 and some
+other value whatever because we have the
+
+367
+00:43:08,789 --> 00:43:11,659
+open list you generate the open list.
+
+368
+00:43:11,659 --> 00:43:12,659
+..
+
+369
+00:43:12,659 --> 00:43:21,420
+So, you go back to this parent here, generate
+the open list take children only whose
+
+370
+00:43:21,420 --> 00:43:26,630
+values are greater that equal to this 1 50
+or f max essentially and construct a new beam
+
+371
+00:43:26,630 --> 00:43:31,849
+layers depending on something it could something
+like 1 80 or something like that. What
+
+372
+00:43:31,849 --> 00:43:42,599
+is the initial value for this beam stacks
+every value will have 0 comma u. So, what
+
+373
+00:43:42,599 --> 00:43:45,480
+is
+beam stack is doing is it helping with the
+
+374
+00:43:45,480 --> 00:43:48,570
+back tracking process once you back track
+to a
+
+375
+00:43:48,570 --> 00:43:55,570
+layer and you generate. So, you go to these
+nodes, generate their children again, so again
+
+376
+00:43:55,570 --> 00:44:00,320
+which of those children do you want to now
+explode, this beam stack will tell you that
+
+377
+00:44:00,320 --> 00:44:06,460
+you have already seen values up to 100 and
+50 and look at value which are greater than
+
+378
+00:44:06,460 --> 00:44:07,980
+1
+50 essentially f values.
+
+379
+00:44:07,980 --> 00:44:12,990
+So, generate only look at those values, so
+depending on of course how many there are
+
+380
+00:44:12,989 --> 00:44:23,589
+this value could be 1 80 or it could be 1
+90 or whatever essentially. So, you must
+
+381
+00:44:23,590 --> 00:44:31,980
+convince yourself that maintaining this beam
+stack allows us to search completely in the
+
+382
+00:44:31,980 --> 00:44:38,059
+search space. So, of course it is very difficult
+to visualize in this space, but in this space
+
+383
+00:44:38,059 --> 00:44:42,139
+which is on ordered h value it is easy to
+visualize that the search will progress from
+
+384
+00:44:42,139 --> 00:44:45,599
+left
+to right. If you can search this entire space
+
+385
+00:44:45,599 --> 00:44:48,159
+inside this view, your algorithm is going
+to be
+
+386
+00:44:48,159 --> 00:44:58,329
+complete essentially and this beam stack allows
+us to do that essentially, so this is called
+
+387
+00:44:58,329 --> 00:45:07,880
+BSS beam stack search and the next step.
+As you can imagine is divide and conquer beam
+
+388
+00:45:07,880 --> 00:45:14,440
+stack search you can expand this you
+what used to this idea of DC BSS means what
+
+389
+00:45:14,440 --> 00:45:17,470
+is this to this maintains only 4 layers like
+
+390
+00:45:17,469 --> 00:45:24,389
+.those divide and conquer breadth first heuristic
+search. It maintains one open layer, one
+
+391
+00:45:24,389 --> 00:45:30,809
+boundary layer, sorry one boundary layer here
+and some relay layer in the peak. It
+
+392
+00:45:30,809 --> 00:45:35,299
+maintains only these 3 things beam stack search
+maintains all this everything which is
+
+393
+00:45:35,300 --> 00:45:43,330
+inside this beam. So, the question I want
+to ask which i hope has occurred to you is
+
+394
+00:45:43,329 --> 00:45:45,809
+in
+beam stack search you have the parents of
+
+395
+00:45:45,809 --> 00:45:51,159
+every node. So, you could go back to the
+parent and regenerate the parent’s children
+
+396
+00:45:51,159 --> 00:45:54,440
+and take the next set of children in divide
+and
+
+397
+00:45:54,440 --> 00:46:02,539
+conquer beam stack search, you do not have
+the open layer.
+
+398
+00:46:02,539 --> 00:46:12,099
+You only have the boundary layer and you only
+have the relay layer how can you back
+
+399
+00:46:12,099 --> 00:46:16,860
+track. Now, I hope you see the problem isn’t
+it may be I am going a bit fast here just
+
+400
+00:46:16,860 --> 00:46:27,250
+because I am running out of time, how can
+how can this search go here? Retry this space,
+
+401
+00:46:27,250 --> 00:46:32,599
+let us say the relay does not matter let us
+say this also relay or something does not
+
+402
+00:46:32,599 --> 00:46:34,869
+matter
+how can it go here and how can it do this
+
+403
+00:46:34,869 --> 00:46:37,849
+type because we do not have the parent of
+this
+
+404
+00:46:37,849 --> 00:46:43,449
+relay node here. What is more we do not have
+the parent of the boundary node we cannot
+
+405
+00:46:43,449 --> 00:46:56,319
+go back to it is parent and then this parent,
+so this was a paper published by Zhou and
+
+406
+00:46:56,320 --> 00:47:06,750
+Hansen ICAPS 2005.
+ICAPS is international conference on automated
+
+407
+00:47:06,750 --> 00:47:12,829
+planning and scheduling and for this
+paper, they got the best paper award in the
+
+408
+00:47:12,829 --> 00:47:16,849
+conference essentially. So, it is possible,
+so let
+
+409
+00:47:16,849 --> 00:47:23,339
+me ask I want to do, I want to stimulate the
+behaviour of beam stack search which means
+
+410
+00:47:23,340 --> 00:47:28,210
+I will go down searching down the beam and
+if I hit the boundary I will come back and
+
+411
+00:47:28,210 --> 00:47:32,940
+try something else. I will come back and try
+something else trouble is if I throw away
+
+412
+00:47:32,940 --> 00:47:35,950
+the
+close list or the parents, how can I come
+
+413
+00:47:35,949 --> 00:47:57,919
+back and try something else we have 1 minute
+to answer this question the answer is that
+
+414
+00:47:57,920 --> 00:48:04,980
+you do not talk of going back.
+You regenerate from the source again and so
+
+415
+00:48:04,980 --> 00:48:08,530
+suppose think you are at the ninth layer.
+You want to back track to the 8 layer what
+
+416
+00:48:08,530 --> 00:48:13,220
+do you do you go to the start and generate
+8
+
+417
+00:48:13,219 --> 00:48:19,279
+layers which children should pick the beam
+stack will tell you that of all the children
+
+418
+00:48:19,280 --> 00:48:21,290
+that
+you are generating which once are the 1s.
+
+419
+00:48:21,289 --> 00:48:23,659
+These are inside this beam that beam stack
+has
+
+420
+00:48:23,659 --> 00:48:29,500
+this information, so you go to the eight layer
+and then you can generate of course there
+
+421
+00:48:29,500 --> 00:48:32,449
+is
+a extra work again back tracking 1 step would
+
+422
+00:48:32,449 --> 00:48:34,619
+have been just going to the parent and
+then retry.
+
+423
+00:48:34,619 --> 00:48:39,940
+Here, you have come from the source all the
+way to the parent and there from this parent
+
+424
+00:48:39,940 --> 00:48:43,590
+to the next parent again you have to go all
+the way and so on. So, if have to back track
+
+425
+00:48:43,590 --> 00:48:51,039
+.you have this extra work, but as a result
+of this if you do not covered to the memory
+
+426
+00:48:51,039 --> 00:48:56,309
+required by the beam stack which goes linearly
+with it, but these a small value. Let us
+
+427
+00:48:56,309 --> 00:49:05,299
+hope what is the space complexity of divide
+and conquer beam stack search, it is
+
+428
+00:49:05,300 --> 00:49:11,930
+constant you are just keeping three layers
+of constant width, the open layer, the boundary
+
+429
+00:49:11,929 --> 00:49:17,539
+layer and the relay layer. So, here starting
+with an algorithm a star which required
+
+430
+00:49:17,539 --> 00:49:22,659
+exponential amount of space, we have an algorithm
+which practically requires constant
+
+431
+00:49:22,659 --> 00:49:27,359
+amount of space.
+In this era of huge memory sizes, you can
+
+432
+00:49:27,360 --> 00:49:34,000
+keep the beam width as large as you can isn’t
+it and it will work. So, I will stop here,
+
+433
+00:49:34,000 --> 00:49:42,519
+I believe professor Shri Chaudary is waiting
+outside, He should be waiting outside and
+
+434
+00:49:42,519 --> 00:49:44,920
+with this we will end the search part of it.
+We
+
+435
+00:49:44,920 --> 00:49:48,289
+will look at problem solving from the slightly
+different prospective in the next class that
+
+436
+00:49:48,289 --> 00:49:52,300
+we meet on Wednesday, which is you know looking
+from the goal towards the problems,
+
+437
+00:49:52,300 --> 00:49:56,710
+essentially how can you move from the goal
+to the problem.
+
+438
+00:49:56,710 --> 00:50:06,710
+.
+

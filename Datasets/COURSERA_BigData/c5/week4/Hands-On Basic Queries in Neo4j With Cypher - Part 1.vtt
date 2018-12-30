@@ -1,0 +1,455 @@
+WEBVTT
+
+1
+00:00:00.840 --> 00:00:06.150
+As you probably already know, Cypher is
+the scripting language used in Neo4j and
+
+2
+00:00:06.150 --> 00:00:10.120
+it's what we have been using
+already in the previous lectures.
+
+3
+00:00:10.120 --> 00:00:15.160
+In this lecture, we're going to go through
+a series of basic queries using Cypher
+
+4
+00:00:15.160 --> 00:00:18.900
+with the focus on the data sets
+that we've already been using.
+
+5
+00:00:18.900 --> 00:00:22.787
+Here's a listing of the basic queries
+we will go through step by step.
+
+6
+00:00:31.424 --> 00:00:32.341
+So let's get started.
+
+7
+00:00:36.764 --> 00:00:42.167
+To keep things simple we will be using a
+text file containing the basic queries and
+
+8
+00:00:42.167 --> 00:00:47.930
+we'll make this file available for
+download as a reading in the module.
+
+9
+00:00:47.930 --> 00:00:51.130
+I will briefly review the queries and
+
+10
+00:00:51.130 --> 00:00:56.255
+then we'll toggle to the browser to view
+the results of the queries in Neo4j.
+
+11
+00:00:57.680 --> 00:01:03.120
+Neo4j has a very nice feature which
+allows us to retain individual queries
+
+12
+00:01:03.120 --> 00:01:09.620
+in multiple panels as we're going through
+the process of exploring each query.
+
+13
+00:01:09.620 --> 00:01:13.470
+So for the first few queries we'll be
+using the simple road network data set
+
+14
+00:01:13.470 --> 00:01:16.250
+that we used in previous demonstrations.
+
+15
+00:01:16.250 --> 00:01:18.800
+And here we've already loaded
+the data set into Neo4j.
+
+16
+00:01:19.910 --> 00:01:21.185
+So let's look at our first query.
+
+17
+00:01:21.185 --> 00:01:23.530
+Our first query is a very a simple one,
+
+18
+00:01:23.530 --> 00:01:27.280
+in which we're counting the number
+of nodes in the network.
+
+19
+00:01:27.280 --> 00:01:31.770
+So the first line of code simply matches
+all of the nodes with the label MyNode and
+
+20
+00:01:31.770 --> 00:01:34.200
+it returns a count of those nodes.
+
+21
+00:01:34.200 --> 00:01:36.120
+So let's look at the results.
+
+22
+00:01:36.120 --> 00:01:40.100
+The results are very simple,
+the value of eleven.
+
+23
+00:01:40.100 --> 00:01:43.520
+And we can visually confirm this
+by inspecting the graph itself and
+
+24
+00:01:43.520 --> 00:01:46.140
+see it has 11 nodes and
+we can see that up here.
+
+25
+00:01:49.510 --> 00:01:54.540
+The next query is almost as simple,
+we want to count the number of edges.
+
+26
+00:01:54.540 --> 00:01:59.290
+Now, first thing to keep in mind
+is in order to count edges,
+
+27
+00:01:59.290 --> 00:02:03.970
+we also need to declare nodes that
+are associated with those edges.
+
+28
+00:02:03.970 --> 00:02:07.070
+So this first line of codes
+includes a declaration
+
+29
+00:02:07.070 --> 00:02:09.840
+of the nodes associated with the edges.
+
+30
+00:02:09.840 --> 00:02:12.231
+Here we're identifying
+with thevariable r and
+
+31
+00:02:12.231 --> 00:02:14.570
+then we're returning
+a count of those edges.
+
+32
+00:02:15.580 --> 00:02:20.850
+So let's take a look in Neo4j and the
+results of this query are a value of 14.
+
+33
+00:02:20.850 --> 00:02:24.938
+And once again we can confirm this
+visually by looking at our network and
+
+34
+00:02:24.938 --> 00:02:26.720
+counting the number of edges.
+
+35
+00:02:29.749 --> 00:02:35.290
+The next query involves finding all
+of the leaf nodes in the network.
+
+36
+00:02:35.290 --> 00:02:37.535
+Now as you may remember
+from a previous lecture,
+
+37
+00:02:37.535 --> 00:02:42.810
+leaf nodes are defined as those
+nodes which have no outgoing edges.
+
+38
+00:02:44.400 --> 00:02:48.300
+Notice that we're returning the node
+represented by the variable M,
+
+39
+00:02:48.300 --> 00:02:50.950
+which is the target node in this query.
+
+40
+00:02:50.950 --> 00:02:55.750
+So here we're matching all nodes
+associated with edges having the label two
+
+41
+00:02:56.780 --> 00:02:59.000
+and we want to place
+a constraint on those nodes,
+
+42
+00:02:59.000 --> 00:03:02.180
+such that they have no outgoing edges.
+
+43
+00:03:02.180 --> 00:03:03.930
+And then we return all those nodes.
+
+44
+00:03:04.950 --> 00:03:07.170
+So let's take a look at the results.
+
+45
+00:03:07.170 --> 00:03:10.380
+We're going to see a single node returned,
+the node with the label p.
+
+46
+00:03:12.020 --> 00:03:17.490
+And if we inspect our graph, we can
+see over here on the right the node p,
+
+47
+00:03:17.490 --> 00:03:20.630
+and sure enough it has no outgoing edges,
+only one incoming edge.
+
+48
+00:03:24.290 --> 00:03:26.170
+The next query is also similar,
+
+49
+00:03:26.170 --> 00:03:29.390
+we're looking for
+root nodes instead of leaf notes.
+
+50
+00:03:29.390 --> 00:03:30.650
+And as you may also remember,
+
+51
+00:03:30.650 --> 00:03:35.180
+root nodes are defined as a node
+which has no incoming edges.
+
+52
+00:03:36.230 --> 00:03:40.550
+You may notice that this segment of
+the first line of code is sort of a mirror
+
+53
+00:03:40.550 --> 00:03:46.040
+image of the same segment in the first
+line of code from the previous query.
+
+54
+00:03:46.040 --> 00:03:50.540
+We also want to place the constraint
+on the nodes that we want to return
+
+55
+00:03:50.540 --> 00:03:54.150
+by specifying that they can
+have no incoming edges.
+
+56
+00:03:54.150 --> 00:03:58.340
+And then, we return all of those nodes
+When we look at our results in Neo4j.
+
+57
+00:03:58.340 --> 00:04:00.420
+Once again,
+
+58
+00:04:00.420 --> 00:04:04.270
+we see we only get a single node
+return it's the node with the label H.
+
+59
+00:04:05.500 --> 00:04:09.640
+And if we inspect our graph,
+we see over here the node H and
+
+60
+00:04:09.640 --> 00:04:11.480
+sure enough it has no incoming edges.
+
+61
+00:04:11.480 --> 00:04:15.382
+Only a single outgoing edge which
+means it's a root node of the network.
+
+62
+00:04:18.388 --> 00:04:23.740
+The next query can be described
+as a pattern matching query.
+
+63
+00:04:23.740 --> 00:04:26.990
+We're looking for a pattern that
+we're describing as triangles.
+
+64
+00:04:26.990 --> 00:04:29.880
+This is a pattern that's
+a bit more complex than
+
+65
+00:04:29.880 --> 00:04:33.540
+the patterns we've been looking for
+in our previous queries.
+
+66
+00:04:33.540 --> 00:04:38.750
+A triangle can also be described as a
+three cycle, consisting of three nodes and
+
+67
+00:04:38.750 --> 00:04:43.010
+three edges where the beginning and
+end node are the same.
+
+68
+00:04:43.010 --> 00:04:47.420
+So here we're matching a node A which
+goes through an edge to node B
+
+69
+00:04:47.420 --> 00:04:51.480
+which goes through a second
+edge to a second node C and
+
+70
+00:04:51.480 --> 00:04:54.960
+through a third edge back
+to the original node A.
+
+71
+00:04:54.960 --> 00:04:57.500
+And then we return all of those notes.
+
+72
+00:04:57.500 --> 00:04:59.600
+Let's look at our results.
+
+73
+00:04:59.600 --> 00:05:03.390
+And here we see we have five
+distinct nodes returned.
+
+74
+00:05:03.390 --> 00:05:06.720
+And we have two triangles or
+two three cycles.
+
+75
+00:05:06.720 --> 00:05:10.804
+From D to E to G and from D to C to B.
+
+76
+00:05:13.868 --> 00:05:17.788
+Finally the last query we're going
+to execute with this data set,
+
+77
+00:05:17.788 --> 00:05:21.290
+is going to explore the neighborhood
+of a particular node.
+
+78
+00:05:21.290 --> 00:05:23.220
+In this case, the node with the label d.
+
+79
+00:05:23.220 --> 00:05:27.290
+And we're going to be looking for
+what we're calling second neighbors of D.
+
+80
+00:05:27.290 --> 00:05:31.480
+This means nodes that
+are two nodes away from d.
+
+81
+00:05:31.480 --> 00:05:36.230
+So the first line of code matches
+all nodes that are two nodes away
+
+82
+00:05:36.230 --> 00:05:38.130
+from a specific node.
+
+83
+00:05:38.130 --> 00:05:43.150
+And then the second line of codes
+specifies the actual node that we
+
+84
+00:05:43.150 --> 00:05:47.240
+we want to consider by constraining
+its name to have the label d,
+
+85
+00:05:47.240 --> 00:05:50.240
+and then we return those nodes.
+
+86
+00:05:50.240 --> 00:05:53.040
+And here we're using the command distinct
+
+87
+00:05:53.040 --> 00:05:56.440
+because we want to make sure that we
+don't return any duplicate nodes.
+
+88
+00:05:56.440 --> 00:05:58.650
+All of our nodes must be unique.
+
+89
+00:05:59.760 --> 00:06:00.930
+So let's look at the results.
+
+90
+00:06:02.130 --> 00:06:07.040
+And here we have a network that
+consists of nine nodes and 11 edges and
+
+91
+00:06:07.040 --> 00:06:13.710
+we can see that each node is
+two nodes away from the node D.
+
+92
+00:06:13.710 --> 00:06:17.510
+Some nodes appear to be only one
+node away from the node D but
+
+93
+00:06:17.510 --> 00:06:21.890
+we can get to those nodes indirectly
+through another node, which means that
+
+94
+00:06:21.890 --> 00:06:24.660
+they're not only a first neighbor but
+they're also a second neighbor.
+
+95
+00:06:26.390 --> 00:06:28.930
+So we encourage you to play
+around with these queries,
+
+96
+00:06:28.930 --> 00:06:32.320
+and make minor changes with them,
+and see what the results might be.

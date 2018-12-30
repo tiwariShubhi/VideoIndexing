@@ -1,0 +1,4057 @@
+﻿1
+00:00:00,000 --> 00:00:00,835
+
+
+2
+00:00:00,835 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,570
+at ocw.mit.edu.
+
+9
+00:00:18,570 --> 00:00:30,070
+
+
+10
+00:00:30,070 --> 00:00:31,405
+JOHN GUTTAG: Hi, everybody.
+
+11
+00:00:31,405 --> 00:00:35,869
+
+
+12
+00:00:35,869 --> 00:00:39,153
+Welcome back to class.
+
+13
+00:00:39,154 --> 00:00:40,820
+I have a lot to cover
+today, so I'm just
+
+14
+00:00:40,820 --> 00:00:42,600
+going to get right to it.
+
+15
+00:00:42,600 --> 00:00:46,439
+So you may remember at
+the end of last lecture,
+
+16
+00:00:46,439 --> 00:00:49,159
+I talked about
+the Empirical Rule
+
+17
+00:00:49,159 --> 00:00:53,119
+and said that there were
+a couple of assumptions
+
+18
+00:00:53,119 --> 00:00:54,159
+underlying it.
+
+19
+00:00:54,159 --> 00:00:57,379
+That one is the mean
+estimation error is zero.
+
+20
+00:00:57,380 --> 00:01:00,200
+And second, that the
+distribution of errors
+
+21
+00:01:00,200 --> 00:01:03,140
+will be normally distributed.
+
+22
+00:01:03,140 --> 00:01:04,819
+I didn't probably
+mention at the time,
+
+23
+00:01:04,819 --> 00:01:08,060
+but we often call this
+distribution Gaussian
+
+24
+00:01:08,060 --> 00:01:11,180
+after the astronomer Carl Gauss.
+
+25
+00:01:11,180 --> 00:01:12,345
+And it looks like that.
+
+26
+00:01:12,344 --> 00:01:16,189
+
+
+27
+00:01:16,189 --> 00:01:21,250
+Normal distributions are very
+easy to generate in Python.
+
+28
+00:01:21,250 --> 00:01:24,290
+I have a little example
+here of generating, not
+
+29
+00:01:24,290 --> 00:01:28,020
+a real normal distribution,
+but a discrete approximation
+
+30
+00:01:28,019 --> 00:01:28,519
+of one.
+
+31
+00:01:28,519 --> 00:01:31,170
+
+
+32
+00:01:31,170 --> 00:01:34,260
+And the thing to really
+notice about it here
+
+33
+00:01:34,260 --> 00:01:38,380
+is this line random.gauss.
+
+34
+00:01:38,379 --> 00:01:43,719
+So that's a built in function
+of the random library.
+
+35
+00:01:43,719 --> 00:01:47,280
+The first argument is the mean.
+
+36
+00:01:47,280 --> 00:01:49,920
+And the second argument
+is the standard deviation
+
+37
+00:01:49,920 --> 00:01:53,969
+or a mu and sigma as
+they're usually called.
+
+38
+00:01:53,969 --> 00:01:57,299
+Every time I call that,
+I will get a different--
+
+39
+00:01:57,299 --> 00:02:00,329
+or usually a
+different random value
+
+40
+00:02:00,329 --> 00:02:04,260
+drawn from a Gaussian with
+the mean, in this case of 0
+
+41
+00:02:04,260 --> 00:02:08,430
+and a standard deviation of 100.
+
+42
+00:02:08,430 --> 00:02:10,990
+I'm then going to
+produce a plot of those
+
+43
+00:02:10,990 --> 00:02:13,270
+so you can see
+what it looks like.
+
+44
+00:02:13,270 --> 00:02:15,760
+And I'm going to do that
+using some things we
+
+45
+00:02:15,759 --> 00:02:16,734
+haven't seen before.
+
+46
+00:02:16,735 --> 00:02:19,550
+
+
+47
+00:02:19,550 --> 00:02:22,880
+So first of all,
+we've seen histograms.
+
+48
+00:02:22,879 --> 00:02:28,269
+So pylab.hist
+produces a histogram.
+
+49
+00:02:28,270 --> 00:02:31,540
+Bins tells us how many bins
+we want in the histogram.
+
+50
+00:02:31,539 --> 00:02:33,280
+I said we want 100.
+
+51
+00:02:33,280 --> 00:02:35,240
+The default is 10.
+
+52
+00:02:35,240 --> 00:02:39,189
+Dist is the values
+it will use for it.
+
+53
+00:02:39,189 --> 00:02:45,960
+And then this is something we
+haven't seen before, weights.
+
+54
+00:02:45,960 --> 00:02:48,540
+Weights is a keyword argument.
+
+55
+00:02:48,539 --> 00:02:52,639
+So normally when we
+produce a histogram,
+
+56
+00:02:52,639 --> 00:02:57,979
+we take all of the values,
+the minimum to the maximum,
+
+57
+00:02:57,979 --> 00:03:00,759
+and in this case, we would
+divide them into 100 bins,
+
+58
+00:03:00,759 --> 00:03:07,489
+because I said, bins equals 100.
+
+59
+00:03:07,490 --> 00:03:09,790
+So the first bin
+might be, well, let's
+
+60
+00:03:09,789 --> 00:03:13,030
+say we only had values
+ranging from 0 to 100.
+
+61
+00:03:13,030 --> 00:03:16,360
+The first bin would be all
+the 0's, all the 1's up to all
+
+62
+00:03:16,360 --> 00:03:16,960
+the 99's.
+
+63
+00:03:16,960 --> 00:03:21,010
+
+
+64
+00:03:21,009 --> 00:03:25,409
+And it weights each
+value in the bin by 1.
+
+65
+00:03:25,409 --> 00:03:28,560
+So if the bin had 10
+values falling in it,
+
+66
+00:03:28,560 --> 00:03:31,340
+the y-axis would be a 10.
+
+67
+00:03:31,340 --> 00:03:33,680
+If the bin had 50
+values falling in it,
+
+68
+00:03:33,680 --> 00:03:35,469
+the y-axis would go up to 50.
+
+69
+00:03:35,469 --> 00:03:38,430
+
+
+70
+00:03:38,430 --> 00:03:41,189
+You can tell it
+how much you want
+
+71
+00:03:41,189 --> 00:03:45,599
+to weight each bin, the
+elements in the bins.
+
+72
+00:03:45,599 --> 00:03:48,569
+And say, no, I don't want
+them each to count as 1,
+
+73
+00:03:48,569 --> 00:03:51,289
+I want them to count
+as a half or a quarter,
+
+74
+00:03:51,289 --> 00:03:52,989
+and that will change the y-axis.
+
+75
+00:03:52,990 --> 00:03:55,560
+
+
+76
+00:03:55,560 --> 00:03:57,979
+So that's what I've done here.
+
+77
+00:03:57,979 --> 00:04:02,479
+What I've said is
+I've created a list
+
+78
+00:04:02,479 --> 00:04:05,449
+and I want to say for
+each of the bins--
+
+79
+00:04:05,449 --> 00:04:10,009
+in this case I'm going to weigh
+each of them the same way--
+
+80
+00:04:10,009 --> 00:04:14,310
+the weight is going to be 1
+over the number of samples.
+
+81
+00:04:14,310 --> 00:04:16,920
+
+
+82
+00:04:16,920 --> 00:04:19,910
+I'm multiplying it by
+the len of dist, that
+
+83
+00:04:19,910 --> 00:04:23,220
+will be how many items I have.
+
+84
+00:04:23,220 --> 00:04:26,660
+And that will tell me how much
+each one is being weighted.
+
+85
+00:04:26,660 --> 00:04:38,380
+So for example, if I
+have, say, 1,000 items,
+
+86
+00:04:38,379 --> 00:04:40,870
+I could give 1,000
+values and say,
+
+87
+00:04:40,870 --> 00:04:43,660
+I want this item
+weighted by 1, and I
+
+88
+00:04:43,660 --> 00:04:48,580
+want this item over here
+weighted by 12 or a half.
+
+89
+00:04:48,579 --> 00:04:50,449
+We rarely do that.
+
+90
+00:04:50,449 --> 00:04:55,860
+Usually, what we want is to
+give each item the same weight.
+
+91
+00:04:55,860 --> 00:05:01,150
+So why would I want it not
+to be weighted at just one?
+
+92
+00:05:01,149 --> 00:05:06,759
+Because I want my y-axis to
+be more easily interpreted,
+
+93
+00:05:06,759 --> 00:05:09,819
+and essentially give me
+the fraction of the values
+
+94
+00:05:09,819 --> 00:05:10,990
+that fell in that bin.
+
+95
+00:05:10,990 --> 00:05:14,050
+
+
+96
+00:05:14,050 --> 00:05:17,660
+And that's what I'm doing here.
+
+97
+00:05:17,660 --> 00:05:20,570
+The other new thing
+I'm doing here
+
+98
+00:05:20,569 --> 00:05:23,899
+is the plotting
+commands, including
+
+99
+00:05:23,899 --> 00:05:28,250
+pylab.hist, many of
+them return values.
+
+100
+00:05:28,250 --> 00:05:30,800
+Usually, I just ignore
+that value when we just
+
+101
+00:05:30,800 --> 00:05:34,280
+say pylab.plot or pylab.hist.
+
+102
+00:05:34,279 --> 00:05:37,819
+Here I am taking the value.
+
+103
+00:05:37,819 --> 00:05:41,709
+The value in this
+case for a histogram
+
+104
+00:05:41,709 --> 00:05:44,560
+is a tuple of length 2.
+
+105
+00:05:44,560 --> 00:05:50,030
+The first element is
+a list or an array,
+
+106
+00:05:50,029 --> 00:05:53,539
+giving me how many
+items are in each bin.
+
+107
+00:05:53,540 --> 00:05:57,740
+And the second is
+the patches used
+
+108
+00:05:57,740 --> 00:06:01,660
+to produce the beautiful
+pictures we're use to seeing.
+
+109
+00:06:01,660 --> 00:06:05,560
+So here what I'm going
+to do is take this value
+
+110
+00:06:05,560 --> 00:06:07,360
+so that I can do
+this at the end.
+
+111
+00:06:07,360 --> 00:06:11,456
+
+
+112
+00:06:11,456 --> 00:06:13,330
+Now, why would I want
+to look at the fraction
+
+113
+00:06:13,329 --> 00:06:16,819
+within approximately
+200 of the mean?
+
+114
+00:06:16,819 --> 00:06:19,069
+What is that going to
+correspond to in this case?
+
+115
+00:06:19,069 --> 00:06:22,509
+
+
+116
+00:06:22,509 --> 00:06:27,539
+Well, if I divide
+200 by 2 I get 100.
+
+117
+00:06:27,540 --> 00:06:30,710
+Which happens to be
+the standard deviation.
+
+118
+00:06:30,709 --> 00:06:33,729
+So in this case, what I'm
+going to be looking at
+
+119
+00:06:33,730 --> 00:06:37,150
+is what fraction
+of the values fall
+
+120
+00:06:37,149 --> 00:06:39,969
+within two standard
+deviations of the mean?
+
+121
+00:06:39,970 --> 00:06:43,740
+Kind of a check on the
+empirical rule, right?
+
+122
+00:06:43,740 --> 00:06:49,600
+All right, when I run
+the code I get this.
+
+123
+00:06:49,600 --> 00:06:53,350
+So it is a discrete
+approximation
+
+124
+00:06:53,350 --> 00:06:56,150
+to the probability
+density function.
+
+125
+00:06:56,149 --> 00:06:58,269
+You'll notice, unlike
+the previous picture
+
+126
+00:06:58,269 --> 00:07:02,829
+I showed you which was nice
+and smooth, this is jaggedy.
+
+127
+00:07:02,829 --> 00:07:05,599
+You would expect it to be.
+
+128
+00:07:05,600 --> 00:07:11,800
+And again, you can see it's
+very nice that the peak is what
+
+129
+00:07:11,800 --> 00:07:14,230
+we said the mean should be, 0.
+
+130
+00:07:14,230 --> 00:07:16,240
+And then it falls off.
+
+131
+00:07:16,240 --> 00:07:21,199
+And indeed, slightly
+more than 95%
+
+132
+00:07:21,199 --> 00:07:26,665
+fall within two standard
+deviations of the mean.
+
+133
+00:07:26,665 --> 00:07:30,490
+I'm not even surprised that
+it's a little bit more than 95%
+
+134
+00:07:30,490 --> 00:07:35,560
+because, remember the magic
+number is 1.96, not 2.
+
+135
+00:07:35,560 --> 00:07:39,819
+But since this is
+only a finite sample,
+
+136
+00:07:39,819 --> 00:07:41,860
+I only want it to be around 95.
+
+137
+00:07:41,860 --> 00:07:46,770
+I'm not going to worry too much
+whether it's bigger or smaller.
+
+138
+00:07:46,769 --> 00:07:48,180
+All right?
+
+139
+00:07:48,180 --> 00:07:53,670
+So random.gauss does a nice job
+of giving us Gaussian values.
+
+140
+00:07:53,670 --> 00:07:56,580
+We plotted them and now
+you can see that I've
+
+141
+00:07:56,579 --> 00:07:59,099
+got the relative frequency.
+
+142
+00:07:59,100 --> 00:08:06,400
+That's why I see fractions in
+the y-axis rather than counts.
+
+143
+00:08:06,399 --> 00:08:10,399
+And that would be because of the
+way I use the weights command.
+
+144
+00:08:10,399 --> 00:08:14,359
+All right, let's return to PDFs.
+
+145
+00:08:14,360 --> 00:08:17,240
+So as we said last
+time, distributions
+
+146
+00:08:17,240 --> 00:08:21,090
+can be defined by Probability
+Density Functions,
+
+147
+00:08:21,089 --> 00:08:23,000
+and that gives us
+the probability
+
+148
+00:08:23,000 --> 00:08:27,980
+of some random variable
+lying between two values.
+
+149
+00:08:27,980 --> 00:08:30,890
+It defines a curve where
+the values in the x-axis
+
+150
+00:08:30,889 --> 00:08:35,990
+lie between the minimum and
+maximum values of the variable.
+
+151
+00:08:35,990 --> 00:08:38,000
+And it's the area
+under the curve--
+
+152
+00:08:38,000 --> 00:08:39,980
+and we'll come back to this--
+
+153
+00:08:39,980 --> 00:08:42,649
+between those two
+points that give us
+
+154
+00:08:42,649 --> 00:08:47,009
+the probability of an example
+falling in that range.
+
+155
+00:08:47,009 --> 00:08:50,960
+So now let's look at it
+for a normal distribution.
+
+156
+00:08:50,960 --> 00:08:54,680
+You may recall from the last
+lecture this rather exotic
+
+157
+00:08:54,679 --> 00:09:02,379
+looking formula which defines a
+PDF for a normal distribution.
+
+158
+00:09:02,379 --> 00:09:07,580
+And here's some code
+that's as straight forward
+
+159
+00:09:07,580 --> 00:09:13,720
+an implementation as one could
+imagine of this formula, OK.
+
+160
+00:09:13,720 --> 00:09:16,899
+So that now is a
+value that, given
+
+161
+00:09:16,899 --> 00:09:21,610
+a mu and a sigma and an x,
+gives me the x associated
+
+162
+00:09:21,610 --> 00:09:26,810
+with that mu and sigma, OK?
+
+163
+00:09:26,809 --> 00:09:29,769
+And you'll notice there's
+nothing random about this.
+
+164
+00:09:29,769 --> 00:09:32,429
+
+
+165
+00:09:32,429 --> 00:09:37,029
+All right, it is
+giving me the value.
+
+166
+00:09:37,029 --> 00:09:41,214
+Now, let's go down here.
+
+167
+00:09:41,215 --> 00:09:44,350
+
+
+168
+00:09:44,350 --> 00:09:47,379
+And I'm going to,
+for a set of x's, get
+
+169
+00:09:47,379 --> 00:09:53,009
+the set of y's corresponding
+to that and then plot it.
+
+170
+00:09:53,009 --> 00:09:55,169
+I'm going to set
+mu to 0 and sigma
+
+171
+00:09:55,169 --> 00:09:59,259
+to 1, the so-called standard
+normal distribution.
+
+172
+00:09:59,259 --> 00:10:05,689
+And I'm going to look at the
+distribution from minus 4 to 4.
+
+173
+00:10:05,690 --> 00:10:08,240
+Nothing magic about that
+other than, as you'll see,
+
+174
+00:10:08,240 --> 00:10:13,450
+it's kind of a place where
+it asymptotes near 0.
+
+175
+00:10:13,450 --> 00:10:16,420
+So while x is less
+than 4, I'll get
+
+176
+00:10:16,419 --> 00:10:20,979
+the x-value, I'll get the
+y-value corresponding to that x
+
+177
+00:10:20,980 --> 00:10:25,440
+by calling Gaussian,
+increment x by 0.05
+
+178
+00:10:25,440 --> 00:10:29,810
+and do that until I'm done.
+
+179
+00:10:29,809 --> 00:10:34,679
+And then simply, I'll plot the
+x-values against the y-values
+
+180
+00:10:34,679 --> 00:10:39,939
+and throw a title on
+it using pylab.title.
+
+181
+00:10:39,940 --> 00:10:41,270
+All right, code make sense?
+
+182
+00:10:41,269 --> 00:10:45,350
+
+
+183
+00:10:45,350 --> 00:10:48,550
+Well, this is where I got
+that beautiful picture
+
+184
+00:10:48,549 --> 00:10:50,839
+we've looked at before.
+
+185
+00:10:50,840 --> 00:10:55,740
+When I plotted here, it
+looks, actually quite smooth.
+
+186
+00:10:55,740 --> 00:10:59,820
+It's not, it's really connecting
+a bunch of tiny little lines
+
+187
+00:10:59,820 --> 00:11:01,950
+but I made the points
+close enough together
+
+188
+00:11:01,950 --> 00:11:06,180
+that it looks at least here
+smooth at this resolution.
+
+189
+00:11:06,179 --> 00:11:08,969
+
+
+190
+00:11:08,970 --> 00:11:12,840
+So we know what the
+values on the x-axis are.
+
+191
+00:11:12,840 --> 00:11:15,300
+Those are the values
+I happen to want
+
+192
+00:11:15,299 --> 00:11:19,559
+to look at, from minus 4 to 4.
+
+193
+00:11:19,559 --> 00:11:21,179
+What are the values
+on the y-axis?
+
+194
+00:11:21,179 --> 00:11:26,639
+
+
+195
+00:11:26,639 --> 00:11:28,710
+We kind of would like
+to interpret them
+
+196
+00:11:28,710 --> 00:11:31,170
+as probabilities, right?
+
+197
+00:11:31,169 --> 00:11:34,799
+But we could be pretty
+suspicious about that
+
+198
+00:11:34,799 --> 00:11:38,279
+and then if we take this
+one point that's up here,
+
+199
+00:11:38,279 --> 00:11:42,539
+we say the probability of
+that single point is 0.4.
+
+200
+00:11:42,539 --> 00:11:45,689
+Well, that doesn't make any
+sense because, in fact, we
+
+201
+00:11:45,690 --> 00:11:49,740
+know the probability
+of any particular point
+
+202
+00:11:49,740 --> 00:11:52,850
+is 0 in some sense, right?
+
+203
+00:11:52,850 --> 00:11:58,670
+So furthermore, if I chose
+a different value for sigma,
+
+204
+00:11:58,669 --> 00:12:05,199
+I can actually get this to go
+bigger than 1 on the y-axis.
+
+205
+00:12:05,200 --> 00:12:09,240
+So if you take sigma
+to be say, 0.1--
+
+206
+00:12:09,240 --> 00:12:14,480
+I think the y-axis goes
+up to something like 40.
+
+207
+00:12:14,480 --> 00:12:18,289
+So we know we don't have
+probabilities in the range 40.
+
+208
+00:12:18,289 --> 00:12:21,709
+So if these aren't
+probabilities, what are they?
+
+209
+00:12:21,710 --> 00:12:24,530
+What are the y values?
+
+210
+00:12:24,529 --> 00:12:27,949
+Well, not too surprising
+since I claimed
+
+211
+00:12:27,950 --> 00:12:32,670
+this was a probability density
+function, they're densities.
+
+212
+00:12:32,669 --> 00:12:34,269
+Well, what's a density?
+
+213
+00:12:34,269 --> 00:12:37,159
+
+
+214
+00:12:37,159 --> 00:12:38,399
+This makes sense.
+
+215
+00:12:38,399 --> 00:12:40,459
+I'll say it and then
+I'll try and explain it.
+
+216
+00:12:40,460 --> 00:12:44,120
+It's a derivative of the
+cumulative distribution
+
+217
+00:12:44,120 --> 00:12:45,539
+function.
+
+218
+00:12:45,539 --> 00:12:49,849
+Now, why are we talking about
+derivatives in the first place?
+
+219
+00:12:49,850 --> 00:12:52,960
+Well, remember what
+we're trying to say.
+
+220
+00:12:52,960 --> 00:12:57,340
+If we want to ask, what's the
+probability of a value falling
+
+221
+00:12:57,340 --> 00:13:02,110
+between here and here,
+we claim that that
+
+222
+00:13:02,110 --> 00:13:10,379
+was going to be the area under
+this curve, the integral.
+
+223
+00:13:10,379 --> 00:13:13,960
+Well, as you know
+from 18.01, there's
+
+224
+00:13:13,960 --> 00:13:17,620
+a very clear relationship
+between derivatives
+
+225
+00:13:17,620 --> 00:13:19,750
+and integrals.
+
+226
+00:13:19,750 --> 00:13:24,460
+And so if we interpret each of
+these points as a derivative,
+
+227
+00:13:24,460 --> 00:13:27,310
+in some sense the
+slope here, then we
+
+228
+00:13:27,309 --> 00:13:30,039
+can look at this
+as the area just
+
+229
+00:13:30,039 --> 00:13:31,569
+by integrating under there.
+
+230
+00:13:31,570 --> 00:13:34,720
+
+
+231
+00:13:34,720 --> 00:13:39,790
+So to interpret a PDF, we
+always do it mathematically.
+
+232
+00:13:39,789 --> 00:13:42,259
+Actually, I do it
+just by looking at it.
+
+233
+00:13:42,259 --> 00:13:46,419
+But the only really interesting
+mathematical questions to ask
+
+234
+00:13:46,419 --> 00:13:49,399
+have to do with area.
+
+235
+00:13:49,399 --> 00:13:51,949
+Once we have the
+area, we can, then,
+
+236
+00:13:51,950 --> 00:13:56,390
+talk about the probabilities
+of some value falling
+
+237
+00:13:56,389 --> 00:13:58,919
+within a region of the curve.
+
+238
+00:13:58,919 --> 00:14:01,069
+So what's interesting
+here is not
+
+239
+00:14:01,070 --> 00:14:06,930
+the numbers per se on the y-axis
+but the shape of the curve,
+
+240
+00:14:06,929 --> 00:14:09,239
+because those numbers
+have to be related
+
+241
+00:14:09,240 --> 00:14:14,190
+to the numbers on the
+x-axis, dx, dy right?
+
+242
+00:14:14,190 --> 00:14:17,860
+We're looking at derivatives.
+
+243
+00:14:17,860 --> 00:14:22,300
+All right, so now, we have
+to talk about integration.
+
+244
+00:14:22,299 --> 00:14:25,699
+I promise you'll only hear
+about it for another few minutes
+
+245
+00:14:25,700 --> 00:14:27,730
+then we'll leave the topic.
+
+246
+00:14:27,730 --> 00:14:30,519
+So I mentioned before
+SciPy as a library
+
+247
+00:14:30,519 --> 00:14:35,779
+that contains a lot of useful
+mathematical functions.
+
+248
+00:14:35,779 --> 00:14:39,294
+One of them is integrate.quad.
+
+249
+00:14:39,294 --> 00:14:41,814
+
+
+250
+00:14:41,815 --> 00:14:43,790
+Well, the integrate
+part is obvious.
+
+251
+00:14:43,789 --> 00:14:45,439
+It means integration.
+
+252
+00:14:45,440 --> 00:14:47,930
+Quad is telling you
+the algorithm it's
+
+253
+00:14:47,929 --> 00:14:50,239
+choosing to do the integration.
+
+254
+00:14:50,240 --> 00:14:54,945
+All of these integrals are going
+to be actual approximations
+
+255
+00:14:54,945 --> 00:14:55,820
+to the real integral.
+
+256
+00:14:55,820 --> 00:14:58,450
+
+
+257
+00:14:58,450 --> 00:15:01,009
+SciPy is not doing
+some clever mathematics
+
+258
+00:15:01,009 --> 00:15:03,899
+to get an analytical solution.
+
+259
+00:15:03,899 --> 00:15:08,519
+It's using a numerical technique
+to approximate the integral.
+
+260
+00:15:08,519 --> 00:15:11,490
+And the one here happens
+to be called quadrature,
+
+261
+00:15:11,490 --> 00:15:14,810
+it doesn't matter.
+
+262
+00:15:14,809 --> 00:15:19,399
+All right, you can pass
+it up to four arguments.
+
+263
+00:15:19,399 --> 00:15:22,929
+You must pass it to
+function to be integrated,
+
+264
+00:15:22,929 --> 00:15:25,539
+that makes sense.
+
+265
+00:15:25,539 --> 00:15:29,809
+A number representing the lower
+limit of the integration--
+
+266
+00:15:29,809 --> 00:15:31,159
+you need to give it that.
+
+267
+00:15:31,159 --> 00:15:33,289
+A number representing
+the upper limit--
+
+268
+00:15:33,289 --> 00:15:35,149
+you need to give it that.
+
+269
+00:15:35,149 --> 00:15:39,449
+And then the fourth
+argument is a tuple
+
+270
+00:15:39,450 --> 00:15:43,490
+supplying all values
+for the arguments,
+
+271
+00:15:43,490 --> 00:15:48,049
+except the first of the
+function you are integrating.
+
+272
+00:15:48,049 --> 00:15:51,269
+I'll show you an example
+of that on the next slide.
+
+273
+00:15:51,269 --> 00:15:55,639
+And we'll see that it returns
+a tuple, an approximation
+
+274
+00:15:55,639 --> 00:15:58,730
+to the result, what it
+thinks the integral is,
+
+275
+00:15:58,730 --> 00:16:01,940
+and an estimate
+of how much error
+
+276
+00:16:01,940 --> 00:16:04,040
+there might be in that one.
+
+277
+00:16:04,039 --> 00:16:06,779
+We'll ignore the
+error for the moment.
+
+278
+00:16:06,779 --> 00:16:10,019
+All right, let's
+look at the code.
+
+279
+00:16:10,019 --> 00:16:13,684
+So we start by importing
+scipy.integrate.
+
+280
+00:16:13,684 --> 00:16:17,149
+
+
+281
+00:16:17,149 --> 00:16:20,459
+That gives us all the
+different integration methods.
+
+282
+00:16:20,460 --> 00:16:23,250
+I'm not going to show
+you the code for Gaussian
+
+283
+00:16:23,250 --> 00:16:25,750
+since I showed it to you
+a couple of minutes ago.
+
+284
+00:16:25,750 --> 00:16:27,750
+But I wanted you to
+remember that it takes three
+
+285
+00:16:27,750 --> 00:16:32,480
+arguments, x, mu, and sigma.
+
+286
+00:16:32,480 --> 00:16:37,460
+Because when we get down
+here to the integration,
+
+287
+00:16:37,460 --> 00:16:44,180
+we'll pass at the function
+Gaussian and then the values
+
+288
+00:16:44,179 --> 00:16:45,889
+that we want to integrate over.
+
+289
+00:16:45,889 --> 00:16:49,500
+
+
+290
+00:16:49,500 --> 00:16:56,250
+So those will be the values
+that x can take upon.
+
+291
+00:16:56,250 --> 00:17:02,330
+And that will change
+as we go from mu
+
+292
+00:17:02,330 --> 00:17:05,059
+minus the number of standard
+deviations times sigma
+
+293
+00:17:05,059 --> 00:17:07,220
+to mu plus the number
+of standard deviations
+
+294
+00:17:07,220 --> 00:17:09,799
+times sigma.
+
+295
+00:17:09,799 --> 00:17:13,818
+And then, this is the optional
+fourth argument, the tuple, mu,
+
+296
+00:17:13,818 --> 00:17:15,460
+and sigma.
+
+297
+00:17:15,460 --> 00:17:17,740
+Why do I need to pass that in?
+
+298
+00:17:17,740 --> 00:17:22,088
+Because Gaussian is a ternary
+argument, or a function
+
+299
+00:17:22,088 --> 00:17:24,460
+that takes three values.
+
+300
+00:17:24,460 --> 00:17:26,769
+And I'm going to
+integrate over values
+
+301
+00:17:26,769 --> 00:17:32,829
+of x so I have to fix mu and
+sigma to constants, which
+
+302
+00:17:32,829 --> 00:17:35,079
+is what I'm doing down here.
+
+303
+00:17:35,079 --> 00:17:37,389
+And then I'll take
+the zeroth value,
+
+304
+00:17:37,390 --> 00:17:41,320
+which is its estimate
+of the integral.
+
+305
+00:17:41,319 --> 00:17:43,980
+All right, so that's
+the new thing.
+
+306
+00:17:43,980 --> 00:17:46,980
+The rest of the code is
+all stuff you've seen.
+
+307
+00:17:46,980 --> 00:17:49,680
+For t and range
+number of trials,
+
+308
+00:17:49,680 --> 00:17:53,759
+I'm going to choose a random
+mu between minus 10 and 10
+
+309
+00:17:53,759 --> 00:17:56,789
+and a random sigma
+between 1 and 10.
+
+310
+00:17:56,789 --> 00:18:00,069
+It doesn't matter what
+those constants are.
+
+311
+00:18:00,069 --> 00:18:04,500
+And then for the number
+of standard deviations
+
+312
+00:18:04,500 --> 00:18:10,430
+in 1, 1.96, and 3,
+I'm going to integrate
+
+313
+00:18:10,430 --> 00:18:16,720
+Gaussian over that range.
+
+314
+00:18:16,720 --> 00:18:19,799
+And then we're just going
+to see how many of them
+
+315
+00:18:19,799 --> 00:18:21,864
+fall within that range.
+
+316
+00:18:21,864 --> 00:18:23,279
+In some sense,
+what we're doing is
+
+317
+00:18:23,279 --> 00:18:26,089
+we're checking the
+empirical rule.
+
+318
+00:18:26,089 --> 00:18:27,589
+We're saying, take the Gaussian.
+
+319
+00:18:27,589 --> 00:18:29,269
+I don't care what
+mu and sigma are.
+
+320
+00:18:29,269 --> 00:18:31,009
+It doesn't matter.
+
+321
+00:18:31,009 --> 00:18:34,490
+The empirical rule will
+still hold, I think.
+
+322
+00:18:34,490 --> 00:18:37,480
+But we're just
+checking it here, OK?
+
+323
+00:18:37,480 --> 00:18:41,690
+
+
+324
+00:18:41,690 --> 00:18:44,370
+Well, here are the results.
+
+325
+00:18:44,369 --> 00:18:46,654
+So from mu equals 9
+and sigma equals 6,
+
+326
+00:18:46,654 --> 00:18:49,399
+I happened to
+choose those, we'll
+
+327
+00:18:49,400 --> 00:18:55,380
+see the fracture within 1,
+fraction within 1.96 and 3.
+
+328
+00:18:55,380 --> 00:18:58,800
+And so for these
+random mus and sigmas,
+
+329
+00:18:58,799 --> 00:19:00,440
+you can see that all
+of them-- and you
+
+330
+00:19:00,440 --> 00:19:02,190
+can set them to whatever
+you want when you
+
+331
+00:19:02,190 --> 00:19:04,380
+get your hand them the code.
+
+332
+00:19:04,380 --> 00:19:10,880
+Essentially, what we have is,
+whoops, the empirical rule
+
+333
+00:19:10,880 --> 00:19:13,430
+actually works.
+
+334
+00:19:13,430 --> 00:19:17,120
+One of those beautiful cases
+where you can test the theory
+
+335
+00:19:17,119 --> 00:19:21,673
+and see that the
+theory really is sound.
+
+336
+00:19:21,673 --> 00:19:25,339
+So there we go.
+
+337
+00:19:25,339 --> 00:19:29,240
+So why am I making such a big
+deal of normal distributions?
+
+338
+00:19:29,240 --> 00:19:31,910
+They have lots of nice
+mathematical properties,
+
+339
+00:19:31,910 --> 00:19:34,142
+some of which we've
+already talked about.
+
+340
+00:19:34,142 --> 00:19:35,600
+But all of that
+would be irrelevant
+
+341
+00:19:35,599 --> 00:19:38,019
+if we didn't see them.
+
+342
+00:19:38,019 --> 00:19:41,109
+The good news is they're
+all over the place.
+
+343
+00:19:41,109 --> 00:19:43,899
+I've just taken a few here.
+
+344
+00:19:43,900 --> 00:19:47,320
+Up here we'll see SAT scores.
+
+345
+00:19:47,319 --> 00:19:50,899
+I would never show that
+to high school students,
+
+346
+00:19:50,900 --> 00:19:53,259
+or GREs to you guys.
+
+347
+00:19:53,259 --> 00:19:56,019
+But you can see that
+they are amazingly
+
+348
+00:19:56,019 --> 00:19:58,943
+well-distributed along
+a normal distribution.
+
+349
+00:19:58,943 --> 00:20:02,659
+
+
+350
+00:20:02,660 --> 00:20:09,420
+On down here, this is plotting
+percent change in oil prices.
+
+351
+00:20:09,420 --> 00:20:14,380
+And again, we see something very
+close to a normal distribution.
+
+352
+00:20:14,380 --> 00:20:17,350
+And here is just looking at
+heights of men and women.
+
+353
+00:20:17,349 --> 00:20:19,980
+And again, they clearly
+look very normal.
+
+354
+00:20:19,980 --> 00:20:23,329
+
+
+355
+00:20:23,329 --> 00:20:29,970
+So it's really quite impressive
+how often they occur.
+
+356
+00:20:29,970 --> 00:20:34,630
+But not everything is normal.
+
+357
+00:20:34,630 --> 00:20:37,360
+So we saw that
+the empirical rule
+
+358
+00:20:37,359 --> 00:20:39,599
+works for normal distributions.
+
+359
+00:20:39,599 --> 00:20:41,230
+I won't say I proved it for you.
+
+360
+00:20:41,230 --> 00:20:43,914
+I illustrated it for you
+with a bunch of examples.
+
+361
+00:20:43,914 --> 00:20:47,109
+
+
+362
+00:20:47,109 --> 00:20:49,639
+But are the outcomes of the
+spins of a roulette wheel
+
+363
+00:20:49,640 --> 00:20:50,140
+normal?
+
+364
+00:20:50,140 --> 00:20:53,370
+
+
+365
+00:20:53,369 --> 00:20:54,389
+No.
+
+366
+00:20:54,390 --> 00:20:56,430
+They're totally uniform, right?
+
+367
+00:20:56,430 --> 00:21:01,650
+Everything is equally probable--
+a 4, a 6, an 11, a 13, double-0
+
+368
+00:21:01,650 --> 00:21:03,330
+if you're in Las Vegas.
+
+369
+00:21:03,329 --> 00:21:05,369
+They're all equally probable.
+
+370
+00:21:05,369 --> 00:21:09,750
+So if I plotted
+those, I'd basically
+
+371
+00:21:09,750 --> 00:21:12,579
+just get a straight
+line with everything
+
+372
+00:21:12,579 --> 00:21:17,059
+at 1 over however many
+pockets there are.
+
+373
+00:21:17,059 --> 00:21:23,809
+So in that case, why does
+the empirical rule work?
+
+374
+00:21:23,809 --> 00:21:28,039
+We saw that we were doing
+some estimates about returns
+
+375
+00:21:28,039 --> 00:21:30,399
+and we used the empirical
+rule, we checked it
+
+376
+00:21:30,400 --> 00:21:35,560
+and, by George, it was
+telling us the truth.
+
+377
+00:21:35,559 --> 00:21:38,470
+And the reason is
+because we're not
+
+378
+00:21:38,470 --> 00:21:42,620
+reasoning about a
+single spin of the wheel
+
+379
+00:21:42,619 --> 00:21:47,449
+but about the mean
+of a set of spins.
+
+380
+00:21:47,450 --> 00:21:49,910
+So if you think about it,
+what we were reasoning about
+
+381
+00:21:49,910 --> 00:21:52,820
+was the return of betting.
+
+382
+00:21:52,819 --> 00:21:55,189
+If we look at one spin--
+
+383
+00:21:55,190 --> 00:21:57,680
+well, let's say we bet $1.
+
+384
+00:21:57,680 --> 00:22:02,060
+The return is either minus 1
+because we've lost our dollar.
+
+385
+00:22:02,059 --> 00:22:05,359
+Or if we get lucky and our
+pocket happens to come up,
+
+386
+00:22:05,359 --> 00:22:08,459
+it was 36, I think, or 35.
+
+387
+00:22:08,460 --> 00:22:11,090
+I forget which, OK?
+
+388
+00:22:11,089 --> 00:22:13,559
+But that's all.
+
+389
+00:22:13,559 --> 00:22:16,859
+So if we plotted a
+histogram, we would
+
+390
+00:22:16,859 --> 00:22:23,879
+see a huge peak at minus
+1 and a little bump
+
+391
+00:22:23,880 --> 00:22:28,900
+here at 36 and
+nothing in the middle.
+
+392
+00:22:28,900 --> 00:22:31,655
+Clearly, not a
+normal distribution.
+
+393
+00:22:31,654 --> 00:22:36,109
+
+
+394
+00:22:36,109 --> 00:22:39,849
+But what we're
+reasoning about is not
+
+395
+00:22:39,849 --> 00:22:43,869
+the return of a single spin
+but the return of many spins.
+
+396
+00:22:43,869 --> 00:22:47,500
+If we played 1,000 spins,
+what is our expected return?
+
+397
+00:22:47,500 --> 00:22:51,309
+
+
+398
+00:22:51,309 --> 00:22:55,579
+As soon as we end up reasoning,
+not about a single event
+
+399
+00:22:55,579 --> 00:22:59,889
+but about the mean of something,
+we can imply something
+
+400
+00:22:59,890 --> 00:23:03,060
+called the Central
+Limit Theorem.
+
+401
+00:23:03,059 --> 00:23:04,379
+And here it is.
+
+402
+00:23:04,380 --> 00:23:10,280
+It's actually for something
+so important, very simple.
+
+403
+00:23:10,279 --> 00:23:12,865
+It says that given a
+sufficiently large sample--
+
+404
+00:23:12,865 --> 00:23:16,120
+and I love terms like
+sufficiently large
+
+405
+00:23:16,119 --> 00:23:18,699
+but we'll later put a
+little meat on that--
+
+406
+00:23:18,700 --> 00:23:22,200
+the following three
+things are true.
+
+407
+00:23:22,200 --> 00:23:25,920
+The means of the samples
+in a set of samples,
+
+408
+00:23:25,920 --> 00:23:29,340
+the so-called sample means
+will be approximately normally
+
+409
+00:23:29,339 --> 00:23:32,649
+distributed.
+
+410
+00:23:32,650 --> 00:23:39,140
+So that says if
+I take a sample--
+
+411
+00:23:39,140 --> 00:23:44,130
+and remember, a sample will
+have multiple examples.
+
+412
+00:23:44,130 --> 00:23:45,375
+So just to remind people.
+
+413
+00:23:45,375 --> 00:23:50,279
+
+
+414
+00:23:50,279 --> 00:23:55,029
+A population is a
+set of examples.
+
+415
+00:23:55,029 --> 00:24:00,859
+
+
+416
+00:24:00,859 --> 00:24:07,769
+A sample is a subset
+of the population.
+
+417
+00:24:07,769 --> 00:24:12,879
+
+
+418
+00:24:12,880 --> 00:24:19,010
+So it too is a set of
+examples, typically.
+
+419
+00:24:19,009 --> 00:24:21,785
+If this set is
+sufficiently large--
+
+420
+00:24:21,785 --> 00:24:25,190
+
+
+421
+00:24:25,190 --> 00:24:28,870
+certainly 1 is not
+sufficiently large--
+
+422
+00:24:28,869 --> 00:24:34,459
+then it will be the case
+that the mean of the means--
+
+423
+00:24:34,460 --> 00:24:36,950
+so I take the mean
+of each sample
+
+424
+00:24:36,950 --> 00:24:39,740
+and then I can now
+plot all of those means
+
+425
+00:24:39,740 --> 00:24:43,390
+and so take the mean
+of those, right--
+
+426
+00:24:43,390 --> 00:24:45,220
+and they'll be
+normally distributed.
+
+427
+00:24:45,220 --> 00:24:49,089
+
+
+428
+00:24:49,089 --> 00:24:53,539
+Furthermore, this
+distribution will
+
+429
+00:24:53,539 --> 00:24:56,700
+have a mean that is close to
+the mean of the population.
+
+430
+00:24:56,700 --> 00:25:00,930
+
+
+431
+00:25:00,930 --> 00:25:03,000
+The mean of the means
+will be close to the mean
+
+432
+00:25:03,000 --> 00:25:04,930
+of the population.
+
+433
+00:25:04,930 --> 00:25:07,980
+And the variance
+of the sample means
+
+434
+00:25:07,980 --> 00:25:11,940
+will be close to the variance
+of the population divided
+
+435
+00:25:11,940 --> 00:25:13,090
+by the sample size.
+
+436
+00:25:13,089 --> 00:25:16,959
+
+
+437
+00:25:16,960 --> 00:25:19,180
+This is really
+amazing that this is
+
+438
+00:25:19,180 --> 00:25:23,105
+true and dramatically useful.
+
+439
+00:25:23,105 --> 00:25:26,940
+
+
+440
+00:25:26,940 --> 00:25:30,779
+So to get some insight,
+let's check it.
+
+441
+00:25:30,779 --> 00:25:34,500
+To do that, postulate that we
+have this kind of miraculous
+
+442
+00:25:34,500 --> 00:25:35,789
+die.
+
+443
+00:25:35,789 --> 00:25:38,940
+So instead of a die that when
+you roll it you get a number 1,
+
+444
+00:25:38,940 --> 00:25:44,220
+2, 3, 4, 5, or 6, this
+particular die is continuous.
+
+445
+00:25:44,220 --> 00:25:48,000
+It gives you a real
+number between 0 and 5,
+
+446
+00:25:48,000 --> 00:25:53,529
+or maybe it's
+between 1 and 6, OK?
+
+447
+00:25:53,529 --> 00:25:55,420
+So it's a continuous die.
+
+448
+00:25:55,420 --> 00:25:58,450
+
+
+449
+00:25:58,450 --> 00:26:02,360
+What we're going to do is
+roll it a lot of times.
+
+450
+00:26:02,359 --> 00:26:07,949
+
+
+451
+00:26:07,950 --> 00:26:10,335
+We're going to
+say, how many die?
+
+452
+00:26:10,335 --> 00:26:13,039
+
+
+453
+00:26:13,039 --> 00:26:15,500
+And then, how many
+times are we going
+
+454
+00:26:15,500 --> 00:26:17,779
+to roll that number of die?
+
+455
+00:26:17,779 --> 00:26:21,170
+So the number of die
+will be the sample size--
+
+456
+00:26:21,170 --> 00:26:23,870
+number of dice will
+be the sample size.
+
+457
+00:26:23,869 --> 00:26:26,959
+And then we'll take a
+bunch of samples which
+
+458
+00:26:26,960 --> 00:26:28,910
+I'm calling number of rolls.
+
+459
+00:26:28,910 --> 00:26:31,519
+And then we'll plot
+it and I'm just
+
+460
+00:26:31,519 --> 00:26:34,069
+choosing some bins
+and some colors
+
+461
+00:26:34,069 --> 00:26:36,769
+and some style and
+various other things
+
+462
+00:26:36,769 --> 00:26:39,349
+just to show you how we
+use the keyword arguments.
+
+463
+00:26:39,349 --> 00:26:43,639
+
+
+464
+00:26:43,640 --> 00:26:46,880
+Actually, I said the number of
+rolls is the number of trials.
+
+465
+00:26:46,880 --> 00:26:50,240
+But it isn't quite
+that because I'm
+
+466
+00:26:50,240 --> 00:26:51,829
+going to get the
+number of trials
+
+467
+00:26:51,829 --> 00:26:55,819
+by dividing the number of
+rolls by the number of dice.
+
+468
+00:26:55,819 --> 00:27:00,109
+So if I have more dice, I get
+to have fewer samples, more
+
+469
+00:27:00,109 --> 00:27:04,539
+dice per sample, all right?
+
+470
+00:27:04,539 --> 00:27:06,359
+Then we'll just do it.
+
+471
+00:27:06,359 --> 00:27:11,789
+So it will be between 0
+and 5 because random.random
+
+472
+00:27:11,789 --> 00:27:17,045
+returns a number between 0 and
+1 and I'm multiplying it by 5.
+
+473
+00:27:17,045 --> 00:27:21,220
+
+
+474
+00:27:21,220 --> 00:27:24,720
+And then we'll look at the
+means and we'll plot it all.
+
+475
+00:27:24,720 --> 00:27:29,630
+
+
+476
+00:27:29,630 --> 00:27:32,620
+Again, we're playing
+games with weights just
+
+477
+00:27:32,619 --> 00:27:35,809
+to make the plot a
+little easier to read.
+
+478
+00:27:35,809 --> 00:27:36,869
+And here's what we get.
+
+479
+00:27:36,869 --> 00:27:39,469
+
+
+480
+00:27:39,470 --> 00:27:46,069
+If we roll one die, the
+mean is very close to 2.5.
+
+481
+00:27:46,069 --> 00:27:48,470
+Well, that's certainly
+what you'd expect, right?
+
+482
+00:27:48,470 --> 00:27:51,890
+It's some random
+number between 0 and 5.
+
+483
+00:27:51,890 --> 00:27:56,890
+2.5 is a pretty good guess
+as to what it should average.
+
+484
+00:27:56,890 --> 00:28:01,225
+And it has a standard
+deviation of 1.44.
+
+485
+00:28:01,224 --> 00:28:02,949
+And that's a little
+harder to guess
+
+486
+00:28:02,950 --> 00:28:04,720
+that that's what it would be.
+
+487
+00:28:04,720 --> 00:28:07,210
+But you could figure it
+out with a little math
+
+488
+00:28:07,210 --> 00:28:10,840
+or as I did here
+with the simulation.
+
+489
+00:28:10,839 --> 00:28:15,669
+But now, if I roll 50
+dice, well, again, the mean
+
+490
+00:28:15,670 --> 00:28:20,000
+is close to 2.5.
+
+491
+00:28:20,000 --> 00:28:22,529
+It's what you'd expect, right?
+
+492
+00:28:22,529 --> 00:28:27,899
+I roll 50 die, I get the
+mean value of those 50.
+
+493
+00:28:27,900 --> 00:28:30,960
+But look how much smaller
+the standard deviation is.
+
+494
+00:28:30,960 --> 00:28:34,269
+
+
+495
+00:28:34,269 --> 00:28:38,139
+More importantly,
+what we see here
+
+496
+00:28:38,140 --> 00:28:46,200
+is that if we look at the
+value, the probability
+
+497
+00:28:46,200 --> 00:28:51,240
+is flat for all possible
+values between 0 and 5
+
+498
+00:28:51,240 --> 00:28:53,430
+for a single die.
+
+499
+00:28:53,430 --> 00:28:57,960
+But if we look at the
+distribution for the means,
+
+500
+00:28:57,960 --> 00:29:02,730
+it's not quite Gaussian
+but it's pretty close.
+
+501
+00:29:02,730 --> 00:29:04,029
+Why is it not Gaussian?
+
+502
+00:29:04,029 --> 00:29:06,970
+Well, I didn't do it an
+infinite number of times.
+
+503
+00:29:06,970 --> 00:29:09,670
+Did it quite a few, but
+not an infinite number.
+
+504
+00:29:09,670 --> 00:29:13,870
+Enough that you didn't want
+to sit here while it ran.
+
+505
+00:29:13,869 --> 00:29:15,849
+But you can see the
+amazing thing here
+
+506
+00:29:15,849 --> 00:29:19,959
+that when I go from looking at
+1 to looking at the mean of 50,
+
+507
+00:29:19,960 --> 00:29:25,180
+suddenly I have a
+normal distribution.
+
+508
+00:29:25,180 --> 00:29:29,710
+And that means that
+I can bring to bear
+
+509
+00:29:29,710 --> 00:29:35,559
+on the problem the
+Central Limit Theorem.
+
+510
+00:29:35,559 --> 00:29:38,169
+We can try it for roulette.
+
+511
+00:29:38,170 --> 00:29:40,930
+Again I'm not going to make you
+sit through a million trials
+
+512
+00:29:40,930 --> 00:29:44,000
+of 200 spins each.
+
+513
+00:29:44,000 --> 00:29:46,339
+I'll do it only
+for fair roulette.
+
+514
+00:29:46,339 --> 00:29:51,076
+And again, this is a
+very simple simulation,
+
+515
+00:29:51,076 --> 00:29:52,160
+and we'll see what we get.
+
+516
+00:29:52,160 --> 00:29:54,730
+
+
+517
+00:29:54,730 --> 00:29:59,960
+And what we see is it's
+not quite normal, again,
+
+518
+00:29:59,960 --> 00:30:04,039
+but it definitely
+has that shape.
+
+519
+00:30:04,039 --> 00:30:06,500
+Now, it's going
+to be a little bit
+
+520
+00:30:06,500 --> 00:30:15,339
+strange because I can't
+lose more than one,
+
+521
+00:30:15,339 --> 00:30:17,439
+if I'm betting one.
+
+522
+00:30:17,440 --> 00:30:20,440
+So it will never be
+quite normal because it's
+
+523
+00:30:20,440 --> 00:30:25,890
+going to be truncated
+down on the left side,
+
+524
+00:30:25,890 --> 00:30:31,080
+whereas the tail can
+be arbitrarily long.
+
+525
+00:30:31,079 --> 00:30:36,519
+So again, mathematically
+it can't be normal
+
+526
+00:30:36,519 --> 00:30:41,930
+but it's close enough in
+the main region, where
+
+527
+00:30:41,930 --> 00:30:46,460
+most of the values lie,
+that we can get away
+
+528
+00:30:46,460 --> 00:30:49,700
+with applying the empirical
+rule and looking at answers.
+
+529
+00:30:49,700 --> 00:30:52,430
+
+
+530
+00:30:52,430 --> 00:30:56,500
+And indeed as we
+saw, it does work.
+
+531
+00:30:56,500 --> 00:30:57,690
+So what's the moral here?
+
+532
+00:30:57,690 --> 00:31:00,509
+
+
+533
+00:31:00,509 --> 00:31:04,170
+It doesn't matter what the
+shape of the distribution
+
+534
+00:31:04,170 --> 00:31:08,140
+of the original
+values happen to be.
+
+535
+00:31:08,140 --> 00:31:12,700
+If we're trying to estimate
+the mean using samples that
+
+536
+00:31:12,700 --> 00:31:17,019
+are sufficiently
+large, the CLT will
+
+537
+00:31:17,019 --> 00:31:20,319
+allow us to use the
+empirical rule when
+
+538
+00:31:20,319 --> 00:31:22,119
+computing confidence intervals.
+
+539
+00:31:22,119 --> 00:31:25,589
+
+
+540
+00:31:25,589 --> 00:31:30,179
+Even if we go back and look at
+this anomaly over in the left,
+
+541
+00:31:30,180 --> 00:31:34,470
+what do you think would happen
+if I, instead of had 200, have,
+
+542
+00:31:34,470 --> 00:31:40,670
+say, 1,000?
+
+543
+00:31:40,670 --> 00:31:46,265
+What's the probability of the
+average return being minus 1
+
+544
+00:31:46,265 --> 00:31:50,090
+of 1,000 bets?
+
+545
+00:31:50,089 --> 00:31:54,559
+Much smaller than for 100 bets.
+
+546
+00:31:54,559 --> 00:31:59,289
+To lose 1,000 times in a
+row is pretty unlikely.
+
+547
+00:31:59,289 --> 00:32:01,180
+So to get all the
+way to the left
+
+548
+00:32:01,180 --> 00:32:03,470
+is going to be less
+likely, and, therefore,
+
+549
+00:32:03,470 --> 00:32:06,579
+the thing will start
+looking more and more normal
+
+550
+00:32:06,579 --> 00:32:07,970
+as the samples get bigger.
+
+551
+00:32:07,970 --> 00:32:10,509
+
+
+552
+00:32:10,509 --> 00:32:15,869
+All right, and so
+we can use the CLT
+
+553
+00:32:15,869 --> 00:32:18,719
+to justify using
+the empirical rule
+
+554
+00:32:18,720 --> 00:32:21,390
+when we compute
+confidence intervals.
+
+555
+00:32:21,390 --> 00:32:24,630
+All right, I want to look at
+one more example in detail.
+
+556
+00:32:24,630 --> 00:32:27,070
+This is kind of an
+interesting one.
+
+557
+00:32:27,069 --> 00:32:31,710
+You might think that
+randomness is of no use for,
+
+558
+00:32:31,710 --> 00:32:34,880
+say, finding the value
+of pi because there's
+
+559
+00:32:34,880 --> 00:32:37,320
+nothing random about that.
+
+560
+00:32:37,319 --> 00:32:40,000
+Similarly, you might think
+that randomness was of no use
+
+561
+00:32:40,000 --> 00:32:42,880
+in integrating a
+function, but in fact,
+
+562
+00:32:42,880 --> 00:32:45,000
+the way those numerical
+algorithms work
+
+563
+00:32:45,000 --> 00:32:47,700
+is they use randomness.
+
+564
+00:32:47,700 --> 00:32:51,210
+What you're about to
+see is that randomness,
+
+565
+00:32:51,210 --> 00:32:55,350
+and indeed things related
+to Monte Carlo simulations,
+
+566
+00:32:55,349 --> 00:32:59,189
+can be enormously useful, even
+when you're computing something
+
+567
+00:32:59,190 --> 00:33:04,620
+that is inherently not random
+like the value of pi here.
+
+568
+00:33:04,619 --> 00:33:06,689
+And we won't ask you to
+remember that many digits
+
+569
+00:33:06,690 --> 00:33:08,740
+on the quiz and the exam.
+
+570
+00:33:08,740 --> 00:33:10,615
+All right, so what's pi?
+
+571
+00:33:10,615 --> 00:33:13,859
+Well, people have known about
+pi for thousands and thousands
+
+572
+00:33:13,859 --> 00:33:15,179
+of years.
+
+573
+00:33:15,180 --> 00:33:20,519
+And what people knew was
+that there was some constant,
+
+574
+00:33:20,519 --> 00:33:21,480
+we'll call it pi.
+
+575
+00:33:21,480 --> 00:33:23,460
+It wasn't always called that.
+
+576
+00:33:23,460 --> 00:33:25,410
+Such that it was equal
+to the circumference
+
+577
+00:33:25,410 --> 00:33:28,910
+of a circle divided
+by the diameter,
+
+578
+00:33:28,910 --> 00:33:34,100
+and furthermore, the area
+was going to be pi r squared.
+
+579
+00:33:34,099 --> 00:33:38,449
+People knew that way back to the
+Babylonians and the Egyptians.
+
+580
+00:33:38,450 --> 00:33:43,250
+What they didn't know
+is what that value was.
+
+581
+00:33:43,250 --> 00:33:47,799
+The earliest known estimate
+of pi was by the Egyptians,
+
+582
+00:33:47,799 --> 00:33:51,889
+on something called the
+Rhind Papyrus pictured here.
+
+583
+00:33:51,890 --> 00:33:55,250
+And they estimated pi
+to be 4 times 8 over 9
+
+584
+00:33:55,250 --> 00:33:59,839
+squared, or 3.16.
+
+585
+00:33:59,839 --> 00:34:00,720
+Not so bad.
+
+586
+00:34:00,720 --> 00:34:03,920
+
+
+587
+00:34:03,920 --> 00:34:08,030
+About 1,100 years
+later an estimate of pi
+
+588
+00:34:08,030 --> 00:34:14,466
+appeared in the
+Bible, Kings 7:23.
+
+589
+00:34:14,465 --> 00:34:20,009
+It didn't say pi is
+but it described--
+
+590
+00:34:20,010 --> 00:34:23,639
+I think this was a construction
+of King Solomon's Temple.
+
+591
+00:34:23,639 --> 00:34:25,980
+"He made a molten sea,
+ten cubits from one brim
+
+592
+00:34:25,980 --> 00:34:27,210
+to the other."
+
+593
+00:34:27,210 --> 00:34:28,480
+it was round.
+
+594
+00:34:28,480 --> 00:34:30,119
+It was a circle.
+
+595
+00:34:30,119 --> 00:34:33,119
+"His height was five cubits
+and a line of 30 cubits
+
+596
+00:34:33,119 --> 00:34:35,699
+did compass it round about."
+
+597
+00:34:35,699 --> 00:34:38,219
+Well, if you do the
+arithmetic, what does
+
+598
+00:34:38,219 --> 00:34:41,460
+this imply the
+value of pi to be?
+
+599
+00:34:41,460 --> 00:34:46,300
+3, and I'm sure that's what
+Mike Pence thinks it is.
+
+600
+00:34:46,300 --> 00:34:53,170
+
+
+601
+00:34:53,170 --> 00:34:58,450
+About 300 years
+later, Archimedes
+
+602
+00:34:58,449 --> 00:34:59,980
+did a better job of it.
+
+603
+00:34:59,980 --> 00:35:02,530
+
+
+604
+00:35:02,530 --> 00:35:08,140
+He estimated pi by constructing
+a 96-sided polygon.
+
+605
+00:35:08,139 --> 00:35:09,289
+There's a picture of one.
+
+606
+00:35:09,289 --> 00:35:11,860
+It looks a lot like a circle.
+
+607
+00:35:11,860 --> 00:35:14,380
+On the left is one
+with fewer sides.
+
+608
+00:35:14,380 --> 00:35:17,420
+And what he did is he then--
+
+609
+00:35:17,420 --> 00:35:20,740
+since it was a polygon he
+knew how to compute its area
+
+610
+00:35:20,739 --> 00:35:23,750
+or it's circumference and
+he just counted things up
+
+611
+00:35:23,750 --> 00:35:25,940
+and he said, well,
+pi is somewhere
+
+612
+00:35:25,940 --> 00:35:31,780
+between 223/71 and 22/7.
+
+613
+00:35:31,780 --> 00:35:33,600
+And that turns out
+to actually-- if you
+
+614
+00:35:33,599 --> 00:35:36,411
+take the average of that it
+will be a really good estimate.
+
+615
+00:35:36,411 --> 00:35:39,059
+
+
+616
+00:35:39,059 --> 00:35:44,829
+2000 years after Archimedes,
+the French mathematicians
+
+617
+00:35:44,829 --> 00:35:47,980
+Buffon and Laplace
+proposed finding
+
+618
+00:35:47,980 --> 00:35:51,130
+the value of pi using what we
+would today call a Monte Carlo
+
+619
+00:35:51,130 --> 00:35:53,110
+simulation.
+
+620
+00:35:53,110 --> 00:35:56,769
+They did not have a
+computer to execute this on.
+
+621
+00:35:56,769 --> 00:35:59,849
+So what they proposed--
+
+622
+00:35:59,849 --> 00:36:02,420
+it started with
+this mathematics.
+
+623
+00:36:02,420 --> 00:36:05,180
+They took a circle
+and inscribed it
+
+624
+00:36:05,179 --> 00:36:11,609
+in a square, a square of
+two units of whatever it
+
+625
+00:36:11,610 --> 00:36:12,990
+is per side.
+
+626
+00:36:12,989 --> 00:36:15,089
+And therefore we know that
+the area of the square
+
+627
+00:36:15,090 --> 00:36:19,059
+is 2 times 2 or 4.
+
+628
+00:36:19,059 --> 00:36:24,440
+We know that the area of
+the circle is pi r squared.
+
+629
+00:36:24,440 --> 00:36:26,530
+And since we know that r is 1--
+
+630
+00:36:26,530 --> 00:36:29,140
+because that's the square
+it's inscribed in--
+
+631
+00:36:29,139 --> 00:36:32,059
+we know that the area of
+a circle is exactly pi.
+
+632
+00:36:32,059 --> 00:36:36,440
+
+
+633
+00:36:36,440 --> 00:36:40,849
+What Buffon then proposed was
+dropping a bunch of needles
+
+634
+00:36:40,849 --> 00:36:44,690
+at random-- kind of like when
+Professor Grimson was sorting
+
+635
+00:36:44,690 --> 00:36:46,530
+things--
+
+636
+00:36:46,530 --> 00:36:49,700
+and seeing where they land.
+
+637
+00:36:49,699 --> 00:36:53,419
+Some would land in the
+square but not in the circle.
+
+638
+00:36:53,420 --> 00:36:55,039
+Some would land in the circle.
+
+639
+00:36:55,039 --> 00:36:59,559
+You would ignore any that
+landed outside the square.
+
+640
+00:36:59,559 --> 00:37:03,489
+And then they said, well, since
+they're falling at random,
+
+641
+00:37:03,489 --> 00:37:07,659
+the ratio of the needles in the
+circle to needles in the square
+
+642
+00:37:07,659 --> 00:37:10,869
+should exactly equal
+the area of the square
+
+643
+00:37:10,869 --> 00:37:13,869
+over the area of
+the circle, exactly,
+
+644
+00:37:13,869 --> 00:37:16,909
+if you did an infinite
+number of needles.
+
+645
+00:37:16,909 --> 00:37:19,940
+Does that make sense?
+
+646
+00:37:19,940 --> 00:37:24,139
+Now, given that, you
+can do some algebra
+
+647
+00:37:24,139 --> 00:37:27,589
+and solve for the
+area of the circle
+
+648
+00:37:27,590 --> 00:37:30,890
+and say it has to be the
+area of the square times
+
+649
+00:37:30,889 --> 00:37:33,049
+the number of needles
+in the circle divided
+
+650
+00:37:33,050 --> 00:37:36,630
+by the needles in the square.
+
+651
+00:37:36,630 --> 00:37:38,880
+And since we know that
+the area of the circle
+
+652
+00:37:38,880 --> 00:37:44,809
+is pi that tells
+us that pi is going
+
+653
+00:37:44,809 --> 00:37:48,460
+to equal four times the
+needles in the circle.
+
+654
+00:37:48,460 --> 00:37:51,199
+That's 4 is the area
+of the square divided
+
+655
+00:37:51,199 --> 00:37:54,349
+by the number of
+needles in the square.
+
+656
+00:37:54,349 --> 00:37:55,929
+And so the argument
+was you can just
+
+657
+00:37:55,929 --> 00:37:59,589
+drop a bunch of these
+needles, see where they land,
+
+658
+00:37:59,590 --> 00:38:02,860
+add them up and from that
+you would magically now know
+
+659
+00:38:02,860 --> 00:38:06,440
+the actual value of pi.
+
+660
+00:38:06,440 --> 00:38:10,940
+Well, we tried a simulation
+one year in class but rather
+
+661
+00:38:10,940 --> 00:38:12,920
+than using needles
+we had an archer
+
+662
+00:38:12,920 --> 00:38:17,340
+and we blindfolded him so he
+would shoot arrows at random
+
+663
+00:38:17,340 --> 00:38:21,559
+and we would see
+where they ended up.
+
+664
+00:38:21,559 --> 00:38:25,159
+There's a video of this
+here if you want to see it.
+
+665
+00:38:25,159 --> 00:38:27,949
+I'm going to play only the
+very end of the video which
+
+666
+00:38:27,949 --> 00:38:29,004
+describes the results.
+
+667
+00:38:29,005 --> 00:38:40,590
+
+
+668
+00:38:40,590 --> 00:38:42,839
+Maybe we should just use
+Python to build a Monte Carlo
+
+669
+00:38:42,840 --> 00:38:44,829
+simulation instead.
+
+670
+00:38:44,829 --> 00:38:46,289
+So that's what happened.
+
+671
+00:38:46,289 --> 00:38:48,329
+After it was all
+over, Anna came up
+
+672
+00:38:48,329 --> 00:38:50,340
+and gave me some sound advice.
+
+673
+00:38:50,340 --> 00:38:53,910
+Yeah, I was very proud of that
+particular shot with the apple.
+
+674
+00:38:53,909 --> 00:38:56,369
+I had hoped the student would
+put it on his or her head
+
+675
+00:38:56,369 --> 00:38:59,190
+but no one volunteered.
+
+676
+00:38:59,190 --> 00:39:01,010
+That was not done blindfolded.
+
+677
+00:39:01,010 --> 00:39:05,970
+Any rate, so here
+is the simulation.
+
+678
+00:39:05,969 --> 00:39:07,724
+So first we have
+throwing the needles.
+
+679
+00:39:07,724 --> 00:39:10,839
+
+
+680
+00:39:10,840 --> 00:39:15,160
+For needles in range 1 to
+number of needles plus 1,
+
+681
+00:39:15,159 --> 00:39:20,289
+we're going to choose
+the random x or random y
+
+682
+00:39:20,289 --> 00:39:24,099
+and we're going to see whether
+or not it's in the circle.
+
+683
+00:39:24,099 --> 00:39:26,529
+And there we will use
+the Pythagorean theorem
+
+684
+00:39:26,530 --> 00:39:28,460
+to tell us that, all right?
+
+685
+00:39:28,460 --> 00:39:31,260
+
+
+686
+00:39:31,260 --> 00:39:33,060
+And we'll just do
+this, and then we're
+
+687
+00:39:33,059 --> 00:39:35,369
+going to return
+exactly the formula we
+
+688
+00:39:35,369 --> 00:39:39,079
+saw in the previous slide.
+
+689
+00:39:39,079 --> 00:39:40,389
+Now, comes an interesting part.
+
+690
+00:39:40,389 --> 00:39:43,809
+We need to get an estimate.
+
+691
+00:39:43,809 --> 00:39:45,719
+So we start with the
+number of needles
+
+692
+00:39:45,719 --> 00:39:48,963
+and the number of trials.
+
+693
+00:39:48,963 --> 00:39:51,400
+For t in range number
+of trials, we'll
+
+694
+00:39:51,400 --> 00:39:55,510
+get a guess by throwing
+number of needles.
+
+695
+00:39:55,510 --> 00:40:00,790
+And then we'll append that
+guess to our list of estimates.
+
+696
+00:40:00,789 --> 00:40:03,369
+
+
+697
+00:40:03,369 --> 00:40:10,179
+We'll then compute the
+standard deviation,
+
+698
+00:40:10,179 --> 00:40:11,949
+get the current
+estimate which will
+
+699
+00:40:11,949 --> 00:40:13,629
+be the sum of the
+estimates divided
+
+700
+00:40:13,630 --> 00:40:17,860
+by the len of the estimate,
+just the mean of the estimate.
+
+701
+00:40:17,860 --> 00:40:20,860
+And then we'll
+print it, all right?
+
+702
+00:40:20,860 --> 00:40:24,039
+So given a number of needles
+and a number of trials,
+
+703
+00:40:24,039 --> 00:40:27,190
+we'll estimate pi and we'll
+give you the standard deviation
+
+704
+00:40:27,190 --> 00:40:28,324
+of that estimate.
+
+705
+00:40:28,324 --> 00:40:33,539
+
+
+706
+00:40:33,539 --> 00:40:37,239
+However, to do that within
+a certain precision,
+
+707
+00:40:37,239 --> 00:40:40,669
+I'm going to have
+yet another loop.
+
+708
+00:40:40,670 --> 00:40:43,099
+And I'm showing you
+this because we often
+
+709
+00:40:43,099 --> 00:40:44,880
+structure simulations this way.
+
+710
+00:40:44,880 --> 00:40:48,250
+
+
+711
+00:40:48,250 --> 00:40:51,639
+So what I have
+here is the number
+
+712
+00:40:51,639 --> 00:40:55,629
+of trials, which is not so
+interesting, but the precision.
+
+713
+00:40:55,630 --> 00:40:59,260
+I'm saying, I would like
+to know the value of pi
+
+714
+00:40:59,260 --> 00:41:01,090
+and I would like
+to have good reason
+
+715
+00:41:01,090 --> 00:41:04,240
+to believe that the
+value you give me
+
+716
+00:41:04,239 --> 00:41:08,919
+is within 0.005, in this
+case, of the true value.
+
+717
+00:41:08,920 --> 00:41:12,909
+
+
+718
+00:41:12,909 --> 00:41:14,619
+Or maybe more
+precisely, I would like
+
+719
+00:41:14,619 --> 00:41:19,549
+to know with a confidence of
+95% that the true value is
+
+720
+00:41:19,550 --> 00:41:22,720
+within a certain range.
+
+721
+00:41:22,719 --> 00:41:26,829
+So what this is going to do
+is it's just going to-- and I
+
+722
+00:41:26,829 --> 00:41:32,219
+should probably use 1.96
+instead of 2, but oh, well--
+
+723
+00:41:32,219 --> 00:41:34,859
+it's just going
+to keep increasing
+
+724
+00:41:34,860 --> 00:41:38,490
+the number of needles,
+doubling the number of needles
+
+725
+00:41:38,489 --> 00:41:41,879
+until it's confident
+about the estimate,
+
+726
+00:41:41,880 --> 00:41:44,990
+confident enough, all right?
+
+727
+00:41:44,989 --> 00:41:47,389
+So this is a very common thing.
+
+728
+00:41:47,389 --> 00:41:50,629
+We don't know how many needles
+we should need so let's
+
+729
+00:41:50,630 --> 00:41:52,700
+just start with
+some small number
+
+730
+00:41:52,699 --> 00:41:57,014
+and we'll keep going
+until we're good.
+
+731
+00:41:57,014 --> 00:41:58,639
+All right, what
+happens when we run it?
+
+732
+00:41:58,639 --> 00:42:01,440
+
+
+733
+00:42:01,440 --> 00:42:03,139
+Well, we start
+with some estimates
+
+734
+00:42:03,139 --> 00:42:12,769
+that when we had 1,000 needles
+it told us that pi was 3.148
+
+735
+00:42:12,769 --> 00:42:16,590
+and standard deviation
+was 0.047 et cetera.
+
+736
+00:42:16,590 --> 00:42:19,590
+So a couple of things to notice.
+
+737
+00:42:19,590 --> 00:42:26,120
+One, are my estimates of pi
+getting monotonically better?
+
+738
+00:42:26,119 --> 00:42:29,029
+You'd like to think,
+as I add more needles,
+
+739
+00:42:29,030 --> 00:42:31,164
+my estimates are
+getting more accurate.
+
+740
+00:42:31,164 --> 00:42:33,890
+
+
+741
+00:42:33,889 --> 00:42:35,779
+So that's question one.
+
+742
+00:42:35,780 --> 00:42:40,019
+Are they getting more accurate?
+
+743
+00:42:40,019 --> 00:42:42,219
+Not monotonically, right?
+
+744
+00:42:42,219 --> 00:42:44,929
+
+
+745
+00:42:44,929 --> 00:42:48,039
+If we look at it, where
+are they getting worse?
+
+746
+00:42:48,039 --> 00:42:48,789
+Well, let's see.
+
+747
+00:42:48,789 --> 00:42:53,699
+
+
+748
+00:42:53,699 --> 00:43:00,759
+All right, 3.148, well, 3.13
+is already worse, right?
+
+749
+00:43:00,760 --> 00:43:02,860
+So I double the
+number of needles
+
+750
+00:43:02,860 --> 00:43:06,340
+and I get a worse estimate.
+
+751
+00:43:06,340 --> 00:43:10,340
+Now, the trend is good.
+
+752
+00:43:10,340 --> 00:43:15,680
+By the time I get here, I've
+got a pretty good estimate.
+
+753
+00:43:15,679 --> 00:43:23,250
+So overall as I look at
+larger samples, a bigger
+
+754
+00:43:23,250 --> 00:43:26,010
+subset of the
+population, my estimates
+
+755
+00:43:26,010 --> 00:43:29,360
+are trending towards
+better but not every time.
+
+756
+00:43:29,360 --> 00:43:32,700
+
+
+757
+00:43:32,699 --> 00:43:38,939
+On the other hand, let's look
+at the standard deviations.
+
+758
+00:43:38,940 --> 00:43:42,510
+What we see here is that
+the standard deviations
+
+759
+00:43:42,510 --> 00:43:45,880
+are, indeed, getting
+monotonically better.
+
+760
+00:43:45,880 --> 00:43:50,119
+
+
+761
+00:43:50,119 --> 00:43:52,619
+Now, there's nothing
+mathematical guaranteeing that,
+
+762
+00:43:52,619 --> 00:43:53,119
+right?
+
+763
+00:43:53,119 --> 00:43:55,489
+Because there is
+randomness here.
+
+764
+00:43:55,489 --> 00:43:59,149
+But I'm increasing the
+number of needles by so much
+
+765
+00:43:59,150 --> 00:44:02,539
+that it kind of overrides
+the bad luck of maybe getting
+
+766
+00:44:02,539 --> 00:44:04,730
+a bad random set.
+
+767
+00:44:04,730 --> 00:44:08,570
+And we see those
+are getting better.
+
+768
+00:44:08,570 --> 00:44:10,570
+So the important
+thing to see here
+
+769
+00:44:10,570 --> 00:44:15,420
+is not that I happened
+to get a better estimate,
+
+770
+00:44:15,420 --> 00:44:19,271
+but that I know more
+about the estimate.
+
+771
+00:44:19,271 --> 00:44:22,529
+I can have more
+confidence in the estimate
+
+772
+00:44:22,530 --> 00:44:26,342
+because it's closing in on it.
+
+773
+00:44:26,342 --> 00:44:29,650
+
+
+774
+00:44:29,650 --> 00:44:32,849
+So the moral here is it's
+not sufficient to produce
+
+775
+00:44:32,849 --> 00:44:33,630
+a good answer.
+
+776
+00:44:33,630 --> 00:44:35,849
+I've said this before.
+
+777
+00:44:35,849 --> 00:44:38,069
+We need to have reason
+to believe that it
+
+778
+00:44:38,070 --> 00:44:39,988
+is close to the right answer.
+
+779
+00:44:39,987 --> 00:44:43,199
+
+
+780
+00:44:43,199 --> 00:44:46,849
+So in this case, I'm using
+the standard deviation
+
+781
+00:44:46,849 --> 00:44:51,130
+and say, given that it's
+gotten quite small--
+
+782
+00:44:51,130 --> 00:44:58,800
+you know, 1.96 times 0.002
+is indeed a small number.
+
+783
+00:44:58,800 --> 00:45:00,810
+I could make it
+smaller if I wanted.
+
+784
+00:45:00,809 --> 00:45:04,615
+
+
+785
+00:45:04,615 --> 00:45:05,989
+I have good reason
+to believe I'm
+
+786
+00:45:05,989 --> 00:45:09,209
+close to the right value of pi.
+
+787
+00:45:09,210 --> 00:45:12,300
+Everyone agree with that?
+
+788
+00:45:12,300 --> 00:45:13,019
+Is that right?
+
+789
+00:45:13,019 --> 00:45:15,769
+
+
+790
+00:45:15,769 --> 00:45:19,179
+Not quite, actually.
+
+791
+00:45:19,179 --> 00:45:20,619
+It would be nice
+if it were true.
+
+792
+00:45:20,619 --> 00:45:23,529
+But it isn't.
+
+793
+00:45:23,530 --> 00:45:26,000
+So let's look at some things.
+
+794
+00:45:26,000 --> 00:45:29,239
+Is it correct to state
+that 95% of the time we
+
+795
+00:45:29,239 --> 00:45:32,269
+run this simulation you'll
+get an estimate of pi
+
+796
+00:45:32,269 --> 00:45:35,070
+between these two values?
+
+797
+00:45:35,070 --> 00:45:37,559
+I don't expect you to do
+the arithmetic in your head
+
+798
+00:45:37,559 --> 00:45:40,570
+but the answer is yes.
+
+799
+00:45:40,570 --> 00:45:42,960
+So that is something
+we believe is
+
+800
+00:45:42,960 --> 00:45:46,789
+true by the math we've been
+looking at for the last two
+
+801
+00:45:46,789 --> 00:45:47,289
+lectures.
+
+802
+00:45:47,289 --> 00:45:50,880
+
+
+803
+00:45:50,880 --> 00:45:54,570
+Next statement, with
+a probability of 0.95,
+
+804
+00:45:54,570 --> 00:45:58,940
+the actual value of pi is
+between these two things.
+
+805
+00:45:58,940 --> 00:45:59,690
+Is that true?
+
+806
+00:45:59,690 --> 00:46:07,490
+
+
+807
+00:46:07,489 --> 00:46:11,250
+In fact, if I were to say,
+with a probability of 1,
+
+808
+00:46:11,250 --> 00:46:14,019
+the actual value is pi is
+between those two values,
+
+809
+00:46:14,019 --> 00:46:15,940
+would it be true?
+
+810
+00:46:15,940 --> 00:46:17,369
+Yes.
+
+811
+00:46:17,369 --> 00:46:20,159
+So they are both true facts.
+
+812
+00:46:20,159 --> 00:46:22,859
+
+
+813
+00:46:22,860 --> 00:46:27,210
+However, only the
+first of these can be
+
+814
+00:46:27,210 --> 00:46:28,690
+inferred from our simulation.
+
+815
+00:46:28,690 --> 00:46:31,550
+
+
+816
+00:46:31,550 --> 00:46:33,350
+While the second
+fact is true, we
+
+817
+00:46:33,349 --> 00:46:36,980
+can't infer it from
+the simulation.
+
+818
+00:46:36,980 --> 00:46:44,110
+And to show you that,
+statistically valid is not
+
+819
+00:46:44,110 --> 00:46:49,099
+the same as true,
+we'll look at this.
+
+820
+00:46:49,099 --> 00:46:53,429
+I've introduced a
+bug in my simulation.
+
+821
+00:46:53,429 --> 00:47:00,724
+I've replaced the 4 that
+we saw we needed by 2, now,
+
+822
+00:47:00,724 --> 00:47:03,869
+an easy kind of mistake to make.
+
+823
+00:47:03,869 --> 00:47:06,011
+And now, if we go to the code--
+
+824
+00:47:06,012 --> 00:47:15,180
+
+
+825
+00:47:15,179 --> 00:47:17,839
+well, what do you think will
+happen if we go to the code
+
+826
+00:47:17,840 --> 00:47:21,620
+and run it?
+
+827
+00:47:21,619 --> 00:47:22,369
+We'll try it.
+
+828
+00:47:22,369 --> 00:47:27,309
+
+
+829
+00:47:27,309 --> 00:47:28,817
+We'll go down here to the code.
+
+830
+00:47:28,817 --> 00:47:33,690
+
+
+831
+00:47:33,690 --> 00:47:35,327
+We'll make that a 2.
+
+832
+00:47:35,327 --> 00:47:49,980
+
+
+833
+00:47:49,980 --> 00:47:55,079
+And what you'll see as it
+runs is that once again we're
+
+834
+00:47:55,079 --> 00:48:02,789
+getting very nice confidence
+intervals, but totally
+
+835
+00:48:02,789 --> 00:48:04,170
+bogus values of pi.
+
+836
+00:48:04,170 --> 00:48:08,190
+
+
+837
+00:48:08,190 --> 00:48:11,789
+So the statistics
+can tell us something
+
+838
+00:48:11,789 --> 00:48:15,719
+about how reproducible
+our simulation is
+
+839
+00:48:15,719 --> 00:48:18,569
+but not whether the
+simulation is an actually,
+
+840
+00:48:18,570 --> 00:48:21,347
+accurate model of reality.
+
+841
+00:48:21,347 --> 00:48:22,430
+So what do you need to do?
+
+842
+00:48:22,429 --> 00:48:25,609
+You need to do something
+like a sanity check.
+
+843
+00:48:25,610 --> 00:48:28,730
+So here you might
+look at a polygon
+
+844
+00:48:28,730 --> 00:48:32,300
+and say, well, clearly that's
+a totally wrong number.
+
+845
+00:48:32,300 --> 00:48:33,877
+Something is wrong with my code.
+
+846
+00:48:33,876 --> 00:48:44,320
+
+
+847
+00:48:44,320 --> 00:48:49,620
+OK, so just to wrap-up.
+
+848
+00:48:49,619 --> 00:48:53,609
+What we've shown is
+a way to find pi.
+
+849
+00:48:53,610 --> 00:48:56,730
+This is a generally
+useful technique.
+
+850
+00:48:56,730 --> 00:49:00,789
+To estimate the area
+of any region r,
+
+851
+00:49:00,789 --> 00:49:02,650
+you pick an enclosing
+region, call
+
+852
+00:49:02,650 --> 00:49:08,639
+it e, such that it's easy
+to estimate the area of e,
+
+853
+00:49:08,639 --> 00:49:10,650
+and r lies within it.
+
+854
+00:49:10,650 --> 00:49:16,590
+Pick some random sets of points
+within e, let f be the fraction
+
+855
+00:49:16,590 --> 00:49:21,980
+and fall within r, multiply
+e by f and you're done.
+
+856
+00:49:21,980 --> 00:49:26,409
+So this for example, is a very
+common way to do integration.
+
+857
+00:49:26,409 --> 00:49:29,230
+I promised you we'd
+talk about integration.
+
+858
+00:49:29,230 --> 00:49:31,139
+So here's a sine of x.
+
+859
+00:49:31,139 --> 00:49:35,509
+If I want to integrate the
+sine of x over some region,
+
+860
+00:49:35,510 --> 00:49:39,320
+as done here, all
+I need to do is
+
+861
+00:49:39,320 --> 00:49:43,280
+pick a bunch of random points,
+red and black in this case,
+
+862
+00:49:43,280 --> 00:49:47,440
+and look at the ratio
+of one to the other.
+
+863
+00:49:47,440 --> 00:49:51,940
+So showing how we
+can use randomness
+
+864
+00:49:51,940 --> 00:49:55,750
+to again, compute something
+that is not inherently random.
+
+865
+00:49:55,750 --> 00:49:58,090
+This is a trick people
+use over and over
+
+866
+00:49:58,090 --> 00:50:03,340
+and over again when confronted
+with some situation where
+
+867
+00:50:03,340 --> 00:50:07,390
+it's not easy to solve
+for things mathematically.
+
+868
+00:50:07,389 --> 00:50:11,469
+You just do a simulation
+and if you do it right,
+
+869
+00:50:11,469 --> 00:50:13,719
+you get a very good answer.
+
+870
+00:50:13,719 --> 00:50:20,189
+All right, we will move on to
+a different topic on Wednesday.
+
+871
+00:50:20,190 --> 00:50:28,019
+
+

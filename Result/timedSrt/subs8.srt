@@ -1,0 +1,1640 @@
+1
+00:00:02,022 --> 00:00:03,322
+getting started 
+
+2
+00:00:03,322 --> 00:00:05,063
+why hadoop 
+
+3
+00:00:05,063 --> 00:00:07,254
+we have all heard that hadoop and
+
+4
+00:00:07,254 --> 00:00:12,150
+related projects in this ecosystem are great for big data 
+
+5
+00:00:12,150 --> 00:00:18,332
+this module will answer the four ws and an h about why this statement is true 
+
+6
+00:00:30,473 --> 00:00:33,788
+before we dive further into the details of hadoop 
+
+7
+00:00:33,788 --> 00:00:38,890
+let take a moment to analyze the characteristics of the hadoop ecosystem 
+
+8
+00:00:40,560 --> 00:00:42,680
+what is in the ecosystem 
+
+9
+00:00:42,680 --> 00:00:43,890
+why is it beneficial 
+
+10
+00:00:45,150 --> 00:00:46,040
+where is it used 
+
+11
+00:00:47,420 --> 00:00:48,130
+who uses it 
+
+12
+00:00:49,910 --> 00:00:51,740
+and how do these tools work 
+
+13
+00:00:54,830 --> 00:00:59,642
+the hadoop ecosystem frameworks and applications that we will describe in this
+
+14
+00:00:59,642 --> 00:01:03,670
+module have several overarching themes and goals 
+
+15
+00:01:03,670 --> 00:01:08,930
+first they provide scalability to store large volumes of data
+
+16
+00:01:08,930 --> 00:01:10,180
+on commodity hardware 
+
+17
+00:01:12,160 --> 00:01:16,820
+as the number of systems increases so does the chance for crashes and
+
+18
+00:01:16,820 --> 00:01:18,510
+hardware failures 
+
+19
+00:01:18,510 --> 00:01:23,570
+a second goal supported by most frameworks in the hadoop ecosystem 
+
+20
+00:01:23,570 --> 00:01:26,590
+is the ability to gracefully recover from these problems 
+
+21
+00:01:28,730 --> 00:01:34,070
+in addition as we have mentioned before big data comes in
+
+22
+00:01:34,070 --> 00:01:40,560
+a variety of flavors such as text files graph of social networks 
+
+23
+00:01:40,560 --> 00:01:46,681
+streaming sensor data and raster images 
+
+24
+00:01:46,681 --> 00:01:50,250
+a third goal for the hadoop ecosystem then 
+
+25
+00:01:50,250 --> 00:01:55,920
+is the ability to handle these different data types for any given type of data 
+
+26
+00:01:57,040 --> 00:02:00,590
+you can find several projects in the ecosystem that support it 
+
+27
+00:02:02,350 --> 00:02:05,890
+a fourth goal of the hadoop ecosystem
+
+28
+00:02:05,890 --> 00:02:08,998
+is the ability to facilitate a shared environment 
+
+29
+00:02:08,998 --> 00:02:15,030
+since even modest - sized clusters can have many cores 
+
+30
+00:02:15,030 --> 00:02:18,640
+it is important to allow multiple jobs to execute simultaneously 
+
+31
+00:02:20,070 --> 00:02:23,450
+why buy servers only to let them sit idle 
+
+32
+00:02:25,670 --> 00:02:30,750
+another goal of the hadoop ecosystem is providing value for your enterprise 
+
+33
+00:02:32,910 --> 00:02:37,630
+the ecosystem includes a wide range of open source projects
+
+34
+00:02:37,630 --> 00:02:40,270
+backed by a large active community 
+
+35
+00:02:41,640 --> 00:02:46,500
+these projects are free to use and easy to find support for 
+
+36
+00:02:48,640 --> 00:02:50,750
+in the following lectures in this module 
+
+37
+00:02:50,750 --> 00:02:55,260
+we will take a more detailed look at the hadoop ecosystem 
+
+38
+00:02:55,260 --> 00:02:59,590
+first we will explore the kinds of projects available and
+
+39
+00:02:59,590 --> 00:03:01,760
+the types of capabilities they provide 
+
+40
+00:03:03,100 --> 00:03:09,300
+next we will take a deeper look at the three main parts of hadoop 
+
+41
+00:03:09,300 --> 00:03:12,130
+the hadoop distributed file system or hdfs 
+
+42
+00:03:13,490 --> 00:03:15,910
+yarn the scheduler and resource manager 
+
+43
+00:03:17,170 --> 00:03:21,400
+and mapreduce a programming model for processing big data 
+
+44
+00:03:23,210 --> 00:03:28,060
+we will then discuss cloud computing and the types of service models it provides 
+
+45
+00:03:29,980 --> 00:03:34,865
+we will also describe situations in which hadoop is not the best solution 
+
+46
+00:03:36,935 --> 00:03:40,945
+this module then concludes with two readings involving hands - on
+
+47
+00:03:40,945 --> 00:03:44,245
+experience with hdfs and mapreduce 
+
+48
+00:03:44,245 --> 00:03:45,325
+so let get started 
+
+1
+00:03:46,873 --> 00:03:50,670
+mapreduce simple programming for big results 
+
+2
+00:04:06,723 --> 00:04:11,650
+mapreduce is a programming model for the hadoop ecosystem 
+
+3
+00:04:11,650 --> 00:04:14,020
+it relies on yarn to schedule and
+
+4
+00:04:14,020 --> 00:04:18,430
+execute parallel processing over the distributed file blocks in hdfs 
+
+5
+00:04:19,600 --> 00:04:24,292
+there are several tools that use the mapreduce model to provide a higher level
+
+6
+00:04:24,292 --> 00:04:26,829
+interface to other programming models 
+
+7
+00:04:26,829 --> 00:04:31,747
+hive has a sql - like interface that adds capabilities that help with
+
+8
+00:04:31,747 --> 00:04:34,220
+relational data modeling 
+
+9
+00:04:34,220 --> 00:04:37,460
+and pig is a high level data flow language
+
+10
+00:04:37,460 --> 00:04:40,470
+that adds capabilities that help with process map modeling 
+
+11
+00:04:42,070 --> 00:04:47,200
+traditional parallel programming requires expertise on a number of computing and
+
+12
+00:04:47,200 --> 00:04:49,160
+systems concepts 
+
+13
+00:04:49,160 --> 00:04:54,170
+for example synchronization mechanisms like locks semaphores 
+
+14
+00:04:54,170 --> 00:04:56,460
+and monitors are essential 
+
+15
+00:04:56,460 --> 00:05:00,450
+and incorrectly using them can either crash your program or
+
+16
+00:05:00,450 --> 00:05:02,460
+severely impact performance 
+
+17
+00:05:04,080 --> 00:05:06,600
+this high learning curve makes it difficult 
+
+18
+00:05:07,930 --> 00:05:12,465
+it is also error prone since your code can run on hundreds or
+
+19
+00:05:12,465 --> 00:05:15,813
+thousands of nodes each having many cores 
+
+20
+00:05:15,813 --> 00:05:18,685
+and any problem related to these parallel processes 
+
+21
+00:05:18,685 --> 00:05:21,130
+needs to be handled by your parallel program 
+
+22
+00:05:22,510 --> 00:05:28,200
+the mapreduce programming model greatly simplifies running code in parallel
+
+23
+00:05:28,200 --> 00:05:31,250
+since you do not have to deal with any of these issues 
+
+24
+00:05:31,250 --> 00:05:37,450
+instead you only need to create and map and reduce tasks and you do not 
+
+25
+00:05:37,450 --> 00:05:41,670
+have to worry about multiple threads synchronization or concurrency issues 
+
+26
+00:05:43,900 --> 00:05:46,110
+so what is a map and reduce 
+
+27
+00:05:47,760 --> 00:05:52,522
+map and reduce are two concepts based on functional programming
+
+28
+00:05:52,522 --> 00:05:57,160
+where the output the function is based solely on the input 
+
+29
+00:05:59,010 --> 00:06:05,060
+just like in a mathematical function f x = y y depends on x 
+
+30
+00:06:06,480 --> 00:06:10,360
+you provide a function or operation for a map and reduce 
+
+31
+00:06:11,890 --> 00:06:15,570
+and the runtime executes it over the data 
+
+32
+00:06:15,570 --> 00:06:20,890
+for map the operation is applied on each data element 
+
+33
+00:06:20,890 --> 00:06:25,110
+and in reduce the operation summarizes elements in some manner 
+
+34
+00:06:26,510 --> 00:06:32,180
+an example using map and reduce will make this concepts more clear 
+
+35
+00:06:34,230 --> 00:06:37,180
+hello word is a traditional first program you code
+
+36
+00:06:37,180 --> 00:06:39,310
+when you start to learning programming languages 
+
+37
+00:06:40,730 --> 00:06:46,661
+the first program to learn or hello word of map reduce is often wordcount 
+
+38
+00:06:48,735 --> 00:06:53,128
+wordcount reads one or more text files and
+
+39
+00:06:53,128 --> 00:06:59,313
+counts the number of occurrences of each word in these files 
+
+40
+00:06:59,313 --> 00:07:02,654
+the output will be a text file with a list of words and
+
+41
+00:07:02,654 --> 00:07:05,940
+their occurrence frequencies in the input data 
+
+42
+00:07:07,320 --> 00:07:10,560
+let examine each step of wordcount 
+
+43
+00:07:11,820 --> 00:07:16,790
+for simplification we are assuming we have one big file as an input 
+
+44
+00:07:18,200 --> 00:07:24,040
+before wordcount runs the input file is stored in hdfs 
+
+45
+00:07:24,040 --> 00:07:25,880
+as you know now 
+
+46
+00:07:25,880 --> 00:07:30,200
+hdfs partitions the blocks across multiple nodes in the cluster 
+
+47
+00:07:31,470 --> 00:07:38,503
+in this case four partitions labeled a b c and d 
+
+48
+00:07:38,503 --> 00:07:43,550
+the first step in mapreduce is to run a map operation on each node 
+
+49
+00:07:45,100 --> 00:07:50,190
+as the input partitions are read from htfs map is called for
+
+50
+00:07:50,190 --> 00:07:51,760
+each line in the input 
+
+51
+00:07:53,020 --> 00:07:57,330
+let look at the first lines of the input partitions a and
+
+52
+00:07:57,330 --> 00:07:59,810
+b and start counting the words 
+
+53
+00:08:00,920 --> 00:08:06,162
+the first line in the partition on node a 
+
+54
+00:08:06,162 --> 00:08:11,133
+says my apple is red and my rose is blue 
+
+55
+00:08:11,133 --> 00:08:17,990
+similarly the first line on partition b says you are the apple of my eye 
+
+56
+00:08:19,370 --> 00:08:23,170
+let now see what happens in the first map node for partition a 
+
+57
+00:08:25,138 --> 00:08:27,910
+map creates a key value for
+
+58
+00:08:27,910 --> 00:08:34,510
+each word on the line containing the word as the key and 1 as the value 
+
+59
+00:08:34,510 --> 00:08:40,470
+in this example the word apple is read from the line in partition a 
+
+60
+00:08:41,550 --> 00:08:46,447
+map produces a key value of apple 1 
+
+61
+00:08:46,447 --> 00:08:53,273
+similarly the word my is seen on the first line of a twice 
+
+62
+00:08:53,273 --> 00:08:59,759
+so the key values of my 1 are created 
+
+63
+00:08:59,759 --> 00:09:05,040
+note that map goes to each node containing a data block for
+
+64
+00:09:05,040 --> 00:09:10,050
+the file instead of the data moving to map 
+
+65
+00:09:10,050 --> 00:09:12,410
+this is moving computation to data 
+
+66
+00:09:13,790 --> 00:09:18,863
+let now see what the same map operation generates for partition b 
+
+67
+00:09:18,863 --> 00:09:22,221
+since each word only happens to occur once 
+
+68
+00:09:22,221 --> 00:09:27,770
+a list of all the words with one key - value pairing each gets generated 
+
+69
+00:09:28,950 --> 00:09:33,170
+please take a moment to observe the outputs of map and
+
+70
+00:09:33,170 --> 00:09:37,480
+each key - value pair associated to a word 
+
+71
+00:09:47,003 --> 00:09:54,570
+next all the key - values that were output from map are sorted based on their key 
+
+72
+00:09:54,570 --> 00:10:01,810
+and the key values with the same word are moved or shuffled to the same node 
+
+73
+00:10:02,980 --> 00:10:08,850
+to simplify this figure each node only has a single word in orange boxes 
+
+74
+00:10:09,970 --> 00:10:14,010
+but in general a node will have many different words 
+
+75
+00:10:14,010 --> 00:10:17,890
+just like our example from the two lines in a and b partitions 
+
+76
+00:10:18,960 --> 00:10:24,480
+here we see that you and apple are assigned to the first node 
+
+77
+00:10:24,480 --> 00:10:28,543
+the word is to the second node 
+
+78
+00:10:28,543 --> 00:10:32,710
+and the words rose and red to the third 
+
+79
+00:10:33,900 --> 00:10:39,960
+although for simplicity we drew four map nodes and three shuffle nodes 
+
+80
+00:10:39,960 --> 00:10:43,760
+the number of nodes can be extended as much as the application demands 
+
+81
+00:10:46,903 --> 00:10:52,083
+next the reduce operation executes on these nodes to
+
+82
+00:10:52,083 --> 00:10:57,045
+add values for key - value pairs with the same keys 
+
+83
+00:10:57,045 --> 00:11:01,875
+for example apple 1 and
+
+84
+00:11:01,875 --> 00:11:08,959
+another apple 1 becomes apple 2 
+
+85
+00:11:08,959 --> 00:11:13,161
+the result of reduce is a single key pair for
+
+86
+00:11:13,161 --> 00:11:17,263
+each word that was read in the input file 
+
+87
+00:11:17,263 --> 00:11:21,160
+the key is the word and the value is the number of occurrences 
+
+88
+00:11:23,790 --> 00:11:27,650
+if we look back at our wordcount example 
+
+89
+00:11:27,650 --> 00:11:30,640
+we see that there were three distinct steps 
+
+90
+00:11:30,640 --> 00:11:37,818
+namely the map step the shuffle and sort step and the reduce step 
+
+91
+00:11:37,818 --> 00:11:43,840
+although the wordcount example is pretty simple 
+
+92
+00:11:43,840 --> 00:11:48,320
+it represents a large number of applications to which these three steps
+
+93
+00:11:48,320 --> 00:11:52,000
+can be applied in order to achieve data parallel scalability 
+
+94
+00:11:53,540 --> 00:11:59,213
+for example now that you have seen the wordcount application 
+
+95
+00:11:59,213 --> 00:12:04,063
+consider changing the wordcount algorithm to index all
+
+96
+00:12:04,063 --> 00:12:07,170
+the urls by words after a web crawl 
+
+97
+00:12:08,320 --> 00:12:14,225
+this means instead of pointing to a number the keys would refer to urls 
+
+98
+00:12:16,100 --> 00:12:21,350
+after the map with this new function which by the way is called a user
+
+99
+00:12:21,350 --> 00:12:26,760
+defined function the output of shuffle and sort would look like this 
+
+100
+00:12:31,333 --> 00:12:38,450
+now when we reduce the urls all the urls that mention apple would look like this 
+
+101
+00:12:40,943 --> 00:12:46,010
+this is in fact one of the ways a search engine like google works 
+
+102
+00:12:47,900 --> 00:12:53,150
+so now if somebody came to the interface built for this application 
+
+103
+00:12:53,150 --> 00:12:57,078
+to search for the word apple and entered apple 
+
+104
+00:12:57,078 --> 00:13:02,490
+it would be easy to get all the urls as the word itself 
+
+105
+00:13:03,840 --> 00:13:07,943
+no wonder the first mapreduce paper was produced by google 
+
+106
+00:13:07,943 --> 00:13:12,760
+we will give you a link to the original google paper on mapreduce from
+
+107
+00:13:12,760 --> 00:13:15,390
+2004 at the end of this lecture 
+
+108
+00:13:17,030 --> 00:13:19,080
+it is pretty technical but
+
+109
+00:13:19,080 --> 00:13:23,040
+it gives you a simple overview without the current system implementations 
+
+110
+00:13:24,720 --> 00:13:28,440
+we just saw how mapreduce can be used in search engines
+
+111
+00:13:28,440 --> 00:13:30,800
+in addition to counting the words and documents 
+
+112
+00:13:32,180 --> 00:13:36,900
+although it possible to add many more applications let stop here for
+
+113
+00:13:36,900 --> 00:13:40,150
+a general discussion on how the points of
+
+114
+00:13:40,150 --> 00:13:44,670
+data parallelism can be used in search in this three step pattern 
+
+115
+00:13:46,480 --> 00:13:50,780
+there is definitely parallelization during the map step 
+
+116
+00:13:51,810 --> 00:13:54,953
+this parallelization is over the input 
+
+117
+00:13:54,953 --> 00:13:58,918
+as each partition gets processed one line at a time 
+
+118
+00:13:58,918 --> 00:14:03,440
+to achieve this type of data parallelism we must decide on
+
+119
+00:14:03,440 --> 00:14:08,430
+the data granularity of each parallel competition 
+
+120
+00:14:08,430 --> 00:14:10,540
+in this case it will be a line 
+
+121
+00:14:11,860 --> 00:14:18,410
+we also see parallel grouping of data in the shuffle and sort phase 
+
+122
+00:14:18,410 --> 00:14:22,710
+this time the parallelization is over the intermediate products 
+
+123
+00:14:23,740 --> 00:14:26,570
+that is the individual key - value pairs 
+
+124
+00:14:27,940 --> 00:14:31,400
+and after the grouping of the intermediate products 
+
+125
+00:14:31,400 --> 00:14:36,630
+the reduce step gets parallelized to construct one output file 
+
+126
+00:14:38,090 --> 00:14:41,340
+you have probably noticed that the data gets reduced
+
+127
+00:14:41,340 --> 00:14:43,140
+to a smaller set at each step 
+
+128
+00:14:44,840 --> 00:14:51,208
+this overview gave us an idea of what kinds of tasks that mapreduce is good for 
+
+129
+00:14:51,208 --> 00:14:56,604
+while mapreduce excels at independent batch tasks similar to our applications 
+
+130
+00:14:56,604 --> 00:15:01,700
+there are certain kinds of tasks that you would not want to use mapreduce for 
+
+131
+00:15:02,965 --> 00:15:07,300
+for example if your data is frequently changing 
+
+132
+00:15:07,300 --> 00:15:12,120
+mapreduce is slow since it reads the entire input data set each time 
+
+133
+00:15:13,350 --> 00:15:16,540
+the mapreduce model requires that maps and
+
+134
+00:15:16,540 --> 00:15:20,320
+reduces execute independently of each other 
+
+135
+00:15:20,320 --> 00:15:22,920
+this greatly simplifies your job as a designer 
+
+136
+00:15:22,920 --> 00:15:26,910
+since you do not have to deal with synchronization issues 
+
+137
+00:15:26,910 --> 00:15:31,060
+however it means that computations that do have dependencies 
+
+138
+00:15:31,060 --> 00:15:32,880
+cannot be expressed with mapreduce 
+
+139
+00:15:34,600 --> 00:15:38,760
+finally mapreduce does not return any results
+
+140
+00:15:38,760 --> 00:15:41,490
+until the entire process is finished 
+
+141
+00:15:41,490 --> 00:15:44,060
+it must read the entire input data set 
+
+142
+00:15:45,130 --> 00:15:49,240
+this makes it unsuitable for interactive applications where the results must be
+
+143
+00:15:49,240 --> 00:15:54,200
+presented to the user very quickly expecting a return from the user 
+
+144
+00:15:55,880 --> 00:16:00,830
+as a summary mapreduce hides complexities of parallel programming and
+
+145
+00:16:00,830 --> 00:16:03,450
+greatly simplifies building parallel applications 
+
+146
+00:16:04,530 --> 00:16:06,996
+many types of tasks suitable for
+
+147
+00:16:06,996 --> 00:16:12,130
+mapreduce include search engine page ranking and topic mapping 
+
+148
+00:16:12,130 --> 00:16:15,929
+please see the reading after this lecture on making pasta sauce
+
+149
+00:16:17,382 --> 00:16:23,320
+with mapreduce for another fun application using the mapreduce programming model 
+
+1
+00:16:24,058 --> 00:16:26,042
+programming models for big data 
+
+2
+00:16:45,264 --> 00:16:49,664
+we have seen that scalable computing over the internet to achieve
+
+3
+00:16:49,664 --> 00:16:55,375
+data - parallel scalability for big data applications is now a possibility 
+
+4
+00:16:55,375 --> 00:16:57,625
+thanks to commodity clusters 
+
+5
+00:16:57,625 --> 00:17:01,970
+cost - effective commodity clusters together with advances in distributed
+
+6
+00:17:01,970 --> 00:17:04,670
+file systems to move computation to data 
+
+7
+00:17:04,670 --> 00:17:09,280
+provide a potential to conduct scalable big data analytics 
+
+8
+00:17:09,280 --> 00:17:12,050
+the next thing we will talk about is how to take
+
+9
+00:17:12,050 --> 00:17:14,050
+advantage of these infrastructure advances 
+
+10
+00:17:15,100 --> 00:17:16,560
+what are the right programming models 
+
+11
+00:17:17,680 --> 00:17:23,460
+a programming model is an abstraction or existing machinery or infrastructure 
+
+12
+00:17:23,460 --> 00:17:26,970
+it is a set of abstract runtime libraries and
+
+13
+00:17:26,970 --> 00:17:31,310
+programming languages that form a model of computation 
+
+14
+00:17:31,310 --> 00:17:37,110
+this abstraction level can be low - level as in machine language in computers 
+
+15
+00:17:37,110 --> 00:17:43,030
+or very high as in high - level programming languages for example java 
+
+16
+00:17:43,030 --> 00:17:46,470
+so we can say if the enabling infrastructure for
+
+17
+00:17:46,470 --> 00:17:51,320
+big data analysis is distributed file systems as we mentioned 
+
+18
+00:17:51,320 --> 00:17:56,120
+then the programming model for big data should enable the programmability
+
+19
+00:17:56,120 --> 00:18:00,100
+of the operations within distributed file systems 
+
+20
+00:18:00,100 --> 00:18:04,840
+what we mean by this being able to write computer programs that work
+
+21
+00:18:04,840 --> 00:18:09,410
+efficiently on top of distributed file systems using big data and
+
+22
+00:18:09,410 --> 00:18:13,430
+making it easy to cope with all the potential issues 
+
+23
+00:18:13,430 --> 00:18:15,320
+based on everything we discussed so
+
+24
+00:18:15,320 --> 00:18:20,680
+far let describe the requirements for big data programming models 
+
+25
+00:18:20,680 --> 00:18:25,480
+first of all such a programming model for big data should support
+
+26
+00:18:25,480 --> 00:18:30,280
+common big data operations like splitting large volumes of data 
+
+27
+00:18:31,420 --> 00:18:35,460
+this means for partitioning and placement of data in and
+
+28
+00:18:35,460 --> 00:18:41,220
+out of computer memory along with a model to synchronize the datasets later on 
+
+29
+00:18:41,220 --> 00:18:44,463
+the access to data should be achieved in a fast way 
+
+30
+00:18:44,463 --> 00:18:49,291
+it should allow fast distribution to nodes within a rack and these are potentially 
+
+31
+00:18:49,291 --> 00:18:51,815
+the data nodes we moved the computation to 
+
+32
+00:18:51,815 --> 00:18:57,020
+this means scheduling of many parallel tasks at once 
+
+33
+00:18:57,020 --> 00:19:00,950
+it should also enable reliability of the computing and
+
+34
+00:19:00,950 --> 00:19:03,100
+full tolerance from failures 
+
+35
+00:19:03,100 --> 00:19:06,768
+this means it should enable programmable replications and
+
+36
+00:19:06,768 --> 00:19:08,758
+recovery of files when needed 
+
+37
+00:19:08,758 --> 00:19:13,518
+it should be easily scalable to the distributed notes where the data gets
+
+38
+00:19:13,518 --> 00:19:14,305
+produced 
+
+39
+00:19:14,305 --> 00:19:19,647
+it should also enable adding new resources to take advantage of distributive
+
+40
+00:19:19,647 --> 00:19:24,670
+computers and scale to more or faster data without losing performance 
+
+41
+00:19:24,670 --> 00:19:28,280
+this is called scaling out if needed 
+
+42
+00:19:28,280 --> 00:19:31,220
+since there are a variety of different types of data 
+
+43
+00:19:31,220 --> 00:19:36,140
+such as documents graphs tables key values etc 
+
+44
+00:19:36,140 --> 00:19:40,100
+a programming model should enable operations over a particular set
+
+45
+00:19:40,100 --> 00:19:41,680
+of these types 
+
+46
+00:19:41,680 --> 00:19:46,261
+not every type of data may be supported by a particular model but
+
+47
+00:19:46,261 --> 00:19:50,020
+the models should be optimized for at least one type 
+
+48
+00:19:50,020 --> 00:19:52,540
+is it getting a little complicated 
+
+49
+00:19:52,540 --> 00:19:54,153
+it does not have to have to be 
+
+50
+00:19:54,153 --> 00:19:59,696
+in fact we apply similar models in our daily lives for everyday tasks 
+
+51
+00:19:59,696 --> 00:20:04,520
+let look at the scenario where you might unknowingly apply this model 
+
+52
+00:20:04,520 --> 00:20:08,020
+imagine a peaceful saturday afternoon 
+
+53
+00:20:08,020 --> 00:20:10,840
+you receive a phone call from a friend and she says 
+
+54
+00:20:10,840 --> 00:20:13,050
+she they will be at your house in an hour for dinner 
+
+55
+00:20:14,290 --> 00:20:19,157
+it seems like you completely forgot that you had invited your friends for dinner 
+
+56
+00:20:19,157 --> 00:20:22,309
+so you say you are looking forward to it and head to the kitchen 
+
+57
+00:20:22,309 --> 00:20:28,035
+as a quick solution you decide to cook pasta with some tomato sauce 
+
+58
+00:20:28,035 --> 00:20:30,487
+you need to take advantage of parallelization so
+
+59
+00:20:30,487 --> 00:20:34,315
+that the dinner is ready by the time your guest arrive that within an hour 
+
+60
+00:20:34,315 --> 00:20:38,593
+you call your spouse and your teenage kids to action in the kitchen 
+
+61
+00:20:38,593 --> 00:20:43,464
+now you need to give them directions to start dicing the ingredients for you 
+
+62
+00:20:43,464 --> 00:20:50,010
+but in the heat of the moment you end up mixing the onions tomatoes and peppers 
+
+63
+00:20:50,010 --> 00:20:51,890
+instead of sorting them first 
+
+64
+00:20:51,890 --> 00:20:56,380
+you give everyone a randomly mixed batch of different types of vegetables 
+
+65
+00:20:56,380 --> 00:21:01,360
+they are required to use their computer powers to chop the vegetables 
+
+66
+00:21:01,360 --> 00:21:05,210
+they need to ensure not mix different types of veggies 
+
+67
+00:21:05,210 --> 00:21:10,562
+when everyone is done chopping you want to group the veggies by their types 
+
+68
+00:21:10,562 --> 00:21:15,877
+you ask each helper to collect items of the same type put them in a large
+
+69
+00:21:15,877 --> 00:21:21,016
+bowl and label this large bowl with the sum of individual bowl weights
+
+70
+00:21:21,016 --> 00:21:26,975
+like tomatoes in one bowl peppers in another and the onions in the third bowl 
+
+71
+00:21:26,975 --> 00:21:27,781
+in the end 
+
+72
+00:21:27,781 --> 00:21:33,209
+you have nice large bowls with the total weight of each vegetable labeled on it 
+
+73
+00:21:33,209 --> 00:21:38,378
+your helpers are soon done with their work while you are focused on coordinating their
+
+74
+00:21:38,378 --> 00:21:43,284
+actions and other dinner tasks in the kitchen you can start cooking your pasta 
+
+75
+00:21:43,284 --> 00:21:48,230
+what you have just seen is an excellent example of big data modeling in action 
+
+76
+00:21:48,230 --> 00:21:53,439
+only it is really the data processed by human processors 
+
+77
+00:21:53,439 --> 00:21:57,600
+this scenario can be modeled by a common programming model for big data 
+
+78
+00:21:57,600 --> 00:21:59,609
+namely mapreduce 
+
+79
+00:21:59,609 --> 00:22:03,625
+mapreduce is a big data programming model that supports all
+
+80
+00:22:03,625 --> 00:22:07,249
+the requirements of big data modeling we mentioned 
+
+81
+00:22:07,249 --> 00:22:10,093
+it can model processing large data 
+
+82
+00:22:10,093 --> 00:22:14,406
+split complications into different parallel tasks and
+
+83
+00:22:14,406 --> 00:22:20,562
+make efficient use of large commodity clusters and distributed file systems 
+
+84
+00:22:20,562 --> 00:22:24,542
+in addition it abstracts out the details of parallelzation 
+
+85
+00:22:24,542 --> 00:22:29,050
+full tolerance data distribution monitoring and load balancing 
+
+86
+00:22:30,140 --> 00:22:31,700
+as a programming model 
+
+87
+00:22:31,700 --> 00:22:35,590
+it has been implemented in a few different big data frameworks 
+
+88
+00:22:35,590 --> 00:22:39,123
+next week we will see more details on mapreduce and
+
+89
+00:22:39,123 --> 00:22:41,788
+how its hadoop implementation works 
+
+90
+00:22:41,788 --> 00:22:44,362
+to summarize programming models for
+
+91
+00:22:44,362 --> 00:22:48,267
+big data are abstractions over distributed file systems 
+
+92
+00:22:48,267 --> 00:22:53,022
+the desired programming models for big data should handle large volumes and
+
+93
+00:22:53,022 --> 00:22:54,289
+varieties of data 
+
+94
+00:22:54,289 --> 00:22:58,492
+support full tolerance and provide scale out functionality 
+
+95
+00:22:58,492 --> 00:23:00,535
+mapreduce is one of these models 
+
+96
+00:23:00,535 --> 00:23:04,063
+implemented in a variety of frameworks including hadoop 
+
+97
+00:23:04,063 --> 00:23:08,360
+we will summarize the inner workings of the hadoop implementation next week 
+
+1
+00:23:08,230 --> 00:23:11,230
+in this lecture we will use hadoop to run wordcount 
+
+2
+00:23:11,230 --> 00:23:13,487
+first we will open a terminal shell and
+
+3
+00:23:13,487 --> 00:23:16,680
+explore the hadoop - provided mapreduce programs 
+
+4
+00:23:16,680 --> 00:23:20,657
+next we will verify the input file exists in hdfs 
+
+5
+00:23:20,657 --> 00:23:25,130
+we will then run wordcount and explore the wordcount output directory 
+
+6
+00:23:25,130 --> 00:23:27,560
+after that we will copy the wordcount results
+
+7
+00:23:27,560 --> 00:23:30,556
+from hdfs to the local file system and view them 
+
+8
+00:23:30,556 --> 00:23:32,493
+let begin 
+
+9
+00:23:32,493 --> 00:23:35,930
+first we will open a terminal shell by
+
+10
+00:23:35,930 --> 00:23:38,320
+clicking on the icon at top of the window here 
+
+11
+00:23:41,430 --> 00:23:44,811
+next we will look at the map produced programs that come with hadoop 
+
+12
+00:23:44,811 --> 00:23:50,961
+we can do this by running hadoop jars user jars hadoop examples jar 
+
+13
+00:23:54,666 --> 00:23:59,616
+this command says we are going to use the jar command to run a program
+
+14
+00:23:59,616 --> 00:24:02,030
+in hadoop from a jar file 
+
+15
+00:24:02,030 --> 00:24:07,730
+and the jar file that we are running from is in usr jars hadoop - examples jar 
+
+16
+00:24:07,730 --> 00:24:11,510
+many programs written in java are distributed via jar files 
+
+17
+00:24:11,510 --> 00:24:18,520
+if we run this command we will see a list of different programs that come with hadoop 
+
+18
+00:24:18,520 --> 00:24:21,090
+so for example wordcount 
+
+19
+00:24:21,090 --> 00:24:22,780
+count the words in a text file 
+
+20
+00:24:23,990 --> 00:24:27,350
+wordmean count the average length of words 
+
+21
+00:24:27,350 --> 00:24:33,220
+and other programs such as sorting and calculating the length of pi 
+
+22
+00:24:35,748 --> 00:24:39,558
+in the previous lecture we downloaded the works of shakespeare and
+
+23
+00:24:39,558 --> 00:24:40,721
+saved it into hdfs 
+
+24
+00:24:40,721 --> 00:24:45,822
+let make sure that file is still there by running hadoop fs - ls 
+
+25
+00:24:48,387 --> 00:24:52,734
+we can see that the file is still there and it called words txt 
+
+26
+00:24:54,900 --> 00:24:59,390
+we can run wordcount by running hadoop jar
+
+27
+00:24:59,390 --> 00:25:05,180
+ usr jars hadoop - examples jar wordcount 
+
+28
+00:25:05,180 --> 00:25:07,090
+this command says that we are going to run a jar 
+
+29
+00:25:07,090 --> 00:25:10,690
+and this is the name of the jar containing the program 
+
+30
+00:25:10,690 --> 00:25:13,690
+and the program we are going to run is wordcount 
+
+31
+00:25:13,690 --> 00:25:16,450
+when we run it we see that it prints the command line usage for
+
+32
+00:25:16,450 --> 00:25:18,050
+how to run wordcount 
+
+33
+00:25:18,050 --> 00:25:25,310
+this says that wordcount takes one or more input files and an output name 
+
+34
+00:25:25,310 --> 00:25:29,837
+now both the input and the output are located in hdfs 
+
+35
+00:25:29,837 --> 00:25:35,010
+so we have the input file that we just listed words txt in hdfs 
+
+36
+00:25:35,010 --> 00:25:35,940
+we can run wordcount 
+
+37
+00:25:37,400 --> 00:25:44,148
+so we will run hadoop jar usr jars hadoop - examples jar
+
+38
+00:25:44,148 --> 00:25:47,351
+wordcount words txt out 
+
+39
+00:25:48,390 --> 00:25:53,250
+this is saying we are going to run the wordcount program using words txt
+
+40
+00:25:53,250 --> 00:25:57,170
+as the input and put the output in a directory called out 
+
+41
+00:25:58,470 --> 00:25:59,251
+so we will run it 
+
+42
+00:26:06,381 --> 00:26:09,190
+as wordcount is running your prints progress to the screen 
+
+43
+00:26:11,247 --> 00:26:14,760
+it will print the percentage of map and reduce completed 
+
+44
+00:26:14,760 --> 00:26:18,124
+and when both of these reach 100 then the job is done 
+
+45
+00:26:22,664 --> 00:26:25,440
+now that the job is complete let look at the results 
+
+46
+00:26:27,900 --> 00:26:31,220
+we can run hadoop fs - ls to see the output 
+
+47
+00:26:34,220 --> 00:26:38,930
+this shows that out was created and this is where our results are stored 
+
+48
+00:26:38,930 --> 00:26:42,580
+notice that it a directory with a d here 
+
+49
+00:26:42,580 --> 00:26:47,870
+so hadoop word count created the directory to contain the output 
+
+50
+00:26:47,870 --> 00:26:52,412
+let look inside that directory by running hadoop fs - ls out 
+
+51
+00:26:52,412 --> 00:26:57,580
+ blank audio we can see that there are two files in this directory 
+
+52
+00:26:57,580 --> 00:27:03,280
+the first is success this means that the wordcount job completed successfully 
+
+53
+00:27:03,280 --> 00:27:07,279
+the other file part - r - 00000 is a text file
+
+54
+00:27:07,279 --> 00:27:11,284
+containing the output from the wordcount command
+
+55
+00:27:13,198 --> 00:27:19,260
+now let copy this text file to the local file system from hdfs and then view it 
+
+56
+00:27:19,260 --> 00:27:26,357
+we could copy it by running hadoop fs - copytolocal
+
+57
+00:27:26,357 --> 00:27:31,481
+out part - r - 00000 local 
+
+58
+00:27:33,760 --> 00:27:36,520
+and we will say local txt is the name 
+
+59
+00:27:36,520 --> 00:27:41,340
+you can view the results of this 
+
+60
+00:27:41,340 --> 00:27:43,320
+we are running more local txt 
+
+61
+00:27:46,170 --> 00:27:47,740
+this will view the contents of the file 
+
+62
+00:27:50,700 --> 00:27:52,310
+we can hit spacebar to scroll down 
+
+63
+00:27:55,130 --> 00:27:58,450
+we see the results of wordcount in this file 
+
+64
+00:27:58,450 --> 00:28:03,980
+each line is a particular word and the second column is the count
+
+65
+00:28:03,980 --> 00:28:08,020
+of how many words of this particular word was found in the input file 
+
+66
+00:28:10,820 --> 00:28:12,159
+you can hit q to quit
+
+1
+00:28:13,110 --> 00:28:15,128
+scalable computing over the internet 
+
+2
+00:28:31,074 --> 00:28:35,040
+most computing is done on a single compute node 
+
+3
+00:28:36,900 --> 00:28:41,960
+if the computation needs more than a node or parallel processing 
+
+4
+00:28:41,960 --> 00:28:46,070
+like many scientific computing problems we use parallel computers 
+
+5
+00:28:47,070 --> 00:28:52,420
+simply put a parallel computer is a very large number of
+
+6
+00:28:52,420 --> 00:28:58,041
+single computing nodes with specialized capabilities connected to other network 
+
+7
+00:28:59,130 --> 00:29:06,525
+for example the gordon supercomputer here at the san diego supercomputer center 
+
+8
+00:29:06,525 --> 00:29:15,170
+has 1 024 compute nodes with 16 cores each equalling 16 384 compute cores in total 
+
+9
+00:29:16,230 --> 00:29:19,890
+this type of specialized computer is pretty costly
+
+10
+00:29:19,890 --> 00:29:25,180
+compared to its most recent cousin the commodity cluster 
+
+11
+00:29:25,180 --> 00:29:29,920
+the term commodity cluster is often heard in big data conversations 
+
+12
+00:29:31,280 --> 00:29:33,560
+have you ever wondered what it exactly means 
+
+13
+00:29:34,960 --> 00:29:39,740
+commodity clusters are affordable parallel computers
+
+14
+00:29:39,740 --> 00:29:41,780
+with an average number of computing nodes 
+
+15
+00:29:43,070 --> 00:29:47,650
+they are not as powerful as traditional parallel computers and
+
+16
+00:29:47,650 --> 00:29:50,280
+are often built out of less specialized nodes 
+
+17
+00:29:51,400 --> 00:29:54,660
+in fact the nodes in the commodity cluster
+
+18
+00:29:54,660 --> 00:29:57,640
+are more generic in their computing capabilities 
+
+19
+00:29:58,960 --> 00:30:03,320
+the service - oriented computing community over the internet have pushed for
+
+20
+00:30:03,320 --> 00:30:08,800
+computing to be done on commodity clusters as distributed computations 
+
+21
+00:30:08,800 --> 00:30:14,030
+and in turn reducing the cost of computing over the internet 
+
+22
+00:30:15,680 --> 00:30:21,390
+in commodity clusters the computing nodes are clustered in racks
+
+23
+00:30:23,400 --> 00:30:27,480
+connected to each other via a fast network 
+
+24
+00:30:28,860 --> 00:30:32,150
+there might be many of such racks in extensible amounts 
+
+25
+00:30:33,600 --> 00:30:38,410
+computing in one or more of these clusters across
+
+26
+00:30:38,410 --> 00:30:43,910
+a local area network or the internet is called distributed computing 
+
+27
+00:30:43,910 --> 00:30:48,860
+such architectures enable what we call data - parallelism 
+
+28
+00:30:48,860 --> 00:30:53,416
+in data - parallelism many jobs that share nothing can work on
+
+29
+00:30:53,416 --> 00:30:56,580
+different data sets or parts of a data set 
+
+30
+00:30:57,930 --> 00:31:03,060
+this type of parallelism sometimes gets called as job level parallelism 
+
+31
+00:31:03,060 --> 00:31:07,950
+but in this specialization we will refer to it as data - parallelism
+
+32
+00:31:07,950 --> 00:31:12,020
+in the context of big - data computing 
+
+33
+00:31:12,020 --> 00:31:17,020
+large volumes and varieties of big data can be analyzed using this mode
+
+34
+00:31:17,020 --> 00:31:23,540
+of parallelism achieving scalability performance and cost reduction 
+
+35
+00:31:23,540 --> 00:31:28,070
+as you can imagine there are many points of failure inside systems 
+
+36
+00:31:29,500 --> 00:31:35,200
+a node or an entire rack can fail at any given time 
+
+37
+00:31:35,200 --> 00:31:39,850
+the connectivity of a rack to the network can stop or
+
+38
+00:31:39,850 --> 00:31:43,300
+the connections between individual nodes can break 
+
+39
+00:31:44,820 --> 00:31:49,370
+it is not practical to restart everything every time if failure happens 
+
+40
+00:31:50,500 --> 00:31:56,069
+the ability to recover from such failures is called fault - tolerance 
+
+41
+00:31:56,069 --> 00:32:01,245
+for fault - tolerance of such systems two neat solutions emerged 
+
+42
+00:32:01,245 --> 00:32:06,230
+namely redundant data storage and
+
+43
+00:32:06,230 --> 00:32:09,480
+restart of failed individual parallel jobs 
+
+44
+00:32:10,700 --> 00:32:12,780
+we will explain these two solutions next 
+
+45
+00:32:14,100 --> 00:32:18,970
+as a summary the commodity clusters are a cost effective way
+
+46
+00:32:18,970 --> 00:32:23,360
+of achieving data parallel scalability for big data applications 
+
+47
+00:32:23,360 --> 00:32:28,750
+these type of systems have a higher potential for partial failures 
+
+48
+00:32:28,750 --> 00:32:31,850
+it is this type of distributed computing that pushed for
+
+49
+00:32:31,850 --> 00:32:35,385
+a change towards cost effective reliable and
+
+50
+00:32:35,385 --> 00:32:39,550
+fault - tolerant systems for management and analysis of big data 
+

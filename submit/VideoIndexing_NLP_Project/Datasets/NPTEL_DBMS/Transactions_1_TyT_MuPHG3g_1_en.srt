@@ -1,0 +1,1613 @@
+﻿1
+00:00:16,820 --> 00:00:20,960
+.
+Welcome to module 31 of database management
+
+2
+00:00:20,960 --> 00:00:23,250
+system.
+
+3
+00:00:23,250 --> 00:00:28,820
+This module and the few following it will
+be on transactions.
+
+4
+00:00:28,820 --> 00:00:35,450
+So, we have so far, ah through the modules
+that you have done we have so far looked at
+
+5
+00:00:35,450 --> 00:00:42,660
+the first the schema of a database system,
+which is the plan the layout of how the data
+
+6
+00:00:42,659 --> 00:00:45,009
+will be organized.
+
+7
+00:00:45,009 --> 00:00:52,119
+Then we have looked at if the data is populated,
+then how we can query how we can manipulate
+
+8
+00:00:52,119 --> 00:00:54,049
+the data.
+
+9
+00:00:54,049 --> 00:01:02,169
+We have looked at how the data is actually
+physically stored, and how it can be efficiently
+
+10
+00:01:02,170 --> 00:01:07,570
+accessed through different mechanisms in the
+storage.
+
+11
+00:01:07,569 --> 00:01:11,519
+Now we will focus on the actual execution
+time.
+
+12
+00:01:11,519 --> 00:01:22,519
+We will focus on what goes on when the data
+in a database system is accessed, it is read,
+
+13
+00:01:22,519 --> 00:01:27,239
+locally modified and then written back.
+
+14
+00:01:27,239 --> 00:01:33,449
+In a very simple terms this is the operation
+that keeps on happening in the database systems,
+
+15
+00:01:33,450 --> 00:01:39,100
+which we will identify which we say are transactions.
+
+16
+00:01:39,099 --> 00:01:46,559
+So, this is what we had done in the last week
+talking about index.
+
+17
+00:01:46,560 --> 00:01:55,520
+And we now start with the understanding of
+this concept of transaction, and we explore
+
+18
+00:01:55,519 --> 00:02:00,869
+various issues related to concurrent execution
+of transactions.
+
+19
+00:02:00,870 --> 00:02:05,180
+So, we will explain in more detail what this
+mean.
+
+20
+00:02:05,180 --> 00:02:09,300
+And these are the 3 topics that we will focus
+on in this module.
+
+21
+00:02:09,300 --> 00:02:12,891
+So, let us first take a look at what does
+a transaction mean.
+
+22
+00:02:12,890 --> 00:02:21,899
+We say transaction is a unit of program execution
+that accesses and possibly updates we data
+
+23
+00:02:21,900 --> 00:02:22,900
+items.
+
+24
+00:02:22,900 --> 00:02:28,460
+So, it greets possibly makes some local changes
+and then it writes it back.
+
+25
+00:02:28,460 --> 00:02:32,760
+So, here is an example of a transaction.
+
+26
+00:02:32,759 --> 00:02:40,860
+So, without that detail unnecessary details
+what it looks at there are 2 accounts account
+
+27
+00:02:40,860 --> 00:02:50,750
+A and B, and we want to transfer 50 dollars
+from account A to account B. So, we want to
+
+28
+00:02:50,750 --> 00:02:58,139
+we need to debit account A by 50 dollars,
+and then credit account B by 50 dollars that
+
+29
+00:02:58,139 --> 00:03:01,340
+will achieve the transfer.
+
+30
+00:03:01,340 --> 00:03:07,539
+So, to start this process we first need to
+know what is the current balance of the account
+
+31
+00:03:07,539 --> 00:03:12,849
+A.
+So, that is done by read a the first ah instruction.
+
+32
+00:03:12,849 --> 00:03:20,608
+Then so, A after reading a has come into a
+local buffer into a temporary which exists
+
+33
+00:03:20,609 --> 00:03:28,850
+in memory, if the current balance was 200
+dollar, then that has not changed that remains
+
+34
+00:03:28,849 --> 00:03:36,659
+to be 200 dollar a has become is a local variable
+which is taken the value 200 dollar now.
+
+35
+00:03:36,659 --> 00:03:41,239
+So, we locally change it we debit 50 dollars
+from that.
+
+36
+00:03:41,239 --> 00:03:45,939
+So, a becomes 100 and 50 dollar, and then
+we write it back.
+
+37
+00:03:45,939 --> 00:03:53,150
+So, in the account balance where it was 200
+dollar, it will now become 100 and 50 dollar
+
+38
+00:03:53,150 --> 00:03:57,579
+with this 50 dollars debited.
+
+39
+00:03:57,579 --> 00:04:01,870
+Then we have to do the credit process to the
+account B. So, in the 4th instruction we read
+
+40
+00:04:01,870 --> 00:04:11,900
+B. So, let us say the current balance of account
+B was 300 dollar, then read B will make the
+
+41
+00:04:11,900 --> 00:04:18,680
+temporary variable B as 300 we credit 300;
+that is, we add 50 dollars to that it becomes
+
+42
+00:04:18,680 --> 00:04:25,519
+300 and 50, and then we write B onto the account
+based balance.
+
+43
+00:04:25,519 --> 00:04:29,849
+So, account-based balance will now change
+to 300 and 50 dollar.
+
+44
+00:04:29,850 --> 00:04:36,170
+So, this whole sequence of 6 instructions
+is called a transaction.
+
+45
+00:04:36,170 --> 00:04:42,640
+And as you can understand that to achieve
+our target of transferring 50 dollars from
+
+46
+00:04:42,639 --> 00:04:50,250
+account A to account B, all these 6 instructions
+have to execute in this order so that we can
+
+47
+00:04:50,250 --> 00:04:53,439
+get the desired results.
+
+48
+00:04:53,439 --> 00:04:59,319
+Now the question is; so, this this is pretty
+simple, this is like a very simple low-level
+
+49
+00:04:59,319 --> 00:05:00,849
+program.
+
+50
+00:05:00,850 --> 00:05:04,400
+But there are 2 main issues that we have to
+deal with.
+
+51
+00:05:04,399 --> 00:05:09,509
+First, what is the guarantee that once the
+instruction one starts?
+
+52
+00:05:09,509 --> 00:05:13,959
+What is the guarantee that it will continue
+up to instruction 6?
+
+53
+00:05:13,959 --> 00:05:19,560
+There may be some failures in between the
+disk may fail the hardware may fail the system
+
+54
+00:05:19,560 --> 00:05:20,819
+may crash.
+
+55
+00:05:20,819 --> 00:05:25,279
+So, what will happen to the state of the database?
+
+56
+00:05:25,279 --> 00:05:27,709
+What will happen to the values that exist
+in the database?
+
+57
+00:05:27,709 --> 00:05:32,719
+What will happen to the target operation that
+we wanted to do achieved through this transaction
+
+58
+00:05:32,720 --> 00:05:34,730
+if such failures happen.
+
+59
+00:05:34,730 --> 00:05:42,160
+A second issue is, we need multiple transactions
+to execute concurrently.
+
+60
+00:05:42,160 --> 00:05:49,670
+What it means that, suppose I am working on
+a net banking updating my account I am making
+
+61
+00:05:49,670 --> 00:05:53,020
+transfers to another party whom I need to
+pay.
+
+62
+00:05:53,019 --> 00:06:01,560
+At the same time, several other people are
+also doing operations on their accounts, respective
+
+63
+00:06:01,560 --> 00:06:02,600
+accounts.
+
+64
+00:06:02,600 --> 00:06:07,860
+Lot of other operations might happen from
+the database itself.
+
+65
+00:06:07,860 --> 00:06:12,949
+For example, while I am making a transfer
+at that same time the database may be crediting
+
+66
+00:06:12,949 --> 00:06:16,479
+some quarterly interest to my account.
+
+67
+00:06:16,480 --> 00:06:22,069
+All these transactions, actually execute concurrently.
+
+68
+00:06:22,069 --> 00:06:26,579
+Which means that, they all are independently
+executing.
+
+69
+00:06:26,579 --> 00:06:34,949
+They use the same CPU, but they achieve the
+result at the same time.
+
+70
+00:06:34,949 --> 00:06:43,339
+So, it is not that the transactions are actually
+happening on separate machines, the transactions
+
+71
+00:06:43,339 --> 00:06:46,169
+have to take effect on the same database.
+
+72
+00:06:46,170 --> 00:06:52,590
+So, they have to occur in a concurrent manner,
+that is what we see is a concurrent manner
+
+73
+00:06:52,589 --> 00:06:55,479
+because they occur together.
+
+74
+00:06:55,480 --> 00:07:01,210
+And while this is going on, how do we ensure,
+but there is one CPU.
+
+75
+00:07:01,209 --> 00:07:06,149
+So, the CPU is executing these instructions
+in some order.
+
+76
+00:07:06,149 --> 00:07:13,079
+So, how do we ensure that this in the face
+of such concurrency the transactions will
+
+77
+00:07:13,079 --> 00:07:15,109
+still give me correct result?
+
+78
+00:07:15,110 --> 00:07:20,169
+So, these are the 2 major issues for which
+we are going to study about transactions,
+
+79
+00:07:20,168 --> 00:07:23,569
+and what we in general say the transaction
+management systems .
+
+80
+00:07:23,569 --> 00:07:30,889
+So, we first set the targets we put some required
+properties of a transaction.
+
+81
+00:07:30,889 --> 00:07:34,079
+The first requirement is atomicity.
+
+82
+00:07:34,079 --> 00:07:41,180
+Suppose again just look at the same transaction,
+suppose the system crashes there is a system
+
+83
+00:07:41,180 --> 00:07:46,199
+failure after the first 3 instructions has
+happened and 4th instruction was about to
+
+84
+00:07:46,199 --> 00:07:47,199
+happen.
+
+85
+00:07:47,199 --> 00:07:49,209
+So, what will happen?
+
+86
+00:07:49,209 --> 00:07:56,680
+The already the account A has been debited
+by 50 dollars and account B has not yet been
+
+87
+00:07:56,680 --> 00:07:58,709
+credited with that 50 dollars.
+
+88
+00:07:58,709 --> 00:08:03,829
+So, simply at this point if the transaction
+if the system failure happens, then simply
+
+89
+00:08:03,829 --> 00:08:07,800
+50 dollars will disappear from the system
+it will not exist.
+
+90
+00:08:07,800 --> 00:08:16,480
+So, the basic requirement is that once a transaction
+start it should either completely happen it
+
+91
+00:08:16,480 --> 00:08:23,910
+should either do all the 6 instruction as
+in this case or it should do nothing.
+
+92
+00:08:23,910 --> 00:08:29,439
+So, there is an all or none kind of requirement
+is that that is what we say it is like.
+
+93
+00:08:29,439 --> 00:08:36,120
+So, transactions in a way are indivisible
+or atomic and this is the atomicity requirement.
+
+94
+00:08:36,120 --> 00:08:39,320
+The second requirement is called consistency
+requirement.
+
+95
+00:08:39,320 --> 00:08:46,579
+That is as the transactions are making changes
+to the database at , through these changes
+
+96
+00:08:46,578 --> 00:08:53,089
+the integrity of the database the consistency
+of the values should not get affected.
+
+97
+00:08:53,090 --> 00:08:59,240
+So, if we there are certain specific integrity
+constraints we have talked of primary keys
+
+98
+00:08:59,240 --> 00:09:01,250
+foreign keys and so on.
+
+99
+00:09:01,250 --> 00:09:04,620
+And there could be implicit domain integrity
+constraints.
+
+100
+00:09:04,620 --> 00:09:12,190
+For example, in this accounting case if we
+are making transfers, then while making a
+
+101
+00:09:12,190 --> 00:09:19,279
+transfer from account A to account B the sum
+of the balances in account and account B before
+
+102
+00:09:19,278 --> 00:09:22,960
+the transfer and after the transfer must the
+same.
+
+103
+00:09:22,960 --> 00:09:28,259
+So, money should not disappear, neither should
+get should it get generated.
+
+104
+00:09:28,259 --> 00:09:32,649
+So, what we assume that a transaction when
+it starts to execute.
+
+105
+00:09:32,649 --> 00:09:37,879
+It must start in a consistent database which
+is correct in every respect.
+
+106
+00:09:37,879 --> 00:09:41,740
+During the transaction there may be temporary
+inconsistency.
+
+107
+00:09:41,740 --> 00:09:48,419
+For example, if you look at ah at instruction
+4 or instruction 5 at this time, the account
+
+108
+00:09:48,419 --> 00:09:53,559
+A has already been debited by 50 dollars the
+account B has not been credited by that 50
+
+109
+00:09:53,559 --> 00:09:54,559
+dollar.
+
+110
+00:09:54,559 --> 00:10:00,579
+So, if you add instruction 4 if you try to
+see, what is the sum of the balance in account
+
+111
+00:10:00,580 --> 00:10:04,460
+A and account B you will see that sum is 50
+dollars less.
+
+112
+00:10:04,460 --> 00:10:11,769
+But when the transaction completes, it completes
+the instruction 6, then again, the sum will
+
+113
+00:10:11,769 --> 00:10:15,689
+be same as thus as it were at the beginning.
+
+114
+00:10:15,690 --> 00:10:22,370
+So, at the beginning of an execution, and
+at the end of a successful execution the database
+
+115
+00:10:22,370 --> 00:10:26,120
+must be consistent in between there may be
+transient inconsistency.
+
+116
+00:10:26,120 --> 00:10:29,090
+So, this is called the consistency requirement.
+
+117
+00:10:29,090 --> 00:10:37,840
+The third is again first look at the example
+the same on the left is a transaction T 1
+
+118
+00:10:37,840 --> 00:10:40,570
+which is the transaction we have been talking
+of.
+
+119
+00:10:40,570 --> 00:10:45,080
+And suppose there is another transaction T
+2 which happens concurrently.
+
+120
+00:10:45,080 --> 00:10:49,950
+If it happens concurrently the transaction
+T 2 has let us say 3 instructions read A read
+
+121
+00:10:49,950 --> 00:10:54,528
+B and print A plus B. So, it tries to read
+the balance of account A and B and prints
+
+122
+00:10:54,528 --> 00:10:55,860
+their sum.
+
+123
+00:10:55,860 --> 00:11:02,710
+Obviously, if the transaction T 2 is allowed
+these 3 instructions of transaction T 2 if
+
+124
+00:11:02,710 --> 00:11:05,139
+they are allowed to be executed.
+
+125
+00:11:05,139 --> 00:11:12,100
+Between instruction 3 and instruction 4 of
+transaction T 1, then T 2 will print a sum
+
+126
+00:11:12,100 --> 00:11:18,740
+of A plus B which is 50 dollars less, than
+the sum of A plus B at the beginning.
+
+127
+00:11:18,740 --> 00:11:25,940
+So, it will become it will appear as if there
+is some inconsistency that has happened.
+
+128
+00:11:25,940 --> 00:11:33,750
+So, the isolation requirement says that when
+transactions ah occur concurrently, the net
+
+129
+00:11:33,750 --> 00:11:41,028
+effect of the transactions should be as if
+they happen either first T 1 happened and
+
+130
+00:11:41,028 --> 00:11:42,350
+then T 2 happen.
+
+131
+00:11:42,350 --> 00:11:46,730
+Over first u or T 2 executed and then T 1
+executed.
+
+132
+00:11:46,730 --> 00:11:53,899
+The though even though they can may execute
+in a concurrent or mixed manner, the result
+
+133
+00:11:53,899 --> 00:12:01,480
+of such inconsistent state of the database
+should not be available to the other transactions.
+
+134
+00:12:01,480 --> 00:12:04,170
+So, this is called the isolation requirement.
+
+135
+00:12:04,169 --> 00:12:07,569
+So, that transactions need to be isolated
+appropriately.
+
+136
+00:12:07,570 --> 00:12:14,459
+So, that they can; obviously, if they execute
+serially then the isolation is trivially satisfied,
+
+137
+00:12:14,458 --> 00:12:19,059
+but that will mean that your throughput, your
+performance will be very low.
+
+138
+00:12:19,059 --> 00:12:23,149
+So, we need transactions to happen concurrently,
+but the isolation must be satisfied .
+
+139
+00:12:23,149 --> 00:12:31,919
+The 4th ah is called the durability requirement,
+which says that if a transaction has finally,
+
+140
+00:12:31,919 --> 00:12:33,740
+completed successfully.
+
+141
+00:12:33,740 --> 00:12:38,870
+Then the update the changes that the database
+that has been made by the transaction, that
+
+142
+00:12:38,870 --> 00:12:45,600
+must persist even if there is some software
+or hardware failures in future so once.
+
+143
+00:12:45,600 --> 00:12:53,290
+This transaction of transferring 50 dollar
+from A to B has successfully completed with
+
+144
+00:12:53,289 --> 00:12:58,189
+the 6 instructions having been executed and
+the money have been transferred, that will
+
+145
+00:12:58,190 --> 00:13:06,310
+should persist even if subsequently some error
+some failures in the database will occur.
+
+146
+00:13:06,309 --> 00:13:08,809
+So, it must be the changes must be durable
+.
+
+147
+00:13:08,809 --> 00:13:19,169
+So, these 4 properties are together called
+the acid properties of a transaction system.
+
+148
+00:13:19,169 --> 00:13:25,639
+So, acid means a for atomicity that either
+all operation of the transaction are properly
+
+149
+00:13:25,639 --> 00:13:32,100
+reflected in the database or none of them
+are reflected consistency c for consistency
+
+150
+00:13:32,100 --> 00:13:37,830
+execution of a transaction in isolation preserves
+the consistency in the database.
+
+151
+00:13:37,830 --> 00:13:44,270
+The isolation requirement, that if multiple
+transactions are occurring concurrently, transaction
+
+152
+00:13:44,269 --> 00:13:50,088
+Tir Tjr occurring concurrently that is some
+instruction of Ti happen then some instructions
+
+153
+00:13:50,089 --> 00:13:53,730
+of Tj happen then some instruction of Ti again
+happen and in this manner.
+
+154
+00:13:53,730 --> 00:14:01,610
+Even then, the final result should look like
+as if Ti has happened followed by Tj or Tj
+
+155
+00:14:01,610 --> 00:14:07,789
+has first executed followed by Ti the isolation
+i for isolation and finally, durability once
+
+156
+00:14:07,789 --> 00:14:13,699
+the successfully transactions have completed
+the changes in the database should persist.
+
+157
+00:14:13,700 --> 00:14:20,540
+So, a cid the acid properties are the critical
+properties of the transaction system and must
+
+158
+00:14:20,539 --> 00:14:24,179
+always be satisfied.
+
+159
+00:14:24,179 --> 00:14:30,729
+Next what we look at is as transactions go
+through each and every instruction.
+
+160
+00:14:30,730 --> 00:14:35,610
+The transaction happened to be in one of the
+different states.
+
+161
+00:14:35,610 --> 00:14:42,039
+So, while the transaction as soon as the transaction
+starts and starts executing starting from
+
+162
+00:14:42,039 --> 00:14:45,240
+the initial state it is in an active state.
+
+163
+00:14:45,240 --> 00:14:51,230
+So, consider this same transaction is done
+read it it is in active state it has decremented
+
+164
+00:14:51,230 --> 00:14:53,700
+A by 50 it is in active state and so on.
+
+165
+00:14:53,700 --> 00:15:01,730
+So, as long as it is executing, it is in active
+state, unless it has ok first let us talk
+
+166
+00:15:01,730 --> 00:15:02,730
+about success.
+
+167
+00:15:02,730 --> 00:15:08,930
+So, once it has executed the last treatment,
+last instruction that is instruction 6 here,
+
+168
+00:15:08,929 --> 00:15:11,989
+it is in a state that is called partially
+committed.
+
+169
+00:15:11,990 --> 00:15:17,778
+So, it has been able to successfully complete
+all the instructions.
+
+170
+00:15:17,778 --> 00:15:26,759
+Or it might happen that during being in the
+active state, or being in the partially committed
+
+171
+00:15:26,759 --> 00:15:33,350
+state some errors has happened so that the
+normal execution cannot proceed any further.
+
+172
+00:15:33,350 --> 00:15:37,120
+Then, the transaction comes in to the failed
+state.
+
+173
+00:15:37,120 --> 00:15:43,370
+A transaction which is in the failed state
+will eventually get aborted.
+
+174
+00:15:43,370 --> 00:15:45,620
+Because it is not known when the failure has
+happened.
+
+175
+00:15:45,620 --> 00:15:49,690
+So, naturally at the time of failure there
+could be an inconsistency failure could have
+
+176
+00:15:49,690 --> 00:15:53,910
+happened in the 4th instruction in this transaction.
+
+177
+00:15:53,909 --> 00:15:56,350
+And as you have already noted.
+
+178
+00:15:56,350 --> 00:16:00,930
+That a has already been debited by 50 dollars
+and B has not been credited that 50 dollars
+
+179
+00:16:00,929 --> 00:16:03,239
+so, it is in an inconsistent state.
+
+180
+00:16:03,240 --> 00:16:09,230
+Say failure if the transaction is in a failed
+state like this then we need to rollback,
+
+181
+00:16:09,230 --> 00:16:12,060
+we need to undo the changes that we have done.
+
+182
+00:16:12,059 --> 00:16:17,009
+We need to credit back the 50 dollars that
+was debited from A.
+
+183
+00:16:17,009 --> 00:16:20,230
+So, that we can reach a consistent state.
+
+184
+00:16:20,230 --> 00:16:25,390
+And once we have done that once we have done
+this rollback successfully, the transaction
+
+185
+00:16:25,390 --> 00:16:32,129
+goes to an aborted state that is it it could
+not take place, and after that you have 2
+
+186
+00:16:32,129 --> 00:16:37,470
+choices either you can restart the transaction,
+or you can totally kill the transaction do
+
+187
+00:16:37,470 --> 00:16:41,839
+not do it at all depending on different situation
+that choice is made.
+
+188
+00:16:41,839 --> 00:16:48,529
+In the other case if it is it were partially
+committed, then all instructions had completed,
+
+189
+00:16:48,528 --> 00:16:52,870
+now the bookkeeping and other actions were
+required.
+
+190
+00:16:52,870 --> 00:16:57,490
+If there is some failure during that time
+from partially committed it comes to fail
+
+191
+00:16:57,490 --> 00:17:01,269
+state, and then goes to abroad state as I
+have already explained.
+
+192
+00:17:01,269 --> 00:17:08,078
+Or it actually commits all the changes correctly
+and it has completed successfully and it goes
+
+193
+00:17:08,078 --> 00:17:13,119
+to a committed state where the transaction
+has successfully finished.
+
+194
+00:17:13,119 --> 00:17:18,458
+So, every transaction will go through this
+state at any point of time a transaction will
+
+195
+00:17:18,459 --> 00:17:23,409
+be in one of the states, and depending on
+the status of execution it will continue to
+
+196
+00:17:23,409 --> 00:17:25,929
+remain in that state or will change state.
+
+197
+00:17:25,929 --> 00:17:33,290
+So, this state transition diagram for transactions
+are very important, and you must thoroughly
+
+198
+00:17:33,289 --> 00:17:40,589
+understand what is happening and remember
+this particular state transition ok.
+
+199
+00:17:40,589 --> 00:17:44,589
+Now let us look into the actual concrete execution
+situations.
+
+200
+00:17:44,589 --> 00:17:49,058
+So, in the concurrent execution situation,
+what we have we have multiple transactions
+
+201
+00:17:49,058 --> 00:17:51,778
+that run at the same time on the system.
+
+202
+00:17:51,778 --> 00:17:57,798
+So, that will advantages it will increase
+throughput, it will increase processor and
+
+203
+00:17:57,798 --> 00:18:02,220
+discrete realization for example, when one
+transaction is doing some operations with
+
+204
+00:18:02,220 --> 00:18:07,700
+on the CPU, some internal computations are
+going on the disk can still be accessed by
+
+205
+00:18:07,700 --> 00:18:10,489
+another transaction to read or write some
+values.
+
+206
+00:18:10,489 --> 00:18:15,840
+So, the throughput will increase and also
+the average response time will reduce because
+
+207
+00:18:15,839 --> 00:18:19,128
+there may be a short transaction.
+
+208
+00:18:19,128 --> 00:18:23,308
+Which if it were serially done then it will
+have to wait for a very long transaction,
+
+209
+00:18:23,308 --> 00:18:30,278
+which may already been executed executing
+ah, but if we allow concurrent execution then
+
+210
+00:18:30,278 --> 00:18:35,419
+in between that long transaction few cycles
+may be taken to execute the short transaction
+
+211
+00:18:35,419 --> 00:18:37,619
+and the average response time will improve.
+
+212
+00:18:37,618 --> 00:18:40,279
+So, that is our basic requirement.
+
+213
+00:18:40,279 --> 00:18:46,569
+Naturally we need to do this in a controlled
+manner so that we ensure that the acid property
+
+214
+00:18:46,569 --> 00:18:50,000
+is the consistency of the database and the
+acid properties are maintained.
+
+215
+00:18:50,000 --> 00:18:53,759
+So, for doing this we create what is called
+a schedule.
+
+216
+00:18:53,759 --> 00:18:59,880
+A schedule is a sequence of instructions that
+specify, the chronological, or the time wise
+
+217
+00:18:59,880 --> 00:19:03,980
+order in which instructions of concurrent
+transactions are executed.
+
+218
+00:19:03,980 --> 00:19:06,288
+So, what is what will the schedule will have?
+
+219
+00:19:06,288 --> 00:19:11,099
+Scheduler will have for a set of it is defined
+for the set of transactions.
+
+220
+00:19:11,099 --> 00:19:15,528
+And it must consist of all instructions of
+those transactions.
+
+221
+00:19:15,528 --> 00:19:20,470
+And in a certain order, and what is the basic
+requirement that in this schedule in this
+
+222
+00:19:20,470 --> 00:19:27,058
+ordering, the original order of instructions
+in any of this given transaction, you have
+
+223
+00:19:27,058 --> 00:19:31,239
+an individual transaction must be preserved.
+
+224
+00:19:31,239 --> 00:19:37,538
+But the instructions from different transaction
+can be interleaved, intermixed in between
+
+225
+00:19:37,538 --> 00:19:43,720
+to prepare the schedule . So, a transaction
+that successfully completes it is execution
+
+226
+00:19:43,720 --> 00:19:49,350
+will perform what is called a commit instruction
+we will more specifically say what is commit
+
+227
+00:19:49,349 --> 00:19:54,209
+a commit instruction, which means successful
+completion as the last statement that should
+
+228
+00:19:54,210 --> 00:19:58,850
+be the last statement if the committee is
+not given by default also transactions which
+
+229
+00:19:58,849 --> 00:20:06,298
+have executed successfully are assumed to
+have executed commit, or if the transaction
+
+230
+00:20:06,298 --> 00:20:11,929
+fails to successfully complete the execution;
+that means, we will do abort as a last statement
+
+231
+00:20:11,929 --> 00:20:12,929
+ok.
+
+232
+00:20:12,929 --> 00:20:19,119
+So, let us take an example so, again we are
+going back to the same ah example.
+
+233
+00:20:19,118 --> 00:20:22,240
+So, we have 2 transactions T 1 and T 2.
+
+234
+00:20:22,240 --> 00:20:25,769
+T 1 transfers 50 dollars from a to B as we
+have seen.
+
+235
+00:20:25,769 --> 00:20:33,679
+And T 2 transfers 10 percent of the balance
+from A to B. So, one transaction debits 50
+
+236
+00:20:33,679 --> 00:20:41,129
+dollars one transaction debits 10 percent
+of the account balance of A to B. So, if they
+
+237
+00:20:41,128 --> 00:20:46,829
+they are serially executed as you can see
+here we are serially executing them as in.
+
+238
+00:20:46,829 --> 00:20:55,939
+So, first you first your whole of T 1 is executing,
+and once this has committed, that is successfully
+
+239
+00:20:55,940 --> 00:20:58,629
+ended then T 2 is executing.
+
+240
+00:20:58,628 --> 00:21:01,959
+So, at the beginning if we assume this is
+just an assumption.
+
+241
+00:21:01,960 --> 00:21:07,058
+If we assume at the beginning that a had 100
+dollar and we had 200 dollar, then the sum
+
+242
+00:21:07,058 --> 00:21:08,960
+was 300 dollar.
+
+243
+00:21:08,960 --> 00:21:15,730
+So, if the a is red 100 dollar is red then
+it becomes 50 then you write this A. So, when
+
+244
+00:21:15,730 --> 00:21:21,210
+you are here at this point, you can see, this
+is what you will have because a has changed
+
+245
+00:21:21,210 --> 00:21:26,419
+from 100 to 50 because you have debited B
+nothing has happened on B so, some is 250.
+
+246
+00:21:26,419 --> 00:21:32,179
+So, you can see that is why I have shown different
+colors you can see at 250.
+
+247
+00:21:32,179 --> 00:21:37,489
+This state of the database is temporarily
+inconsistent because the sum has become different
+
+248
+00:21:37,489 --> 00:21:38,858
+from 300.
+
+249
+00:21:38,858 --> 00:21:46,199
+Then it reads B it reads 200 adds that 250
+it writes B . You come to this point where
+
+250
+00:21:46,200 --> 00:21:52,389
+ah after this right, when the commit is happening
+after the writing this B. Then T 1 has actually
+
+251
+00:21:52,388 --> 00:21:57,709
+completed, and 50 dollars has got transferred
+to account B, and the sum is again back to
+
+252
+00:21:57,710 --> 00:22:01,569
+300 so, consistency is preserved.
+
+253
+00:22:01,569 --> 00:22:09,058
+Then transaction 2 starts so, a is red 50
+dollars is red in temporary you compute 5
+
+254
+00:22:09,058 --> 00:22:13,980
+10 percent of that 5 dollar you decrement
+a by 5 dollar and write it back.
+
+255
+00:22:13,980 --> 00:22:17,909
+So, when you have written it back, you write
+back 45 dollar.
+
+256
+00:22:17,909 --> 00:22:23,619
+Again, naturally the sum becomes 5 dollar
+less, the 5 dollar that you have kept in this
+
+257
+00:22:23,618 --> 00:22:30,569
+temp, and this becomes again transitively
+inconsistent in in the process.
+
+258
+00:22:30,569 --> 00:22:36,239
+Then you do the read B, ad that temporary
+5 dollar back to B and then you finally, when
+
+259
+00:22:36,239 --> 00:22:42,720
+you write B here you write back from 200 and
+50 you have added 5 dollar to 255, and again
+
+260
+00:22:42,720 --> 00:22:46,929
+the sum becomes 300 you are again back to
+the ah consistent state.
+
+261
+00:22:46,929 --> 00:22:54,629
+So, you can see, through this process that
+when transactions actually happen in a serial
+
+262
+00:22:54,628 --> 00:22:59,118
+manner, this is how things will move on so,
+which is quite understandable.
+
+263
+00:22:59,118 --> 00:23:09,288
+So, let us move on let us . So, this is a
+different schedule you can see, but this is
+
+264
+00:23:09,288 --> 00:23:14,798
+also a serial schedule here what we have assumed
+that all instructions of T 2 are done first
+
+265
+00:23:14,798 --> 00:23:16,460
+then all instructions of T 1.
+
+266
+00:23:16,460 --> 00:23:21,179
+I am not going through the going through each
+step you can see what are the consistent,
+
+267
+00:23:21,179 --> 00:23:25,559
+and the temporarily inconsistently states
+of the database, but at the end the database
+
+268
+00:23:25,558 --> 00:23:27,829
+is in a consistent state.
+
+269
+00:23:27,829 --> 00:23:35,569
+And you can can note that now the end value
+of a is 40 dollar, and n value of B is 2 60
+
+270
+00:23:35,569 --> 00:23:36,569
+dollar.
+
+271
+00:23:36,569 --> 00:23:41,749
+In the previous schedule, the value was 45
+dollar, and 255 dollar these 2 are different.
+
+272
+00:23:41,749 --> 00:23:47,259
+But both of them are actually correct both
+of them are consistent, because when things
+
+273
+00:23:47,259 --> 00:23:53,110
+happen in this distributed manner, we have
+no control in terms of whether that whether
+
+274
+00:23:53,109 --> 00:23:57,699
+first 50 dollars should be debited and then
+10 should be debited transferred.
+
+275
+00:23:57,700 --> 00:24:02,429
+Or whether first 10 should be transferred
+or 50 dollars where will be transferred after
+
+276
+00:24:02,429 --> 00:24:05,809
+that, either of that is a correct consistent
+state.
+
+277
+00:24:05,808 --> 00:24:11,009
+So, the different schedules might give you
+different results that is not of any concern
+
+278
+00:24:11,009 --> 00:24:14,048
+because both of them are possible valid results.
+
+279
+00:24:14,048 --> 00:24:19,000
+But the question is it must finally, have
+a consistent state of the database so, both
+
+280
+00:24:19,000 --> 00:24:20,319
+of these are consistent.
+
+281
+00:24:20,319 --> 00:24:26,720
+Now, take an interesting example, where schedule
+3 where where in here if you, if you look
+
+282
+00:24:26,720 --> 00:24:32,649
+at carefully there are few instructions of
+T 1 which are executed.
+
+283
+00:24:32,648 --> 00:24:38,258
+And then in the temporal order few other instructs,
+few instructions of T 2 are executed.
+
+284
+00:24:38,259 --> 00:24:40,788
+Then again T 1 then again T 2.
+
+285
+00:24:40,788 --> 00:24:46,028
+So, the instructions from 2 different transactions
+are getting interleaved.
+
+286
+00:24:46,028 --> 00:24:49,460
+And this is what the execution status would
+be.
+
+287
+00:24:49,460 --> 00:24:55,190
+So, you can see that when you are when T 1
+writes a this is where you are 50 dollars
+
+288
+00:24:55,190 --> 00:24:56,419
+has been debited.
+
+289
+00:24:56,419 --> 00:25:02,538
+Then when T 2 writes a subsequently , another
+5 dollar is debited so, it becomes 45.
+
+290
+00:25:02,538 --> 00:25:10,148
+So, then ah you have T 1 again executing and
+adding B on to that.
+
+291
+00:25:10,148 --> 00:25:17,918
+And by that it is not only that it has gone
+into an inconsistent, it is it was already
+
+292
+00:25:17,919 --> 00:25:22,149
+in an inconsistent state, but that was transient
+that was temporary.
+
+293
+00:25:22,148 --> 00:25:25,808
+But now the transaction T 1 has totally completed.
+
+294
+00:25:25,808 --> 00:25:31,278
+It is completed his execution it is at it
+is commit, but your database is still in an
+
+295
+00:25:31,278 --> 00:25:32,278
+inconsistent state.
+
+296
+00:25:32,278 --> 00:25:37,288
+So, this is something which is possible, because
+you are doing an interleaving of the instructions
+
+297
+00:25:37,288 --> 00:25:39,980
+of the 2 transactions in the schedule.
+
+298
+00:25:39,980 --> 00:25:46,669
+But once you allow the rest of the transaction
+B this part to ah complete that is B gets
+
+299
+00:25:46,669 --> 00:25:48,899
+updated and you reach here.
+
+300
+00:25:48,898 --> 00:25:50,319
+And that also has committed.
+
+301
+00:25:50,319 --> 00:25:55,178
+So, your schedule comprised of transaction
+one and transaction 2, when both of them have
+
+302
+00:25:55,179 --> 00:25:59,909
+completed you have again reached state which
+is consistent.
+
+303
+00:25:59,909 --> 00:26:04,499
+And if you look at the results of what you
+have achieved you will immediately identify
+
+304
+00:26:04,499 --> 00:26:10,639
+that this doing it doing the transactions
+according to schedule 3, which is interleaving
+
+305
+00:26:10,638 --> 00:26:18,759
+in in this manner is equivalent to this in
+this manner of interleaving is equivalent
+
+306
+00:26:18,759 --> 00:26:23,210
+to doing them according to in this manner
+which is schedule one.
+
+307
+00:26:23,210 --> 00:26:30,788
+So, you have got a schedule which is equivalent
+to schedule one . And it is therefore, so,
+
+308
+00:26:30,788 --> 00:26:36,038
+this is just an example to show that it is
+actually possible to interleave the instructions
+
+309
+00:26:36,038 --> 00:26:42,489
+of 2 transactions, and create a schedule which
+will still which might in the in in the process
+
+310
+00:26:42,489 --> 00:26:48,808
+have transient or even ah inconsistent commit
+states of the database.
+
+311
+00:26:48,808 --> 00:26:55,878
+But finally, when the schedule ends it will
+it is possible that it will bring you to a
+
+312
+00:26:55,878 --> 00:27:01,678
+consistent state .
+Now, look at again for those transactions
+
+313
+00:27:01,679 --> 00:27:07,759
+look at a different interleaving, a different
+schedule, again T 1 T 2 are involved.
+
+314
+00:27:07,759 --> 00:27:16,929
+But you have now tried to interleave them
+in a in a different order . So, earlier the
+
+315
+00:27:16,929 --> 00:27:25,159
+interleaving was done after T 1 has done right,
+here it is done after he has been the locally
+
+316
+00:27:25,159 --> 00:27:26,720
+debited by 50.
+
+317
+00:27:26,720 --> 00:27:29,850
+And then this part is done and then the right
+is happening.
+
+318
+00:27:29,849 --> 00:27:33,488
+And now if you go through the steps I will
+leave it as an exercise for you in schedule
+
+319
+00:27:33,489 --> 00:27:34,489
+4.
+
+320
+00:27:34,489 --> 00:27:39,019
+Now, if you go through the state you will
+find that when transaction T 1 commits ah
+
+321
+00:27:39,019 --> 00:27:43,628
+ends here, you have an inconsistent state.
+
+322
+00:27:43,628 --> 00:27:47,028
+And finally, even when the schedule ends that
+T 2 has committed.
+
+323
+00:27:47,028 --> 00:27:53,489
+There is A, you are in an inconsistent state
+somehow that sum of A and B which was 350
+
+324
+00:27:53,489 --> 00:27:57,569
+has become 300 has become 350 so, 50 dollars
+as what generated.
+
+325
+00:27:57,569 --> 00:28:03,009
+So, this is so you can see that if you interleave
+the transactions, then it is quite possible
+
+326
+00:28:03,009 --> 00:28:08,639
+that the transactions will may or may not
+actually give you a consistent data base.
+
+327
+00:28:08,638 --> 00:28:16,808
+So, here in this module, we have ah understood
+the basic tasks that a data bit base performs
+
+328
+00:28:16,808 --> 00:28:20,730
+database executes; which is in form of a transaction.
+
+329
+00:28:20,730 --> 00:28:28,220
+And we have seen that they must satisfy a
+set of properties typically called the acid
+
+330
+00:28:28,220 --> 00:28:35,538
+properties, and atomicity, consistency, isolation
+and durability must be satisfied.
+
+331
+00:28:35,538 --> 00:28:41,489
+And when the transactions are executed in
+concurrent fashion, we improve the throughput,
+
+332
+00:28:41,489 --> 00:28:47,919
+but the concurrent execution of transaction
+raise issues of serializability; that is,
+
+333
+00:28:47,919 --> 00:28:54,369
+the concurrent execution that the interleaved
+schedule of instruction of 2 or more transactions
+
+334
+00:28:54,368 --> 00:29:00,569
+can give rise to certain effect which violate
+the acid properties.
+
+335
+00:29:00,569 --> 00:29:05,740
+And those need to be addressed that certainly
+inconsistent database is certainly never acceptable.
+
+336
+00:29:05,740 --> 00:29:11,638
+And ah so that is the the basic problem that
+we have identified which we will have to address
+
+337
+00:29:11,638 --> 00:29:12,839
+in the coming modules .
+

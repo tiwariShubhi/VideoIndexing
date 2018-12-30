@@ -1,0 +1,843 @@
+WEBVTT
+
+1
+00:00:02.463 --> 00:00:07.381
+A different kind of scaling problem arises
+when we try to answer queries over a large
+
+2
+00:00:07.381 --> 00:00:12.158
+number of data sources, but before we do
+that let's see how a query is answered in
+
+3
+00:00:12.158 --> 00:00:14.570
+the virtual data integration setting.
+
+4
+00:00:15.990 --> 00:00:18.819
+We are going to use a toy
+scenario in a medical setting
+
+5
+00:00:19.890 --> 00:00:22.070
+simple as we have four data sources.
+
+6
+00:00:22.070 --> 00:00:24.320
+Each with one table for
+the sake of simplicity.
+
+7
+00:00:25.570 --> 00:00:30.760
+Notice that two sources, S1 and
+S3, have the same schema.
+
+8
+00:00:30.760 --> 00:00:34.380
+Now this is entirely possible because
+sources may be independent of each other.
+
+9
+00:00:35.750 --> 00:00:39.310
+Further, there is no guarantee that
+they would have the same exact content.
+
+10
+00:00:40.390 --> 00:00:44.400
+Maybe these two sources represent
+clinics at different locations.
+
+11
+00:00:46.260 --> 00:00:48.860
+So next, we look at the target schema.
+
+12
+00:00:50.020 --> 00:00:54.630
+For simplicity, let's consider that
+it's not an algorithmically creative
+
+13
+00:00:54.630 --> 00:00:59.090
+probabilistic mediator schema but just a
+manually designed schema with five tables.
+
+14
+00:01:00.670 --> 00:01:05.620
+But while we assume that
+the target schema is fixed
+
+15
+00:01:05.620 --> 00:01:08.710
+we want the possibility that
+we can add more sources.
+
+16
+00:01:08.710 --> 00:01:11.280
+That means more clinics
+as the system grows.
+
+17
+00:01:13.970 --> 00:01:16.210
+Now I'm beginning to
+add the schema mapping.
+
+18
+00:01:17.370 --> 00:01:21.430
+Now there are several techniques
+of specifying schema mappings.
+
+19
+00:01:21.430 --> 00:01:24.090
+One of them is called Local-as-View.
+
+20
+00:01:24.090 --> 00:01:29.830
+This means we write the relations in each
+source as a view over the target schema.
+
+21
+00:01:31.590 --> 00:01:35.398
+But this way of writing the query,
+as we can see here, may seem odd to you.
+
+22
+00:01:35.398 --> 00:01:39.280
+It's called syntax, but
+you don't need to know it.
+
+23
+00:01:39.280 --> 00:01:45.300
+Just as an example, the first few things
+the treats relation in S1 maps to,
+
+24
+00:01:45.300 --> 00:01:47.220
+so you see that arrow, that means maps to.
+
+25
+00:01:48.790 --> 00:01:53.030
+So it maps to the query select doctor,
+
+26
+00:01:53.030 --> 00:01:58.890
+chronic disease from treats patient,
+has chronic disease.
+
+27
+00:01:58.890 --> 00:02:04.550
+Where treatspatient.patient Is equal
+to has chronic disease dot patient.
+
+28
+00:02:07.050 --> 00:02:08.520
+We see the query here in the yellow box.
+
+29
+00:02:09.760 --> 00:02:14.200
+The only thing we should notice here
+is that the select class on the query
+
+30
+00:02:14.200 --> 00:02:15.880
+has two attributes doctor and
+
+31
+00:02:15.880 --> 00:02:21.040
+chronic disease which are exactly the same
+attributes of the treats relation in S1.
+
+32
+00:02:23.360 --> 00:02:25.820
+Now let's ask a query that
+gives the target schema.
+
+33
+00:02:26.820 --> 00:02:30.620
+Which doctors are responsible for
+discharging patients?
+
+34
+00:02:30.620 --> 00:02:32.777
+Which translates to
+the SQL query shown here.
+
+35
+00:02:34.491 --> 00:02:39.344
+Now, the problem is how to translate
+this query to a query that can
+
+36
+00:02:39.344 --> 00:02:41.120
+be sent to the sources.
+
+37
+00:02:42.160 --> 00:02:47.985
+Now ideally this should be simplest query
+with no extra operations as shown here.
+
+38
+00:02:47.985 --> 00:02:55.020
+S3 treats means treats
+relation in sources 3.
+
+39
+00:02:55.020 --> 00:02:57.500
+Now you can see the ideal answer.
+
+40
+00:02:58.600 --> 00:03:03.200
+To find such an optimal query
+reformulation, it turns out that this
+
+41
+00:03:03.200 --> 00:03:08.550
+process is very complex and becomes
+worse as a number of sources increases.
+
+42
+00:03:10.090 --> 00:03:12.840
+Thus query reformulation
+
+43
+00:03:12.840 --> 00:03:17.200
+becomes a significant scalability problem
+in a big data integration scenario.
+
+44
+00:03:21.000 --> 00:03:22.640
+Let's look at the second use case
+
+45
+00:03:23.860 --> 00:03:27.070
+public health is a significant
+component of our healthcare system.
+
+46
+00:03:28.150 --> 00:03:33.630
+Public health systems monitor detect and
+take action when epidemics strike.
+
+47
+00:03:33.630 --> 00:03:38.500
+Not so long ago we have witnessed public
+health concerns due to Anthrax virus,
+
+48
+00:03:38.500 --> 00:03:40.240
+the swine flu and the bird flu.
+
+49
+00:03:41.510 --> 00:03:46.180
+But these epidemics caused a group
+called WADDS to develop a system for
+
+50
+00:03:46.180 --> 00:03:47.070
+disease surveillance.
+
+51
+00:03:48.230 --> 00:03:52.670
+This system would connect all local
+hospitals in the Washington, DC area, and
+
+52
+00:03:52.670 --> 00:03:55.290
+is designed to exchange
+disease information.
+
+53
+00:03:55.290 --> 00:04:00.030
+For example, if a hospital lab has
+identified a new strain of a virus,
+
+54
+00:04:00.030 --> 00:04:02.630
+other hospitals and the Centers for
+Disease Control, CDC,
+
+55
+00:04:02.630 --> 00:04:05.260
+in the network,
+should be able to know about it.
+
+56
+00:04:07.300 --> 00:04:12.020
+It should be clear that this needs a data
+integration solution where the data
+
+57
+00:04:12.020 --> 00:04:17.490
+sources would be the labs, the data would
+be the lab tests medical records and
+
+58
+00:04:17.490 --> 00:04:21.170
+even genetic profiles of the virus and
+the subjects who might be infected.
+
+59
+00:04:22.180 --> 00:04:26.630
+The table here shows the different
+components with this architecture.
+
+60
+00:04:26.630 --> 00:04:29.590
+We will just digest the necessary
+parts for our requirement.
+
+61
+00:04:30.620 --> 00:04:35.488
+Just know that RIM which stands for
+Reference Information Model is global
+
+62
+00:04:35.488 --> 00:04:40.370
+schema that this industry has developed
+and expects to use as a standard.
+
+63
+00:04:43.820 --> 00:04:47.330
+Why we want to exchange and combine new
+information from different hospitals?
+
+64
+00:04:48.430 --> 00:04:50.990
+Every hospital is independent and
+
+65
+00:04:50.990 --> 00:04:54.190
+can implement their own information
+system any way they see fit.
+
+66
+00:04:55.450 --> 00:04:59.080
+Therefore even when there
+are standards like HL-7 that
+
+67
+00:04:59.080 --> 00:05:03.230
+specify what kind of data a held
+cache system should have an exchange.
+
+68
+00:05:03.230 --> 00:05:08.520
+There are considerable variations in
+the implementation of the standard itself.
+
+69
+00:05:08.520 --> 00:05:12.660
+For example the two wide boxes show
+a difference in representation
+
+70
+00:05:12.660 --> 00:05:17.620
+of the same kind of data, this should
+remind you of the data variety problem.
+
+71
+00:05:18.800 --> 00:05:23.810
+Let's say, we have a patient
+with ID 19590520 whose lab
+
+72
+00:05:25.280 --> 00:05:29.020
+reports containing her plasma protein
+measurements are required for
+
+73
+00:05:29.020 --> 00:05:30.440
+analyzing her health condition.
+
+74
+00:05:31.590 --> 00:05:35.550
+The problem is that the patient
+went to three different clinics and
+
+75
+00:05:35.550 --> 00:05:38.990
+four different labs which all
+implement the standards differently.
+
+76
+00:05:40.290 --> 00:05:41.540
+On top of it?
+
+77
+00:05:41.540 --> 00:05:45.420
+Each clinic uses its own
+electronic medical record system
+
+78
+00:05:45.420 --> 00:05:47.230
+which we have a very large amount of data.
+
+79
+00:05:48.510 --> 00:05:53.300
+So the data integration system's job is to
+transform the data from the source schema
+
+80
+00:05:53.300 --> 00:05:58.150
+to the schema of the receiving
+system in this case the rim system.
+
+81
+00:05:59.410 --> 00:06:02.730
+This is sometimes called
+the data exchange problem.
+
+82
+00:06:05.380 --> 00:06:09.140
+Informally a data exchange
+problem can be defined like this.
+
+83
+00:06:10.780 --> 00:06:14.300
+Suppose we have a given database
+whose relations are known.
+
+84
+00:06:15.750 --> 00:06:18.920
+Let us say we also know
+the target database's schema and
+
+85
+00:06:18.920 --> 00:06:20.700
+the constraints the schema will satisfy.
+
+86
+00:06:22.330 --> 00:06:26.780
+Further we know the desired schema
+mappings between the source and
+
+87
+00:06:26.780 --> 00:06:28.300
+this target schema.
+
+88
+00:06:28.300 --> 00:06:34.040
+What we do not know is how to populate
+the tuples in the target database.
+
+89
+00:06:34.040 --> 00:06:38.493
+From the tuples in the socialization in
+such a way that both schema mappings and
+
+90
+00:06:38.493 --> 00:06:41.540
+target constraints
+are simultaneously satisfied.
+
+91
+00:06:44.729 --> 00:06:48.854
+In many domains like healthcare,
+a significant amount of effort has been
+
+92
+00:06:48.854 --> 00:06:52.260
+spend by the industry in
+standardizing schemas and values.
+
+93
+00:06:53.440 --> 00:06:57.320
+For example LOINC is a standard for
+medical lab observations.
+
+94
+00:06:58.720 --> 00:07:01.320
+Here item like systolic blood pressure or
+
+95
+00:07:01.320 --> 00:07:05.580
+gene mutation are encoded in this
+specific way as given by this standard.
+
+96
+00:07:06.630 --> 00:07:11.060
+So, if we want to write that
+the systolic/diastolic pressure of
+
+97
+00:07:11.060 --> 00:07:17.190
+a individual is 132 by 90, we'll not write
+out the string systolic blood pressure,
+
+98
+00:07:17.190 --> 00:07:19.920
+but use the code for it.
+
+99
+00:07:19.920 --> 00:07:24.070
+The ability to use standard code
+is not unique to healthcare data.
+
+100
+00:07:24.070 --> 00:07:26.919
+The 50 states of the US all
+have two letter abbreviations.
+
+101
+00:07:28.210 --> 00:07:34.210
+Generalizing therefore, whenever we have
+data such as the domain is finite and have
+
+102
+00:07:34.210 --> 00:07:39.910
+a standard set of code available, we give
+a new opportunity of handling big deal.
+
+103
+00:07:41.610 --> 00:07:45.260
+Mainly, reducing the data
+size through compression.
+
+104
+00:07:47.110 --> 00:07:49.700
+The compression refers to a way of
+
+105
+00:07:49.700 --> 00:07:52.920
+creating an encoded
+representation of data.
+
+106
+00:07:52.920 --> 00:07:56.980
+So that this encoder form is smaller
+than the original representation.
+
+107
+00:07:58.970 --> 00:08:02.420
+A common encoding method is
+called dictionary encoding.
+
+108
+00:08:02.420 --> 00:08:05.980
+Consider a database with 10 million
+record of patient visits a lab.
+
+109
+00:08:07.250 --> 00:08:11.140
+Each record indicates a test and
+its results.
+
+110
+00:08:11.140 --> 00:08:14.140
+Now we show it this way like
+in a columnar structure
+
+111
+00:08:15.220 --> 00:08:20.040
+to make the point that the data is kept
+in a column stored relational database
+
+112
+00:08:20.040 --> 00:08:22.430
+rather than a row store
+relational database.
+
+113
+00:08:23.650 --> 00:08:26.380
+Now consider the column for test code.
+
+114
+00:08:26.380 --> 00:08:29.470
+Where the type of test is codified
+according to the standard.
+
+115
+00:08:31.470 --> 00:08:35.340
+We replace a string representation
+of the standard by a number.
+
+116
+00:08:37.750 --> 00:08:40.540
+The mapping between
+the original test code and
+
+117
+00:08:40.540 --> 00:08:43.870
+the encoded number are also
+stored separately.
+
+118
+00:08:43.870 --> 00:08:45.810
+Now suppose there
+are a total of 500 tests.
+
+119
+00:08:47.240 --> 00:08:52.780
+So this separate table called
+the dictionary here has 500 rows,
+
+120
+00:08:52.780 --> 00:08:57.500
+which is clearly much smaller
+than ten million right?
+
+121
+00:08:57.500 --> 00:09:02.300
+Now 500 distinct values can be
+represented by encoding them in 9 bits,
+
+122
+00:09:02.300 --> 00:09:04.114
+because 2 to the power of 9 is 512.
+
+123
+00:09:06.060 --> 00:09:09.750
+Other encoding techniques would be applied
+to attributes like date and patient ID.
+
+124
+00:09:10.920 --> 00:09:15.890
+That's full large data we cannot reduce
+the number of total actual rules.
+
+125
+00:09:15.890 --> 00:09:18.090
+So we have to store all ten million rules.
+
+126
+00:09:18.090 --> 00:09:23.893
+But we can reduce the amount of space
+required by storing data in a column
+
+127
+00:09:23.893 --> 00:09:28.925
+oriented data store and
+by using compression, indeed modern
+
+128
+00:09:28.925 --> 00:09:35.621
+systems use credit processing algorithms
+to operate directly on compress data.
+
+129
+00:09:39.025 --> 00:09:42.636
+Data compression is an important
+technology for big data.
+
+130
+00:09:45.555 --> 00:09:50.560
+And just like is a set of qualified
+terms for lab tests, clinical data
+
+131
+00:09:50.560 --> 00:09:55.500
+also uses SNOMED which stands for
+systematized nomenclature of medicine.
+
+132
+00:09:56.770 --> 00:09:59.780
+SNOMED is a little more
+than just a vocabulary.
+
+133
+00:10:00.900 --> 00:10:02.599
+It does have a vocabulary of course.
+
+134
+00:10:03.620 --> 00:10:08.656
+The vocabulary is the collection
+of medical terms in human and
+
+135
+00:10:08.656 --> 00:10:14.790
+medicine to provide codes, terms, synonyms
+and definitions that cover anatomy,
+
+136
+00:10:14.790 --> 00:10:18.980
+diseases, findings, procedures,
+micro organisms, substances etcetera.
+
+137
+00:10:19.990 --> 00:10:21.590
+But it also has relationships.
+
+138
+00:10:23.060 --> 00:10:27.277
+As you can see,
+a renal cyst is related to kidney because
+
+139
+00:10:27.277 --> 00:10:30.615
+kidney's the finding site of a renal cyst.
+
+140
+00:10:32.890 --> 00:10:37.080
+If we query against an ontology,
+it would look like a graph grid.
+
+141
+00:10:38.150 --> 00:10:38.920
+In this box,
+
+142
+00:10:38.920 --> 00:10:43.120
+we are asking to find all patient
+findings with a benign tumor morphology.
+
+143
+00:10:44.350 --> 00:10:49.100
+In terms of querying, we are looking for
+edges of a graph where one noticed
+
+144
+00:10:49.100 --> 00:10:54.470
+the concept that we need to find which is
+connected to a node called benign neoplasm
+
+145
+00:10:54.470 --> 00:10:59.050
+that is benign tumor through an edge
+called associated morphology
+
+146
+00:11:00.070 --> 00:11:04.700
+that applying this query against
+the data here produces all benign tumors
+
+147
+00:11:04.700 --> 00:11:08.970
+of specific organs as you can
+see by the orange rounded group.
+
+148
+00:11:11.170 --> 00:11:13.410
+But now that we have these terms,
+
+149
+00:11:13.410 --> 00:11:17.760
+we can use these terms to search
+outpatient records with these terms would
+
+150
+00:11:17.760 --> 00:11:22.910
+have been used so
+what's the essence of this used case.
+
+151
+00:11:24.030 --> 00:11:29.170
+This is can shows that an in division
+system in a public health domain and
+
+152
+00:11:29.170 --> 00:11:32.320
+in many other domains must
+be able to handle variety.
+
+153
+00:11:33.910 --> 00:11:40.520
+In this case there's a Global Schema
+called RiM shown here all queries and
+
+154
+00:11:40.520 --> 00:11:45.000
+analyses performed by a data analysts
+should be against this global schema.
+
+155
+00:11:46.230 --> 00:11:50.870
+However, the actual data which is
+generated by different medical facilities
+
+156
+00:11:50.870 --> 00:11:55.970
+would need to be transformed
+into data in this schema.
+
+157
+00:11:55.970 --> 00:12:00.220
+This would require not only
+format conversions, but
+
+158
+00:12:00.220 --> 00:12:05.630
+it would need to respect all constraints
+imposed by the source and by the target.
+
+159
+00:12:05.630 --> 00:12:10.520
+For example, a source may not distinguish
+between an emergency surgical procedure
+
+160
+00:12:10.520 --> 00:12:12.430
+and a regular surgical procedure.
+
+161
+00:12:12.430 --> 00:12:16.429
+But the target may want to
+put them in different tables.
+
+162
+00:12:18.850 --> 00:12:20.850
+We also saw that
+the integration system for
+
+163
+00:12:20.850 --> 00:12:24.920
+this used case would need to use
+quantified data but this gives
+
+164
+00:12:24.920 --> 00:12:28.970
+us the opportunity to use data compression
+to gauge story and query efficiency.
+
+165
+00:12:30.120 --> 00:12:35.352
+In terms of variety, we saw how
+relational data like patient records XML
+
+166
+00:12:35.352 --> 00:12:40.603
+data like HL7 events, and
+graph data like ontologies, are co-used.
+
+167
+00:12:42.866 --> 00:12:47.407
+To support this, the integration
+system must be able to do both model
+
+168
+00:12:47.407 --> 00:12:50.400
+transformation and query transformation.
+
+169
+00:12:51.560 --> 00:12:55.260
+Query transformation is the process of
+taking a query on the target schema.
+
+170
+00:12:56.490 --> 00:13:00.540
+Converting it to a query
+against a different data model.
+
+171
+00:13:00.540 --> 00:13:06.100
+For example, part of an SQL query against
+the RIM may need to go to snowmad and
+
+172
+00:13:06.100 --> 00:13:09.240
+hence when you to be converted to
+a graph query in the snowmad system.
+
+173
+00:13:10.590 --> 00:13:13.933
+Model transformation is
+a process of taking data
+
+174
+00:13:13.933 --> 00:13:17.274
+represented in one model
+in one source system and
+
+175
+00:13:17.274 --> 00:13:22.263
+converting it to an equivalent data
+in another model the target system.

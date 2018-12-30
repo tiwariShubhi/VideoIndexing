@@ -1,0 +1,262 @@
+WEBVTT
+
+1
+00:00:00.810 --> 00:00:05.170
+In this lecture, we will discuss how
+overfitting occurs with decision trees and
+
+2
+00:00:05.170 --> 00:00:06.210
+how it can be avoided.
+
+3
+00:00:07.300 --> 00:00:08.160
+After this video,
+
+4
+00:00:08.160 --> 00:00:14.120
+you will be able to discuss overfitting
+in the context of decision tree models.
+
+5
+00:00:14.120 --> 00:00:17.496
+Explain how overfitting is addressed
+in decision tree induction.
+
+6
+00:00:17.496 --> 00:00:21.370
+Define pre-pruning and post-pruning.
+
+7
+00:00:21.370 --> 00:00:25.260
+In our lecture on decision trees, we
+discussed that during the construction of
+
+8
+00:00:25.260 --> 00:00:30.830
+a decision tree, also referred to as
+tree induction, the tree repeatedly
+
+9
+00:00:30.830 --> 00:00:35.000
+splits the data in a node in order to
+get successively paired subsets of data.
+
+10
+00:00:36.320 --> 00:00:40.810
+Note that a decision tree classifier can
+potentially expand its nodes until it can
+
+11
+00:00:40.810 --> 00:00:44.230
+perfectly classify samples
+in the training data.
+
+12
+00:00:44.230 --> 00:00:48.280
+But if the tree grows nodes to fit
+the noise in the training data,
+
+13
+00:00:48.280 --> 00:00:51.370
+then it will not classify
+a new sample well.
+
+14
+00:00:51.370 --> 00:00:55.450
+This is because the tree has partitioned
+the input space according to the noise in
+
+15
+00:00:55.450 --> 00:00:59.410
+the data instead of to
+the true structure of a data.
+
+16
+00:00:59.410 --> 00:01:00.825
+In other words, it has overfit.
+
+17
+00:01:02.710 --> 00:01:05.580
+How can overfitting be
+avoided in decision trees?
+
+18
+00:01:05.580 --> 00:01:07.220
+There are two ways.
+
+19
+00:01:07.220 --> 00:01:10.510
+One is to stop growing the tree
+before the tree is fully grown
+
+20
+00:01:10.510 --> 00:01:12.590
+to perfectly fit the training data.
+
+21
+00:01:12.590 --> 00:01:15.890
+This is referred to as pre-pruning.
+
+22
+00:01:15.890 --> 00:01:19.770
+The other way to avoid overfitting in
+decision trees is to grow the tree to its
+
+23
+00:01:19.770 --> 00:01:24.860
+maximum size and then prune the tree
+back by removing parts of the tree.
+
+24
+00:01:24.860 --> 00:01:28.020
+This is referred to as post-pruning.
+
+25
+00:01:28.020 --> 00:01:32.300
+In general, overfitting occurs
+because the model is too complex.
+
+26
+00:01:32.300 --> 00:01:34.060
+For a decision tree model,
+
+27
+00:01:34.060 --> 00:01:38.250
+model complexity is determined by
+the number of nodes in the tree.
+
+28
+00:01:38.250 --> 00:01:43.300
+Addressing overfitting in decision trees
+means controlling the number of nodes.
+
+29
+00:01:43.300 --> 00:01:46.920
+Both methods of pruning control
+the growth of the tree and consequently,
+
+30
+00:01:46.920 --> 00:01:48.880
+the complexity of the resulting model.
+
+31
+00:01:50.380 --> 00:01:55.270
+With pre-pruning, the idea is to stop tree
+induction before a fully grown tree is
+
+32
+00:01:55.270 --> 00:01:58.540
+built that perfectly
+fits the training data.
+
+33
+00:01:58.540 --> 00:02:03.320
+To do this, restrictive stopping
+conditions for growing nodes must be used.
+
+34
+00:02:03.320 --> 00:02:08.121
+For example, a nose stops expanding if
+the number of samples in the node is less
+
+35
+00:02:08.121 --> 00:02:10.940
+than some minimum threshold.
+
+36
+00:02:10.940 --> 00:02:14.954
+Another example is to stop expanding
+a note if the improvement in the impurity
+
+37
+00:02:14.954 --> 00:02:17.190
+measure falls below a certain threshold.
+
+38
+00:02:18.480 --> 00:02:22.440
+In post-pruning,
+the tree is grown to its maximum size,
+
+39
+00:02:22.440 --> 00:02:27.280
+then the tree is pruned by removing
+nodes using a bottom up approach.
+
+40
+00:02:27.280 --> 00:02:31.250
+That is, the tree is trimmed
+starting with the leaf nodes.
+
+41
+00:02:31.250 --> 00:02:34.900
+The pruning is done by replacing
+a subtree with a leaf node if
+
+42
+00:02:34.900 --> 00:02:38.140
+this improves the generalization error,
+or if there is no
+
+43
+00:02:38.140 --> 00:02:41.580
+change to the generalization
+error with this replacement.
+
+44
+00:02:41.580 --> 00:02:45.590
+In other words, if removing a subtree
+does not have a negative effect
+
+45
+00:02:45.590 --> 00:02:49.240
+on the generalization error,
+then the nodes in that subtree only
+
+46
+00:02:49.240 --> 00:02:52.730
+add to the complexity of the tree,
+and not to its overall performance.
+
+47
+00:02:52.730 --> 00:02:54.058
+So those nodes should be removed.
+
+48
+00:02:54.058 --> 00:02:59.290
+In practice,
+post-pruning tends to give better results.
+
+49
+00:02:59.290 --> 00:03:03.250
+This is because pruning decisions are
+based on information from the full tree.
+
+50
+00:03:03.250 --> 00:03:08.510
+Pre-pruning, on the other hand, may stop
+the tree growing process prematurely.
+
+51
+00:03:08.510 --> 00:03:12.951
+However, post-pruning is more
+computationally expensive since the tree
+
+52
+00:03:12.951 --> 00:03:15.040
+has to be expanded to its full size.
+
+53
+00:03:16.490 --> 00:03:21.720
+In summary, to address overfitting in
+decision trees, tree pruning is used.
+
+54
+00:03:21.720 --> 00:03:26.030
+There are two pruning methods,
+pre-pruning and post-pruning.
+
+55
+00:03:26.030 --> 00:03:28.880
+Both methods control
+the complexity of the tree model.

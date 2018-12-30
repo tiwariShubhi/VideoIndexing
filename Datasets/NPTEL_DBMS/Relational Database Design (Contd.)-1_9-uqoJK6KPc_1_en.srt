@@ -1,0 +1,1380 @@
+﻿1
+00:00:15,990 --> 00:00:24,079
+Welcome to the Module 17 of Database Management
+Systems. From the last module, we are discussing
+
+2
+00:00:24,079 --> 00:00:30,059
+Relational Database Design. So, this is second
+in the series of 5 modules which we will discuss
+
+3
+00:00:30,059 --> 00:00:37,488
+this .
+We have already seen ah basic features of
+
+4
+00:00:37,488 --> 00:00:42,419
+good relational design. We have studied about
+first normal form atomic domains and got introduced
+
+5
+00:00:42,420 --> 00:00:47,120
+to functional dependencies.
+So, we will develop further on that to see
+
+6
+00:00:47,119 --> 00:00:52,320
+how decompositions into good design can be
+done by making use of the notion of functional
+
+7
+00:00:52,320 --> 00:00:58,679
+dependencies and we will more formally introduce
+the theory of functional dependencies.
+
+8
+00:00:58,679 --> 00:01:04,030
+So, that is all that we discuss in this. So,
+decomposition using functional dependencies
+
+9
+00:01:04,030 --> 00:01:10,060
+is the first thing that we look at.
+The first normal form of relations which ah
+
+10
+00:01:10,060 --> 00:01:16,670
+were studied, we look at its Boyce-Codd Normal
+Form. So, normal forms are ah kind of set
+
+11
+00:01:16,670 --> 00:01:22,990
+of properties which is satisfied by a relational
+schema and if they are satisfied, then we
+
+12
+00:01:22,989 --> 00:01:29,560
+have certain guarantees in terms of what can
+or cannot happen in that relational schema
+
+13
+00:01:29,560 --> 00:01:38,219
+design. So, Boyce-Codd is a simplest kind
+of ah beyond 1NF is a simplest kind of normal
+
+14
+00:01:38,218 --> 00:01:43,548
+form and a relational schema is said to be
+in Boyce-Codd normal form if with respect
+
+15
+00:01:43,549 --> 00:01:48,640
+to a set of functional dependencies, all functional
+dependencies in the closure.
+
+16
+00:01:48,640 --> 00:01:58,409
+So, in respect of F, we compute F plus which
+is a closure and if I have a dependency alpha
+
+17
+00:01:58,409 --> 00:02:03,859
+determines beta, then naturally alpha will
+have to be a subset of R beta will have to
+
+18
+00:02:03,859 --> 00:02:08,430
+be a subset of R, but what is important is
+every functional dependency in the closure
+
+19
+00:02:08,430 --> 00:02:20,250
+set must either be trivial that is right hand
+side is a superset of the left hand side or
+
+20
+00:02:20,250 --> 00:02:28,699
+the left hand side set alpha must be super
+key. So, only those kind of ah functional
+
+21
+00:02:28,699 --> 00:02:33,679
+dependencies are possible. No other functional
+dependencies are possible. If that is satisfied
+
+22
+00:02:33,680 --> 00:02:40,909
+by the relational schema R, then it is said
+to be in the Boyce-Codd normal form .
+
+23
+00:02:40,909 --> 00:02:48,479
+So, if we look at ah inst department schema
+of the combined relations we saw last time,
+
+24
+00:02:48,479 --> 00:02:54,679
+then we will know that certainly this is not
+in Boyce-Codd Normal Form because ah this
+
+25
+00:02:54,680 --> 00:03:04,150
+functional dependency holds in this schema
+where it is neither a trivial dependency and
+
+26
+00:03:04,150 --> 00:03:09,460
+nor department name is a super key. So, this
+is not in BCNF.
+
+27
+00:03:09,460 --> 00:03:16,540
+So, if a relational scheme is not in BCNF,
+then the question naturally is can I make
+
+28
+00:03:16,539 --> 00:03:21,679
+it into BCNF. So, then that process is the
+process of decomposition. So, what you do?
+
+29
+00:03:21,680 --> 00:03:29,790
+You divide the set of attributes into two
+or more at sets of attributes. So, here ah
+
+30
+00:03:29,789 --> 00:03:36,459
+let us say that ah we have a relational schema
+which has a non-trivial dependency, alpha
+
+31
+00:03:36,460 --> 00:03:41,930
+determines beta where alpha is not a super
+key. So, with respect to this functional dependency,
+
+32
+00:03:41,930 --> 00:03:50,629
+the relational schema is not in BCNF, then
+we can decompose R by two sets. One is alpha
+
+33
+00:03:50,629 --> 00:04:00,411
+union beta take the union of these two attribute
+sets and remove beta minus alpha from R, take
+
+34
+00:04:00,411 --> 00:04:09,120
+the difference of beta minus alpha and remove
+that from R. The resulting pair of relations,
+
+35
+00:04:09,120 --> 00:04:14,569
+relational schemas will be in Boyce-Codd Normal
+Form with respect to this particular functional
+
+36
+00:04:14,569 --> 00:04:21,120
+dependency .
+So, let us ah see an example. So, if alpha
+
+37
+00:04:21,120 --> 00:04:26,800
+is department name beta is a pair of attribute
+building and budget, we have department name
+
+38
+00:04:26,800 --> 00:04:31,319
+functionally determines building budget. So,
+alpha determines beta and we have already
+
+39
+00:04:31,319 --> 00:04:39,639
+seen that ah it does not hold. It is not satisfied
+by the inst department. So, you replace it
+
+40
+00:04:39,639 --> 00:04:47,329
+by taking alpha union beta. So, alpha union
+beta is this ah set of relational ah this
+
+41
+00:04:47,329 --> 00:04:55,680
+relational schema and you do R minus ah beta
+. R minus difference of beta minus alpha beta
+
+42
+00:04:55,680 --> 00:05:02,509
+minus alpha. Naturally if this is beta and
+alpha, then beta minus alpha is necessary
+
+43
+00:05:02,509 --> 00:05:07,348
+building budget because if the department
+does not occur in beta.
+
+44
+00:05:07,348 --> 00:05:14,300
+So, this set is building budget and if I remove
+it from R which means that id, name, salary
+
+45
+00:05:14,300 --> 00:05:20,800
+and department name are retained, but building
+and budget gets removed. So, I get another
+
+46
+00:05:20,800 --> 00:05:28,079
+relational schema which has these four names
+and it holds the ah functional dependency
+
+47
+00:05:28,079 --> 00:05:35,339
+id determinant. So, even now if I look into
+this schema R1 and this schema R2, there are
+
+48
+00:05:35,339 --> 00:05:41,869
+different dependencies that hold on R1 and
+with respect to that dependency R1 is in BCNF
+
+49
+00:05:41,870 --> 00:05:48,629
+because department name is the super key,
+is the primary key and with respect to this
+
+50
+00:05:48,629 --> 00:05:52,908
+dependency, R2 is in BCNF because id is the
+key.
+
+51
+00:05:52,908 --> 00:05:59,990
+So, I can see that ah the original combined
+relational schema was not in BCNF with respect
+
+52
+00:05:59,990 --> 00:06:06,300
+to this functional dependency, but when I
+do this decomposition, I get two schemas which
+
+53
+00:06:06,300 --> 00:06:13,610
+are each in BCNF normal form. So, this is
+the basic process and we will see ah depending
+
+54
+00:06:13,610 --> 00:06:19,309
+on the normal form and different notions of
+functional dependencies, we will see how these
+
+55
+00:06:19,309 --> 00:06:24,410
+ah conversions can be done, but this is a
+basic approach of converting a schema into
+
+56
+00:06:24,410 --> 00:06:32,270
+a normal form .
+Now, ah the question is if ah the constraints
+
+57
+00:06:32,269 --> 00:06:36,878
+including the functional dependencies if we
+look at, then functional dependencies will
+
+58
+00:06:36,879 --> 00:06:42,550
+have to be checked on different instance.
+Now, in general it is ah difficult to check
+
+59
+00:06:42,550 --> 00:06:50,319
+a functional dependency alpha determining
+beta if the attributes alpha and the attributes
+
+60
+00:06:50,319 --> 00:06:55,168
+of beta or the attributes of beta are distributed
+between multiple relations because naturally
+
+61
+00:06:55,168 --> 00:07:01,490
+how do I check if they are true, how do I
+check that two tuples which match on alpha
+
+62
+00:07:01,490 --> 00:07:11,800
+is indeed matching on beta unless I perform
+a costly join operation. So, there objective
+
+63
+00:07:11,800 --> 00:07:18,499
+is to be able to come to designs where it
+is sufficient to test only those dependencies
+
+64
+00:07:18,499 --> 00:07:26,699
+on individual relations of the decomposition
+and with that I must be able to ensure that
+
+65
+00:07:26,699 --> 00:07:31,150
+all functional dependencies hold. So, it is
+a very interesting situation.
+
+66
+00:07:31,149 --> 00:07:36,789
+So, we are saying that we will decompose,
+get into a number of relational schema. Every
+
+67
+00:07:36,790 --> 00:07:43,218
+schema will have a number of dependencies,
+functional dependencies and those functional
+
+68
+00:07:43,218 --> 00:07:50,290
+dependencies if they involve only the attributes
+of that relational schema, they can be tested
+
+69
+00:07:50,290 --> 00:07:58,100
+very easily and if these functional dependencies
+together mean ensure that all functional dependencies
+
+70
+00:07:58,100 --> 00:08:04,999
+hold that is if the closure of this set of
+functional dependencies is same as the closure
+
+71
+00:08:04,999 --> 00:08:10,449
+of the earlier set, the original set, then
+we say that the decomposition that we have
+
+72
+00:08:10,449 --> 00:08:20,749
+achieved is dependency preserving because
+ah I can actually effectively compute. This
+
+73
+00:08:20,749 --> 00:08:30,270
+is dependency preserving because I can effectively
+compute whether every dependency is satisfied
+
+74
+00:08:30,269 --> 00:08:38,348
+by checking on every individual relation , but
+the unfortunate part of the reality is that
+
+75
+00:08:38,349 --> 00:08:47,000
+it is not always possible to achieve a Boyce-Codd
+Normal Form Decomposition which also preserves
+
+76
+00:08:47,000 --> 00:08:52,149
+the dependencies. See if there are in some
+cases will be able to do like the example
+
+77
+00:08:52,149 --> 00:09:01,039
+we saw ah just now the instructor and department,
+but it is not always possible. So, we usually
+
+78
+00:09:01,039 --> 00:09:08,730
+need another weaker form, normal form which
+is known as a third normal form and ah we
+
+79
+00:09:08,730 --> 00:09:15,860
+will subsequently look into those.
+A third normal form is ah again a relational
+
+80
+00:09:15,860 --> 00:09:24,860
+ah schema is there and for all attribute,
+for all dependencies that belong to the closure
+
+81
+00:09:24,860 --> 00:09:31,470
+of the functional dependencies, this following
+conditions must hold either alpha, determines
+
+82
+00:09:31,470 --> 00:09:38,180
+beta is trivial which is a condition which
+BCNF or alpha is a super key of R which is
+
+83
+00:09:38,179 --> 00:09:46,929
+also a condition that we say an effort or
+each attribute in beta minus alpha that is
+
+84
+00:09:46,929 --> 00:09:52,459
+right hand side difference. The left hand
+side is contained in a candidate key for R.
+
+85
+00:09:52,460 --> 00:09:59,009
+It is not very obvious as to why we need that.
+That will unfold slowly. This is the condition
+
+86
+00:09:59,009 --> 00:10:04,700
+we did not have in BCNF. So, naturally you
+can see that based on the first two conditions,
+
+87
+00:10:04,700 --> 00:10:11,959
+you can always say that if a relational schema
+is in BCNF, it necessarily is in 3NF, but
+
+88
+00:10:11,958 --> 00:10:16,299
+not that if .
+There could be some schema which is in 3 NF
+
+89
+00:10:16,299 --> 00:10:21,338
+because of the third condition where there
+exists a functional dependency. So, that beta
+
+90
+00:10:21,339 --> 00:10:31,079
+minus alpha is contained in a candidate key
+for R, but it is not in the BCNF form and
+
+91
+00:10:31,078 --> 00:10:41,159
+also you can ah note that the attributes of
+ah that are contained in beta minus alpha
+
+92
+00:10:41,159 --> 00:10:46,990
+must be in some candidate key, not necessarily
+in the same candidate key. If they exist in
+
+93
+00:10:46,990 --> 00:10:54,778
+some candidate key, then itself 3 NF condition
+will get satisfied . So, if a relation is
+
+94
+00:10:54,778 --> 00:11:01,399
+in BCNF, it is in 3NF. We have already seen
+that. So, third condition minimally relaxes
+
+95
+00:11:01,399 --> 00:11:07,980
+BCNF to ensure that we have a dependency preservation.
+We will see this more later. So, I am just
+
+96
+00:11:07,980 --> 00:11:12,769
+introducing the concept of a relaxed normal
+form here.
+
+97
+00:11:12,769 --> 00:11:21,129
+So, what is a goal of this normalization is
+if tosummarize let R be a relational scheme,
+
+98
+00:11:21,129 --> 00:11:26,458
+F is a set of functional dependencies, we
+need to decide whether the relational scheme
+
+99
+00:11:26,458 --> 00:11:36,619
+R is in a good form which means that ah it
+should not have ah unnecessary redundancy.
+
+100
+00:11:36,620 --> 00:11:45,269
+It should be impossible to ah acquire information
+by doing lossless join. So, in case it is
+
+101
+00:11:45,269 --> 00:11:52,778
+not in good form. We can convert it by decomposition
+into N relational schema, such that each schema
+
+102
+00:11:52,778 --> 00:11:58,899
+is in good form. The decomposition has a lossless
+join, so that I can get back the original
+
+103
+00:11:58,899 --> 00:12:06,578
+relation from this and preferably the decomposition
+should preserve that dependencies. So, that
+
+104
+00:12:06,578 --> 00:12:12,409
+is what we will target henceforth .
+So, when we do that let us quickly evaluate
+
+105
+00:12:12,409 --> 00:12:24,799
+as to we have seen BCNF. So, how good really
+BCNF is. So, if I have something in BCNF should
+
+106
+00:12:24,799 --> 00:12:32,378
+I really be very happy always. So, let us
+look at a relational schema. This is an information
+
+107
+00:12:32,379 --> 00:12:39,620
+relating the idea of a person, the name of
+the child and the phone number and ah naturally
+
+108
+00:12:39,620 --> 00:12:45,000
+the person, the instructor may have more than
+one phone and may have multiple children.
+
+109
+00:12:45,000 --> 00:12:50,828
+So, this is a possible instance that you can
+see though all of these belong to the same
+
+110
+00:12:50,828 --> 00:12:56,508
+instructor. He has naturally you can see that
+two children and there are ah this is here,
+
+111
+00:12:56,509 --> 00:13:02,350
+this is here. So, this is here and this is
+here. So, there are two different phone numbers.
+
+112
+00:13:02,350 --> 00:13:08,240
+So, naturally you have four possible combinations
+that you need to look at
+
+113
+00:13:08,240 --> 00:13:16,500
+So, now there is no non-trivial ah functional
+dependency in this ah relation. So, since
+
+114
+00:13:16,500 --> 00:13:21,318
+there is no non-trivial functional dependency,
+this relation naturally is in BCNF form because
+
+115
+00:13:21,318 --> 00:13:29,649
+that is the existence of non trivial dependency
+is what makes a schema not conform to the
+
+116
+00:13:29,649 --> 00:13:39,839
+BCNF form. So, there is no such. So, this
+is in BCNF form and ah now, if you look at,
+
+117
+00:13:39,839 --> 00:13:44,220
+but what did we see the key thing that we
+saw if we just go back, the key thing that
+
+118
+00:13:44,220 --> 00:13:51,290
+we saw that there is ample redundancy of data,
+the same data is entered multiple times. So,
+
+119
+00:13:51,289 --> 00:13:56,230
+the consequence of that could be insertion
+anomaly. If we want to add a phone number
+
+120
+00:13:56,230 --> 00:14:04,420
+to the same instructor, then we need to add
+two tuple because the instructor also has
+
+121
+00:14:04,419 --> 00:14:09,458
+two children. If the instructor and three
+children will need to add three and unless
+
+122
+00:14:09,458 --> 00:14:12,208
+this is maintained always, then we will have
+difficulty.
+
+123
+00:14:12,208 --> 00:14:18,909
+So, the redundancy consequences anomaly that
+we are getting into , so it could be better
+
+124
+00:14:18,909 --> 00:14:25,559
+to decompose this to say that I make this
+orthogonal. I keep the child information with
+
+125
+00:14:25,559 --> 00:14:32,068
+id and I keep the phone number information
+in the id separately. So, if I do that, then
+
+126
+00:14:32,068 --> 00:14:37,669
+I can decompose it in this manner and if I
+decompose that, this have just shown that
+
+127
+00:14:37,669 --> 00:14:42,838
+if you are dividing that table in two parts.
+So, naturally these are not required, ah neither
+
+128
+00:14:42,839 --> 00:14:51,220
+are these required. So, these are the entries
+that I get and you can convince yourself that
+
+129
+00:14:51,220 --> 00:14:54,589
+you can actually do a lossless join to get
+back the information .
+
+130
+00:14:54,589 --> 00:15:01,700
+So, BCNF not necessarily give you good designs
+and we will see later on that there are other
+
+131
+00:15:01,700 --> 00:15:07,490
+normal forms which can be used to improve
+on BCNF .
+
+132
+00:15:07,490 --> 00:15:15,560
+Now, let us for formally getting into how
+do we convert decompose relation into a third
+
+133
+00:15:15,559 --> 00:15:21,409
+normal form and how we assess that we need
+to understand more of the functional dependencies.
+
+134
+00:15:21,409 --> 00:15:27,799
+So, we will consider now a little bit of formal
+theory on them and then, develop algorithms
+
+135
+00:15:27,799 --> 00:15:35,240
+that can generate lossless join decomposition
+into BCNF and 3 NF and we will also create
+
+136
+00:15:35,240 --> 00:15:39,899
+algorithm to test if decomposition preserves
+the dependency .
+
+137
+00:15:39,899 --> 00:15:47,139
+So, just quickly to recap we have already
+introduced the closure set of a functional
+
+138
+00:15:47,139 --> 00:15:51,850
+dependencies. It is all dependencies that
+are logically implied by it. Now, the question
+
+139
+00:15:51,850 --> 00:15:58,290
+certainly is how do I give a set? How do I
+compute this closer set?
+
+140
+00:15:58,289 --> 00:16:06,860
+So, to do this we make use of three rules
+known by Armstrongs Axiom named after the
+
+141
+00:16:06,860 --> 00:16:13,700
+person who first observed them. So, the first
+rule is reflexivity which says that if beta
+
+142
+00:16:13,700 --> 00:16:19,949
+is a subset of alpha, then alpha determines
+beta. Always alpha functionally determines
+
+143
+00:16:19,948 --> 00:16:27,209
+beta. So, this is basically reflexivity you
+can see is a different way of saying ah specifying
+
+144
+00:16:27,210 --> 00:16:33,990
+about trivial dependencies. Next comes important
+thing augmentation which says that if alpha
+
+145
+00:16:33,990 --> 00:16:39,389
+determines beta, then gamma alpha where gamma
+is some set of attributes in R.
+
+146
+00:16:39,389 --> 00:16:45,579
+Then, gamma alpha will functionally determine
+gamma beta which is very easy to see because
+
+147
+00:16:45,578 --> 00:16:50,729
+alpha determines beta means two tuples who
+match on alpha will necessarily match on beta.
+
+148
+00:16:50,730 --> 00:16:56,470
+Now, if that happens and whatever is gamma
+if two tuples match on gamma and alpha, then
+
+149
+00:16:56,470 --> 00:17:01,410
+certainly they will match and gamma and beta
+because alpha determines beta tells me that
+
+150
+00:17:01,409 --> 00:17:05,949
+they will match on beta and gamma is the same
+set of attributes. So, augmentation also is
+
+151
+00:17:05,949 --> 00:17:12,120
+easy. Then, we have transitivity which we
+earlier saw also if alpha determines beta
+
+152
+00:17:12,119 --> 00:17:15,179
+and beta determines gamma, then obviously
+alpha determines gamma.
+
+153
+00:17:15,180 --> 00:17:21,659
+So, these are the foundational rules observed
+which can be made used to compute the closure
+
+154
+00:17:21,659 --> 00:17:28,370
+of the set of functional dependencies. Now,
+these rules as they say this is more for ah
+
+155
+00:17:28,369 --> 00:17:34,079
+you know understanding the theory better.
+These rules are sound as well as complete.
+
+156
+00:17:34,079 --> 00:17:42,028
+Soundness mean that if I use these rules repeatedly
+in a set of dependencies, then it generates
+
+157
+00:17:42,028 --> 00:17:47,079
+functional dependencies all of which actually
+hold. So, it will never generate a functional
+
+158
+00:17:47,079 --> 00:17:53,089
+dependency which is not correct, which will
+not hold and the second it is complete which
+
+159
+00:17:53,089 --> 00:18:00,028
+means that if I keep on using these ah rules,
+then all functional dependencies that can
+
+160
+00:18:00,028 --> 00:18:05,349
+at all hold will eventually get generated.
+So, that is a very strong result and that
+
+161
+00:18:05,349 --> 00:18:15,129
+is what leads to say the following example.
+So, when we are trying to ah compute the functional,
+
+162
+00:18:15,130 --> 00:18:19,169
+the closure of the function set of functional
+dependencies here. So, there are six attributes
+
+163
+00:18:19,169 --> 00:18:28,679
+in the set. There are six different functional
+dependencies and ah we identify some members
+
+164
+00:18:28,679 --> 00:18:35,559
+of the closure. For example, ah we can see
+that A functionally determines B and B functionally
+
+165
+00:18:35,558 --> 00:18:42,759
+determines H. So, transitivity clearly show
+that A will functionally determine H, very
+
+166
+00:18:42,759 --> 00:18:52,740
+clear. So, in the closure that must be there.
+Similarly, we can see that A functionally
+
+167
+00:18:52,740 --> 00:19:03,880
+determine C. Now, if we augment it with G,
+that is put G on both sides, then AG functionally
+
+168
+00:19:03,880 --> 00:19:12,650
+determines CG and we know that CG functionally
+determines I. So, if we combine these two
+
+169
+00:19:12,650 --> 00:19:19,429
+by transitivity, then we can get a new functional
+dependency which has AG functionally determines
+
+170
+00:19:19,429 --> 00:19:26,370
+I. So, in this manner you can do the next
+one also and you can try to infer several
+
+171
+00:19:26,369 --> 00:19:33,099
+other functional dependencies that can be
+inferred by different applications of the
+
+172
+00:19:33,099 --> 00:19:37,399
+armstrongs axiom, the three rules in any multiple
+different ways.
+
+173
+00:19:37,400 --> 00:19:44,679
+So, to get the closure what we need to do
+is, now very simple is certainly we will have
+
+174
+00:19:44,679 --> 00:19:51,410
+a repetitive algorithm to get the closure.
+The first algorithm will start with the set
+
+175
+00:19:51,410 --> 00:19:56,409
+of functional dependencies that we have. So,
+the closure must include the given set of
+
+176
+00:19:56,409 --> 00:20:01,620
+functional dependencies. So, F plus must have
+F. So, let us start with initial value of
+
+177
+00:20:01,619 --> 00:20:07,278
+F plus as F, then for every functional dependency
+is F plus. This is what we keep on repeating.
+
+178
+00:20:07,278 --> 00:20:13,308
+Look at the outer loop, every functional dependency
+that we have. F plus now will apply reflexivity
+
+179
+00:20:13,308 --> 00:20:20,369
+and augmentation and add the resulting functional
+dependency in F plus. It is possible that
+
+180
+00:20:20,369 --> 00:20:25,500
+the same functional dependency gets generated
+and added multiple times does not matter.
+
+181
+00:20:25,500 --> 00:20:29,700
+F plus is a set. It will naturally eliminate
+duplicates.
+
+182
+00:20:29,700 --> 00:20:37,159
+Then, for each pair of functional dependencies
+because reflexivity and augmentation applies
+
+183
+00:20:37,159 --> 00:20:42,778
+to one functional dependency only, but transitivity
+applies to two functional dependencies. So,
+
+184
+00:20:42,778 --> 00:20:47,880
+for every pair of functional dependencies,
+we check whether they can be combined by transitivity.
+
+185
+00:20:47,880 --> 00:20:55,210
+If they do, then the transitive closure of
+the transitive functional dependency that
+
+186
+00:20:55,210 --> 00:21:01,450
+arise out of that is also added to F plus
+and mind you more and more functional dependencies
+
+187
+00:21:01,450 --> 00:21:08,100
+you add, there are more and more opportunities
+to apply the Armstrongs Axiom rules and newer
+
+188
+00:21:08,099 --> 00:21:13,779
+functional dependencies will continue to get
+added, but eventually you reach a point where
+
+189
+00:21:13,779 --> 00:21:22,509
+F plus does not change any further and when
+that is achieved, we know that the functional,
+
+190
+00:21:22,509 --> 00:21:26,710
+the closure of the functional dependencies
+have been obtained and that is our final set
+
+191
+00:21:26,710 --> 00:21:38,000
+.
+We can also observe that ah based on the rules
+
+192
+00:21:38,000 --> 00:21:45,390
+of ah Armstrong, the Armstrongs Axioms we
+can also generate lot of derived rules. Some
+
+193
+00:21:45,390 --> 00:21:53,690
+of those are shown here. For example, if A
+determines, if alpha determines beta holds
+
+194
+00:21:53,690 --> 00:21:59,690
+and if alpha determines gamma, that also holds,
+then alpha determines beta and gamma together.
+
+195
+00:21:59,690 --> 00:22:03,700
+This is called the union set. So, if there
+are two functional dependencies which are
+
+196
+00:22:03,700 --> 00:22:11,210
+the same left hand side set of attribute,
+then we can take the union of their right
+
+197
+00:22:11,210 --> 00:22:16,789
+hand side attributes and that functional dependency
+will hold. Ibviously, it is trivial to prove
+
+198
+00:22:16,789 --> 00:22:22,440
+this.
+If alpha determines beta gamma, then alpha
+
+199
+00:22:22,440 --> 00:22:27,450
+determines beta holds and alpha determines
+gamma holds. This is called decomposition.
+
+200
+00:22:27,450 --> 00:22:32,340
+So, kind of the other side of the union which
+also is trivial because alpha determines beta.
+
+201
+00:22:32,339 --> 00:22:37,579
+Gamma says if two tuples match on alpha, they
+match on beta as well as gamma attributes.
+
+202
+00:22:37,579 --> 00:22:42,089
+So, obviously you take the first part, you
+get alpha determines beta. You take the second
+
+203
+00:22:42,089 --> 00:22:47,609
+part of the observation, you get alpha determines
+gamma. So, that is a composition rule. The
+
+204
+00:22:47,609 --> 00:22:52,250
+third is interesting. It is called the pseudo
+transitivity which says that alpha determines
+
+205
+00:22:52,250 --> 00:23:01,269
+beta if that holds and gamma beta determines
+delta if that holds, then alpha gamma will
+
+206
+00:23:01,269 --> 00:23:10,509
+determine delta which is not difficult to
+get because if this holds, then I can augment
+
+207
+00:23:10,509 --> 00:23:19,898
+gamma on both sides. I get beta gamma and
+then, I have given ah beta gamma determines
+
+208
+00:23:19,898 --> 00:23:28,709
+delta. So, if I combine these two in terms
+of transitivity, I get alpha gamma determining
+
+209
+00:23:28,710 --> 00:23:32,159
+delta.
+So, this is called pseudo transitivity because
+
+210
+00:23:32,159 --> 00:23:37,890
+here you are adding another attribute in the
+transitivity. So, often times it becomes easier
+
+211
+00:23:37,890 --> 00:23:42,288
+to make use of these additional rules to quickly
+get to the closer set .
+
+212
+00:23:42,288 --> 00:23:52,089
+So, given a set of attributes we also compute
+the closure of a set of attributes. This is
+
+213
+00:23:52,089 --> 00:23:57,908
+a second concept we have seen how to give
+the set of functional dependencies, how to
+
+214
+00:23:57,909 --> 00:24:04,110
+compute the closure of the functional dependencies.
+Now, we are given a set of attributes and
+
+215
+00:24:04,109 --> 00:24:10,379
+we want to define the closure of this set
+of functional, this set of attributes under
+
+216
+00:24:10,380 --> 00:24:17,400
+the set of functional dependencies and as
+ah the closure of functional dependencies
+
+217
+00:24:17,400 --> 00:24:25,330
+F is denoted by F plus, the closure of a set
+of attributes alpha under F is denoted by
+
+218
+00:24:25,329 --> 00:24:38,039
+alpha plus. So, this set of closure attributes
+of alpha is a set of attributes that are functionally
+
+219
+00:24:38,039 --> 00:24:47,319
+determined by alpha under F. So, all set of
+attributes that are functionally determined
+
+220
+00:24:47,319 --> 00:24:54,730
+by alpha under the set of functional dependencies
+is member of alpha plus.
+
+221
+00:24:54,730 --> 00:25:02,360
+So, the following simple algorithm can compute
+the closure naturally. Initially let us say
+
+222
+00:25:02,359 --> 00:25:08,409
+the result is the final closure set. So, initially
+we can say that result can be initialized
+
+223
+00:25:08,410 --> 00:25:13,600
+with alpha because certainly the whole of
+alpha would necessarily belong to alpha plus
+
+224
+00:25:13,599 --> 00:25:24,139
+by the reflexivity condition, then for each
+functional dependency beta determining gamma,
+
+225
+00:25:24,140 --> 00:25:30,700
+we check if beta is a subset of the result.
+If beta is a subset of the current set of
+
+226
+00:25:30,700 --> 00:25:39,500
+attributes that form result which mean that
+alpha functionally determines beta, it will
+
+227
+00:25:39,500 --> 00:25:46,080
+have to because result is the set of all attributes
+that alpha functionally determines. So, if
+
+228
+00:25:46,080 --> 00:25:54,229
+beta is a subset of the result, then necessarily
+alpha functionally determines beta is a consequence
+
+229
+00:25:54,230 --> 00:26:02,380
+of this and we know that this is their beta
+functionally determines gamma combined by
+
+230
+00:26:02,380 --> 00:26:05,539
+transitivity.
+So, I know alpha functionally determines gamma.
+
+231
+00:26:05,538 --> 00:26:09,210
+If function alpha functionally determines
+gamma, then it must get into the result and
+
+232
+00:26:09,210 --> 00:26:15,259
+this is exactly what the statement is saying
+that take result and add alpha, add gamma,
+
+233
+00:26:15,259 --> 00:26:22,259
+the set of attributes gamma to the result.
+How long should you do that? Naturally you
+
+234
+00:26:22,259 --> 00:26:29,840
+will do that as long as over a full iteration
+of functional dependencies in F, if there
+
+235
+00:26:29,840 --> 00:26:34,319
+is no change to the result, then you know
+that all future iterations will have no change.
+
+236
+00:26:34,319 --> 00:26:39,750
+So, you reach a fixed point and you declare
+that the closure of the set of attributes
+
+237
+00:26:39,750 --> 00:26:46,288
+have been obtained.
+Now, this closure information is very ah interesting
+
+238
+00:26:46,288 --> 00:26:53,319
+and we just show an example here based on
+the same set of attributes and same set of
+
+239
+00:26:53,319 --> 00:26:57,039
+functional dependencies.
+So, we are trying to find the closure of the
+
+240
+00:26:57,039 --> 00:27:04,808
+set of attributes AG. So, AG plus initially
+it will be AG. Now, ah since A functionally
+
+241
+00:27:04,808 --> 00:27:14,970
+determines C, so given that I can say that
+C will get included in this set in the same
+
+242
+00:27:14,970 --> 00:27:20,589
+iteration. If I look at A functionally determines
+B, so B will get included in this set. So,
+
+243
+00:27:20,589 --> 00:27:31,609
+after this first iterative loop I will have
+the result as ABCG. If ABCG is there and I
+
+244
+00:27:31,609 --> 00:27:37,089
+am looking at the next iteration, then CG
+functionally determines H. So, H comes into
+
+245
+00:27:37,089 --> 00:27:47,980
+the set because CG is a subset of that I comes
+into the set because CG functional determines
+
+246
+00:27:47,980 --> 00:27:56,921
+I and at this point, it eventually ends in
+this case. In this particular example, you
+
+247
+00:27:56,921 --> 00:28:02,558
+can see that all attributes have got included.
+So, you can see that it immediately gives
+
+248
+00:28:02,558 --> 00:28:08,960
+you another information as a byproduct of
+the closure that closure of AG is all attributes
+
+249
+00:28:08,960 --> 00:28:15,110
+which mean that AG is a key. It has to be
+a key because AG functionally determines all
+
+250
+00:28:15,109 --> 00:28:18,500
+attributes now.
+So, what is the meaning of AG plus being this?
+
+251
+00:28:18,500 --> 00:28:27,409
+So, if the meaning of this is AG functionally
+determines the set of attribute ABCGHI, right
+
+252
+00:28:27,409 --> 00:28:36,500
+, so we will see that this closure set has
+a lot ah of valuable information in this.
+
+253
+00:28:36,500 --> 00:28:44,819
+So, we can say that AG is a candidate key
+and ah because of this, we can also check
+
+254
+00:28:44,819 --> 00:28:50,089
+whether AG is a super key or not. All that
+we need to do is drop some member from AG,
+
+255
+00:28:50,089 --> 00:28:57,649
+we drop G and check whether a functional determines
+R which means we check whether A plus is equal
+
+256
+00:28:57,650 --> 00:29:05,720
+to R or not. We check we drop a from a g and
+check whether G functionally determines R
+
+257
+00:29:05,720 --> 00:29:12,960
+which means G plus has to be equal to R and
+by that we can easily determine whether the
+
+258
+00:29:12,960 --> 00:29:19,259
+set of attributes is a key or not .
+So, there are several ways. The attribute
+
+259
+00:29:19,259 --> 00:29:24,759
+closure can be used as we have just seen.
+It helps you determine whether something is
+
+260
+00:29:24,759 --> 00:29:31,558
+a super key. We can check for ah ah testing
+functional dependencies because if we have
+
+261
+00:29:31,558 --> 00:29:36,720
+to check whether a functional dependency alpha
+determines beta hold, all that we will have
+
+262
+00:29:36,720 --> 00:29:42,950
+to do is to compute the closure of the set
+of attributes alpha that is alpha plus and
+
+263
+00:29:42,950 --> 00:29:48,139
+check whether beta is a subset of that. If
+it is, then certainly holds. If it is not,
+
+264
+00:29:48,138 --> 00:29:55,479
+then it does not hold. So, it is simple and
+useful test that can be made use of. So, it
+
+265
+00:29:55,480 --> 00:30:03,190
+can also be used in computing the closure
+of F that for example, for every subset gamma
+
+266
+00:30:03,190 --> 00:30:10,759
+of R, if we find gamma plus that is a closure
+of the set of attributes of gamma and then,
+
+267
+00:30:10,759 --> 00:30:18,179
+for each subset of gamma plus, we know that
+there is a functional dependency gamma determining
+
+268
+00:30:18,179 --> 00:30:23,970
+S which is just is the same statement being
+made in you know or in different forms and
+
+269
+00:30:23,970 --> 00:30:29,808
+ah the closure of attributes is a very nice
+concept which ah help you play around in this
+
+270
+00:30:29,808 --> 00:30:34,329
+multiple ways and we will see subsequently
+many of the algorithms for normalization.
+
+271
+00:30:34,329 --> 00:30:43,379
+How they make effective use of this closure
+set, notion of both closure of ah functional
+
+272
+00:30:43,380 --> 00:30:50,120
+dependencies and in very practical implementation
+algorithms, the closure of attributes. So,
+
+273
+00:30:50,119 --> 00:30:55,459
+to summarize this module, we have discussed
+ah issues for, issues in the good design in
+
+274
+00:30:55,460 --> 00:31:01,590
+the context of functional dependencies and
+in the process, we have also extended the
+
+275
+00:31:01,589 --> 00:31:08,220
+theory of functional dependencies and we will
+continue it this in the next module to get
+
+276
+00:31:08,220 --> 00:31:12,409
+more insight into the algorithms that actually
+work with the functional dependencies .
+

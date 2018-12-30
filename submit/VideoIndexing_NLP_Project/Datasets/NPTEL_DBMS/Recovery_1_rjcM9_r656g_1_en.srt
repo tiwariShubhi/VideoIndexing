@@ -1,0 +1,2124 @@
+﻿1
+00:00:14,490 --> 00:00:21,589
+Welcome, to module - 36 of Database Management
+Systems. In this module and the next, we will
+
+2
+00:00:21,589 --> 00:00:29,300
+talk about recovery in databases.
+In the last week, ah we have talked at length
+
+3
+00:00:29,300 --> 00:00:36,299
+in terms of ah the transactions and the concurrency
+control and we will see how the acid properties
+
+4
+00:00:36,299 --> 00:00:42,169
+of the transaction can be fulfilled ah using
+the different recovery schemes.
+
+5
+00:00:42,170 --> 00:00:48,500
+To specifically we will try to understand
+the different sources of failure and ah how
+
+6
+00:00:48,500 --> 00:00:55,710
+the recovery can be facilitated by different
+storage structures particularly ah those ah
+
+7
+00:00:55,710 --> 00:01:03,109
+different models of volatile and nonvolatile
+ah storages and ah we will take a look into
+
+8
+00:01:03,109 --> 00:01:09,769
+recovery schemes that are based on logging
+mechanism and ah for this module we will focus
+
+9
+00:01:09,769 --> 00:01:16,170
+only on single transactions. So, these are
+the ah topics ah that will cover.
+
+10
+00:01:16,170 --> 00:01:23,280
+So, we ah, what we have looked at is ah all
+database writes and reads are within a transaction
+
+11
+00:01:23,280 --> 00:01:28,728
+and transactions ah must satisfy the ACID
+properties and ah in terms of the concurrency
+
+12
+00:01:28,728 --> 00:01:33,670
+control we have already seen that concurrency
+in a controlled guarantees ah isolation of
+
+13
+00:01:33,670 --> 00:01:40,728
+transactions and in ah in a certain way it
+contributes to achieving ah maintaining consistency.
+
+14
+00:01:40,728 --> 00:01:47,438
+Application programs are heavily responsible
+for guaranteeing consistency, but ah to really
+
+15
+00:01:47,438 --> 00:01:53,118
+guaranty the atomicity and durability of the
+data that the transactions reads and write
+
+16
+00:01:53,118 --> 00:01:58,099
+the recovery sub system is required and it
+also contributes to the consistency property.
+
+17
+00:01:58,099 --> 00:02:03,769
+So, let us look at ah if we are talking about
+recovery and the phase of failure. So, let
+
+18
+00:02:03,769 --> 00:02:09,069
+us look at what are the ah generic types of
+failures that can happen one is the type transactions
+
+19
+00:02:09,069 --> 00:02:14,829
+can fail. A transaction can fail due to logical
+error due to some internal error or it might
+
+20
+00:02:14,830 --> 00:02:20,060
+fail due to some ah system error. So, that
+ah the system must terminate the transaction,
+
+21
+00:02:20,060 --> 00:02:24,691
+we have talked about ah several situations
+where deadlock might happen and the transaction
+
+22
+00:02:24,691 --> 00:02:30,789
+needs to be rolled back ah that is a kind
+of ah transaction failure error.
+
+23
+00:02:30,789 --> 00:02:35,379
+The second possible error can happen if there
+is a crash in the system. A system can crash
+
+24
+00:02:35,379 --> 00:02:41,919
+due to hardware failure power failure software
+failure. So, um ah we try to make fail stop
+
+25
+00:02:41,919 --> 00:02:49,789
+assumptions that ah nonvolatile contents are
+assumed to be eh corrupted and ah database
+
+26
+00:02:49,789 --> 00:02:55,159
+systems consequently have to involve a number
+of integrity checks to prevent the corruption
+
+27
+00:02:55,159 --> 00:02:59,049
+of data.
+And, ah the third broad category of failures
+
+28
+00:02:59,050 --> 00:03:04,730
+happen with disk failure a disk might itself
+fail it is ah it is hardware may fail the
+
+29
+00:03:04,729 --> 00:03:11,729
+head may crash ah and when that ah happens
+then the destruction is assumed to be detectable
+
+30
+00:03:11,729 --> 00:03:16,689
+we must be able to detect ah such failures.
+Ah there are checksums and other mechanisms
+
+31
+00:03:16,689 --> 00:03:21,509
+for detecting failures, but broadly these
+are the three types of ah failures that a
+
+32
+00:03:21,509 --> 00:03:28,189
+ba database system can go through.
+So, in view of that ah ifs one or more of
+
+33
+00:03:28,189 --> 00:03:33,960
+this failures happen then we need ah mechanisms
+to recover from that let us consider a very
+
+34
+00:03:33,960 --> 00:03:40,200
+simple ah situation of a transaction which
+ah we saw ah earlier to that a transaction
+
+35
+00:03:40,199 --> 00:03:45,709
+T i transfers ah dollar 50 from account A
+to account B and therefore, two updates have
+
+36
+00:03:45,710 --> 00:03:52,300
+to happen; A has to get debited and B has
+to get credited. So, the transaction T i requires
+
+37
+00:03:52,300 --> 00:03:58,570
+updates to A and B that are happening that
+must be written that must be output to the
+
+38
+00:03:58,569 --> 00:04:03,359
+database in a permanent manner.
+So, if failure may occur ah after one of this
+
+39
+00:04:03,360 --> 00:04:07,450
+modifications have happened and before both
+of them are made, so that is one possibility.
+
+40
+00:04:07,449 --> 00:04:15,429
+One possibility is we can get we have modified
+the database without ah ensuring that the
+
+41
+00:04:15,430 --> 00:04:19,650
+transaction will necessarily commit, but the
+database has been checked transaction may
+
+42
+00:04:19,649 --> 00:04:24,339
+not have committed. So, that will leave the
+database inconsistent because the transaction
+
+43
+00:04:24,339 --> 00:04:31,399
+will have to be rolled back or it may so happen
+that ah database has not been modified and
+
+44
+00:04:31,399 --> 00:04:38,318
+ah the, but ah the transaction has committed.
+So, ah if the failure occurs at that ah point
+
+45
+00:04:38,319 --> 00:04:44,430
+then there will be some lost updates. So,
+the recovery algorithms ah strategy has to
+
+46
+00:04:44,430 --> 00:04:50,319
+primarily take care of two things; one is
+during the normal transactions it has to ah
+
+47
+00:04:50,319 --> 00:04:56,449
+collect enough informations so that the recovery
+from failures can be done. So, one is what
+
+48
+00:04:56,449 --> 00:05:01,080
+we need to do while in normal transaction
+is going on because during that time we need
+
+49
+00:05:01,079 --> 00:05:06,019
+to have enough data so that we can recovery
+in the phase of failure and the second ah
+
+50
+00:05:06,019 --> 00:05:12,098
+set of actions are actions that can once a
+failure has happened to recover the database
+
+51
+00:05:12,098 --> 00:05:18,228
+so that we can ah go back to a consistent
+state and ensure the atomicity consistency
+
+52
+00:05:18,228 --> 00:05:24,579
+and durability of the transaction.
+So, before we get into ah these ah discussions
+
+53
+00:05:24,579 --> 00:05:30,728
+of ah the different ah recovery algorithms
+let us quickly look into this storage model
+
+54
+00:05:30,728 --> 00:05:33,771
+that we are assuming.
+We know there is volatile storage which we
+
+55
+00:05:33,771 --> 00:05:38,978
+have discussed about that we know this ah
+nonvolatile storage which ah disk, tape, flash
+
+56
+00:05:38,978 --> 00:05:45,608
+and all that volatile storage ah disappears
+ah whenever system crashes and ah non-volatile
+
+57
+00:05:45,608 --> 00:05:50,378
+storage is supposed to survive the system
+crash, but it may still fail it may still
+
+58
+00:05:50,379 --> 00:05:54,439
+cause loss of data.
+So, we also consider a third kind of storage
+
+59
+00:05:54,439 --> 00:05:59,220
+which is ah notionally known as stable storage.
+It is called a mythical form of storage ah
+
+60
+00:05:59,220 --> 00:06:04,610
+where we assume that it will survive all kinds
+of failures. Now, naturally this ah in in
+
+61
+00:06:04,610 --> 00:06:09,840
+ideality this can never happen, but we can
+approximate this by maintaining multiple copies
+
+62
+00:06:09,839 --> 00:06:16,068
+ah of the same data on distinct non-volatile
+media and ah the stables storage would be
+
+63
+00:06:16,069 --> 00:06:22,509
+assumed to be one available component ah in
+the database system for making the recovery
+
+64
+00:06:22,509 --> 00:06:27,129
+systems work.
+So, as you can see in this ah ah ah diagram
+
+65
+00:06:27,129 --> 00:06:33,840
+below. So, we are trying to ah explain more
+of what is the stable storage. So, this is
+
+66
+00:06:33,839 --> 00:06:40,349
+a on the secondary storage so, you have a
+stable database. So, kind of approximates
+
+67
+00:06:40,350 --> 00:06:45,370
+that it will never fail ah whereas, ah on
+a on a routine basis things happen in terms
+
+68
+00:06:45,370 --> 00:06:52,509
+of database buffers which are basically volatile
+ah databases, the volatile memory.
+
+69
+00:06:52,509 --> 00:07:02,800
+So, now the fig so, what we do is ah we maintain
+ah multiple copies of each block of data and
+
+70
+00:07:02,800 --> 00:07:09,069
+keep them on separate disk. So, even if one
+disk fail that is possible to ah recover from
+
+71
+00:07:09,069 --> 00:07:14,129
+other disk. There are different kinds of ah
+the multiplicity that can be done even it
+
+72
+00:07:14,129 --> 00:07:21,028
+can be ah located at a remote location so
+that ah even if there is a fire or flooding
+
+73
+00:07:21,028 --> 00:07:26,310
+the database can be recovered, but ah in in
+principle will assume that ah the multiple
+
+74
+00:07:26,310 --> 00:07:29,288
+copies are not all copies can fail at the
+same time.
+
+75
+00:07:29,288 --> 00:07:34,818
+So, it can ah now this will ensure the data
+has already been written then it is guarantee
+
+76
+00:07:34,819 --> 00:07:40,080
+that it will stay we have talked about rate
+systems, but what happens if the failure ah
+
+77
+00:07:40,079 --> 00:07:46,961
+ba happens during the data transfer where
+the result is still in ah transient ah state
+
+78
+00:07:46,961 --> 00:07:52,639
+in it will live with transient copies. So,
+block transfer ah in general can ah result
+
+79
+00:07:52,639 --> 00:07:58,848
+in either in successful completion or in partial
+failure, where the destination block actually
+
+80
+00:07:58,848 --> 00:08:04,759
+has in current information or total failure
+where destination block could not be updated
+
+81
+00:08:04,759 --> 00:08:10,560
+at all. So, to protect ah against the media
+again such ah failures ah during the data
+
+82
+00:08:10,560 --> 00:08:15,999
+transfer ah the one possible solution could
+be ah and and we assume that there are only
+
+83
+00:08:15,999 --> 00:08:22,160
+two copies ah of each block it could you could
+have multiple copies to give you more ah resiliency
+
+84
+00:08:22,160 --> 00:08:25,439
+against failure.
+So, if we have two copies and the strategy
+
+85
+00:08:25,439 --> 00:08:32,028
+could go like this that ah write the information
+ah onto the first ah physical block then ah
+
+86
+00:08:32,028 --> 00:08:36,610
+once that is successfully completed then you
+write the same information on the second ah
+
+87
+00:08:36,610 --> 00:08:43,629
+or physical block and ah the output is completed
+only after the second ah write ah the physical
+
+88
+00:08:43,629 --> 00:08:47,519
+block is successfully completed. So, that
+is what we need to guarantee.
+
+89
+00:08:47,519 --> 00:08:53,980
+Now, to protect against that ah ba that ah
+happens if during this transfer with during
+
+90
+00:08:53,980 --> 00:09:00,159
+this write if some ah ah output operation
+is some failure happens. So, to recover from
+
+91
+00:09:00,159 --> 00:09:03,828
+that you need to find out ah what are the
+blocks which are inconsistent, because we
+
+92
+00:09:03,828 --> 00:09:09,528
+have kept two or more copies so ah ba you
+have to compare two copies of ah every disk
+
+93
+00:09:09,528 --> 00:09:15,149
+block have kept them at separate disks and
+see which one ah whether ah there has been
+
+94
+00:09:15,149 --> 00:09:19,750
+some inconsistence. Now, this is ah this is
+theoretically ok, but this is very expensive
+
+95
+00:09:19,750 --> 00:09:24,289
+because there are so many different blocks.
+So, what is typically done a better solution
+
+96
+00:09:24,289 --> 00:09:29,459
+is ah while you are actually doing the disk
+write where you are actually doing the output
+
+97
+00:09:29,460 --> 00:09:37,339
+on a ah in the process of doing the output
+then you record the these writes on a nonvolatile
+
+98
+00:09:37,339 --> 00:09:43,240
+storage say non-volatile ram or special area
+of the disk and use this information during
+
+99
+00:09:43,240 --> 00:09:48,899
+the recovery to find the blocks that are inconsistent
+and only compare those copies. So, that will
+
+100
+00:09:48,899 --> 00:09:54,100
+be naturally much faster because ah memory
+as you know is is much ah faster to access
+
+101
+00:09:54,100 --> 00:09:59,430
+than the disk and ah these are strategy which
+is typically used in the rate system we have
+
+102
+00:09:59,429 --> 00:10:04,219
+discussed earlier.
+So, if either of ah either copy of a inconsistent
+
+103
+00:10:04,220 --> 00:10:09,920
+block is detected to have some kind of an
+error, to checksums to the error then over
+
+104
+00:10:09,919 --> 00:10:15,069
+write by the other copy, but if both ah have
+no error, but are different then overwrite
+
+105
+00:10:15,070 --> 00:10:20,000
+the second one by the first one. So, this
+will ah make sure that ah you always have
+
+106
+00:10:20,000 --> 00:10:23,889
+even if there is a transient failures you
+can take care of the that you know what is
+
+107
+00:10:23,889 --> 00:10:27,159
+wrong and you can take care of and correct
+that.
+
+108
+00:10:27,159 --> 00:10:32,379
+Now, to make this ah kind of a mechanism work
+we ah you resort we have very simple module
+
+109
+00:10:32,379 --> 00:10:39,319
+of ah data access. We assume that there are
+physical blocks ah on the disk that ah that
+
+110
+00:10:39,318 --> 00:10:44,278
+are on the non-volatile permanent storage
+and that is where finally, you want your data
+
+111
+00:10:44,278 --> 00:10:49,600
+to decide, but you also assume that ah there
+are system buffer blocks; the blocks that
+
+112
+00:10:49,600 --> 00:10:54,379
+we decide temporarily in the main memory,
+so, they can be used in the in transit.
+
+113
+00:10:54,379 --> 00:11:01,220
+So, when you move the block between the disk
+and the main memory that is ah initiated by
+
+114
+00:11:01,220 --> 00:11:08,269
+an input operation. So, you are doing an input
+so, all the physical block a that is disk
+
+115
+00:11:08,269 --> 00:11:14,028
+a block physical block B is brought into the
+main memory or you have a output operation
+
+116
+00:11:14,028 --> 00:11:20,100
+which transfers first a buffer block B to
+the disk and replaces the appropriate ah physical
+
+117
+00:11:20,100 --> 00:11:26,000
+block there. So, these operations when you
+move ah physical blocks with the disk you
+
+118
+00:11:26,000 --> 00:11:32,129
+call them as input and output. So, and we
+are making some assumption that ah the data
+
+119
+00:11:32,129 --> 00:11:36,189
+that we want to write is small enough so that
+it fits into a block otherwise there are several
+
+120
+00:11:36,190 --> 00:11:39,720
+schemes of or you you know spread you data
+over multiple blocks .
+
+121
+00:11:39,720 --> 00:11:47,560
+Now, the other part is each transaction on
+the other side is assumed to have a private
+
+122
+00:11:47,559 --> 00:11:53,388
+work area. So, in the private work area that
+transaction actually gives local copies and
+
+123
+00:11:53,389 --> 00:11:58,778
+ah these ah local copies say you have a data
+item X, so, you say that ah for transaction
+
+124
+00:11:58,778 --> 00:12:06,439
+T i the copy of that data item X is xi and
+say, B x is the block that contains ah X.
+
+125
+00:12:06,440 --> 00:12:13,570
+So, B x is the ah physical block and ah then
+you can transfer data between the transactions
+
+126
+00:12:13,570 --> 00:12:18,889
+private area and this ah buffer block in terms
+of read and write operations.
+
+127
+00:12:18,889 --> 00:12:24,669
+So, we have two kinds of operation; one is
+input output which is between the memory and
+
+128
+00:12:24,669 --> 00:12:30,229
+the physical block that is the disk and the
+other is read write operation which is between
+
+129
+00:12:30,230 --> 00:12:35,850
+the transactions private area and the system
+buffered blocks. So, the transaction must
+
+130
+00:12:35,850 --> 00:12:41,350
+perform read before accessing X for the first
+time and once it is done that it has a local
+
+131
+00:12:41,350 --> 00:12:46,610
+copy now and therefore, subsequent reads can
+happen from the local copy and the write ah
+
+132
+00:12:46,610 --> 00:12:51,110
+can be executed at any time before the transaction
+actually commits.
+
+133
+00:12:51,110 --> 00:12:59,259
+So, let us ah look at ah ah also it is a fact
+is that ah the when I want to actually output
+
+134
+00:12:59,259 --> 00:13:07,129
+the block that contains X, I mean your item
+X to be finally, written to disk the output
+
+135
+00:13:07,129 --> 00:13:12,459
+B x ah need not immediately happen after you
+write. So, you are doing it in two stages,
+
+136
+00:13:12,458 --> 00:13:17,508
+from the transactions ah private area to the
+system buffer, to the system buffer to the
+
+137
+00:13:17,509 --> 00:13:25,389
+disk. So, first is write the next is output,
+but this may not ah actually ah follow immediately
+
+138
+00:13:25,389 --> 00:13:30,659
+once the data exists in the system buffer
+it may be actually output on a at a later
+
+139
+00:13:30,659 --> 00:13:37,469
+time whenever it is then fit to do that.
+So, let us ah ah take a very quick looks schematically
+
+140
+00:13:37,470 --> 00:13:44,149
+here to make ah things some simple ah ah understandable.
+So, they are ah data items A and B on the
+
+141
+00:13:44,149 --> 00:13:49,480
+disk that we are talking of. So, if I do an
+input operation then I am actually trans and
+
+142
+00:13:49,480 --> 00:13:53,740
+this is the buffer this is the system buffer.
+So, this is kind of a common buffer where
+
+143
+00:13:53,740 --> 00:14:00,310
+you can keep data, we will see how to manage
+this ah system buffer and this is the private
+
+144
+00:14:00,309 --> 00:14:07,319
+work area of a transaction say T 1. So, to
+process of read I mean if T 1 wants to if
+
+145
+00:14:07,320 --> 00:14:16,610
+T 1 wants to read A then the that read initiation
+will bring A onto the buffer area as X and
+
+146
+00:14:16,610 --> 00:14:22,550
+then it will read X as x 1 in its private
+area, it will this is where it will do the
+
+147
+00:14:22,549 --> 00:14:28,049
+work. This is a private area where ah T 1
+will do the work and possibly it has generated
+
+148
+00:14:28,049 --> 00:14:32,919
+a write item y with which needs to go back
+to the disk. So, again we will do a write
+
+149
+00:14:32,919 --> 00:14:38,120
+to the buffer area and then at a later point
+there will be an output which will take this
+
+150
+00:14:38,120 --> 00:14:44,149
+Y back to the disk.
+So, this will ensure that ah the ah transaction
+
+151
+00:14:44,149 --> 00:14:49,980
+can after reading the transaction can independently
+ah do the write to the buffers and outputs
+
+152
+00:14:49,980 --> 00:14:55,730
+can happen independently of that either before
+that transaction commits or even after the
+
+153
+00:14:55,730 --> 00:14:58,259
+transaction commits there are difference in
+situation there are different protocols that
+
+154
+00:14:58,259 --> 00:15:03,250
+are followed and we will see through, but
+this is the basic simple model that will regularly
+
+155
+00:15:03,250 --> 00:15:06,909
+be ah used.
+So, please keep in mind we will talk about
+
+156
+00:15:06,909 --> 00:15:12,500
+ah often will talk about three areas ah work
+area the private work area of a transaction
+
+157
+00:15:12,500 --> 00:15:19,649
+this is an memory and the system buffer blocks
+where the data is the ah temporarily deciding
+
+158
+00:15:19,649 --> 00:15:26,509
+on the way of being read or on the way of
+being ah written and ah the system disk where
+
+159
+00:15:26,509 --> 00:15:31,339
+the physical block exists. And, this is the
+path way through this ah system buffer that
+
+160
+00:15:31,339 --> 00:15:37,050
+the read writes will output will happen and
+please remember that we will use the term
+
+161
+00:15:37,049 --> 00:15:41,549
+read write when it is between the private
+work area of a transaction and the system
+
+162
+00:15:41,549 --> 00:15:45,628
+buffer block and will talk about input output
+when it is between in terms of the physical
+
+163
+00:15:45,629 --> 00:15:54,600
+block with the disk
+So, the data access ah you can I have already
+
+164
+00:15:54,600 --> 00:16:00,649
+explained. So, in terms of the data access
+these are the steps that the transaction will
+
+165
+00:16:00,649 --> 00:16:13,480
+do to read or write as I have already explained.
+Now, in terms of now, let us see that ah how
+
+166
+00:16:13,480 --> 00:16:18,938
+will in the background of ah such a storage
+access how will the recovery happen and how
+
+167
+00:16:18,938 --> 00:16:24,370
+will the atomicity be guaranteed.
+So, to ensure a atomicity in the phase of
+
+168
+00:16:24,370 --> 00:16:31,759
+failure we need to output information describing
+the modifications to stable storage with input
+
+169
+00:16:31,759 --> 00:16:36,850
+modifying database itself. So, what we are
+saying that to be able to recover that ah
+
+170
+00:16:36,850 --> 00:16:42,110
+we should write ah the changes to the stable
+storage you recall that ah stable storage
+
+171
+00:16:42,110 --> 00:16:47,490
+something that is assumed to be not ah failing
+without actually modifying database.
+
+172
+00:16:47,490 --> 00:16:55,560
+Now, we do a very ah ah simple mechanism which
+is ah called a log based ah recovery mechanism.
+
+173
+00:16:55,559 --> 00:17:01,309
+So, we will first talk about this log based
+recovery mechanism what are the key concepts
+
+174
+00:17:01,309 --> 00:17:08,419
+of ah logging and ah redo undo redo kind of
+ah operations and present the actual recovery
+
+175
+00:17:08,420 --> 00:17:12,950
+algorithm. There are other alternatives also
+like shadow paging we will not discuss about
+
+176
+00:17:12,950 --> 00:17:17,640
+ah that and I would like to again remind you
+that in this ah module we are talking about
+
+177
+00:17:17,640 --> 00:17:24,250
+single ah transactions at a time, serial execution.
+In the next module we will talk about concurrency
+
+178
+00:17:24,250 --> 00:17:29,519
+of the I mean the behavior of recovery algorithms
+and in the case of concurrent transactions
+
+179
+00:17:29,519 --> 00:17:34,200
+.
+So, now let us ah talk about the log based
+
+180
+00:17:34,200 --> 00:17:39,690
+recovery mechanism. So, ma in the log based
+ah recovery mechanism you can you can see
+
+181
+00:17:39,690 --> 00:17:44,809
+this is the basic this is your stable database
+which you want to make use of, these are your
+
+182
+00:17:44,809 --> 00:17:51,928
+buffers you talked off and we will have certain
+logs the information of what have been doing
+
+183
+00:17:51,929 --> 00:17:58,380
+in terms of the log buffers and the also is
+stable log which is a log that is written
+
+184
+00:17:58,380 --> 00:18:03,500
+in the stable database. So, once we understand
+what is ah logging you will understand this,
+
+185
+00:18:03,500 --> 00:18:08,380
+but I just wanted to show you that like the
+data there are buffer copies as well as stable
+
+186
+00:18:08,380 --> 00:18:14,299
+database copies in terms of log also ah there
+will be buffer copies as well as stable ah,
+
+187
+00:18:14,298 --> 00:18:22,660
+log copies .
+So, a log is kept ah in the stable storage,
+
+188
+00:18:22,660 --> 00:18:28,680
+it is a sequence of records. So, log is basically
+a record of what and. So, it is like a if
+
+189
+00:18:28,680 --> 00:18:33,411
+am doing some task we have always every task
+I do I keep a record of what am actually be
+
+190
+00:18:33,411 --> 00:18:39,058
+doing and that is called the logging. So,
+when a transaction starts I write a log record
+
+191
+00:18:39,058 --> 00:18:45,599
+which ah puts the transaction ID say T i and
+then puts a keyword start to the log. So,
+
+192
+00:18:45,599 --> 00:18:53,349
+that indicates that the transaction T i has
+started and ah when it is about to execute
+
+193
+00:18:53,349 --> 00:19:00,678
+a write, so, ma before it has actually executed
+the write, then I write a log record which
+
+194
+00:19:00,679 --> 00:19:07,759
+ah looks like this ah which is .
+So, here if we look carefully this is ah the
+
+195
+00:19:07,759 --> 00:19:15,339
+idea of the transaction X is the data item
+that you want in to write V 1 is the current
+
+196
+00:19:15,339 --> 00:19:21,418
+value of the data item which kind of we can
+say is the old value and V 2 is the value
+
+197
+00:19:21,419 --> 00:19:27,150
+that we want to actually write. So, here you
+can see that we are clearly keeping a track
+
+198
+00:19:27,150 --> 00:19:33,850
+of what ah we are writing and in that process
+what is the original value that would get
+
+199
+00:19:33,849 --> 00:19:40,199
+changed. So, that is the main important factor
+of this logging that every with every write
+
+200
+00:19:40,200 --> 00:19:45,690
+you remember as to what value was originally
+there and what value we have actually changed
+
+201
+00:19:45,690 --> 00:19:51,240
+it to in that transaction.
+Now, in this process finally, when that the
+
+202
+00:19:51,240 --> 00:19:57,640
+transaction finishes the last statement of
+the log record is T i commit. So, that actually
+
+203
+00:19:57,640 --> 00:20:02,120
+is a meaning of committing a transaction when
+this log record is written out. So, that is.
+
+204
+00:20:02,119 --> 00:20:08,028
+So, a log will have start then different ah
+write log records and then finally, a commit
+
+205
+00:20:08,028 --> 00:20:12,519
+log record.
+So, there are basically two approaches of
+
+206
+00:20:12,519 --> 00:20:17,519
+using log one is called ah immediate database
+modification this is what ah we would follow
+
+207
+00:20:17,519 --> 00:20:23,798
+here and there is a differed database modification.
+In the immediate ah modification scheme the
+
+208
+00:20:23,798 --> 00:20:29,490
+ma it allows updates of a uncommitted transaction
+to be made to the buffer or the disk itself
+
+209
+00:20:29,490 --> 00:20:33,490
+before the transaction commit. So, before
+the transaction has committed that is before
+
+210
+00:20:33,490 --> 00:20:39,480
+the T i commit log record has been written
+at that point itself you allow the updates
+
+211
+00:20:39,480 --> 00:20:45,130
+ah of the transaction to be made to the buffer
+or the disk and ah the update log record must
+
+212
+00:20:45,130 --> 00:20:50,278
+be written before the database is actually
+written. So, you must first write the log
+
+213
+00:20:50,278 --> 00:20:57,159
+and then actual ah database item. So, and
+we assume that the log record is output directly
+
+214
+00:20:57,159 --> 00:21:02,280
+to the stable storage. So, that it is not
+there is no possibility of is getting lost.
+
+215
+00:21:02,279 --> 00:21:06,928
+Now, output of the updated blocks to disk
+storage can take place, that is the final
+
+216
+00:21:06,929 --> 00:21:11,649
+actual output this is where we have written
+the log that ok that am doing this change,
+
+217
+00:21:11,648 --> 00:21:17,769
+but the actual change we can take place any
+time before the transaction commits or even
+
+218
+00:21:17,769 --> 00:21:23,730
+after the transaction commits. If you follow
+this ah ma protocol then you say you are in
+
+219
+00:21:23,730 --> 00:21:29,360
+the immediate modification scheme and in fact,
+the order in which the blocks are output that
+
+220
+00:21:29,359 --> 00:21:34,259
+finally, written to the disk may be different
+from the order in which they were originally
+
+221
+00:21:34,259 --> 00:21:40,869
+written, but the log records the will have
+to be written before these each one of this
+
+222
+00:21:40,869 --> 00:21:46,269
+output are done .
+In the deferred modification scheme ah the
+
+223
+00:21:46,269 --> 00:21:51,369
+change updates are performed to buffer and
+disk only at the time of transaction commit
+
+224
+00:21:51,369 --> 00:21:57,308
+not any time before that. So, that simplify
+some aspects of recovery, but it has other
+
+225
+00:21:57,308 --> 00:22:01,470
+issues. So, we will not talk about this scheme,
+just know that there is an alternate scheme
+
+226
+00:22:01,470 --> 00:22:08,089
+for doing things.
+So, now formally speaking what is transaction
+
+227
+00:22:08,089 --> 00:22:13,288
+commit? A transaction commit is said transaction
+is said to have committed if it commit log
+
+228
+00:22:13,288 --> 00:22:17,898
+record is output to the stable storage. That
+is T i commit has gone to the stables stable
+
+229
+00:22:17,898 --> 00:22:23,629
+storage is the meaning of the transaction
+has been committed. Obviously, all previous
+
+230
+00:22:23,630 --> 00:22:28,390
+log records of the transactions must have
+been outputted already because that ah those
+
+231
+00:22:28,390 --> 00:22:34,320
+commit ah those outputs will have happen in
+the same order in which the actions are taken.
+
+232
+00:22:34,319 --> 00:22:39,099
+Now, the writes performed by the transaction
+may still in the buffer. So, you have transaction
+
+233
+00:22:39,099 --> 00:22:45,149
+is committed everything is done, but your
+actual writes that are performed may not have
+
+234
+00:22:45,150 --> 00:22:48,970
+been outputted. They are they may still be
+in the buffer when the transaction commits
+
+235
+00:22:48,970 --> 00:22:52,829
+and those may be output at a later point of
+time.
+
+236
+00:22:52,829 --> 00:22:58,859
+So, let us take an example here. Let us look
+at an example. So, here ah you see the log
+
+237
+00:22:58,859 --> 00:23:05,459
+records and here is the sequence of write
+and output ah A 1 is happening. So, in the
+
+238
+00:23:05,460 --> 00:23:09,941
+log record the transaction starts here. So,
+you have a log record of start, what is the
+
+239
+00:23:09,941 --> 00:23:18,039
+meaning of this? The meaning of this is transaction
+T 0 is ah trying to write A and ah the current
+
+240
+00:23:18,039 --> 00:23:23,659
+value is 1000 and it wants to change it to
+950. So, this log record is written and you
+
+241
+00:23:23,660 --> 00:23:28,820
+can see that the actual write actual write
+has not happened here, actual write is not
+
+242
+00:23:28,819 --> 00:23:36,240
+done, but it is it already has ah must like
+in the immediate database modification scheme
+
+243
+00:23:36,240 --> 00:23:42,519
+it must write the log record before actually
+ah writing the output, actually doing the
+
+244
+00:23:42,519 --> 00:23:46,398
+output or doing the write. So, ah this has
+happened here.
+
+245
+00:23:46,398 --> 00:23:53,459
+Similarly, the next one ah is another ah update
+transaction for B and ah and actual writes
+
+246
+00:23:53,460 --> 00:23:58,730
+have happened. So, which means the data has
+been written from the transactions ah private
+
+247
+00:23:58,730 --> 00:24:04,440
+work area to the system buffer and then the
+transaction has transaction T 0 has done commits.
+
+248
+00:24:04,440 --> 00:24:10,990
+So, at this point if you go up to this then
+the commit of the transaction is already completed
+
+249
+00:24:10,990 --> 00:24:15,650
+and ah another transaction T 1 starts you
+please remember that we have said that we
+
+250
+00:24:15,650 --> 00:24:21,759
+will ah we are using serial ah ma schedules
+only. So, only now another transaction can
+
+251
+00:24:21,759 --> 00:24:28,970
+commit that has started and ah that has ah
+written log record for updating C from 700
+
+252
+00:24:28,970 --> 00:24:34,429
+to 600. So, there is a write for 600 then
+T 1 has commit.
+
+253
+00:24:34,429 --> 00:24:39,169
+In the meanwhile and at this stage, in the
+meanwhile these blocks have been output. So,
+
+254
+00:24:39,169 --> 00:24:45,940
+they have actually been written the disk and
+ah you can understand that ah this block B
+
+255
+00:24:45,940 --> 00:24:52,720
+B is a block that contains the data of data
+item the updated value of data item B and
+
+256
+00:24:52,720 --> 00:25:00,538
+ah ma this B C has the updated value of data
+item C. So, you can have see that ah actually
+
+257
+00:25:00,538 --> 00:25:06,480
+these output of ah B is happening after the
+transactions is 0 has committed whereas, for
+
+258
+00:25:06,480 --> 00:25:14,538
+ah update of data you can see the ah output
+is happening af before the ah T 1 has committed.
+
+259
+00:25:14,538 --> 00:25:20,390
+So, here it is happening after the commit,
+but here it is happening before the commit.
+
+260
+00:25:20,390 --> 00:25:25,200
+So, both of these are ah permitted both of
+these are allowed in terms of the protocol
+
+261
+00:25:25,200 --> 00:25:32,120
+that ah we are following. And, you can also
+see that ah in in terms of ah the order in
+
+262
+00:25:32,119 --> 00:25:37,689
+which they were written A was written earlier,
+but A is output at a later point of time because
+
+263
+00:25:37,690 --> 00:25:42,808
+that is a different sequence in which the
+system might decide for writing the buffer
+
+264
+00:25:42,808 --> 00:25:48,759
+onto the disk .
+So, this is ah the immediate ah database modification
+
+265
+00:25:48,759 --> 00:25:54,089
+scheme through which we can write the logs.
+Now, the question is ok we have written the
+
+266
+00:25:54,089 --> 00:25:59,169
+logs. So, what is the use of the those logs?
+Naturally, the use of those logs are in terms
+
+267
+00:25:59,170 --> 00:26:05,509
+of two operations to which we say are undo
+operation and redo operation and undo operation
+
+268
+00:26:05,509 --> 00:26:13,579
+is one which ah basically undoes the operation
+ah the effect of an update. So, while ah ma
+
+269
+00:26:13,579 --> 00:26:20,028
+you have done ah you have if this is a log
+record then undoing, so, this meant that X
+
+270
+00:26:20,028 --> 00:26:25,839
+was changed it had a value V 1 and it was
+changed to V 2. If you undo that then the
+
+271
+00:26:25,839 --> 00:26:33,380
+old value comes back to this old value comes
+back to X. So, that is if I undo this ah particular
+
+272
+00:26:33,381 --> 00:26:39,440
+action the which was put in the log record
+then X will get back it is original value
+
+273
+00:26:39,440 --> 00:26:45,970
+and redo is ah doing the same thing over again
+if I redo for this log record then the value
+
+274
+00:26:45,970 --> 00:26:51,960
+of V 2 will again reset on X. So, these are
+the two simple undo and redo operations which
+
+275
+00:26:51,960 --> 00:26:57,940
+will help us achieve the ah recovery systems
+ah input.
+
+276
+00:26:57,940 --> 00:27:03,919
+So, what is meant by undo redo of transactions
+let us understand. So, when I undo a transaction
+
+277
+00:27:03,919 --> 00:27:11,120
+T i that restores the values of all data items
+updated by T i to their old values. So, the
+
+278
+00:27:11,119 --> 00:27:18,058
+values have been updated in in this ah forward
+order. So, when you go to undo you will actually
+
+279
+00:27:18,058 --> 00:27:23,058
+will have to do that in the reverse order,
+because it is quite possible that ah X ah
+
+280
+00:27:23,058 --> 00:27:29,839
+got 1 here then at a some at a some later
+point it was updated to 17 then at some later
+
+281
+00:27:29,839 --> 00:27:36,350
+point it was updated to 13. So, this this
+update possibly had happened from 0, this
+
+282
+00:27:36,351 --> 00:27:40,419
+update had happened from 1, this update had
+happened from 3. So, all those transactions
+
+283
+00:27:40,419 --> 00:27:47,120
+records are there then you going backwards.
+So, you will first restore X back to 17 because
+
+284
+00:27:47,119 --> 00:27:52,619
+this is then this back restoring back to 1
+then going back to 0, in this order it will
+
+285
+00:27:52,619 --> 00:27:56,939
+go on.
+And, ah every time ah you restore you write
+
+286
+00:27:56,940 --> 00:28:02,980
+that you write that out as a record which
+is known as ah redo redo only record. So,
+
+287
+00:28:02,980 --> 00:28:08,599
+you can see that here you are not ah trying
+to remember the original value you are just
+
+288
+00:28:08,599 --> 00:28:14,138
+ah writing the value that you have ah written
+out in terms of the undo operation that is
+
+289
+00:28:14,138 --> 00:28:20,719
+the old value and ah the going in this ah
+manner undo operation will terminate when
+
+290
+00:28:20,720 --> 00:28:27,509
+you have come across ah the beginning of this
+ah this one process, when it is complete then
+
+291
+00:28:27,509 --> 00:28:34,960
+a log record T i abort is written out which
+says that the undo is actually over. So, this
+
+292
+00:28:34,960 --> 00:28:40,460
+is the undo operation .
+For redo you said that the redo is doing the
+
+293
+00:28:40,460 --> 00:28:47,710
+transactions ah doing the same ah instructions
+of the transactions in the same manner, it
+
+294
+00:28:47,710 --> 00:28:53,789
+was done earlier. So, that unlike undo which
+goes backwards ah redo goes forward and it
+
+295
+00:28:53,789 --> 00:29:00,710
+starts from the first ah log record of this
+transaction and goes on till the end and ah
+
+296
+00:29:00,710 --> 00:29:03,419
+for this there is no separate logging for
+this operation .
+
+297
+00:29:03,419 --> 00:29:10,460
+Now, how will the undo redo operations be
+used. There are two major situations in which
+
+298
+00:29:10,460 --> 00:29:17,440
+they are used one is undo is used transactions
+roll back have to roll back during normal
+
+299
+00:29:17,440 --> 00:29:22,000
+operation. That is nothing has I mean there
+is no ah system failure or there is no data
+
+300
+00:29:22,000 --> 00:29:28,950
+disk failure anything, but ah if the transaction
+has a normal failure that it cannot complete
+
+301
+00:29:28,950 --> 00:29:33,639
+it is execution due to some logical error
+or because it has to roll back because of
+
+302
+00:29:33,638 --> 00:29:38,639
+deadlock or something, then you what you do
+you just undo the whole effect of the transaction
+
+303
+00:29:38,640 --> 00:29:45,399
+go backwards and keep on undoing. But, when
+the there is a failure ah there is a failure
+
+304
+00:29:45,398 --> 00:29:49,979
+and you have to recover from that then undo
+and redo operations both will be required
+
+305
+00:29:49,980 --> 00:29:55,630
+as we will soon see.
+So, we also need to ah deal with the case
+
+306
+00:29:55,630 --> 00:30:00,120
+where the recovery from failure while you
+are recovering from failure another failure
+
+307
+00:30:00,119 --> 00:30:05,668
+happens. So, what do you do in that case that
+is more complicated will talk about that later.
+
+308
+00:30:05,669 --> 00:30:11,059
+So, first let us discuss what happens when
+you roll back at transactions during normal
+
+309
+00:30:11,058 --> 00:30:17,079
+operation. So, let T i be the transaction.
+So, you have to naturally do the undo because
+
+310
+00:30:17,079 --> 00:30:21,619
+you have to undo the effect that it has already
+created. So, you will scan the log records
+
+311
+00:30:21,619 --> 00:30:28,329
+ah from the end and for each ah log record
+which is kind of an update like this you will
+
+312
+00:30:28,329 --> 00:30:37,028
+ah perform in update to restore the original
+value the old value and write out a redo only
+
+313
+00:30:37,028 --> 00:30:42,519
+log record or which is called ah compensation
+log record which ah says that this has been
+
+314
+00:30:42,519 --> 00:30:49,870
+undone to the value V 1 which is the original
+value of the transaction original value of
+
+315
+00:30:49,869 --> 00:30:54,509
+the data item sorry .
+Now, in going in this process backwards at
+
+316
+00:30:54,509 --> 00:31:00,408
+some point of time you will reach come across
+ah T i start ah log record when you face come
+
+317
+00:31:00,409 --> 00:31:06,330
+across that you write log record T i abort
+indicating that the undo of that transaction
+
+318
+00:31:06,329 --> 00:31:12,428
+is over. So, this is the basic ah process
+of undoing the transactions during rollback.
+
+319
+00:31:12,429 --> 00:31:16,840
+In the other case if you are recovering from
+a failure if there has been a failure then
+
+320
+00:31:16,839 --> 00:31:23,398
+you do something ah which ah needs to be understood
+carefully. So, the transaction T i needs to
+
+321
+00:31:23,398 --> 00:31:31,798
+be undone if the log contains the record start
+T i start, but it does not contain either
+
+322
+00:31:31,798 --> 00:31:38,119
+T i commit or T i abort. So, perform T i start
+you will know that it has started, but because
+
+323
+00:31:38,119 --> 00:31:44,788
+of failure it could not complete, because
+if it could complete or if before that if
+
+324
+00:31:44,788 --> 00:31:49,778
+it had to roll back because of the normal
+execution then it would have written T i commit
+
+325
+00:31:49,778 --> 00:31:55,079
+or T i abort, but because of system failure
+you could not write any one of them. So, the
+
+326
+00:31:55,079 --> 00:32:01,289
+transaction has to be rolled back .
+The other case is the case where the transaction
+
+327
+00:32:01,289 --> 00:32:08,548
+needs to be redone is when then it contains
+the record ah T i start, but in addition it
+
+328
+00:32:08,548 --> 00:32:12,788
+also contains the record T i commit or T i
+abort. So, this is the transaction which had
+
+329
+00:32:12,788 --> 00:32:18,408
+completed successfully, did the start, it
+did the commit or it rolled back the whole
+
+330
+00:32:18,409 --> 00:32:22,789
+thing happened successfully, but because of
+system failure changes have not been able
+
+331
+00:32:22,788 --> 00:32:27,339
+to take place and therefore, you will you
+have to again execute that transactions. So,
+
+332
+00:32:27,339 --> 00:32:32,109
+that is why you do a re dones. In the earlier
+case it is undone you want to undo the effect,
+
+333
+00:32:32,109 --> 00:32:38,359
+here the effects were given, but they somehow
+could not be ah made ah durable the database
+
+334
+00:32:38,359 --> 00:32:41,969
+have become inconsistent. So, you need to
+redo that whole thing.
+
+335
+00:32:41,970 --> 00:32:50,130
+So, ma it may sound ah little bit awkwardness
+that if the it contains the T i abort why
+
+336
+00:32:50,130 --> 00:32:56,580
+should you actually redo the transaction this
+is a just to keep ah things ah simple so that
+
+337
+00:32:56,579 --> 00:33:04,730
+ah you can ah just trace back the original
+history. So, you do not try to really optimize,
+
+338
+00:33:04,730 --> 00:33:10,860
+but you just trace back ah the original history
+and ah do whatever had happened in the way
+
+339
+00:33:10,859 --> 00:33:15,869
+and then ah that simplifies your algorithm
+significantly. And, then if there is a certain
+
+340
+00:33:15,869 --> 00:33:21,288
+things which ah ah have been done by the undo
+operation you also want to go through those
+
+341
+00:33:21,288 --> 00:33:27,500
+and maintain that status .
+So, here are ah some examples here ah they
+
+342
+00:33:27,500 --> 00:33:32,759
+transaction we are showing it is ah failure
+recovery action at ah every case. So, if in
+
+343
+00:33:32,759 --> 00:33:39,769
+case a the transaction has started and we
+made changes to A and B and at that time the
+
+344
+00:33:39,769 --> 00:33:44,490
+failure happens. So, naturally the start is
+there and at ah commit is not there or abort
+
+345
+00:33:44,490 --> 00:33:50,250
+is no there. So, these has to be undone. So,
+this will be undone A will get back the value
+
+346
+00:33:50,250 --> 00:33:56,390
+thousand and B we will get back the value
+2000 and to such ah record T 0, B, 2000 and
+
+347
+00:33:56,390 --> 00:34:04,999
+T 0, A 2000 that two ah compensation log records
+will be and then it T 0 abort will be written
+
+348
+00:34:04,999 --> 00:34:08,190
+.
+Now, if you look at ah second transaction
+
+349
+00:34:08,190 --> 00:34:15,280
+transaction just a second states ah of ah
+as in b then you will see that T 0 has actually
+
+350
+00:34:15,280 --> 00:34:19,700
+started and committed and T 1 has started
+after that which could not complete after
+
+351
+00:34:19,699 --> 00:34:26,138
+updating C. So, in the case of b since T 0
+has start and commit both you have to redo
+
+352
+00:34:26,139 --> 00:34:30,849
+that because you have lost all these changes
+we have to redo again and for that you do
+
+353
+00:34:30,849 --> 00:34:37,378
+not log anything and then T 1 could not complete
+because it has start and does not have the
+
+354
+00:34:37,378 --> 00:34:43,940
+ah abort or commit. So, you would log record
+for undoing it, undoing T 1 and you write
+
+355
+00:34:43,940 --> 00:34:51,269
+T 1, C, 100 and T 1, abort.
+In the third case ah ma both transaction T
+
+356
+00:34:51,269 --> 00:34:57,139
+0 and transaction T 1 has ah commit start
+and commit and both have completed. So, you
+
+357
+00:34:57,139 --> 00:35:01,699
+have to redo both of them. So, these are the
+basic ah different ah cases strategies that
+
+358
+00:35:01,699 --> 00:35:05,879
+you have in in place.
+Now, the question is if you have to do this
+
+359
+00:35:05,880 --> 00:35:11,160
+for all transactions ah when a failure happens
+and a failure may have happened say after
+
+360
+00:35:11,159 --> 00:35:18,299
+ah 1 year or ah after 8, 9, 10 months and
+so on. So, there will be a huge ah you know
+
+361
+00:35:18,300 --> 00:35:23,820
+ah set of ah redo, undo operations that you
+will have do it will run for a very long time.
+
+362
+00:35:23,820 --> 00:35:30,730
+So, what we do is ah we create something like
+a ah check pointing where we said, ok. Ah,
+
+363
+00:35:30,730 --> 00:35:36,750
+we will ah periodically choose a point of
+time where we will make sure that all updates
+
+364
+00:35:36,750 --> 00:35:43,340
+have actually been consistently put in the
+disk and ah the database is surely on a consistent
+
+365
+00:35:43,340 --> 00:35:48,420
+state and that is called check pointing.
+So, whatever is done is a at a chosen point
+
+366
+00:35:48,420 --> 00:35:52,720
+of check pointing, time of check pointing
+all updates are stopped in database. So, there
+
+367
+00:35:52,719 --> 00:35:57,959
+is no changing changes happening in all transaction
+are no new transactions are allowed what is
+
+368
+00:35:57,960 --> 00:36:03,400
+happening as. So, you make sure that all records
+that are currently residing in your buffer
+
+369
+00:36:03,400 --> 00:36:09,980
+is ah flushed on to the ah stable storage
+all modified buffer blocks which were not
+
+370
+00:36:09,980 --> 00:36:16,670
+output we have also outputted and then you
+write that this is a write a log record saying
+
+371
+00:36:16,670 --> 00:36:23,920
+the check point ah L on to the stable storage,
+where L is basically the transactions that
+
+372
+00:36:23,920 --> 00:36:27,430
+were active at the time of checkpoint in the
+transactions that have already completed you
+
+373
+00:36:27,429 --> 00:36:32,989
+do not need to remember because they have
+they are changes by the process of outputting
+
+374
+00:36:32,989 --> 00:36:38,139
+all log records and all ah modified buffer
+on to disk, you make sure that all completed
+
+375
+00:36:38,139 --> 00:36:42,259
+transactions are fully secured.
+Now, they are consistent, they are you would
+
+376
+00:36:42,260 --> 00:36:48,119
+have to, but ah those which are ah which were
+still ah continuing you keep the list and
+
+377
+00:36:48,119 --> 00:36:53,000
+write that out in terms of the checkpoint
+ah log record and take it into the stable
+
+378
+00:36:53,000 --> 00:36:56,800
+storage.
+So, during recovery what we need to consider
+
+379
+00:36:56,800 --> 00:37:02,700
+is ah we have to now we not have to go back
+to the last time the data fail we just need
+
+380
+00:37:02,699 --> 00:37:07,299
+to go back to the last time we did ah check
+pointing and when you go back to the check
+
+381
+00:37:07,300 --> 00:37:14,260
+pointing ah you already know that ah ma what
+are ah the ah transactions that are live at
+
+382
+00:37:14,260 --> 00:37:20,030
+the time of check pointing. So, you can scan
+backwards and ah ah check out ah what ah were
+
+383
+00:37:20,030 --> 00:37:27,890
+ah they had ah started. So, you need to and
+undo redo those are transactions and ah then
+
+384
+00:37:27,889 --> 00:37:34,309
+you see what are the transactions that have
+committed aborted ah have already there in
+
+385
+00:37:34,309 --> 00:37:40,690
+the output in the stable storage .
+So, some of the earlier part of the log may
+
+386
+00:37:40,690 --> 00:37:46,349
+need ah may be needed for undo operations.
+So, you continue scanning backwards till you
+
+387
+00:37:46,349 --> 00:37:49,098
+find in T i start and then you take care of
+that.
+
+388
+00:37:49,099 --> 00:37:54,400
+Let me just explain through an example. So,
+let us ah say that ah this is the checkpoint
+
+389
+00:37:54,400 --> 00:37:59,800
+where you froze everything and did not allow
+any further updates to happen and rolled back
+
+390
+00:37:59,800 --> 00:38:04,920
+all the data. So, what has happened is in
+this transaction T 1 which is committed before
+
+391
+00:38:04,920 --> 00:38:09,500
+the last checkpoint naturally there was no
+obtained pending for that. So, you have made
+
+392
+00:38:09,500 --> 00:38:15,170
+sure that all the updates in terms of the
+log as well as ah the the system buffer has
+
+393
+00:38:15,170 --> 00:38:20,230
+been written on to have been ah output on
+to the disk at the time of check pointing.
+
+394
+00:38:20,230 --> 00:38:24,280
+So, you do not remembering need to remember
+this transaction at all, so this can simply
+
+395
+00:38:24,280 --> 00:38:28,099
+be ignored.
+Now, at the checkpoint you can see that ah
+
+396
+00:38:28,099 --> 00:38:32,970
+transaction T 1 was in execution. So, certain
+things had happened. So, at the checkpoint
+
+397
+00:38:32,969 --> 00:38:39,929
+the part that has already happened the log
+records ah for that as well as the ah output
+
+398
+00:38:39,929 --> 00:38:44,659
+for that this has already been firmly put
+into that because these are checkpoints because
+
+399
+00:38:44,659 --> 00:38:49,719
+you are writing everything, but this transaction
+is still in execution. So, you will put this
+
+400
+00:38:49,719 --> 00:38:54,899
+transaction in the checkpoint log list. So,
+we will say this is ah this is the T 2 and
+
+401
+00:38:54,900 --> 00:39:01,250
+this will need to be looked at. If you so
+so, let let let us see what is you will do
+
+402
+00:39:01,250 --> 00:39:05,539
+with this.
+So, if we look at then naturally T 2 if ah
+
+403
+00:39:05,539 --> 00:39:12,420
+you have a failure at this point ah if you
+have a failure at this point ah as you have
+
+404
+00:39:12,420 --> 00:39:17,260
+here then naturally this is the last stable
+point you know where everything was written
+
+405
+00:39:17,260 --> 00:39:21,819
+to the disk in a consistent manner. So, what
+you will need to do you will have to execute
+
+406
+00:39:21,818 --> 00:39:27,730
+transaction T 2 once more to make sure that
+it is you know up to this point this being
+
+407
+00:39:27,730 --> 00:39:33,710
+done, so, you need to redo this part. Similarly,
+T 3 if you look at it started after the checkpoint
+
+408
+00:39:33,710 --> 00:39:40,269
+and it ah committed before the system failure.
+So, you need to redo that as well.
+
+409
+00:39:40,269 --> 00:39:49,389
+And, ah if you look into the T 4 if you look
+into T 4 you can see that it started before
+
+410
+00:39:49,389 --> 00:39:54,059
+the system failure of course, after the checkpoint
+and it was still running when the failure
+
+411
+00:39:54,059 --> 00:39:58,059
+happens. So, you do not know what are the
+final results of that, so, what you will need
+
+412
+00:39:58,059 --> 00:40:04,980
+to do? You will need to undo this transaction.
+So, this has no impact you can just ignore
+
+413
+00:40:04,980 --> 00:40:12,030
+these cases you have to redo the transaction
+and in this case, in case of T 4 you have
+
+414
+00:40:12,030 --> 00:40:16,410
+to undo the transaction.
+So, by check pointing and you obviously, the
+
+415
+00:40:16,409 --> 00:40:21,170
+the point you the time you choose for check
+pointing has to be judiciously done it may
+
+416
+00:40:21,170 --> 00:40:26,720
+not be very frequent and then then it will
+there be a lot of over it at the same time
+
+417
+00:40:26,719 --> 00:40:32,039
+if you do it in a in a very after a very long
+period of time then naturally you will not
+
+418
+00:40:32,039 --> 00:40:36,230
+get the benefits, but check pointing is a
+very critical feature of doing the recovery
+
+419
+00:40:36,230 --> 00:40:40,889
+in the databases.
+So, to summarize we have ah seen that ah there
+
+420
+00:40:40,889 --> 00:40:46,929
+are may be different types of failures and
+different strategies are required ah for handling
+
+421
+00:40:46,929 --> 00:40:52,919
+them and a we have also seen that ah we use
+different kinds of ah storage structures and
+
+422
+00:40:52,920 --> 00:40:57,869
+they judicious mix and then arrangement of
+these the structure can guarantee, ah recovery
+
+423
+00:40:57,869 --> 00:41:03,180
+from failures and we have taken their brief
+look into the log base recovery mechanism
+
+424
+00:41:03,179 --> 00:41:07,449
+which is efficient as well as effective and
+I will remind you that all this discussion
+
+425
+00:41:07,449 --> 00:41:09,568
+was done for serial transactions only.
+

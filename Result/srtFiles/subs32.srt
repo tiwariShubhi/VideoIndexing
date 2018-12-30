@@ -1,0 +1,2419 @@
+
+1
+00:00:01.720 --> 00:00:05.366
+In this activity we will perform
+classification in Spark is in
+
+2
+00:00:05.366 --> 00:00:06.355
+decision tree.
+
+3
+00:00:06.355 --> 00:00:10.889
+First, we will load weather
+data into DataFrame and
+
+4
+00:00:10.889 --> 00:00:13.578
+drop unused and missing data.
+
+5
+00:00:13.578 --> 00:00:16.686
+We'll then,
+create a categorical variable for
+
+6
+00:00:16.686 --> 00:00:21.100
+low humidity days and aggregate
+features used to make predictions.
+
+7
+00:00:21.100 --> 00:00:25.110
+We will then split our data
+into training and test sets.
+
+8
+00:00:26.400 --> 00:00:28.330
+And then create and
+train the decision tree.
+
+9
+00:00:29.730 --> 00:00:34.414
+Finally, we will save our
+predictions to a CSV file.
+
+10
+00:00:34.414 --> 00:00:38.635
+Let's begin, first, we'll open
+the notebook called classification.
+
+11
+00:00:38.635 --> 00:00:46.344
+The first cell contains the classes
+we need to load to run this exercise.
+
+12
+00:00:46.344 --> 00:00:47.122
+Let's run this.
+
+13
+00:00:50.152 --> 00:00:55.540
+Next we create SQL context and load
+the weather data CSV into a data frame.
+
+14
+00:00:55.540 --> 00:00:58.570
+The second cell also prints all
+the columns in this data frame.
+
+15
+00:00:59.770 --> 00:01:00.270
+Run this.
+
+16
+00:01:05.731 --> 00:01:08.923
+The third cell defines the columns
+in the weather data we will use for
+
+17
+00:01:08.923 --> 00:01:10.440
+the decision tree classifier.
+
+18
+00:01:11.460 --> 00:01:11.960
+Let's run it.
+
+19
+00:01:14.570 --> 00:01:16.710
+We will now use the column name number.
+
+20
+00:01:16.710 --> 00:01:23.030
+So, let's drop that from the data frame,
+df = df.drop Number.
+
+21
+00:01:24.960 --> 00:01:31.422
+Now, let's revolve the rows with
+missing data, df = df.na.drop.
+
+22
+00:01:33.486 --> 00:01:40.129
+Now, let's print the number of rows and
+columns in our resulting data frame,
+
+23
+00:01:40.129 --> 00:01:43.664
+df.count(), len(df.columns).
+
+24
+00:01:47.994 --> 00:01:52.800
+Next, let's create a categorical variable
+to denote if the humidity is low.
+
+25
+00:01:54.070 --> 00:01:59.793
+We'll enter binarizer = Binarizer ().
+
+26
+00:01:59.793 --> 00:02:03.663
+The first argument specifies
+a threshold value for the variable.
+
+27
+00:02:03.663 --> 00:02:09.598
+We want the categorical variable to be 1,
+if the humidity is greater than 25%.
+
+28
+00:02:09.598 --> 00:02:15.555
+So we'll enter a threshold=24.9999.
+
+29
+00:02:15.555 --> 00:02:20.820
+The next argument specifies the column to
+use to create the categorical variable.
+
+30
+00:02:20.820 --> 00:02:26.409
+We'll input,
+inputCol = relative_humidity_3pm.
+
+31
+00:02:26.409 --> 00:02:33.610
+The final argument specifies the new
+column name, outputCol = label.
+
+32
+00:02:33.610 --> 00:02:36.206
+Now, let's create a new data frame
+with this categorical variable.
+
+33
+00:02:36.206 --> 00:02:42.123
+binarizeredDF = binarizer.transform df.
+
+34
+00:02:42.123 --> 00:02:43.702
+Let's run this.
+
+35
+00:02:45.787 --> 00:02:48.774
+Let's look at the first four
+rows in this new data frame.
+
+36
+00:02:48.774 --> 00:02:54.519
+We'll run binarizedDF.select
+('relative_humidity_3pm',
+
+37
+00:02:54.519 --> 00:02:56.918
+'label').show(4).
+
+38
+00:03:00.238 --> 00:03:06.630
+The relative humidity in the first row
+is greater than 25% and the label is 1.
+
+39
+00:03:06.630 --> 00:03:10.720
+The relative humidity in the second,
+third, and fourth rows are less than 25%,
+
+40
+00:03:10.720 --> 00:03:14.060
+and the label is 0.
+
+41
+00:03:14.060 --> 00:03:20.014
+Next, let's aggregate the features we will
+use to make predictions into a single col,
+
+42
+00:03:20.014 --> 00:03:22.517
+assembler = VectorAssember( ).
+
+43
+00:03:22.517 --> 00:03:26.248
+The first argument is a list of
+the columns to be aggregated.
+
+44
+00:03:26.248 --> 00:03:31.946
+inputCols=featureColumns, and
+the second argument is the name
+
+45
+00:03:31.946 --> 00:03:38.876
+of the new column containing the
+aggregated features, outputCol=features.
+
+46
+00:03:38.876 --> 00:03:42.836
+We can create the new
+data frame by running
+
+47
+00:03:42.836 --> 00:03:47.829
+assembled=assembler.transform binarizedDF.
+
+48
+00:03:47.829 --> 00:03:49.141
+Let's run this.
+
+49
+00:03:51.707 --> 00:03:55.410
+Next we will split our data
+set into two parts, one for
+
+50
+00:03:55.410 --> 00:03:57.972
+training data and one for test data.
+
+51
+00:03:57.972 --> 00:04:03.198
+You can do this by entering (training
+
+52
+00:04:03.198 --> 00:04:11.693
+Data,
+testData)=assembled.randomSplit([0.8,
+
+53
+00:04:11.693 --> 00:04:16.602
+0.2], seed=13234).
+
+54
+00:04:16.602 --> 00:04:21.049
+We can see the size of the two
+sets by running count,
+
+55
+00:04:21.049 --> 00:04:25.818
+trainingData.count(), testData.count ().
+
+56
+00:04:28.419 --> 00:04:30.996
+Next let's create and
+train the decision tree.
+
+57
+00:04:30.996 --> 00:04:35.490
+We'll enter dt = DecisionTreeClassifier.
+
+58
+00:04:36.510 --> 00:04:41.763
+The first argument is the column we're
+trying to predict, labelCol='label'.
+
+59
+00:04:41.763 --> 00:04:46.036
+The second argument is the name
+of the column containing your
+
+60
+00:04:46.036 --> 00:04:49.989
+aggregated features,
+featuresCol='features'.
+
+61
+00:04:51.310 --> 00:04:53.880
+The third argument is
+the stopping criteria for
+
+62
+00:04:53.880 --> 00:04:58.700
+tree induction based on the maximum
+depth of the tree, maxDepth=5.
+
+63
+00:04:58.700 --> 00:05:04.135
+The fourth argument is the stopping
+criteria for tree induction based
+
+64
+00:05:04.135 --> 00:05:09.954
+on the minimum number of samples
+in a node, minInstancesPerNode=20.
+
+65
+00:05:09.954 --> 00:05:14.942
+And finally, the last argument
+specifies the impurity measure
+
+66
+00:05:14.942 --> 00:05:20.127
+used to split the nodes,
+impurity="gini", let's run this.
+
+67
+00:05:22.507 --> 00:05:25.665
+Next, we can create a model by
+training the decision tree.
+
+68
+00:05:25.665 --> 00:05:28.463
+We'll do this by executing
+it in a pipeline.
+
+69
+00:05:28.463 --> 00:05:36.020
+We'll enter pipeline=Pipeline
+(stages=[dt]).
+
+70
+00:05:36.020 --> 00:05:40.719
+We'll create them all by putting
+a training data, model =
+
+71
+00:05:40.719 --> 00:05:45.740
+pipeline.fit trainingData.
+
+72
+00:05:45.740 --> 00:05:52.695
+Let's run this Now, we can make
+predictions using our test data.
+
+73
+00:05:52.695 --> 00:05:58.520
+We'll enter predictions =
+model.transform(testData).
+
+74
+00:05:58.520 --> 00:06:02.824
+You can look at the first 10 rows
+of the prediction by running,
+
+75
+00:06:02.824 --> 00:06:07.619
+predictions.select('prediction', label')
+show(10).
+
+76
+00:06:10.232 --> 00:06:13.611
+You can see in the first ten rows,
+the prediction matches the label.
+
+77
+00:06:13.611 --> 00:06:16.595
+Now let's save our
+predictions to a CSV file.
+
+78
+00:06:16.595 --> 00:06:20.190
+In the next Spark hands-on activity
+we will evaluate the accuracy.
+
+79
+00:06:20.190 --> 00:06:25.861
+You can save it by running
+predictions.select('prediction',
+
+80
+00:06:25.861 --> 00:06:30.753
+'label').write.save(path='file File:///
+
+81
+00:06:30.753 --> 00:06:36.631
+home/cloudera/downloads/big-data-4/predic-
+tions.csv.
+
+82
+00:06:36.631 --> 00:06:40.365
+We'll specify the format to use Spark csv.
+
+83
+00:06:40.365 --> 00:06:46.101
+Format='com.databricks.spark.csv.
+
+84
+00:06:46.101 --> 00:06:49.735
+Finally, we'll enter header='true'.
+
+85
+00:06:49.735 --> 00:06:52.823
+Run this to save
+the predictions to a .csv file.
+
+1
+00:00:01.640 --> 00:00:04.850
+In this activity, we will be
+performing classification in KNIME,
+
+2
+00:00:05.900 --> 00:00:09.830
+first we will create a new workflow and
+import our weather data.
+
+3
+00:00:09.830 --> 00:00:14.990
+Next, we will remove the missing data and
+then create a categorical value for
+
+4
+00:00:14.990 --> 00:00:16.260
+the humidity measurements.
+
+5
+00:00:17.540 --> 00:00:21.490
+We will then examine summary
+statistics of the data before and
+
+6
+00:00:21.490 --> 00:00:26.710
+after the missing data was removed, and
+finally build a decision tree workflow.
+
+7
+00:00:30.203 --> 00:00:31.570
+Let's begin.
+
+8
+00:00:31.570 --> 00:00:33.450
+First, let's create a New Workflow.
+
+9
+00:00:37.330 --> 00:00:38.990
+We'll call it Classification.
+
+10
+00:00:41.650 --> 00:00:46.010
+Next, we'll import the daily weather data,
+using the File Reader node.
+
+11
+00:00:49.495 --> 00:00:56.429
+Configure the file reader node,
+to use daily_weather.csv.
+
+12
+00:00:56.429 --> 00:01:01.250
+Next, we'll add a missing value node,
+
+13
+00:01:01.250 --> 00:01:04.020
+to remove the missing values
+in the daily weather data.
+
+14
+00:01:09.872 --> 00:01:13.480
+We'll configure missing value to
+remove all the missing values.
+
+15
+00:01:21.112 --> 00:01:26.072
+Next we'll use a numeric binner node
+to create a categorical variable for
+
+16
+00:01:26.072 --> 00:01:27.595
+the humidity at 3pm.
+
+17
+00:01:29.090 --> 00:01:32.530
+We'll add the numeric binner node,
+we'll connect it to missing value.
+
+18
+00:01:32.530 --> 00:01:38.170
+We'll select the relative
+humidity 3pm column.
+
+19
+00:01:39.320 --> 00:01:45.144
+We'll create two bins,
+the first bin we'll call humidity_low.
+
+20
+00:01:49.696 --> 00:01:51.450
+And that value will go up to 25.
+
+21
+00:01:51.450 --> 00:01:56.885
+The second bin, we'll
+
+22
+00:01:56.885 --> 00:02:03.411
+call humidity_not_low.
+
+23
+00:02:03.411 --> 00:02:06.274
+We'll check the Append new column and
+
+24
+00:02:06.274 --> 00:02:10.045
+we'll call the new
+column low_humidity_day.
+
+25
+00:02:19.286 --> 00:02:23.435
+Next, we'll examine some summary
+statistics, both before, and
+
+26
+00:02:23.435 --> 00:02:26.940
+after we've removed the missing values.
+
+27
+00:02:26.940 --> 00:02:29.649
+We'll add the statistics
+node to the canvas.
+
+28
+00:02:34.914 --> 00:02:38.130
+We'll connect the first one to
+the output of the File Reader actor.
+
+29
+00:02:39.740 --> 00:02:42.590
+We'll add another one to
+the output of Numeric Binner.
+
+30
+00:02:47.550 --> 00:02:51.540
+We'll change the name of the first
+one to be BEFORE filtering.
+
+31
+00:02:55.630 --> 00:02:58.660
+And change the name of the second
+one to AFTER filtering.
+
+32
+00:03:02.440 --> 00:03:03.650
+Lets configure the first one.
+
+33
+00:03:05.650 --> 00:03:10.114
+We'll change the maximum number of
+possible values per column to 1500.
+
+34
+00:03:12.400 --> 00:03:14.090
+We'll also add all the columns.
+
+35
+00:03:18.130 --> 00:03:20.670
+Let's configure the second statistics now.
+
+36
+00:03:20.670 --> 00:03:24.210
+Again, we'll change the maximum number of
+possible values per column to 1500, and
+
+37
+00:03:24.210 --> 00:03:25.950
+we'll add all the columns.
+
+38
+00:03:29.165 --> 00:03:30.360
+Now let's run our workflow.
+
+39
+00:03:34.983 --> 00:03:38.680
+Let's view both Statistic
+nodes to compare the outputs.
+
+40
+00:03:42.971 --> 00:03:47.240
+In the BEFORE filtering statistics,
+we can see that there are missing values.
+
+41
+00:03:49.770 --> 00:03:54.519
+However, there are no missing values
+in the AFTER filtering statistics.
+
+42
+00:03:58.890 --> 00:04:02.050
+We can also compare the summary
+statistics, for different measurements,
+
+43
+00:04:02.050 --> 00:04:04.450
+to see that they are similar values.
+
+44
+00:04:04.450 --> 00:04:07.810
+For example,
+let's take a look at air_temp_9am.
+
+45
+00:04:18.505 --> 00:04:21.065
+We could see that most of
+the statistics are the same.
+
+46
+00:04:22.435 --> 00:04:24.325
+As well as the distribution of values.
+
+47
+00:04:26.365 --> 00:04:30.210
+In the AFTER filtering statistics,
+click on the Nominal tab,
+
+48
+00:04:30.210 --> 00:04:35.610
+and we'll look at the low humidity
+day categorical variable we created.
+
+49
+00:04:43.759 --> 00:04:47.719
+We can see that the samples are equally
+distributed between the two values.
+
+50
+00:04:51.140 --> 00:04:53.290
+Let's close these Statistics views.
+
+51
+00:04:54.740 --> 00:04:56.720
+Next, let's add a Column Filter node.
+
+52
+00:05:04.100 --> 00:05:07.441
+We'll connect this to
+the output of Numeric Binner.
+
+53
+00:05:07.441 --> 00:05:09.390
+Double-click to configure the node.
+
+54
+00:05:09.390 --> 00:05:15.141
+And we will exclude
+relative_humidity_9am and
+
+55
+00:05:15.141 --> 00:05:20.770
+relative_humidity_3pm columns, click OK.
+
+56
+00:05:20.770 --> 00:05:24.329
+Next, we'll add a Color Manager
+node to the canvas.
+
+57
+00:05:28.940 --> 00:05:33.850
+Will connect this to the output of Column
+Filter, double-click to configure it.
+
+58
+00:05:35.350 --> 00:05:42.450
+We will make sure the humidly_low is red,
+and humidity_not_low is blue.
+
+59
+00:05:42.450 --> 00:05:44.317
+Click OK to close.
+
+60
+00:05:44.317 --> 00:05:49.710
+Next, we'll add the Partitioning
+node to the campus.
+
+61
+00:05:54.380 --> 00:05:57.800
+We'll connect this to
+the output of Color Manager.
+
+62
+00:05:57.800 --> 00:05:58.990
+Double-click to configure.
+
+63
+00:05:58.990 --> 00:06:03.060
+We want to split the data
+into two partitions.
+
+64
+00:06:03.060 --> 00:06:05.920
+The first partition should
+have 80% of the data.
+
+65
+00:06:05.920 --> 00:06:07.890
+The second partition should have 20%.
+
+66
+00:06:07.890 --> 00:06:12.560
+To do this click on Relative[%] and
+change this to 80.
+
+67
+00:06:12.560 --> 00:06:16.870
+We'll make sure Draw randomly is selected.
+
+68
+00:06:19.030 --> 00:06:25.390
+And check Use random seed and
+change the seed to 12345.
+
+69
+00:06:25.390 --> 00:06:28.700
+Normally we would not
+specific the random seed.
+
+70
+00:06:28.700 --> 00:06:33.040
+However, since we want repeatable results,
+we use a specific seed value here.
+
+71
+00:06:34.260 --> 00:06:35.520
+Click OK to continue.
+
+72
+00:06:36.830 --> 00:06:39.770
+Next, we'll add a Decision Tree Learner
+to the work flow.
+
+73
+00:06:42.790 --> 00:06:45.950
+We'll connect this to the top
+output of the Partitioning node.
+
+74
+00:06:47.248 --> 00:06:50.580
+Double-click to configure, and
+
+75
+00:06:50.580 --> 00:06:55.090
+change the Min number of
+records per node to 20.
+
+76
+00:06:55.090 --> 00:06:56.480
+Click OK.
+
+77
+00:06:58.330 --> 00:07:03.410
+Next, we'll add a Decision Tree Predictor
+node to the canvas, and we will connect
+
+78
+00:07:03.410 --> 00:07:08.310
+the bottom output of Partitioning to
+the bottom input of the predictor.
+
+79
+00:07:09.660 --> 00:07:13.760
+Next we'll connect the output
+of Decision Tree Learner
+
+80
+00:07:13.760 --> 00:07:16.420
+to the top input of
+Decision Tree Predictor.
+
+81
+00:07:17.530 --> 00:07:19.190
+Now let's execute our workflow.
+
+82
+00:07:20.250 --> 00:07:23.000
+We can view the resulting
+classification rules
+
+83
+00:07:23.000 --> 00:07:25.190
+by right clicking on
+Decision Tree Predictor.
+
+84
+00:07:27.130 --> 00:07:32.040
+And choosing either View: Decision Tree
+View or View: Decision Tree View (simple).
+
+85
+00:07:33.800 --> 00:07:34.610
+Let's do the first one.
+
+86
+00:07:35.650 --> 00:07:39.100
+This shows the first two
+splits in our decision tree.
+
+87
+00:07:39.100 --> 00:07:41.300
+We can expand each branch
+by clicking on the plus.
+
+88
+00:07:41.300 --> 00:07:43.343
+Let's close this.
+
+89
+00:07:43.343 --> 00:07:47.910
+Now let's look at the simplified view.
+
+90
+00:07:49.980 --> 00:07:53.160
+Again, we can expand the branches to
+see the splits in the Decision Tree.
+
+91
+00:07:54.910 --> 00:07:59.250
+Close this,
+finally let's save this workflow.
+
+92
+00:08:00.310 --> 00:08:05.150
+We'll analyze the results of the Decision
+Tree model in the next KNIME Hands On.
+
+93
+00:08:05.150 --> 00:08:07.388
+Save the workflow by
+clicking on the disk icon.
+
+1
+00:00:01.160 --> 00:00:05.410
+Welcome back, we already discussing
+Classification models and techniques for
+
+2
+00:00:05.410 --> 00:00:07.030
+next few lectures.
+
+3
+00:00:07.030 --> 00:00:09.450
+Let's first define what
+the classification task is,
+
+4
+00:00:10.670 --> 00:00:15.720
+after this video you will be able
+to define what classification is.
+
+5
+00:00:15.720 --> 00:00:20.040
+Explain whether classification is
+supervised or unsupervised and
+
+6
+00:00:20.040 --> 00:00:24.660
+describe how binomial classification
+differs from multinomial classification.
+
+7
+00:00:26.250 --> 00:00:29.780
+Classification is one type of
+machine learning problems.
+
+8
+00:00:29.780 --> 00:00:33.340
+In the classification problem, the input
+data is presented to the machine learning
+
+9
+00:00:33.340 --> 00:00:39.620
+model and the task is to predict the
+target corresponding to the input data.
+
+10
+00:00:39.620 --> 00:00:44.530
+The target is a categorical variable,
+so the classification task is
+
+11
+00:00:44.530 --> 00:00:49.850
+to predict the category or
+label of the target given the input data.
+
+12
+00:00:49.850 --> 00:00:53.870
+For example, the classification
+problem illustrated in this image
+
+13
+00:00:53.870 --> 00:00:56.660
+is to predict the type of weather.
+
+14
+00:00:56.660 --> 00:01:01.540
+The target that the model has to predict
+is the weather and the possible values for
+
+15
+00:01:01.540 --> 00:01:06.490
+weather in this case is Sunny,
+Windy, Rainy, or Cloudy.
+
+16
+00:01:07.560 --> 00:01:12.127
+The input data can consist of measurements
+like temperature, relative humidity,
+
+17
+00:01:12.127 --> 00:01:16.380
+atmospheric pressure,
+wind speed, wind direction, etc.
+
+18
+00:01:17.570 --> 00:01:22.640
+So, given specific values for temperature,
+relative humidity, atmospheric pressure,
+
+19
+00:01:22.640 --> 00:01:27.570
+etc., the task for the model is to
+predict if the weather will be sunny.
+
+20
+00:01:27.570 --> 00:01:30.370
+Windy, rainy, or cloudy for the day,
+
+21
+00:01:32.230 --> 00:01:36.530
+this is what the data set might look like
+for the weather classification problem.
+
+22
+00:01:36.530 --> 00:01:41.540
+Each row is a sample with input
+variables temperature, humidity, and
+
+23
+00:01:41.540 --> 00:01:43.980
+pressure and target variable weather.
+
+24
+00:01:45.010 --> 00:01:48.580
+Each row has specific values for
+the input variables and
+
+25
+00:01:48.580 --> 00:01:50.970
+a corresponding value for
+the target variable.
+
+26
+00:01:52.000 --> 00:01:56.580
+The classification task is to predict
+the value of the target variable
+
+27
+00:01:56.580 --> 00:01:58.389
+from the values of the input variables.
+
+28
+00:02:00.090 --> 00:02:03.950
+Since a target is provided,
+we have labeled data and so
+
+29
+00:02:03.950 --> 00:02:07.470
+classification is a supervised task.
+
+30
+00:02:07.470 --> 00:02:10.680
+Recall that in a supervised task,
+the target or
+
+31
+00:02:10.680 --> 00:02:14.170
+desired output for each sample is given.
+
+32
+00:02:14.170 --> 00:02:18.440
+Note that the target variable goes
+by many names such as target,
+
+33
+00:02:18.440 --> 00:02:23.170
+label, output, class variable,
+category, and class.
+
+34
+00:02:25.040 --> 00:02:30.050
+A classification problem can be binary or
+multi-class with binary
+
+35
+00:02:30.050 --> 00:02:36.520
+classification the target variable has two
+possible values, for example yes and no.
+
+36
+00:02:36.520 --> 00:02:40.500
+With multi-class classification
+the target variable has more than
+
+37
+00:02:40.500 --> 00:02:42.320
+two possible values.
+
+38
+00:02:42.320 --> 00:02:46.425
+For example, the target can be short,
+medium and tall.
+
+39
+00:02:46.425 --> 00:02:51.805
+Multi-class classification is
+also referred to multinomial or
+
+40
+00:02:51.805 --> 00:02:53.200
+multi-label classification.
+
+41
+00:02:54.230 --> 00:02:58.600
+Remember though that the target is always
+a categorical variable in classification.
+
+42
+00:03:00.270 --> 00:03:04.270
+Some examples of binary
+classification are predicting
+
+43
+00:03:04.270 --> 00:03:09.380
+whether it will rain tomorrow or not,
+here there are two possible outcomes,
+
+44
+00:03:09.380 --> 00:03:12.450
+yes it will rain tomorrow or
+no, it will not rain tomorrow.
+
+45
+00:03:13.890 --> 00:03:18.360
+Identifying whether a credit card
+transaction is legitimate or fraudulent,
+
+46
+00:03:18.360 --> 00:03:22.660
+again, there are only two possible values
+for the target, legitimate or fraudulent.
+
+47
+00:03:23.910 --> 00:03:27.780
+Some examples of multi-class
+classification include
+
+48
+00:03:27.780 --> 00:03:31.610
+predicting what type of product
+that a customer will buy.
+
+49
+00:03:31.610 --> 00:03:34.540
+The possible values for
+the target variables would be product
+
+50
+00:03:34.540 --> 00:03:38.960
+categories such as kitchen,
+electronics, clothes, etc.
+
+51
+00:03:38.960 --> 00:03:42.580
+There is more than one
+category of products, so
+
+52
+00:03:42.580 --> 00:03:45.210
+this is a multi-class
+classification problem.
+
+53
+00:03:46.430 --> 00:03:51.530
+Another example is categorizing a tweet
+as having a positive, negative, or
+
+54
+00:03:51.530 --> 00:03:55.090
+neutral sentiment, again,
+the number of possible values for
+
+55
+00:03:55.090 --> 00:03:56.830
+the target is more than two here.
+
+56
+00:03:56.830 --> 00:04:01.250
+So, this is also a multi-class
+classification task
+
+57
+00:04:01.250 --> 00:04:03.330
+to summarize in classification,
+
+58
+00:04:03.330 --> 00:04:07.770
+the model has to predict the category
+corresponding to the input data.
+
+59
+00:04:07.770 --> 00:04:12.870
+Since the target is provided for each
+sample, classification is a supervised
+
+60
+00:04:12.870 --> 00:04:17.519
+task, the target variable is always
+categorical in classification.
+
+1
+00:00:01.120 --> 00:00:02.080
+In this lecture,
+
+2
+00:00:02.080 --> 00:00:07.490
+we will look at the decision tree model,
+a popular method used for classification.
+
+3
+00:00:07.490 --> 00:00:12.500
+After this video, you will be able to
+explain how a decision tree is used for
+
+4
+00:00:12.500 --> 00:00:14.120
+classification.
+
+5
+00:00:14.120 --> 00:00:18.650
+Describe the process of constructing
+a decision tree for classification.
+
+6
+00:00:18.650 --> 00:00:22.520
+And interpret how a decision tree comes
+up with a classification decision.
+
+7
+00:00:23.530 --> 00:00:27.520
+The idea behind decision trees for
+classification is to split the data
+
+8
+00:00:27.520 --> 00:00:33.040
+into subsets where each subset
+belongs to only one class.
+
+9
+00:00:33.040 --> 00:00:37.900
+This is accomplished by dividing
+the input space into pure regions,
+
+10
+00:00:37.900 --> 00:00:41.210
+that is regions with samples
+from only one class.
+
+11
+00:00:42.420 --> 00:00:46.740
+With real data completely pure
+subsets may not be possible.
+
+12
+00:00:46.740 --> 00:00:52.006
+So the goal is to divide the data into
+subsets that are as pure as possible.
+
+13
+00:00:52.006 --> 00:00:57.320
+That is each subset contains as many
+samples as possible from a single class.
+
+14
+00:00:58.450 --> 00:01:03.050
+Graphically this is equivalent to dividing
+the input space into regions that are as
+
+15
+00:01:03.050 --> 00:01:04.940
+pure as possible.
+
+16
+00:01:04.940 --> 00:01:09.760
+Boundaries separating these regions
+are called decision boundaries.
+
+17
+00:01:09.760 --> 00:01:13.450
+And the decision tree model
+makes classification decisions
+
+18
+00:01:13.450 --> 00:01:15.600
+based on these decision boundaries.
+
+19
+00:01:16.760 --> 00:01:23.040
+A decision tree is a hierarchical
+structure with nodes and directed edges.
+
+20
+00:01:23.040 --> 00:01:25.560
+The node at the top is
+called the root node.
+
+21
+00:01:26.600 --> 00:01:28.870
+The nodes at the bottom
+are called the leaf nodes.
+
+22
+00:01:30.000 --> 00:01:35.810
+Nodes that are neither the root node or
+the leaf nodes are called internal nodes.
+
+23
+00:01:35.810 --> 00:01:38.530
+The root and
+internal nodes have test conditions,
+
+24
+00:01:39.580 --> 00:01:42.740
+each leaf node has a class
+label associated with it.
+
+25
+00:01:43.770 --> 00:01:48.250
+A classification decision is made
+by traversing the decision tree
+
+26
+00:01:48.250 --> 00:01:49.280
+starting with the root node.
+
+27
+00:01:50.620 --> 00:01:54.470
+At each node the answer to the test
+condition determines which
+
+28
+00:01:54.470 --> 00:01:56.740
+branch to traverse to.
+
+29
+00:01:56.740 --> 00:02:00.330
+When a leaf node is reached
+the category at the leaf node
+
+30
+00:02:00.330 --> 00:02:02.595
+determines the classification decision.
+
+31
+00:02:03.740 --> 00:02:09.590
+The depth of a node is the number of
+edges from the root node to that node.
+
+32
+00:02:09.590 --> 00:02:11.130
+The depth of the root node is 0.
+
+33
+00:02:11.130 --> 00:02:15.620
+The depth of a decision
+tree is the number of edges
+
+34
+00:02:15.620 --> 00:02:19.700
+in the longest path from
+the root node to the leaf node.
+
+35
+00:02:19.700 --> 00:02:23.280
+The size of a decision tree is
+the number of nodes in the tree.
+
+36
+00:02:24.460 --> 00:02:27.160
+This is an example of a decision tree.
+
+37
+00:02:27.160 --> 00:02:32.290
+It can be used to classify an animal
+as a mammal or not a mammal.
+
+38
+00:02:32.290 --> 00:02:36.530
+According to this decision tree,
+if an animal is warm-blooded,
+
+39
+00:02:36.530 --> 00:02:41.570
+gives live birth, and
+is a vertebrate, then it is a mammal.
+
+40
+00:02:41.570 --> 00:02:45.000
+If an animal does not have all
+of these three characteristics,
+
+41
+00:02:45.000 --> 00:02:46.350
+then it is not a mammal.
+
+42
+00:02:47.520 --> 00:02:51.790
+A decision tree is built by starting
+with all samples at a single node,
+
+43
+00:02:51.790 --> 00:02:53.400
+the root node.
+
+44
+00:02:53.400 --> 00:02:58.170
+Additional nodes are added when
+the data is split into subsets.
+
+45
+00:02:58.170 --> 00:03:02.449
+At a high level, constructing a decision
+tree consists of the following steps.
+
+46
+00:03:03.860 --> 00:03:05.650
+Start with all samples and a node,
+
+47
+00:03:07.180 --> 00:03:11.850
+partition the samples into subsets
+based in the input variables.
+
+48
+00:03:11.850 --> 00:03:16.250
+The goal is to create subsets of
+records that are purest, that is
+
+49
+00:03:16.250 --> 00:03:20.990
+each subset contains as many samples as
+possible, belonging to just one class.
+
+50
+00:03:22.260 --> 00:03:26.557
+Another way to say this is that
+the subsets should be as homogeneous or
+
+51
+00:03:26.557 --> 00:03:27.900
+as pure as possible.
+
+52
+00:03:29.120 --> 00:03:33.230
+Repeatedly partition data into
+successively purer subsets
+
+53
+00:03:33.230 --> 00:03:35.460
+until some stopping
+criterion is satisfied.
+
+54
+00:03:36.990 --> 00:03:37.930
+An algorithm for
+
+55
+00:03:37.930 --> 00:03:42.720
+constructing a decision tree model is
+referred to as an induction algorithm.
+
+56
+00:03:42.720 --> 00:03:46.410
+So you may hear the term tree induction
+used to describe the process of
+
+57
+00:03:46.410 --> 00:03:47.690
+building a decision tree.
+
+58
+00:03:49.330 --> 00:03:52.150
+Note that at each split
+the induction algorithm
+
+59
+00:03:52.150 --> 00:03:56.820
+only considers the best way to split
+that particular portion of the data.
+
+60
+00:03:56.820 --> 00:03:59.660
+This is referred to as a greedy approach.
+
+61
+00:03:59.660 --> 00:04:03.800
+Greedy algorithms solve a subset
+of the problem at a time, and
+
+62
+00:04:03.800 --> 00:04:08.510
+as a necessary approach when solving
+the entire problem is not feasible.
+
+63
+00:04:08.510 --> 00:04:11.020
+This is the case with decision trees.
+
+64
+00:04:11.020 --> 00:04:15.090
+It is not feasible to determine
+the best tree given a data set, so
+
+65
+00:04:15.090 --> 00:04:18.460
+the tree has to be built
+in piecemeal fashion
+
+66
+00:04:18.460 --> 00:04:21.978
+by determining the best way to split
+the current node at each step.
+
+67
+00:04:21.978 --> 00:04:26.485
+And combining these decisions together
+to form the final decision tree,
+
+68
+00:04:26.485 --> 00:04:31.600
+in constructing a decision tree
+how is the data partitioned?
+
+69
+00:04:31.600 --> 00:04:34.520
+How does a decision tree
+determine the best way to split
+
+70
+00:04:34.520 --> 00:04:36.920
+the set of samples at a node?
+
+71
+00:04:36.920 --> 00:04:41.530
+Again the goal is to partition data
+at a node into subsets that are as
+
+72
+00:04:41.530 --> 00:04:42.700
+pure as possible.
+
+73
+00:04:43.760 --> 00:04:45.110
+In this example,
+
+74
+00:04:45.110 --> 00:04:49.640
+the partition shown on the right
+results in more homogeneous subsets.
+
+75
+00:04:49.640 --> 00:04:54.620
+Since these subsets contain more
+samples belonging to a single class
+
+76
+00:04:54.620 --> 00:04:57.950
+than the resulting subsets
+shown on the left.
+
+77
+00:04:57.950 --> 00:05:01.800
+So the partition on the right
+results in purer subsets and
+
+78
+00:05:01.800 --> 00:05:03.180
+is the preferred partition.
+
+79
+00:05:04.440 --> 00:05:08.650
+Therefore, we need a way to
+measure the purity of a split
+
+80
+00:05:08.650 --> 00:05:12.910
+in order to compare different
+ways to partition a set of data.
+
+81
+00:05:12.910 --> 00:05:17.980
+It turns out that it works out better
+mathematically if we measure the impurity
+
+82
+00:05:17.980 --> 00:05:19.820
+rather than the purity of a split.
+
+83
+00:05:20.830 --> 00:05:23.370
+So the impurity measure of a node
+
+84
+00:05:23.370 --> 00:05:26.730
+specifies how mixed
+the resulting subsets are.
+
+85
+00:05:26.730 --> 00:05:30.580
+Since we want the resulting subsets
+to have homogeneous class labels,
+
+86
+00:05:30.580 --> 00:05:36.230
+not mixed class labels, we want the split
+that minimizes the impurity measure.
+
+87
+00:05:37.720 --> 00:05:39.610
+A common impurity measure used for
+
+88
+00:05:39.610 --> 00:05:41.900
+determining the best
+split is the Gini Index.
+
+89
+00:05:42.900 --> 00:05:47.440
+The lower the Gini Index the higher
+the purity of the split.
+
+90
+00:05:47.440 --> 00:05:52.470
+So the decision tree will select
+the split that minimizes the Gini Index.
+
+91
+00:05:52.470 --> 00:05:56.710
+Besides the Gini Index, other
+impurity measures include entropy, or
+
+92
+00:05:56.710 --> 00:05:59.571
+information gain, and
+misclassification rate.
+
+93
+00:06:01.140 --> 00:06:04.750
+The other factor in determining
+the best way to partition a node
+
+94
+00:06:04.750 --> 00:06:07.500
+is which variable to split on.
+
+95
+00:06:07.500 --> 00:06:12.910
+The decision tree will test all variables
+to determine the best way to split a node
+
+96
+00:06:12.910 --> 00:06:16.860
+using a purity measure such as
+the Gini index to compare the various
+
+97
+00:06:16.860 --> 00:06:17.709
+possibilities.
+
+98
+00:06:18.910 --> 00:06:23.880
+Recall that the tree induction algorithm
+repeatedly splits nodes to get more and
+
+99
+00:06:23.880 --> 00:06:25.890
+more homogeneous subsets.
+
+100
+00:06:25.890 --> 00:06:27.970
+So when does this process stop?
+
+101
+00:06:27.970 --> 00:06:30.150
+When does the algorithm
+stop growing the tree?
+
+102
+00:06:31.150 --> 00:06:35.670
+There's several criteria that can be used
+to determine when a node should no longer
+
+103
+00:06:35.670 --> 00:06:36.935
+be split into subsets.
+
+104
+00:06:38.830 --> 00:06:41.730
+The induction algorithm can
+stop expanding a node when
+
+105
+00:06:41.730 --> 00:06:45.500
+all samples in the node
+have the same class label.
+
+106
+00:06:45.500 --> 00:06:49.370
+This means that this set of data
+is as pure as possible, and
+
+107
+00:06:49.370 --> 00:06:53.030
+further splitting will not result in
+any better partition of the data.
+
+108
+00:06:54.230 --> 00:06:58.890
+Since getting completely pure subsets
+is difficult to achieve with real data,
+
+109
+00:06:58.890 --> 00:07:01.620
+this stopping criterion can be modified.
+
+110
+00:07:01.620 --> 00:07:05.961
+To when a certain percentage of
+the samples in the node, say 90% for
+
+111
+00:07:05.961 --> 00:07:08.400
+example, have the same class labels.
+
+112
+00:07:09.750 --> 00:07:13.710
+The algorithm can stop expanding a node
+when the number of samples in the node
+
+113
+00:07:13.710 --> 00:07:15.940
+falls below a certain minimum value.
+
+114
+00:07:16.940 --> 00:07:19.920
+A this point the number of
+samples is too small to make
+
+115
+00:07:19.920 --> 00:07:23.119
+much difference in the classification
+results with the further splitting.
+
+116
+00:07:24.570 --> 00:07:28.860
+The induction algorithm can stop expanding
+a node when the improvement in impurity
+
+117
+00:07:28.860 --> 00:07:33.540
+measure is too small to make much of
+a difference in classification results.
+
+118
+00:07:35.060 --> 00:07:39.980
+The algorithm can stop expanding a node
+when the maximum tree depth is reached.
+
+119
+00:07:39.980 --> 00:07:43.240
+This is to control the complexity
+of the resulting tree.
+
+120
+00:07:45.060 --> 00:07:48.590
+There can be other criteria that can be
+used to determine when tree induction
+
+121
+00:07:48.590 --> 00:07:49.090
+should stop.
+
+122
+00:07:50.720 --> 00:07:55.140
+Let's take a look at an example to
+illustrate the tree induction process.
+
+123
+00:07:55.140 --> 00:07:59.720
+Let's say that we want to classify loan
+applicants as being likely to repay a loan
+
+124
+00:07:59.720 --> 00:08:03.090
+or not likely to repay a loan
+based on their income and
+
+125
+00:08:03.090 --> 00:08:04.750
+amount of debt they already have.
+
+126
+00:08:06.090 --> 00:08:07.360
+Building a decision tree for
+
+127
+00:08:07.360 --> 00:08:10.490
+this classification problem
+could proceed as follows.
+
+128
+00:08:10.490 --> 00:08:14.230
+Consider the input space of this
+problem as shown in the left figure.
+
+129
+00:08:14.230 --> 00:08:18.990
+One way to split this
+data set into homogeneous
+
+130
+00:08:18.990 --> 00:08:23.380
+subsets is to consider the decision
+boundary where income equals t1.
+
+131
+00:08:24.800 --> 00:08:28.410
+To the right of this decision
+boundary are mostly red samples and
+
+132
+00:08:28.410 --> 00:08:30.140
+to the left are mostly blue samples.
+
+133
+00:08:31.340 --> 00:08:33.950
+The subsets are not
+completely homogeneous but
+
+134
+00:08:33.950 --> 00:08:38.100
+that is the best way to split the original
+data set based on the variable income.
+
+135
+00:08:40.120 --> 00:08:44.380
+This decision boundary is represented
+in the decision tree by the condition
+
+136
+00:08:44.380 --> 00:08:48.326
+Income is greater than
+t1 at the root node.
+
+137
+00:08:48.326 --> 00:08:51.894
+This is the condition used to
+split the original data set.
+
+138
+00:08:51.894 --> 00:08:55.350
+Samples with income greater
+than the threshold value
+
+139
+00:08:55.350 --> 00:08:59.800
+of t1 are placed in the right subset and
+samples with income less than or
+
+140
+00:08:59.800 --> 00:09:04.950
+equal to t1 are placed in the left subset,
+just as shown in the right diagram.
+
+141
+00:09:06.480 --> 00:09:08.748
+The right subset is now labeled as red,
+
+142
+00:09:08.748 --> 00:09:12.203
+meaning that the loan applicant
+is likely to be paid alone.
+
+143
+00:09:13.688 --> 00:09:18.980
+The second step then is to determine how
+to split the region outlined in red.
+
+144
+00:09:18.980 --> 00:09:24.000
+As shown in the left diagram, in input
+space, the best way to split this data
+
+145
+00:09:24.000 --> 00:09:27.940
+is specified by the second decision
+boundary with debt equals t2.
+
+146
+00:09:29.520 --> 00:09:32.580
+This is represented in
+the decision tree on the right
+
+147
+00:09:32.580 --> 00:09:36.760
+with the addition of the node with
+condition debt greater than t2.
+
+148
+00:09:38.050 --> 00:09:41.930
+Samples with the value of debt greater
+than t2 are shown in the region
+
+149
+00:09:41.930 --> 00:09:44.010
+above the decision boundary.
+
+150
+00:09:44.010 --> 00:09:49.370
+This region contains all blue samples and
+so the corresponding node is labeled blue.
+
+151
+00:09:49.370 --> 00:09:52.700
+Meaning that the loan applicant
+is not likely to repay the loan.
+
+152
+00:09:54.170 --> 00:09:58.180
+The third and final split looks at how
+to split the region outlined in red
+
+153
+00:09:58.180 --> 00:09:59.010
+in the left diagram.
+
+154
+00:10:00.210 --> 00:10:04.930
+The best split is specified by
+the boundary with income equals T3.
+
+155
+00:10:04.930 --> 00:10:08.190
+This splits the red region
+into two pure subsets.
+
+156
+00:10:09.250 --> 00:10:13.330
+This split is represented in the decision
+tree by adding a node with condition,
+
+157
+00:10:13.330 --> 00:10:15.629
+Income is greater than t3.
+
+158
+00:10:15.629 --> 00:10:19.210
+The left resulting node is labeled blue,
+and
+
+159
+00:10:19.210 --> 00:10:21.980
+the right resulting node is labeled red,
+
+160
+00:10:21.980 --> 00:10:26.200
+corresponding to the resulting subsets
+within the red border in the left diagram.
+
+161
+00:10:27.780 --> 00:10:30.810
+We end with the final
+decision tree on the right,
+
+162
+00:10:30.810 --> 00:10:35.400
+which implements the decision boundaries
+shown as dash lines in the left diagram.
+
+163
+00:10:36.630 --> 00:10:40.280
+These decision boundaries
+partition the data set as shown.
+
+164
+00:10:40.280 --> 00:10:45.200
+The label for each region is determined by
+the label of the majority of the samples.
+
+165
+00:10:45.200 --> 00:10:49.090
+These labels are reflected in
+the leaf nodes of the decision tree.
+
+166
+00:10:49.090 --> 00:10:49.910
+Shown on the right.
+
+167
+00:10:51.500 --> 00:10:55.850
+You may have noticed that the decision
+boundaries of a decision tree are parallel
+
+168
+00:10:55.850 --> 00:11:02.110
+to the axes formed by the variables,
+this is referred to as being rectilinear.
+
+169
+00:11:02.110 --> 00:11:06.410
+The boundaries are rectilinear
+because each split considers only
+
+170
+00:11:06.410 --> 00:11:08.370
+a single variable.
+
+171
+00:11:08.370 --> 00:11:12.185
+There are variance of the tree induction
+algorithm that consider more than one
+
+172
+00:11:12.185 --> 00:11:14.560
+attribute when splitting a note.
+
+173
+00:11:14.560 --> 00:11:19.550
+However, each split has to consider all
+combinations of combined variables and
+
+174
+00:11:19.550 --> 00:11:24.000
+so such induction algorithms are much
+more computationally expensive.
+
+175
+00:11:25.310 --> 00:11:28.650
+There are a few important things to
+note about the decision tree classifier.
+
+176
+00:11:30.160 --> 00:11:33.970
+The resulting tree is often simple
+to understand and interpret.
+
+177
+00:11:33.970 --> 00:11:38.500
+This is one of the biggest advantages
+of decision trees for classification.
+
+178
+00:11:38.500 --> 00:11:41.550
+It is often possible to look
+at the resulting tree to see
+
+179
+00:11:41.550 --> 00:11:45.570
+which variables are important to
+the classification problem and
+
+180
+00:11:45.570 --> 00:11:48.840
+understand how
+the classification is performed.
+
+181
+00:11:48.840 --> 00:11:52.590
+For this reason, many people will start
+out with the decision tree classifier
+
+182
+00:11:52.590 --> 00:11:55.690
+to get a feel for
+the classification problem.
+
+183
+00:11:55.690 --> 00:11:58.730
+Even if they end up using more
+sophisticated models later on.
+
+184
+00:12:00.730 --> 00:12:03.480
+The tree induction algorithm
+as described in this lesson
+
+185
+00:12:03.480 --> 00:12:06.990
+is relatively computationally inexpensive.
+
+186
+00:12:06.990 --> 00:12:10.940
+So training a decision tree for
+classification can be relatively fast.
+
+187
+00:12:12.985 --> 00:12:17.495
+The greedy approach used by tree induction
+algorithm determines the best way to split
+
+188
+00:12:17.495 --> 00:12:19.905
+the portion of the data at a node but
+
+189
+00:12:19.905 --> 00:12:23.823
+does not guarantee the best solution
+overall for the entire data set.
+
+190
+00:12:26.000 --> 00:12:28.490
+Decision boundaries are rectilinear.
+
+191
+00:12:28.490 --> 00:12:32.550
+This can limit the expressiveness
+of the resulting model which means
+
+192
+00:12:32.550 --> 00:12:36.480
+that it may not be able to solve
+complicated classification problems that
+
+193
+00:12:36.480 --> 00:12:39.400
+require more complex decision
+boundaries to be formed.
+
+194
+00:12:41.060 --> 00:12:46.280
+In summary, the decision tree classifier
+uses a tree like structure to specify
+
+195
+00:12:46.280 --> 00:12:51.600
+a series of conditions that are tested to
+determine the class label for a sample.
+
+196
+00:12:52.740 --> 00:12:57.230
+The decision tree is constructed by
+repeatedly splitting a data partition
+
+197
+00:12:57.230 --> 00:13:00.860
+into successively more
+homogeneous subsets.
+
+198
+00:13:00.860 --> 00:13:03.680
+The resulting tree can
+often be easy to interpret.
+
+1
+00:00:00.681 --> 00:00:05.059
+We will start with a very simple
+classification technique called k-Nearest
+
+2
+00:00:05.059 --> 00:00:05.807
+Neighbors.
+
+3
+00:00:05.807 --> 00:00:10.451
+After this video, you will be able
+to describe how kNN is used for
+
+4
+00:00:10.451 --> 00:00:12.710
+classification.
+
+5
+00:00:12.710 --> 00:00:17.995
+Discuss the assumption behind kNN and
+explain what the k stands for in kNN.
+
+6
+00:00:17.995 --> 00:00:21.995
+kNN stands for k-Nearest Neighbors.
+
+7
+00:00:21.995 --> 00:00:25.924
+This is one of the simplest techniques
+to build a classification model.
+
+8
+00:00:25.924 --> 00:00:30.623
+The basic idea is to classify
+a sample based on its neighbors.
+
+9
+00:00:30.623 --> 00:00:35.774
+So when you get a new sample as shown by
+the green circle in the figure, the class
+
+10
+00:00:35.774 --> 00:00:40.944
+label for that sample is determined by
+looking at the labels of its neighbors.
+
+11
+00:00:40.944 --> 00:00:44.030
+KNN relies on the notion
+of the so-called duck test.
+
+12
+00:00:44.030 --> 00:00:48.724
+That is if it looks like a duck,
+swims like a duck and quacks like a duck,
+
+13
+00:00:48.724 --> 00:00:51.430
+then it probably is a duck.
+
+14
+00:00:51.430 --> 00:00:53.260
+In the classification context,
+
+15
+00:00:53.260 --> 00:00:59.320
+this means that samples with similar input
+values likely belong to the same class.
+
+16
+00:00:59.320 --> 00:01:03.640
+So, samples with similar input values
+should be labeled with the same
+
+17
+00:01:03.640 --> 00:01:05.390
+target label.
+
+18
+00:01:05.390 --> 00:01:08.820
+This means that classification
+of a sample is dependent
+
+19
+00:01:08.820 --> 00:01:12.250
+on the target labels of
+the neighboring points.
+
+20
+00:01:12.250 --> 00:01:15.140
+In more detail then,
+this is how kNN works.
+
+21
+00:01:15.140 --> 00:01:17.084
+Given a new sample, look for
+
+22
+00:01:17.084 --> 00:01:21.710
+the samples in the training data
+that are closest to the new sample.
+
+23
+00:01:21.710 --> 00:01:23.740
+These are the neighbors.
+
+24
+00:01:23.740 --> 00:01:28.550
+Use the labels of this neighboring points
+to determine the label for the new sample.
+
+25
+00:01:29.590 --> 00:01:32.410
+This figure illustrate how kNN works.
+
+26
+00:01:32.410 --> 00:01:36.240
+The problem here is to determine if
+a sample should be classified as
+
+27
+00:01:36.240 --> 00:01:37.940
+a blue square or red triangle.
+
+28
+00:01:38.990 --> 00:01:40.980
+The green circle is the new sample.
+
+29
+00:01:40.980 --> 00:01:45.780
+To determine a class label for this new
+sample, look at its closest neighbors.
+
+30
+00:01:45.780 --> 00:01:49.230
+These neighbors are the samples
+within the dashed circle.
+
+31
+00:01:50.270 --> 00:01:53.180
+Two blue squares and one red triangle.
+
+32
+00:01:53.180 --> 00:01:56.590
+The class labels of the neighboring
+samples determine the label for
+
+33
+00:01:56.590 --> 00:01:57.290
+the new sample.
+
+34
+00:01:58.690 --> 00:02:03.480
+The value of k determines the number
+of nearest neighbor to consider.
+
+35
+00:02:03.480 --> 00:02:08.160
+So if k equals 1,
+then only the closest neighbor is examined
+
+36
+00:02:08.160 --> 00:02:12.030
+to determine the class of the new
+sample as shown in the left figure.
+
+37
+00:02:13.170 --> 00:02:14.197
+If k equals 2,
+
+38
+00:02:14.197 --> 00:02:19.182
+then the 2 nearest neighbors are
+considered as seen in the middle figure.
+
+39
+00:02:19.182 --> 00:02:23.815
+If k equal 3, then the 3 nearest
+neighbors are considered as
+
+40
+00:02:23.815 --> 00:02:26.101
+in the right figure and so on.
+
+41
+00:02:26.101 --> 00:02:30.311
+If k equal 1 and only 1 neighbor is used,
+then the label for
+
+42
+00:02:30.311 --> 00:02:34.030
+the new sample is simpler
+the label of the neighbor.
+
+43
+00:02:34.030 --> 00:02:37.090
+This is shown in the left figure.
+
+44
+00:02:37.090 --> 00:02:39.610
+The label of the new sample is then A,
+
+45
+00:02:39.610 --> 00:02:42.510
+since that is the label of
+its one nearest neighbor.
+
+46
+00:02:43.630 --> 00:02:48.270
+When multiple neighbors are considered,
+then a voting scheme is used.
+
+47
+00:02:48.270 --> 00:02:52.290
+Majority of vote is commonly used,
+so the label associated with
+
+48
+00:02:52.290 --> 00:02:57.670
+the majority of the neighbors is
+used as the label of the new sample.
+
+49
+00:02:57.670 --> 00:03:00.730
+This is what we see in the right figure.
+
+50
+00:03:00.730 --> 00:03:04.090
+With k equals 3,
+3 nearest neighbors are considered.
+
+51
+00:03:05.398 --> 00:03:08.830
+With two neighbors labeled as A and
+one as B,
+
+52
+00:03:08.830 --> 00:03:12.560
+the majority of vote determines that
+the new sample should be labeled as A.
+
+53
+00:03:13.680 --> 00:03:18.168
+In case of a tie which could be
+possible if the value of k is even,
+
+54
+00:03:18.168 --> 00:03:21.154
+then some tight breaking rule is needed.
+
+55
+00:03:21.154 --> 00:03:24.853
+For example, the label of
+the closer neighbor is used or
+
+56
+00:03:24.853 --> 00:03:28.250
+the label is chosen randomly
+among the neighbors.
+
+57
+00:03:28.250 --> 00:03:30.480
+This is seen in the middle figure.
+
+58
+00:03:31.550 --> 00:03:35.970
+With two nearest neighbors and each with
+a different class label, the label for
+
+59
+00:03:35.970 --> 00:03:38.640
+the new sample is randomly
+chosen here to be B.
+
+60
+00:03:40.000 --> 00:03:44.230
+With kNN, some measure of similarity
+is needed to determine how
+
+61
+00:03:44.230 --> 00:03:47.030
+close two samples are together.
+
+62
+00:03:47.030 --> 00:03:50.690
+This is necessary to determine which
+samples are the nearest neighbors.
+
+63
+00:03:51.690 --> 00:03:55.650
+Distance measures such as
+distance are commonly used.
+
+64
+00:03:55.650 --> 00:03:59.480
+Other distance measures that can be used,
+include Manhattan and hemming distance.
+
+65
+00:04:00.640 --> 00:04:05.671
+To summarize, kNN is a very
+simple classification technique.
+
+66
+00:04:05.671 --> 00:04:08.970
+Note that there is no
+separate training phase.
+
+67
+00:04:08.970 --> 00:04:13.490
+There is no separate part where a model is
+constructed and its parameter is adjusted.
+
+68
+00:04:13.490 --> 00:04:16.970
+This is unlike most other
+classification algorithms.
+
+69
+00:04:18.510 --> 00:04:22.230
+KNN can generate complex
+decision boundaries allowing for
+
+70
+00:04:22.230 --> 00:04:24.980
+complex classification
+decisions to be made.
+
+71
+00:04:26.400 --> 00:04:28.410
+It can be susceptible to noise,however,
+
+72
+00:04:28.410 --> 00:04:32.910
+because classification decisions
+are made using only information about
+
+73
+00:04:32.910 --> 00:04:35.735
+a few neighboring points
+instead of the entire dataset.
+
+74
+00:04:37.570 --> 00:04:41.540
+KNN can be slow, however, since
+the distance between a new sample and
+
+75
+00:04:41.540 --> 00:04:45.630
+all sample points in the data must
+be calculated in order to determine
+
+76
+00:04:45.630 --> 00:04:49.796
+the k-Nearest Neighbors.

@@ -1,0 +1,659 @@
+WEBVTT
+
+1
+00:00:01.310 --> 00:00:04.510
+The next system we'll explore is Vertica.
+
+2
+00:00:04.510 --> 00:00:08.810
+Which is the relational DBMS
+designed to operate on top of HTFS.
+
+3
+00:00:10.450 --> 00:00:13.960
+It belongs to a family of DBMS
+architectures called column stores.
+
+4
+00:00:15.320 --> 00:00:18.410
+Other products in
+the same family are UCDV,
+
+5
+00:00:18.410 --> 00:00:21.540
+Carrot Cell Xvelocity from Microsoft and
+so forth.
+
+6
+00:00:23.070 --> 00:00:25.620
+The primary difference
+between a row store and
+
+7
+00:00:25.620 --> 00:00:28.010
+a column store is shown
+in the diagram here.
+
+8
+00:00:29.160 --> 00:00:32.094
+Logically, this table has five columns.
+
+9
+00:00:32.094 --> 00:00:35.935
+Emp number, department number,
+
+10
+00:00:35.935 --> 00:00:38.810
+hire date, employee last name and
+employee first name.
+
+11
+00:00:40.940 --> 00:00:45.760
+In a row oriented design the database
+internally organizes the record
+
+12
+00:00:45.760 --> 00:00:46.300
+two four by two.
+
+13
+00:00:48.390 --> 00:00:52.030
+In a column store,
+the data is organized column wise.
+
+14
+00:00:53.500 --> 00:00:58.100
+So the nth number column is stored
+separately from the department id
+
+15
+00:00:58.100 --> 00:00:59.280
+column and so forth.
+
+16
+00:01:00.740 --> 00:01:03.730
+Now suppose a query
+needs to find the ID and
+
+17
+00:01:03.730 --> 00:01:09.100
+department ID of all employees who were
+hired after first of January, 2001.
+
+18
+00:01:09.100 --> 00:01:12.990
+The system only needs to look up
+
+19
+00:01:12.990 --> 00:01:16.720
+the hire date column to figure
+out which records qualify.
+
+20
+00:01:16.720 --> 00:01:18.670
+And then pick up the values of the ID,
+
+21
+00:01:18.670 --> 00:01:22.450
+and the department of ID columns for
+the qualifying records.
+
+22
+00:01:22.450 --> 00:01:26.060
+The other columns are not touched.
+
+23
+00:01:26.060 --> 00:01:31.270
+So if a table has 30 to 50 columns, very
+often only a few of them are needed for
+
+24
+00:01:31.270 --> 00:01:31.950
+any single query.
+
+25
+00:01:33.730 --> 00:01:40.440
+So for tables with 500 million rows and
+40 columns a typical query is very fast,
+
+26
+00:01:40.440 --> 00:01:45.400
+and uses much less memory because a full
+record is not used most of the time.
+
+27
+00:01:46.990 --> 00:01:51.780
+My own experience is that with
+an application that needed a database
+
+28
+00:01:51.780 --> 00:01:53.830
+with 150 billion tuples in a table.
+
+29
+00:01:54.870 --> 00:01:58.860
+Accounting operation took a little
+under three minutes to complete.
+
+30
+00:02:00.330 --> 00:02:03.890
+A second advantage of the column store
+comes from the nature of the data.
+
+31
+00:02:05.350 --> 00:02:09.220
+In a column store,
+data in every column is sorted.
+
+32
+00:02:10.400 --> 00:02:13.900
+The figure on the right shows
+three sorted columns of a table
+
+33
+00:02:13.900 --> 00:02:15.110
+with three visible columns.
+
+34
+00:02:16.550 --> 00:02:18.940
+The bottom of the first column shown here
+
+35
+00:02:18.940 --> 00:02:22.670
+has many accurate sixteen
+transactions on the same day.
+
+36
+00:02:24.340 --> 00:02:29.170
+The second column has customer ids which
+can be numerically close to each other.
+
+37
+00:02:29.170 --> 00:02:31.930
+They are all within seventy
+values of the first customer.
+
+38
+00:02:33.430 --> 00:02:38.020
+So in the first case we can just
+say that the value is one, one,
+
+39
+00:02:38.020 --> 00:02:41.730
+2007, and
+the next 16 records have this value.
+
+40
+00:02:42.800 --> 00:02:48.580
+That means we do not have to store
+the next 16 values thus saving space.
+
+41
+00:02:50.770 --> 00:02:54.280
+Now this form of shortened
+representation is called compression.
+
+42
+00:02:55.300 --> 00:03:00.070
+And this specific variety is
+called run-length encoding or RLE.
+
+43
+00:03:01.760 --> 00:03:05.010
+Another form of encoding can
+be seen in the second column.
+
+44
+00:03:07.030 --> 00:03:10.990
+Here the customer ids a long integer,
+but for
+
+45
+00:03:10.990 --> 00:03:14.460
+the records shown there
+are nearby numbers.
+
+46
+00:03:14.460 --> 00:03:18.420
+So, if we pick a value in the column and
+just put the difference between
+
+47
+00:03:18.420 --> 00:03:22.340
+this value and
+other values The difference will be small.
+
+48
+00:03:22.340 --> 00:03:25.380
+It means,
+we'll need fewer bites to represent them.
+
+49
+00:03:27.330 --> 00:03:30.800
+This one of compression is called
+Frame-of-reference encoding.
+
+50
+00:03:32.440 --> 00:03:36.520
+The lesson to remember here is
+that compressed data presentation
+
+51
+00:03:36.520 --> 00:03:41.760
+can significantly reduce the total
+size of a database and if BDMS.
+
+52
+00:03:41.760 --> 00:03:44.970
+Should use all such tricks
+to improve space efficiency.
+
+53
+00:03:46.730 --> 00:03:50.020
+While the space efficiency and
+performance of Vertica is impressive for
+
+54
+00:03:50.020 --> 00:03:54.490
+large data, one has to be careful
+about how to design a system with it.
+
+55
+00:03:55.620 --> 00:03:57.570
+Like Google's Web Table, and
+
+56
+00:03:57.570 --> 00:04:02.844
+Apache Cassandra, Vertica allows
+the declaration of column-groups.
+
+57
+00:04:04.180 --> 00:04:05.830
+These are columns like first name and
+
+58
+00:04:05.830 --> 00:04:08.730
+last name which are very
+often accessed together.
+
+59
+00:04:09.980 --> 00:04:13.040
+In Vertica,
+a column group is like a mini table
+
+60
+00:04:13.040 --> 00:04:15.640
+which is treated like a little
+row storied in the system.
+
+61
+00:04:16.750 --> 00:04:22.070
+But because these groups represent
+activists that are frequently co accessed
+
+62
+00:04:22.070 --> 00:04:24.500
+the grouping actually
+improves performance.
+
+63
+00:04:25.560 --> 00:04:29.660
+So an application developer is
+better off when the nature and
+
+64
+00:04:29.660 --> 00:04:33.150
+the frequency of user queries
+are known to some degree.
+
+65
+00:04:33.150 --> 00:04:37.190
+And this knowledge is applies
+to designing the column groups.
+
+66
+00:04:37.190 --> 00:04:41.200
+An important side effect of column
+structure organization of vertical
+
+67
+00:04:41.200 --> 00:04:44.390
+Is that the writing of data into
+Vertica is a little slower.
+
+68
+00:04:45.590 --> 00:04:50.110
+When rows are added to a table,
+Vertica initially places
+
+69
+00:04:50.110 --> 00:04:53.750
+them in a row-wise data structure and
+
+70
+00:04:53.750 --> 00:04:58.029
+then converts them into a column-wise
+data structure, which is then compressed.
+
+71
+00:04:59.370 --> 00:05:02.920
+This lowness can be perceptible for
+large uploads or updates.
+
+72
+00:05:04.140 --> 00:05:08.050
+Vertica belongs to a new breed of
+database systems that call themselves
+
+73
+00:05:08.050 --> 00:05:09.220
+analytical databases.
+
+74
+00:05:10.620 --> 00:05:14.780
+This means two slightly different things.
+
+75
+00:05:14.780 --> 00:05:18.110
+First, Vertica offers many more
+statistical functions than in
+
+76
+00:05:18.110 --> 00:05:18.950
+classical DBMS.
+
+77
+00:05:20.140 --> 00:05:24.500
+For example one can perform
+operations over a Window
+
+78
+00:05:25.728 --> 00:05:32.150
+to see an example consider a table of
+stock ticks having a time attribute,
+
+79
+00:05:32.150 --> 00:05:35.520
+a stock name and
+a value of the stock called bid here.
+
+80
+00:05:36.570 --> 00:05:41.610
+This shows that data values in
+the table now we would like to compute
+
+81
+00:05:41.610 --> 00:05:45.220
+a moving average of
+the bit every 40 seconds.
+
+82
+00:05:46.510 --> 00:05:48.770
+We show the query in a frame below.
+
+83
+00:05:48.770 --> 00:05:53.450
+Now we aren't going into the details of
+the query just consider the blue part.
+
+84
+00:05:53.450 --> 00:05:57.930
+It says the average,
+which is the AVG function in yellow.
+
+85
+00:05:57.930 --> 00:06:00.760
+It must be computed on
+the last column which is bit.
+
+86
+00:06:01.920 --> 00:06:03.060
+But, this computation
+
+87
+00:06:04.200 --> 00:06:08.270
+must be over the range that is
+computed on the timestamp call.
+
+88
+00:06:09.740 --> 00:06:15.877
+So, the range is defined by a 40
+second row before that current row so,
+
+89
+00:06:15.877 --> 00:06:21.404
+here the computation of the average
+advances for the stock abc.
+
+90
+00:06:21.404 --> 00:06:26.293
+And for each computation,
+the system only considers the rows whose
+
+91
+00:06:26.293 --> 00:06:30.510
+timestamp is within 40 seconds
+before the current row.
+
+92
+00:06:31.840 --> 00:06:35.630
+The table on the right shows
+the result of the query.
+
+93
+00:06:35.630 --> 00:06:38.130
+The average value, 10.12.
+
+94
+00:06:38.130 --> 00:06:41.910
+Is the same as the actual value, because
+there are no other rows within 40 seconds.
+
+95
+00:06:41.910 --> 00:06:45.963
+The next two result rows average
+over the preceding rows,
+
+96
+00:06:45.963 --> 00:06:49.530
+was times R within 40
+seconds of the current row.
+
+97
+00:06:50.650 --> 00:06:51.670
+When we get to the blue row,
+
+98
+00:06:51.670 --> 00:06:58.020
+that we notice that it occurs 1 minute
+16 seconds after the previous row.
+
+99
+00:06:58.020 --> 00:07:00.950
+So we cannot consider the previous
+sort in the computation.
+
+100
+00:07:00.950 --> 00:07:04.660
+Instead, the result is just the value
+of the bid in the current row.
+
+101
+00:07:06.190 --> 00:07:10.180
+The takeaway from this example is
+that analytical computations like
+
+102
+00:07:10.180 --> 00:07:14.260
+this are happening inside the database and
+not in an external application.
+
+103
+00:07:15.880 --> 00:07:19.850
+This brings us to the second feature
+of Vertica as an analytical database.
+
+104
+00:07:21.200 --> 00:07:25.710
+R is a well known free statistics
+package that's used by statisticians,
+
+105
+00:07:25.710 --> 00:07:28.050
+data minors, predictive analytics experts.
+
+106
+00:07:28.050 --> 00:07:33.840
+Today, R can not only
+read data from files,
+
+107
+00:07:33.840 --> 00:07:37.660
+but it can go to an SQL database and
+grab data to perform statistical analysis.
+
+108
+00:07:39.300 --> 00:07:42.160
+Over time, R has evolved and
+
+109
+00:07:42.160 --> 00:07:47.830
+given rights to distributed R which
+is a high performance platform for R.
+
+110
+00:07:49.430 --> 00:07:51.810
+As expected in this distributed setting,
+
+111
+00:07:51.810 --> 00:07:55.050
+the system operates in
+a master slave mode.
+
+112
+00:07:55.050 --> 00:07:59.650
+The master node coordinates computations
+by sending commands to the workers.
+
+113
+00:07:59.650 --> 00:08:02.520
+The worker nodes maintain
+data partitions and
+
+114
+00:08:02.520 --> 00:08:05.470
+apply the computation
+functions to the data.
+
+115
+00:08:05.470 --> 00:08:09.070
+Just getting the data parallelly,
+
+116
+00:08:09.070 --> 00:08:12.310
+the essential data structure
+is a distributed array.
+
+117
+00:08:12.310 --> 00:08:15.266
+That is an array that is
+partitioned as shown here.
+
+118
+00:08:15.266 --> 00:08:18.480
+Now in this diagram
+the partitions are equal, but
+
+119
+00:08:18.480 --> 00:08:20.960
+in practice they may be
+all different sizes.
+
+120
+00:08:20.960 --> 00:08:26.320
+On which, one can compute a function for
+each of these mini-arrays.
+
+121
+00:08:26.320 --> 00:08:30.200
+The bottom diagram, shows a simple
+work flow of constructing and
+
+122
+00:08:30.200 --> 00:08:31.690
+deploying a predictive model.
+
+123
+00:08:32.730 --> 00:08:34.460
+The role of Vertica here,
+
+124
+00:08:34.460 --> 00:08:38.620
+is that it's a data supplier to the worker
+nodes of R, and a model consumer.
+
+125
+00:08:39.880 --> 00:08:43.730
+The data to be analyzed is
+the output of the vertica query,
+
+126
+00:08:43.730 --> 00:08:48.010
+which is transferred in memory through
+a protocol called vertica fast transfer
+
+127
+00:08:48.010 --> 00:08:49.780
+through distributed R as a dArray.
+
+128
+00:08:50.940 --> 00:08:52.120
+When the model is created in R,
+
+129
+00:08:52.120 --> 00:08:56.900
+it should come back as a code that
+goes through vertica as a function.
+
+130
+00:08:58.070 --> 00:09:00.870
+This function can be
+called from inside Vertica
+
+131
+00:09:00.870 --> 00:09:03.310
+as if it was a user defined function.
+
+132
+00:09:04.330 --> 00:09:07.690
+Now in sophisticated applications,
+the features of the data needed for
+
+133
+00:09:07.690 --> 00:09:13.670
+predicted modeling will also be
+computed inside the DBMS possibly
+
+134
+00:09:13.670 --> 00:09:16.389
+using the new analytical operations
+of Vertica that we've just shown.
+
+135
+00:09:17.770 --> 00:09:21.190
+Now this will make future
+computation much faster and
+
+136
+00:09:21.190 --> 00:09:24.930
+improve the efficiency of
+the entire analytics process.
+
+137
+00:09:26.240 --> 00:09:31.920
+Going forward, we believe that most DBMS's
+will want to play in the analytics field,
+
+138
+00:09:31.920 --> 00:09:33.290
+will support similar functions.

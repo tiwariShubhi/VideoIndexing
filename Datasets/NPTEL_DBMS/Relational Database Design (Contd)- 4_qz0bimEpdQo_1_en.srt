@@ -1,0 +1,1760 @@
+﻿1
+00:00:17,140 --> 00:00:25,239
+Welcome to module 20 of database management
+systems. We have been discussing about relational
+
+2
+00:00:25,239 --> 00:00:32,820
+database design, since the last 4 modules
+and this will be the concluding part of relational
+
+3
+00:00:32,820 --> 00:00:38,369
+database design.
+In the last module, we have seen some very
+
+4
+00:00:38,369 --> 00:00:44,750
+key concepts of relational design, that of
+normal forms third and Boyce Codd normal form
+
+5
+00:00:44,750 --> 00:00:51,108
+specifically and how to decompose into them?
+And how do we get benefit in terms of doing
+
+6
+00:00:51,109 --> 00:00:58,059
+this kind of decomposition? In removing the
+anomalies by reducing the redundancy in the
+
+7
+00:00:58,058 --> 00:01:03,289
+design.
+In view of that in the background of that,
+
+8
+00:01:03,289 --> 00:01:09,090
+in this module will we would try to understand
+a new kind of data dependency, an additional
+
+9
+00:01:09,090 --> 00:01:14,930
+kind of data dependency, which is called multivalued
+dependency. Which can occur when an attribute
+
+10
+00:01:14,930 --> 00:01:20,640
+can have can take multiple possible values,
+which we had eliminated in the first normal
+
+11
+00:01:20,640 --> 00:01:27,519
+form together and based on that, we will define
+4th normal form and decomposition into 4 NF
+
+12
+00:01:27,519 --> 00:01:34,379
+and then we will summarize this whole set
+of discussions of relational database design,
+
+13
+00:01:34,379 --> 00:01:38,780
+and talk little bit about what happens, when
+you have temporal data in your system .
+
+14
+00:01:38,780 --> 00:01:46,000
+So, these are the ah outline points, based
+on our objectives and we start with the discussion
+
+15
+00:01:46,000 --> 00:01:53,959
+of multivalued dependency. Consider a situation
+like this. So, here we are trying to represent
+
+16
+00:01:53,959 --> 00:02:01,759
+an individual instead of persons with 3 attributes,
+man which is an may be id or name of that
+
+17
+00:02:01,760 --> 00:02:09,240
+person, phones and dog like. So, the idea
+is that the here persons and they can have
+
+18
+00:02:09,240 --> 00:02:16,670
+1 2 3 any number of phones, which is true
+for all of us and then a person may have any
+
+19
+00:02:16,669 --> 00:02:26,449
+number of dogs that he or she likes. So, both
+of these phones and dog like D P and D attributes
+
+20
+00:02:26,449 --> 00:02:36,289
+can take multiple values and ah. So, ah if
+we if we if you look at the ah 1 NF normalized
+
+21
+00:02:36,289 --> 00:02:42,340
+form here. So, in 1 NF what we do? We create
+separate rows for them. So, we have created
+
+22
+00:02:42,340 --> 00:02:51,090
+separate rows for M 1 ah against P 1 and P
+1 or P 2 in phones and similarly for D 1 and
+
+23
+00:02:51,090 --> 00:02:58,319
+D 2. So, once we have done that then we have
+here, we can see I have highlighted with yellow,
+
+24
+00:02:58,318 --> 00:03:03,209
+you can see the different redundancies that
+are arising.
+
+25
+00:03:03,210 --> 00:03:12,350
+Because since I have phones and dog liking
+ah attributes. So, it is possible that if
+
+26
+00:03:12,349 --> 00:03:17,628
+phone takes 2 values and dog like takes 2
+values, then actually 4 different combinations
+
+27
+00:03:17,628 --> 00:03:23,739
+of them are possible. But in reality, it may
+be in reality it may be actually these 2 are
+
+28
+00:03:23,739 --> 00:03:31,969
+true, that M 1 has phone P 1 and likes dog
+D 1 M 1 has ah phone P 2 and ah likes dog
+
+29
+00:03:31,969 --> 00:03:40,930
+D 2, but you could also have such redundant
+tuples coming in, because there they are now
+
+30
+00:03:40,930 --> 00:03:45,680
+valid.
+So, this is the situation which we try to
+
+31
+00:03:45,680 --> 00:03:51,810
+ah try to capture, in terms of what you see
+here multivalued dependencies, where which
+
+32
+00:03:51,810 --> 00:03:58,709
+is row shown in terms of double arrows as
+you can see here. So, man I say determines
+
+33
+00:03:58,709 --> 00:04:04,030
+multi determines phones man multi determines
+dog likes. So, there are 2 different multi
+
+34
+00:04:04,030 --> 00:04:09,049
+valued dependencies in this case. So, this
+multi valued dependency adds a new source
+
+35
+00:04:09,049 --> 00:04:16,569
+of redundancy in our data, and that is very
+real in in various models of our system.
+
+36
+00:04:16,569 --> 00:04:24,800
+So, let us move on . So, this is just ah another
+example, we have 2 different ah relations
+
+37
+00:04:24,800 --> 00:04:31,840
+student give the student id and name, courses
+giving course id and name and the corresponding
+
+38
+00:04:31,839 --> 00:04:39,338
+functional dependencies in them, you can see
+2 instances of that. But if we ah as as such,
+
+39
+00:04:39,338 --> 00:04:44,978
+there is no relationship between student and
+course, but if we choose to keep them in a
+
+40
+00:04:44,978 --> 00:04:51,069
+single relation, say student course which
+I have shown on bottom right here. Then there
+
+41
+00:04:51,069 --> 00:05:00,158
+will be you can see lot of ah redundancies
+coming in, because ah since I they can be
+
+42
+00:05:00,158 --> 00:05:06,529
+in terms of all different combinations. So,
+S 1 has in name A may be taking course C 1
+
+43
+00:05:06,529 --> 00:05:16,129
+having name C, but again the the S 1 having
+name A could be taking course C 2 having name
+
+44
+00:05:16,129 --> 00:05:23,279
+B, you just do not know which one is is correct.
+So, you can see that here again you have 2
+
+45
+00:05:23,279 --> 00:05:30,149
+multiple value dependencies, one where SID
+multi determines CID and SID multi determines
+
+46
+00:05:30,149 --> 00:05:38,329
+C name. So, these are the 2 different multiple
+values that you can, find against the SID
+
+47
+00:05:38,329 --> 00:05:46,159
+and this is ah. So, if 2 or more multi valued
+dependencies exist in a relation, then while
+
+48
+00:05:46,160 --> 00:05:54,660
+we convert the we we convert multivalued attributes
+into single valued attributes, then the multi
+
+49
+00:05:54,660 --> 00:06:00,640
+value dependency will show up. So, that is
+the basic problem, that we would like to address.
+
+50
+00:06:00,639 --> 00:06:06,120
+This is another example of 2 relations, ah
+where the id and child are together, when
+
+51
+00:06:06,120 --> 00:06:11,959
+id and phone number are together. So, naturally
+ah if I combine them into a single relation,
+
+52
+00:06:11,959 --> 00:06:17,939
+you have a set of possibilities of multiple
+different tuples. Because given an id there
+
+53
+00:06:17,939 --> 00:06:22,418
+could be multiple children, there given an
+id there could be multiple phone numbers.
+
+54
+00:06:22,418 --> 00:06:28,519
+Mind you, this relation of ah isn't info is
+still in Boyce Codd normal form, because there
+
+55
+00:06:28,519 --> 00:06:33,588
+is no dependence there is no functional dependency
+that holds on this relation. So, the key of
+
+56
+00:06:33,588 --> 00:06:40,379
+this relation is the union of all the 3 attributes
+and therefore, that being the key and no functional
+
+57
+00:06:40,379 --> 00:06:44,939
+dependency holding on it, naturally vacuously
+makes it Boyce Codd normal form, but you can
+
+58
+00:06:44,939 --> 00:06:49,098
+still see that there are redundancy in that
+is data.
+
+59
+00:06:49,098 --> 00:06:58,240
+So now, let us define multivalued dependency
+in a formal way and ah . So, we say that ah
+
+60
+00:06:58,240 --> 00:07:03,960
+alpha multi determines beta, naturally alpha
+and beta both have to be subsets of the given
+
+61
+00:07:03,959 --> 00:07:11,089
+set of attributes. When we say that? When
+there are for all pairs of tuples t 1 and
+
+62
+00:07:11,089 --> 00:07:16,429
+t 2 such that they match on the fields of
+alpha, this till this point it looks like
+
+63
+00:07:16,430 --> 00:07:23,129
+functional dependencies. There exists 2 more
+tuples t 3 and t 4 such that this condition
+
+64
+00:07:23,129 --> 00:07:30,110
+sold, what are the conditions? Look carefully
+here we say that all of them match on the
+
+65
+00:07:30,110 --> 00:07:37,610
+alpha attributes which is fine, then you say
+that t 3 matches with t 1 in the beta attributes
+
+66
+00:07:37,610 --> 00:07:47,158
+and t 3 matches on the remaining attributes
+with t 2. Similarly, t 4 matches with t 2
+
+67
+00:07:47,158 --> 00:07:51,348
+in the beta attributes and t 4 matches with
+t 1 on the remaining attributes.
+
+68
+00:07:51,348 --> 00:07:58,879
+So, let us look at an example, gets confusing.
+So, here is course ah book and lecturer ah.
+
+69
+00:07:58,879 --> 00:08:04,228
+So, it is a relationship of university courses
+known naturally, every course has multiple
+
+70
+00:08:04,228 --> 00:08:10,098
+recommended books and every course has been
+taken by multiple different lecturers from
+
+71
+00:08:10,098 --> 00:08:18,589
+time to time. So, course can have multiple
+books. So, there is a multivalued dependency
+
+72
+00:08:18,589 --> 00:08:24,408
+here, it can be taught by multiple lectures.
+So, there is a multivalued dependency here
+
+73
+00:08:24,408 --> 00:08:31,430
+and therefore, I can have an instance of ah
+this particular relation and I am just showing
+
+74
+00:08:31,430 --> 00:08:37,320
+you, how to test for the multivalued dependency
+course multi determines book. So, these are
+
+75
+00:08:37,320 --> 00:08:44,090
+the 2 4 tuples I have marked t 1 t 2 t 3 t
+4 if you look into the first condition. So,
+
+76
+00:08:44,090 --> 00:08:51,019
+this is your alpha I am checking for. So,
+this is alpha this is beta. So, this is beta
+
+77
+00:08:51,019 --> 00:08:58,980
+ah and this is ah. So, to say R minus beta
+minus alpha ok.
+
+78
+00:08:58,980 --> 00:09:05,340
+So, the first condition that all these tuples
+will have to match on alpha yes, they do,
+
+79
+00:09:05,340 --> 00:09:13,000
+all 4 of them have AHA here. So, that is fine
+take at the second condition t 3 on beta is
+
+80
+00:09:13,000 --> 00:09:23,070
+Silberschatz and t 1 on beta is also Silberschatz.
+So, they match and t 3 on the remaining attributes
+
+81
+00:09:23,070 --> 00:09:28,620
+remaining attributes are, if I take out beta
+if I take out book it is AHA it is course
+
+82
+00:09:28,620 --> 00:09:34,149
+and the lecturer that is remaining. Now it
+already matches on the course. So, I do not
+
+83
+00:09:34,149 --> 00:09:39,340
+have to check for that, but. So, I can just
+check for whether it matches on lecturer,
+
+84
+00:09:39,340 --> 00:09:45,990
+between some checking for this rule, whether
+t 3 and t 2 match yes t t and t 2 match, they
+
+85
+00:09:45,990 --> 00:09:53,210
+have the same name for the lecturer.
+Look at ah the next one which is ah t 4 and
+
+86
+00:09:53,210 --> 00:10:00,190
+t 2 match on beta, t 4 and t 2 match on beta
+yes, they have the same name of the book,
+
+87
+00:10:00,190 --> 00:10:07,120
+and whether t 4 and t 1 match on the lecturer,
+this rule t 4 and t 1 match on the lecturer
+
+88
+00:10:07,120 --> 00:10:16,330
+this rule. So, it also satisfies. So, I can
+say that this relation has ah holds the multivalued
+
+89
+00:10:16,330 --> 00:10:22,280
+dependency course multi determining book.
+In a similar way you can ah you can ah mark
+
+90
+00:10:22,279 --> 00:10:28,309
+your t 1 t 2 t 3 t 4 on this and check for
+course multi determining the lecturer, actually
+
+91
+00:10:28,309 --> 00:10:33,799
+we will we will soon state that if course
+multi determines book, then it is trivial
+
+92
+00:10:33,799 --> 00:10:38,899
+that course will also multi determine lecturer.
+So, this is ah just to ah tell you if you
+
+93
+00:10:38,899 --> 00:10:47,159
+have ah 3 non-empty sets of attributes Y Z
+and W and then we say, Y multi determine Z,
+
+94
+00:10:47,159 --> 00:10:53,370
+if and only if there are these are the possible
+relations. That I can have Y 1 and Z 1 W 1
+
+95
+00:10:53,370 --> 00:11:01,980
+in a relation and Y 1 and Z 2 W 2 in the relation,
+then I can have Y 1 Z 1 with W 2 and Y 1 Z
+
+96
+00:11:01,980 --> 00:11:09,159
+2 is W 1, that is you can basically take the
+cross of these ah to other 2 attributes and
+
+97
+00:11:09,159 --> 00:11:15,419
+those are r tuples, possible tuples in your
+relation and ah.
+
+98
+00:11:15,419 --> 00:11:20,199
+So, you can you can naturally if you read
+it in little in a different way, then you
+
+99
+00:11:20,200 --> 00:11:26,820
+can observe that since the behavior of Z and
+W are identical they are switchable. So, if
+
+100
+00:11:26,820 --> 00:11:35,040
+Y multi determine Z, then you can you have
+ah Z Y multi determining W and vice versa.
+
+101
+00:11:35,039 --> 00:11:41,409
+So, this is ah what is a core observation
+in terms of the multi value dependencies?
+
+102
+00:11:41,409 --> 00:11:47,159
+So, this is ah in terms of our example, you
+can now clearly understand that id multi determines
+
+103
+00:11:47,159 --> 00:11:53,980
+child name and id multi determines phone number,
+in the earlier example that we took and ah.
+
+104
+00:11:53,980 --> 00:12:01,740
+So, we can also note that if there is a functional
+dependency, Y functionally determines Z then;
+
+105
+00:12:01,740 --> 00:12:07,720
+obviously, Y will multi determine Z, that
+is that is just quite obvious.
+
+106
+00:12:07,720 --> 00:12:14,019
+. So, we have to ah we can make use of multi
+value dependency to specify, further constraints
+
+107
+00:12:14,019 --> 00:12:20,528
+to remove ah redundancies and defining what
+is legal in a relation. And ah if a relation
+
+108
+00:12:20,528 --> 00:12:26,259
+fails to satisfy a given multivalued dependency,
+then we can construct a relation r primed,
+
+109
+00:12:26,259 --> 00:12:34,059
+that does satisfy the multi valued ah dependency
+by adding tuples to that r right?
+
+110
+00:12:34,059 --> 00:12:42,989
+Now, once having defined the notion of multi
+valued dependency, we next proceed to check
+
+111
+00:12:42,990 --> 00:12:48,049
+how do we reason about that. So, I would remind
+you about functional dependencies, and the
+
+112
+00:12:48,049 --> 00:12:56,909
+different rules of ah ah functional dependencies
+ah Armstrong's rules, that we had introduced
+
+113
+00:12:56,909 --> 00:13:00,219
+the all of these of augmentation transitivity
+and all that.
+
+114
+00:13:00,220 --> 00:13:06,750
+So, in terms of ah functional dependencies
+we have 3 rules, commonly called the cat rules.
+
+115
+00:13:06,750 --> 00:13:11,509
+Which purely involve the functional dependencies,
+first is a complementation which is a kind
+
+116
+00:13:11,509 --> 00:13:18,950
+which we have just ah discussed shown, that
+if X multi determines Y then X multi determines
+
+117
+00:13:18,950 --> 00:13:23,620
+R minus X union Y with multi determines the
+remaining set of attributes.
+
+118
+00:13:23,620 --> 00:13:31,190
+Augmentation, that is I can augment any multivalued
+dependency with left and putting attributes
+
+119
+00:13:31,190 --> 00:13:36,870
+on the left and right-hand side, as long as
+I put all attributes that I put on the right-hand
+
+120
+00:13:36,870 --> 00:13:40,789
+side, I put them on the left-hand side. I
+may put more attributes on the left-hand side,
+
+121
+00:13:40,789 --> 00:13:47,009
+but all attributes that I put on the right-hand
+side here Z must be a subset of the attributes
+
+122
+00:13:47,009 --> 00:13:52,539
+that I put on the left-hand side, that augmentation
+is possible. Transitivity is ah manifesting
+
+123
+00:13:52,539 --> 00:13:59,139
+in a little different way, if X multi determines
+Y and Y multi determines Z then, X multi determines
+
+124
+00:13:59,139 --> 00:14:04,159
+Z minus Y.
+So, these are the these are the 3 rules which
+
+125
+00:14:04,159 --> 00:14:10,279
+are basically these 3 are rules that, involve
+only multi valued dependencies and the other
+
+126
+00:14:10,279 --> 00:14:15,909
+2 rules, actually involve the relationship
+between multi value dependency the replication
+
+127
+00:14:15,909 --> 00:14:22,230
+rule and the coalescence rule, which are between
+the multi value dependency and the functional
+
+128
+00:14:22,230 --> 00:14:29,210
+dependency. We are not going going ah deeper
+into that further, or trying to take specific
+
+129
+00:14:29,210 --> 00:14:35,310
+examples and show how they work. I just want
+you to know that such rules exist through
+
+130
+00:14:35,309 --> 00:14:41,278
+which, you can define similar algorithms for
+multivalued dependency also, as we did for
+
+131
+00:14:41,278 --> 00:14:46,529
+functional dependency like as you can understand
+the most critical algorithm to define would
+
+132
+00:14:46,529 --> 00:14:51,539
+be the algorithm of closure, which can again
+be used in the situation where I have functional
+
+133
+00:14:51,539 --> 00:14:57,279
+as well as multivalued dependency.
+So, just ah we will keep that, in little bit
+
+134
+00:14:57,279 --> 00:15:02,230
+advance space of this course. So, just know
+that such things exist, but we are not going
+
+135
+00:15:02,230 --> 00:15:10,460
+into the details of that. Finally, for a multivalued
+dependency where, X determines Y we call that
+
+136
+00:15:10,460 --> 00:15:18,019
+MVD to be trivial. If either y is a subset
+of X which is the notion we used for functional
+
+137
+00:15:18,019 --> 00:15:23,279
+dependencies or there is a second condition
+here, that the union of the X and Y that left
+
+138
+00:15:23,279 --> 00:15:30,159
+hand right hand side gives you the whole set
+of attributes, otherwise a it is a non-trivial
+
+139
+00:15:30,159 --> 00:15:35,139
+multivalued dependency and we have to repeat
+the values. So, these are the 2 conditions,
+
+140
+00:15:35,139 --> 00:15:39,240
+if they satisfy then we know that we have
+a trivial multi value dependency and we do
+
+141
+00:15:39,240 --> 00:15:44,750
+not want to deal with that.
+So, there is little bit of ah references to
+
+142
+00:15:44,750 --> 00:15:50,549
+the theory given here, ah I have mentioned
+that there are closure algorithms ah. So,
+
+143
+00:15:50,549 --> 00:15:57,549
+that given a set of dependencies I will now
+generalize and set dependencies, which means
+
+144
+00:15:57,549 --> 00:16:02,549
+that there could be functional dependencies,
+always lies multivalued dependencies. Even
+
+145
+00:16:02,549 --> 00:16:08,809
+a set of dependencies you can define a closure
+of all of these functional and multivalued
+
+146
+00:16:08,809 --> 00:16:16,409
+dependencies together, that are implied by
+the given set and ah we can have all those
+
+147
+00:16:16,409 --> 00:16:22,909
+ah parallel definitions of ah closure of the
+dependencies, ah the minimal cover canonical
+
+148
+00:16:22,909 --> 00:16:28,088
+cover and so on.
+So, I just want ah you to note that these
+
+149
+00:16:28,089 --> 00:16:32,460
+things have been defined and the existent
+theory, but will be beyond the current course
+
+150
+00:16:32,460 --> 00:16:41,420
+that we are pursuing. So, it is ah now that
+we have is we have seen a another additional
+
+151
+00:16:41,419 --> 00:16:47,459
+source of ah redundancy in our data, in terms
+of multiple values and ah in terms of the
+
+152
+00:16:47,460 --> 00:16:53,250
+multi value dependency that hold.
+So, we would now like to look into if such
+
+153
+00:16:53,250 --> 00:17:01,669
+dependencies exist, then how do you decompose
+a relation to satisfy that the redundancy
+
+154
+00:17:01,669 --> 00:17:08,288
+caused by such dependencies are not affecting
+us. So, such a normal form it is beyond the
+
+155
+00:17:08,288 --> 00:17:14,788
+third normal form is called to be said to
+be a 4th normal form or 4 NF. Where you say
+
+156
+00:17:14,788 --> 00:17:23,759
+that a relation is ah in 4 m NF if, every
+multi value dependency alpha multi determining
+
+157
+00:17:23,759 --> 00:17:32,960
+beta, in the closure of the set of dependencies
+is either trivial, trivial means that left
+
+158
+00:17:32,960 --> 00:17:36,929
+hand side is a subset of the right-hand side
+or the union of the left and right-hand side
+
+159
+00:17:36,929 --> 00:17:41,900
+gives you the whole set of attributes.
+So, it is either trivial every dependency
+
+160
+00:17:41,900 --> 00:17:49,850
+is either trivial, or alpha left-hand side
+is a superset of the schema R, you can very
+
+161
+00:17:49,849 --> 00:17:56,769
+well relate that this is just a little twist
+on the definition of the Boyce Codd normal
+
+162
+00:17:56,769 --> 00:18:01,389
+form, where the second condition was identical
+and only thing in the first condition instead
+
+163
+00:18:01,390 --> 00:18:08,330
+of MVD, you had a functional dependency. So,
+when we have this, we say we are a relation
+
+164
+00:18:08,329 --> 00:18:16,230
+would be in the in the 4th normal form. Naturally,
+if a relation is in 4th normal form, it is
+
+165
+00:18:16,230 --> 00:18:21,460
+trivial that it will be in the Boyce Codd
+normal form, but the reverse will not be necessarily
+
+166
+00:18:21,460 --> 00:18:26,120
+true.
+So, again the same set of ah concepts that,
+
+167
+00:18:26,119 --> 00:18:32,669
+ah if I have a set of dependencies and you
+have a decomposed relation then smaller relation,
+
+168
+00:18:32,670 --> 00:18:40,271
+then I can ah project that set of ah dependencies,
+in in terms of a particular subset of the
+
+169
+00:18:40,270 --> 00:18:44,409
+attributes and here is the condition that
+is given.
+
+170
+00:18:44,410 --> 00:18:51,120
+So, the decomposition algorithm into 4 NF
+is exactly like the decomposition algorithm
+
+171
+00:18:51,119 --> 00:18:59,399
+of the Boyce Codd, normal form BC NF. Only
+difference being that, now you may be doing
+
+172
+00:18:59,400 --> 00:19:09,410
+this ah crucial step of ah to a decomposition,
+for every multivalued dependency also earlier
+
+173
+00:19:09,410 --> 00:19:11,600
+we were doing this only for the functional
+dependency.
+
+174
+00:19:11,599 --> 00:19:17,169
+So, now if there is any offending multivalued
+dependency, which is not satisfying the phone
+
+175
+00:19:17,170 --> 00:19:22,789
+in a form. We can decompose the relation in
+terms of R 1 and R 2, as in here which is
+
+176
+00:19:22,789 --> 00:19:29,678
+exactly like the Boyce Codd normal form and
+then the rest of it is simple. If ah ah if
+
+177
+00:19:29,679 --> 00:19:36,670
+it is ah you know by by this another important
+point, that you that you must note is in this
+
+178
+00:19:36,670 --> 00:19:42,180
+process you actually guarantee lossless join.
+So, this also continues to be in lossless
+
+179
+00:19:42,180 --> 00:19:48,250
+join, with every decomposition and then you
+keep on repeating till all dependencies in
+
+180
+00:19:48,250 --> 00:19:56,440
+f, in your set has been ah dealt with the
+attributes in R 1 and have converted them
+
+181
+00:19:56,440 --> 00:20:02,039
+into the 4 NF form. So, you have a total 4
+NF decomposition happening.
+
+182
+00:20:02,039 --> 00:20:09,678
+Ah let us ah take a ok this here, is the like
+before here is a formal algorithm for those
+
+183
+00:20:09,679 --> 00:20:16,990
+who would be interested, to ah formally study
+the steps. Ah here I am just showing examples
+
+184
+00:20:16,990 --> 00:20:26,220
+of 4 NF decomposition. So, we started this
+discussion with a person ah relational scheme,
+
+185
+00:20:26,220 --> 00:20:32,950
+having man phone and dog likes MPD, I have
+added I have just modified and I have added
+
+186
+00:20:32,950 --> 00:20:40,509
+another attribute address. So, that in addition
+to the multi value dependencies, I can also
+
+187
+00:20:40,509 --> 00:20:45,549
+have a functional dependency. So, we have
+2 multivalued dependencies like before, man
+
+188
+00:20:45,549 --> 00:20:52,720
+multi determining phones and man multi determining
+dog like, but now we have a functional dependency
+
+189
+00:20:52,720 --> 00:20:57,210
+man determining address the key continues
+to be MPD.
+
+190
+00:20:57,210 --> 00:21:05,240
+So, all of these dependencies ah will violate
+the 4 NF, because none of them satisfy the
+
+191
+00:21:05,240 --> 00:21:11,019
+either of the condition, that none of them
+are trivial and on for none of them left hand
+
+192
+00:21:11,019 --> 00:21:17,759
+side is a super key because a key is MPD.
+So, you can see that in on instances of this,
+
+193
+00:21:17,759 --> 00:21:25,170
+ah relational schema you will have multiple
+redundant records, in the actual instance.
+
+194
+00:21:25,170 --> 00:21:32,200
+So, on the right ah we normalize we normalize
+by taking f D 1, take the union of man and
+
+195
+00:21:32,200 --> 00:21:37,980
+phones, that gives you the first relation
+and then the rest of it. Then again you split
+
+196
+00:21:37,980 --> 00:21:44,679
+based on f D 2, you have the second relation
+in the decomposition man and dog like and
+
+197
+00:21:44,679 --> 00:21:51,150
+the third one gets generated as a byproduct
+of that, which is man and address.
+
+198
+00:21:51,150 --> 00:21:58,170
+And you have 3 relations now, which together
+represents the original relation each one
+
+199
+00:21:58,170 --> 00:22:03,190
+of them is in 4th normal form. Actually, what
+happens is, when you when you have decomposed
+
+200
+00:22:03,190 --> 00:22:15,029
+then, f D 1 in ah this has ah has ah become
+a a relation where, the multivalued dependency
+
+201
+00:22:15,029 --> 00:22:20,990
+man multi determining phones can be checked
+in terms of a functional dependency itself,
+
+202
+00:22:20,990 --> 00:22:28,089
+and ah that that is what gives you the multi
+value dependency. And since it is multivalued
+
+203
+00:22:28,089 --> 00:22:35,039
+so, man and phones together ah continues to
+form the key, similarly in the second one
+
+204
+00:22:35,039 --> 00:22:41,500
+the man and dog like is the key. Because you
+just have the multivalued dependency and given
+
+205
+00:22:41,500 --> 00:22:47,029
+the same man, you will have multiple dogs
+whom he or she likes, but in the third one
+
+206
+00:22:47,029 --> 00:22:52,490
+in the person address where you have man and
+address you have only man as the key, because
+
+207
+00:22:52,490 --> 00:23:00,759
+man is a functional dependency that holds.
+So, this is a simple illustration of ah decomposition
+
+208
+00:23:00,759 --> 00:23:10,548
+into 4 NF, here is a little more elaborate
+one, again this is a we have ah I have worked
+
+209
+00:23:10,548 --> 00:23:17,019
+through the steps. So, there are 3 multivalued
+dependencies and you can see that, A multi
+
+210
+00:23:17,019 --> 00:23:24,160
+determining B is not does not is not who does
+not hold the condition of 4 NF. So, you have
+
+211
+00:23:24,160 --> 00:23:30,570
+to decompose, you decompose get R 1 which
+is in 4 NF and the remaining R 2 which is
+
+212
+00:23:30,569 --> 00:23:38,899
+also not in 4 NF. So, decompose in R 3 which
+is in 4 NF and R 4, we can R 4 is not in 4
+
+213
+00:23:38,900 --> 00:23:46,220
+NF you decomposER 4 into R 5 and R 6 and ah
+work through that, and you will be able to
+
+214
+00:23:46,220 --> 00:23:53,460
+see that R 5 is in 4 NF and R 6 also is in
+4 NF, which gives a complete multivalued decomposition
+
+215
+00:23:53,460 --> 00:23:59,640
+of this whole set.
+Naturally with that, ah we will conclude our
+
+216
+00:23:59,640 --> 00:24:07,120
+discussion on the decomposition process, there
+are there would be some more aspects to look
+
+217
+00:24:07,119 --> 00:24:12,849
+at and there is lot of more ah normal forms
+that exist. But this is for all practical
+
+218
+00:24:12,849 --> 00:24:19,820
+purposes, ah a database is normalized, when
+it is represented in terms of the third normal
+
+219
+00:24:19,820 --> 00:24:24,428
+form. And I have discussed still I have discussed
+the 4th normal form, because in some places
+
+220
+00:24:24,429 --> 00:24:27,720
+people prefer to represent also in 4th normal
+form.
+
+221
+00:24:27,720 --> 00:24:33,829
+So, that they guarantee that they have even
+less redundancy in the data, but ah leaving
+
+222
+00:24:33,829 --> 00:24:39,970
+that, let us quickly take a round in terms
+of the what we have done so far and what is
+
+223
+00:24:39,970 --> 00:24:43,970
+a basic overall design process that we should
+be following.
+
+224
+00:24:43,970 --> 00:24:50,710
+So, again to remind you the goal for our design,
+is to have a relational database which is
+
+225
+00:24:50,710 --> 00:24:57,210
+in BC NF or 3 NF has a lossless join due to
+the decomposition, and dependency preservation.
+
+226
+00:24:57,210 --> 00:25:03,090
+If we cannot ah achieve that, I am I am sorry
+earlier what I meant is BC NF or 4 NF not
+
+227
+00:25:03,089 --> 00:25:09,109
+BC NF and 3 NF. So, the idea would be I have
+a decomposition in BC NF and 4 NF lossless
+
+228
+00:25:09,109 --> 00:25:13,928
+join and dependency preservation which may
+not be achievable. If I cannot achieve that
+
+229
+00:25:13,929 --> 00:25:19,750
+then I go I have to sacrifice either, the
+lack of dependency preservation. So, dependencies
+
+230
+00:25:19,750 --> 00:25:26,119
+will have to be checked using natural joint
+or, I will allow a little bit of redundancy
+
+231
+00:25:26,119 --> 00:25:29,599
+and use the third normal form where I have
+the guarantee.
+
+232
+00:25:29,599 --> 00:25:36,779
+Now, at this point you must wonder and note
+that SQL, the language in which we are doing
+
+233
+00:25:36,779 --> 00:25:42,549
+the creation and update and the query processing.
+That SQL does not provide any directory of
+
+234
+00:25:42,549 --> 00:25:49,308
+specifying or checking any dependency, other
+than the functional other than the ah functional
+
+235
+00:25:49,308 --> 00:25:55,540
+dependency, that checks the super key. Super
+key is the only functional dependency ah that
+
+236
+00:25:55,540 --> 00:26:01,480
+SQL would check, no other functional dependency
+or multivalued dependency and other type dependencies
+
+237
+00:26:01,480 --> 00:26:08,829
+are can be specified or checked in SQL. You
+can do that using assertions, in the in the
+
+238
+00:26:08,829 --> 00:26:14,619
+while discussing SQL I were talked about assertions
+we can do that using assertions, but that
+
+239
+00:26:14,619 --> 00:26:24,659
+too is very expensive to test. So, it is not
+ah not usually supported by any of the databases,
+
+240
+00:26:24,660 --> 00:26:28,929
+which are widely used because that slows down
+your every process very, very much.
+
+241
+00:26:28,929 --> 00:26:35,740
+So, you can understand that in terms of your
+design goals, you have ah to do a very good
+
+242
+00:26:35,740 --> 00:26:41,099
+job to make sure that, your functional and
+multivalued dependencies are accurately expressed
+
+243
+00:26:41,099 --> 00:26:47,039
+in the design and accordingly the schemas
+are normalized in in the proper ways satisfying
+
+244
+00:26:47,039 --> 00:26:55,329
+BC NF for 4 NF or 3 NF ah normal forms. But
+because, while you will actually have instances
+
+245
+00:26:55,329 --> 00:27:00,939
+there will not be a practical way, to see
+if you are violating any one or more of these
+
+246
+00:27:00,940 --> 00:27:08,779
+ah ah rules of dependencies that you have
+set.
+
+247
+00:27:08,779 --> 00:27:15,789
+So, as I mentioned there are actually these
+are not the only forms, there are various
+
+248
+00:27:15,789 --> 00:27:23,849
+other normal forms as well and ah fifth normal
+form 6 normal form and so on, but it is very
+
+249
+00:27:23,849 --> 00:27:31,379
+rarely these are very rarely used . It is
+not ah easy to decompose into these normal
+
+250
+00:27:31,380 --> 00:27:36,549
+forms, and by this decomposition does not
+give you enough returns in terms of the reduction
+
+251
+00:27:36,548 --> 00:27:42,500
+of redundancy and removal of anomalies, that
+people often would have motivation to do them,
+
+252
+00:27:42,500 --> 00:27:45,450
+but you should know that such normal forms
+exist.
+
+253
+00:27:45,450 --> 00:27:50,940
+So, in the overall process if we look, at
+I mean what we have been doing is ah there
+
+254
+00:27:50,940 --> 00:27:55,890
+are several tracks that we could be taking
+one possible thing is, the whole set of attributes
+
+255
+00:27:55,890 --> 00:28:00,380
+have been generated while we have converted
+or relation has been generated. When you have
+
+256
+00:28:00,380 --> 00:28:07,750
+converted the entity relationship diagram,
+the UML or the ER diagram into a set of tables,
+
+257
+00:28:07,750 --> 00:28:12,849
+That is how we got our ah set of attributes
+or the relational schema R, it is also possible
+
+258
+00:28:12,849 --> 00:28:18,679
+that we just started with a single relation
+containing all attributes, ah which is called
+
+259
+00:28:18,680 --> 00:28:25,081
+the universal relation? And then ah normalization
+will break them into smaller relations. It
+
+260
+00:28:25,080 --> 00:28:29,829
+could have been or could have been the result
+of some add of design of relations also, and
+
+261
+00:28:29,829 --> 00:28:32,909
+then you convert them.
+So, there are possible all different possible
+
+262
+00:28:32,910 --> 00:28:40,490
+tracks that can happen. So, if we have taken
+the ER model track, ah then frankly speaking
+
+263
+00:28:40,490 --> 00:28:46,910
+if the ER model is carefully designed, then
+every entity defined in that ER model will
+
+264
+00:28:46,910 --> 00:28:52,919
+have only the dependency which are the determining
+super key.
+
+265
+00:28:52,919 --> 00:29:00,690
+So, ah just just recall the employee department
+building kind of situation we discussed earlier.
+
+266
+00:29:00,690 --> 00:29:06,740
+So, an employee entity has attributes department
+name and building, and there is a functional
+
+267
+00:29:06,740 --> 00:29:11,460
+dependency from department name 2 building.
+So, what it means that in the entity relationship
+
+268
+00:29:11,460 --> 00:29:16,250
+diagram itself we didn't do a good job. If
+we had done a good job then we would have
+
+269
+00:29:16,250 --> 00:29:21,230
+identified that the department itself is an
+entity and therefore, would not feature as
+
+270
+00:29:21,230 --> 00:29:26,640
+an attribute on the employee. So, it would
+have been I mean right there, we would have
+
+271
+00:29:26,640 --> 00:29:31,788
+if we had called it as a separate entity,
+then that is equivalent of what we are doing
+
+272
+00:29:31,788 --> 00:29:36,180
+now taking the relation and then breaking
+it down through decomposition.
+
+273
+00:29:36,180 --> 00:29:43,600
+So, functional dependencies from non-key attributes
+of a relation ah ship are possible ah, but
+
+274
+00:29:43,599 --> 00:29:48,949
+are rare. So, ah mostly the relationships
+are binary, and if you do a careful design
+
+275
+00:29:48,950 --> 00:29:56,558
+of the ER model then many of these deep exercise
+of ah normalization you will not have to go
+
+276
+00:29:56,558 --> 00:30:00,119
+through.
+It should also be kept in ah your view, that
+
+277
+00:30:00,119 --> 00:30:05,899
+ah at there times when you want to de normalize
+want to use denormalized relations, because
+
+278
+00:30:05,900 --> 00:30:11,370
+ah if you have normalized and the only way
+to get back ah the original view is to perform
+
+279
+00:30:11,369 --> 00:30:18,089
+join. So, if we of course, if you have prerequisites
+and if you want to say, view or print ah prerequisites
+
+280
+00:30:18,089 --> 00:30:23,288
+with that title hm title and course id ah
+naturally you will have to take a join with
+
+281
+00:30:23,288 --> 00:30:27,519
+the course, which is expensive.
+So, one option could be first alternative
+
+282
+00:30:27,519 --> 00:30:32,900
+could be that, you use a de normalized relation,
+where the course prerequisite is actually
+
+283
+00:30:32,900 --> 00:30:38,769
+included in the course and you you know that
+will have you know violations of some of the
+
+284
+00:30:38,769 --> 00:30:44,990
+normal forms. Because, ah there are there
+are ah functional dependencies between them,
+
+285
+00:30:44,990 --> 00:30:48,589
+but that will certainly lead you to first
+a look up, because you have them in the same
+
+286
+00:30:48,589 --> 00:30:53,379
+table you do not need to perform join. But
+you need extra space exact extra execution
+
+287
+00:30:53,380 --> 00:30:59,760
+time for update, because you have redundant
+data you have redundancy while programming
+
+288
+00:30:59,759 --> 00:31:05,089
+on that coding on that, because of this redundancy
+there could be possibility of error, because
+
+289
+00:31:05,089 --> 00:31:08,939
+any of these anomalies can happen and your
+code will have to now take care of that.
+
+290
+00:31:08,940 --> 00:31:14,009
+So, it does help in certain way in terms of
+getting a better efficiency, but it there
+
+291
+00:31:14,009 --> 00:31:18,980
+is a there is a cost to pay in a different
+way also the other alternative could be you
+
+292
+00:31:18,980 --> 00:31:25,079
+can have a materialized view, which is actually
+the joint and course of prerequisite. In terms
+
+293
+00:31:25,079 --> 00:31:32,418
+of performance it has a same benefit or or
+the costs as you say, but ah only thing is
+
+294
+00:31:32,419 --> 00:31:37,150
+you will not need to do that extra coding.
+So, it is better from that perspective.
+
+295
+00:31:37,150 --> 00:31:43,750
+So, always keep the issue of de normalization
+in view, and we do a careful design that if
+
+296
+00:31:43,750 --> 00:31:50,288
+it is very frequent that, you will have to
+compute a join then, you might want to sacrifice
+
+297
+00:31:50,288 --> 00:31:55,109
+some of the redundancy some of the you know
+possibilities of having anomaly, and still
+
+298
+00:31:55,109 --> 00:32:00,769
+have a you know ah de normalized design in
+your database.
+
+299
+00:32:00,769 --> 00:32:07,940
+There are several other issues of design,
+which do not get captured in what we have
+
+300
+00:32:07,940 --> 00:32:15,600
+designed. For example, let say very regularly
+we are we have ah returns, income tax returns
+
+301
+00:32:15,599 --> 00:32:22,189
+to submit and we will be maintain ah income
+tax return tax your sales tax return and on
+
+302
+00:32:22,190 --> 00:32:27,880
+all that, and you maintain your accounts book
+of transactions debit credit accounted and
+
+303
+00:32:27,880 --> 00:32:32,890
+so on. Now naturally, these are all bound
+in terms of one-year effectivity.
+
+304
+00:32:32,890 --> 00:32:39,538
+So, when they come when in the next year comes,
+then you need a a separate you know set of
+
+305
+00:32:39,538 --> 00:32:45,430
+records to be done for that year. So, how
+do you. So, if you if you have such a table
+
+306
+00:32:45,430 --> 00:32:51,289
+where you along with the company idea of year
+and amount and then how do you take care of
+
+307
+00:32:51,289 --> 00:32:59,940
+this situation, because one way could be that
+you have all all of these you take out year,
+
+308
+00:32:59,940 --> 00:33:04,850
+from the attribute and you have separate table
+in every year. So, you will have to create
+
+309
+00:33:04,849 --> 00:33:11,819
+new table and remember their name. So, if
+queries which ah run across year will be difficult
+
+310
+00:33:11,819 --> 00:33:15,048
+to do.
+The other way could be that, you every new
+
+311
+00:33:15,048 --> 00:33:22,460
+year you start renaming you know you do a
+year where where your earnings from different
+
+312
+00:33:22,460 --> 00:33:28,529
+years are shown on different columns. So,
+you are basically every year you have the
+
+313
+00:33:28,529 --> 00:33:33,480
+result in terms of a different attribute.
+So, that also is not a very good solution
+
+314
+00:33:33,480 --> 00:33:38,360
+for a database ah it is something which is
+with the spreadsheets will will often use,
+
+315
+00:33:38,359 --> 00:33:45,288
+but ah in terms of data which has a certain
+format and needs to be you know redefined
+
+316
+00:33:45,288 --> 00:33:51,058
+from scratch, at a at a different time frame
+in a different way, then you will come across
+
+317
+00:33:51,058 --> 00:33:55,798
+these issues.
+Ah let me close ah with just pointing out
+
+318
+00:33:55,798 --> 00:34:01,150
+that, if we have a one kind of data that we
+have not looked at which are temporally in
+
+319
+00:34:01,150 --> 00:34:06,070
+nature, that is all that we have ah said is
+the attributes and their values. So, if we
+
+320
+00:34:06,069 --> 00:34:11,519
+put at value to an attribute then that value
+is taken to be the truth for now, and for
+
+321
+00:34:11,519 --> 00:34:15,809
+the past and for the features. So, if that
+value changes, then you completely erase that
+
+322
+00:34:15,809 --> 00:34:19,329
+in the database.
+So, for example, today I stay at a certain
+
+323
+00:34:19,329 --> 00:34:24,309
+address, tomorrow I may take up a different
+quarter my address has changed. So, in our
+
+324
+00:34:24,309 --> 00:34:29,349
+design if if there is against my employee
+id there is an address given, then once I
+
+325
+00:34:29,349 --> 00:34:33,329
+change my quarter my address will change it
+will not be possible to recollect, what address
+
+326
+00:34:33,329 --> 00:34:40,989
+I resided in in say 2017.
+So, temporal data of ah such kind, temporal
+
+327
+00:34:40,989 --> 00:34:50,329
+data I am sorry just of ah such kind ah have
+an association with an interval. So, a snapshot
+
+328
+00:34:50,329 --> 00:34:57,190
+often does not solve the problem. So, ah you
+have ah you have to decide, how you do that?
+
+329
+00:34:57,190 --> 00:35:02,900
+Whether ah you can you would like to put some
+attributes, which specify the timestamp or
+
+330
+00:35:02,900 --> 00:35:09,650
+you would like to I mean really have ah multivalued
+attributes, denoting the different time frames
+
+331
+00:35:09,650 --> 00:35:17,979
+where they are ah they may have taken effect,
+there is no accepted standard . And the fact
+
+332
+00:35:17,978 --> 00:35:24,788
+that, if you if you know that it keeps on
+changing with time then your original dependencies
+
+333
+00:35:24,789 --> 00:35:30,320
+might get affected they will they will change
+as well. So, these are the things that you
+
+334
+00:35:30,320 --> 00:35:35,109
+will have to take care ah.
+This is another style, that many a times when
+
+335
+00:35:35,108 --> 00:35:42,478
+you have to say that ok. This course ah with
+this title existed from this semester, a different
+
+336
+00:35:42,478 --> 00:35:48,189
+semester the title may have changed. So, you
+can put a start and end attribute with which
+
+337
+00:35:48,190 --> 00:35:55,440
+specifies what is the time for which the remaining
+attributes made sense a good design, but these
+
+338
+00:35:55,440 --> 00:36:00,739
+also have issues because, ah if you do this
+kind of temporal intervals, then how do you
+
+339
+00:36:00,739 --> 00:36:05,869
+make sure that ah between 2 records the intervals
+are not overlapped. So, you are not saying
+
+340
+00:36:05,869 --> 00:36:11,289
+that at the same time this course had them
+X this of course, also had name Y. So, they
+
+341
+00:36:11,289 --> 00:36:16,130
+have to be disjoint. So, how do you check
+for this ah ah this consistency of data, there
+
+342
+00:36:16,130 --> 00:36:20,789
+is no easy way to do that.
+So, um the foreign key references and all
+
+343
+00:36:20,789 --> 00:36:25,299
+those. So, handling of temporal data is another
+aspect which will have to be looked into very
+
+344
+00:36:25,298 --> 00:36:31,248
+carefully, in the design and you will need
+to do some kind of design compromise and implementation
+
+345
+00:36:31,248 --> 00:36:37,409
+has to take care of those issues.
+So, to summarize ah we have ah ah taken a
+
+346
+00:36:37,409 --> 00:36:42,879
+full look into the multivalued dependencies
+and tried to understand what happens, when
+
+347
+00:36:42,880 --> 00:36:48,660
+your attributes get multiple values. Learn
+the 4th normal form for that and the decomposition
+
+348
+00:36:48,659 --> 00:36:54,288
+into that, and most importantly we have tried
+to summarize the core database design process.
+
+349
+00:36:54,289 --> 00:37:00,670
+That we have been discussing ah for the last
+4 modules, this is the 5th one including this
+
+350
+00:37:00,670 --> 00:37:05,298
+and we have understood that and we have talked
+a little bit about the temporal data and with
+
+351
+00:37:05,298 --> 00:37:10,028
+this we close our discussions on the relational
+database design, and from the next module
+
+352
+00:37:10,028 --> 00:37:13,768
+we will move on to other aspects of the database
+systems.
+

@@ -1,0 +1,360 @@
+WEBVTT
+
+1
+00:00:02.200 --> 00:00:06.550
+Hello, I hope you enjoyed your first
+programming experience with Spark.
+
+2
+00:00:07.580 --> 00:00:10.890
+Although the words count
+example is simple,
+
+3
+00:00:10.890 --> 00:00:14.420
+it is useful in starting to
+understand how to work with RDDs.
+
+4
+00:00:16.040 --> 00:00:22.820
+After this video, you'll be able to use
+two methods to create RDDs in Spark,
+
+5
+00:00:22.820 --> 00:00:28.500
+explain what immutable means,
+interpret a Spark program as a pipeline
+
+6
+00:00:28.500 --> 00:00:33.860
+of transformations and actions, and
+list the steps to create a Spark program.
+
+7
+00:00:36.390 --> 00:00:37.970
+So let's remember where we are.
+
+8
+00:00:39.540 --> 00:00:43.620
+We have a Driver Program that
+defines the Spark context.
+
+9
+00:00:44.700 --> 00:00:48.419
+This is the entry point
+to your application.
+
+10
+00:00:48.419 --> 00:00:53.980
+The driver converts all the data to RDDs,
+and
+
+11
+00:00:53.980 --> 00:00:59.720
+everything from this point on
+gets managed using the RDDs.
+
+12
+00:00:59.720 --> 00:01:03.320
+RDDs can be constructed from files or
+any other storage.
+
+13
+00:01:04.500 --> 00:01:08.650
+They can also be constructed from
+data structures for collections and
+
+14
+00:01:08.650 --> 00:01:10.150
+programs, like lists.
+
+15
+00:01:11.940 --> 00:01:18.306
+All the transformations and actions on
+these RDDs take place either locally,
+
+16
+00:01:18.306 --> 00:01:22.560
+or on the Worker Nodes
+managed by a Cluster Manager.
+
+17
+00:01:25.190 --> 00:01:29.560
+Each transformation results in
+a new updated version of the RDD.
+
+18
+00:01:29.560 --> 00:01:33.480
+The RDDs at the end get converted and
+
+19
+00:01:33.480 --> 00:01:37.319
+saved in a persistent storage like HDFS or
+your local drive.
+
+20
+00:01:40.000 --> 00:01:46.480
+As we mentioned before,
+RDDs get created in the Driver Program.
+
+21
+00:01:46.480 --> 00:01:48.680
+The developer of the Driver Program,
+
+22
+00:01:48.680 --> 00:01:52.820
+who in this case is you,
+is responsible for creating them.
+
+23
+00:01:55.030 --> 00:01:58.650
+You can just read in a file
+through your Spark Context, or
+
+24
+00:01:58.650 --> 00:02:04.300
+as we have in this example,
+you can provide an existing collection,
+
+25
+00:02:04.300 --> 00:02:07.820
+like a list to be turned into
+a distributed collection.
+
+26
+00:02:10.400 --> 00:02:15.130
+You can also create an integer
+RDD using parallelize,
+
+27
+00:02:16.340 --> 00:02:18.690
+and provide a number of partitions for
+
+28
+00:02:18.690 --> 00:02:23.000
+distribution as we do create
+the numbers RDD in this line.
+
+29
+00:02:25.850 --> 00:02:29.440
+Here, the range function in Python
+
+30
+00:02:30.460 --> 00:02:33.738
+will give us a list of
+numbers starting from 0 to 9.
+
+31
+00:02:33.738 --> 00:02:40.340
+The parallelize function
+will create three partitions
+
+32
+00:02:40.340 --> 00:02:45.160
+of the RDD to be distributed, based on
+the parameter that was provided to it.
+
+33
+00:02:46.440 --> 00:02:51.040
+Spark will decide how to assign partitions
+to our executors and worker nodes.
+
+34
+00:02:53.110 --> 00:02:58.037
+The distributed RDDs can in the end be
+gathered into a single partition on
+
+35
+00:02:58.037 --> 00:03:01.286
+the driver using
+the collect transformation.
+
+36
+00:03:07.478 --> 00:03:12.225
+Now let's think of a scenario were we
+start processing the created RDDs.
+
+37
+00:03:14.060 --> 00:03:19.252
+There are two types of operations
+that help with processing in Spark,
+
+38
+00:03:19.252 --> 00:03:22.158
+namely Transformations and Actions.
+
+39
+00:03:24.829 --> 00:03:29.734
+All partitions written in RDD,
+go through the same transformation in
+
+40
+00:03:29.734 --> 00:03:34.820
+the worker node, executors when
+a transformation is applied to an RDD.
+
+41
+00:03:36.420 --> 00:03:40.110
+Spark uses lazy evaluation for
+transformations.
+
+42
+00:03:41.470 --> 00:03:45.310
+That means they will not be
+immediately executed, but
+
+43
+00:03:45.310 --> 00:03:47.610
+instead wait for
+an action to be performed.
+
+44
+00:03:49.440 --> 00:03:53.890
+The transformations get computed
+when an action is executed.
+
+45
+00:03:53.890 --> 00:03:56.810
+For this reason,
+a lot of times you will see run
+
+46
+00:03:56.810 --> 00:04:01.300
+time errors showing up at the action stage
+and not at the transformation stages.
+
+47
+00:04:02.340 --> 00:04:04.840
+It is very similar to Haskell or Erlang,
+
+48
+00:04:04.840 --> 00:04:07.120
+if any of you are familiar
+with these languages.
+
+49
+00:04:09.730 --> 00:04:12.870
+Let's put some names on
+these transformations.
+
+50
+00:04:12.870 --> 00:04:18.530
+We can have a pipeline by converting a
+text file into an RDD with two partitions.
+
+51
+00:04:19.840 --> 00:04:25.440
+Filter some values out of it, and
+maybe apply a map function to it.
+
+52
+00:04:25.440 --> 00:04:30.350
+In the end, the run,
+the collect action on the mapped RDDs
+
+53
+00:04:30.350 --> 00:04:34.620
+to evaluate the results of the pipeline
+and convert the outputs into results.
+
+54
+00:04:35.680 --> 00:04:41.440
+Here, filter and map are transformations,
+and collect is the action.
+
+55
+00:04:43.340 --> 00:04:47.990
+Although the RDDs are in memory,
+and they are not persistent,
+
+56
+00:04:47.990 --> 00:04:51.240
+we can use the cash function
+to make them persistent cash.
+
+57
+00:04:53.090 --> 00:04:58.684
+For example, in order to reuse the RDD
+created from a database query that could
+
+58
+00:04:58.684 --> 00:05:03.792
+otherwise be costly to re-execute,
+we can instead cache these RDDs.
+
+59
+00:05:06.461 --> 00:05:09.883
+We need to use caution when
+using the cache option,
+
+60
+00:05:09.883 --> 00:05:14.432
+as it can consume too much memory and
+generate a bottleneck itself.
+
+61
+00:05:17.713 --> 00:05:25.070
+As a part of the Word Count example, we
+mapped the words RDD to generate tuples.
+
+62
+00:05:25.070 --> 00:05:29.350
+We then applied reduceByKey
+to tuples to generate counts.
+
+63
+00:05:30.470 --> 00:05:34.465
+In the end, we convert the number
+of partitions to one so
+
+64
+00:05:34.465 --> 00:05:38.120
+that output is one file
+when written to this later.
+
+65
+00:05:38.120 --> 00:05:41.980
+Otherwise, output will be spread
+over multiple files on disk.
+
+66
+00:05:43.572 --> 00:05:49.410
+Finally, saveAsTextFile is an action
+that kickstarts the computation and
+
+67
+00:05:49.410 --> 00:05:50.120
+writes to disk.
+
+68
+00:05:52.040 --> 00:05:55.700
+To summarize, in a typical Spark program
+
+69
+00:05:55.700 --> 00:06:00.400
+we create RDDs from external storage or
+local collections like lists.
+
+70
+00:06:01.610 --> 00:06:05.130
+Then we apply transformations
+to these RDDs,
+
+71
+00:06:05.130 --> 00:06:09.820
+like filter, map, and reduceByKey.
+
+72
+00:06:09.820 --> 00:06:14.800
+These transformations get lazily
+evaluated until an action is performed.
+
+73
+00:06:15.970 --> 00:06:22.330
+Actions are performed both for local and
+parallel computation to generate results.
+
+74
+00:06:22.330 --> 00:06:26.780
+Next, we will talk more about
+transformation and actions in Spark.

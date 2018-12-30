@@ -1,0 +1,440 @@
+WEBVTT
+
+1
+00:00:01.550 --> 00:00:02.530
+In this hands on activity,
+
+2
+00:00:02.530 --> 00:00:05.190
+we will be using Spark Streaming
+to read weather data.
+
+3
+00:00:06.900 --> 00:00:09.470
+First, we open
+the Spark Streaming Jupyter Notebook.
+
+4
+00:00:10.610 --> 00:00:13.680
+Next, we will look at sensor format and
+measurement types.
+
+5
+00:00:14.695 --> 00:00:19.110
+We'll then create a Spark DStream of
+weather data, read the measurements, and
+
+6
+00:00:19.110 --> 00:00:20.630
+create a sliding window of the data.
+
+7
+00:00:20.630 --> 00:00:26.180
+We will define a function to display the
+maximum and minimum values in the window.
+
+8
+00:00:26.180 --> 00:00:28.770
+We start to stream processing
+to give their results.
+
+9
+00:00:31.350 --> 00:00:35.610
+Before we begin this activity, we need
+to change the virtual box settings for
+
+10
+00:00:35.610 --> 00:00:37.100
+our carder virtual machine.
+
+11
+00:00:39.110 --> 00:00:42.330
+Start streaming needs more
+than one thread of execution.
+
+12
+00:00:42.330 --> 00:00:45.620
+So we need to change the settings to
+add more than one virtual processor.
+
+13
+00:00:47.180 --> 00:00:52.930
+First, shut down your cloudera virtual
+machine and go to the virtual box manager.
+
+14
+00:00:54.960 --> 00:00:58.300
+Select the cloudera virtual box and
+click on settings.
+
+15
+00:01:00.720 --> 00:01:05.040
+Next, click on system, click on Processor.
+
+16
+00:01:07.520 --> 00:01:14.444
+And change the number of
+CPU's to be two or more.
+
+17
+00:01:14.444 --> 00:01:19.910
+When you're done, click okay,
+and start the machine as usual.
+
+18
+00:01:23.740 --> 00:01:24.760
+Let's begin.
+
+19
+00:01:24.760 --> 00:01:27.280
+First, click on the browser icon
+at the top of the tool bar.
+
+20
+00:01:29.370 --> 00:01:35.560
+Navigate to the Jupyter Notebook server,
+monitoring local host calling 8889.
+
+21
+00:01:35.560 --> 00:01:39.778
+We'll then go in to downloads.
+
+22
+00:01:39.778 --> 00:01:43.337
+Big data 3.
+
+23
+00:01:43.337 --> 00:01:46.186
+Spark-streaming.
+
+24
+00:01:46.186 --> 00:01:48.616
+Let's then open Spark-Streaming notebook.
+
+25
+00:01:51.346 --> 00:01:55.070
+This first line, shows the example
+data we get from the weather station.
+
+26
+00:01:56.680 --> 00:01:59.680
+Each line has a time stamp and
+a set of measurements.
+
+27
+00:02:01.860 --> 00:02:05.200
+Each of these abbreviations is
+a particular type of measurement,
+
+28
+00:02:05.200 --> 00:02:06.680
+followed by the actual value.
+
+29
+00:02:09.140 --> 00:02:11.328
+The next cell shows the key for
+these measurements.
+
+30
+00:02:11.328 --> 00:02:16.190
+For this hands-on, we are interested
+in the average wind direction.
+
+31
+00:02:16.190 --> 00:02:18.059
+Which is abbreviated as DM.
+
+32
+00:02:20.470 --> 00:02:24.178
+This next cell, defines a function
+that parses each line of text and
+
+33
+00:02:24.178 --> 00:02:26.080
+pulls out the average wind speed.
+
+34
+00:02:27.610 --> 00:02:29.860
+We define it here, so
+we don't have to type it in later.
+
+35
+00:02:31.360 --> 00:02:32.627
+Let's run this cell.
+
+36
+00:02:35.308 --> 00:02:38.790
+Next, let's create
+a streaming spark context.
+
+37
+00:02:38.790 --> 00:02:40.870
+First, we'll need to import the module.
+
+38
+00:02:40.870 --> 00:02:46.590
+We'll enter from pyspark.streaming
+import StreamingContext.
+
+39
+00:02:46.590 --> 00:02:51.130
+We can create a new streaming context.
+
+40
+00:02:51.130 --> 00:02:52.920
+We'll put in in a variable called ssc.
+
+41
+00:02:54.400 --> 00:02:59.218
+We'll enter ssc = StreamingContext(sc,1).
+
+42
+00:02:59.218 --> 00:03:02.710
+The SC is a StreamingContext.
+
+43
+00:03:02.710 --> 00:03:07.070
+The 1 specifies the batch interval,
+1 second in this case.
+
+44
+00:03:07.070 --> 00:03:07.760
+Let's run this.
+
+45
+00:03:10.040 --> 00:03:11.580
+Next, we'll create a dstream.
+
+46
+00:03:13.100 --> 00:03:17.100
+We'll import the streaming weather data,
+over a TCP connection.
+
+47
+00:03:17.100 --> 00:03:19.099
+We'll put this in a dstream called, Lines.
+
+48
+00:03:21.940 --> 00:03:26.249
+Let's say lines = ssc.socketTextStream,
+
+49
+00:03:26.249 --> 00:03:31.661
+we'll enter the host name in
+port of the weather station,
+
+50
+00:03:31.661 --> 00:03:35.757
+rtd.hpwren.ucsd.edu for 12028.
+
+51
+00:03:35.757 --> 00:03:36.784
+Let's run this.
+
+52
+00:03:40.924 --> 00:03:46.260
+Next, we'll create a new d-stream called
+vals that would hold the measurements.
+
+53
+00:03:46.260 --> 00:03:52.390
+We'll say vals = lines.flatMap parse.
+
+54
+00:03:52.390 --> 00:03:55.020
+This calls the parse function,
+we defined above for
+
+55
+00:03:55.020 --> 00:03:57.228
+each of the lines coming
+from the weather station.
+
+56
+00:03:57.228 --> 00:04:01.620
+The resulting D-Stream will have just
+the average wind direction values.
+
+57
+00:04:02.850 --> 00:04:03.570
+We'll run this.
+
+58
+00:04:07.150 --> 00:04:11.340
+Next, we'll create a window that
+will aggregate the D-Stream values.
+
+59
+00:04:13.250 --> 00:04:17.470
+We'll say, window = vals.window(10,5).
+
+60
+00:04:17.470 --> 00:04:22.850
+The first argument specifies that the
+length of the window should be 10 seconds.
+
+61
+00:04:22.850 --> 00:04:27.515
+The second argument specifies that
+the window should move every 5 seconds.
+
+62
+00:04:27.515 --> 00:04:29.900
+Let's run this.
+
+63
+00:04:31.740 --> 00:04:34.480
+Next, we'll define a function
+that prints the minimum and
+
+64
+00:04:34.480 --> 00:04:36.240
+maximum values that we see.
+
+65
+00:04:36.240 --> 00:04:37.710
+We'll start by entering the definition.
+
+66
+00:04:39.440 --> 00:04:44.230
+Def stats,
+this will take an rdd as an argument.
+
+67
+00:04:47.330 --> 00:04:50.478
+Next, let's print the entire
+contents of the rdd.
+
+68
+00:04:50.478 --> 00:04:54.736
+Print, parenthesis rdd.collect,
+
+69
+00:04:54.736 --> 00:04:59.932
+this'll print the entire
+content of the rdd.
+
+70
+00:04:59.932 --> 00:05:01.484
+In a real big data application,
+
+71
+00:05:01.484 --> 00:05:04.020
+this will be impractical due
+to the size of the data.
+
+72
+00:05:05.020 --> 00:05:07.940
+However, for this hands on,
+the rdd is small, and so
+
+73
+00:05:07.940 --> 00:05:10.330
+we can use this to see
+the contents of the rdd.
+
+74
+00:05:12.720 --> 00:05:14.670
+Next, we'll print the min and max.
+
+75
+00:05:15.940 --> 00:05:17.279
+Before we do that however,
+
+76
+00:05:17.279 --> 00:05:21.303
+we should check to make sure that
+the size of the rdd is greater than zero.
+
+77
+00:05:21.303 --> 00:05:24.767
+We'll check that rdd.count
+is greater than 0.
+
+78
+00:05:29.285 --> 00:05:34.647
+Finally, we'll print the MinID, MAX.
+
+79
+00:05:34.647 --> 00:05:39.826
+We'll enter print (“max = {} min =
+
+80
+00:05:39.826 --> 00:05:44.853
+{}”) Outside of the quote we'll do
+
+81
+00:05:44.853 --> 00:05:50.653
+.format(rdd.max,rdd.min())).
+
+82
+00:05:50.653 --> 00:05:54.286
+Let's run this, next,
+
+83
+00:05:54.286 --> 00:05:59.860
+let's call this function stats.
+
+84
+00:05:59.860 --> 00:06:01.944
+So all the rdds in our sliding window.
+
+85
+00:06:01.944 --> 00:06:08.366
+I'll enter window.foreachRDD(stats).
+
+86
+00:06:08.366 --> 00:06:13.539
+Run this.
+
+87
+00:06:13.539 --> 00:06:16.110
+We're now ready to start
+our streaming processing.
+
+88
+00:06:16.110 --> 00:06:19.880
+We can do this by entering ssc.start.
+
+89
+00:06:19.880 --> 00:06:21.567
+We'll run this to start the streaming.
+
+90
+00:06:29.214 --> 00:06:32.975
+When we want to stop this streaming,
+we'll run ssc.stop
+
+91
+00:06:38.028 --> 00:06:40.200
+Please scroll up and
+look at the beginning of the output.
+
+92
+00:06:43.130 --> 00:06:47.770
+We'll see that it's printing the full
+window and the min and max values.
+
+93
+00:06:50.010 --> 00:06:52.610
+Notice that in the beginning,
+the window is not yet filled.
+
+94
+00:06:52.610 --> 00:06:54.610
+In this case, there's only three entries.
+
+95
+00:06:55.760 --> 00:06:59.029
+We count to see that the window
+is moving by five measurements.
+
+96
+00:07:00.220 --> 00:07:03.510
+For example, the last five
+measurements in the second window,
+
+97
+00:07:04.540 --> 00:07:06.870
+are the first five measurements
+in the third window.

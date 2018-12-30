@@ -1,0 +1,637 @@
+WEBVTT
+
+1
+00:00:00.050 --> 00:00:04.100
+k-means clustering is a simple yet
+effective algorithm for
+
+2
+00:00:04.100 --> 00:00:06.820
+cluster analysis that is
+commonly used in practice.
+
+3
+00:00:07.920 --> 00:00:08.720
+After this video,
+
+4
+00:00:08.720 --> 00:00:13.410
+you will be able to describe
+the steps in the k-means algorithm,
+
+5
+00:00:13.410 --> 00:00:18.229
+explain what the k stands for in k-means
+and define what a cluster centroid is.
+
+6
+00:00:19.300 --> 00:00:24.640
+Recall a cluster analysis divides samples
+in a data set into groups or clusters.
+
+7
+00:00:24.640 --> 00:00:29.590
+The idea is to group similar items in
+the same cluster, where similar is defined
+
+8
+00:00:29.590 --> 00:00:33.340
+by some metric that measures
+similarity between data samples.
+
+9
+00:00:33.340 --> 00:00:36.760
+So the goal of cluster analysis
+is to divide data sample
+
+10
+00:00:36.760 --> 00:00:41.260
+such that sample within a cluster
+are as close together as possible.
+
+11
+00:00:41.260 --> 00:00:46.387
+And samples from different clusters
+are as far apart as possible.
+
+12
+00:00:46.387 --> 00:00:50.440
+k-means is a classic algorithm used for
+cluster analysis.
+
+13
+00:00:50.440 --> 00:00:51.810
+The algorithm is very simple.
+
+14
+00:00:53.040 --> 00:00:56.015
+The first step is to select
+k initial centroids.
+
+15
+00:00:57.200 --> 00:01:01.540
+A centroid is simply the center of
+a cluster, as you see in the diagram here.
+
+16
+00:01:03.180 --> 00:01:07.950
+Next, assign each sample in
+a dataset to the closest centroid.
+
+17
+00:01:07.950 --> 00:01:10.920
+This means you calculate
+the distance between the sample and
+
+18
+00:01:10.920 --> 00:01:16.790
+each cluster center and assign a sample
+to the cluster with the closest centroid.
+
+19
+00:01:16.790 --> 00:01:18.140
+Then you calculate the mean,
+
+20
+00:01:18.140 --> 00:01:21.630
+or average, of each cluster
+to determine a new centroid.
+
+21
+00:01:23.165 --> 00:01:27.330
+These two steps are then repeated until
+some stopping criterion are reached.
+
+22
+00:01:28.450 --> 00:01:32.346
+Here's an illustration
+of how k-Means works.
+
+23
+00:01:32.346 --> 00:01:34.460
+(a) shows the original data
+set with some samples.
+
+24
+00:01:36.070 --> 00:01:38.990
+And (b) illustrates centroids
+initially selected.
+
+25
+00:01:40.385 --> 00:01:42.820
+(c) shows the first iteration.
+
+26
+00:01:42.820 --> 00:01:46.352
+Here, samples are assigned
+to the closest centroid.
+
+27
+00:01:46.352 --> 00:01:49.050
+In (d), the centroids are recalculated.
+
+28
+00:01:50.625 --> 00:01:52.560
+(e) shows the second iteration.
+
+29
+00:01:52.560 --> 00:01:55.540
+Samples are assigned to
+the closer centroid.
+
+30
+00:01:55.540 --> 00:01:59.040
+Note that some samples changed
+their cluster assignments.
+
+31
+00:01:59.040 --> 00:02:02.480
+And in (f),
+the centroids are recalculated again.
+
+32
+00:02:02.480 --> 00:02:03.630
+Cluster assignments and
+
+33
+00:02:03.630 --> 00:02:08.730
+centroid calculations are repeated until
+some stopping criteria is reached.
+
+34
+00:02:08.730 --> 00:02:10.940
+And you get your final clusters,
+as shown in (f).
+
+35
+00:02:12.700 --> 00:02:14.770
+How are the initial centroids selected?
+
+36
+00:02:14.770 --> 00:02:18.050
+The issue is that the final
+cluster results are sensitive
+
+37
+00:02:18.050 --> 00:02:19.500
+to initial centroids.
+
+38
+00:02:19.500 --> 00:02:22.990
+This means that cluster results with
+one set of initial centroids can be
+
+39
+00:02:22.990 --> 00:02:27.270
+very different from results with
+another set of initial centroids.
+
+40
+00:02:27.270 --> 00:02:30.145
+There are many approaches to
+selecting the initial centroids for
+
+41
+00:02:30.145 --> 00:02:33.660
+k-means varying in levels
+of sophistication.
+
+42
+00:02:33.660 --> 00:02:38.620
+The easiest and most widely used approach
+is to apply k-means several times
+
+43
+00:02:38.620 --> 00:02:43.510
+with different initial centroids
+randomly chosen to cluster you dataset.
+
+44
+00:02:43.510 --> 00:02:47.020
+And then select the centroids that
+give the best clustering results.
+
+45
+00:02:48.130 --> 00:02:50.970
+To evaluate the cluster results,
+an error measure,
+
+46
+00:02:50.970 --> 00:02:55.870
+known as the within cluster sum
+of squared error, can be used.
+
+47
+00:02:55.870 --> 00:02:58.450
+The error associated with a sample
+
+48
+00:02:58.450 --> 00:03:03.720
+within a cluster is the distance between
+the sample and the cluster centroid.
+
+49
+00:03:03.720 --> 00:03:07.840
+The squared error of the sample then,
+is the squared of that distance.
+
+50
+00:03:09.020 --> 00:03:12.160
+We sum up all the squared errors for
+all samples for
+
+51
+00:03:12.160 --> 00:03:15.430
+a cluster to the get the squared error for
+that cluster.
+
+52
+00:03:16.590 --> 00:03:21.130
+We then do the same thing for all
+clusters to get the final calculation for
+
+53
+00:03:21.130 --> 00:03:24.590
+the within-cluster sum
+of squared error for
+
+54
+00:03:24.590 --> 00:03:27.490
+all clusters in the results
+of a cluster analysis run.
+
+55
+00:03:28.810 --> 00:03:33.920
+Given two clustering results, the one with
+the smaller within-cluster sum of squared
+
+56
+00:03:33.920 --> 00:03:39.400
+error, or WSSE for short,
+provides the better solution numerically.
+
+57
+00:03:39.400 --> 00:03:42.770
+However, as we've discussed before,
+there is no ground truth
+
+58
+00:03:42.770 --> 00:03:47.120
+to mathematically determine which set of
+clusters is more correct than the other.
+
+59
+00:03:48.160 --> 00:03:52.561
+In addition, note that increasing
+the number of clusters,
+
+60
+00:03:52.561 --> 00:03:56.977
+that is, increasing the value for
+k, always reduces WSSE.
+
+61
+00:03:56.977 --> 00:04:00.510
+So WSSE should be used with caution.
+
+62
+00:04:00.510 --> 00:04:04.770
+It only makes sense to use WSSE
+to compare two sets of clusters
+
+63
+00:04:04.770 --> 00:04:08.880
+with the same value for k and
+generate it from the same dataset.
+
+64
+00:04:10.060 --> 00:04:13.410
+Also the set of clusters with
+the smallest WSSE may not
+
+65
+00:04:13.410 --> 00:04:16.730
+always be the best solution for
+the application at hand.
+
+66
+00:04:16.730 --> 00:04:18.150
+Again, interpretation and
+
+67
+00:04:18.150 --> 00:04:22.430
+domain knowledge about what the cluster
+should represent and how they will be used
+
+68
+00:04:22.430 --> 00:04:26.710
+are crucial in determining
+which cluster results are best.
+
+69
+00:04:26.710 --> 00:04:30.710
+Now that there are several metrics that are
+used to evaluate cluster results as well.
+
+70
+00:04:31.950 --> 00:04:36.223
+Choosing the optimal value for k is
+always a big question in using k-means.
+
+71
+00:04:36.223 --> 00:04:39.185
+There are several methods to
+determine the value for k.
+
+72
+00:04:39.185 --> 00:04:41.140
+We will discuss a few here.
+
+73
+00:04:42.310 --> 00:04:45.880
+Visualization techniques can be used
+to determine the dataset to see if
+
+74
+00:04:45.880 --> 00:04:48.720
+there are natural
+groupings of the samples.
+
+75
+00:04:48.720 --> 00:04:49.700
+Scatter plots and
+
+76
+00:04:49.700 --> 00:04:53.450
+the use of dimensionality reduction
+are useful here, to visualize the data.
+
+77
+00:04:54.850 --> 00:04:57.540
+A good value for
+k is application-dependent.
+
+78
+00:04:57.540 --> 00:05:02.260
+So domain knowledge of the application can
+drive the selection for the value of k.
+
+79
+00:05:02.260 --> 00:05:03.030
+For example,
+
+80
+00:05:03.030 --> 00:05:06.940
+if you want to cluster the types of
+products customers are purchasing,
+
+81
+00:05:06.940 --> 00:05:11.850
+a natural choice for k might be the number
+of product categories that you offer.
+
+82
+00:05:11.850 --> 00:05:16.510
+Or k might be selected to represent the
+geographical locations of respondents to
+
+83
+00:05:16.510 --> 00:05:17.670
+a survey.
+
+84
+00:05:17.670 --> 00:05:19.150
+In which case, a good value for
+
+85
+00:05:19.150 --> 00:05:22.655
+k would be the number of regions
+your interested in analyzing.
+
+86
+00:05:24.210 --> 00:05:28.330
+There are also data-driven method for
+determining the value of k.
+
+87
+00:05:28.330 --> 00:05:30.140
+These methods calculate symmetric for
+
+88
+00:05:30.140 --> 00:05:34.570
+different values of k to determine
+the best selections of k.
+
+89
+00:05:34.570 --> 00:05:36.540
+One such method is the elbow method.
+
+90
+00:05:37.790 --> 00:05:41.890
+The elbow method for determining
+the value of k is shown on this plot.
+
+91
+00:05:41.890 --> 00:05:44.140
+As we saw in the previous slide,
+
+92
+00:05:44.140 --> 00:05:48.690
+WSSE, or within-cluster sum of
+squared error, measures how much
+
+93
+00:05:48.690 --> 00:05:53.750
+data samples deviate from their respective
+centroids in a set of clustering results.
+
+94
+00:05:53.750 --> 00:05:58.810
+If we plot WSSE for different values for
+k, we can see how this
+
+95
+00:05:58.810 --> 00:06:04.170
+error measure changes as a value
+of k changes as seen in the plot.
+
+96
+00:06:04.170 --> 00:06:10.010
+The bend in this error curve indicates
+a drop in gain by adding more clusters.
+
+97
+00:06:10.010 --> 00:06:14.270
+So this elbow in the curve provides
+a suggestion for a good value of k.
+
+98
+00:06:15.320 --> 00:06:19.540
+Note that the elbow can not always be
+unambiguously determined, especially for
+
+99
+00:06:19.540 --> 00:06:21.170
+complex data.
+
+100
+00:06:21.170 --> 00:06:24.630
+And in many cases, the error curve
+will not have a clear suggestion for
+
+101
+00:06:24.630 --> 00:06:27.270
+one value, but for multiple values.
+
+102
+00:06:27.270 --> 00:06:30.810
+This can be used as a guideline for
+the range of values to try for k.
+
+103
+00:06:32.490 --> 00:06:34.650
+We've discussed choosing
+the initial centroids and
+
+104
+00:06:34.650 --> 00:06:38.370
+looked at ways to select a value for
+k, the number of clusters.
+
+105
+00:06:38.370 --> 00:06:40.440
+Let's now look at when to stop.
+
+106
+00:06:40.440 --> 00:06:42.763
+How do you know when to stop
+iterating when using k-means?
+
+107
+00:06:42.763 --> 00:06:48.890
+One obviously stopping criterion is when
+there are no changes to the centroids.
+
+108
+00:06:48.890 --> 00:06:52.370
+This means that no samples would
+change cluster assignments.
+
+109
+00:06:52.370 --> 00:06:56.140
+And recalculating the centroids
+will not result in any changes.
+
+110
+00:06:56.140 --> 00:06:59.410
+So additional iterations will
+not bring about any more changes
+
+111
+00:06:59.410 --> 00:07:00.320
+to the cluster results.
+
+112
+00:07:01.510 --> 00:07:06.350
+The stopping criterion can be relaxed to
+the second stopping criterion listed here.
+
+113
+00:07:06.350 --> 00:07:09.390
+Which is when the number of
+sample changing clusters is below
+
+114
+00:07:09.390 --> 00:07:13.180
+a certain threshold, say 1% for example.
+
+115
+00:07:13.180 --> 00:07:16.750
+At this point, the clusters
+are changing by only a few samples,
+
+116
+00:07:16.750 --> 00:07:20.820
+resulting in only minimal changes
+to the final cluster results.
+
+117
+00:07:20.820 --> 00:07:22.350
+So the algorithm can be stopped here.
+
+118
+00:07:23.880 --> 00:07:27.370
+At the end of k-means we have a set
+of clusters, each with a centroid.
+
+119
+00:07:28.370 --> 00:07:32.860
+Each centroid is the mean of
+the samples assigned to that cluster.
+
+120
+00:07:32.860 --> 00:07:37.500
+You can think of the centroid as
+a representative sample for that cluster.
+
+121
+00:07:37.500 --> 00:07:39.860
+So to interpret the cluster
+analysis results,
+
+122
+00:07:39.860 --> 00:07:42.580
+we can examine the cluster centroids.
+
+123
+00:07:42.580 --> 00:07:46.720
+Comparing the values of the variables
+between the centroids will reveal
+
+124
+00:07:46.720 --> 00:07:49.480
+how different or alike clusters are and
+
+125
+00:07:49.480 --> 00:07:52.800
+provide insights into what
+each cluster represents.
+
+126
+00:07:52.800 --> 00:07:57.259
+For example, if the value for age is
+different for different customer clusters,
+
+127
+00:07:57.259 --> 00:08:00.361
+this indicates that the clusters
+are encoding different
+
+128
+00:08:00.361 --> 00:08:03.213
+customer segments by age,
+among other variables.
+
+129
+00:08:03.213 --> 00:08:08.390
+In summary, k-means is a classic algorithm
+for performing cluster analysis.
+
+130
+00:08:08.390 --> 00:08:11.570
+It is an algorithm that is simple
+to understand and implement, and
+
+131
+00:08:11.570 --> 00:08:13.330
+is also efficient.
+
+132
+00:08:13.330 --> 00:08:17.158
+The value of k, the number of clusters,
+must be specified.
+
+133
+00:08:17.158 --> 00:08:20.070
+And final clusters are sensitive
+to initial centroids.

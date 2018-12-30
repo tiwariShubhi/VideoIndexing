@@ -1,0 +1,1559 @@
+﻿1
+00:00:17,278 --> 00:00:20,469
+.
+Welcome to module 32 of database management
+
+2
+00:00:20,469 --> 00:00:26,268
+systems, from the last module we are discussing
+about transactions and transaction management.
+
+3
+00:00:26,268 --> 00:00:32,368
+And we have technical look into the basic
+concept of a transaction the transaction state
+
+4
+00:00:32,368 --> 00:00:36,820
+and the issues.
+In concurrent execution and in this module,
+
+5
+00:00:36,820 --> 00:00:42,990
+we will look try to understand, what are the
+very specific issues that happen when 2 or
+
+6
+00:00:42,990 --> 00:00:49,670
+more transactions work concurrently we have
+seen that now it is possible that they execute
+
+7
+00:00:49,670 --> 00:00:55,929
+in a schedule, which would not let us preserve
+the acid properties.
+
+8
+00:00:55,929 --> 00:01:03,670
+So, we want to introduce the very basic concept
+of making sure that such concurrent execution
+
+9
+00:01:03,670 --> 00:01:10,109
+schedules are acceptable, and those are the
+notions of serializability. And we will ah
+
+10
+00:01:10,109 --> 00:01:16,879
+analyze different conditions called conflicts
+that need to be honored to attend the serializability
+
+11
+00:01:16,879 --> 00:01:22,060
+of the schedules.
+So, serializability is the main topic to discuss.
+
+12
+00:01:22,060 --> 00:01:27,469
+So, to understand serializability we make
+a basic assumption, we make an assumption
+
+13
+00:01:27,469 --> 00:01:35,950
+that every transaction by itself preserves
+the database consistency. That is, it starts
+
+14
+00:01:35,950 --> 00:01:40,859
+in a consistent state of the database. And
+through the execution of it is instructions
+
+15
+00:01:40,859 --> 00:01:46,569
+in the order given it leaves the database
+in a consistent state, that is satisfied in
+
+16
+00:01:46,569 --> 00:01:53,048
+each and every transaction. So, we can conclude
+that, if we see really execute a set of instruction
+
+17
+00:01:53,049 --> 00:01:59,100
+set of transactions, then the consistency
+of the database will always be preserved.
+
+18
+00:01:59,099 --> 00:02:05,978
+Now, the problem happens, and as we have seen
+in the last module, that problems happen when
+
+19
+00:02:05,978 --> 00:02:15,281
+possibly concurrent transactions happen. And
+we may execute may be executing the instruction
+
+20
+00:02:15,281 --> 00:02:20,560
+in an order which leads to the violation of
+acid properties, the consistency in particular.
+
+21
+00:02:20,560 --> 00:02:28,920
+So, we say that a concurrent schedule is serializable,
+if there is a there is some serial schedule,
+
+22
+00:02:28,919 --> 00:02:33,569
+you say what is the serial schedule serial
+schedule is where the transactions are executed
+
+23
+00:02:33,569 --> 00:02:36,579
+one after the other.
+So, if you have 2 transactions in in the concurrent
+
+24
+00:02:36,580 --> 00:02:42,849
+system, then if I do T 1 then I do T 2 it
+is a serial schedule. If I do T 2 and then
+
+25
+00:02:42,848 --> 00:02:47,949
+I do T 1 it is a serial schedule as well.
+So, if I have a concurrent schedule, like
+
+26
+00:02:47,949 --> 00:02:54,340
+few refer back to the last module schedule
+3; where the instructions of T 1 and T 2 are
+
+27
+00:02:54,341 --> 00:03:01,311
+interleaved, then it is it will have to be
+equivalent to a serial schedule either T 1
+
+28
+00:03:01,311 --> 00:03:12,490
+after T 2 or T 2 after T 1. Different forms
+of schedule equivalence is uh is used one
+
+29
+00:03:12,490 --> 00:03:17,129
+is called conflict serializability, and the
+other is called view serializability. In the
+
+30
+00:03:17,128 --> 00:03:20,268
+present module we will first discuss conflict
+serializability.
+
+31
+00:03:20,269 --> 00:03:26,938
+Now, we make now a transaction may have all
+varied kinds of instructions, but we make
+
+32
+00:03:26,938 --> 00:03:32,209
+an assumption that we will ignore anything
+other than any instruction other than the
+
+33
+00:03:32,209 --> 00:03:39,219
+read and write instruction. Because ah other
+operations like we saw an operation where
+
+34
+00:03:39,219 --> 00:03:45,030
+an account is debited by 50 or account is
+credited. So, you subtract 50 you add 50 you
+
+35
+00:03:45,030 --> 00:03:50,098
+multiply by point one or things like that
+are all operations that happen in the local
+
+36
+00:03:50,098 --> 00:03:54,378
+buffer in the memory, and never temporary
+in nature and mostly they do not affect the
+
+37
+00:03:54,378 --> 00:03:59,389
+state of the database, because you have read
+the data do the changes write it back. So,
+
+38
+00:03:59,389 --> 00:04:05,000
+it is a read and write that actually are important
+for that maintaining the consistency after
+
+39
+00:04:05,000 --> 00:04:10,340
+database. So, that simplifies our process
+of analysis to a good extent.
+
+40
+00:04:10,340 --> 00:04:17,579
+So, this is so, we assume that between every
+read and write or read and read write and
+
+41
+00:04:17,579 --> 00:04:22,680
+write and so on, the database the transactions
+may be doing arbitrary computations, which
+
+42
+00:04:22,680 --> 00:04:28,290
+are all in the local buffer and do not affect
+the state. So, we can make this assumption
+
+43
+00:04:28,290 --> 00:04:31,420
+that our shift schedules consists only of
+read and writing.
+
+44
+00:04:31,420 --> 00:04:42,620
+Now, we say that suppose Ii and Ij, 2 instructions
+for belonging to transaction Ti and transaction
+
+45
+00:04:42,620 --> 00:04:49,310
+Tj. So, there are 2 transactions Ti and Tj,
+Ti has an instruction Ii Tj has an instruction
+
+46
+00:04:49,310 --> 00:04:57,439
+Ij and we say that I and Ij this instruction
+will conflict, if and only if there is some
+
+47
+00:04:57,439 --> 00:05:09,180
+item Q, that is some data entity Q; which
+both Ii and Ij are trying to access. And at
+
+48
+00:05:09,180 --> 00:05:17,418
+least one of these instructions try to write.
+So, these 2 instructions from true transactions
+
+49
+00:05:17,418 --> 00:05:23,519
+are trying to manipulate the same data item,
+and at least one of them is trying to write.
+
+50
+00:05:23,519 --> 00:05:29,939
+If that happens then we say that Ii and Ij
+these 2 instructions are conflicting. So,
+
+51
+00:05:29,939 --> 00:05:35,550
+you can naturally enumerate the 4 possibilities,
+if both of them are reading their own conflict.
+
+52
+00:05:35,550 --> 00:05:40,689
+If it is read write, write read, write write
+All of them are cases of conflict.
+
+53
+00:05:40,689 --> 00:05:47,600
+So, naturally intuitively, you can figure
+out that since the write changes are value
+
+54
+00:05:47,600 --> 00:05:53,080
+that if there is a conflict between these
+2 instruction, then there must be a fixed
+
+55
+00:05:53,079 --> 00:05:59,669
+temporal order between them. So, if Ii and
+Ij are consecutive in a schedule and they
+
+56
+00:05:59,670 --> 00:06:07,509
+do not conflict. Then we can interchange the
+temporal order of Ii and Ij, that will also
+
+57
+00:06:07,509 --> 00:06:11,979
+not make a difference, because they do not
+conflict. But if they conflict I cannot make
+
+58
+00:06:11,978 --> 00:06:17,430
+the change in their ordering.
+So, that gives rise to the notion of conflict
+
+59
+00:06:17,430 --> 00:06:25,180
+serializability. So, we say if a schedule
+S can be transformed into another schedule
+
+60
+00:06:25,180 --> 00:06:34,019
+S primed by a series of swaps of non-conflicting
+instructions, then S and S prime that conflict
+
+61
+00:06:34,019 --> 00:06:41,849
+equivalent. So, what are you saying? That
+we have 2 one schedule S, and we will swap
+
+62
+00:06:41,850 --> 00:06:47,210
+non-conflicting instruction, possibly since
+non-conflicting instructions that ah occur
+
+63
+00:06:47,209 --> 00:06:56,079
+side by side. And if by doing this, if I can
+create the schedule S primed, then I will
+
+64
+00:06:56,079 --> 00:07:03,209
+say S and S prime that conflict equivalent.
+But if S and S prime are such that, I cannot
+
+65
+00:07:03,209 --> 00:07:08,810
+transform S into S prime by just swapping
+non-conflicting instructions, then they are
+
+66
+00:07:08,810 --> 00:07:14,879
+not conflict equivalent.
+The second definition to keep in mind is a
+
+67
+00:07:14,879 --> 00:07:22,990
+schedule S is conflict serializable, if it
+is conflict equivalent to a serial schedule,
+
+68
+00:07:22,990 --> 00:07:28,329
+what is the serial schedule? Just to remind
+you serial schedule is one where the transactions
+
+69
+00:07:28,329 --> 00:07:32,990
+are happened one after the other in a serial
+manner. So, all instructions of one transaction
+
+70
+00:07:32,990 --> 00:07:39,168
+complete, then all instructions of the second
+transaction complete, then all instructions
+
+71
+00:07:39,168 --> 00:07:44,848
+of the third transaction complete and so on.
+So, if a schedule is conflict serializable;
+
+72
+00:07:44,848 --> 00:07:54,719
+that is, if in a schedule. I can swap non-conflicting
+instructions. And make it into a serial schedule,
+
+73
+00:07:54,720 --> 00:08:00,620
+then I will say that the given schedule is
+a conflict serializable schedule ok.
+
+74
+00:08:00,620 --> 00:08:08,689
+So now let us it is time for a number of examples
+to understand this better. So, we had seen
+
+75
+00:08:08,689 --> 00:08:17,819
+schedule 3, will have to refer to the earlier
+module 4 schedule 3. Sir, no not I am sorry
+
+76
+00:08:17,819 --> 00:08:24,080
+this is the the this is just abstracted form
+of that; not the actual one because in the
+
+77
+00:08:24,079 --> 00:08:28,219
+in the earlier schedule 3 we had shown all
+the complete other computations also, but
+
+78
+00:08:28,220 --> 00:08:36,139
+the read writes are the same.
+Now, that this ah schedule 3 can be converted
+
+79
+00:08:36,139 --> 00:08:41,658
+to so, this is where you have schedule 3,
+and you can easily see that the part of transaction
+
+80
+00:08:41,658 --> 00:08:49,460
+T 1 then a part of transaction T 2. So, schedule
+3 is not a serial schedule, but if you can
+
+81
+00:08:49,460 --> 00:08:55,639
+swap non conflicting instructions, then you
+are able to convert this into this schedule
+
+82
+00:08:55,639 --> 00:09:01,149
+which if we are calling a schedule 6. Where
+all instructions of T 1 is followed by all
+
+83
+00:09:01,149 --> 00:09:07,490
+instructions of T 2 which is a serial schedule.
+So, since this can be done, we will say it
+
+84
+00:09:07,490 --> 00:09:13,568
+is conflict serializable schedule 3 is conflict
+serializable. And just to see how how that
+
+85
+00:09:13,568 --> 00:09:21,139
+happens. So, you start here let me erase this
+marks and start here. So, here if I look into
+
+86
+00:09:21,139 --> 00:09:26,939
+these 2 instructions, which are the consecutive
+instructions in schedule 3 I can swap them;
+
+87
+00:09:26,940 --> 00:09:33,150
+that is, I can do read B first and then do
+read A, I can swap read B and write A read
+
+88
+00:09:33,149 --> 00:09:41,230
+B, and write A can be swapped.
+Once I have done that, then I can swap read
+
+89
+00:09:41,230 --> 00:09:47,558
+B with read A. It has become before right
+I can swap it with, because read B and write
+
+90
+00:09:47,558 --> 00:09:55,059
+A, or write B read B and read A these do not
+conflict their non-conflicting instruction.
+
+91
+00:09:55,059 --> 00:10:00,259
+Why read B an righty and non-conflicting?
+Because they are not reading and writing to
+
+92
+00:10:00,259 --> 00:10:06,328
+the same data item. Why read B and read A
+are non-conflicting, they are accessing the
+
+93
+00:10:06,328 --> 00:10:10,669
+same data item, but both of them are read
+there is no right. So, I can swap so, this
+
+94
+00:10:10,669 --> 00:10:17,159
+is the second one I can. So, once I do that
+read B will come here, and write A read A
+
+95
+00:10:17,159 --> 00:10:22,219
+write A will come down.
+Then again, I can see that write B can be
+
+96
+00:10:22,220 --> 00:10:27,490
+swapped with write A. Both are rights, but
+referring to different data items. Similarly,
+
+97
+00:10:27,490 --> 00:10:34,279
+write B then can be swapped with read A, because
+they are again referring to different data
+
+98
+00:10:34,279 --> 00:10:39,879
+items. So, I can do this and then these will
+also come up. So, I will eventually after
+
+99
+00:10:39,879 --> 00:10:49,389
+these 4 swaps, this whole schedule 3 will
+transform into this serial 6, and we get a
+
+100
+00:10:49,389 --> 00:10:54,669
+serial schedule.
+So, we will say that schedule 3 is conflict
+
+101
+00:10:54,669 --> 00:11:04,549
+serializable. That is the basic concept that
+we are trying to establish here ah.
+
+102
+00:11:04,549 --> 00:11:10,179
+Just as very simple example suppose you had
+2 transactions T 3 and T 4, and you have this
+
+103
+00:11:10,179 --> 00:11:16,489
+situation. Now is it conflict serializable
+it is not. Because to make it conflict serializable.
+
+104
+00:11:16,490 --> 00:11:25,839
+I need to either swap right Q of T 3 with
+right Q of T 4. Which is not possible because
+
+105
+00:11:25,839 --> 00:11:32,370
+these are conflicting instructions, they both
+access the same data item Q and they both
+
+106
+00:11:32,370 --> 00:11:38,500
+are right.
+The other option is I could swap read Q in
+
+107
+00:11:38,500 --> 00:11:48,188
+T 3 and write Q in T 4, that they are also
+conflicting because they access the same data
+
+108
+00:11:48,188 --> 00:11:58,568
+item and one of them is right. So, I cannot
+do either of this swaps which mean, that I
+
+109
+00:11:58,568 --> 00:12:09,500
+cannot find a conflict equivalent schedule
+for this schedule; either to T 3 T 4 or to
+
+110
+00:12:09,500 --> 00:12:15,279
+T 4 T 3. It is not this schedule is not conflict
+equivalent to either one of them.
+
+111
+00:12:15,279 --> 00:12:21,819
+So, this schedule is not conflict serializable,
+this is the core concept. So, if you if you
+
+112
+00:12:21,820 --> 00:12:29,360
+go through different examples and try to understand
+this at the very beginning, then in terms
+
+113
+00:12:29,360 --> 00:12:34,558
+of the transaction management the whole study
+of transaction management you will have very
+
+114
+00:12:34,558 --> 00:12:40,669
+easy progress.
+So, let us let me show you number of other
+
+115
+00:12:40,669 --> 00:12:44,740
+bad schedules, and let me a little bit more
+complex examples.
+
+116
+00:12:44,740 --> 00:12:50,810
+So, consider 2 transactions transaction 1
+here. Update an account, where the account
+
+117
+00:12:50,809 --> 00:13:01,318
+id is 31414 a specific account and balance
+is debited by 100. So, it is debiting 100
+
+118
+00:13:01,318 --> 00:13:07,029
+from the balance. Where in the transaction
+2, you update accounts where balance is changed
+
+119
+00:13:07,029 --> 00:13:17,259
+to balance times 1.005 which means that we
+are giving a point 5 percent ah interest,
+
+120
+00:13:17,259 --> 00:13:24,558
+and here there is no where clause. So, transaction
+2 actually changes does this balance change
+
+121
+00:13:24,558 --> 00:13:29,309
+in all the accounts, whereas, transaction
+1 makes this debit in only one account.
+
+122
+00:13:29,309 --> 00:13:34,619
+Let see what will happen in terms of them.
+So, let us first try to write out transaction
+
+123
+00:13:34,620 --> 00:13:39,879
+1 and transaction 2, the first in the read
+write Abstracted form. So, transaction 1 it
+
+124
+00:13:39,879 --> 00:13:44,379
+is working only on one account let us call
+it account A. So, what does it do? It has
+
+125
+00:13:44,379 --> 00:13:54,039
+to set the balance to debit 100. So, it has
+to read so, this is r 1 by r 1 A, we mean
+
+126
+00:13:54,039 --> 00:13:58,418
+that it is read the subscript here refers
+to the transaction number.
+
+127
+00:13:58,418 --> 00:14:06,919
+So, r 1 stands for r stands for read, 1 stands
+for transaction 1. So, it is read by transaction
+
+128
+00:14:06,919 --> 00:14:11,979
+1. And what are we reading? We are reading
+the account balance A, let us arbitrarily
+
+129
+00:14:11,980 --> 00:14:16,980
+we are calling it A. And then what we will
+have to do? After having debited that locally
+
+130
+00:14:16,980 --> 00:14:21,680
+we will have to write it back so that the
+change has happened. So, r 1 A followed by
+
+131
+00:14:21,679 --> 00:14:27,319
+w 1 A is transaction 1 which is being shown
+on the left. So, I have shown you from the
+
+132
+00:14:27,320 --> 00:14:33,990
+actual sql statement, how can you make an
+abstraction of the read write that we use
+
+133
+00:14:33,990 --> 00:14:41,850
+in terms of reasoning about the serializability.
+In contrast, if you look at transaction 2,
+
+134
+00:14:41,850 --> 00:14:47,129
+naturally transaction 2 does not have a where
+clause. So, it performs this balance update
+
+135
+00:14:47,129 --> 00:14:54,740
+on each of the accounts. So, it will also
+perform this balance update on the account
+
+136
+00:14:54,740 --> 00:15:01,789
+A or account balance a rather, that we assumed
+in the transaction 1. So, we model that by
+
+137
+00:15:01,789 --> 00:15:09,519
+saying that naturally for changing the balance
+from balance times 1.005, we need to read
+
+138
+00:15:09,519 --> 00:15:15,110
+A if the read is done in transaction 2. So,
+that is r 2 A and write it back. So, that
+
+139
+00:15:15,110 --> 00:15:22,438
+is w 2 A and then I assume that B is some
+other account. There may be one more account
+
+140
+00:15:22,438 --> 00:15:27,669
+there may be 100 thousand more account, but
+so far as serializability are concerned, these
+
+141
+00:15:27,669 --> 00:15:34,750
+are all other different accounts from A. So,
+we symbolically just consider one; that is,
+
+142
+00:15:34,750 --> 00:15:40,918
+some other account B other than the balance
+a and naturally to do the change here or do
+
+143
+00:15:40,918 --> 00:15:46,788
+the update here will have to read B r to be
+and w to B. So, these are the 2 transactions
+
+144
+00:15:46,788 --> 00:15:54,110
+in the simplified form that we have to analyze.
+Now, let us consider A so, we have between
+
+145
+00:15:54,110 --> 00:16:00,149
+transaction 1 and transaction 2 we have 6
+instructions. So, we produce a schedule 6,
+
+146
+00:16:00,149 --> 00:16:06,789
+where these 6 instructions are interleaved.
+And we satisfy the basic constraint that the
+
+147
+00:16:06,789 --> 00:16:11,230
+instructions of every transaction occur in
+the same order in which they existed. So,
+
+148
+00:16:11,230 --> 00:16:22,311
+r 1 precedes ah w 1 ah r 1 precedes w 1 in
+this schedule. R 2 A precedes ah w 2 A, w
+
+149
+00:16:22,311 --> 00:16:29,850
+2 A precedes r 2 B, r 2 B precedes w 2 B and
+so on. So, their original ordering is maintained,
+
+150
+00:16:29,850 --> 00:16:38,399
+but we have an interleaved ah schedule called
+S. And then on the on the write if you if
+
+151
+00:16:38,399 --> 00:16:42,568
+you look at here on the write this is schedule
+S.
+
+152
+00:16:42,568 --> 00:16:48,078
+So, in the write we are saying, that let us
+say that a starts with 200 dollar, and B at
+
+153
+00:16:48,078 --> 00:16:53,828
+the beginning is 100 dollar. So, what will
+happen you will read? You will read here this
+
+154
+00:16:53,828 --> 00:17:02,979
+is the first thing r 1 A. So, 200 is read
+then r 2 A. So, what happens if r 2 A is read
+
+155
+00:17:02,980 --> 00:17:13,308
+Again 200 is read. And then you do w 1 A.
+So, what is w 1 A? W 1 A is the right of the
+
+156
+00:17:13,308 --> 00:17:18,609
+transaction 1. So, transaction 1 writes after
+debiting this balance this is the intermediate
+
+157
+00:17:18,609 --> 00:17:24,019
+computation.
+So, when transaction 1 writes, it writes based
+
+158
+00:17:24,019 --> 00:17:30,859
+on the value that it had read in r 1 A; which
+was 200 then 100 debited. So, it writes back
+
+159
+00:17:30,859 --> 00:17:42,849
+100. Then the next is w 2 A. So, w what will
+w 2 A ah do w 2 A will write back the write
+
+160
+00:17:42,849 --> 00:17:50,679
+back w 2 A is here, will write back the result
+of the computation in transaction 2 based
+
+161
+00:17:50,680 --> 00:17:59,029
+on what it read in the r 2 A. R 2 A had written
+had read 200, we hear and therefore, if you
+
+162
+00:17:59,029 --> 00:18:05,730
+multiply 200 by this factor it becomes 201.
+So, w 2 A will write 201.
+
+163
+00:18:05,730 --> 00:18:14,150
+So, naturally E as w 2 A has changed the value
+of a after w 1 A naturally the final value
+
+164
+00:18:14,150 --> 00:18:23,310
+of a will be 201. Then you have r to be w
+to be which reads 100 makes this balance change
+
+165
+00:18:23,309 --> 00:18:34,039
+by 1.005, it becomes 100.5. So, this is what
+we will have when actually this schedule completes.
+
+166
+00:18:34,039 --> 00:18:43,240
+So, if I mean just this look at what has happened,
+it has I have debited 100 dollar from account
+
+167
+00:18:43,240 --> 00:18:50,140
+A which was transaction 1, bar and here I
+had started with 200 dollar. But at the end
+
+168
+00:18:50,140 --> 00:18:57,009
+what I have according to the schedule is account
+A has a balance which is 201 dollar. Whereas,
+
+169
+00:18:57,009 --> 00:19:02,500
+it should have had a balance which should
+have been 100 dollar, the balance in account
+
+170
+00:19:02,500 --> 00:19:09,299
+B is fine. But it shows that 101 dollar more
+in account A. So, naturally the bank is going
+
+171
+00:19:09,299 --> 00:19:12,509
+to get bankrupt very soon if such scheduled
+are allowed.
+
+172
+00:19:12,509 --> 00:19:21,129
+So, this schedule is an incorrect inconsistent
+schedule, it is a bad schedule , let us take
+
+173
+00:19:21,130 --> 00:19:25,440
+other examples.
+Now let us ask ah what is the ideal schedule,
+
+174
+00:19:25,440 --> 00:19:30,910
+what is is ideally what should happen. Ideally
+naturally we can have we will have serial
+
+175
+00:19:30,910 --> 00:19:36,779
+schedules, there are 2 transactions. So, there
+are 2 possible serial schedules that can happen
+
+176
+00:19:36,779 --> 00:19:44,389
+that is first T 1 happens, then hole of T
+2 happens. I am sorry, first T 1 and then
+
+177
+00:19:44,390 --> 00:19:52,270
+hole of T 2 . Or first hole of T 2 and then
+T 1 . And if you go through the steps, assuming
+
+178
+00:19:52,269 --> 00:19:57,379
+that a initially is 200 dollar and B is 100
+dollar, these are the possible results that
+
+179
+00:19:57,380 --> 00:20:02,920
+you see naturally. As I had mentioned earlier
+also, the different ordering different schedule
+
+180
+00:20:02,920 --> 00:20:07,090
+might give you different results, but both
+of them are correct, because any one of them
+
+181
+00:20:07,089 --> 00:20:12,339
+will happen, but both are consistent. Either
+debit has first happened, then the interest
+
+182
+00:20:12,339 --> 00:20:16,109
+rate or interest rate it has first happened
+and then the debit.
+
+183
+00:20:16,109 --> 00:20:23,139
+So, either of these schedules are acceptable,
+but what we got as a schedule S in the last
+
+184
+00:20:23,140 --> 00:20:30,740
+case are not acceptable. So, we will call
+it you will serializable, if it has the same
+
+185
+00:20:30,740 --> 00:20:37,319
+effect, as some of the one of the 2 schedules
+that we have here. Then we will say that is
+
+186
+00:20:37,319 --> 00:20:44,879
+it this is serializable schedule . So, again
+we create another example schedule T here.
+
+187
+00:20:44,880 --> 00:20:50,380
+So, what we do? We take the schedule S which
+we saw was bad, and we interchange, these
+
+188
+00:20:50,380 --> 00:20:58,390
+2 we do w 2 for a first and w 1 A next.
+Now, you see very interesting things will
+
+189
+00:20:58,390 --> 00:21:08,090
+happen. So now, you focus on this part, on
+the left part of schedule T where we are assuming
+
+190
+00:21:08,089 --> 00:21:15,980
+that A and B both have 100 dollar to start
+with. And then go through these steps r 1
+
+191
+00:21:15,980 --> 00:21:22,700
+is in transaction 1 r 2 is in transaction
+2, then w 2 happens so, the interest is credit
+
+192
+00:21:22,700 --> 00:21:29,730
+100.5. And then ah then what has happened?
+W 2 after that w 1 A so, whatever was written
+
+193
+00:21:29,730 --> 00:21:37,720
+here is debited and written back. So, whatever
+was read there is 100 dollar. So, you debit
+
+194
+00:21:37,720 --> 00:21:44,740
+100 dollar it becomes 0.
+So, a has become 0, and then you have the
+
+195
+00:21:44,740 --> 00:21:52,539
+B which goes goes on correctly. So, things
+look like that it appears that we are we are
+
+196
+00:21:52,539 --> 00:21:59,099
+perfectly ok. So, by the first example the
+outcome is same as a serial schedule one.
+
+197
+00:21:59,099 --> 00:22:06,189
+And so, we we might just think that things
+have been good, but this is just incidental
+
+198
+00:22:06,190 --> 00:22:12,740
+based on the particular values. Now let us
+consider another execution by the same schedule
+
+199
+00:22:12,740 --> 00:22:17,799
+which makes use of this this value 200 and
+100.
+
+200
+00:22:17,799 --> 00:22:30,099
+Now, as it with 200 and 100 and we do w 2
+followed by w 1. So, when r 2 A is followed
+
+201
+00:22:30,099 --> 00:22:45,599
+by w 2 r 2 A 100 read 200 and that 10 ah 1.005
+or that kind of interest is given then it
+
+202
+00:22:45,599 --> 00:22:57,589
+becomes 201 . And then r 1 then you have w
+1. Now what does w 1 A changes? R 1 had read
+
+203
+00:22:57,589 --> 00:23:08,939
+200, and from that you have subtracted 100.
+So now, you have as w 1 A, you have 100 input.
+
+204
+00:23:08,940 --> 00:23:16,029
+And from this you have B certainly does not
+change.
+
+205
+00:23:16,029 --> 00:23:23,089
+So, if you look into that, now you can see
+that he has a value which is 100; which certainly
+
+206
+00:23:23,089 --> 00:23:29,369
+if you if you look back. So, 200 and 100 are
+the values that we had assumed here, and you
+
+207
+00:23:29,369 --> 00:23:36,689
+can see that in neither of the schedule a
+can have a value, which is 100 dollar as we
+
+208
+00:23:36,690 --> 00:23:43,279
+have found here. It can either be 100.50 or
+it can be 101, but you have got a value 100.
+
+209
+00:23:43,279 --> 00:23:51,299
+So, even though with some data, a schedule
+might look like serializable, but it actually
+
+210
+00:23:51,299 --> 00:23:56,710
+is not and it needs to be properly established
+that serial is serializable.
+
+211
+00:23:56,710 --> 00:24:10,740
+So, neither S naught T are serializable , yet
+another schedule U this again. So, you can
+
+212
+00:24:10,740 --> 00:24:16,019
+see that ah transaction 1 is happening instruction
+of transaction 1 is happening somewhere in
+
+213
+00:24:16,019 --> 00:24:24,609
+the middle ah. With transaction 2, and this
+is what you you get. So, if you if you look
+
+214
+00:24:24,609 --> 00:24:33,909
+back as to ah earlier case . You you will
+find that this is same as scheduled 201. So,
+
+215
+00:24:33,910 --> 00:24:42,400
+this is same as scheduled 2.
+So, again my the data it looks like that this
+
+216
+00:24:42,400 --> 00:24:46,840
+is correct, but we have to actually establish
+that this is correct. So, we can establish
+
+217
+00:24:46,839 --> 00:24:55,919
+say that by proving that schedule 2 is, I
+am sorry, schedule 2 is conflict serialize,
+
+218
+00:24:55,920 --> 00:25:05,850
+schedule U is conflict serializable to schedule
+2. How we do that? We keep on swapping the
+
+219
+00:25:05,849 --> 00:25:14,039
+non-conflicting instructions. This is one
+we start with, and we swap w 1 with r 2 B
+
+220
+00:25:14,039 --> 00:25:22,389
+this is possible they are referring to 2 different
+data items. Then we swap w 1 with w 2 again
+
+221
+00:25:22,390 --> 00:25:32,891
+different data items. Then we swap r 1 with
+r 2 again different data items and also, they
+
+222
+00:25:32,891 --> 00:25:41,820
+are both of them are read. And finally, we
+swap r 1 with w 2 r 1 A with w 2 B and we
+
+223
+00:25:41,819 --> 00:25:47,289
+get this, and now you can see that this is
+transaction 2 followed by transaction 1 which
+
+224
+00:25:47,289 --> 00:25:53,920
+is scheduled 2. Which is indeed a serial schedule
+and we have been able to transform schedule
+
+225
+00:25:53,920 --> 00:25:59,580
+U into a conflict equivalent schedule 2 which
+is serial.
+
+226
+00:25:59,579 --> 00:26:08,069
+So, we will say that while our earlier attempts
+on schedule S and schedule T were not serializable
+
+227
+00:26:08,069 --> 00:26:16,799
+schedule U is serializable.
+So, naturally all serializable schedules are
+
+228
+00:26:16,799 --> 00:26:24,579
+are they conflict serializable. No, for example,
+here I have given. So, here what we are trying
+
+229
+00:26:24,579 --> 00:26:34,429
+to highlight is a schedule may be serializable,
+but it may not be conflict serializable. So,
+
+230
+00:26:34,430 --> 00:26:39,470
+conflict serializability is a stronger notion.
+So, here I have given a small example which
+
+231
+00:26:39,470 --> 00:26:47,130
+I leave to you to go through in detail and
+understand where it is not possible to show
+
+232
+00:26:47,130 --> 00:26:53,810
+that it is conflict serializable in the sense
+you cannot there are 3 transactions here w
+
+233
+00:26:53,809 --> 00:27:03,609
+1 w 2 and w 3. And you cannot swap non-conflicting
+instructions in this schedule and convert
+
+234
+00:27:03,609 --> 00:27:07,409
+it into a serial schedule.
+So, serial schedule here will mean, T 1, T
+
+235
+00:27:07,410 --> 00:27:14,330
+2, T 3, T 1, T 3, T 2, T 2, T 1, T 3 like
+that. Any of the 6 possibilities, you cannot
+
+236
+00:27:14,329 --> 00:27:20,829
+convert this in a conflict equivalent manner
+to any of those 6 serial schedules. But this
+
+237
+00:27:20,829 --> 00:27:25,049
+actually is a serial schedule, because very
+interestingly even though there are multiple
+
+238
+00:27:25,049 --> 00:27:30,329
+rights, but in between there are no reads.
+So, you can you can easily reason, that the
+
+239
+00:27:30,329 --> 00:27:36,539
+values have actually not changed ok. So, this
+is on the basic notion of serializability.
+
+240
+00:27:36,539 --> 00:27:43,299
+Now, the question naturally is how do I detect,
+if a schedule is serializable. So, the process
+
+241
+00:27:43,299 --> 00:27:50,720
+is to construct a what is called a precedence
+graph. So, if I have a set of transactions,
+
+242
+00:27:50,720 --> 00:27:57,710
+then I construct a graph is a directed graph
+where the vertices are the transactions their
+
+243
+00:27:57,710 --> 00:28:04,309
+names. And we will draw an art from T I to
+Tj, that is my graph means there will be an
+
+244
+00:28:04,309 --> 00:28:13,329
+edge is a directed edge. If these 2 transactions
+Ti and Tj are conflicting. So, if Ti Tj conflict
+
+245
+00:28:13,329 --> 00:28:20,369
+there will edge between that. And the edge
+will be from Ti to Tj, if Ti access the data
+
+246
+00:28:20,369 --> 00:28:29,509
+item which conflict with Tj. So, if Ti is
+a head is earlier, then we will draw the art
+
+247
+00:28:29,509 --> 00:28:36,879
+from Ti to Tj, otherwise it will be from Tj
+to Ti. And we may also annotate label the
+
+248
+00:28:36,880 --> 00:28:41,070
+arc by the item on which item that is being
+accessed.
+
+249
+00:28:41,069 --> 00:28:50,279
+So, this could be A so, possible what is called
+the precedence graph. So, it is a schedule
+
+250
+00:28:50,279 --> 00:28:57,670
+is conflict serializable, if and only if it
+is precedence graph is acyclic . Naturally,
+
+251
+00:28:57,670 --> 00:29:05,870
+if there is a cycle then; that means, that
+any of the like like we have here, if there
+
+252
+00:29:05,869 --> 00:29:16,859
+if it is a cyclic like this then it is possible
+that I can actually do a topological ordering
+
+253
+00:29:16,859 --> 00:29:24,629
+of these nodes, and we can find a serial schedule.
+But if it has a cycle then naturally, Ii cannot
+
+254
+00:29:24,630 --> 00:29:29,750
+put any of the transactions on the cycle at
+the beginning and put the others on the later
+
+255
+00:29:29,750 --> 00:29:32,519
+part things will; obviously, always conflict
+.
+
+256
+00:29:32,519 --> 00:29:44,039
+So, we can easily these are details of the
+algorithms, cycle detection can be done very
+
+257
+00:29:44,039 --> 00:29:50,359
+easily. Either in n square time in a simple
+manner or when n plus E time where E is a
+
+258
+00:29:50,359 --> 00:29:55,349
+number of edges. So, the precedence if the
+precedence graph is acyclic the serializability
+
+259
+00:29:55,349 --> 00:30:01,509
+order will be obtained by simple topological
+sorting. I am not discussing what these algorithms
+
+260
+00:30:01,509 --> 00:30:08,079
+are I would expect that you know if you do
+not please look up in algorithms book.
+
+261
+00:30:08,079 --> 00:30:13,619
+So, to test for conflict serializability.
+The steps will be built the directed graph
+
+262
+00:30:13,619 --> 00:30:19,269
+. Then go through each operation of the shall,
+you look at each each operation read or write.
+
+263
+00:30:19,269 --> 00:30:27,150
+If the operation is a write, then find so,
+it if it is wi X, then find what is happening
+
+264
+00:30:27,150 --> 00:30:33,400
+with data this data element X in different
+transactions that exists later on that instructions
+
+265
+00:30:33,400 --> 00:30:39,730
+exist later on.
+If there is some rj X or some wj X, either
+
+266
+00:30:39,730 --> 00:30:46,429
+in in this was in transaction I/, in transaction
+some transaction j if there is a read X or
+
+267
+00:30:46,429 --> 00:30:52,910
+if there is a right of X, then there will
+be a directed graph age from Ti to Tj. This
+
+268
+00:30:52,910 --> 00:30:59,019
+is what I said earlier. On the other case
+if your operation is of the from r ij if it
+
+269
+00:30:59,019 --> 00:31:05,170
+is a read operation then all that you need
+to look for is only a right on this X on the
+
+270
+00:31:05,170 --> 00:31:11,130
+different transaction. And then you will have
+a naturally if you if your current operation
+
+271
+00:31:11,130 --> 00:31:16,549
+is read and you do not find a write there
+may be other reads on X then you do not add
+
+272
+00:31:16,548 --> 00:31:22,440
+any conflict edge.
+So, on this graph the schedule is conflict
+
+273
+00:31:22,440 --> 00:31:28,509
+serializable if it is acyclic, and we will
+do topological sort to get that as I have.
+
+274
+00:31:28,509 --> 00:31:34,700
+So, here what I have done is I have actually
+taken a little bigger example, where you can
+
+275
+00:31:34,700 --> 00:31:44,149
+see that at the at the beginning here. I have
+given a schedule which has ah 5 transactions.
+
+276
+00:31:44,148 --> 00:31:53,359
+And it has A B C D E, 5 different data elements,
+and variety of read write happening on them.
+
+277
+00:31:53,359 --> 00:32:00,099
+So, based on that, you start with an empty
+graph having so, your graph will have 5 notes
+
+278
+00:32:00,099 --> 00:32:04,808
+because these are the transactions. And then
+you go through the schedule, you start with
+
+279
+00:32:04,808 --> 00:32:13,410
+the very first one w 1 A. So, a is the data
+item you are looking at and then you see who
+
+280
+00:32:13,410 --> 00:32:21,560
+is doing it. So, you you see that well a is
+read by a is here read by T 2.
+
+281
+00:32:21,559 --> 00:32:30,679
+So, there is a conflict. So, you will add
+an edge T 1 T 2 so, this this edge gets added.
+
+282
+00:32:30,680 --> 00:32:37,640
+Then is to have r 2 A, and you find ok look
+for A, A, A, A, A, A there is no A so, there
+
+283
+00:32:37,640 --> 00:32:44,810
+is no subsequent right. So, there is no new
+edge then you have w 1 B, w 1 B and if you
+
+284
+00:32:44,809 --> 00:32:51,869
+look for you have r 4 B. So, r 4 that this
+transaction 4 is reading it later on. So,
+
+285
+00:32:51,869 --> 00:33:00,119
+w 1 A B subsequently read 5 T 4 so, there
+is a conflict. So, you add the edge T 1, T
+
+286
+00:33:00,119 --> 00:33:07,969
+4, T 1, T 4. You proceed in this way, you
+can work it out in full. And when you come
+
+287
+00:33:07,970 --> 00:33:15,048
+to the end you have constructed this particular
+graph which is the precedence graph. And you
+
+288
+00:33:15,048 --> 00:33:21,500
+can very easily see that this precedence graph
+is acyclic there is no cycle here. And therefore,
+
+289
+00:33:21,500 --> 00:33:30,808
+the original schedule is serializable. And
+what is that what is the order in which you
+
+290
+00:33:30,808 --> 00:33:36,298
+you find out what is the corresponding serial
+schedule for that you do a topological sort.
+
+291
+00:33:36,298 --> 00:33:41,099
+So, by topological sort which will mean this
+have no predecessor. So, any one of them can
+
+292
+00:33:41,099 --> 00:33:47,429
+be the first node other one can be the next
+node. So, it could be T 3 T 1 or T 1 T 3.
+
+293
+00:33:47,430 --> 00:33:53,929
+So, let us say T 3 T 1 then T 3 T 1 has happened.
+So, I can put any one of T 2 or T 4 after
+
+294
+00:33:53,929 --> 00:34:04,130
+that. Here I put T 4 then T 2. So, up to this
+and then finally, T 5. So, this is one possible
+
+295
+00:34:04,130 --> 00:34:14,269
+ah serial schedule to which this given schedule
+is conflict serializable. And so, the actual
+
+296
+00:34:14,269 --> 00:34:20,418
+serial schedule. So, if you if you do this
+schedule, you will get a result which is a
+
+297
+00:34:20,418 --> 00:34:27,368
+result of this serial schedule which is T
+3, T 1, T 4, T 2, T 5. It is also actually
+
+298
+00:34:27,369 --> 00:34:33,190
+this channel is conflict serializable to several
+other trade rules because you can do this
+
+299
+00:34:33,190 --> 00:34:37,750
+topological sorting in in various different
+manners, you could have started with T 1 and
+
+300
+00:34:37,750 --> 00:34:42,769
+then do T 3 and then do the rest. You could
+have done T 3, T 1, and then instead of doing
+
+301
+00:34:42,769 --> 00:34:49,250
+T 4, T 2, you could do T 2, T 4.
+So, you will get a number of, but having one
+
+302
+00:34:49,250 --> 00:34:56,000
+equivalent serial schedule. One conflict equivalent
+serial schedule is enough to prove the serializability
+
+303
+00:34:56,000 --> 00:35:04,159
+of a schedule. Now ah so, based on that you
+say that this particular schedule is conflict
+
+304
+00:35:04,159 --> 00:35:12,810
+serializable . And it will be safe to execute
+the interleaved instructions of the 5 different
+
+305
+00:35:12,811 --> 00:35:18,150
+transactions in this manner in the schedule,
+and we will always have a consistent result
+
+306
+00:35:18,150 --> 00:35:21,510
+.
+So, here in this module, you have understood
+
+307
+00:35:21,510 --> 00:35:28,510
+the issues that arise in terms of concurrency
+when 2 or more transactions work concurrently.
+
+308
+00:35:28,510 --> 00:35:34,630
+And very specifically we have learnt about
+different forms of serializability. In this
+
+309
+00:35:34,630 --> 00:35:40,280
+module we have talked of conflict serializability,
+view serializability we will take up later
+
+310
+00:35:40,280 --> 00:35:45,619
+on. And we have seen an algorithm, simple
+algorithm, based on the a cyclic precedence
+
+311
+00:35:45,619 --> 00:35:53,800
+graph, which will allow you to ensure that
+a given schedule is conflict serializable
+
+312
+00:35:53,800 --> 00:35:54,410
+or not .
+

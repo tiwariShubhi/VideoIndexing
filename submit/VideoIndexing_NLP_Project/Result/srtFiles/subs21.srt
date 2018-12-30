@@ -1,0 +1,3495 @@
+
+1
+00:00:00.008 --> 00:00:04.900
+In this hands-on activity,
+we will be querying documents in MongoDB.
+
+2
+00:00:06.020 --> 00:00:10.480
+First, we will start a MongoDB server and
+then run the MongoDB Shell.
+
+3
+00:00:10.480 --> 00:00:15.730
+We will see how to show the databases and
+collections in the MongoDB Server.
+
+4
+00:00:15.730 --> 00:00:19.520
+We will look at an example
+document in the database and
+
+5
+00:00:19.520 --> 00:00:21.529
+see how to find distinct values for
+a field.
+
+6
+00:00:23.360 --> 00:00:26.540
+Next, we will search for
+specific field values and
+
+7
+00:00:26.540 --> 00:00:28.620
+see how to filter fields
+returned in a query.
+
+8
+00:00:30.530 --> 00:00:34.070
+Finally, we will search using
+regular expressions and operators.
+
+9
+00:00:36.903 --> 00:00:41.361
+Let's begin,
+first we'll start the MongoDB server.
+
+10
+00:00:41.361 --> 00:00:46.830
+Open the terminal window by clicking on
+the terminal icon, the top of the toolbar.
+
+11
+00:00:46.830 --> 00:00:53.680
+We'll cd into
+Downloads/big-data-3-mongodb.
+
+12
+00:00:53.680 --> 00:00:59.495
+We'll start the MongoDB server by running
+
+13
+00:00:59.495 --> 00:01:05.675
+./mongodb/bin/mongod --dbpath db.
+
+14
+00:01:05.675 --> 00:01:08.930
+The arguments dbpath db
+
+15
+00:01:08.930 --> 00:01:13.330
+specified that the database on
+MongoDB is in the directory named db.
+
+16
+00:01:15.260 --> 00:01:16.780
+Run this to start the server.
+
+17
+00:01:20.530 --> 00:01:24.413
+Next, we'll start the MongoDB Shell so
+that we can perform queries.
+
+18
+00:01:24.413 --> 00:01:29.416
+We'll open another terminal window.
+
+19
+00:01:29.416 --> 00:01:36.417
+Again, cd into
+Downloads/big-data-3-mongodb.
+
+20
+00:01:36.417 --> 00:01:41.955
+We'll start the shell by
+running ./mongodb/bin/mongo.
+
+21
+00:01:49.734 --> 00:01:55.237
+We can see what databases are available in
+the MongoDB server by running the command,
+
+22
+00:01:55.237 --> 00:01:55.933
+show dbs.
+
+23
+00:01:59.521 --> 00:02:02.680
+We've created the sample database
+with JSON data from Twitter.
+
+24
+00:02:04.400 --> 00:02:08.400
+We can use the use command
+to change to this database.
+
+25
+00:02:08.400 --> 00:02:10.245
+We'll run use sample.
+
+26
+00:02:13.078 --> 00:02:16.828
+We can see the collections in this
+database by running, show collections.
+
+27
+00:02:19.858 --> 00:02:22.656
+There's only one collection called users.
+
+28
+00:02:22.656 --> 00:02:26.987
+So, all of the queries will be
+using the users collection.
+
+29
+00:02:26.987 --> 00:02:31.945
+Let's count how many documents there
+are in the users collection by writing
+
+30
+00:02:31.945 --> 00:02:33.349
+db.users.count.
+
+31
+00:02:38.225 --> 00:02:43.241
+We can look at one of these documents
+by writing db.users.findOne.
+
+32
+00:02:51.078 --> 00:02:55.443
+This document contains
+Jason from a Twitter tweet.
+
+33
+00:02:55.443 --> 00:02:58.740
+You can see the field names
+here with their values.
+
+34
+00:02:58.740 --> 00:03:02.380
+There are also nested fields
+under the user field.
+
+35
+00:03:02.380 --> 00:03:04.410
+And each of these fields also has values.
+
+36
+00:03:05.730 --> 00:03:08.870
+You can find the distinct values for
+
+37
+00:03:08.870 --> 00:03:12.320
+particular field,
+by using the distinct command.
+
+38
+00:03:12.320 --> 00:03:15.058
+Let's find the distinct values for
+the username field.
+
+39
+00:03:15.058 --> 00:03:21.234
+We'll write
+db.users.distinct("user_name").
+
+40
+00:03:30.324 --> 00:03:35.193
+Next, let's find all the documents in
+this collection where the field username
+
+41
+00:03:35.193 --> 00:03:36.990
+matches the specific value.
+
+42
+00:03:38.050 --> 00:03:41.360
+The value we'll search for
+is ActionSportsJax.
+
+43
+00:03:42.730 --> 00:03:46.851
+We'll run the command db.users.find.
+
+44
+00:03:46.851 --> 00:03:49.980
+And the field name is username, and
+
+45
+00:03:49.980 --> 00:03:54.688
+the value we're searching for
+is ActionSportsJax.
+
+46
+00:04:04.405 --> 00:04:07.050
+Results of this query is
+compressed all in one line.
+
+47
+00:04:08.650 --> 00:04:11.401
+If we append the .pretty
+to the previous query.
+
+48
+00:04:11.401 --> 00:04:13.874
+We can see the formatted output.
+
+49
+00:04:13.874 --> 00:04:16.776
+So we'll run the same
+command with append .pretty.
+
+50
+00:04:23.289 --> 00:04:25.980
+We can filter the fields
+returned from the queries.
+
+51
+00:04:27.560 --> 00:04:31.709
+Let's perform the same query again but
+only show the tweet_id field.
+
+52
+00:04:33.200 --> 00:04:36.090
+We can do this by adding a second
+argument to the find command.
+
+53
+00:04:37.440 --> 00:04:42.648
+So we'll run the same command again,
+
+54
+00:04:42.648 --> 00:04:49.827
+but add a second argument,
+saying tweet_ID: 1.
+
+55
+00:04:49.827 --> 00:04:55.748
+The underscore ID field is a primary
+key used in all documents in MongoDB.
+
+56
+00:04:55.748 --> 00:04:58.280
+You can turn this off by adding
+another field to our filter.
+
+57
+00:05:00.130 --> 00:05:03.287
+We'll run the same command again,
+but turn of _ID.
+
+58
+00:05:11.820 --> 00:05:16.550
+Next, we use the regular expression search
+to find strings containing the document.
+
+59
+00:05:17.680 --> 00:05:21.640
+For example, if we want to find all
+the tweets containing the text FIFA,
+
+60
+00:05:21.640 --> 00:05:25.171
+we can run db.users.find tweet_text FIFA.
+
+61
+00:05:32.170 --> 00:05:35.850
+There are no results in this query
+because this query is searching for
+
+62
+00:05:35.850 --> 00:05:37.580
+tweet text equals FIFA.
+
+63
+00:05:39.030 --> 00:05:43.590
+That is the entire contents and
+the value of tweet_text must be FIFA.
+
+64
+00:05:44.720 --> 00:05:46.110
+Instead, if we want to look for
+
+65
+00:05:46.110 --> 00:05:51.230
+FIFA anywhere in the tweet_text,
+we can do a regular expression search.
+
+66
+00:05:51.230 --> 00:05:55.750
+To do this,
+replace the double quotes with slashes.
+
+67
+00:05:55.750 --> 00:05:57.850
+So we'll run the same command again.
+
+68
+00:05:57.850 --> 00:06:03.573
+But replacing double quotes with slashes.
+
+69
+00:06:03.573 --> 00:06:07.423
+We can count how many documents are
+returned by this query by running the same
+
+70
+00:06:07.423 --> 00:06:09.540
+command again, but appending .count.
+
+71
+00:06:13.325 --> 00:06:17.948
+We can also search for documents in
+MongoDB where the field values are greater
+
+72
+00:06:17.948 --> 00:06:20.020
+than or less than a certain value.
+
+73
+00:06:21.170 --> 00:06:26.162
+For example, lets find tweet
+mention count greater than six.
+
+74
+00:06:26.162 --> 00:06:32.977
+We'll run db.users.find, and
+the field name is tweet_mentioned_count.
+
+75
+00:06:35.670 --> 00:06:41.265
+And we want to look for the value
+where this field is greater than six.
+
+76
+00:06:41.265 --> 00:06:47.940
+So I'll enter a { $gt : 6 }.
+
+1
+00:00:01.500 --> 00:00:06.870
+In a prior course we looked at JSON as
+an example of semi-structured data,
+
+2
+00:00:06.870 --> 00:00:10.020
+and we demonstrated that JSON
+data can be thought of as a tree.
+
+3
+00:00:11.200 --> 00:00:14.180
+In this course,
+we'll focus on querying JSON data.
+
+4
+00:00:15.330 --> 00:00:20.340
+Before we start, lets review
+the details of the JSON structure, and
+
+5
+00:00:20.340 --> 00:00:24.180
+get an initial sense of how
+to query this form of data.
+
+6
+00:00:25.720 --> 00:00:28.590
+Let's consider a simple
+JSON collection and
+
+7
+00:00:28.590 --> 00:00:32.330
+look at the structures,
+substructures actually, it's composed of.
+
+8
+00:00:34.160 --> 00:00:37.990
+The atomic element in the structure
+is a key value pair, for example,
+
+9
+00:00:37.990 --> 00:00:43.520
+name is the key and sue is the value,
+in this case, an atomic string value.
+
+10
+00:00:45.560 --> 00:00:47.178
+To query a key value pair,
+
+11
+00:00:47.178 --> 00:00:52.123
+we should be able perform one basic
+operation given the key, return the value.
+
+12
+00:00:54.140 --> 00:01:00.830
+Now, the value can also be an array,
+an array is a list.
+
+13
+00:01:02.060 --> 00:01:06.940
+So the query operations on it can either
+be on its position in the list or
+
+14
+00:01:06.940 --> 00:01:08.370
+on the value.
+
+15
+00:01:08.370 --> 00:01:12.980
+Thus, we should be able to ask for the
+second element of the array called badges.
+
+16
+00:01:12.980 --> 00:01:17.180
+Or we should be able to seek objects
+of which the key called badges
+
+17
+00:01:17.180 --> 00:01:18.270
+has a value of blue.
+
+18
+00:01:20.130 --> 00:01:25.360
+Notice here that the document
+collection here is itself an array,
+
+19
+00:01:25.360 --> 00:01:29.130
+within square brackets and
+it's just two elements in it.
+
+20
+00:01:29.130 --> 00:01:33.664
+The top level array does not have a key,
+by default it's called db.
+
+21
+00:01:36.820 --> 00:01:41.135
+These key value peers
+are structured as tuples,
+
+22
+00:01:41.135 --> 00:01:44.607
+often with a name In the snippet shown,
+
+23
+00:01:44.607 --> 00:01:48.644
+favorites has a tuple
+of two key value pairs.
+
+24
+00:01:48.644 --> 00:01:53.530
+Now, tuples can be thought of as
+relational records, as the operations
+
+25
+00:01:53.530 --> 00:01:57.800
+would include, projection of an attribute,
+and selection over a set of tables.
+
+26
+00:02:00.330 --> 00:02:03.060
+On the other hand,
+the area called 'points',
+
+27
+00:02:03.060 --> 00:02:07.180
+has two tuples, these two tuples named.
+
+28
+00:02:07.180 --> 00:02:10.880
+As you will see, we'll address
+these tuples by their positions.
+
+29
+00:02:12.570 --> 00:02:16.000
+Finally, this one has nesting,
+
+30
+00:02:16.000 --> 00:02:20.110
+that means a mini structure can be
+embedded within another structure.
+
+31
+00:02:21.250 --> 00:02:24.220
+So we need operations
+that will let us navigate
+
+32
+00:02:24.220 --> 00:02:27.350
+from one structure to any of
+it's embedded structures.
+
+33
+00:02:30.030 --> 00:02:35.180
+Now just like a basic SQL query states,
+which parts of which records from one or
+
+34
+00:02:35.180 --> 00:02:39.840
+more people should be reported,
+a MongoDB query states
+
+35
+00:02:39.840 --> 00:02:43.700
+which parts of which documents from
+a document collection should be returned.
+
+36
+00:02:45.010 --> 00:02:51.088
+The primary query is expressed as a find
+function, which contains two arguments and
+
+37
+00:02:51.088 --> 00:02:56.494
+an optional qualifier, there are four
+things to notice in this function.
+
+38
+00:02:58.142 --> 00:03:00.773
+The first is the term collection,
+
+39
+00:03:00.773 --> 00:03:05.402
+this tells the system which
+document collection to use, and
+
+40
+00:03:05.402 --> 00:03:11.410
+therefore is roughly similar to the From
+clause when restricted to one table.
+
+41
+00:03:11.410 --> 00:03:18.629
+So if the name of the collection is beers,
+the first part would say db.beers.find.
+
+42
+00:03:18.629 --> 00:03:23.098
+The second item is a query filter
+which lists all conditions that
+
+43
+00:03:23.098 --> 00:03:28.159
+the retrieved documents should satisfy,
+so it's like a Where clause.
+
+44
+00:03:30.170 --> 00:03:34.370
+Now, if we want to return everything,
+then this filter is left blank.
+
+45
+00:03:35.550 --> 00:03:39.719
+Otherwise, we'll fill it in a couple
+of ways shown in the next few slides.
+
+46
+00:03:41.330 --> 00:03:45.652
+The third term is a projection class
+which is essentially a list of variables
+
+47
+00:03:45.652 --> 00:03:47.550
+that we want to see in the output.
+
+48
+00:03:49.520 --> 00:03:53.950
+The fourth and last item sits
+after the find function ends and
+
+49
+00:03:53.950 --> 00:03:57.370
+is separated by a dot,
+it's called a cursor modifier.
+
+50
+00:03:58.370 --> 00:04:02.760
+The word cursor relates back
+to SQL where cursor is defined
+
+51
+00:04:02.760 --> 00:04:06.120
+as a block of results that is
+returned to the user in one chunk.
+
+52
+00:04:07.410 --> 00:04:11.357
+This becomes important when the set of
+results is too large to be returned all
+
+53
+00:04:11.357 --> 00:04:14.256
+together, and
+the user may need to specify how much, or
+
+54
+00:04:14.256 --> 00:04:16.614
+what portion of results
+they actually want.
+
+55
+00:04:18.710 --> 00:04:21.776
+So, we'll start out with a few queries,
+
+56
+00:04:21.776 --> 00:04:26.156
+where we show how the same query
+can be expressed in SQL, and
+
+57
+00:04:26.156 --> 00:04:31.220
+in MongoDB The first query
+wants everything from Beers.
+
+58
+00:04:31.220 --> 00:04:34.740
+The SQL query is structured
+on the table Beers, and
+
+59
+00:04:34.740 --> 00:04:37.660
+the SELECT * asks to return all rows.
+
+60
+00:04:38.740 --> 00:04:43.230
+In MongoDB the same query
+is more succincted,
+
+61
+00:04:43.230 --> 00:04:45.830
+since the name of the collection
+is already specified in
+
+62
+00:04:45.830 --> 00:04:49.650
+calling the find function,
+the body of the find function is empty.
+
+63
+00:04:50.650 --> 00:04:55.020
+That means there are no query conditions
+and no projection clauses in it.
+
+64
+00:04:55.020 --> 00:04:59.550
+The second query
+
+65
+00:04:59.550 --> 00:05:04.160
+needs to return the variables beer and
+price for all records.
+
+66
+00:05:05.810 --> 00:05:12.120
+So the find function here needs an empty
+query condition denoted by the open and
+
+67
+00:05:12.120 --> 00:05:17.860
+closed brace symbols, but the projection
+clauses are specifically identified.
+
+68
+00:05:17.860 --> 00:05:21.760
+There is a 1 if an attribute is output and
+a 0 if it is not.
+
+69
+00:05:21.760 --> 00:05:26.500
+As a shortcut,
+only variables with 1 are required.
+
+70
+00:05:28.000 --> 00:05:29.204
+Okay, so when do you use 0?
+
+71
+00:05:30.360 --> 00:05:31.870
+A common situation is the following.
+
+72
+00:05:33.160 --> 00:05:37.548
+Every MongoDB document has
+an identifier named _id.
+
+73
+00:05:40.139 --> 00:05:44.410
+By default every query will
+return the id of the document.
+
+74
+00:05:45.700 --> 00:05:49.150
+If you don't want it to return
+this designated attribute,
+
+75
+00:05:49.150 --> 00:05:55.970
+you should explicitly say, _id:0.
+
+76
+00:05:55.970 --> 00:05:58.630
+Next we will add query conditions.
+
+77
+00:05:58.630 --> 00:06:02.640
+That is the equivalent of
+the Where clause in SQL.
+
+78
+00:06:02.640 --> 00:06:07.490
+Our query number three has the query
+condition where name is equal to a value.
+
+79
+00:06:08.600 --> 00:06:15.020
+In MongoDB, that equal to translate
+to a variable colon value form.
+
+80
+00:06:16.070 --> 00:06:21.135
+Notice the symbol used for
+a string is quotes.
+
+81
+00:06:22.987 --> 00:06:25.720
+Query four is more interesting for
+two reasons.
+
+82
+00:06:26.770 --> 00:06:30.980
+First, we see a way in which
+the distinct operation is specified.
+
+83
+00:06:32.580 --> 00:06:38.670
+Notice here that the primary query
+function is not find any more but
+
+84
+00:06:38.670 --> 00:06:40.310
+a new function called distinct.
+
+85
+00:06:41.790 --> 00:06:45.990
+As we'll see later again in our slides,
+
+86
+00:06:45.990 --> 00:06:49.660
+MongoDB uses a few special query
+functions for some of the operations.
+
+87
+00:06:51.520 --> 00:06:55.620
+So, you need to know, which function
+should be used in what context,
+
+88
+00:06:55.620 --> 00:06:57.270
+when you write MogoDB queries.
+
+89
+00:06:58.640 --> 00:07:03.191
+Secondly, in this query,
+we have a non-equality condition,
+
+90
+00:07:03.191 --> 00:07:06.153
+namely, the price is greater than 15.
+
+91
+00:07:08.370 --> 00:07:12.418
+This example shows MongoDB style
+of using operators in a query.
+
+92
+00:07:12.418 --> 00:07:17.090
+It's always variable:
+
+93
+00:07:17.090 --> 00:07:21.470
+followed by MongoDB's name for the
+operator, and then the comparison value.
+
+94
+00:07:22.580 --> 00:07:24.959
+So where would you find
+MongoDB's operators?
+
+95
+00:07:26.620 --> 00:07:28.890
+Here are some of the operators
+supported in MongoDB.
+
+96
+00:07:30.300 --> 00:07:33.860
+These operators and others are listed
+in the URL shown at the bottom.
+
+97
+00:07:35.210 --> 00:07:37.430
+The operators shown here are color coded.
+
+98
+00:07:38.470 --> 00:07:41.866
+The top blue set
+are the comparison operators.
+
+99
+00:07:41.866 --> 00:07:47.760
+We see the $gt, greater than,
+operation that we used in the last slide.
+
+100
+00:07:50.100 --> 00:07:54.780
+The green colored operations are array
+operations which we'll see shortly.
+
+101
+00:07:54.780 --> 00:07:58.370
+And the yellow operators at the bottom
+are logical operations that
+
+102
+00:07:58.370 --> 00:08:02.070
+combine two conditions in different ways
+like the AND operation we saw in SQL.
+
+103
+00:08:02.070 --> 00:08:07.860
+Now, the last operator $nor,
+is interesting,
+
+104
+00:08:07.860 --> 00:08:13.110
+because it is used to specify queries
+when neither of two conditions must hold.
+
+105
+00:08:13.110 --> 00:08:16.960
+For example, find all beer
+whose name is neither bad nor
+
+106
+00:08:16.960 --> 00:08:20.080
+is the price less than $6 per bottle.
+
+107
+00:08:20.080 --> 00:08:23.021
+Now I would strongly encourage you
+to play with these operators in
+
+108
+00:08:23.021 --> 00:08:24.098
+your hands on session.
+
+109
+00:08:27.220 --> 00:08:29.980
+Now I'm sure you remember
+the like query in SQL.
+
+110
+00:08:31.420 --> 00:08:37.000
+MongoDB uses regular expressions
+to specify partial string matches.
+
+111
+00:08:37.000 --> 00:08:39.120
+Now some of you may not know
+what a regular expression is.
+
+112
+00:08:39.120 --> 00:08:41.660
+Let's first use some examples.
+
+113
+00:08:43.680 --> 00:08:48.150
+The first example is the same query
+we saw before when we're asking for
+
+114
+00:08:48.150 --> 00:08:53.514
+beer manufacturers,
+whose name has a sub string A-M in it,
+
+115
+00:08:53.514 --> 00:08:56.620
+so A-M can appear
+anywhere within the name.
+
+116
+00:08:57.630 --> 00:08:58.550
+To do this,
+
+117
+00:08:58.550 --> 00:09:03.890
+the query condition first states that
+it is going to use a $regex operation.
+
+118
+00:09:04.980 --> 00:09:10.340
+And then we have to give
+the partial string as /am/.
+
+119
+00:09:10.340 --> 00:09:16.250
+Then it gives the directive
+that this match
+
+120
+00:09:16.250 --> 00:09:21.560
+should be case insensitive by placing
+an i after the partial string.
+
+121
+00:09:21.560 --> 00:09:28.070
+And if we just wanted to do names we
+would stop right after the find function.
+
+122
+00:09:28.070 --> 00:09:33.120
+But here we also want to do a count,
+which is a post operation
+
+123
+00:09:33.120 --> 00:09:38.140
+after the find, so we use .count
+at the end of the find function.
+
+124
+00:09:39.860 --> 00:09:46.560
+Now, what if we have the same query,
+but we want the partial string A-m?
+
+125
+00:09:46.560 --> 00:09:49.610
+To appear at the beginning of the name and
+
+126
+00:09:49.610 --> 00:09:52.070
+you'd like the A to really
+be a capital letter.
+
+127
+00:09:53.460 --> 00:09:57.540
+In this case we use
+the caret sign to indicate
+
+128
+00:09:57.540 --> 00:09:59.950
+that the partial string is at
+the beginning of the name.
+
+129
+00:10:01.090 --> 00:10:05.786
+Naturally we also drop the i at the end
+because the match is no longer case
+
+130
+00:10:05.786 --> 00:10:10.389
+insensitive A more complex
+
+131
+00:10:10.389 --> 00:10:15.445
+partial string pattern will be a case
+where our name starts with capital A-m,
+
+132
+00:10:15.445 --> 00:10:19.600
+then has a number of characters
+in the middle and ends with corp.
+
+133
+00:10:20.810 --> 00:10:26.140
+So for the first part,
+the string pattern is ^Am.
+
+134
+00:10:26.140 --> 00:10:31.370
+For the second part, that is,
+any character in the middle, we use dot
+
+135
+00:10:31.370 --> 00:10:37.480
+to represent any character, and star
+to represent zero or more occurrences.
+
+136
+00:10:37.480 --> 00:10:40.090
+For the third part, we say corp but
+
+137
+00:10:40.090 --> 00:10:44.580
+put a dollar at the end to say that it
+must appear at the end of the string.
+
+138
+00:10:45.830 --> 00:10:49.330
+The regular expression pattern is
+a sub-language, in itself, and
+
+139
+00:10:49.330 --> 00:10:52.500
+is supported by most
+programming languages today.
+
+140
+00:10:52.500 --> 00:10:56.530
+We will refer you to the following
+URL to learn more about it.
+
+141
+00:10:58.120 --> 00:11:01.270
+Also, note an example that,
+instead of saying, find.count,
+
+142
+00:11:01.270 --> 00:11:06.200
+we can directly use the count function,
+natively defined in MongoDB.
+
+143
+00:11:08.680 --> 00:11:13.070
+One important feature of JSON is that
+everything contain arrays, as a type of
+
+144
+00:11:13.070 --> 00:11:19.390
+collection objects, this enables us
+to query arrays in multiple ways.
+
+145
+00:11:19.390 --> 00:11:23.460
+One of them,
+is to consider an array as a list and
+
+146
+00:11:23.460 --> 00:11:28.310
+perform intersection operations,
+the first query shows this.
+
+147
+00:11:28.310 --> 00:11:29.840
+The data item is shown on the right.
+
+148
+00:11:31.190 --> 00:11:35.600
+It has the area value attribute
+called tags with three entries.
+
+149
+00:11:35.600 --> 00:11:40.390
+The first query asks if two specific
+strings belong to the array.
+
+150
+00:11:41.660 --> 00:11:46.510
+In other words, it wants to get
+the document whose tagged attribute
+
+151
+00:11:46.510 --> 00:11:48.480
+intersects with the query supplied array.
+
+152
+00:11:49.520 --> 00:11:53.640
+In this case, there is an intersection and
+the document is returned.
+
+153
+00:11:55.250 --> 00:11:57.950
+In the second case, it is asking for
+
+154
+00:11:57.950 --> 00:12:01.570
+a documents who's tags
+attribute has no intersection.
+
+155
+00:12:02.920 --> 00:12:08.880
+Now notice the $nin operator so
+there is no intersection with this list.
+
+156
+00:12:10.730 --> 00:12:14.810
+So in this document there exists and
+intersection so nothing will be returned.
+
+157
+00:12:16.940 --> 00:12:21.560
+A different kind of array query uses
+the positions of the list elements and
+
+158
+00:12:21.560 --> 00:12:23.680
+wants to extract a portion of the array.
+
+159
+00:12:24.950 --> 00:12:28.000
+This is illustrated in
+the third query which asks for
+
+160
+00:12:28.000 --> 00:12:31.140
+the second and third items of the array.
+
+161
+00:12:31.140 --> 00:12:35.890
+To encode this in MongoDB,
+we use the $slice operator
+
+162
+00:12:35.890 --> 00:12:41.890
+which needs two parameters,
+the number of variable limits to skip,
+
+163
+00:12:41.890 --> 00:12:44.370
+and the number of variable limits
+to extract after skipping.
+
+164
+00:12:45.420 --> 00:12:50.910
+In this case, we need to extract items two
+and three, so the skip value is one and
+
+165
+00:12:50.910 --> 00:12:55.130
+the number of items is two,
+thus returning summer and Japanese.
+
+166
+00:12:56.320 --> 00:13:00.990
+Now, we could get the same result if we
+pose the query using the last statement.
+
+167
+00:13:02.080 --> 00:13:06.740
+In this case, the minus says that
+the system should count from the end and
+
+168
+00:13:07.800 --> 00:13:10.360
+the true says that it should
+extract two elements.
+
+169
+00:13:11.990 --> 00:13:16.096
+Now if we omitted the minus sign,
+it will come from the beginning and
+
+170
+00:13:16.096 --> 00:13:17.981
+fetch the first two elements.
+
+171
+00:13:21.300 --> 00:13:27.570
+Finally, we can also ask for a document
+who's second element in tags is summer.
+
+172
+00:13:27.570 --> 00:13:33.529
+In this case we use an array index
+tags.1 to denote the second element.
+
+173
+00:13:37.580 --> 00:13:42.232
+Compound statements are queries
+with multiple query conditions that
+
+174
+00:13:42.232 --> 00:13:45.750
+are combined using logical operations.
+
+175
+00:13:45.750 --> 00:13:51.167
+The query shown here has one condition,
+which is the and,are in terms of MongoDB,
+
+176
+00:13:51.167 --> 00:13:53.640
+the $and of three different clauses.
+
+177
+00:13:54.710 --> 00:13:57.310
+The last clause is
+the most straight forward,
+
+178
+00:13:57.310 --> 00:14:00.368
+it states that the desired
+item should not be Coors.
+
+179
+00:14:00.368 --> 00:14:07.630
+The first clause is an or, that is,
+a $or, between two sub-conditions,
+
+180
+00:14:07.630 --> 00:14:13.622
+A the prices either 3.99, or B it is 4.99.
+
+181
+00:14:13.622 --> 00:14:18.154
+The second clause is also an or
+of two sub conditions,
+
+182
+00:14:18.154 --> 00:14:23.101
+A the rating is good, and
+B the quantity is less than 20.
+
+183
+00:14:24.474 --> 00:14:27.019
+This query shows that the $and and
+
+184
+00:14:27.019 --> 00:14:32.170
+the $or operators need a list
+that is an array of arguments.
+
+185
+00:14:32.170 --> 00:14:34.343
+To draw a quick comparison,
+
+186
+00:14:34.343 --> 00:14:38.609
+here's the example of the same
+query imposed with SQL.
+
+187
+00:14:43.250 --> 00:14:47.612
+Now, an important feature of
+semi-structured data is that
+
+188
+00:14:47.612 --> 00:14:49.070
+it allows nesting.
+
+189
+00:14:50.120 --> 00:14:54.750
+We showed three documents here,
+where there is an area named points,
+
+190
+00:14:54.750 --> 00:14:58.620
+which in turn has two tuples with
+the elements points and bonus.
+
+191
+00:14:58.620 --> 00:15:04.060
+Let's assume that these three
+documents are part of a collection, so
+
+192
+00:15:04.060 --> 00:15:07.630
+they form three items in
+an area called users.
+
+193
+00:15:08.800 --> 00:15:13.060
+Our goal is to show how we can
+write queries to extract data
+
+194
+00:15:13.060 --> 00:15:15.350
+from these documents with nesting.
+
+195
+00:15:16.620 --> 00:15:19.300
+The first query wants
+to find documents for
+
+196
+00:15:19.300 --> 00:15:23.860
+which, the value of points should
+be less than or equal to 80.
+
+197
+00:15:23.860 --> 00:15:26.052
+Now, which ones?
+
+198
+00:15:26.052 --> 00:15:29.120
+Now, points.0,
+
+199
+00:15:29.120 --> 00:15:34.016
+refers to the first tuple
+under the outer points, and
+
+200
+00:15:34.016 --> 00:15:39.800
+points.0.points, refers to
+the first element of that tuple.
+
+201
+00:15:39.800 --> 00:15:42.980
+Clearly, only the second
+documents satisfies this query.
+
+202
+00:15:45.280 --> 00:15:48.150
+Now, what happens if we have
+the same query but we drop the zero?
+
+203
+00:15:49.410 --> 00:15:54.260
+Now, we are looking for points.points
+without specifying the array index.
+
+204
+00:15:54.260 --> 00:15:56.830
+This means that the points element in
+
+205
+00:15:56.830 --> 00:16:00.050
+any of the tuples should
+have a value of 80 or less.
+
+206
+00:16:01.170 --> 00:16:05.403
+So now, the first and the second
+document will satisfy the query.
+
+207
+00:16:07.900 --> 00:16:11.340
+We can put multiple conditions
+as seen in the third query.
+
+208
+00:16:12.490 --> 00:16:16.740
+It looks for a document where the points
+element of a tuple, should be utmost 81,
+
+209
+00:16:16.740 --> 00:16:23.440
+and the bonus should be exactly 20, and
+clearly the second document qualifies.
+
+210
+00:16:23.440 --> 00:16:25.500
+But does the third document qualify?
+
+211
+00:16:26.930 --> 00:16:32.640
+In this case, the first tuple
+satisfies points greater than 81 and
+
+212
+00:16:32.640 --> 00:16:34.870
+the second tuple satisfies
+bonus equal to 20.
+
+213
+00:16:34.870 --> 00:16:41.190
+The answer is no, because the comma
+is treated as an implicit and
+
+214
+00:16:41.190 --> 00:16:45.280
+condition within the same double,
+as shown in the yellow braces.
+
+215
+00:16:47.320 --> 00:16:50.770
+Now remember that we said in course
+two that all semi-structured
+
+216
+00:16:50.770 --> 00:16:52.070
+data can be viewed as a tree.
+
+217
+00:16:53.490 --> 00:16:57.730
+Now, what if I pick a node of a tree and
+ask for all the descendents of that node?
+
+218
+00:16:58.880 --> 00:17:02.660
+That would require the system
+to recursively get chideNodes,
+
+219
+00:17:02.660 --> 00:17:04.510
+over increasing depth from the given node.
+
+220
+00:17:05.820 --> 00:17:11.141
+Unfortunately, at this time,
+MongoDB does not support recursive search.
+
+1
+00:00:02.463 --> 00:00:07.381
+A different kind of scaling problem arises
+when we try to answer queries over a large
+
+2
+00:00:07.381 --> 00:00:12.158
+number of data sources, but before we do
+that let's see how a query is answered in
+
+3
+00:00:12.158 --> 00:00:14.570
+the virtual data integration setting.
+
+4
+00:00:15.990 --> 00:00:18.819
+We are going to use a toy
+scenario in a medical setting
+
+5
+00:00:19.890 --> 00:00:22.070
+simple as we have four data sources.
+
+6
+00:00:22.070 --> 00:00:24.320
+Each with one table for
+the sake of simplicity.
+
+7
+00:00:25.570 --> 00:00:30.760
+Notice that two sources, S1 and
+S3, have the same schema.
+
+8
+00:00:30.760 --> 00:00:34.380
+Now this is entirely possible because
+sources may be independent of each other.
+
+9
+00:00:35.750 --> 00:00:39.310
+Further, there is no guarantee that
+they would have the same exact content.
+
+10
+00:00:40.390 --> 00:00:44.400
+Maybe these two sources represent
+clinics at different locations.
+
+11
+00:00:46.260 --> 00:00:48.860
+So next, we look at the target schema.
+
+12
+00:00:50.020 --> 00:00:54.630
+For simplicity, let's consider that
+it's not an algorithmically creative
+
+13
+00:00:54.630 --> 00:00:59.090
+probabilistic mediator schema but just a
+manually designed schema with five tables.
+
+14
+00:01:00.670 --> 00:01:05.620
+But while we assume that
+the target schema is fixed
+
+15
+00:01:05.620 --> 00:01:08.710
+we want the possibility that
+we can add more sources.
+
+16
+00:01:08.710 --> 00:01:11.280
+That means more clinics
+as the system grows.
+
+17
+00:01:13.970 --> 00:01:16.210
+Now I'm beginning to
+add the schema mapping.
+
+18
+00:01:17.370 --> 00:01:21.430
+Now there are several techniques
+of specifying schema mappings.
+
+19
+00:01:21.430 --> 00:01:24.090
+One of them is called Local-as-View.
+
+20
+00:01:24.090 --> 00:01:29.830
+This means we write the relations in each
+source as a view over the target schema.
+
+21
+00:01:31.590 --> 00:01:35.398
+But this way of writing the query,
+as we can see here, may seem odd to you.
+
+22
+00:01:35.398 --> 00:01:39.280
+It's called syntax, but
+you don't need to know it.
+
+23
+00:01:39.280 --> 00:01:45.300
+Just as an example, the first few things
+the treats relation in S1 maps to,
+
+24
+00:01:45.300 --> 00:01:47.220
+so you see that arrow, that means maps to.
+
+25
+00:01:48.790 --> 00:01:53.030
+So it maps to the query select doctor,
+
+26
+00:01:53.030 --> 00:01:58.890
+chronic disease from treats patient,
+has chronic disease.
+
+27
+00:01:58.890 --> 00:02:04.550
+Where treatspatient.patient Is equal
+to has chronic disease dot patient.
+
+28
+00:02:07.050 --> 00:02:08.520
+We see the query here in the yellow box.
+
+29
+00:02:09.760 --> 00:02:14.200
+The only thing we should notice here
+is that the select class on the query
+
+30
+00:02:14.200 --> 00:02:15.880
+has two attributes doctor and
+
+31
+00:02:15.880 --> 00:02:21.040
+chronic disease which are exactly the same
+attributes of the treats relation in S1.
+
+32
+00:02:23.360 --> 00:02:25.820
+Now let's ask a query that
+gives the target schema.
+
+33
+00:02:26.820 --> 00:02:30.620
+Which doctors are responsible for
+discharging patients?
+
+34
+00:02:30.620 --> 00:02:32.777
+Which translates to
+the SQL query shown here.
+
+35
+00:02:34.491 --> 00:02:39.344
+Now, the problem is how to translate
+this query to a query that can
+
+36
+00:02:39.344 --> 00:02:41.120
+be sent to the sources.
+
+37
+00:02:42.160 --> 00:02:47.985
+Now ideally this should be simplest query
+with no extra operations as shown here.
+
+38
+00:02:47.985 --> 00:02:55.020
+S3 treats means treats
+relation in sources 3.
+
+39
+00:02:55.020 --> 00:02:57.500
+Now you can see the ideal answer.
+
+40
+00:02:58.600 --> 00:03:03.200
+To find such an optimal query
+reformulation, it turns out that this
+
+41
+00:03:03.200 --> 00:03:08.550
+process is very complex and becomes
+worse as a number of sources increases.
+
+42
+00:03:10.090 --> 00:03:12.840
+Thus query reformulation
+
+43
+00:03:12.840 --> 00:03:17.200
+becomes a significant scalability problem
+in a big data integration scenario.
+
+44
+00:03:21.000 --> 00:03:22.640
+Let's look at the second use case
+
+45
+00:03:23.860 --> 00:03:27.070
+public health is a significant
+component of our healthcare system.
+
+46
+00:03:28.150 --> 00:03:33.630
+Public health systems monitor detect and
+take action when epidemics strike.
+
+47
+00:03:33.630 --> 00:03:38.500
+Not so long ago we have witnessed public
+health concerns due to Anthrax virus,
+
+48
+00:03:38.500 --> 00:03:40.240
+the swine flu and the bird flu.
+
+49
+00:03:41.510 --> 00:03:46.180
+But these epidemics caused a group
+called WADDS to develop a system for
+
+50
+00:03:46.180 --> 00:03:47.070
+disease surveillance.
+
+51
+00:03:48.230 --> 00:03:52.670
+This system would connect all local
+hospitals in the Washington, DC area, and
+
+52
+00:03:52.670 --> 00:03:55.290
+is designed to exchange
+disease information.
+
+53
+00:03:55.290 --> 00:04:00.030
+For example, if a hospital lab has
+identified a new strain of a virus,
+
+54
+00:04:00.030 --> 00:04:02.630
+other hospitals and the Centers for
+Disease Control, CDC,
+
+55
+00:04:02.630 --> 00:04:05.260
+in the network,
+should be able to know about it.
+
+56
+00:04:07.300 --> 00:04:12.020
+It should be clear that this needs a data
+integration solution where the data
+
+57
+00:04:12.020 --> 00:04:17.490
+sources would be the labs, the data would
+be the lab tests medical records and
+
+58
+00:04:17.490 --> 00:04:21.170
+even genetic profiles of the virus and
+the subjects who might be infected.
+
+59
+00:04:22.180 --> 00:04:26.630
+The table here shows the different
+components with this architecture.
+
+60
+00:04:26.630 --> 00:04:29.590
+We will just digest the necessary
+parts for our requirement.
+
+61
+00:04:30.620 --> 00:04:35.488
+Just know that RIM which stands for
+Reference Information Model is global
+
+62
+00:04:35.488 --> 00:04:40.370
+schema that this industry has developed
+and expects to use as a standard.
+
+63
+00:04:43.820 --> 00:04:47.330
+Why we want to exchange and combine new
+information from different hospitals?
+
+64
+00:04:48.430 --> 00:04:50.990
+Every hospital is independent and
+
+65
+00:04:50.990 --> 00:04:54.190
+can implement their own information
+system any way they see fit.
+
+66
+00:04:55.450 --> 00:04:59.080
+Therefore even when there
+are standards like HL-7 that
+
+67
+00:04:59.080 --> 00:05:03.230
+specify what kind of data a held
+cache system should have an exchange.
+
+68
+00:05:03.230 --> 00:05:08.520
+There are considerable variations in
+the implementation of the standard itself.
+
+69
+00:05:08.520 --> 00:05:12.660
+For example the two wide boxes show
+a difference in representation
+
+70
+00:05:12.660 --> 00:05:17.620
+of the same kind of data, this should
+remind you of the data variety problem.
+
+71
+00:05:18.800 --> 00:05:23.810
+Let's say, we have a patient
+with ID 19590520 whose lab
+
+72
+00:05:25.280 --> 00:05:29.020
+reports containing her plasma protein
+measurements are required for
+
+73
+00:05:29.020 --> 00:05:30.440
+analyzing her health condition.
+
+74
+00:05:31.590 --> 00:05:35.550
+The problem is that the patient
+went to three different clinics and
+
+75
+00:05:35.550 --> 00:05:38.990
+four different labs which all
+implement the standards differently.
+
+76
+00:05:40.290 --> 00:05:41.540
+On top of it?
+
+77
+00:05:41.540 --> 00:05:45.420
+Each clinic uses its own
+electronic medical record system
+
+78
+00:05:45.420 --> 00:05:47.230
+which we have a very large amount of data.
+
+79
+00:05:48.510 --> 00:05:53.300
+So the data integration system's job is to
+transform the data from the source schema
+
+80
+00:05:53.300 --> 00:05:58.150
+to the schema of the receiving
+system in this case the rim system.
+
+81
+00:05:59.410 --> 00:06:02.730
+This is sometimes called
+the data exchange problem.
+
+82
+00:06:05.380 --> 00:06:09.140
+Informally a data exchange
+problem can be defined like this.
+
+83
+00:06:10.780 --> 00:06:14.300
+Suppose we have a given database
+whose relations are known.
+
+84
+00:06:15.750 --> 00:06:18.920
+Let us say we also know
+the target database's schema and
+
+85
+00:06:18.920 --> 00:06:20.700
+the constraints the schema will satisfy.
+
+86
+00:06:22.330 --> 00:06:26.780
+Further we know the desired schema
+mappings between the source and
+
+87
+00:06:26.780 --> 00:06:28.300
+this target schema.
+
+88
+00:06:28.300 --> 00:06:34.040
+What we do not know is how to populate
+the tuples in the target database.
+
+89
+00:06:34.040 --> 00:06:38.493
+From the tuples in the socialization in
+such a way that both schema mappings and
+
+90
+00:06:38.493 --> 00:06:41.540
+target constraints
+are simultaneously satisfied.
+
+91
+00:06:44.729 --> 00:06:48.854
+In many domains like healthcare,
+a significant amount of effort has been
+
+92
+00:06:48.854 --> 00:06:52.260
+spend by the industry in
+standardizing schemas and values.
+
+93
+00:06:53.440 --> 00:06:57.320
+For example LOINC is a standard for
+medical lab observations.
+
+94
+00:06:58.720 --> 00:07:01.320
+Here item like systolic blood pressure or
+
+95
+00:07:01.320 --> 00:07:05.580
+gene mutation are encoded in this
+specific way as given by this standard.
+
+96
+00:07:06.630 --> 00:07:11.060
+So, if we want to write that
+the systolic/diastolic pressure of
+
+97
+00:07:11.060 --> 00:07:17.190
+a individual is 132 by 90, we'll not write
+out the string systolic blood pressure,
+
+98
+00:07:17.190 --> 00:07:19.920
+but use the code for it.
+
+99
+00:07:19.920 --> 00:07:24.070
+The ability to use standard code
+is not unique to healthcare data.
+
+100
+00:07:24.070 --> 00:07:26.919
+The 50 states of the US all
+have two letter abbreviations.
+
+101
+00:07:28.210 --> 00:07:34.210
+Generalizing therefore, whenever we have
+data such as the domain is finite and have
+
+102
+00:07:34.210 --> 00:07:39.910
+a standard set of code available, we give
+a new opportunity of handling big deal.
+
+103
+00:07:41.610 --> 00:07:45.260
+Mainly, reducing the data
+size through compression.
+
+104
+00:07:47.110 --> 00:07:49.700
+The compression refers to a way of
+
+105
+00:07:49.700 --> 00:07:52.920
+creating an encoded
+representation of data.
+
+106
+00:07:52.920 --> 00:07:56.980
+So that this encoder form is smaller
+than the original representation.
+
+107
+00:07:58.970 --> 00:08:02.420
+A common encoding method is
+called dictionary encoding.
+
+108
+00:08:02.420 --> 00:08:05.980
+Consider a database with 10 million
+record of patient visits a lab.
+
+109
+00:08:07.250 --> 00:08:11.140
+Each record indicates a test and
+its results.
+
+110
+00:08:11.140 --> 00:08:14.140
+Now we show it this way like
+in a columnar structure
+
+111
+00:08:15.220 --> 00:08:20.040
+to make the point that the data is kept
+in a column stored relational database
+
+112
+00:08:20.040 --> 00:08:22.430
+rather than a row store
+relational database.
+
+113
+00:08:23.650 --> 00:08:26.380
+Now consider the column for test code.
+
+114
+00:08:26.380 --> 00:08:29.470
+Where the type of test is codified
+according to the standard.
+
+115
+00:08:31.470 --> 00:08:35.340
+We replace a string representation
+of the standard by a number.
+
+116
+00:08:37.750 --> 00:08:40.540
+The mapping between
+the original test code and
+
+117
+00:08:40.540 --> 00:08:43.870
+the encoded number are also
+stored separately.
+
+118
+00:08:43.870 --> 00:08:45.810
+Now suppose there
+are a total of 500 tests.
+
+119
+00:08:47.240 --> 00:08:52.780
+So this separate table called
+the dictionary here has 500 rows,
+
+120
+00:08:52.780 --> 00:08:57.500
+which is clearly much smaller
+than ten million right?
+
+121
+00:08:57.500 --> 00:09:02.300
+Now 500 distinct values can be
+represented by encoding them in 9 bits,
+
+122
+00:09:02.300 --> 00:09:04.114
+because 2 to the power of 9 is 512.
+
+123
+00:09:06.060 --> 00:09:09.750
+Other encoding techniques would be applied
+to attributes like date and patient ID.
+
+124
+00:09:10.920 --> 00:09:15.890
+That's full large data we cannot reduce
+the number of total actual rules.
+
+125
+00:09:15.890 --> 00:09:18.090
+So we have to store all ten million rules.
+
+126
+00:09:18.090 --> 00:09:23.893
+But we can reduce the amount of space
+required by storing data in a column
+
+127
+00:09:23.893 --> 00:09:28.925
+oriented data store and
+by using compression, indeed modern
+
+128
+00:09:28.925 --> 00:09:35.621
+systems use credit processing algorithms
+to operate directly on compress data.
+
+129
+00:09:39.025 --> 00:09:42.636
+Data compression is an important
+technology for big data.
+
+130
+00:09:45.555 --> 00:09:50.560
+And just like is a set of qualified
+terms for lab tests, clinical data
+
+131
+00:09:50.560 --> 00:09:55.500
+also uses SNOMED which stands for
+systematized nomenclature of medicine.
+
+132
+00:09:56.770 --> 00:09:59.780
+SNOMED is a little more
+than just a vocabulary.
+
+133
+00:10:00.900 --> 00:10:02.599
+It does have a vocabulary of course.
+
+134
+00:10:03.620 --> 00:10:08.656
+The vocabulary is the collection
+of medical terms in human and
+
+135
+00:10:08.656 --> 00:10:14.790
+medicine to provide codes, terms, synonyms
+and definitions that cover anatomy,
+
+136
+00:10:14.790 --> 00:10:18.980
+diseases, findings, procedures,
+micro organisms, substances etcetera.
+
+137
+00:10:19.990 --> 00:10:21.590
+But it also has relationships.
+
+138
+00:10:23.060 --> 00:10:27.277
+As you can see,
+a renal cyst is related to kidney because
+
+139
+00:10:27.277 --> 00:10:30.615
+kidney's the finding site of a renal cyst.
+
+140
+00:10:32.890 --> 00:10:37.080
+If we query against an ontology,
+it would look like a graph grid.
+
+141
+00:10:38.150 --> 00:10:38.920
+In this box,
+
+142
+00:10:38.920 --> 00:10:43.120
+we are asking to find all patient
+findings with a benign tumor morphology.
+
+143
+00:10:44.350 --> 00:10:49.100
+In terms of querying, we are looking for
+edges of a graph where one noticed
+
+144
+00:10:49.100 --> 00:10:54.470
+the concept that we need to find which is
+connected to a node called benign neoplasm
+
+145
+00:10:54.470 --> 00:10:59.050
+that is benign tumor through an edge
+called associated morphology
+
+146
+00:11:00.070 --> 00:11:04.700
+that applying this query against
+the data here produces all benign tumors
+
+147
+00:11:04.700 --> 00:11:08.970
+of specific organs as you can
+see by the orange rounded group.
+
+148
+00:11:11.170 --> 00:11:13.410
+But now that we have these terms,
+
+149
+00:11:13.410 --> 00:11:17.760
+we can use these terms to search
+outpatient records with these terms would
+
+150
+00:11:17.760 --> 00:11:22.910
+have been used so
+what's the essence of this used case.
+
+151
+00:11:24.030 --> 00:11:29.170
+This is can shows that an in division
+system in a public health domain and
+
+152
+00:11:29.170 --> 00:11:32.320
+in many other domains must
+be able to handle variety.
+
+153
+00:11:33.910 --> 00:11:40.520
+In this case there's a Global Schema
+called RiM shown here all queries and
+
+154
+00:11:40.520 --> 00:11:45.000
+analyses performed by a data analysts
+should be against this global schema.
+
+155
+00:11:46.230 --> 00:11:50.870
+However, the actual data which is
+generated by different medical facilities
+
+156
+00:11:50.870 --> 00:11:55.970
+would need to be transformed
+into data in this schema.
+
+157
+00:11:55.970 --> 00:12:00.220
+This would require not only
+format conversions, but
+
+158
+00:12:00.220 --> 00:12:05.630
+it would need to respect all constraints
+imposed by the source and by the target.
+
+159
+00:12:05.630 --> 00:12:10.520
+For example, a source may not distinguish
+between an emergency surgical procedure
+
+160
+00:12:10.520 --> 00:12:12.430
+and a regular surgical procedure.
+
+161
+00:12:12.430 --> 00:12:16.429
+But the target may want to
+put them in different tables.
+
+162
+00:12:18.850 --> 00:12:20.850
+We also saw that
+the integration system for
+
+163
+00:12:20.850 --> 00:12:24.920
+this used case would need to use
+quantified data but this gives
+
+164
+00:12:24.920 --> 00:12:28.970
+us the opportunity to use data compression
+to gauge story and query efficiency.
+
+165
+00:12:30.120 --> 00:12:35.352
+In terms of variety, we saw how
+relational data like patient records XML
+
+166
+00:12:35.352 --> 00:12:40.603
+data like HL7 events, and
+graph data like ontologies, are co-used.
+
+167
+00:12:42.866 --> 00:12:47.407
+To support this, the integration
+system must be able to do both model
+
+168
+00:12:47.407 --> 00:12:50.400
+transformation and query transformation.
+
+169
+00:12:51.560 --> 00:12:55.260
+Query transformation is the process of
+taking a query on the target schema.
+
+170
+00:12:56.490 --> 00:13:00.540
+Converting it to a query
+against a different data model.
+
+171
+00:13:00.540 --> 00:13:06.100
+For example, part of an SQL query against
+the RIM may need to go to snowmad and
+
+172
+00:13:06.100 --> 00:13:09.240
+hence when you to be converted to
+a graph query in the snowmad system.
+
+173
+00:13:10.590 --> 00:13:13.933
+Model transformation is
+a process of taking data
+
+174
+00:13:13.933 --> 00:13:17.274
+represented in one model
+in one source system and
+
+175
+00:13:17.274 --> 00:13:22.263
+converting it to an equivalent data
+in another model the target system.
+
+1
+00:00:00.820 --> 00:00:02.600
+Hello, my name is Victor Lou.
+
+2
+00:00:02.600 --> 00:00:07.090
+I am the Solutions Engineer of
+Global Philanthropy of Daameer.org.
+
+3
+00:00:07.090 --> 00:00:08.440
+Helping researchers, academia,
+
+4
+00:00:08.440 --> 00:00:11.750
+and non-profits find the insights
+that matter using data.
+
+5
+00:00:11.750 --> 00:00:15.280
+Today I am here to give you
+a production environment,
+
+6
+00:00:15.280 --> 00:00:17.410
+personalized music recommendation project.
+
+7
+00:00:17.410 --> 00:00:21.150
+That was done for PonoMusic and
+so what is Pono Music?
+
+8
+00:00:23.120 --> 00:00:26.355
+Pono Music is revolutionizing music
+listening by bringing back native,
+
+9
+00:00:26.355 --> 00:00:28.290
+high-resolution audio.
+
+10
+00:00:28.290 --> 00:00:31.550
+It's the way that artists intended and
+recorded their music.
+
+11
+00:00:31.550 --> 00:00:36.710
+Neil Young, the iconic artist and
+musician is also the founder and CEO.
+
+12
+00:00:36.710 --> 00:00:40.020
+Pono Music is the only complete
+high-resolution music ecosystem.
+
+13
+00:00:40.020 --> 00:00:43.950
+That includes the Pono player, the Pono
+Music store, the Pono Music community.
+
+14
+00:00:45.200 --> 00:00:48.030
+They have been super
+generous in allowing us to
+
+15
+00:00:48.030 --> 00:00:51.020
+take a look behind the scenes as how
+we built out the recommendations.
+
+16
+00:00:53.630 --> 00:00:56.540
+So, David Meer supports their mission
+by providing a music recommendation
+
+17
+00:00:56.540 --> 00:01:00.900
+engine that is both scalable and
+flexible as Pono grows their user base.
+
+18
+00:01:00.900 --> 00:01:05.220
+Let's begin by visiting Pono
+music's website as you can see,
+
+19
+00:01:05.220 --> 00:01:07.740
+they have a few shelves that focus on
+
+20
+00:01:07.740 --> 00:01:11.320
+various recommendations that are not
+tailored to each individual user.
+
+21
+00:01:11.320 --> 00:01:14.670
+If you login,
+then an additional shelf would appear
+
+22
+00:01:14.670 --> 00:01:17.690
+that would deliver the recommendations
+that are created in data gear.
+
+23
+00:01:17.690 --> 00:01:19.029
+So how does DataMirror accomplish this.
+
+24
+00:01:19.029 --> 00:01:24.279
+In a nutshell, DataMirror is a end to end,
+antalis platform which contains ingestion,
+
+25
+00:01:24.279 --> 00:01:29.543
+preparation analysis, visualization and
+operationalization all the same platform.
+
+26
+00:01:29.543 --> 00:01:32.300
+And having all the capabilities
+in one platform is superior to
+
+27
+00:01:32.300 --> 00:01:34.240
+traditional technology stack.
+
+28
+00:01:34.240 --> 00:01:39.300
+Integration between disparate technologies
+brings a lot of unnecessary challenges.
+
+29
+00:01:39.300 --> 00:01:41.880
+We take advantage of open
+source big data technologies.
+
+30
+00:01:41.880 --> 00:01:46.261
+Specifically, we run natively and
+Hadoop and Spark for our back end.
+
+31
+00:01:46.261 --> 00:01:49.600
+And we leverage D3JS on the front end for
+visualizations.
+
+32
+00:01:49.600 --> 00:01:51.821
+Our Excel-like interface makes it easy for
+
+33
+00:01:51.821 --> 00:01:55.960
+folks who don't know how to code to
+also get in with the data modeling.
+
+34
+00:01:55.960 --> 00:01:57.720
+It is very much self-service.
+
+35
+00:01:57.720 --> 00:02:00.001
+In the case of Pono Music's
+data mirror deployment,
+
+36
+00:02:00.001 --> 00:02:02.790
+we have deployed a Hadoop
+on Amazon on web services.
+
+37
+00:02:02.790 --> 00:02:04.410
+But we can also be deployed off premise if
+
+38
+00:02:04.410 --> 00:02:06.290
+needed it doesn't have
+to be in the clouds.
+
+39
+00:02:06.290 --> 00:02:09.820
+In fact, we could work with many many
+different distributions of Hadoop.
+
+40
+00:02:09.820 --> 00:02:12.320
+We can access dean rear through
+any modern web browser.
+
+41
+00:02:12.320 --> 00:02:16.300
+As you can see here we're using Google
+Chrome but it works on any browser, right?
+
+42
+00:02:16.300 --> 00:02:18.460
+So lets go ahead and take a look at
+the a; let's log into data grip,
+
+43
+00:02:18.460 --> 00:02:21.640
+so we're going to go ahead and
+log in here..
+
+44
+00:02:23.390 --> 00:02:28.250
+So what you're seeing here is the browser
+tab and we can see various artifacts
+
+45
+00:02:28.250 --> 00:02:32.364
+which include connections such
+as connections to the pull nose,
+
+46
+00:02:32.364 --> 00:02:36.434
+salesforce.com instance or
+a connection to AWS S3 instance.
+
+47
+00:02:36.434 --> 00:02:38.226
+Because DataMirror comes with so
+
+48
+00:02:38.226 --> 00:02:42.708
+many prebuilt connectors which include
+Connections to salesforce.com and S3.
+
+49
+00:02:42.708 --> 00:02:46.034
+We can easily grant access to
+those systems in order to pull or
+
+50
+00:02:46.034 --> 00:02:48.550
+push data in and out of the dev.
+
+51
+00:02:48.550 --> 00:02:51.760
+For example, let's take a quick look at
+the salesforce.com configuration here.
+
+52
+00:02:51.760 --> 00:02:59.290
+As you can see, we've already configured
+salesforce as the connector type.
+
+53
+00:02:59.290 --> 00:03:00.530
+When we hit next here,
+
+54
+00:03:00.530 --> 00:03:04.370
+we'll we that you can authorize
+a data manager to retrieve data.
+
+55
+00:03:04.370 --> 00:03:06.380
+We're not going to do it because
+this is a production environment, so
+
+56
+00:03:06.380 --> 00:03:09.300
+I don't want to disrupt the pools.
+
+57
+00:03:09.300 --> 00:03:13.210
+But if we were to click it, it'll give
+us a salesfloor.com blogging stream.
+
+58
+00:03:13.210 --> 00:03:17.830
+And so as soon as we login, the Datameer
+would have access via the O-Off token.
+
+59
+00:03:17.830 --> 00:03:20.130
+And so this is valid for a period of time.
+
+60
+00:03:20.130 --> 00:03:20.650
+I'm going to go ahead and
+
+61
+00:03:20.650 --> 00:03:23.910
+hit the cancel button as this
+is a production environment.
+
+62
+00:03:23.910 --> 00:03:28.290
+And so now we're ready to look
+at an import job artifact.
+
+63
+00:03:28.290 --> 00:03:31.888
+So this is the sales force import job and
+
+64
+00:03:31.888 --> 00:03:36.152
+as you can see we go in here and
+we configure it.
+
+65
+00:03:36.152 --> 00:03:41.830
+We can see that it's connected to
+the Pono Music SMDC connection.
+
+66
+00:03:44.753 --> 00:03:49.269
+I'm going to go ahead and
+hit next here.with salesforce.com,
+
+67
+00:03:49.269 --> 00:03:52.079
+we just have to simply define the SOQL,
+
+68
+00:03:52.079 --> 00:03:56.526
+which is basically a querying
+language that's based on SQL.
+
+69
+00:03:56.526 --> 00:03:59.860
+To locate data contained within
+the salesforce.com objects.
+
+70
+00:03:59.860 --> 00:04:04.997
+You can see the select statement here,
+you can also see the familiar
+
+71
+00:04:04.997 --> 00:04:10.059
+from statement, and you can also
+see the where statement as well.
+
+72
+00:04:10.059 --> 00:04:12.459
+So in order to protect
+the privacy of the users,
+
+73
+00:04:12.459 --> 00:04:16.830
+Datameer has the capability to obfuscate
+sort of columns that are sensitive.
+
+74
+00:04:16.830 --> 00:04:19.770
+And so in other words, we can scramble
+sensitive fields such as email or
+
+75
+00:04:19.770 --> 00:04:21.370
+physical addresses.
+
+76
+00:04:21.370 --> 00:04:25.228
+And at this point in time, I'm going to
+go ahead and cancel out, and I'm going to
+
+77
+00:04:25.228 --> 00:04:28.866
+show the next part of this demo in
+an obfuscated workbook environment.
+
+78
+00:04:28.866 --> 00:04:33.813
+The artifacts contained in the obfuscated
+folders are duplicates of the import job
+
+79
+00:04:33.813 --> 00:04:38.130
+of the workbook from their production
+counterparts as you can see here.
+
+80
+00:04:40.360 --> 00:04:44.510
+So as you can see in the import
+job settings we have configured
+
+81
+00:04:44.510 --> 00:04:51.320
+the same connections here but
+for the obfuscated columns here.
+
+82
+00:04:51.320 --> 00:04:54.970
+Now we're obfuscating the owner
+email as well as the street address.
+
+83
+00:04:54.970 --> 00:04:55.690
+Now we hit Next here.
+
+84
+00:04:59.259 --> 00:05:03.140
+And so you can see, various fields are
+being pulled here from Salesforce, right.
+
+85
+00:05:03.140 --> 00:05:05.130
+And in particular,
+I want to highlight the.
+
+86
+00:05:06.150 --> 00:05:09.780
+The owner email, that field, so as you
+can see these are the obfuscated fields.
+
+87
+00:05:09.780 --> 00:05:13.420
+Similarly, the actual street address,
+that's also masked as well.
+
+88
+00:05:13.420 --> 00:05:17.375
+I'm going to go ahead and hit Cancel.
+
+89
+00:05:17.375 --> 00:05:20.780
+I will go back to, rather we're going to
+go check out the workbook environment,
+
+90
+00:05:20.780 --> 00:05:23.300
+which is where we do the preparation and
+analysis.
+
+91
+00:05:28.465 --> 00:05:31.070
+To the obfuscated workbook environment.
+
+92
+00:05:31.070 --> 00:05:34.260
+As you can see we're starting
+with a raw source of data here.
+
+93
+00:05:34.260 --> 00:05:38.930
+This was the data that was
+contained in the data sheet.
+
+94
+00:05:38.930 --> 00:05:43.500
+Take note that there's a variety of icons
+that indicate different types of sheets.
+
+95
+00:05:43.500 --> 00:05:45.610
+So you could see here this
+is the raw data type.
+
+96
+00:05:45.610 --> 00:05:48.360
+This is a regular worksheet.
+
+97
+00:05:48.360 --> 00:05:51.400
+You have a union sheet and
+you have a joint sheet and
+
+98
+00:05:51.400 --> 00:05:54.440
+we'll go into a little bit
+more detail as we get to them.
+
+99
+00:05:54.440 --> 00:05:57.700
+So, as you can see,
+the interface is very much like Excel.
+
+100
+00:05:57.700 --> 00:06:02.830
+Looking at the second sheet pairs, and
+it's using a function called group by.
+
+101
+00:06:02.830 --> 00:06:07.380
+So the group by function is a type of
+aggregation function in Datameer speak.
+
+102
+00:06:07.380 --> 00:06:10.640
+As you can see, you can build
+the functions by pointing and clicking.
+
+103
+00:06:10.640 --> 00:06:14.040
+But you can also enter the formula
+to create nested functions or
+
+104
+00:06:14.040 --> 00:06:19.310
+Apply arithmetic
+operations just as a cell.
+
+105
+00:06:19.310 --> 00:06:21.770
+We take all the unique combinations
+of albums purchased for
+
+106
+00:06:21.770 --> 00:06:24.730
+each of the unique email
+using a group pair function.
+
+107
+00:06:25.890 --> 00:06:28.710
+Then we pull out each of the elements
+of the pairings using a list element
+
+108
+00:06:28.710 --> 00:06:30.310
+function, so let's see here.
+
+109
+00:06:31.360 --> 00:06:34.230
+If you were to build a function
+from scratch, you can see this.
+
+110
+00:06:34.230 --> 00:06:39.950
+So then you create a group by function,
+and then direct it at a column.
+
+111
+00:06:39.950 --> 00:06:41.120
+You basically pass it to argument.
+
+112
+00:06:43.890 --> 00:06:47.856
+To find out the occurrence
+of each pairing of albums,
+
+113
+00:06:47.856 --> 00:06:52.188
+we're going to go ahead and
+look at this LR sheet.
+
+114
+00:06:52.188 --> 00:06:55.477
+And so these are, we're using group
+by functions as well here, so
+
+115
+00:06:55.477 --> 00:06:58.372
+we're grouping by the first item one,
+and then item two.
+
+116
+00:06:58.372 --> 00:07:00.088
+And then, we're doing a group count,
+
+117
+00:07:00.088 --> 00:07:03.430
+which is counting the frequency
+of occurrences of those cells.
+
+118
+00:07:03.430 --> 00:07:06.350
+Similarly, we're going to
+do a similar thing but
+
+119
+00:07:06.350 --> 00:07:11.096
+with the item two first now, and then
+item one, and then doing a group count.
+
+120
+00:07:11.096 --> 00:07:13.780
+And the reason is,
+we don't care about the order.
+
+121
+00:07:13.780 --> 00:07:17.810
+And so, we repeat this on the next sheet
+reversing the order of the albums to make
+
+122
+00:07:17.810 --> 00:07:21.460
+sure that we capture all the combinations
+since the order doesn't matter to us.
+
+123
+00:07:24.260 --> 00:07:28.887
+And then we use our unit sheet function
+to append the second frequency
+
+124
+00:07:28.887 --> 00:07:34.140
+counting sheet to the first frequency
+counting sheet, as you can see here.
+
+125
+00:07:34.140 --> 00:07:36.962
+It's drag and drop, of course, and
+so we've connected them together.
+
+126
+00:07:36.962 --> 00:07:39.248
+You can do multi-sheets but
+in this case we only have two, right.
+
+127
+00:07:39.248 --> 00:07:42.260
+So it's, okay.
+
+128
+00:07:42.260 --> 00:07:47.770
+We ignore the co-occurrent set sheet as it
+is currently not used in the final output.
+
+129
+00:07:47.770 --> 00:07:51.010
+We were kind of experimenting
+with other recommendation models.
+
+130
+00:07:51.010 --> 00:07:52.660
+We're rebuilding those workbooks.
+
+131
+00:07:52.660 --> 00:07:56.780
+So one of the really cool features for
+we can execute the workbook, but
+
+132
+00:07:56.780 --> 00:07:59.162
+deselect the storage of
+intermediary sheets.
+
+133
+00:07:59.162 --> 00:08:02.958
+This means that we only need
+relevant functions are executed
+
+134
+00:08:02.958 --> 00:08:07.740
+at a to the data lineage of columns that
+are contained in the selector sheet.
+
+135
+00:08:07.740 --> 00:08:12.620
+Moving on, we have to create
+a separate sheet from the raw data,
+
+136
+00:08:12.620 --> 00:08:16.770
+that counts the number of times an album
+occurs across all of the purchases.
+
+137
+00:08:16.770 --> 00:08:20.780
+So you can see here, which students will
+buy an album and then we do a count.
+
+138
+00:08:24.890 --> 00:08:29.768
+We bring the code occurrences and
+the frequency together using the join
+
+139
+00:08:29.768 --> 00:08:33.599
+feature as you can see,
+it is a drag and drop interface.
+
+140
+00:08:33.599 --> 00:08:36.601
+You got the obfuscated workbook
+each of the worksheets here and
+
+141
+00:08:36.601 --> 00:08:39.100
+within each worksheets,
+you got various columns.
+
+142
+00:08:39.100 --> 00:08:45.484
+You can bring those, you can drag and
+drop them into here to do the joins.
+
+143
+00:08:45.484 --> 00:08:50.730
+You can do different types of joins,
+you got the inner, outer, etc.
+
+144
+00:08:50.730 --> 00:08:53.206
+You can also do multi column joins.
+
+145
+00:08:53.206 --> 00:08:54.491
+You can do multi sheet joins.
+
+146
+00:08:54.491 --> 00:08:59.168
+You can also select which columns
+you want to keep during the join.
+
+147
+00:08:59.168 --> 00:09:02.705
+Go ahead and cancel out here.
+
+148
+00:09:02.705 --> 00:09:06.580
+Datameer does not allow us to add
+additional functions to a joint sheet so
+
+149
+00:09:06.580 --> 00:09:09.269
+we duplicate it by right clicking and
+then hitting the duplicate button.
+
+150
+00:09:11.820 --> 00:09:14.780
+And then we create the next sheet,
+which contains a link to columns, so
+
+151
+00:09:14.780 --> 00:09:17.570
+it will be linked to the rating sheet.
+
+152
+00:09:17.570 --> 00:09:22.480
+This is, see the link columns back
+to the joint sheets and then.
+
+153
+00:09:23.760 --> 00:09:28.880
+We simply add a calculation
+where it's the number of times
+
+154
+00:09:28.880 --> 00:09:32.730
+the co-occurrence occurs divided by
+the number of times that the first album
+
+155
+00:09:32.730 --> 00:09:35.950
+in the column appears
+throughout the data set.
+
+156
+00:09:35.950 --> 00:09:40.284
+The idea is to give a high recommendation
+for albums that appear frequently
+
+157
+00:09:40.284 --> 00:09:44.503
+together While simultaneously
+penalizing albums that are too common.
+
+158
+00:09:44.503 --> 00:09:48.513
+And so at this point,
+I would like to write a few more joins
+
+159
+00:09:48.513 --> 00:09:51.773
+that bring together the album ID,
+the email,
+
+160
+00:09:51.773 --> 00:09:56.980
+recommended album ID based on the album
+ID and email, so take a look here.
+
+161
+00:09:59.310 --> 00:10:03.472
+So, as you can see here and then,
+
+162
+00:10:03.472 --> 00:10:08.460
+before we finish,
+we also do an anti joint by performing
+
+163
+00:10:08.460 --> 00:10:14.170
+the outer left joint with
+the almighty in the email.
+
+164
+00:10:14.170 --> 00:10:18.830
+And then filtering, so this is,
+by the way, this is a double column joint.
+
+165
+00:10:20.090 --> 00:10:24.060
+And then we do a filter, so
+then we filter out all the, for
+
+166
+00:10:24.060 --> 00:10:26.840
+the obfuscated owner
+fields that are empty.
+
+167
+00:10:26.840 --> 00:10:30.192
+We apply a filter to it.
+
+168
+00:10:30.192 --> 00:10:35.996
+So finally, we use a few group I
+functions to do some deep duplication,
+
+169
+00:10:35.996 --> 00:10:38.915
+so we use group by functions again.
+
+170
+00:10:38.915 --> 00:10:42.637
+And then, so we make sure that the album
+functions are unique for each user and
+
+171
+00:10:42.637 --> 00:10:44.250
+then we use a group max function.
+
+172
+00:10:45.780 --> 00:10:49.292
+In order to preserve the highest
+rating for each of the unique
+
+173
+00:10:50.950 --> 00:10:55.310
+recommendations the final desired
+output is on the recommenders sheet.
+
+174
+00:10:55.310 --> 00:11:01.710
+It leverages the group top end function,
+so you can see here group top numbers.
+
+175
+00:11:01.710 --> 00:11:05.349
+So we only want to look at the to
+20 recommendations for each user.
+
+176
+00:11:05.349 --> 00:11:09.759
+And in addition,
+we also create a email row number field,
+
+177
+00:11:09.759 --> 00:11:13.720
+which is a key that needed for
+salesforce.com, and
+
+178
+00:11:13.720 --> 00:11:18.142
+it is generated by a simple
+concatenation function here.
+
+179
+00:11:18.142 --> 00:11:22.642
+Something that note that [SOUND] is
+big on data governance, data lineage.
+
+180
+00:11:22.642 --> 00:11:26.632
+As you can see, we can keep track of
+how all the raw data flows through
+
+181
+00:11:26.632 --> 00:11:29.650
+from the raw data set all
+the way to the end product.
+
+182
+00:11:31.950 --> 00:11:36.651
+So each workbook functions can be
+also exported in JSON format to keep
+
+183
+00:11:36.651 --> 00:11:38.605
+track of revision history.
+
+184
+00:11:38.605 --> 00:11:41.470
+We're not ready to operationalize
+things and so how do we do it?
+
+185
+00:11:41.470 --> 00:11:45.700
+Get our workbook configurations.
+
+186
+00:11:45.700 --> 00:11:46.860
+Go ahead and exit out of the workbook.
+
+187
+00:11:49.420 --> 00:11:50.710
+Let's go back to
+the production environment.
+
+188
+00:11:56.340 --> 00:11:57.128
+As you can see,
+
+189
+00:11:57.128 --> 00:12:01.670
+the workbook recalculation retriggers
+when the import job is completed.
+
+190
+00:12:01.670 --> 00:12:03.820
+We also only retain the latest results, so
+
+191
+00:12:03.820 --> 00:12:09.440
+we select purge historical results,
+as you can see here.
+
+192
+00:12:09.440 --> 00:12:14.970
+As I mentioned earlier, a data mirror
+makes it easy to operationalize a workbook
+
+193
+00:12:14.970 --> 00:12:17.630
+because we only select
+the final output sheets.
+
+194
+00:12:17.630 --> 00:12:21.000
+And, so you see everything's unchecked
+except for the recommended sheet.
+
+195
+00:12:22.730 --> 00:12:26.420
+And Datameer basically will automatically
+determine what is a critical path
+
+196
+00:12:26.420 --> 00:12:28.990
+of the intermediary sheets to
+produce the desired output sheet.
+
+197
+00:12:30.430 --> 00:12:33.031
+Once the recommendation
+workbook is calculated,
+
+198
+00:12:33.031 --> 00:12:35.029
+then this triggers the export job run.
+
+199
+00:12:35.029 --> 00:12:38.032
+I'm going to go ahead and
+move to the export job artifact.
+
+200
+00:12:38.032 --> 00:12:40.194
+Exit out of this.
+
+201
+00:12:40.194 --> 00:12:42.361
+Go ahead and save, or not save.
+
+202
+00:12:42.361 --> 00:12:47.223
+We'll see the export job,
+let's go ahead and configure that.
+
+203
+00:12:52.087 --> 00:12:55.127
+Hit Next, Share.
+
+204
+00:12:55.127 --> 00:13:00.240
+CSV outputs, so.
+
+205
+00:13:02.817 --> 00:13:04.557
+This triggers the export job to run,
+
+206
+00:13:04.557 --> 00:13:08.600
+which is how we basically push
+the results of the recommendations to S3.
+
+207
+00:13:08.600 --> 00:13:14.310
+We elected to use S3 because we
+are already hosting at services and
+
+208
+00:13:14.310 --> 00:13:16.630
+S3 is an affordable storage solution.
+
+209
+00:13:16.630 --> 00:13:19.695
+We cannot push directly to
+salesforce.com at the present because
+
+210
+00:13:19.695 --> 00:13:22.920
+It's a only connection.
+
+211
+00:13:22.920 --> 00:13:26.726
+Therefore, we need to push
+data to the storage area,
+
+212
+00:13:26.726 --> 00:13:30.123
+which can be scheduled for using Apex.
+
+213
+00:13:30.123 --> 00:13:33.796
+A general challenge for
+is the role limitation on each pool.
+
+214
+00:13:33.796 --> 00:13:38.386
+Fortunately, DataMirror comes
+with the option to push
+
+215
+00:13:38.386 --> 00:13:41.873
+files that are broken
+into one megabyte chunks.
+
+216
+00:13:41.873 --> 00:13:46.796
+So as you can see here in
+advanced settings 1 megabyte, and
+
+217
+00:13:46.796 --> 00:13:51.140
+then we set a type of
+consecutive numbering scheme.
+
+218
+00:13:51.140 --> 00:13:53.852
+And so it's dynamic naming conventions
+using time stamps and numbering for
+
+219
+00:13:53.852 --> 00:13:55.530
+each of the chunks.
+
+220
+00:13:55.530 --> 00:13:58.830
+So that sums up the current
+co-curds/d deployment.
+
+221
+00:13:58.830 --> 00:14:03.018
+As you've seen, we have easily
+integrated data from Salesforce.com,
+
+222
+00:14:03.018 --> 00:14:07.272
+created a recommendation model, and
+set up a push to S3 automatically for
+
+223
+00:14:07.272 --> 00:14:09.856
+easy consumption back to Salesforce.com.
+
+224
+00:14:09.856 --> 00:14:13.469
+Finally, we operationalized this by
+triggering each of the steps sequentially
+
+225
+00:14:13.469 --> 00:14:16.297
+all in sitting on top of
+the powerful Hadoop platform.
+
+226
+00:14:16.297 --> 00:14:19.070
+What's next?
+
+227
+00:14:19.070 --> 00:14:23.590
+Well, Pono Music is working on
+implementing Google Analytics tracking for
+
+228
+00:14:23.590 --> 00:14:26.450
+each user at the Apple pages.
+
+229
+00:14:26.450 --> 00:14:29.450
+So let's go back to
+the Apple Music Store here.
+
+230
+00:14:29.450 --> 00:14:32.620
+Just for an example, let's take a look
+at the Train Led Zeppelin Two Album.
+
+231
+00:14:33.670 --> 00:14:36.650
+As you can see all of those album
+IDs that we were looking at earlier,
+
+232
+00:14:36.650 --> 00:14:38.390
+these are actually embedded in the URL.
+
+233
+00:14:40.300 --> 00:14:44.517
+This means that in the near future, we
+can actually adapt recommendations based
+
+234
+00:14:44.517 --> 00:14:49.053
+on the buying behavior to recommendations
+based on both buying and browser behavior.
+
+235
+00:14:49.053 --> 00:14:53.313
+We can look at recommendations based on
+genre, perhaps we can try to look at most
+
+236
+00:14:53.313 --> 00:14:57.526
+recent purchases or browsing behavior in
+the last three to six to nine months.
+
+237
+00:14:57.526 --> 00:15:01.541
+Or we could use album metadata such as
+album release date to give additional
+
+238
+00:15:01.541 --> 00:15:03.270
+recommendations.
+
+239
+00:15:03.270 --> 00:15:07.698
+Also, it is quite simple to just
+duplicate the recommendations workbook in
+
+240
+00:15:07.698 --> 00:15:10.409
+[INAUDIBLE] to try any
+number of these options.
+
+241
+00:15:10.409 --> 00:15:13.172
+And so,
+that means we can do a lot of AB testing,
+
+242
+00:15:13.172 --> 00:15:18.600
+as we track how users react to each of
+the modified recommendation algorithms.
+
+243
+00:15:18.600 --> 00:15:21.170
+The possibilities are literally endless.
+
+244
+00:15:21.170 --> 00:15:24.051
+So anyhow, thanks again for
+checking out how Data Mirror
+
+245
+00:15:24.051 --> 00:15:27.305
+builds a simple code current
+recommendation engine for music.
+
+246
+00:15:27.305 --> 00:15:29.636
+Please feel free to direction questions or
+
+247
+00:15:29.636 --> 00:15:32.492
+comments to me at
+victor.liu@datamirror.com.
+
+248
+00:15:32.492 --> 00:15:34.220
+Thanks again.
+
+1
+00:00:01.380 --> 00:00:09.185
+Amarnath just finished overviewing
+querying and integrational big data.
+
+2
+00:00:09.185 --> 00:00:13.160
+Although, fundamental understanding
+of these concepts are important.
+
+3
+00:00:14.300 --> 00:00:17.520
+Some of these tasks can be accomplished
+
+4
+00:00:17.520 --> 00:00:21.650
+using graphical user interface
+based tools or software products.
+
+5
+00:00:22.800 --> 00:00:27.870
+In this short module,
+we introduce you to two of those tools.
+
+6
+00:00:27.870 --> 00:00:29.810
+Splunk and Datameer.
+
+7
+00:00:31.860 --> 00:00:37.720
+We have selected a few videos from
+the site of our sponsors Splunk,
+
+8
+00:00:37.720 --> 00:00:41.900
+to give you an overview of using such
+tools for different applications.
+
+9
+00:00:42.930 --> 00:00:45.940
+You will also have a short
+hands-on activity on Splunk.
+
+10
+00:00:47.810 --> 00:00:52.210
+In addition,
+we provide you a comprehensive video on
+
+11
+00:00:52.210 --> 00:00:56.110
+using Datamere in
+the digital music industry.
+
+12
+00:00:56.110 --> 00:01:01.150
+Keep in mind, Splunk and
+Datamere are just two of the many
+
+13
+00:01:01.150 --> 00:01:06.613
+tools in this category, but
+they represent a huge industry.

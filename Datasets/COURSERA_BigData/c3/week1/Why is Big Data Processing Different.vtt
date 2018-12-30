@@ -1,0 +1,491 @@
+WEBVTT
+
+1
+00:00:02.627 --> 00:00:07.359
+In this video, we will talk about
+the challenges of ingesting and
+
+2
+00:00:07.359 --> 00:00:12.178
+processing big data and
+remind ourselves why need any paradigm and
+
+3
+00:00:12.178 --> 00:00:14.690
+programming models for big data.
+
+4
+00:00:15.900 --> 00:00:20.710
+After this video, you will be able to
+summarize the requirements of programming
+
+5
+00:00:20.710 --> 00:00:23.650
+models for big data and
+why you should care about them.
+
+6
+00:00:24.730 --> 00:00:27.800
+You will also be able to explain
+how the challenges of big
+
+7
+00:00:27.800 --> 00:00:32.750
+data related to its variety, volume and
+velocity affects its processing.
+
+8
+00:00:36.090 --> 00:00:41.880
+Before we start,
+let's imagine an online gaming newscase,
+
+9
+00:00:41.880 --> 00:00:44.870
+just like the one we have for
+Catch the Pink Flamingo.
+
+10
+00:00:47.140 --> 00:00:52.123
+You just introduced the game,
+and users started signing up.
+
+11
+00:00:52.123 --> 00:00:55.101
+You start with a traditional
+relational database,
+
+12
+00:00:55.101 --> 00:00:57.950
+keeping track of user sessions and
+other events.
+
+13
+00:01:00.130 --> 00:01:05.030
+Your game server receives
+an event notification every time
+
+14
+00:01:05.030 --> 00:01:08.710
+a user opens his session and
+makes a point in the game.
+
+15
+00:01:09.990 --> 00:01:13.690
+Initially, everything is great,
+your game is working and
+
+16
+00:01:13.690 --> 00:01:17.230
+the database is able to handle the event
+streams coming into the server.
+
+17
+00:01:18.490 --> 00:01:23.960
+However, suddenly your game becomes
+highly popular a good problem to have.
+
+18
+00:01:25.890 --> 00:01:29.670
+The database management system in
+your game server won't be able to
+
+19
+00:01:29.670 --> 00:01:31.660
+handle the load anymore.
+
+20
+00:01:31.660 --> 00:01:35.630
+You start getting errors that the events
+can't be inserted into the database
+
+21
+00:01:35.630 --> 00:01:37.240
+at the speed they are coming in.
+
+22
+00:01:38.650 --> 00:01:45.240
+You decide that you will have a buffer or
+a queue to process the advancing chunks.
+
+23
+00:01:45.240 --> 00:01:50.600
+Maybe also at the same time processing
+them to be organized in windows of time or
+
+24
+00:01:50.600 --> 00:01:51.260
+game sessions.
+
+25
+00:01:53.390 --> 00:01:58.916
+However, in time as the demand goes up,
+you will need more processing nodes and
+
+26
+00:01:58.916 --> 00:02:02.638
+even more database servers
+that can handle the load.
+
+27
+00:02:02.638 --> 00:02:08.042
+This is, a typical scenario that
+most web sites face when confronted
+
+28
+00:02:08.042 --> 00:02:13.373
+with big data issues related to
+volume and velocity of information.
+
+29
+00:02:13.373 --> 00:02:15.894
+As this scenario demonstrates,
+
+30
+00:02:15.894 --> 00:02:20.580
+solving the problem in one step
+might be possible initially.
+
+31
+00:02:20.580 --> 00:02:25.382
+But the more reactive fixes
+the game developers add, the system
+
+32
+00:02:25.382 --> 00:02:29.630
+becomes less robust and
+more complicated to evolve.
+
+33
+00:02:31.880 --> 00:02:35.210
+While the developers initially
+started with an application and
+
+34
+00:02:35.210 --> 00:02:36.360
+the database to manage.
+
+35
+00:02:37.400 --> 00:02:41.614
+Now they have to manage a number
+of issues related to this
+
+36
+00:02:41.614 --> 00:02:46.920
+infrastructure management just to
+keep up with the load on the system.
+
+37
+00:02:46.920 --> 00:02:52.282
+Similarly, the database servers
+can be effected and corrupted.
+
+38
+00:02:52.282 --> 00:02:57.150
+The replication and fault tolerance of
+them need to be handled separately.
+
+39
+00:02:58.240 --> 00:03:01.745
+Let's start by going through these issues.
+
+40
+00:03:01.745 --> 00:03:05.300
+Let's say,
+one of the processing nodes went down.
+
+41
+00:03:06.470 --> 00:03:11.970
+The system needs to manage and
+restart the processing and
+
+42
+00:03:11.970 --> 00:03:14.920
+there will be potentially some
+data loss in the meantime.
+
+43
+00:03:16.400 --> 00:03:19.560
+The system would need to
+check every processing node
+
+44
+00:03:19.560 --> 00:03:21.020
+before it can discard data.
+
+45
+00:03:22.040 --> 00:03:28.373
+Each note and each database has
+to be replicated separately.
+
+46
+00:03:28.373 --> 00:03:35.255
+Batch computations that need data from
+multiple data servers need to access and
+
+47
+00:03:35.255 --> 00:03:42.453
+maintain use of the data separately which
+might end up being quite slow and costly.
+
+48
+00:03:42.453 --> 00:03:46.705
+Big data processing techniques
+we will address in this course,
+
+49
+00:03:46.705 --> 00:03:51.430
+will help you to reduce the management
+of the mentioned complexities,
+
+50
+00:03:51.430 --> 00:03:55.226
+including failing servers and
+breaking compute nodes.
+
+51
+00:03:55.226 --> 00:04:00.840
+While helping with the scalability of the
+management and processing infrastructure.
+
+52
+00:04:02.610 --> 00:04:07.170
+We will talk about using big data systems
+like Spark to achieve data parallel
+
+53
+00:04:07.170 --> 00:04:12.130
+processing scalability for
+data applications on commodity clusters.
+
+54
+00:04:13.450 --> 00:04:18.080
+We will use to Spark Runtime Libraries and
+Programming Models to
+
+55
+00:04:18.080 --> 00:04:22.230
+demonstrate how big data systems can
+be used for application management.
+
+56
+00:04:23.630 --> 00:04:28.260
+To summarize, what our imaginary game
+application needs from big data system.
+
+57
+00:04:29.830 --> 00:04:35.021
+First of all, there needs to be a way
+to use common big data operations
+
+58
+00:04:35.021 --> 00:04:39.778
+to manage and split large volumes
+of events data streaming in.
+
+59
+00:04:39.778 --> 00:04:43.740
+This means the partitioning and
+placement of data in and
+
+60
+00:04:43.740 --> 00:04:49.400
+out of computer memory along with a model
+to synchronize the datasets later on.
+
+61
+00:04:50.960 --> 00:04:54.410
+The access to data should
+be achieved in a fast way.
+
+62
+00:04:56.060 --> 00:04:58.710
+The game developers need
+to be able to deploy
+
+63
+00:04:58.710 --> 00:05:03.630
+many event processing jobs to
+distributed processing nodes at once.
+
+64
+00:05:03.630 --> 00:05:07.350
+And these are potentially the data
+nodes we move the computations to.
+
+65
+00:05:08.850 --> 00:05:13.430
+It should also enable
+reliability of the computing and
+
+66
+00:05:13.430 --> 00:05:16.190
+enable fault tolerance from failures.
+
+67
+00:05:16.190 --> 00:05:19.998
+This means enabling
+programmable replications and
+
+68
+00:05:19.998 --> 00:05:22.685
+recovery of event data when needed.
+
+69
+00:05:22.685 --> 00:05:24.119
+It should be easily
+
+70
+00:05:24.119 --> 00:05:29.238
+scalable to a distributed set of
+nodes where the data gets produced.
+
+71
+00:05:29.238 --> 00:05:32.639
+It should also enable scaling out.
+
+72
+00:05:32.639 --> 00:05:38.963
+Scaling out is simply adding new
+resources like distributed computers to
+
+73
+00:05:38.963 --> 00:05:44.681
+process more or faster data at
+scale without losing performance.
+
+74
+00:05:44.681 --> 00:05:47.360
+There are many data
+types in an online game.
+
+75
+00:05:48.360 --> 00:05:51.440
+Although, we talked about
+time click events and
+
+76
+00:05:51.440 --> 00:05:56.390
+scores, it would be easy to imagine
+there are graphs of players,
+
+77
+00:05:56.390 --> 00:05:59.790
+text-based chats, and
+images that need to be processed.
+
+78
+00:06:01.390 --> 00:06:04.700
+Our big data system should
+enable processing of such
+
+79
+00:06:04.700 --> 00:06:09.500
+a mixed variety of data and
+potentially optimize handling of
+
+80
+00:06:09.500 --> 00:06:12.870
+each type separately as well
+as together when needed.
+
+81
+00:06:15.180 --> 00:06:19.750
+In addition, our system should
+have been able both streaming and
+
+82
+00:06:19.750 --> 00:06:25.140
+batch processing, enabling all
+the processing to be debuggable and
+
+83
+00:06:25.140 --> 00:06:27.950
+extensible with minimal effort.
+
+84
+00:06:27.950 --> 00:06:32.110
+That means being able to handle
+operations at small chunks of data
+
+85
+00:06:32.110 --> 00:06:36.450
+streams with minimal delay,
+that is what we call low latency.
+
+86
+00:06:37.810 --> 00:06:44.050
+While at the same time handle processing
+of potentially all available data
+
+87
+00:06:44.050 --> 00:06:49.370
+in batch form and
+all through the same system architecture.
+
+88
+00:06:51.160 --> 00:06:56.330
+Latency is a word that we use and
+hear a lot in big data processing,
+
+89
+00:06:57.370 --> 00:07:02.340
+here we refer to how fast the data
+is being processed, or simply
+
+90
+00:07:02.340 --> 00:07:09.400
+the difference between production or event
+time and processing time of a data entry.
+
+91
+00:07:09.400 --> 00:07:13.560
+In other words, latency is quantification
+
+92
+00:07:13.560 --> 00:07:17.330
+of the delay in the processing of
+the streaming data in the system.
+
+93
+00:07:19.400 --> 00:07:22.700
+While some big data
+systems are good at it.
+
+94
+00:07:22.700 --> 00:07:27.220
+Hadoop for instance is not a great choice
+for operations that require low latency.
+
+95
+00:07:29.540 --> 00:07:32.962
+Let's finish by remembering
+the real reasons for
+
+96
+00:07:32.962 --> 00:07:36.310
+all these requirements
+of big data processing.
+
+97
+00:07:36.310 --> 00:07:41.559
+Making a different from processing
+in a traditional data architecture.
+
+98
+00:07:41.559 --> 00:07:47.148
+Big data has varying volume and
+velocity requiring the dynamic and
+
+99
+00:07:47.148 --> 00:07:50.575
+scalable batch and stream processing.
+
+100
+00:07:50.575 --> 00:07:55.048
+Big data has a variety requiring
+management of data in many
+
+101
+00:07:55.048 --> 00:07:59.626
+different data systems and
+integration of it all at scale.

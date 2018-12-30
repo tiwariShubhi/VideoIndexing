@@ -1,0 +1,607 @@
+WEBVTT
+
+1
+00:00:01.140 --> 00:00:05.070
+Now that we went through an overview
+of the Spark ecosystem and
+
+2
+00:00:05.070 --> 00:00:09.640
+the components of the Spark stack, it is
+time for us to start learning more about
+
+3
+00:00:09.640 --> 00:00:13.960
+its architecture and run our first
+Spark program in the cloud VM.
+
+4
+00:00:15.580 --> 00:00:19.710
+After this video you will be
+able to describe how Spark
+
+5
+00:00:19.710 --> 00:00:24.690
+does in-memory processing using the
+Resilient Distributed Dataset abstraction,
+
+6
+00:00:25.890 --> 00:00:29.740
+explain the inner workings of
+the Spark architecture, and
+
+7
+00:00:29.740 --> 00:00:34.090
+summarize how Spark manages and
+executes code on Clusters.
+
+8
+00:00:35.510 --> 00:00:39.531
+I mentioned a few times that
+Spark is efficient because it
+
+9
+00:00:39.531 --> 00:00:43.739
+uses an abstraction called RDDs for
+in memory processing.
+
+10
+00:00:45.704 --> 00:00:48.970
+What this means might not be
+clear to some of you yet.
+
+11
+00:00:50.170 --> 00:00:52.660
+Let's remember the alternative.
+
+12
+00:00:52.660 --> 00:00:57.153
+In Hadoop MapReduce,
+each step, also pipeline,
+
+13
+00:00:57.153 --> 00:01:02.272
+reads from disk to memory,
+performs the computations and
+
+14
+00:01:02.272 --> 00:01:06.770
+writes back its output from
+the memory to the disk.
+
+15
+00:01:08.290 --> 00:01:13.520
+However, writing data to disk
+is a costly operation and
+
+16
+00:01:13.520 --> 00:01:17.220
+this cost becomes even more
+with large volumes of data.
+
+17
+00:01:18.650 --> 00:01:20.010
+Here is an interesting fact.
+
+18
+00:01:21.320 --> 00:01:25.664
+Memory operations can
+be up to 100,000 times
+
+19
+00:01:25.664 --> 00:01:28.250
+faster than disk operations in some cases.
+
+20
+00:01:29.510 --> 00:01:33.430
+Spark instead takes advantage of this and
+allows for
+
+21
+00:01:33.430 --> 00:01:37.810
+immediate results of transformations
+in different stages of the pipeline and
+
+22
+00:01:37.810 --> 00:01:40.650
+memory, like MAP and REDUCE here.
+
+23
+00:01:41.980 --> 00:01:45.540
+Here, we see that the outputs
+of MAP operations
+
+24
+00:01:45.540 --> 00:01:49.890
+are shared with reduce operations
+without being written to the disk.
+
+25
+00:01:50.980 --> 00:01:55.900
+The containers where the data
+gets stored in memory
+
+26
+00:01:55.900 --> 00:02:00.370
+are called resilient distributed
+datasets or RDDs for short.
+
+27
+00:02:02.210 --> 00:02:06.730
+RDDs are how Spark distributes data and
+computations across
+
+28
+00:02:06.730 --> 00:02:12.180
+the nodes of a commodity cluster,
+preferably with large memory.
+
+29
+00:02:12.180 --> 00:02:14.380
+Thanks to this abstraction,
+
+30
+00:02:14.380 --> 00:02:18.790
+Spark has proven to be 100 times
+faster for some applications.
+
+31
+00:02:20.360 --> 00:02:23.960
+Let's define all the words
+in this interesting name
+
+32
+00:02:23.960 --> 00:02:26.510
+beginning with the last one, datasets.
+
+33
+00:02:28.196 --> 00:02:36.790
+Datasets that RDD distributes comes
+from a batch data storage like HDFS,
+
+34
+00:02:36.790 --> 00:02:42.120
+no SQL databases, text files or streaming
+data ingestion systems like Cafco.
+
+35
+00:02:43.330 --> 00:02:47.760
+It can even conveniently read and
+distribute the data from your local disc
+
+36
+00:02:47.760 --> 00:02:52.600
+like text files into Spark, or
+even a hierarchy of folders.
+
+37
+00:02:54.750 --> 00:03:01.200
+When Spark reads data from these sources,
+it generates RDDs for them.
+
+38
+00:03:01.200 --> 00:03:07.930
+The Spark operations can transform RDDs
+into other RDDs like any other data.
+
+39
+00:03:07.930 --> 00:03:13.650
+Here it's important to mention
+that RDDs are immutable.
+
+40
+00:03:13.650 --> 00:03:17.610
+This means that you cannot
+change them partially.
+
+41
+00:03:17.610 --> 00:03:22.970
+However, you can create new RDDs by
+a series of one or many transformations.
+
+42
+00:03:24.570 --> 00:03:28.200
+Next, let's look at what distributed
+means in the RDD context.
+
+43
+00:03:29.480 --> 00:03:34.680
+As I mentioned before, RDDs distribute
+partitioned data collections and
+
+44
+00:03:34.680 --> 00:03:40.740
+computations on clusters even
+across a number of machines.
+
+45
+00:03:41.770 --> 00:03:44.860
+For example, running on the Amazon Cloud.
+
+46
+00:03:46.160 --> 00:03:50.880
+The complexity of this operation is
+hidden by this very simple interface.
+
+47
+00:03:52.140 --> 00:03:57.230
+Computations are a diverse set of
+transformations of RDDs like map,
+
+48
+00:03:57.230 --> 00:03:59.230
+filter and join.
+
+49
+00:03:59.230 --> 00:04:05.940
+And also actions on the RDDs like counting
+and saving them persistently on disk.
+
+50
+00:04:05.940 --> 00:04:10.560
+The partitioning of data can be changed
+dynamically to optimize Spark's
+
+51
+00:04:10.560 --> 00:04:11.170
+performance.
+
+52
+00:04:12.620 --> 00:04:17.420
+The last element is resilient, and
+it's very important because in a large
+
+53
+00:04:17.420 --> 00:04:21.640
+scale computing environment it is
+pretty common to have node failures.
+
+54
+00:04:22.850 --> 00:04:25.710
+It's very important to be
+able to recover from these
+
+55
+00:04:25.710 --> 00:04:28.480
+situations without losing
+any work already done.
+
+56
+00:04:29.570 --> 00:04:34.360
+For full tolerance in such situations,
+Spark tracks the history of each
+
+57
+00:04:34.360 --> 00:04:39.220
+partition, keeping a lineage
+over RDDs over time,
+
+58
+00:04:39.220 --> 00:04:44.170
+so every point in your calculations,
+Spark knows which are the partitions
+
+59
+00:04:44.170 --> 00:04:47.560
+needed to recreate the partition
+in case it gets lost.
+
+60
+00:04:48.710 --> 00:04:50.480
+And if that happens,
+
+61
+00:04:50.480 --> 00:04:55.730
+then Spark automatically figures out
+where it can start the recompute from and
+
+62
+00:04:55.730 --> 00:04:59.890
+optimizes the amount of processing
+needed to recover from the failure.
+
+63
+00:05:01.410 --> 00:05:06.087
+Before we create our first Spark program
+using RDDs in Pi Spark in the cloud
+
+64
+00:05:06.087 --> 00:05:09.343
+layer VM,
+let's review Spark's architecture.
+
+65
+00:05:12.239 --> 00:05:16.772
+From a bird's eye view,
+Spark has two main components,
+
+66
+00:05:16.772 --> 00:05:19.610
+a driver program and worker nodes.
+
+67
+00:05:21.900 --> 00:05:25.300
+The driver program is where
+your application starts.
+
+68
+00:05:26.900 --> 00:05:30.760
+It distributes RDDs on your
+computational cluster and
+
+69
+00:05:30.760 --> 00:05:35.435
+makes sure the transformations and
+actions on these RDDs are performed.
+
+70
+00:05:37.530 --> 00:05:42.250
+Driver programs create
+a connection to a Spark cluster or
+
+71
+00:05:42.250 --> 00:05:45.950
+your local Spark through
+a Spark context object.
+
+72
+00:05:47.010 --> 00:05:50.770
+The default Spark context
+in the Spark shell is
+
+73
+00:05:50.770 --> 00:05:54.680
+an object called SC for Spark context.
+
+74
+00:05:55.980 --> 00:06:01.260
+For example, in the upcoming reading for
+creating word counts in Spark,
+
+75
+00:06:01.260 --> 00:06:05.252
+we will use SC as the context to
+
+76
+00:06:05.252 --> 00:06:10.210
+generate RDDs for a text file
+using the line of code shown here.
+
+77
+00:06:11.650 --> 00:06:17.340
+The driver program manages a potentially
+large number of nodes called worker nodes.
+
+78
+00:06:18.780 --> 00:06:23.740
+On a local computer, we can assume
+that there's only one worker node and
+
+79
+00:06:23.740 --> 00:06:25.590
+it is where the Spark operations execute.
+
+80
+00:06:27.100 --> 00:06:32.230
+A worker node in Spark keeps
+a running Java virtual machine,
+
+81
+00:06:32.230 --> 00:06:36.000
+called JVM commonly, called the executor.
+
+82
+00:06:38.080 --> 00:06:40.913
+Depending on the illustration,
+
+83
+00:06:40.913 --> 00:06:45.566
+executor can execute task
+related to mapping stages or
+
+84
+00:06:45.566 --> 00:06:50.130
+reducing stages or
+other Spark specific pipelines.
+
+85
+00:06:50.130 --> 00:06:56.642
+This Java virtual machine is the core
+that all the computation is executed,
+
+86
+00:06:56.642 --> 00:07:03.780
+and this is the interface also to the rest
+of the Big Data storage systems and tools.
+
+87
+00:07:05.320 --> 00:07:10.560
+For example, if we ever had the Hadoop
+file system, HTFS, as the storage system,
+
+88
+00:07:10.560 --> 00:07:14.650
+then on each worker node,
+some of the data will be stored locally.
+
+89
+00:07:14.650 --> 00:07:19.445
+As you know, the most important point
+of this computing framework is to bring
+
+90
+00:07:19.445 --> 00:07:21.084
+the computation to data.
+
+91
+00:07:21.084 --> 00:07:24.770
+So Spark will send some
+computational jobs to be executed
+
+92
+00:07:24.770 --> 00:07:30.190
+on the data that are already available
+on the machine thanks to HDFS.
+
+93
+00:07:30.190 --> 00:07:32.930
+Data will be read from HDFS and
+
+94
+00:07:32.930 --> 00:07:38.580
+get processed in memory,
+the results will be stored as one RDD.
+
+95
+00:07:38.580 --> 00:07:45.012
+The actual computation is running
+straight in the executor,
+
+96
+00:07:45.012 --> 00:07:50.214
+that is the JVM that runs your Scala or
+Java codes.
+
+97
+00:07:50.214 --> 00:07:54.970
+Instead, if you are using PySpark
+then there will be several Python
+
+98
+00:07:54.970 --> 00:07:57.723
+processes generally, one for task but
+
+99
+00:07:57.723 --> 00:08:01.490
+you can configure it depending
+on your application.
+
+100
+00:08:03.999 --> 00:08:09.770
+In a real Big Data scenario, we have many
+worker nodes running tasks internally.
+
+101
+00:08:10.990 --> 00:08:15.220
+It is important to have a system that can
+automatically manage provisioning and
+
+102
+00:08:15.220 --> 00:08:16.420
+restarting of these nodes.
+
+103
+00:08:17.540 --> 00:08:20.550
+The cluster manager in
+Spark has this capability.
+
+104
+00:08:21.970 --> 00:08:27.660
+Spark currently supports mainly three
+interfaces for cluster management,
+
+105
+00:08:27.660 --> 00:08:34.620
+namely Spark's standalone cluster manager,
+the Apache Mesos, and Hadoop YARN.
+
+106
+00:08:36.190 --> 00:08:40.441
+Standalone means that there's a special
+Spark process that takes care of
+
+107
+00:08:40.441 --> 00:08:42.567
+restarting nodes that are failing or
+
+108
+00:08:42.567 --> 00:08:45.668
+starting nodes at the beginning
+of the computation.
+
+109
+00:08:45.668 --> 00:08:50.276
+YARN and Mesos are two external research
+measures that can be used also for
+
+110
+00:08:50.276 --> 00:08:51.400
+these purposes.
+
+111
+00:08:54.080 --> 00:08:57.400
+Choosing a cluster manager
+to fit your application and
+
+112
+00:08:57.400 --> 00:09:00.280
+infrastructure can be quite confusing.
+
+113
+00:09:00.280 --> 00:09:04.020
+Here, we give you a good
+article as a starting point on
+
+114
+00:09:04.020 --> 00:09:07.030
+how to pick the right cluster manager for
+your organization.
+
+115
+00:09:08.470 --> 00:09:13.130
+To summarize, the Spark architecture
+includes a driver program.
+
+116
+00:09:14.270 --> 00:09:18.918
+The driver program communicates
+with the cluster manager for
+
+117
+00:09:18.918 --> 00:09:22.404
+monitoring and
+provisioning of resources and
+
+118
+00:09:22.404 --> 00:09:27.783
+communicates directly with worker
+nodes to submit and execute tasks.
+
+119
+00:09:27.783 --> 00:09:33.410
+RDDs get created and passed within
+transformations running in the executable.
+
+120
+00:09:34.900 --> 00:09:39.691
+Finally, let's see how this
+setup works on the Cloudera VM.
+
+121
+00:09:39.691 --> 00:09:43.797
+In the Cloudera VM,
+we are using Spark in standalone mode and
+
+122
+00:09:43.797 --> 00:09:46.820
+everything is running locally.
+
+123
+00:09:46.820 --> 00:09:53.615
+So it's a single machine and on the same
+machine we have our driver program,
+
+124
+00:09:53.615 --> 00:09:58.089
+the executor JVM and
+our single PySpark process.
+
+125
+00:09:58.089 --> 00:10:02.771
+With that, we are ready to start with
+our first reading to install Spark and
+
+126
+00:10:02.771 --> 00:10:06.946
+then running our word count program
+using the Spark environment.

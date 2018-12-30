@@ -1,0 +1,1629 @@
+﻿1
+00:00:15,570 --> 00:00:22,698
+Welcome to module 29 of Database Management
+Systems; we have been talking about ah indexing
+
+2
+00:00:22,699 --> 00:00:29,200
+and hashing and this is a fourth in the series.
+Ah In the previous 3 we have talked about
+
+3
+00:00:29,199 --> 00:00:34,000
+different aspects of indexing and specifically
+in the last module, we have introduced the
+
+4
+00:00:34,000 --> 00:00:40,369
+most powerful data structure B plus tree for
+index ah files.
+
+5
+00:00:40,369 --> 00:00:47,759
+Ah In this module, we will take a look into
+a explore into various hashing ah schemes
+
+6
+00:00:47,759 --> 00:00:53,719
+for ah achieving the similar targets we will
+look at static and dynamic hashing. And we
+
+7
+00:00:53,719 --> 00:00:59,238
+will then compare it between the ordered indexing
+ah that we have discussed already and hashing
+
+8
+00:00:59,238 --> 00:01:06,269
+and we will also understand about what are
+called bitmap indices. So, these are ah the
+
+9
+00:01:06,269 --> 00:01:09,140
+module outline.
+So, static hashing I am assuming that all
+
+10
+00:01:09,140 --> 00:01:15,750
+of you know about basic concept of hashing.
+So, it what it does a there is a bucket is
+
+11
+00:01:15,750 --> 00:01:21,090
+a unit of storage containing one or more records.
+So, that is the basic logical concept typically
+
+12
+00:01:21,090 --> 00:01:29,359
+in physical terms a bucket can be a disk block.
+So, a hash file organization ah obtains we
+
+13
+00:01:29,359 --> 00:01:34,789
+we in a hash file organization; we attempt
+to obtain a bucket for a record directly from
+
+14
+00:01:34,790 --> 00:01:39,200
+its search key value using a hash function.
+So, this is where it becomes very different
+
+15
+00:01:39,200 --> 00:01:46,420
+compared to the ordered indexing ah for which
+we we saw all this ah I some method and the
+
+16
+00:01:46,420 --> 00:01:50,700
+B plus tree where we went through different
+index structure, but here we want to make
+
+17
+00:01:50,700 --> 00:01:56,510
+use of a mathematical hash function. So, that
+given the key ideally I should be able to
+
+18
+00:01:56,510 --> 00:02:02,620
+get the bucket in which that particular record
+containing the key exists that is the requirement.
+
+19
+00:02:02,620 --> 00:02:07,560
+So, hash function h is a function from the
+set of all search key values K to the set
+
+20
+00:02:07,560 --> 00:02:13,659
+of all bucket addresses B. So, it is a mathematical
+function and ah it is used to locate the records
+
+21
+00:02:13,659 --> 00:02:19,389
+for access insert as well as delete records
+with different search key values may be mapped
+
+22
+00:02:19,389 --> 00:02:25,919
+to the same bucket right this is not what
+ideally we wanted, but it is possible there
+
+23
+00:02:25,919 --> 00:02:30,929
+is a entire bucket has to be searched sequentially
+once you reach there to look at a record,
+
+24
+00:02:30,930 --> 00:02:33,730
+we can make use of other techniques there
+we will come to that.
+
+25
+00:02:33,729 --> 00:02:41,418
+. So, let us ah take a quick example hash
+file organization of an instructor file using
+
+26
+00:02:41,419 --> 00:02:46,189
+say department named as key. So, we need to
+design a hash function. So, let us assume
+
+27
+00:02:46,189 --> 00:02:53,349
+that ah on the address space B we have 10
+buckets. So, every bucket is ah designated
+
+28
+00:02:53,349 --> 00:03:01,189
+by a by a serial number bucket 0 to bucket
+9 and ah we take department name is a key.
+
+29
+00:03:01,189 --> 00:03:05,620
+So, it is a is a character string.
+So, we take the binary representation of the
+
+30
+00:03:05,620 --> 00:03:12,670
+ith character and ah assume it to be the integer
+I simply every character you take take its
+
+31
+00:03:12,669 --> 00:03:17,418
+binary representation and think as if it is
+an integer. And then as a hash function we
+
+32
+00:03:17,419 --> 00:03:25,389
+add these integer values of binary representations
+modulo 10. So, M hash value of music we take
+
+33
+00:03:25,389 --> 00:03:32,120
+the binary representation of m which is the
+as key code of M capital M; then ah add the
+
+34
+00:03:32,120 --> 00:03:40,039
+as key code of u the lower case u and so,
+on and do that modulo 10 and we get a value
+
+35
+00:03:40,039 --> 00:03:42,900
+which is 1.
+So, naturally since we are doing modulo 10
+
+36
+00:03:42,900 --> 00:03:48,060
+which is the number of buckets here. So, we
+will get a result for the hash function which
+
+37
+00:03:48,060 --> 00:03:51,640
+is between 0 to 9 which is a bucket address
+where it is expected.
+
+38
+00:03:51,639 --> 00:03:57,638
+So, here we are showing an example. So, you
+can ah see ah in the earlier slide we are
+
+39
+00:03:57,639 --> 00:04:01,750
+showing music is 1 history is 2 physics and
+electrical engineering both are hash value
+
+40
+00:04:01,750 --> 00:04:06,599
+3.
+So, you can see here in bucket 2 since history
+
+41
+00:04:06,599 --> 00:04:16,100
+has ah value 2. So, those records El Said
+and Califfieri records go to bucket 2 whereas,
+
+42
+00:04:16,100 --> 00:04:21,250
+physics and electrical engineering both have
+hash value 3. So, that Einstein golden came
+
+43
+00:04:21,250 --> 00:04:26,149
+all go to the bucket 3 similarly it happens
+with the other buckets as well not all buckets
+
+44
+00:04:26,149 --> 00:04:32,039
+are shown here shown only 8 buckets are shown,
+but in this way we can actually directly map
+
+45
+00:04:32,040 --> 00:04:37,379
+them to the buckets.
+And ah ; so, such a hash function would be
+
+46
+00:04:37,379 --> 00:04:42,550
+really useful now the question is a it is
+a mathematical function; so, how good or how
+
+47
+00:04:42,550 --> 00:04:47,710
+bad it is. So, we will say that the worst
+possible hash function is one which maps all
+
+48
+00:04:47,709 --> 00:04:51,659
+key values to the same bucket. So, that everything
+will have to within them serially; so, that
+
+49
+00:04:51,660 --> 00:04:58,900
+is of no no use.
+So, the ideal one would be which will ah distribute
+
+50
+00:04:58,899 --> 00:05:07,739
+ah the different search keys values in different
+buckets in an uniform manner to the from the
+
+51
+00:05:07,740 --> 00:05:13,800
+set of all possible values. So, that would
+be that will be nice to have and ideal would
+
+52
+00:05:13,800 --> 00:05:22,310
+be that if the hash function is random which
+means that ah. So, that each bucket will ah
+
+53
+00:05:22,310 --> 00:05:28,709
+I mean it will generate from the key value
+it will generate the bucket number, it will
+
+54
+00:05:28,709 --> 00:05:34,779
+generate the bucket address ah in kind of
+a random manner. So, that in a random phenomena;
+
+55
+00:05:34,779 --> 00:05:42,269
+so, that irrespective of what kind of actual
+distribution the search keys may have the
+
+56
+00:05:42,269 --> 00:05:46,399
+buckets over which the distribute will be
+more or less the same. So, every bucket will
+
+57
+00:05:46,399 --> 00:05:48,939
+have same number of records things will be
+balanced.
+
+58
+00:05:48,939 --> 00:05:55,579
+A typical hash function ah performs ah computation
+on the internal binary representation of the
+
+59
+00:05:55,579 --> 00:06:01,459
+search key that is the basic ah that that
+is the one that you have just seen. So, if
+
+60
+00:06:01,459 --> 00:06:06,509
+it is a string then you treat the characters
+as ah they are binary representations as integer
+
+61
+00:06:06,509 --> 00:06:13,159
+do some some modulo a number exactly what
+we did in the last case.
+
+62
+00:06:13,160 --> 00:06:17,480
+Now the question is the buckets have a certain
+size we said that a bucket is a is a disk
+
+63
+00:06:17,480 --> 00:06:24,660
+block. So, ah a bucket can overflow ah because
+there may not be enough ah sufficient buckets
+
+64
+00:06:24,660 --> 00:06:29,950
+to keep all the records. So, it will not fit
+in or your distribution could be skewed. So,
+
+65
+00:06:29,949 --> 00:06:33,550
+there may be many buckets where there are
+lot of space left, but some buckets may have
+
+66
+00:06:33,550 --> 00:06:39,420
+a too many records coming on to it because
+of the behavior of the hash function. So,
+
+67
+00:06:39,420 --> 00:06:43,930
+that multiple records have the same key value
+or chosen hash function produces non uniform
+
+68
+00:06:43,930 --> 00:06:50,079
+distribution and so, on.
+So, if that happens then ah the probability
+
+69
+00:06:50,079 --> 00:06:55,269
+of bucket flow; bucket overflow will happen
+and we can try to reduce that, but it cannot
+
+70
+00:06:55,269 --> 00:07:02,029
+be eliminated. So, all that you do is to have
+overflow bucket which is nothing, but having
+
+71
+00:07:02,029 --> 00:07:05,500
+other buckets connected to this target bucket
+in a chain.
+
+72
+00:07:05,500 --> 00:07:09,990
+So, this is called a overflow chaining as
+you can see there are 4 buckets shown here
+
+73
+00:07:09,990 --> 00:07:14,819
+and bucket 1 we are saying showing are connected
+with other two buckets which are the overflow
+
+74
+00:07:14,819 --> 00:07:21,089
+buckets for bucket 1. So, that this kind of
+a scheme is called ah closed hashing there
+
+75
+00:07:21,089 --> 00:07:26,689
+is an alternate scheme ah called open hashing,
+which does not use a bucket overflow and,
+
+76
+00:07:26,689 --> 00:07:32,500
+but it is not therefore, suitable for database
+applications and we will not discuss it here
+
+77
+00:07:32,500 --> 00:07:36,300
+.
+So, hash indices can be used only for file
+
+78
+00:07:36,300 --> 00:07:42,970
+organization ah I mean not only for file organization,
+but they can also be used for indexed structure
+
+79
+00:07:42,970 --> 00:07:48,580
+creation like we did for B plus tree we can
+use the hash indices for index structure also.
+
+80
+00:07:48,579 --> 00:07:54,139
+So, hash index organizes the search keys with
+their associated record pointers into a hash
+
+81
+00:07:54,139 --> 00:07:58,449
+file structure exactly in the same way its
+hashing otherwise.
+
+82
+00:07:58,449 --> 00:08:04,259
+So, but the you can note that the hash indices
+are always kind of secondary indices because
+
+83
+00:08:04,259 --> 00:08:11,709
+if a file itself is organized using hashing;
+then a separate primary hash index on it using
+
+84
+00:08:11,709 --> 00:08:17,439
+the same search keys are necessary. Because
+if if you are talking about primary hash indexing
+
+85
+00:08:17,439 --> 00:08:24,819
+then ah it will mean that you are taking the
+primary search key and creating a hash index
+
+86
+00:08:24,819 --> 00:08:31,029
+on that, but if the file is hash created by
+hash indexing then that already exists. So,
+
+87
+00:08:31,029 --> 00:08:37,309
+anything that you create in terms of ah indexing
+is basically a secondary indexing structure
+
+88
+00:08:37,309 --> 00:08:43,708
+in a hash organized file.
+So, this is ah kind of hash indexing example.
+
+89
+00:08:43,708 --> 00:08:52,949
+So, here ah I am I am showing the hash indexing
+with the ah ID of this ah table and the index
+
+90
+00:08:52,950 --> 00:08:59,480
+is computed by adding the digits modulo 8
+assuming that there are 8 buckets. So, if
+
+91
+00:08:59,480 --> 00:09:07,870
+you take; so, if you look at bucket 0 then
+ah the key that has gone there is 76766 which
+
+92
+00:09:07,870 --> 00:09:14,690
+is 7 plus 6; 13, 20 plus 6; 26 plus 6 32 modulo
+8 is 0.
+
+93
+00:09:14,690 --> 00:09:19,691
+So, it goes into bucket 0 it happens that
+way ah if, but if we look into bucket 4 you
+
+94
+00:09:19,691 --> 00:09:27,589
+will find that the 4 IDs ah actually all have
+ah this value 5 under the hash function. So,
+
+95
+00:09:27,589 --> 00:09:32,470
+they all need to go to this bucket and therefore,
+but the bucket size assumed here is just 2.
+
+96
+00:09:32,470 --> 00:09:40,560
+So, after the 2 ah indices have gone in there
+a overflow chain is created and another overflow
+
+97
+00:09:40,559 --> 00:09:46,179
+bucket is used to keep the next two ah IDs
+there. So, this is how a hash index can be
+
+98
+00:09:46,179 --> 00:09:50,729
+created .
+Now, this is this kind of a scheme where you
+
+99
+00:09:50,730 --> 00:09:56,990
+you start with a fixed number of buckets and
+then you design a hashing function which maps
+
+100
+00:09:56,990 --> 00:10:01,150
+the search key values to this fixed set of
+buckets is known as a static hashing it is
+
+101
+00:10:01,150 --> 00:10:04,129
+static because you start with a fixed number
+of buckets.
+
+102
+00:10:04,129 --> 00:10:10,580
+So, yeah naturally the question is what should
+be this value of B the number of buckets.
+
+103
+00:10:10,580 --> 00:10:16,430
+Now if it is initially too small ah then the
+file keeps on growing the performance will
+
+104
+00:10:16,429 --> 00:10:21,169
+degrade because you will have too many overflow
+chains and if the all advantages of having
+
+105
+00:10:21,169 --> 00:10:28,559
+done the hashing will get lost. On the other
+hand if you take a too large a B then ah you
+
+106
+00:10:28,559 --> 00:10:34,119
+will unnecessarily allocate a lot of space
+anticipating growth, but it may take a very
+
+107
+00:10:34,120 --> 00:10:39,370
+significant amount of time to utilize that
+that space or also it is possible that it
+
+108
+00:10:39,370 --> 00:10:44,250
+the database at at certain point of time grew
+to a large size and then it started shrinking
+
+109
+00:10:44,250 --> 00:10:51,370
+and then again space will get wasted .
+So, static hashing ah has has these limitations.
+
+110
+00:10:51,370 --> 00:10:57,080
+So, naturally what you will have to do is
+to periodically reorganize ah the file with
+
+111
+00:10:57,080 --> 00:11:01,730
+a new hash function which is ah certainly
+very expensive because it changes the positions
+
+112
+00:11:01,730 --> 00:11:07,870
+of all records. So, it disrupts the normal
+operation; so, it would be better if we could
+
+113
+00:11:07,870 --> 00:11:14,089
+allow to change the number of buckets to to
+be changed dynamically at the as the database
+
+114
+00:11:14,089 --> 00:11:18,900
+grows. So, if the database grows it can use
+more and more buckets and if we could adjust
+
+115
+00:11:18,899 --> 00:11:25,399
+this in the hashing scheme ah inherently;
+then it will certainly be better as a solution
+
+116
+00:11:25,399 --> 00:11:30,250
+. So, that gives rise to what is known as
+ah dynamic hashing.
+
+117
+00:11:30,250 --> 00:11:36,419
+So, it is certainly good for databases that
+regularly grows and shrinks in size, allows
+
+118
+00:11:36,419 --> 00:11:42,029
+the hash function to be modified dynamically
+ah. Of the different dynamic hashing schemes
+
+119
+00:11:42,029 --> 00:11:48,899
+I will discuss ah the extendable hashing which
+is a very popular scheme . So, let us see
+
+120
+00:11:48,899 --> 00:11:54,179
+what how it works. So, it at the hash function
+will generate the value over a large range
+
+121
+00:11:54,179 --> 00:11:59,399
+say typically a B bit integer say 32 bit integer
+now .
+
+122
+00:11:59,399 --> 00:12:06,129
+So, what you have is is you have generated
+a value which is hash value which is say over
+
+123
+00:12:06,129 --> 00:12:14,750
+32 bits, but what you do at any time you use
+only a prefix of that; you only use a part
+
+124
+00:12:14,750 --> 00:12:21,940
+frontal part of that to index the table to
+the bucket address and ah the length of that
+
+125
+00:12:21,940 --> 00:12:28,840
+prefix is i bits; then naturally it could
+be at least theoretically it could be 0 that
+
+126
+00:12:28,840 --> 00:12:34,910
+is you do not use any prefix and it could
+be up to that you use all the prefixes.
+
+127
+00:12:34,909 --> 00:12:41,969
+And ah so, therefore, if you are using i bits
+then the bucket address table the possible
+
+128
+00:12:41,970 --> 00:12:45,680
+you know bucket addresses that you could have
+is 2 to the power i initially you keep that
+
+129
+00:12:45,679 --> 00:12:52,079
+as 0 .
+So, then the address table will actually point
+
+130
+00:12:52,080 --> 00:12:58,160
+to different buckets let us ah start moving
+to an example and see what is happening.
+
+131
+00:12:58,159 --> 00:13:06,360
+So, this is ah the general ah scheme. So,
+you have ah a hash prefix which is using i
+
+132
+00:13:06,360 --> 00:13:13,209
+number of bits and therefore, different values
+of i number of bits. So, there will be 2 to
+
+133
+00:13:13,208 --> 00:13:19,849
+the power i entries naturally you have different
+buckets here, but you may not actually have
+
+134
+00:13:19,850 --> 00:13:27,159
+all 2 to the power i buckets ah you may have
+less than that as it is shown here that bucket
+
+135
+00:13:27,159 --> 00:13:36,028
+2 and bucket 3 exist, but ah bucket 1 is ah
+a holder for both this ah prefix 0 0 as well
+
+136
+00:13:36,028 --> 00:13:42,990
+as prefix 0 1.
+So, and on on top of ah every bucket you have
+
+137
+00:13:42,990 --> 00:13:53,740
+a a a kind of ah bucket depth given. So, it
+is a number of bits ah that you need to ah
+
+138
+00:13:53,740 --> 00:14:02,080
+explore in the in the representation in the;
+so, that you can distinguish the different
+
+139
+00:14:02,080 --> 00:14:06,778
+records of that bucket .
+Naturally the maximum value of any of these
+
+140
+00:14:06,778 --> 00:14:15,009
+i is ah the the i here, but it could be less
+than that. So, I am I am sure this is this
+
+141
+00:14:15,009 --> 00:14:22,179
+probably is not making much sense immediately.
+So, let me move to my detailed discussion.
+
+142
+00:14:22,179 --> 00:14:28,479
+So, what I was saying that each bucket j stores
+a value i j. So, this is ah the all the entries
+
+143
+00:14:28,480 --> 00:14:36,070
+that point to this bucket has the same value
+on the first i j bits. So, this i j bits are
+
+144
+00:14:36,070 --> 00:14:42,540
+are identical. So, all of them have come to
+this bucket. So, how do you look at ah the
+
+145
+00:14:42,539 --> 00:14:51,169
+bucket that contains the search key K j? So,
+it compute the hash function which is X user
+
+146
+00:14:51,169 --> 00:14:58,229
+prefix i bits of X as a displacement into
+the buckets address table and follow the pointer
+
+147
+00:14:58,230 --> 00:15:06,120
+to the appropriate bucket.
+Now if I have to insert ah a record with a
+
+148
+00:15:06,120 --> 00:15:10,291
+search key K j; you will follow that same
+procedure as a lookup and look at the bucket
+
+149
+00:15:10,291 --> 00:15:16,160
+j and then you will have to look for making
+some space. So, let me do something. Let me
+
+150
+00:15:16,159 --> 00:15:22,059
+before going through this ah statement of
+the algorithm. Let me just go through an example
+
+151
+00:15:22,059 --> 00:15:25,059
+first and we can come back to this ah formal
+statement.
+
+152
+00:15:25,059 --> 00:15:33,409
+So, what we are trying to do is ah ah there
+is ah the department names ah which we are
+
+153
+00:15:33,409 --> 00:15:41,860
+using as a key to do this hashing index and
+they are represented in terms of the binary
+
+154
+00:15:41,860 --> 00:15:49,220
+representation. So, this is ah this is ah
+the hash of that department name and hashed
+
+155
+00:15:49,220 --> 00:15:56,528
+into ah you can you can easily see this is
+ah 1, 2, 3, 4, 5, 6, 7, 8 . So, this is hashed
+
+156
+00:15:56,528 --> 00:16:03,269
+into 32 bit number .
+Now what do we do? So, initially we start
+
+157
+00:16:03,269 --> 00:16:11,419
+with. So, this is ah this is all the different
+ah hash values that you can see I am sorry
+
+158
+00:16:11,419 --> 00:16:18,009
+ah this is ah all the different hash values
+and this is the table that I need to actually
+
+159
+00:16:18,009 --> 00:16:25,409
+represent ok . So, initially there is nothing.
+So, I try to ah I will try to insert Mozart
+
+160
+00:16:25,409 --> 00:16:32,838
+Srinivasan and these 3 records here. So, let
+me try that .
+
+161
+00:16:32,839 --> 00:16:47,960
+So, if I look at Mozart then Mozart is from
+the department of music. So, and ah Srinivasan
+
+162
+00:16:47,960 --> 00:16:55,730
+is from computer science Wu is from finance.
+So, let us look at this. So, Mozart is from
+
+163
+00:16:55,730 --> 00:17:05,980
+music Srinivasan is from computer science
+and ah Wu is from finance. So, these are the
+
+164
+00:17:05,980 --> 00:17:15,308
+3 now if we look into the prefixes of their
+hash values; you can see that ah their hash
+
+165
+00:17:15,308 --> 00:17:25,949
+values are 1 1 and for music it is 0 right.
+So, if I use a hash prefix which has just
+
+166
+00:17:25,949 --> 00:17:34,590
+one bit and naturally therefore, I have two
+entries 0 and 1 then music with the value
+
+167
+00:17:34,589 --> 00:17:43,240
+0 maps to this bucket where I entered the
+record for music. And computer science and
+
+168
+00:17:43,240 --> 00:17:49,599
+finance the records corresponding to them
+has a hash value prefix 1. So, they both map
+
+169
+00:17:49,599 --> 00:17:56,969
+to discipline this is how it can get started.
+So, you you find out while inserting you find
+
+170
+00:17:56,970 --> 00:18:01,360
+out where is Mozart and based on that you
+create this.
+
+171
+00:18:01,359 --> 00:18:14,849
+Now, let us try to ah insert Einstein . So,
+to insert Einstein what ah do we find? So,
+
+172
+00:18:14,849 --> 00:18:21,699
+what all ah we we already have? We have music,
+we have computer science, we have finance
+
+173
+00:18:21,700 --> 00:18:29,100
+and ah now Einstein comes in ah Einstein is
+from physics. So, what would happen when you
+
+174
+00:18:29,099 --> 00:18:36,230
+try to insert Einstein? You already had computer
+science with 1 as 1 prefix and finance with
+
+175
+00:18:36,230 --> 00:18:43,589
+1 prefix.
+So, you had ah in in bucket two ah corresponding
+
+176
+00:18:43,589 --> 00:18:49,599
+to 1 you already have 2 records that bucket
+is full assuming that it can take only 2 records.
+
+177
+00:18:49,599 --> 00:18:57,119
+So, now, you get another which is value 1;
+so, its value is 1. So, what I need to do?
+
+178
+00:18:57,119 --> 00:19:04,189
+I need to actually expand this now how do
+I do that? I cannot expand this because there
+
+179
+00:19:04,190 --> 00:19:10,028
+is no more space left. So, all that I need
+to do is to actually expand the bucket address
+
+180
+00:19:10,028 --> 00:19:15,700
+table.
+So, earlier if I if I just ah if I just go
+
+181
+00:19:15,700 --> 00:19:23,840
+back. So, if I just go back earlier we had
+only two entries because we are using only
+
+182
+00:19:23,839 --> 00:19:33,339
+1 bit in the prefix and with that I could
+not have inserted Einstein oh is from department
+
+183
+00:19:33,339 --> 00:19:41,519
+of physics which also has a 1 bit prefix which
+is 1 it was. So, I need more space; so, I
+
+184
+00:19:41,519 --> 00:19:49,989
+have increased the prefix level to 2 going
+here and now naturally I have if I have increases
+
+185
+00:19:49,989 --> 00:20:00,798
+to 2; now I have let me erase this ah these
+entries and now I look at for music I look
+
+186
+00:20:00,798 --> 00:20:09,908
+at 2 ah for physics 1 0, for finance 1 0,
+for computer science 1 1.
+
+187
+00:20:09,909 --> 00:20:18,071
+So, now, I find that after I have moved from
+looking at 1 bit of prefix to 2 bits of prefix
+
+188
+00:20:18,070 --> 00:20:25,898
+now finance and computer science which was
+earlier together because I was looking at
+
+189
+00:20:25,898 --> 00:20:34,658
+1 bit now becomes different, but finance and
+physics both come to the same ah 1 0.
+
+190
+00:20:34,659 --> 00:20:43,629
+So, in the hash bucket address table 1 0 you
+have financial physics ah coming in with Wu
+
+191
+00:20:43,628 --> 00:20:52,478
+and ah Einstein records and ah computer science
+which has got 1 1 the Srinivasan record goes
+
+192
+00:20:52,479 --> 00:20:58,538
+to a new bucket which comes from 1 1 here
+. Now the interesting fact is what happens
+
+193
+00:20:58,538 --> 00:21:05,019
+to Mozart who which was there if you if you
+remember the earlier structure this is we
+
+194
+00:21:05,019 --> 00:21:15,808
+had only 1 here. So, this was going to Mozart
+this was 1 and Mozart was here because ah
+
+195
+00:21:15,808 --> 00:21:21,019
+music had a prefix 0; now music has a prefix
+0 0.
+
+196
+00:21:21,019 --> 00:21:26,298
+So, what he would have expected? You would
+have expected that therefore, ah since 0 0
+
+197
+00:21:26,298 --> 00:21:33,278
+has come and 0 1 has also come in. So, you
+would have expected that ah to have another
+
+198
+00:21:33,278 --> 00:21:40,819
+bucket here which 0 1 is, but then you observe
+that actually that would be a quite a wasteful
+
+199
+00:21:40,819 --> 00:21:47,499
+to do because you do not actually have a record
+which has a prefix 0 1.
+
+200
+00:21:47,499 --> 00:21:55,038
+Out of ah these two which are we are looking
+at two prefixes, but you do not really right
+
+201
+00:21:55,038 --> 00:22:00,529
+now need to look at both the prefixes you
+can still resolve just by based on the first
+
+202
+00:22:00,529 --> 00:22:08,858
+prefix 1. So, you do a simple trick you do
+not change the prefix level of the particular
+
+203
+00:22:08,858 --> 00:22:15,408
+bucket you say it is 1. Because it is you
+just need to look at one bit to be able to
+
+204
+00:22:15,409 --> 00:22:24,879
+come to the records in this bucket and the
+globally it has changed to 2 bits prefix,
+
+205
+00:22:24,878 --> 00:22:32,069
+but locally you keep it as 1.
+And with that what you have? You have 0 1
+
+206
+00:22:32,069 --> 00:22:36,999
+which has a bucket address table entry actually
+does not have a bucket because there is no
+
+207
+00:22:36,999 --> 00:22:44,889
+records for that. So, you let that point to
+the same bucket. So, this is a very critical
+
+208
+00:22:44,888 --> 00:22:53,648
+observation that these numbers are basically
+the local depth; the local ah information
+
+209
+00:22:53,648 --> 00:23:01,579
+of how many bits in the prefix you need to
+look at to be able to resolve for coming to
+
+210
+00:23:01,579 --> 00:23:05,629
+this bucket for the records that you currently
+have.
+
+211
+00:23:05,630 --> 00:23:09,570
+Whereas this is the global one this is a global
+maximum that you have. So, naturally local
+
+212
+00:23:09,569 --> 00:23:14,788
+depth cannot exceed the global depth, but
+if it is equal then you have a unique mapping
+
+213
+00:23:14,788 --> 00:23:21,308
+from the bucket address table entry to the
+bucket, but if the local depth as in here
+
+214
+00:23:21,308 --> 00:23:26,418
+is less than the global depth; in terms of
+the number of prefix bits you are looking
+
+215
+00:23:26,419 --> 00:23:34,619
+at then multiple bucket address table pointers
+actually end up in the same bucket and that
+
+216
+00:23:34,618 --> 00:23:40,999
+is the main principle of this algorithm we
+can just ah continue further inserting gold
+
+217
+00:23:40,999 --> 00:23:52,589
+and ah said into this .
+So, as you ah try to insert gold and ah said
+
+218
+00:23:52,589 --> 00:24:00,648
+gold is also from physics which we already
+had. So, physics ah and said is from history
+
+219
+00:24:00,648 --> 00:24:06,658
+which we did not have. So, history finance
+computers let me let me just mark them by
+
+220
+00:24:06,659 --> 00:24:13,940
+the side. So, you have now computer science,
+finance, history, music and ah physics.
+
+221
+00:24:13,940 --> 00:24:23,320
+Now, you will ah find that you need to ah
+you now have physics is 1 0 and you have two
+
+222
+00:24:23,319 --> 00:24:33,178
+records ah for that and ah music is continues
+to be 0 0 ah; obviously, ah history is 1 1
+
+223
+00:24:33,179 --> 00:24:41,429
+same as ah computer science. So, that has
+to go on this and finances on 1 0 now, but
+
+224
+00:24:41,429 --> 00:24:49,749
+what happens is when you try to do this; you
+could not have inserted more records because
+
+225
+00:24:49,749 --> 00:24:56,368
+you have run out of space in the buckets.
+So, again you have run out of that; so, you
+
+226
+00:24:56,368 --> 00:25:00,519
+need to expand in terms of the number of bits
+that you look at.
+
+227
+00:25:00,519 --> 00:25:09,149
+So, you increase that to 3 and now you have
+0 0 0 to 1 1 1, but as I have explained not
+
+228
+00:25:09,148 --> 00:25:16,378
+all buckets really need to look into. So,
+many bits Mozart ah this bucket continues
+
+229
+00:25:16,378 --> 00:25:25,069
+to ah B with a local depth of 1 because if
+you look into all these 4 ah different ah
+
+230
+00:25:25,069 --> 00:25:31,759
+cases; then music is the only one which has
+a prefix 0, everyone else has a prefix 1.
+
+231
+00:25:31,759 --> 00:25:37,210
+So, if I know that it is 0 then it comes to
+only this bucket and nowhere else consequently
+
+232
+00:25:37,210 --> 00:25:42,669
+all these 4 bucket address pointers actually
+go to this bucket table.
+
+233
+00:25:42,669 --> 00:25:54,109
+Whereas ah these two for physics I have 1
+0 and ah for finance we have ah 1 0 here and
+
+234
+00:25:54,108 --> 00:26:04,730
+these come to . So, physics now is looking
+into 3; so, it is 1 0 0 finance is into 3
+
+235
+00:26:04,730 --> 00:26:13,089
+it is ah 1 0 1. So, both physics and finance
+go to different buckets; now coming to computer
+
+236
+00:26:13,089 --> 00:26:23,009
+science it is 1 1 1 and there is no. So, computer
+science is 1 1 1 and there is no 1 1 0 . So,
+
+237
+00:26:23,009 --> 00:26:30,288
+the 1 1 0 bucket address table pointer continues
+to point to the same bucket and the local
+
+238
+00:26:30,288 --> 00:26:35,628
+depth value is just 2 less than 3 in the global
+table.
+
+239
+00:26:35,628 --> 00:26:43,689
+So, this is the basic ah process of ah doing
+dynamic hashing. So, I will not ah; so, the
+
+240
+00:26:43,690 --> 00:26:50,399
+whole example in terms of this table I have
+ah given here worked out. So, you can just
+
+241
+00:26:50,398 --> 00:26:54,788
+go through every step and try to convince
+yourself.
+
+242
+00:26:54,788 --> 00:27:02,108
+This is an interesting case that happens here
+where again you come to computer science ah
+
+243
+00:27:02,108 --> 00:27:08,608
+professors to be entered. So, at level 3 of
+prefix you have all of them have prefix 1
+
+244
+00:27:08,608 --> 00:27:15,228
+1 1. So, you would have required to split
+or increase the prefix level globally the
+
+245
+00:27:15,229 --> 00:27:20,909
+prefix level to 4, but assuming that there
+is an upper bound on the number of prefix
+
+246
+00:27:20,909 --> 00:27:26,179
+levels; you can do which decides the size
+of the bucket address table ah. If that is
+
+247
+00:27:26,179 --> 00:27:31,509
+given to be 3 you certainly cannot increase
+it further; so, all that you will have to
+
+248
+00:27:31,509 --> 00:27:36,929
+do is actually do a kind of an overflow chain
+here as well.
+
+249
+00:27:36,929 --> 00:27:42,610
+So, all of them are 1 1 1 here which brings
+you to this you cannot find it you go to this
+
+250
+00:27:42,609 --> 00:27:48,148
+and all 1 1 ones in future will have to be.
+So, it is a its kind of a tradeoff between
+
+251
+00:27:48,148 --> 00:27:53,398
+what is the ah size of the global depth, how
+many prefixes globally you would like to look
+
+252
+00:27:53,398 --> 00:27:59,000
+at what is the size of every bucket that you
+will have to ah maintain and what is the kind
+
+253
+00:27:59,000 --> 00:28:05,339
+of chaining that you will have to accept because
+of that. So, this is ah what happens ah particularly.
+
+254
+00:28:05,339 --> 00:28:11,369
+So, you can continue in this way and this
+is a final table where all things have been
+
+255
+00:28:11,369 --> 00:28:20,648
+hashed well. So, this is the basic extendable
+hashing scheme it has ah in this the performance
+
+256
+00:28:20,648 --> 00:28:25,098
+does not degrade with the growth of the file
+and there is very minimal ah overhead of the
+
+257
+00:28:25,098 --> 00:28:30,569
+space. But it does have ah disadvantages for
+example, there is a extra level of indirection
+
+258
+00:28:30,569 --> 00:28:34,519
+to find the desired record because it the
+hash then come to the hash bucket address
+
+259
+00:28:34,519 --> 00:28:40,778
+table and then go to the bucket ah bucket
+address table itself may be very big because
+
+260
+00:28:40,778 --> 00:28:43,608
+it is exponential in the size of the number
+of beds.
+
+261
+00:28:43,608 --> 00:28:50,278
+So, it could be larger than memory if that.
+So, much of you know a contiguous allocation
+
+262
+00:28:50,278 --> 00:28:56,388
+may not be possible. So, you will need to
+have another possibly a B plus tree structure
+
+263
+00:28:56,388 --> 00:29:01,658
+to locate the desired record in the bucket
+address table first. And then changing the
+
+264
+00:29:01,659 --> 00:29:07,469
+bucket address table ah will become a quite
+an expensive operation. So, the growth will
+
+265
+00:29:07,469 --> 00:29:10,788
+become.
+So, there are several disadvantages that also
+
+266
+00:29:10,788 --> 00:29:18,378
+this scheme has. So, another alternate is
+to use a linear ah hashing allows incremental
+
+267
+00:29:18,378 --> 00:29:26,089
+growth of his directory at the cost of more
+bucket overflows of course, . I would quickly
+
+268
+00:29:26,089 --> 00:29:31,548
+try to compare the two ah major schemes that
+we have ah discussed.
+
+269
+00:29:31,548 --> 00:29:36,940
+The ah ordered indexing ah and the hashing
+now naturally ordered indexing has suffers
+
+270
+00:29:36,940 --> 00:29:44,808
+from the cost of ah periodic reorganization.
+And ah because ah the indexing will have to
+
+271
+00:29:44,808 --> 00:29:50,079
+be maintained the hashing is better in terms
+of that relative you will have to look at
+
+272
+00:29:50,079 --> 00:29:54,999
+the relative frequency of insertion deletion
+that decides much of the cost between going
+
+273
+00:29:54,999 --> 00:29:59,038
+between these two schemes.
+You will have to see is it desirable to optimize
+
+274
+00:29:59,038 --> 00:30:04,700
+average access time at the expense of worst
+case access time. For example ah there could
+
+275
+00:30:04,700 --> 00:30:10,580
+be several ways to organize; so, that your
+average become your worst case may be really
+
+276
+00:30:10,579 --> 00:30:15,829
+really bad, but as long as your averages is
+very good you should be happy about it. So,
+
+277
+00:30:15,829 --> 00:30:23,189
+those kind of hashing schemes should be more
+preferred. So, you also depends on ah the
+
+278
+00:30:23,190 --> 00:30:28,429
+kind of ah expected type of query.
+So, for example, hashing is ah better in terms
+
+279
+00:30:28,429 --> 00:30:33,309
+of retrieving records which have a specific
+value of the key because you can directly
+
+280
+00:30:33,308 --> 00:30:38,898
+map from that key to the bucket. And ah if
+range queries are common then ah as we have
+
+281
+00:30:38,898 --> 00:30:44,109
+seen ordered indices would make it make much
+better sense because in terms of the ordering
+
+282
+00:30:44,109 --> 00:30:49,308
+you can quickly get all the required records
+at the same physical location nearby physical
+
+283
+00:30:49,308 --> 00:30:53,048
+location.
+If you would ah like to understand as to what
+
+284
+00:30:53,048 --> 00:31:00,168
+the industry practices are it is very mixed.
+And if you just look into 3 of the very common
+
+285
+00:31:00,169 --> 00:31:08,049
+ah database systems PostgreSQL does support
+hash index, but recommends does not recommend
+
+286
+00:31:08,048 --> 00:31:13,098
+it because of the poor performance oracle
+supports static hash organization, but not
+
+287
+00:31:13,098 --> 00:31:20,710
+hash indices SQL server supports only B plus
+trees no hash index space scheme. So, of course,
+
+288
+00:31:20,710 --> 00:31:26,940
+you can see that there as ah the community
+is mixed in terms of ah it is a reaction to
+
+289
+00:31:26,940 --> 00:31:33,470
+whether its ah indexing or hashing, but hashing
+powerful at least in in limited ways is a
+
+290
+00:31:33,470 --> 00:31:39,210
+powerful technique to go with.
+Ah The last two that I would like to just
+
+291
+00:31:39,210 --> 00:31:44,838
+quickly remind ah I mean ah take you through
+is what is known as bitmap indexes. Bitmap
+
+292
+00:31:44,838 --> 00:31:48,868
+indexing is a very simple idea. So, what you
+it is a special type of indexing which is
+
+293
+00:31:48,868 --> 00:31:55,470
+designed for querying on multiple keys; the
+basic idea is that ah if let us assume that
+
+294
+00:31:55,470 --> 00:32:02,759
+all records in a relation are numbered from
+0 to n and ah let us say that you are talking
+
+295
+00:32:02,759 --> 00:32:07,429
+about attributes which can take very small
+number of distinct values.
+
+296
+00:32:07,429 --> 00:32:11,889
+So, bitmap indexing is not for any attribute.
+So, consider attributes such a very small
+
+297
+00:32:11,888 --> 00:32:17,398
+number of distinct value say gender which
+has two possible values or few possible values
+
+298
+00:32:17,398 --> 00:32:22,258
+the country state. So, take those or or maybe
+you can you can nominally bucket a range of
+
+299
+00:32:22,259 --> 00:32:28,618
+numbers source income level 5, 6, 10 income
+levels. So, small range of possibilities and
+
+300
+00:32:28,618 --> 00:32:36,459
+bitmap is simply array of bits. So, take an
+array of possible ah ah array array for the
+
+301
+00:32:36,460 --> 00:32:39,999
+records and for the possible values you mark
+1 or 2 0.
+
+302
+00:32:39,999 --> 00:32:46,169
+So, this here is an example showing it. So,
+we are showing bitmap index for gender. So,
+
+303
+00:32:46,169 --> 00:32:55,349
+you have a array for m the male gender and
+f female gender and if you look into the record
+
+304
+00:32:55,348 --> 00:33:05,338
+076766 has ah male under m ah gender m. And
+ah therefore, in the male gender bitmap ah
+
+305
+00:33:05,338 --> 00:33:10,558
+index the first bit is 1 in f it is 0; so,
+actually m and f are are complimentary.
+
+306
+00:33:10,558 --> 00:33:17,009
+Similarly, for the income levels you have
+ah 5 different bitmaps encoding; the 5 different
+
+307
+00:33:17,009 --> 00:33:20,028
+ah possible levels in the income that you
+can have.
+
+308
+00:33:20,028 --> 00:33:28,019
+Now the big advantage of bitmap indices are
+doing different queries on ah multiple attributes.
+
+309
+00:33:28,019 --> 00:33:33,690
+And for example, the often queries have intersection
+union and they can be simply computed in terms
+
+310
+00:33:33,690 --> 00:33:39,659
+of bitmapped operations. So, if you have two
+different ah values to be two conditions to
+
+311
+00:33:39,659 --> 00:33:46,190
+check in terms of bitmap indices; then you
+can just make there and and whatever ah satisfy.
+
+312
+00:33:46,190 --> 00:33:53,759
+So, say if you are looking at males at for
+example, here males at income level L 1, then
+
+313
+00:33:53,759 --> 00:33:59,690
+you can you can just take the ah bitmap for
+ah gender and ah bitmap for income level and
+
+314
+00:33:59,690 --> 00:34:03,558
+do the ending and you get that the first record
+has value 1.
+
+315
+00:34:03,558 --> 00:34:09,750
+So, that is ah answer and you can quickly
+come to that . So, ah bitmap indices generally
+
+316
+00:34:09,750 --> 00:34:15,639
+very I mean naturally they are they are they
+are small in compared to the relation size
+
+317
+00:34:15,639 --> 00:34:21,070
+ah because you are doing bitmap indexing only
+if the attribute can take small number of
+
+318
+00:34:21,070 --> 00:34:25,390
+distinct values.
+Ah Of course, the deletion has to be handled
+
+319
+00:34:25,389 --> 00:34:31,179
+ah properly look at this and ah should keep
+bitmap for all values even if there are null
+
+320
+00:34:31,179 --> 00:34:35,750
+values you must keep that otherwise you will
+lose lose track of that. And ah there are
+
+321
+00:34:35,750 --> 00:34:41,179
+several ah efficient implementations ah some
+information I have given, but ah is we do
+
+322
+00:34:41,179 --> 00:34:46,949
+not want to go in much ah depth here.
+But several compression techniques. are are
+
+323
+00:34:46,949 --> 00:34:51,199
+possible in terms of bitmaps; in the next
+module I will talk little bit more about how
+
+324
+00:34:51,199 --> 00:34:56,980
+to use that ah. In this module to summarize
+we have ah talked about various hashing schemes
+
+325
+00:34:56,980 --> 00:35:02,769
+static and dynamic hashing, compared the order
+indexing with hashing and introduced the notion
+
+326
+00:35:02,769 --> 00:35:03,460
+of bitmap indices.
+

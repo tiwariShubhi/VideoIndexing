@@ -1,0 +1,1810 @@
+﻿1
+00:00:03,259 --> 00:00:17,899
+Bottom of Form
+Welcome to module 38 of database management
+
+2
+00:00:17,899 --> 00:00:25,269
+systems, in this module and the next we will
+talk about query processing and optimization
+
+3
+00:00:25,269 --> 00:00:29,379
+of that in the current module we will talk
+about query processing.
+
+4
+00:00:29,379 --> 00:00:36,238
+So, in the last ah module we had done talked
+about ah database recovery.
+
+5
+00:00:36,238 --> 00:00:42,088
+And ah now we will try to understand the overall
+flow of processing queries. So, if I fire
+
+6
+00:00:42,088 --> 00:00:52,579
+a query like ah select from where how will
+that actually access the database ah files
+
+7
+00:00:52,579 --> 00:00:59,719
+the b trees and indexes and so, on and compute
+the result is what we would like to discuss.
+
+8
+00:00:59,719 --> 00:01:05,909
+And a query can be processed in multiple ways
+giving rise to different kinds of costs in
+
+9
+00:01:05,909 --> 00:01:10,829
+terms of the time required for processing
+that query. So, we will define certain measures
+
+10
+00:01:10,829 --> 00:01:18,480
+of query cost and then we will ah take a quick
+look into a set of sample algorithms for processing
+
+11
+00:01:18,480 --> 00:01:24,730
+ah simple selection operation, sorting, joint
+operation and few of the other operations
+
+12
+00:01:24,730 --> 00:01:29,630
+like aggregation.
+So, first let us so, these are the ah topics
+
+13
+00:01:29,629 --> 00:01:35,500
+to talk about and first we will take a look
+at the overall query processing algorithm.
+
+14
+00:01:35,500 --> 00:01:44,269
+So, this is the flow so, this ah is a way
+the a query will get processed. So, here what
+
+15
+00:01:44,269 --> 00:01:49,649
+you have is ah this is where the input query
+comes in naturally it is written in terms
+
+16
+00:01:49,650 --> 00:01:53,840
+of a in terms of SQL which is kind of a programming
+ah language.
+
+17
+00:01:53,840 --> 00:02:00,799
+So, you need a parser and translator. So,
+the it is parse translated and it is translated
+
+18
+00:02:00,799 --> 00:02:06,569
+into a relational algebra expression as we
+have shown at the very beginning discussed
+
+19
+00:02:06,569 --> 00:02:13,590
+at the very beginning that SQL is basically
+ah derived or developed based on relational
+
+20
+00:02:13,590 --> 00:02:19,990
+algebra. So, corresponding to every SQL query
+there is a one or more relational algebra
+
+21
+00:02:19,990 --> 00:02:26,099
+expression. So, you express in terms of that,
+then you optimize you try to see how ah the
+
+22
+00:02:26,098 --> 00:02:33,018
+relational algebra expression can be made
+efficient and ah to optimize this we might
+
+23
+00:02:33,019 --> 00:02:39,730
+use some information about the statistics.
+Statistics in terms of we might use ah the
+
+24
+00:02:39,729 --> 00:02:46,280
+information past history information of ah
+say what is ah the what are the attributes
+
+25
+00:02:46,280 --> 00:02:53,489
+on which more often the ah where conditions
+are port we might want to use statistics like
+
+26
+00:02:53,489 --> 00:03:00,370
+how many ah tuples actually exist in the relation
+right now and so, on. And based on that we
+
+27
+00:03:00,370 --> 00:03:05,908
+will decide on an execution plan, execution
+plan is how we actually want to what are the
+
+28
+00:03:05,908 --> 00:03:13,269
+actions that we actually want to do in terms
+of accessing ah the the different indexes
+
+29
+00:03:13,269 --> 00:03:19,289
+and the different ah b plus tree nodes to
+evaluate the query and that is the job of
+
+30
+00:03:19,289 --> 00:03:24,730
+the ah evaluation engine is you can see that
+it will access the data for that and finally,
+
+31
+00:03:24,730 --> 00:03:30,299
+out of that the query output will be generated.
+So, in the this module and the next we will
+
+32
+00:03:30,300 --> 00:03:37,790
+ah take a quick look into so, it is ah glimpses
+of these steps one by one and try to understand
+
+33
+00:03:37,789 --> 00:03:41,218
+how query processing and optimization can
+happen.
+
+34
+00:03:41,218 --> 00:03:48,680
+So, beyond a parsing and translation there
+is evaluation as we have ah talked of.
+
+35
+00:03:48,680 --> 00:03:58,879
+Now, if we ah take in terms of ah say a query
+a where ah select from where clause has been
+
+36
+00:03:58,878 --> 00:04:05,518
+translated. So, for example, if ah this is
+ah we can we can simply write out say if we
+
+37
+00:04:05,519 --> 00:04:17,930
+have select and what are we selecting here?
+We are selecting salary and where are we selecting
+
+38
+00:04:17,930 --> 00:04:27,009
+it from? The from is instructor and under
+what conditions are we doing that? Where,
+
+39
+00:04:27,009 --> 00:04:35,969
+where is salary is less than 75000.
+So, if you had a query like this then you
+
+40
+00:04:35,970 --> 00:04:44,191
+know then it will be ah it will get translated
+to some kind of a relational ah algebra expression
+
+41
+00:04:44,190 --> 00:04:52,089
+like this where you do a selection on the
+ah salary and then you do ah you do a projection
+
+42
+00:04:52,089 --> 00:04:58,819
+on the salary and you do a ah selection based
+on that condition. Now, it is ah also clear
+
+43
+00:04:58,819 --> 00:05:05,469
+to say that ah this particular relational
+algebra expression can be equivalently written
+
+44
+00:05:05,470 --> 00:05:10,200
+by swapping that these 2 conditions, that
+is we can first do a selection and then do
+
+45
+00:05:10,199 --> 00:05:15,349
+the projection they are actually equivalent
+and that could be multiple equivalents.
+
+46
+00:05:15,350 --> 00:05:21,490
+So, we ah know that given a query there could
+be multiple relational algebra expressions
+
+47
+00:05:21,490 --> 00:05:27,850
+and then the relational algebra expression
+the operations can be evaluated also in one
+
+48
+00:05:27,850 --> 00:05:33,790
+of the by using one or more different algorithms.
+So, basically what you have you have different
+
+49
+00:05:33,790 --> 00:05:39,629
+options given a SQL query, you have different
+possible relational algebra expressions that
+
+50
+00:05:39,629 --> 00:05:44,969
+are equivalent given every relational algebra
+expressions you have ah different strategies
+
+51
+00:05:44,970 --> 00:05:52,670
+different algorithms to actually execute and
+evaluate that. And ah we would like to based
+
+52
+00:05:52,670 --> 00:05:59,240
+on these we would like to annotate the expression
+we would like to mark out as to whether ah
+
+53
+00:05:59,240 --> 00:06:05,100
+from the above to say whether we first project
+on salary and then do the selection or we
+
+54
+00:06:05,100 --> 00:06:10,800
+first do the selection on salary less than
+75000 and then project.
+
+55
+00:06:10,800 --> 00:06:15,460
+And with that annotation we will build up
+a total evaluation strategy which is known
+
+56
+00:06:15,459 --> 00:06:21,810
+as the evaluation plan and ah for example,
+here we can have different strategies like
+
+57
+00:06:21,810 --> 00:06:28,920
+we can use an index on salary and ah if you
+use that that will be ah it will be pretty
+
+58
+00:06:28,920 --> 00:06:36,759
+efficient to find ah tuples which satisfy
+salary less than 75000 or ah we can ah scan
+
+59
+00:06:36,759 --> 00:06:42,289
+the whole relation and discard all those instructors
+for which salary is greater than equal to
+
+60
+00:06:42,290 --> 00:06:47,810
+75000. So, there could be different ways in
+which we can do this evaluation and that is
+
+61
+00:06:47,810 --> 00:06:51,759
+what optimally has to be decided in every
+case.
+
+62
+00:06:51,759 --> 00:06:58,000
+So, in terms of query optimization out of
+all these equivalent evaluation plans we try
+
+63
+00:06:58,000 --> 00:07:05,430
+to choose the one that ah gives some minimum
+cost the lowest cost ah evaluation.
+
+64
+00:07:05,430 --> 00:07:11,139
+So, the cost will have to be estimated based
+on certain statistical information from the
+
+65
+00:07:11,139 --> 00:07:16,159
+ah database catalog for example, number of
+ah tuples in the relation, the size of the
+
+66
+00:07:16,160 --> 00:07:22,370
+tuples, ah the attributes on which frequently
+condition are tested and so, on ah. So, this
+
+67
+00:07:22,370 --> 00:07:28,310
+is what ah we would ah in totality try to
+understand out of that in this module we will
+
+68
+00:07:28,310 --> 00:07:33,689
+first define what is the measures of cost
+and look at the algorithms for evaluating
+
+69
+00:07:33,689 --> 00:07:38,449
+some of the relational algebra operations
+and then you can combine them to do bigger
+
+70
+00:07:38,449 --> 00:07:42,420
+operations and in the next module we will
+talk about optimization.
+
+71
+00:07:42,420 --> 00:07:48,530
+So, first let us see how we define the cost
+because if we want to say that ah we can do
+
+72
+00:07:48,529 --> 00:07:54,529
+it you say in 2-3 different ways, evaluate
+the same query in 2-3 different ways then
+
+73
+00:07:54,529 --> 00:07:59,619
+we must assess as to what is the best way
+of doing it the best way is whatever gives
+
+74
+00:07:59,620 --> 00:08:06,060
+us the least cost.
+So, measures of cost will be in in absolute
+
+75
+00:08:06,060 --> 00:08:10,980
+terms it is in terms of the elapsed time how
+much time does it take and there could be
+
+76
+00:08:10,980 --> 00:08:18,180
+many factors which ah ma dictate that because
+in terms of evaluating this we will have to
+
+77
+00:08:18,180 --> 00:08:23,790
+access the disk. So, access time of the disk
+will be involved, the computing time in CPU
+
+78
+00:08:23,790 --> 00:08:27,310
+may be involved even some network communication
+may get involved.
+
+79
+00:08:27,310 --> 00:08:33,589
+So, out of these if we assume that there is
+no network communication cost ah just for
+
+80
+00:08:33,589 --> 00:08:40,349
+simplicity that is everything is connected
+to a very you know high speed ah network then
+
+81
+00:08:40,349 --> 00:08:48,110
+between the disk cost and the accesses and
+the CPU processing cost the disk access is
+
+82
+00:08:48,110 --> 00:08:54,230
+a predominant cost. Because ah ah and it is
+relatively easy to estimate that because as
+
+83
+00:08:54,230 --> 00:09:01,519
+we have looked at the storage structure we
+know that ah it is a ah typically a magnetic
+
+84
+00:09:01,519 --> 00:09:07,740
+disk which where the head has to move to the
+correct cylinder to find the block where the
+
+85
+00:09:07,740 --> 00:09:13,879
+records can be ah located. So, there is this
+process is called the seek.
+
+86
+00:09:13,879 --> 00:09:20,120
+So, we will need to ah find out how many estimate
+how many seek operations we need and multiply
+
+87
+00:09:20,120 --> 00:09:26,720
+that by the average cost of seeking a block.
+Similarly, while we are reading that we need
+
+88
+00:09:26,720 --> 00:09:33,610
+to estimate how many blocks to read and average
+ah cost to read a block, number of blocks
+
+89
+00:09:33,610 --> 00:09:38,779
+to write average cost to write the block,
+cost to write the block is ah usually greater
+
+90
+00:09:38,779 --> 00:09:45,449
+than the cost to read actually often when
+we ah write a write some data after writing
+
+91
+00:09:45,450 --> 00:09:50,570
+we also usually read it back to make sure
+that the right was successful.
+
+92
+00:09:50,570 --> 00:09:58,050
+So, these are the typical cost factors that
+will dominate. So, if we say that ah if we
+
+93
+00:09:58,049 --> 00:10:03,809
+just count the number of block transfers and
+the number of seeks and ah if ah the time
+
+94
+00:10:03,809 --> 00:10:10,739
+to transfer one block is t T and time for
+seek is ah one seek is t S, then the cost
+
+95
+00:10:10,740 --> 00:10:16,789
+of transferring b blocks doing and doing S
+seek will be given by this expression you
+
+96
+00:10:16,789 --> 00:10:21,189
+can easily understand that.
+So, every block transfer is t T and the b
+
+97
+00:10:21,190 --> 00:10:26,140
+blocks being transferred. So, this is the
+transfer cost and if there are S number of
+
+98
+00:10:26,139 --> 00:10:32,929
+seeks and every seek time is t S, then this
+is the seeking cost and adding them together
+
+99
+00:10:32,929 --> 00:10:41,620
+we get the total cost of ah seek and transfer
+ah. For simplicity we will ignore ah the CPU
+
+100
+00:10:41,620 --> 00:10:47,990
+cost and we will also for now ah not consider
+the cost of finally, writing the result back
+
+101
+00:10:47,990 --> 00:10:54,659
+to the disk we will simply ah check as to
+what will it take to actually compute the
+
+102
+00:10:54,659 --> 00:10:58,539
+result.
+So, there are also it has to be noted that
+
+103
+00:10:58,539 --> 00:11:05,399
+there are also several algorithms to reduce
+the disk I/O ah we can do that by using extra
+
+104
+00:11:05,399 --> 00:11:10,909
+buffer space for example, one block has been
+read in and we are just using one record of
+
+105
+00:11:10,909 --> 00:11:15,769
+that if in the next operation we have to use
+some record which is already existing in that
+
+106
+00:11:15,769 --> 00:11:21,230
+block and ah if that block is maintained in
+that buffer then we do not need to go back
+
+107
+00:11:21,230 --> 00:11:26,789
+to the disk and actually read the ah block
+once again.
+
+108
+00:11:26,789 --> 00:11:32,129
+So, the more of the buffer space that we can
+ah provide naturally the performance would
+
+109
+00:11:32,129 --> 00:11:37,549
+become better, but certainly; that means,
+that the memory required for keeping the buffer
+
+110
+00:11:37,549 --> 00:11:46,129
+would be higher and ah it is also often ah
+difficult to decide as to ah I mean estimate
+
+111
+00:11:46,129 --> 00:11:51,970
+a query as to if I am looking for a particular
+block whether it is already there in the buffer.
+
+112
+00:11:51,970 --> 00:11:57,670
+So, that the I/O can be avoided or ah it needs
+to be actually read back from the disk, but
+
+113
+00:11:57,669 --> 00:12:05,009
+these are some of the you know cost measures
+that ah are used ah in a more sophisticated
+
+114
+00:12:05,009 --> 00:12:11,279
+cost function, but we will simply use the
+seek and read cost from the disk in terms
+
+115
+00:12:11,279 --> 00:12:19,059
+of blocks to estimate our ah cost of the different
+operation. So, let us ah look at ah sample
+
+116
+00:12:19,059 --> 00:12:26,609
+algorithms for ah different basic SQL operation.
+So, the first and most common SQL operation
+
+117
+00:12:26,610 --> 00:12:31,240
+is selection as you all know.
+So, the selection for selection we discuss
+
+118
+00:12:31,240 --> 00:12:39,100
+in multiple algorithms for different ah situations
+the first ah algorithm is here we are calling
+
+119
+00:12:39,100 --> 00:12:45,490
+it as algorithm A1 is a linear search. So,
+what we do we just ah need to do some selection.
+
+120
+00:12:45,490 --> 00:12:53,830
+So, we scan the say we are looking for a result
+ah of couple of records and or a single record
+
+121
+00:12:53,830 --> 00:12:59,200
+then we just scan the file from one end to
+the other we look for all the records and
+
+122
+00:12:59,200 --> 00:13:02,020
+ah check whether they satisfy the selection
+condition.
+
+123
+00:13:02,019 --> 00:13:10,909
+So, the cost ah for that would be ah ah b
+r block transfers if there are ah if ah b
+
+124
+00:13:10,909 --> 00:13:16,789
+r is a number of blocks containing records
+from relation r then b r blocks have to be
+
+125
+00:13:16,789 --> 00:13:23,110
+read and one seek has to happen. Now, if the
+selection is on a key attribute ah and we
+
+126
+00:13:23,110 --> 00:13:28,600
+can stop find on finding the record and on
+the average we can expect that ah we will
+
+127
+00:13:28,600 --> 00:13:34,590
+be able to find it by having read half of
+the record. So, b r by 2 block transfers plus
+
+128
+00:13:34,590 --> 00:13:41,180
+1 seek so, if I if I write it in the notation
+that we had used earlier this b i by 2 into
+
+129
+00:13:41,179 --> 00:13:48,629
+the transfer cost plus one seek cost.
+So, this should give us the cost of the ah
+
+130
+00:13:48,629 --> 00:13:55,620
+finding out the particular record from any
+ah file ah if we are doing a linear search
+
+131
+00:13:55,620 --> 00:14:01,529
+if we are doing a linear scan. So, the advantage
+of this is it can be applied irrespective
+
+132
+00:14:01,529 --> 00:14:08,149
+of the condition, ordering of the records
+ah whether or not the index is available and
+
+133
+00:14:08,149 --> 00:14:12,159
+so, on.
+So, this could be the fallback ah in any case
+
+134
+00:14:12,159 --> 00:14:18,600
+when we want to do that and ah just you may
+note that ah in memory when we search we say
+
+135
+00:14:18,600 --> 00:14:24,340
+that we will keep the data sorted and binary
+search ah is efficient, but that is not the
+
+136
+00:14:24,340 --> 00:14:30,528
+case for us ah here because as you know the
+data is not stored sequentially it is in terms
+
+137
+00:14:30,528 --> 00:14:36,259
+of a tree structure. So, when the index is
+available we will do the index based search
+
+138
+00:14:36,259 --> 00:14:42,929
+otherwise ah we will have to do some kind
+of a linear scan alone. So, this was the first
+
+139
+00:14:42,929 --> 00:14:49,588
+algorithm that ah we can think of.
+Now, if now let us assume that it is the situation
+
+140
+00:14:49,589 --> 00:14:56,620
+is such that we have some index on the b tree
+b plus tree that we are using to going to
+
+141
+00:14:56,620 --> 00:15:03,220
+do the selection on and let us assume that
+h I is the height of that b plus tree. So,
+
+142
+00:15:03,220 --> 00:15:10,160
+the second algorithm ah is is good if we are
+using a primary index and we are looking for
+
+143
+00:15:10,159 --> 00:15:15,269
+equality on a key that whether it matches
+certain key. So, what will have to do we we
+
+144
+00:15:15,269 --> 00:15:22,569
+know that in b plus t ah if the if the height
+is h I then we will be able to find the leaf
+
+145
+00:15:22,570 --> 00:15:33,190
+node surely by h I number of ah block transfers
+because ah we will be a h I is the height
+
+146
+00:15:33,190 --> 00:15:37,570
+of the tree.
+So, this is a number of ah nodes ah the number
+
+147
+00:15:37,570 --> 00:15:44,240
+of blocks that we will need to read. So, if
+each one of that will take a transfer time
+
+148
+00:15:44,240 --> 00:15:48,060
+plus a seek time because they are not consecutively
+located. So, everything they will have to
+
+149
+00:15:48,059 --> 00:15:55,208
+be ah will need to seek them. So, that will
+be h I times t T plus t S and we will need
+
+150
+00:15:55,208 --> 00:16:02,879
+one additional block transfer to actually
+get the data ah get the record read it. So,
+
+151
+00:16:02,879 --> 00:16:08,110
+that will give us cost that we have shown
+here ah.
+
+152
+00:16:08,110 --> 00:16:14,750
+In a variant of this algorithm A3 we may be
+using a primary index, but we are looking
+
+153
+00:16:14,750 --> 00:16:20,639
+for equality on a non key. So, if you are
+looking for equality on a non key since is
+
+154
+00:16:20,639 --> 00:16:27,230
+a non key then certainly in the result ah
+we may have multiple records, but the records
+
+155
+00:16:27,230 --> 00:16:30,970
+will be on consecutive blocks because we are
+using a primary index.
+
+156
+00:16:30,970 --> 00:16:38,100
+So, if b is the number of blocks containing
+matching records then ah we will ah need to
+
+157
+00:16:38,100 --> 00:16:46,970
+have say this is a cost to find out the the
+first one and ah then they from consecutively
+
+158
+00:16:46,970 --> 00:16:54,610
+they are on. We will need to locate the next
+record and the b blocks for transferring all
+
+159
+00:16:54,610 --> 00:16:59,180
+the matching records this is the kind of cost
+that will need to go through natural you can
+
+160
+00:16:59,179 --> 00:17:04,658
+see that in these cases all these cost expressions
+are better than what we were getting in terms
+
+161
+00:17:04,659 --> 00:17:09,770
+of doing a linear search.
+If we look into a few of the other situations
+
+162
+00:17:09,769 --> 00:17:14,328
+for example let us say instead of primary
+index if I have a secondary index and you
+
+163
+00:17:14,328 --> 00:17:21,039
+are looking for a equality or non key ah ah
+then you can retrieve a single record if the
+
+164
+00:17:21,039 --> 00:17:25,009
+search key is candidate key. If it is a candidate
+key then we know that even though it is not
+
+165
+00:17:25,009 --> 00:17:30,990
+a primary key, but certainly 2 tuples can
+never ah match on them and still exist. So,
+
+166
+00:17:30,990 --> 00:17:37,029
+it is a candidate key we will need to have
+we will get only a single record and ah therefore,
+
+167
+00:17:37,029 --> 00:17:42,009
+this is a cost expression that you will get,
+but if it is not a candidate key then there
+
+168
+00:17:42,009 --> 00:17:45,289
+could be multiple records ah that will have
+to be finally, retrieved.
+
+169
+00:17:45,289 --> 00:17:52,230
+So, if there are n records then first you
+will need h I to locate ah the first record
+
+170
+00:17:52,230 --> 00:17:59,039
+and ah times of course, h I times the transfer
+plus seek cost and if there are n records
+
+171
+00:17:59,039 --> 00:18:03,519
+then you will need to ah every time each one
+of them because they are on secondary index
+
+172
+00:18:03,519 --> 00:18:08,049
+and non key. So, you have to retrieve them
+one by one and every time you will need a
+
+173
+00:18:08,049 --> 00:18:13,119
+search you will need seek and transfer time
+and this can as you can understand could be
+
+174
+00:18:13,119 --> 00:18:19,308
+quite expensive if n turns out to be large
+which will often be the case ah.
+
+175
+00:18:19,308 --> 00:18:26,129
+We can implement different this is a very
+common selection condition where ah we have
+
+176
+00:18:26,130 --> 00:18:31,570
+these kind of conditions that we are selecting
+on ah less than equal to or greater than equal
+
+177
+00:18:31,569 --> 00:18:36,649
+to kind of condition.
+So, ah we can implement this using a linear
+
+178
+00:18:36,650 --> 00:18:43,519
+file scan or by using indices in in a certain
+way using indices we will certainly have a
+
+179
+00:18:43,519 --> 00:18:50,980
+better performance. So, ah if we have a if
+we have a primary index and we are using comparison
+
+180
+00:18:50,980 --> 00:18:58,740
+then what we will we can certainly decide
+is we need to find out the first tuple which
+
+181
+00:18:58,740 --> 00:19:05,410
+matches this condition that is ah a is greater
+than equal to v and then once we have found
+
+182
+00:19:05,410 --> 00:19:12,050
+that in a primary index ah the following ones
+will all be ordered in that manner. So, I
+
+183
+00:19:12,049 --> 00:19:15,859
+can scan sequentially from there and ah get
+them.
+
+184
+00:19:15,859 --> 00:19:22,479
+So, finding the first one will give me ah
+finding the first one will give will take
+
+185
+00:19:22,480 --> 00:19:28,740
+this cost because I am doing a search on the
+primary index and then if there are b blocks
+
+186
+00:19:28,740 --> 00:19:34,161
+containing the result records then this is
+the cost that will need. Whereas, ah we can
+
+187
+00:19:34,161 --> 00:19:39,759
+do something different also we can just start
+ah sequentially based on the primary index
+
+188
+00:19:39,759 --> 00:19:47,390
+from the beginning and ah check for the till
+we get a tuple which is greater than v and
+
+189
+00:19:47,390 --> 00:19:54,590
+then we ah do not use the index we can simply
+ah we know because these are all ordered in
+
+190
+00:19:54,589 --> 00:19:59,129
+terms of the primary index. So, that will
+be the ah search result that can be easily
+
+191
+00:19:59,130 --> 00:20:06,540
+produced. So, here we are using a linear scan
+and that itself will give a good result.
+
+192
+00:20:06,539 --> 00:20:12,000
+But if we are doing a similar operation based
+on a on a secondary index we are doing composition
+
+193
+00:20:12,000 --> 00:20:18,180
+on a secondary index then we will again use
+the index to find the first index entry greater
+
+194
+00:20:18,180 --> 00:20:22,490
+than equal to the key value and then scan
+the index sequentially.
+
+195
+00:20:22,490 --> 00:20:29,279
+So, we will get a cost which is similar to
+what we saw earlier and ah in the other condition
+
+196
+00:20:29,279 --> 00:20:35,019
+we can just scan the leaf pages of index finding
+the pointers to record still the first entry
+
+197
+00:20:35,019 --> 00:20:40,129
+so, we are doing more a sequential one. So,
+in either case retrieving records that are
+
+198
+00:20:40,130 --> 00:20:44,780
+pointed to requires I/O for each record because
+they are on a secondary index. So, they are
+
+199
+00:20:44,779 --> 00:20:50,178
+not necessarily consecutive and residing on
+the on the same block. So, they may be all
+
+200
+00:20:50,179 --> 00:20:55,769
+distributed across different blocks and ah
+in such cases it may turn out that actually
+
+201
+00:20:55,769 --> 00:21:00,509
+is doing a simple linear scan may turn out
+to be cheaper.
+
+202
+00:21:00,509 --> 00:21:09,150
+Often we have ah select conditions which are
+conjunction. So, it could be conjunctive select
+
+203
+00:21:09,150 --> 00:21:16,059
+and may be using only one index in that case
+it depends on if there are n conditions then
+
+204
+00:21:16,058 --> 00:21:22,000
+we will need to depending on the combination
+of this condition theta n and the algorithms
+
+205
+00:21:22,000 --> 00:21:29,039
+that we have seen here we can evaluate as
+to which strategy will give that ah least
+
+206
+00:21:29,039 --> 00:21:34,168
+cost for this condition ah.
+So, we will do the access based on that and
+
+207
+00:21:34,169 --> 00:21:39,630
+then once we have accessed that tuple then
+we will try out the other conditions on the
+
+208
+00:21:39,630 --> 00:21:46,070
+tuples that have been fetched into the memory
+buffer. You can also do conjunctive ah selection
+
+209
+00:21:46,069 --> 00:21:52,798
+using composite index we can there are depending
+on the attributes involved in theta 1, theta
+
+210
+00:21:52,798 --> 00:21:59,500
+2, theta n we may have a multi key index and
+that decision of course, as to whether I have
+
+211
+00:21:59,500 --> 00:22:04,369
+a multi key index or what is that multi key
+index is of course, dependent on the earlier
+
+212
+00:22:04,369 --> 00:22:08,179
+statistics.
+But if we have some multi key index which
+
+213
+00:22:08,180 --> 00:22:12,960
+are appropriate composite index then we can
+use that and more directly get the result
+
+214
+00:22:12,960 --> 00:22:19,308
+which will be more efficient. Or we can do
+conjunctive selection by intersection of identifiers
+
+215
+00:22:19,308 --> 00:22:25,129
+which require indices with record pointers
+and will use corresponding index for each
+
+216
+00:22:25,130 --> 00:22:30,809
+condition and then fetch the records which
+is simple to understand.
+
+217
+00:22:30,808 --> 00:22:37,730
+Disjunction ah this that was conjunction if
+we want to do disjunction then ah if we have
+
+218
+00:22:37,730 --> 00:22:44,250
+all conditions all of these conditions have
+index on them if it is available index then
+
+219
+00:22:44,250 --> 00:22:49,359
+we can do something better. Otherwise if we
+do not have that then it is better to do a
+
+220
+00:22:49,359 --> 00:22:56,609
+linear scan because the conditions all triples
+which satisfies theta 1 will be there in the
+
+221
+00:22:56,609 --> 00:23:01,129
+result, those which satisfy theta 2 may or
+may not satisfy the others will also be there
+
+222
+00:23:01,130 --> 00:23:05,030
+and so, on.
+So, what we can do is ah if we have index
+
+223
+00:23:05,029 --> 00:23:10,058
+on each one of these based on each one of
+these conditions then they can use corresponding
+
+224
+00:23:10,058 --> 00:23:15,119
+index for each condition get the results and
+take their union and then fetch these records.
+
+225
+00:23:15,119 --> 00:23:21,629
+So, these are ah some of the so, I i just
+gave you a quick outline in terms of some
+
+226
+00:23:21,630 --> 00:23:29,650
+of the different ah algorithms that selection
+could use. Negation of a condition could also
+
+227
+00:23:29,650 --> 00:23:35,750
+be done, but ah it usually requires a linear
+scan on the file that is there is not much
+
+228
+00:23:35,750 --> 00:23:41,799
+optimization that you can think of here. The
+next operation which is often required may
+
+229
+00:23:41,799 --> 00:23:47,599
+not ah be explicitly, but in terms of doing
+other operations is sorting.
+
+230
+00:23:47,599 --> 00:23:53,459
+So, if we may build an index on the relation
+then we can use that index to read the relation
+
+231
+00:23:53,460 --> 00:23:59,279
+in sorted order, this is what we have already
+discussed that ah b plus tree in the in order
+
+232
+00:23:59,279 --> 00:24:04,319
+traversal will always give you the sorted
+order. So, that may lead to one disk access
+
+233
+00:24:04,319 --> 00:24:11,759
+for each ah tuple ah at times. Now that if
+the relation can totally if all the records
+
+234
+00:24:11,759 --> 00:24:17,369
+can totally fit into the memory then we can
+use some in memory algorithm like quicksort,
+
+235
+00:24:17,369 --> 00:24:20,189
+but often that will not be the case relations
+are much bigger.
+
+236
+00:24:20,190 --> 00:24:27,130
+So, what will have to do is will have to take
+ah recourse to external sort and merge ah
+
+237
+00:24:27,130 --> 00:24:29,770
+strategy which is a very old strategy, but
+very effective.
+
+238
+00:24:29,769 --> 00:24:36,150
+So, just to illustrate that suppose ah sorry
+so, suppose these are this is the initial
+
+239
+00:24:36,150 --> 00:24:41,210
+relation so, what we do certainly we cannot
+ah read that whole relation in terms of memory
+
+240
+00:24:41,210 --> 00:24:49,298
+ah into a memory. So, what we do we ah take
+different parts and say we are taking in groups
+
+241
+00:24:49,298 --> 00:24:55,829
+of 3 just for illustration and ah make them
+and sort them in memory. So, take them so,
+
+242
+00:24:55,829 --> 00:25:00,359
+take that money records which you can fit
+into the memory and sort them.
+
+243
+00:25:00,359 --> 00:25:07,849
+So, once you have sorted them then you can
+these are 2 sorted ah sub lists of the original
+
+244
+00:25:07,849 --> 00:25:12,329
+set of records. So, now, you can merge them
+according to the merge strategy so, this is
+
+245
+00:25:12,329 --> 00:25:17,720
+the sample merge saw strategy and again you
+write this back you do the similar things
+
+246
+00:25:17,720 --> 00:25:26,000
+again here write them back. So, now, you have
+2 bigger ah short sorted lists so, so these
+
+247
+00:25:26,000 --> 00:25:32,000
+are called runs. So, the first step creates
+the runs and now after you have done merging
+
+248
+00:25:32,000 --> 00:25:39,000
+once you get longer runs then again you merge
+them into a bigger run and depending on the
+
+249
+00:25:39,000 --> 00:25:44,970
+on the actual size of the file and the size
+of the memory that directly fits in you might
+
+250
+00:25:44,970 --> 00:25:49,929
+ah be doing multiple such runs till you get
+to the sorted output.
+
+251
+00:25:49,929 --> 00:25:57,860
+So, ah that is a very external ah sort merge
+is a very effective strategy that the databases
+
+252
+00:25:57,859 --> 00:26:04,189
+ah will always use and the efficiency of that
+or the cost of that depends on the size of
+
+253
+00:26:04,190 --> 00:26:11,990
+the memory in terms of pages as to what can
+ah fit a a complete one run data. So, this
+
+254
+00:26:11,990 --> 00:26:16,919
+is ah whatever I have described is simply
+given here in steps of algorithm.
+
+255
+00:26:16,919 --> 00:26:21,860
+So, that is a sort that is that here is a
+merge so, you can go through that and convince
+
+256
+00:26:21,859 --> 00:26:26,000
+yourself that this is what algorithm is actually
+doing.
+
+257
+00:26:26,000 --> 00:26:30,740
+And there are 2 cases you have to consider
+whether your data fits into the memory otherwise
+
+258
+00:26:30,740 --> 00:26:35,179
+if your it does not fit into the memory then
+multiple passes are required and these are
+
+259
+00:26:35,179 --> 00:26:42,470
+the steps of the algorithm that will be followed.
+Now next to sorting certainly we have often
+
+260
+00:26:42,470 --> 00:26:49,700
+talked about that join is a very required
+operation in ah relational database in terms
+
+261
+00:26:49,700 --> 00:26:54,308
+of SQL.
+So, let us see what will it take to do a join
+
+262
+00:26:54,308 --> 00:27:01,329
+so, first we ah talk about ah so, the join
+could be done in several ways nested loop
+
+263
+00:27:01,329 --> 00:27:06,799
+join, block nested loop join, indexed nested
+loop join, merge join, hash join. So, these
+
+264
+00:27:06,799 --> 00:27:12,970
+are different ah strategies of doing join
+we will just illustrate the algorithms for
+
+265
+00:27:12,970 --> 00:27:18,079
+the first 3 strategies.
+So, nested loop join what we are trying to
+
+266
+00:27:18,079 --> 00:27:24,020
+do is very simple we have 2 relations we have
+2 relations here ah r and s and we have a
+
+267
+00:27:24,020 --> 00:27:29,190
+condition theta and we are doing a theta join.
+So, what needs to be done in terms of theta
+
+268
+00:27:29,190 --> 00:27:33,200
+join in the relational algebra what do we
+do we do a Cartesian product and then in the
+
+269
+00:27:33,200 --> 00:27:36,360
+Cartesian product we check out this theta
+condition.
+
+270
+00:27:36,359 --> 00:27:43,109
+So, the basic Cartesian product is all records
+of r will have to be matched will have to
+
+271
+00:27:43,109 --> 00:27:49,349
+be connected to all record of s. So, that
+naturally can be done using a nested for loop
+
+272
+00:27:49,349 --> 00:27:57,428
+so, for each tuple ah in our you try out each
+tuple n s take the t r, t s pair and if they
+
+273
+00:27:57,429 --> 00:28:03,190
+satisfy the condition theta then they go to
+the output otherwise you leave that otherwise
+
+274
+00:28:03,190 --> 00:28:11,160
+ah you discard that and here we say r is the
+outer relation and this s is the inner relation.
+
+275
+00:28:11,160 --> 00:28:16,910
+So, naturally since you have to examine every
+pair this could be quite expensive to perform
+
+276
+00:28:16,910 --> 00:28:25,000
+and the cost may be quite high.
+So, if we ah look at what could be the possible
+
+277
+00:28:25,000 --> 00:28:32,880
+cost. So, if n r is the number of ah records
+in relation r and b r is the number of blocks
+
+278
+00:28:32,880 --> 00:28:40,250
+in which they exist then for every record
+you have to actually ah access all the blocks
+
+279
+00:28:40,250 --> 00:28:49,659
+of the other ah every for every tuple of relation
+r you have to actually access all the blocks
+
+280
+00:28:49,659 --> 00:28:56,400
+of relation s. So, you get this and you have
+to access all the blocks of relation r.
+
+281
+00:28:56,400 --> 00:29:02,669
+So, this is the kind of block transfer that
+you will get you will require and naturally
+
+282
+00:29:02,669 --> 00:29:07,490
+you will require so many seek because every
+time you have to find out you have to go and
+
+283
+00:29:07,490 --> 00:29:15,620
+seek for that. So, one optimization that is
+very common is what you can do is if if the
+
+284
+00:29:15,619 --> 00:29:21,399
+smaller relation can entirely fit into the
+memory then you do not need to do this repeated
+
+285
+00:29:21,400 --> 00:29:27,309
+ah read for that both the relations.
+So, if it ah fits into that then the cost
+
+286
+00:29:27,308 --> 00:29:33,408
+will significantly reduce to b r plus b l
+block transfers because you want the smaller
+
+287
+00:29:33,409 --> 00:29:38,780
+one has already fit. So, you just need to
+access one relation once you need to read
+
+288
+00:29:38,779 --> 00:29:44,230
+the smaller relation and put it in the memory
+and then you just need to read the other relation
+
+289
+00:29:44,230 --> 00:29:49,990
+one after the ah other. So, b r blocks of
+that and so, you are seeking only twice one
+
+290
+00:29:49,990 --> 00:29:54,048
+for reading r, one for reading s there is
+a 2 seeks.
+
+291
+00:29:54,048 --> 00:30:04,289
+So, here I have just ah shown a simple example
+of ah computing the join of student and takes
+
+292
+00:30:04,289 --> 00:30:11,210
+let us say student has 5000 records and ah
+spread over 100 blocks takes relation has
+
+293
+00:30:11,210 --> 00:30:19,410
+10000 records spread over 400 blocks then
+if you apply the ah formula above you will
+
+294
+00:30:19,410 --> 00:30:23,980
+find that ah if student is the outer relation
+you have so, many block transfer and so, many
+
+295
+00:30:23,980 --> 00:30:28,679
+seeks. Whereas, if takes is the outer relation
+then you have so many block transfers and
+
+296
+00:30:28,679 --> 00:30:32,940
+so many seeks.
+So, you can ah understand you can see here
+
+297
+00:30:32,940 --> 00:30:38,980
+that ah if you make student as a outer relation
+then you have much larger number of block
+
+298
+00:30:38,980 --> 00:30:44,400
+transfers though you need to do less number
+of seek, but ah taking ah, but using takes
+
+299
+00:30:44,400 --> 00:30:49,080
+as a outer relation you have much less block
+transfers, but more number of seek usually
+
+300
+00:30:49,079 --> 00:30:54,740
+seek is less expensive than ah less costly
+than the block transfer.
+
+301
+00:30:54,740 --> 00:31:00,298
+So, will possibly in with this kind of a statistics
+if it is available then we will possibly take
+
+302
+00:31:00,298 --> 00:31:09,230
+takes as outer relation and ah student as
+the inner one ah. You can refine this ah.
+
+303
+00:31:09,230 --> 00:31:14,500
+Strategy by doing a block nesting that is
+ah instead of ah taking every tuple of the
+
+304
+00:31:14,500 --> 00:31:20,179
+relation you can take every block of the relation.
+So, for every block of relation r you try
+
+305
+00:31:20,179 --> 00:31:26,081
+to match with you try to combine with every
+block of relation s and then within every
+
+306
+00:31:26,080 --> 00:31:33,449
+block of relation r the block b r you take
+tuple and within b s you take t S and then
+
+307
+00:31:33,450 --> 00:31:40,580
+you do whatever we are doing earlier, but
+naturally you get a much ah better ah performance.
+
+308
+00:31:40,579 --> 00:31:45,889
+Because you are now optimizing based on the
+block reads only you are not reading every
+
+309
+00:31:45,890 --> 00:31:53,000
+tuple every time you need. So, I will not
+go through ah ah this ah you know simple algebra
+
+310
+00:31:53,000 --> 00:32:03,259
+to show that if you have a ah memory size
+of M ah M blocks that your cost will significantly
+
+311
+00:32:03,259 --> 00:32:09,960
+decrease and, but the larger the M your cost
+will come down by a factor of this M. So,
+
+312
+00:32:09,960 --> 00:32:14,789
+block nested loop join will usually be far
+more efficient than the simple nested loop
+
+313
+00:32:14,789 --> 00:32:18,720
+join.
+The third strategy which we will use very
+
+314
+00:32:18,720 --> 00:32:25,539
+often is efficiently applicable if you are
+ah if your join is an equijoin or a natural
+
+315
+00:32:25,539 --> 00:32:30,359
+join as we have seen that we often need to
+do a natural join. So, there are 2 attributes
+
+316
+00:32:30,359 --> 00:32:36,709
+between these 2 relations on which ah during
+join the values that they match are retained,
+
+317
+00:32:36,710 --> 00:32:42,750
+the values that they do not match are ah not
+retained in the natural join.
+
+318
+00:32:42,750 --> 00:32:48,730
+So, if we now assume that we have an index
+available on the inner relation then every
+
+319
+00:32:48,730 --> 00:32:56,130
+time we go with the outer relation will be
+able to access the inner relation very efficiently
+
+320
+00:32:56,130 --> 00:33:02,460
+because for each tuple in the outer relation
+the index to look up the tuples in nests will
+
+321
+00:33:02,460 --> 00:33:08,909
+satisfy the condition will be found very efficiently
+because they are index. So, they will occur
+
+322
+00:33:08,909 --> 00:33:13,050
+if through the index I can find them in terms
+of the consecutivity.
+
+323
+00:33:13,049 --> 00:33:21,889
+So, ah there the cost in that case will turn
+out to be very simply the cost of ah the b
+
+324
+00:33:21,890 --> 00:33:29,030
+r which is ah the outer relation ah the number
+of blocks in the outer relation the seek and
+
+325
+00:33:29,029 --> 00:33:34,470
+transfer cost of that and then the number
+of record times, the estimated cost of a single
+
+326
+00:33:34,470 --> 00:33:41,200
+selection using the join condition. So, we
+often use the nested loop join when we have
+
+327
+00:33:41,200 --> 00:33:48,210
+to do equal join or natural join .
+So, here is an example with the same students
+
+328
+00:33:48,210 --> 00:33:57,200
+and takes ah ah example. So, it is shows that
+the cost of block ah nested join if you work
+
+329
+00:33:57,200 --> 00:34:04,850
+out for the block nested join then you have
+so, many 40,100 block transfers and 200 seek.
+
+330
+00:34:04,849 --> 00:34:10,739
+Whereas, if you do index to one on the assuming
+that the smaller relation the inner relation
+
+331
+00:34:10,739 --> 00:34:18,559
+has a index then you have 25,000 block transfer
+and seek. So, ah this will turn out to be
+
+332
+00:34:18,559 --> 00:34:23,549
+a naturally more efficient way of implementing
+the join.
+
+333
+00:34:23,550 --> 00:34:28,769
+So, these are there are several other strategies
+particularly hashing based strategies, merging
+
+334
+00:34:28,769 --> 00:34:33,369
+based strategies which we are not discussing
+here, but there are different strategies through
+
+335
+00:34:33,369 --> 00:34:36,800
+which you can do join in more and more efficient
+manner.
+
+336
+00:34:36,800 --> 00:34:41,470
+Couple of ah other operations which are often
+required is duplicate elimination because
+
+337
+00:34:41,469 --> 00:34:47,928
+ah if ah they we know that there are duplicate
+records cannot be kept, duplicate in the sense
+
+338
+00:34:47,929 --> 00:34:54,119
+the records which match in the ah in the key
+field and the duplicate will often happen
+
+339
+00:34:54,119 --> 00:34:58,500
+in terms of the result, they will happen in
+terms of when we do projection, we will need
+
+340
+00:34:58,500 --> 00:35:03,159
+to do aggregation set operations outer join
+and so, on. So, the first 3 we will quickly
+
+341
+00:35:03,159 --> 00:35:07,719
+out like.
+So, duplicate ah naturally can be very easily
+
+342
+00:35:07,719 --> 00:35:13,848
+eliminated through sorting, they can be done
+through hashing also because if we sort they
+
+343
+00:35:13,849 --> 00:35:19,110
+will come on side by they will come consecutively
+after the sort, if we hash then they will
+
+344
+00:35:19,110 --> 00:35:24,390
+necessarily hash to the same value which becomes
+easier to check whether they are identical
+
+345
+00:35:24,389 --> 00:35:31,079
+or not. If whenever we are doing projection
+we can project on each tuple and then you
+
+346
+00:35:31,079 --> 00:35:37,900
+can ah perform a duplicate elimination to
+actually get to the final result. Aggregation
+
+347
+00:35:37,900 --> 00:35:43,680
+ah group that is whatever you do group by
+kind of.
+
+348
+00:35:43,679 --> 00:35:50,000
+So, aggregation ah is certainly will be efficiently
+done if you have again done sorting because
+
+349
+00:35:50,000 --> 00:35:54,599
+if you are grouping by something then if you
+have sorted on that those elements will come
+
+350
+00:35:54,599 --> 00:36:00,000
+together and or if you are hashing then they
+will also come together. So, you can easily
+
+351
+00:36:00,000 --> 00:36:03,800
+do the computation on that.
+And what you can do is instead of for example,
+
+352
+00:36:03,800 --> 00:36:08,760
+you are doing a count or you are doing a minimum,
+maximum, sum this kind of all of these are
+
+353
+00:36:08,760 --> 00:36:14,890
+ah associative operations. So, you can ah
+do it in parts that if you have done ah in
+
+354
+00:36:14,889 --> 00:36:20,159
+this sorted order, in the hashed order if
+you have done the sum of 10 records then you
+
+355
+00:36:20,159 --> 00:36:24,659
+can actually do not need these 10 records
+when you do the sum for the next 10 records
+
+356
+00:36:24,659 --> 00:36:31,221
+and so, on. So, in this manner the aggregation
+can be efficiently implemented. So, we can
+
+357
+00:36:31,221 --> 00:36:38,099
+ah for average keep sum and count and divide
+the sum by count at the end and so, on.
+
+358
+00:36:38,099 --> 00:36:46,019
+So, we have ah in this module we have just
+given a very brief outline of ah what is what
+
+359
+00:36:46,019 --> 00:36:52,130
+are the steps involved in query processing
+and what are the measures that ah define a
+
+360
+00:36:52,130 --> 00:36:59,059
+query cost typically and we have been talked
+about some of the simple algorithms for selection,
+
+361
+00:36:59,059 --> 00:37:06,190
+sorting, join and ah aggregation operations.
+In the next module we will talk about ah elementary
+
+362
+00:37:06,190 --> 00:37:08,800
+optimization strategies for processing of
+queries.
+

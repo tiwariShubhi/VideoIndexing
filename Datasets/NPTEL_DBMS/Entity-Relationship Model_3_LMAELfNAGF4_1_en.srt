@@ -1,0 +1,1549 @@
+﻿1
+00:00:16,160 --> 00:00:21,640
+.
+Welcome to module 15 of Database Management
+
+2
+00:00:21,640 --> 00:00:29,570
+Systems. We have been discussing about entity
+relationship model and this is the third and
+
+3
+00:00:29,570 --> 00:00:38,799
+the closing module on this topic .
+So, in the last module we have discussed about
+
+4
+00:00:38,799 --> 00:00:48,369
+E-R diagram and we have also seen how E-R
+model can be converted to a relational schema.
+
+5
+00:00:48,369 --> 00:00:57,161
+In this ah module we will try to go through
+a few extended features of E-R model, try
+
+6
+00:00:57,161 --> 00:01:05,759
+to show some of the more complicated situations
+how they can be modeled in the E-R model and
+
+7
+00:01:05,759 --> 00:01:14,670
+along with that we will discuss a variety
+of design issues that will follow .
+
+8
+00:01:14,670 --> 00:01:24,179
+So, these are the outline . So, we start with
+extended entity relationship features . The
+
+9
+00:01:24,179 --> 00:01:32,320
+first that we note is ah so, far in the entity
+relationship model we have talked about relationships
+
+10
+00:01:32,319 --> 00:01:40,739
+between two entity sets. So, we have talked
+about the student attending courses or instructors
+
+11
+00:01:40,739 --> 00:01:48,318
+advising students and so, on. So, such relationships
+are naturally called binary, but it is possible
+
+12
+00:01:48,319 --> 00:01:56,420
+that more than two entity sets, let us say
+three entity sets could be involved in the
+
+13
+00:01:56,420 --> 00:02:04,620
+same relation and we show an example here
+where we have three entity sets instructor,
+
+14
+00:02:04,620 --> 00:02:11,420
+student and project.
+So, the project entity set is a list of projects
+
+15
+00:02:11,419 --> 00:02:18,539
+ah being done by the students or to be done
+by the students. So, the relationship project
+
+16
+00:02:18,539 --> 00:02:27,590
+guide is a relationship between the guide
+who is an instructor, the student who will
+
+17
+00:02:27,590 --> 00:02:34,409
+do the project and the project that has to
+be performed. So, all three together define
+
+18
+00:02:34,409 --> 00:02:46,199
+this relationship; so, in such cases it is
+ah possible in E-R model that we can represent
+
+19
+00:02:46,199 --> 00:02:56,969
+it conveniently as a non binary relationship.
+Now this is an E-R diagram this is called
+
+20
+00:02:56,969 --> 00:03:04,990
+a ternary relationship R.
+Now we have talked about ah cardinality constraints
+
+21
+00:03:04,990 --> 00:03:14,350
+on binary relationship one to one, many to
+one one to many and many to many. And we specified
+
+22
+00:03:14,349 --> 00:03:20,650
+that ah if we have a binary relationship say
+this is one entity set and this is another
+
+23
+00:03:20,650 --> 00:03:27,430
+entity set and we have a relationship. So,
+if we just connect them it means a many to
+
+24
+00:03:27,430 --> 00:03:36,030
+many relation, but if we have an arrow on
+one side entity set then it means on the arrow
+
+25
+00:03:36,030 --> 00:03:43,500
+side its one.
+So, this is ah from entity set E 1 to E 2
+
+26
+00:03:43,500 --> 00:03:49,430
+this is one to many; we could have arrow at
+both ends and; that means, one to one . Now
+
+27
+00:03:49,430 --> 00:03:55,790
+the question is how will that work out what
+will be the meaning of arrow in terms of a
+
+28
+00:03:55,790 --> 00:04:03,240
+ternary relationship.
+Now, in the case of ternary relationship or
+
+29
+00:04:03,240 --> 00:04:07,920
+this would generalize to relationships of
+higher degree whether where more than three
+
+30
+00:04:07,919 --> 00:04:17,439
+entity sets may be involved. We put a restriction
+that we will allow at most one arrow out of
+
+31
+00:04:17,439 --> 00:04:26,750
+the ternary relationship. So, we could ah
+have only if we if we look at if we look at
+
+32
+00:04:26,750 --> 00:04:33,790
+say this relationship then we could have an
+arrow only at this end .
+
+33
+00:04:33,790 --> 00:04:40,819
+But multiple arrows are not allowed and the
+reason is certainly to keep the semantics
+
+34
+00:04:40,819 --> 00:04:49,790
+of the cardinality meaningful. For example,
+if we have a ternary relationship between
+
+35
+00:04:49,790 --> 00:05:00,660
+A B and C let us say this is a A this is B
+and this is C and we have a ternary relationship
+
+36
+00:05:00,660 --> 00:05:11,970
+between them. And let us say if we have a
+more than one arrow; there for example, ah
+
+37
+00:05:11,970 --> 00:05:20,780
+suppose ah then we have say an arrow to B
+and an arrow to C the question is how should
+
+38
+00:05:20,779 --> 00:05:26,099
+we interpret that?
+Should we interpret that ah an entity of entity
+
+39
+00:05:26,100 --> 00:05:37,800
+set A is associated with unique entity from
+B and C together or should we associate, should
+
+40
+00:05:37,800 --> 00:05:47,689
+we interpret that the entities formed by the
+pair a B and the entity formed by the pair
+
+41
+00:05:47,689 --> 00:05:55,540
+A C are uniquely related. So, there is multiplicity
+of interpretation; if we allow more than one
+
+42
+00:05:55,540 --> 00:06:02,740
+arrow in case of eternity or higher degree
+relationship. So, what will follow for simplicity
+
+43
+00:06:02,740 --> 00:06:09,079
+in this course and that is what is followed
+often in practice; is in case of a ternary
+
+44
+00:06:09,079 --> 00:06:15,719
+or higher order relationship only one arrow
+will be allowed in that in it in that relationship
+
+45
+00:06:15,720 --> 00:06:21,910
+.
+Now, let us talk about specialization ah those
+
+46
+00:06:21,910 --> 00:06:31,419
+of you who have some background of object
+oriented systems would be familiar with the
+
+47
+00:06:31,418 --> 00:06:38,189
+notion of specialization and generalization
+in ah object oriented system. So, we say that
+
+48
+00:06:38,189 --> 00:06:45,360
+ah if we have a certain concept say we have
+a concept called person and ah then we say
+
+49
+00:06:45,360 --> 00:06:52,100
+that a student is a person; what we mean is
+a student is a specialization of person. And
+
+50
+00:06:52,100 --> 00:06:58,210
+person is a generalization of student and
+in that process student inherits all the attributes
+
+51
+00:06:58,209 --> 00:07:04,500
+of person, but in addition the student may
+have some specialized attributes.
+
+52
+00:07:04,500 --> 00:07:18,168
+So, what it means that if you look ah from
+from the perspective of such specialization;
+
+53
+00:07:18,168 --> 00:07:25,508
+say if I draw like this; this is an entity
+set A and this entity set B and ah to mark
+
+54
+00:07:25,509 --> 00:07:35,100
+the specialization we show an arrowhead with
+a blank triangle at that end. So, if we by
+
+55
+00:07:35,100 --> 00:07:45,081
+this what we mean is B is a A. So, B inherits
+all the properties of A, but can have some
+
+56
+00:07:45,081 --> 00:07:52,450
+more properties. So, if you look at all the
+entities that A may have you will find that
+
+57
+00:07:52,449 --> 00:07:59,009
+a subgroup of the entities in the entity set
+A have some additional common properties.
+
+58
+00:07:59,009 --> 00:08:08,360
+So, if A is set of persons and B is a set
+of students then A may have entities who which
+
+59
+00:08:08,360 --> 00:08:14,660
+represent people who are not students; who
+are employees, who could be retired and so,
+
+60
+00:08:14,660 --> 00:08:19,630
+on, but there will be a number of entities.
+So, who have the commonality of being student
+
+61
+00:08:19,629 --> 00:08:24,560
+they are enrolled in certain course of certain
+university and so on.
+
+62
+00:08:24,560 --> 00:08:32,788
+So, in terms of the E-R diagram E-R model
+what we do is we try to look at the entity
+
+63
+00:08:32,788 --> 00:08:40,309
+A and move top down . So, that whenever we
+find a group of entities which have certain
+
+64
+00:08:40,309 --> 00:08:49,219
+commonality; we move them into a lower separate,
+specialized entity set and relate these two
+
+65
+00:08:49,220 --> 00:08:52,009
+entity sets to the specialization relation
+.
+
+66
+00:08:52,009 --> 00:09:00,980
+So, these sub groups form lower level entity
+sets and ah as I said that it is designated
+
+67
+00:09:00,980 --> 00:09:08,639
+in a certain way. And as in the object oriented
+system the lower level entity set inherits
+
+68
+00:09:08,639 --> 00:09:15,299
+all the attributes and relationships of participation
+of the higher level entity set . So, here
+
+69
+00:09:15,299 --> 00:09:19,500
+is an example.
+Can say the person at the so, called root
+
+70
+00:09:19,500 --> 00:09:26,188
+of this hierarchy of specialization; it has
+a set of properties ID, name, street, city
+
+71
+00:09:26,188 --> 00:09:32,698
+and employee is another relationship; another
+entity set which is a specialization of person
+
+72
+00:09:32,698 --> 00:09:39,188
+relation person entity set.
+So, employee inherits all attributes ID name
+
+73
+00:09:39,188 --> 00:09:45,769
+street and city, but in addition the commonality
+of the entities in the employee entity set
+
+74
+00:09:45,769 --> 00:09:52,698
+is a fact that all of them have a salary attribute.
+A similar entity set student is a specialization
+
+75
+00:09:52,698 --> 00:09:59,359
+of person where the again all attributes are
+inherited, but there is a common attribute
+
+76
+00:09:59,360 --> 00:10:06,490
+called total credits which is common for all
+the students, but is not available or common
+
+77
+00:10:06,490 --> 00:10:11,330
+for the persons in general.
+And as you can see that it could be hierarchical
+
+78
+00:10:11,330 --> 00:10:17,278
+it could go further down employee could be
+specialized into instructor and secretary.
+
+79
+00:10:17,278 --> 00:10:24,539
+Again by the rule of ah specialization instructor
+will inherit all attributes of employee which
+
+80
+00:10:24,539 --> 00:10:32,188
+means that it will inherit attributes of person;
+which imply has inherited plus the employee
+
+81
+00:10:32,188 --> 00:10:38,349
+specific attributes salary. So, it will inherit
+all five of those attributes and then it adds
+
+82
+00:10:38,350 --> 00:10:44,470
+another attribute which is specific for the
+instructor which says a rank which is another
+
+83
+00:10:44,470 --> 00:10:50,249
+specific attribute that you have.
+Now, when we specialize a certain entity set
+
+84
+00:10:50,249 --> 00:10:56,409
+into two or more entity sets like we specialized
+person in employee and student; then there
+
+85
+00:10:56,409 --> 00:11:03,458
+could be different situations that could exist
+for example, certain entity may be a member
+
+86
+00:11:03,458 --> 00:11:11,719
+of both employee as well as ah student . If
+that happens then we say that their overlapping
+
+87
+00:11:11,720 --> 00:11:22,170
+entity sets or they could be disjoint where
+no member of instructor would be a member
+
+88
+00:11:22,169 --> 00:11:29,849
+of the secretary and vice versa.
+So, we say that this disjointness tell us
+
+89
+00:11:29,850 --> 00:11:36,528
+that no instructor can be a secretary and
+no secretary can be an instructor. Whereas,
+
+90
+00:11:36,528 --> 00:11:44,028
+overlapping ah specialized sets denote that
+well an employee may or may not be a student,
+
+91
+00:11:44,028 --> 00:11:49,470
+but it is possible that some employee is also
+a student and vice versa and that is how we
+
+92
+00:11:49,470 --> 00:12:00,199
+will represent this . And we will see that
+ah when we specialized the ah specialized
+
+93
+00:12:00,198 --> 00:12:07,678
+entity could be total or they could be partial.
+We will talk about that totality and partiality
+
+94
+00:12:07,678 --> 00:12:13,169
+little later; let us look at how do we represent
+this information in the relational schema
+
+95
+00:12:13,169 --> 00:12:20,688
+because as we have seen that whenever we have
+a E-R diagram; it is important to find out
+
+96
+00:12:20,688 --> 00:12:28,808
+what is the relational schema that will be
+corresponding to that E-R diagram or E-R model.
+
+97
+00:12:28,808 --> 00:12:34,649
+So, here we could do this in two ways one
+that we are showing here is form a schema
+
+98
+00:12:34,649 --> 00:12:40,958
+for the higher level entity. So, form a schema
+for the person as you can see here that person
+
+99
+00:12:40,958 --> 00:12:47,159
+is described in terms of four attributes and
+this form a schema for each of the lower level
+
+100
+00:12:47,159 --> 00:12:53,509
+entity set where you include the primary key
+of the higher level entity set.
+
+101
+00:12:53,509 --> 00:13:00,149
+So, when you are forming the schema of person
+of student which is a specialization of person
+
+102
+00:13:00,149 --> 00:13:08,639
+you include the ID which is the key of the
+higher level entity set person. And along
+
+103
+00:13:08,639 --> 00:13:13,730
+with that you include the so, called local
+attributes or attributes which are specific
+
+104
+00:13:13,730 --> 00:13:19,440
+to this low level entity set in this case
+total credit similar thing happens with employee.
+
+105
+00:13:19,440 --> 00:13:26,910
+Now this representation is in a way optimized
+because ah you are representing the information
+
+106
+00:13:26,909 --> 00:13:33,328
+only once when it is needed, but the drawback
+is if you have to find out information about
+
+107
+00:13:33,328 --> 00:13:41,128
+say employee; then you will not only have
+to access the employee entity set or the corresponding
+
+108
+00:13:41,129 --> 00:13:47,180
+relation in the relational schema, but you
+will also have to access the parent or higher
+
+109
+00:13:47,179 --> 00:13:52,758
+level entity set to get the attribute values
+which are inherited. And if you have a multi
+
+110
+00:13:52,759 --> 00:13:58,759
+level hierarchy as we have shown this could
+involve accessing multiple relations to find
+
+111
+00:13:58,759 --> 00:14:03,459
+information about a single entity in an entity
+set.
+
+112
+00:14:03,458 --> 00:14:11,388
+So, this is an in terms of data representation
+this is an optimized representation, but it
+
+113
+00:14:11,389 --> 00:14:18,629
+has the overhead of having to access multiple
+ah entity sets to get information about certain
+
+114
+00:14:18,629 --> 00:14:24,170
+entities .
+An alternate scheme would be that ah based
+
+115
+00:14:24,169 --> 00:14:29,698
+on the hierarchy of specialization, you assume
+all attributes as they are inherited and then
+
+116
+00:14:29,698 --> 00:14:34,758
+represent every entity set in full. So, when
+you the representation of person does not
+
+117
+00:14:34,759 --> 00:14:41,359
+change, but when you represent student now
+earlier you are just having ID and total credit;
+
+118
+00:14:41,359 --> 00:14:47,689
+now in you include all entities that are inherited.
+Similarly, you do the same thing; so, you
+
+119
+00:14:47,688 --> 00:14:53,068
+have the all entities of the parent to all
+attributes of the parent entity set as well
+
+120
+00:14:53,068 --> 00:14:59,159
+as the local attribute of that specific entity
+set. Now this naturally makes it easy to extract
+
+121
+00:14:59,159 --> 00:15:06,438
+information from a for a single entity set,
+but at the same time, you are storing the
+
+122
+00:15:06,438 --> 00:15:15,299
+same ah data redundantly for people who are
+having overlapped representation. So, if we
+
+123
+00:15:15,299 --> 00:15:22,198
+have as we know student and employee overlapped.
+So, the same entity will happen in student
+
+124
+00:15:22,198 --> 00:15:28,649
+as well as in employee; so, it will the information
+of the common attributes name street city
+
+125
+00:15:28,649 --> 00:15:33,570
+etcetera they will occur in both these tables
+in the design.
+
+126
+00:15:33,570 --> 00:15:38,250
+So, these are two methods and now we have
+just given you the relative advantages and
+
+127
+00:15:38,250 --> 00:15:45,139
+its advantages of the same and based on a
+particular situation you will have to choose
+
+128
+00:15:45,139 --> 00:15:52,778
+what is a good method to represent .
+You can look at now you know from the object
+
+129
+00:15:52,778 --> 00:15:57,919
+based system that if you have a specialization
+hierarchy you can think of it as a generalization
+
+130
+00:15:57,919 --> 00:16:01,659
+hierarchy also.
+The generalization hierarchy goes in a bottom
+
+131
+00:16:01,659 --> 00:16:09,019
+up manner. So, instead of actually ah starting
+with an entity set and finding out subsets
+
+132
+00:16:09,019 --> 00:16:14,289
+of entities which have greater commonality
+between them and putting them as specialized,
+
+133
+00:16:14,289 --> 00:16:22,759
+you could actually group them in terms of
+finding out what they share and create a higher
+
+134
+00:16:22,759 --> 00:16:29,110
+level entities . For example, the way I am
+saying is let us say that I have one entity
+
+135
+00:16:29,110 --> 00:16:37,699
+set which say UG student and have another
+entity set in the same university which say
+
+136
+00:16:37,698 --> 00:16:42,258
+PG student.
+So, there are both of them are students naturally
+
+137
+00:16:42,259 --> 00:16:48,188
+they are disjoint a person cannot be UG as
+well as PG student at the same time. And once
+
+138
+00:16:48,188 --> 00:16:52,308
+you represent that you find that well there
+are a lot of information which are common
+
+139
+00:16:52,308 --> 00:16:59,490
+between these two entity sets like the student
+roll number, name and so on so, forth. So,
+
+140
+00:16:59,490 --> 00:17:07,589
+you could choose that well you instead of
+having them as two separate entity sets, you
+
+141
+00:17:07,589 --> 00:17:12,698
+could extract out the common attributes and
+put them at a higher level entity. So, all
+
+142
+00:17:12,699 --> 00:17:17,660
+that you are doing is instead of going top
+down you are going bottom up in the whole
+
+143
+00:17:17,660 --> 00:17:23,540
+approach.
+So, if you do that then there you can easily
+
+144
+00:17:23,539 --> 00:17:29,670
+see that specialization and generalization
+is are inverse of each other and they are
+
+145
+00:17:29,670 --> 00:17:38,120
+used interchangeably in terms of the relational
+entity relationship design.
+
+146
+00:17:38,119 --> 00:17:45,239
+The other constraint that you can identify,
+you should identify is the constraint of completeness
+
+147
+00:17:45,240 --> 00:17:56,289
+which say that if I have a ah entity set say
+a person. And ah then we have specializations
+
+148
+00:17:56,289 --> 00:18:03,289
+of employee and student; the question is for
+a higher level entity set is it necessarily
+
+149
+00:18:03,289 --> 00:18:11,879
+that every entity will be represented in one
+of the or more than one of the lower level
+
+150
+00:18:11,880 --> 00:18:17,030
+entity sets.
+If that is guaranteed that an entity must
+
+151
+00:18:17,029 --> 00:18:24,619
+belong to one of the lower level entity set
+we say that it is a complete specialization.
+
+152
+00:18:24,619 --> 00:18:35,589
+But if it is that a high level entity is may
+or may not be featuring in a entity set, which
+
+153
+00:18:35,589 --> 00:18:41,730
+is at a lower level then we will say it is
+a partially specialized hierarchy. So, the
+
+154
+00:18:41,730 --> 00:18:48,740
+both of these are are possible depending on
+different situation that we have. So, by default
+
+155
+00:18:48,740 --> 00:18:56,440
+we assume partial specialization and ah. So,
+if we want to say a certain specialization
+
+156
+00:18:56,440 --> 00:19:02,440
+is total we will have to write the keyword
+total by the side of the arrow head that is
+
+157
+00:19:02,440 --> 00:19:09,940
+representing the specialization hierarchy.
+You can say that the example I talked of in
+
+158
+00:19:09,940 --> 00:19:16,381
+uniting unite undergraduate and graduate or
+postgraduate students into the entity set
+
+159
+00:19:16,381 --> 00:19:25,450
+of students, gives you a hierarchy which is
+total because every entity in the entity set
+
+160
+00:19:25,450 --> 00:19:30,610
+student must be either a UG student or a PG
+student; it is not possible that I have a
+
+161
+00:19:30,609 --> 00:19:35,690
+student who is neither a UG student nor a
+PG student. So, every high entity at the higher
+
+162
+00:19:35,691 --> 00:19:41,350
+level entity set ah student must feature in
+one of these two specializations.
+
+163
+00:19:41,349 --> 00:19:47,799
+So, therefore they are necessarily total in
+the relationship . So, this is the completeness
+
+164
+00:19:47,799 --> 00:19:53,159
+constraint that you can think of .
+Moving on let us talk about another feature
+
+165
+00:19:53,160 --> 00:19:58,070
+which is known as aggregation; the situation
+is like this we have already talked about
+
+166
+00:19:58,069 --> 00:20:04,169
+this part of the diagram which is a ternary
+relationship which relates project instructor
+
+167
+00:20:04,170 --> 00:20:08,420
+and student.
+Now, let us say once the project progresses
+
+168
+00:20:08,420 --> 00:20:13,170
+you would need to add evaluation to that.
+So, yeah there is another entity set which
+
+169
+00:20:13,170 --> 00:20:18,490
+represents evaluation and how we are grading
+or putting marks and so, on. So, naturally
+
+170
+00:20:18,490 --> 00:20:27,880
+the evaluation of ah a student will be dependent
+on the project, the student and the supervisor
+
+171
+00:20:27,880 --> 00:20:34,910
+and that will relate to the evaluation. So,
+evaluation eval for the relationship is necessarily
+
+172
+00:20:34,910 --> 00:20:41,680
+a relationship between four entities or four
+entity sets so, to say .
+
+173
+00:20:41,680 --> 00:20:50,360
+Now, the question is how do we represent this
+information? The relationship sets eval for
+
+174
+00:20:50,359 --> 00:20:55,629
+project guide the two that we saw if we just
+want to recall once more. The project guide
+
+175
+00:20:55,630 --> 00:21:02,720
+involves three of the relation entity sets
+and the eval for relates to four of the entity
+
+176
+00:21:02,720 --> 00:21:10,350
+sets. Now every eval for relationship corresponds
+to a project guide relationship; that is if
+
+177
+00:21:10,349 --> 00:21:15,480
+I have an entity in eval for relationship,
+I will have a corresponding entity in the
+
+178
+00:21:15,480 --> 00:21:19,870
+project guide relationship which specifies
+the student project and the instructor.
+
+179
+00:21:19,869 --> 00:21:26,409
+So, but it is other way it is possible that
+some project guide relationship may not correspond
+
+180
+00:21:26,410 --> 00:21:33,710
+to any eval relationship; that is it is possible
+that ah there is a allotted project by a student
+
+181
+00:21:33,710 --> 00:21:38,059
+with a particular instructor which has yet
+not been evaluated; the evaluation process
+
+182
+00:21:38,059 --> 00:21:45,829
+is not complete or the time has not come.
+So, if we have to represent the information
+
+183
+00:21:45,829 --> 00:21:52,750
+only for the eval for relationship; we will
+get partial information because it is possible
+
+184
+00:21:52,750 --> 00:21:59,819
+that some entities in eval for does not have
+the eval for information do not feature there,
+
+185
+00:21:59,819 --> 00:22:07,009
+but need to be preserved because I need to
+remember the project guide, instructor, the
+
+186
+00:22:07,009 --> 00:22:14,039
+student and the project. So, we need to keep
+both duplicating the information.
+
+187
+00:22:14,039 --> 00:22:21,519
+So, we can use aggregation to eliminate this
+duplication of information or redundancy of
+
+188
+00:22:21,519 --> 00:22:27,779
+information. So, what we do is we treat the
+first first relationship; the project get
+
+189
+00:22:27,779 --> 00:22:35,549
+relationship as if it is an abstract entity
+and then you allow relationship between two
+
+190
+00:22:35,549 --> 00:22:40,889
+relationships; this is something we did not
+do before relationship so, far has always
+
+191
+00:22:40,890 --> 00:22:47,120
+been between entity sets.
+So, what you can see that project guide relationship
+
+192
+00:22:47,119 --> 00:22:52,769
+itself as if it is an virtual entity; it is
+an abstract entity and then you allow the
+
+193
+00:22:52,769 --> 00:23:00,680
+relationship between the project guide and
+the eval for relationship which relates to
+
+194
+00:23:00,680 --> 00:23:07,980
+the evaluation entity set this really this
+shows I mean I will just show you in the diagram.
+
+195
+00:23:07,980 --> 00:23:21,740
+So, this is how it will now work out to be.
+So, this is the abstract project guide entity
+
+196
+00:23:21,740 --> 00:23:26,190
+set which is an abstract entity set because
+it is actually relationship. And that relates
+
+197
+00:23:26,190 --> 00:23:33,440
+to eval for which on the other site has the
+evaluation. So, what will happen is a student
+
+198
+00:23:33,440 --> 00:23:38,880
+is guided by a particular instructor in a
+particular project will feature in this abstract
+
+199
+00:23:38,880 --> 00:23:47,860
+entity set; which relates the three entity
+sets project student and instructor. And ah
+
+200
+00:23:47,859 --> 00:23:55,689
+if it has an evaluation then the; this through
+this relationship it will be represented and
+
+201
+00:23:55,690 --> 00:24:02,820
+the evaluation value will exist.
+So, we know that if a project is evaluated
+
+202
+00:24:02,819 --> 00:24:09,639
+then it certainly have a corresponding entity
+in the abstract entity set project guide,
+
+203
+00:24:09,640 --> 00:24:14,100
+but the reverse may not be true I may have
+an entity in the project guide entity set
+
+204
+00:24:14,099 --> 00:24:19,929
+which does not have an evaluation . So, by
+using this aggregation model; I can represent
+
+205
+00:24:19,930 --> 00:24:26,580
+the information of this situation model this
+situation more accurately than I could do
+
+206
+00:24:26,579 --> 00:24:33,019
+otherwise .
+So, this can be represented again how to represent
+
+207
+00:24:33,019 --> 00:24:38,210
+this in terms of the schema? So, what we do
+we represent the aggregation we create a schema
+
+208
+00:24:38,210 --> 00:24:45,019
+containing the primary key of the aggregated
+ah relationship. The primary key of the associated
+
+209
+00:24:45,019 --> 00:24:50,069
+entity set and all the other descriptive attributes
+and put them together .
+
+210
+00:24:50,069 --> 00:25:06,329
+So, in our example the schema would be eval
+four and that schema will have these are entities
+
+211
+00:25:06,329 --> 00:25:16,220
+these are attributes of the aggregated or
+abstract entity set which is coming from the
+
+212
+00:25:16,220 --> 00:25:23,329
+student ah project and the instructor entities
+and this is for the evaluation ID. So, we
+
+213
+00:25:23,329 --> 00:25:33,589
+put this together; so, now, you can see that
+all of these are related representing who
+
+214
+00:25:33,589 --> 00:25:39,679
+is the guide of which student in what project
+and if this exists then this gives you the
+
+215
+00:25:39,680 --> 00:25:43,779
+evaluation.
+So, naturally once this has been represented;
+
+216
+00:25:43,779 --> 00:25:49,730
+the project guide schema by itself becomes
+redundant and therefore, it can be removed.
+
+217
+00:25:49,730 --> 00:25:56,200
+So, this is a process through which we come
+to the the decision of actually having this
+
+218
+00:25:56,200 --> 00:26:03,019
+schema to represent all the required information.
+Naturally if the evaluation is not done then
+
+219
+00:26:03,019 --> 00:26:10,809
+the evaluation ID ah for in eval four will
+not exist and that will be a null showing
+
+220
+00:26:10,809 --> 00:26:20,190
+that it is not present right now ok.
+Now, given these basic features as well as
+
+221
+00:26:20,190 --> 00:26:27,900
+the extended features let me talk about a
+few design issues which will ah be required
+
+222
+00:26:27,900 --> 00:26:35,009
+to see what kind of information that that
+the different challenges that we have seen
+
+223
+00:26:35,009 --> 00:26:40,420
+so, far. For example, we have seen the case
+of multivalued attributes .
+
+224
+00:26:40,420 --> 00:26:50,450
+So, and ah the way we can represent that is
+using that multivalued attribute as a separate
+
+225
+00:26:50,450 --> 00:26:57,690
+entity set like the phone number which also
+has the advantage of having its own added
+
+226
+00:26:57,690 --> 00:27:04,809
+information. For example, once we do this
+then not only I can have against the same
+
+227
+00:27:04,809 --> 00:27:09,899
+instructor ID; I can have multiple phone numbers,
+but I can have location for each one of these
+
+228
+00:27:09,900 --> 00:27:18,810
+phone numbers. And I make use of this relation
+relationship that I create which allow me
+
+229
+00:27:18,809 --> 00:27:25,139
+to represent this multi valued attribute .
+So, this is a common technique that will be
+
+230
+00:27:25,140 --> 00:27:32,600
+used frequently in such cases you can have
+entities versus relationship for example,
+
+231
+00:27:32,599 --> 00:27:41,649
+if we have inform we need to keep information
+about registration how students register to
+
+232
+00:27:41,650 --> 00:27:49,390
+different sections; then we could represent
+registration as an entity set and have different
+
+233
+00:27:49,390 --> 00:27:55,110
+relationships of section registration which
+specify how registration is related to section
+
+234
+00:27:55,109 --> 00:28:00,889
+and student reg; which specify how do the
+station is related to students to represent
+
+235
+00:28:00,890 --> 00:28:05,890
+that kind of information.
+We can have placement of relationship attributes
+
+236
+00:28:05,890 --> 00:28:14,860
+also attribute date we have talked about as
+an attribute of adviser to designate as when
+
+237
+00:28:14,859 --> 00:28:21,189
+that particular instructor became adviser
+of a student is a common situation that we
+
+238
+00:28:21,190 --> 00:28:26,160
+have already seen.
+There is also question of the choice being
+
+239
+00:28:26,160 --> 00:28:32,519
+made between the binary and non binary relationship
+ternary or higher degree. Now as it turns
+
+240
+00:28:32,519 --> 00:28:38,629
+out that it is possible that you could represent
+ternary relationships directly or you can
+
+241
+00:28:38,630 --> 00:28:44,430
+decompose that. For example, a ternary relationship
+can be decomposed in terms of two binary relationship;
+
+242
+00:28:44,430 --> 00:28:51,960
+for example, let us say if we talk about persons
+then person every person has parents; so,
+
+243
+00:28:51,960 --> 00:29:00,680
+he or she has a father and a mother.
+Now, if we represent this as a ternary relationship
+
+244
+00:29:00,680 --> 00:29:08,759
+then the one difficulty that we have that
+a person must have both the father and mother
+
+245
+00:29:08,759 --> 00:29:13,869
+to be represented there. For example, if we
+can come to a situation where only the mother
+
+246
+00:29:13,869 --> 00:29:18,469
+is known, the father is not known I will not
+be able to represent that because it will
+
+247
+00:29:18,470 --> 00:29:24,610
+always have to come as a triplet of three
+persons thel the person under consideration
+
+248
+00:29:24,609 --> 00:29:32,469
+her father and her mother, but if I represent
+the person and the father in one relationship;
+
+249
+00:29:32,470 --> 00:29:38,829
+the person and the mother in another relationship,
+then I can take care of the situation where
+
+250
+00:29:38,829 --> 00:29:42,949
+when one of the parents are known; I can still
+represent this.
+
+251
+00:29:42,950 --> 00:29:48,120
+So, there are certain tradeoffs which can
+be done between the choice of binary and non
+
+252
+00:29:48,119 --> 00:29:53,399
+binary relationships, but; obviously, there
+are certain relationships which are inherently
+
+253
+00:29:53,400 --> 00:29:58,259
+non binary for example, the project guide
+example we have seen. The project guide information
+
+254
+00:29:58,259 --> 00:30:03,990
+cannot be decomposed without certain loss
+of information to be represented by say the
+
+255
+00:30:03,990 --> 00:30:10,359
+instructor and the project and another relationship
+between the student and the project it really
+
+256
+00:30:10,359 --> 00:30:12,799
+that does not represent the same information
+.
+
+257
+00:30:12,799 --> 00:30:22,250
+So, in general you can convert a non binary
+relationship by in the binary form by doing
+
+258
+00:30:22,250 --> 00:30:27,380
+this. So, this is a ternary relationship being
+shown and for doing that these are the three
+
+259
+00:30:27,380 --> 00:30:35,170
+entity sets involving the ternary relationship
+and to make decomposite into a ternary relationship;
+
+260
+00:30:35,170 --> 00:30:44,150
+what we do is into binary relationships we
+inject a new entity artificial entity set
+
+261
+00:30:44,150 --> 00:30:50,080
+E and then we define three different relations
+between them.
+
+262
+00:30:50,079 --> 00:30:57,629
+So, which individually relates to the entity
+sets A B and c. So, this is a standard decomposition
+
+263
+00:30:57,630 --> 00:31:05,309
+and you can easily understand that A B and
+C in our earlier example could all be persons
+
+264
+00:31:05,308 --> 00:31:14,678
+and R A could mean that father of R B could
+mean mother of and so, on. So, I can do do
+
+265
+00:31:14,679 --> 00:31:21,890
+it in decomposite in this manner and represent
+that .
+
+266
+00:31:21,890 --> 00:31:28,050
+Now while we do this decomposition we will
+also have to remember in that; we need to
+
+267
+00:31:28,049 --> 00:31:36,599
+translate all constraints that are present
+for the ternary relationship. And often times
+
+268
+00:31:36,599 --> 00:31:42,339
+it may become difficult to translate all constraints,
+it may not be possible and there may be instances
+
+269
+00:31:42,339 --> 00:31:49,179
+in the translated schema that cannot correspond
+to an instance of the original relationship.
+
+270
+00:31:49,180 --> 00:31:57,600
+So, we will have to avoid we can we will have
+to take care of this situation by identifying
+
+271
+00:31:57,599 --> 00:32:06,289
+attributes. And making use of the weak entity
+sets which we have already seen in our earlier
+
+272
+00:32:06,289 --> 00:32:11,450
+discussions .
+So, if we summarize the discussions on the
+
+273
+00:32:11,450 --> 00:32:18,990
+E-R design decisions; we see that the first
+decision that we need to take in case of design
+
+274
+00:32:18,990 --> 00:32:22,640
+is the use of an attribute or entity set to
+represent the object.
+
+275
+00:32:22,640 --> 00:32:28,860
+So, that is the first modeling that what is
+the concept and what is what are the attributes
+
+276
+00:32:28,859 --> 00:32:34,059
+or what is the representing entity set for
+the object that we are trying to deal with
+
+277
+00:32:34,059 --> 00:32:41,869
+instructor, student project and so, on . And
+ah we will also have to see whether in the
+
+278
+00:32:41,869 --> 00:32:48,719
+real world this actually is an entity set
+or it is a relationship set that it is ah
+
+279
+00:32:48,720 --> 00:32:56,730
+not and concept by itself, but is a concept
+which relates two or more entity sets and
+
+280
+00:32:56,730 --> 00:33:03,599
+thereby becomes a set of representation.
+The use of ternary relationship versus a pair
+
+281
+00:33:03,599 --> 00:33:09,058
+of binary relationship; this trade off will
+have to be weighed as a design consideration;
+
+282
+00:33:09,058 --> 00:33:14,269
+we have to look into the use of strong or
+weak entity set. So, we will have to identify
+
+283
+00:33:14,269 --> 00:33:19,730
+the weak entity sets and see if they should
+be represented ah through the identifying
+
+284
+00:33:19,730 --> 00:33:28,849
+relation ah as against a strong entity set.
+We have to identify the specialization generalization
+
+285
+00:33:28,849 --> 00:33:35,879
+situation where so, that we can get more specific
+information and create appropriate modularity
+
+286
+00:33:35,880 --> 00:33:42,230
+in the design.
+We have to look at aggregation which where
+
+287
+00:33:42,230 --> 00:33:49,950
+we can aggregate entity sets bound by a ah
+relationship and create an abstract single
+
+288
+00:33:49,950 --> 00:33:56,039
+unit which can play a role of an independent
+entity set in the whole design .
+
+289
+00:33:56,039 --> 00:34:04,730
+So, this is ah the basic ah. So, these are
+the basic design ah decisions that you need
+
+290
+00:34:04,730 --> 00:34:08,500
+to make.
+And we will certainly come up with lot more
+
+291
+00:34:08,500 --> 00:34:15,079
+of design decisions as we go along. And ah
+before I close in the presentation I have
+
+292
+00:34:15,079 --> 00:34:20,909
+summarized the different symbols that are
+used in the E-R notation. So, I will not these
+
+293
+00:34:20,909 --> 00:34:25,070
+have already been discussed in depth. So,
+I will not go through them one by one, but
+
+294
+00:34:25,070 --> 00:34:28,720
+I have put them as a list in the couple of
+slides.
+
+295
+00:34:28,719 --> 00:34:35,469
+This is a next slide in that which ah will
+be a quick reference for you while you are
+
+296
+00:34:35,469 --> 00:34:40,358
+initially doing the E-R diagram so, that you
+know exactly which symbol to pick up for what
+
+297
+00:34:40,358 --> 00:34:44,798
+situation .
+And ah at the end also there are few slides
+
+298
+00:34:44,798 --> 00:34:49,628
+which show you that the E-R notation itself
+is not a unique one.
+
+299
+00:34:49,628 --> 00:34:54,409
+There are multiple ways to represent similar
+things for example, this is one which is showing
+
+300
+00:34:54,409 --> 00:35:01,890
+you different composite attributes ah, the
+generalization, relationship is shown differently.
+
+301
+00:35:01,889 --> 00:35:11,639
+So, there are; these are all different styles
+of showing ah the constraints that that apply
+
+302
+00:35:11,639 --> 00:35:19,368
+to a particular ah relationship . And we will
+I mean we have included this not because we
+
+303
+00:35:19,369 --> 00:35:24,960
+will use these alternate notations, but I
+have put them because it is possible that
+
+304
+00:35:24,960 --> 00:35:30,809
+you come across some E-R diagram where these
+notations are used and if you come across
+
+305
+00:35:30,809 --> 00:35:34,389
+and you are not able to identify then please
+refer to this slides.
+
+306
+00:35:34,389 --> 00:35:39,900
+And you will be able to recognize what is
+ah what is corresponding symbol that you already
+
+307
+00:35:39,900 --> 00:35:43,380
+know.
+So, in this module we have discussed the extended
+
+308
+00:35:43,380 --> 00:35:50,730
+features of E-R model and we have deliberated
+on certain design issues. And ah we will close
+
+309
+00:35:50,730 --> 00:35:57,449
+our discussion on the entity relationship
+model here and move on to discuss the actual
+
+310
+00:35:57,449 --> 00:35:58,739
+relational design.
+

@@ -1,0 +1,1911 @@
+
+1
+00:00:00.008 --> 00:00:03.640
+In this video we will explore
+
+2
+00:00:03.640 --> 00:00:08.040
+another fundamental property
+of graphs called Connectivity.
+
+3
+00:00:08.040 --> 00:00:12.350
+We list two important kinds
+of graph analytic questions
+
+4
+00:00:12.350 --> 00:00:13.610
+that are based on connectivity.
+
+5
+00:00:14.770 --> 00:00:18.380
+In the first case we are asking
+about the robustness of the network.
+
+6
+00:00:19.440 --> 00:00:22.520
+Suppose we have a computer
+network with many servers and
+
+7
+00:00:22.520 --> 00:00:24.330
+a hacker is trying to
+bring the system down,
+
+8
+00:00:25.670 --> 00:00:30.190
+you set a small set of servers that the
+hacker can target to disrupt the network.
+
+9
+00:00:31.690 --> 00:00:35.750
+What we mean by disrupt is to disconnect
+a part of the network from the rest.
+
+10
+00:00:37.262 --> 00:00:41.110
+A similar problem may occur in
+the power distribution network.
+
+11
+00:00:41.110 --> 00:00:46.100
+In that case, an attacker may be able to
+attack one or two central components so
+
+12
+00:00:46.100 --> 00:00:48.700
+that large portions of
+the network loses power.
+
+13
+00:00:50.250 --> 00:00:54.117
+I have a geneticist colleague at
+Tech Graduate Institute who studied
+
+14
+00:00:54.117 --> 00:00:56.460
+the robustness of biological networks.
+
+15
+00:00:57.850 --> 00:01:02.990
+He told me that many biological
+networks have built in redundancy, so
+
+16
+00:01:02.990 --> 00:01:09.030
+that even if you disrupt one important
+gene, there are other genes in the network
+
+17
+00:01:09.030 --> 00:01:12.580
+which will support the biological
+function, possibly through other routes.
+
+18
+00:01:13.760 --> 00:01:17.940
+Therefore a network is robust,
+if removing one or
+
+19
+00:01:17.940 --> 00:01:21.610
+more edges or
+nodes still keeps it connected.
+
+20
+00:01:23.380 --> 00:01:27.720
+The second category is about network
+comparison in terms of their
+
+21
+00:01:27.720 --> 00:01:28.630
+overall connectivity.
+
+22
+00:01:30.090 --> 00:01:33.060
+The two graphs shown here are very
+different in their structure.
+
+23
+00:01:34.730 --> 00:01:37.920
+What are some parameters by
+which we can compare them?
+
+24
+00:01:37.920 --> 00:01:43.540
+That to talk about connectivity, we must
+first define the concept of connectivity.
+
+25
+00:01:43.540 --> 00:01:44.200
+Very simple.
+
+26
+00:01:45.330 --> 00:01:50.120
+A graph is connected if we can
+reach any node from any other node.
+
+27
+00:01:52.150 --> 00:01:57.243
+Let's look at the crypto graph in
+the picture, clearly we cannot
+
+28
+00:01:57.243 --> 00:02:02.714
+reach from all nodes to all nodes here
+because this graph is not connected.
+
+29
+00:02:02.714 --> 00:02:08.850
+However, we can identify four parts of
+the graph that are themselves connected.
+
+30
+00:02:09.920 --> 00:02:14.300
+These islands of connected
+parts are called components or
+
+31
+00:02:14.300 --> 00:02:15.790
+connected components of a graph.
+
+32
+00:02:17.198 --> 00:02:21.420
+For directed graphs, we need to be
+a little more specific about connectivity.
+
+33
+00:02:22.450 --> 00:02:27.200
+We say that the directed graph is strongly
+connected, if we follow the direction of
+
+34
+00:02:27.200 --> 00:02:31.690
+the edges and still reach every
+node from every other node.
+
+35
+00:02:33.170 --> 00:02:38.640
+A weaker form of connectivity is if we do
+not care about the direction of the arrows
+
+36
+00:02:38.640 --> 00:02:41.790
+and can reach every node
+from every other node.
+
+37
+00:02:43.010 --> 00:02:47.430
+Another way of saying it is that
+the undirected version of the graph
+
+38
+00:02:47.430 --> 00:02:51.760
+is connected,
+this is called Weak Connected.
+
+39
+00:02:51.760 --> 00:02:55.300
+Look at the graph that we have seen so
+many times in this course.
+
+40
+00:02:55.300 --> 00:02:57.994
+Is it strongly connected or
+weakly connected?
+
+41
+00:03:05.749 --> 00:03:10.070
+This leads to some big graph challenge.
+
+42
+00:03:10.070 --> 00:03:11.750
+Given an arbitrarily large graph,
+
+43
+00:03:12.960 --> 00:03:16.050
+can I find the connected components
+of the graph efficiently?
+
+44
+00:03:17.230 --> 00:03:20.280
+Second given an arbitrarily large graph,
+
+45
+00:03:20.280 --> 00:03:22.970
+can we find its sub graphs
+that are strongly connected?
+
+46
+00:03:24.080 --> 00:03:26.649
+We'll touch upon these
+questions in Module Four.
+
+1
+00:00:00.840 --> 00:00:02.630
+So there are two ways to break a graph.
+
+2
+00:00:04.320 --> 00:00:08.720
+Identifying the smallest node set which
+if removed will disconnect the graph.
+
+3
+00:00:10.000 --> 00:00:16.617
+Here, if we remove F, D and
+
+4
+00:00:16.617 --> 00:00:21.140
+H or H, F, G,
+we have disconnected the graph.
+
+5
+00:00:22.220 --> 00:00:27.640
+So the separating set is either H,
+F and G, or H, F and D.
+
+6
+00:00:28.870 --> 00:00:30.475
+So the connectivity is three.
+
+7
+00:00:30.475 --> 00:00:36.726
+Similarly, removing C-F, D-G, D-F and
+
+8
+00:00:36.726 --> 00:00:43.590
+H-E edges will also disconnect the graph.
+
+9
+00:00:43.590 --> 00:00:45.730
+Therefore, the edge connectivity is four.
+
+10
+00:00:46.800 --> 00:00:49.900
+So this is how network
+robustness is defined.
+
+11
+00:00:50.950 --> 00:00:53.790
+Now, let's ask, is this network robust?
+
+12
+00:00:54.790 --> 00:00:58.530
+Suppose the attacker removed node F.
+
+13
+00:00:58.530 --> 00:00:59.220
+Why remove F?
+
+14
+00:01:00.410 --> 00:01:04.430
+Because F is the most connected node.
+
+15
+00:01:04.430 --> 00:01:06.620
+That is, F has the highest degree.
+
+16
+00:01:07.780 --> 00:01:11.220
+If we remove F, five paths are disrupted.
+
+17
+00:01:11.220 --> 00:01:15.550
+For example,
+there is no way to go from C to G, or
+
+18
+00:01:15.550 --> 00:01:19.190
+from I to E,
+because these paths went through F.
+
+19
+00:01:20.340 --> 00:01:21.270
+Let's try this exercise.
+
+20
+00:01:22.350 --> 00:01:25.800
+Suppose the attacker
+has already removed F.
+
+21
+00:01:25.800 --> 00:01:29.610
+And would like to cause more
+damage to the rest of the network.
+
+22
+00:01:29.610 --> 00:01:31.340
+Which node should be targeted next?
+
+23
+00:01:32.490 --> 00:01:37.330
+The answer is C,
+because C is the next most connected node.
+
+24
+00:01:38.600 --> 00:01:42.637
+Higher degree nodes make
+the network more vulnerable.
+
+1
+00:00:00.752 --> 00:00:05.460
+So far, the centrality of a node
+is defined using the degree and
+
+2
+00:00:05.460 --> 00:00:08.250
+the shortest distance to other nodes.
+
+3
+00:00:08.250 --> 00:00:09.830
+Now, we introduce a different idea.
+
+4
+00:00:11.050 --> 00:00:14.480
+We would like to say that
+if you are important and
+
+5
+00:00:14.480 --> 00:00:17.350
+I'm connected to you,
+then I must be somewhat important too.
+
+6
+00:00:18.540 --> 00:00:21.510
+In other words, my centrality
+
+7
+00:00:21.510 --> 00:00:26.030
+is proportional to the combined
+centrality values of my neighbors.
+
+8
+00:00:26.030 --> 00:00:30.720
+Now, if we write that down mathematically
+it would look like the top formula.
+
+9
+00:00:30.720 --> 00:00:34.690
+The centrality of (Vi) is
+the sum of its neighbors.
+
+10
+00:00:34.690 --> 00:00:37.140
+Now, we can write that as an equation
+
+11
+00:00:37.140 --> 00:00:39.300
+where Lambda is
+a proportionality constant.
+
+12
+00:00:40.710 --> 00:00:45.040
+The resulting equation looks exactly
+like the Eigenvector equation we have
+
+13
+00:00:45.040 --> 00:00:46.210
+seen before.
+
+14
+00:00:46.210 --> 00:00:49.790
+Now again, you really do not
+have to understand how it works.
+
+15
+00:00:49.790 --> 00:00:53.010
+It's fine to know that if
+we solve that equation,
+
+16
+00:00:53.010 --> 00:00:55.390
+we will get the Eigen values lambda.
+
+17
+00:00:56.690 --> 00:00:59.130
+Now, let's take the largest lambda and
+
+18
+00:00:59.130 --> 00:01:04.130
+find the corresponding Eigenvector, which
+will give you the centrality of each note.
+
+19
+00:01:05.680 --> 00:01:08.390
+Notice the difference between
+the degree centrality and
+
+20
+00:01:08.390 --> 00:01:10.790
+the Eigenvector centrality
+in the same graph.
+
+21
+00:01:12.290 --> 00:01:15.600
+The yellow node in the middle
+has a low degree centrality
+
+22
+00:01:15.600 --> 00:01:17.540
+compared to its neighbors.
+
+23
+00:01:17.540 --> 00:01:23.470
+However, with the Eigenvector centrality,
+the node becomes comparably more important
+
+24
+00:01:23.470 --> 00:01:27.880
+because the neighbor centrality status
+boost some of the centrality of this node.
+
+25
+00:01:29.260 --> 00:01:32.790
+In contrast,
+consider the second highlighted note.
+
+26
+00:01:32.790 --> 00:01:37.350
+It had the same on normalize degree
+centrality as the previous node.
+
+27
+00:01:38.520 --> 00:01:42.610
+But because the neighbors
+are low centrality nodes,
+
+28
+00:01:42.610 --> 00:01:45.440
+the eigenvector centrality goes down.
+
+29
+00:01:45.440 --> 00:01:51.730
+So, this is the intended consequence
+of the eigenvector centrality measure.
+
+30
+00:01:51.730 --> 00:01:57.060
+Speaking of consequences,
+Eigenvector centrality essentially says
+
+31
+00:01:57.060 --> 00:01:59.810
+if you know the right people,
+your importance will go up.
+
+32
+00:02:01.090 --> 00:02:02.760
+Well, that's kind of risky proposition.
+
+33
+00:02:03.880 --> 00:02:09.090
+Here is me in a social network,
+and let's say I'm connected to
+
+34
+00:02:09.090 --> 00:02:13.250
+this somewhat dubious character, and
+I think it doesn't really matter.
+
+35
+00:02:14.430 --> 00:02:19.490
+What I don't know is that my connection
+has it's own set of connections, and
+
+36
+00:02:19.490 --> 00:02:20.160
+look at who they are.
+
+37
+00:02:21.480 --> 00:02:25.740
+So, on the one hand, these shady
+characters that are now connected to
+
+38
+00:02:25.740 --> 00:02:30.020
+indirectly does raise my
+eigenvector centrality, but
+
+39
+00:02:30.020 --> 00:02:34.000
+it also has quite a damaging
+effect on my reputation.
+
+40
+00:02:34.000 --> 00:02:37.230
+My EV centrality almost makes
+me look like a suspect.
+
+41
+00:02:38.230 --> 00:02:38.950
+Now, think about that.
+
+42
+00:02:40.320 --> 00:02:44.090
+Now Brin and Page, the founders of Google
+
+43
+00:02:44.090 --> 00:02:47.260
+had an interesting way to think
+about the eigenvector centrality.
+
+44
+00:02:48.660 --> 00:02:50.750
+They thought about a server.
+
+45
+00:02:50.750 --> 00:02:53.410
+Well no, not that kind of server.
+
+46
+00:02:53.410 --> 00:02:54.770
+This kind of server.
+
+47
+00:02:54.770 --> 00:02:56.860
+The kind that surfs the web.
+
+48
+00:02:56.860 --> 00:02:59.855
+But, this is a special web
+surfer called a random surfer.
+
+49
+00:03:01.050 --> 00:03:06.050
+And here is what he does, he picks
+a web page and looks at the links.
+
+50
+00:03:08.040 --> 00:03:13.320
+Then he chooses a random link, goes to
+that page and does the same thing again.
+
+51
+00:03:15.000 --> 00:03:19.600
+Except sometimes when you kind of get
+bored and goes to totally new page.
+
+52
+00:03:21.220 --> 00:03:23.510
+How often does he do this random jump?
+
+53
+00:03:24.720 --> 00:03:29.250
+Let's say, there's always sort
+of a 15% chance that he will.
+
+54
+00:03:29.250 --> 00:03:32.490
+Or more generally,
+with the probability of 1 minus alpha.
+
+55
+00:03:34.040 --> 00:03:37.210
+So, Page and Brin's idea was to figure out
+
+56
+00:03:37.210 --> 00:03:41.780
+that this surfer will visit a page with
+a high chance, if the page is central.
+
+57
+00:03:43.060 --> 00:03:44.390
+They came up with a measure for
+
+58
+00:03:44.390 --> 00:03:49.010
+this stationary probability of a page
+being visited by the random surfer.
+
+59
+00:03:50.160 --> 00:03:52.820
+They did not call it centrality,
+they called it pagerank.
+
+60
+00:03:54.330 --> 00:03:57.114
+Let's see a YouTube video to
+understand how pagerank behaves.
+
+61
+00:05:15.194 --> 00:05:19.427
+Okay, now we are talking about
+the World Wide Web which is a huge graph.
+
+62
+00:05:19.427 --> 00:05:22.565
+How do we of such a graph?
+
+63
+00:05:23.575 --> 00:05:28.550
+The answer is iteratively using
+a method called power iteration.
+
+64
+00:05:29.710 --> 00:05:33.440
+This method can be used because we
+are looking for the largest eigenvalue.
+
+65
+00:05:33.440 --> 00:05:34.070
+Let me show you.
+
+66
+00:05:35.390 --> 00:05:36.360
+Let's take a small graph.
+
+67
+00:05:37.990 --> 00:05:41.730
+Let's initialize the still unknown
+page rank as zero for all nodes.
+
+68
+00:05:43.020 --> 00:05:48.930
+Now, page rank A is a 0.15 chance,
+that I was at A already.
+
+69
+00:05:48.930 --> 00:05:53.740
+And 0.85 chance that I come to A from B,
+or I come to A from C.
+
+70
+00:05:55.270 --> 00:05:58.370
+However, at this point,
+the page rank of B and C are at zero.
+
+71
+00:05:59.700 --> 00:06:03.134
+So, in the first iteration,
+page rank of A is 0.15.
+
+72
+00:06:04.670 --> 00:06:10.210
+Now for B, I can only come to B from A,
+but we cannot claim all of pagerank of A,
+
+73
+00:06:10.210 --> 00:06:14.901
+because there is always a half chance
+that the surfer will come to B
+
+74
+00:06:14.901 --> 00:06:18.255
+from A because he could
+also get to here from C.
+
+75
+00:06:18.255 --> 00:06:24.042
+This, plus the 0.15 chance that
+the surfer is already at B,
+
+76
+00:06:24.042 --> 00:06:26.733
+makes Bs pagerank 0.21.
+
+77
+00:06:26.733 --> 00:06:30.221
+Now after doing a few rounds of this
+computation, between 50 and 100 iteration,
+
+78
+00:06:30.221 --> 00:06:30.760
+let's say.
+
+79
+00:06:31.820 --> 00:06:32.830
+The values will converge.
+
+80
+00:06:33.830 --> 00:06:37.570
+Now, this computation has been
+demonstrated to perform well
+
+81
+00:06:37.570 --> 00:06:38.740
+in the MapReduce framework.
+
+82
+00:06:40.020 --> 00:06:44.100
+In module four, we'll talk about
+another way of computing this metric.
+
+1
+00:00:03.940 --> 00:00:06.930
+Welcome back to the second
+module of the course.
+
+2
+00:00:08.000 --> 00:00:11.480
+In this module, we will cover
+a number of basic principles and
+
+3
+00:00:11.480 --> 00:00:12.780
+techniques of graph analytics.
+
+4
+00:00:14.340 --> 00:00:18.400
+As we mentioned in the last module,
+the goal of graph analytics
+
+5
+00:00:18.400 --> 00:00:23.200
+is to utilize the mathematical
+properties of data and provide
+
+6
+00:00:23.200 --> 00:00:27.710
+efficient algorithmic solutions for large
+and complex graph structure problems.
+
+7
+00:00:28.970 --> 00:00:33.870
+As I said, in this module, we'll learn a
+number of basic graph analytic techniques.
+
+8
+00:00:35.080 --> 00:00:38.580
+After this module,
+you'll be able to identify the right
+
+9
+00:00:38.580 --> 00:00:42.160
+class of techniques to apply for
+a graph analytics problem.
+
+10
+00:00:42.160 --> 00:00:46.630
+To be more specific,
+in this module we will consider
+
+11
+00:00:46.630 --> 00:00:50.380
+the mathematical and
+algorithmic aspects, and not so
+
+12
+00:00:50.380 --> 00:00:53.050
+much the computing frameworks
+to implement these methods.
+
+13
+00:00:54.590 --> 00:00:59.210
+In Modules 3 and 4, we will look at
+two different kinds of computing
+
+14
+00:00:59.210 --> 00:01:03.190
+platforms that are used for implementing
+the techniques discussed in this module.
+
+15
+00:01:04.330 --> 00:01:06.110
+Here is the lesson plan for the module.
+
+16
+00:01:07.320 --> 00:01:10.800
+First, we'll discuss a few basic terms and
+
+17
+00:01:10.800 --> 00:01:13.850
+their definition which we'll use for
+the rest of the course.
+
+18
+00:01:16.030 --> 00:01:18.980
+Of course, they are not the only terms and
+concepts we will learn.
+
+19
+00:01:20.200 --> 00:01:23.520
+As we go through each technique,
+we will add more terms and
+
+20
+00:01:23.520 --> 00:01:25.026
+definitions in our vocabulary.
+
+21
+00:01:25.026 --> 00:01:29.838
+Now following these definitions we
+will consider four categories of
+
+22
+00:01:29.838 --> 00:01:32.060
+graph analytic procedures.
+
+23
+00:01:32.060 --> 00:01:37.300
+The first, called Path Analytics,
+is centered around the Analytic Techniques
+
+24
+00:01:37.300 --> 00:01:40.250
+where the primary objective involves
+traversing to the nodes and
+
+25
+00:01:40.250 --> 00:01:41.170
+edges of the ground.
+
+26
+00:01:42.820 --> 00:01:45.260
+The second analytic technique inquires and
+
+27
+00:01:45.260 --> 00:01:48.010
+explores the connectivity
+pattern of the gaps.
+
+28
+00:01:48.010 --> 00:01:52.160
+Where the term connectivity pattern
+refers to the structure and
+
+29
+00:01:52.160 --> 00:01:54.510
+organizations of the edges of the graph.
+
+30
+00:01:56.070 --> 00:01:59.230
+The third analytics category
+involves the discovery and
+
+31
+00:01:59.230 --> 00:02:03.820
+behavior of communities which are closely
+interacting entities in a network.
+
+32
+00:02:04.970 --> 00:02:10.210
+The fourth category, termed Centrality
+Analytics, detects and characterizes
+
+33
+00:02:10.210 --> 00:02:14.670
+significant nodes of a network with
+respect to a specific analysis problem.
+
+34
+00:02:15.750 --> 00:02:19.570
+Of course there are many more types of
+graph analytic techniques that we'll cover
+
+35
+00:02:19.570 --> 00:02:20.710
+in the course.
+
+36
+00:02:20.710 --> 00:02:24.000
+We'll provide some additional reading
+material for those who are interested.
+
+37
+00:02:24.000 --> 00:02:27.590
+But we start by recapitulating
+our definition of graphs
+
+38
+00:02:27.590 --> 00:02:32.225
+as a collection of vertices and edges,
+which represent ordered pairs of nodes.
+
+39
+00:02:33.580 --> 00:02:36.880
+While this mathematical
+definition is indeed correct,
+
+40
+00:02:36.880 --> 00:02:41.430
+in practice it needs to be extended to
+give you other information elements.
+
+41
+00:02:43.040 --> 00:02:44.540
+Let us consider a single Tweet.
+
+42
+00:02:46.090 --> 00:02:51.040
+As we have mentioned previously,
+a Tweet is a complex information output
+
+43
+00:02:51.040 --> 00:02:53.970
+because it is a graph in itself
+with several nodes and edges.
+
+44
+00:02:55.120 --> 00:02:57.870
+But over and about the structure, a Tweet
+
+45
+00:02:57.870 --> 00:03:01.880
+actually contains much more information
+and code inside the nodes and edges.
+
+46
+00:03:04.320 --> 00:03:07.560
+First, there several kinds
+of nodes in a Tweet.
+
+47
+00:03:08.680 --> 00:03:12.810
+For example it has a Tweet node,
+a User node, a Media node,
+
+48
+00:03:12.810 --> 00:03:15.335
+a URL node, a hashtag node and so forth.
+
+49
+00:03:16.750 --> 00:03:22.115
+This assignment of kinds or labels to
+nodes is often called node typing.
+
+50
+00:03:23.710 --> 00:03:27.352
+Every graph application will
+have its own set of types.
+
+51
+00:03:27.352 --> 00:03:32.350
+And it'll assign one or more types to
+a node but it is not mandatory for
+
+52
+00:03:32.350 --> 00:03:33.840
+an application to use node types.
+
+53
+00:03:36.140 --> 00:03:41.280
+Mathematically we can extend our original
+definition with two more elements.
+
+54
+00:03:41.280 --> 00:03:46.760
+The set of node types and the mapping
+function that assigns types to nodes.
+
+55
+00:03:46.760 --> 00:03:49.360
+That means it associates
+a type to every node.
+
+56
+00:03:50.430 --> 00:03:56.950
+However, not all nodes need to have
+a type but in many applications they do.
+
+57
+00:03:59.370 --> 00:04:03.250
+In addition to types,
+a node also has attributes and values.
+
+58
+00:04:04.680 --> 00:04:05.910
+In our Tweet example,
+
+59
+00:04:07.090 --> 00:04:11.740
+text is the name of an attribute that
+refers to the textual body of the Tweet
+
+60
+00:04:11.740 --> 00:04:16.910
+whose value is a character string
+written by the author of the Tweet.
+
+61
+00:04:17.980 --> 00:04:20.620
+For a specific kind of data like a Tweet,
+
+62
+00:04:20.620 --> 00:04:23.770
+one has a fixed set of attributes
+as decided by Twitter.
+
+63
+00:04:24.970 --> 00:04:27.800
+This collection of attributes
+is called a node schema.
+
+64
+00:04:29.080 --> 00:04:30.480
+For a general graph,
+
+65
+00:04:30.480 --> 00:04:33.700
+a node schema may have an arbitrary
+number of attribute value pairs.
+
+66
+00:04:34.810 --> 00:04:39.330
+We will revisit this in module 3
+when we discuss graphing the models.
+
+67
+00:04:40.690 --> 00:04:45.290
+Similarly, at edge of a graph, we have
+an edge type, also called an edge label.
+
+68
+00:04:46.390 --> 00:04:47.508
+Also just like a node,
+
+69
+00:04:47.508 --> 00:04:52.026
+an edge may have an edge schema
+consisting of attribute value pierce.
+
+70
+00:04:52.026 --> 00:04:57.590
+Here, Interaction Type is
+an attribute in our biological
+
+71
+00:04:57.590 --> 00:05:01.260
+network that describes the modality of
+interaction between a pair of genes.
+
+72
+00:05:03.550 --> 00:05:06.100
+For the specific edge we have highlighted,
+
+73
+00:05:06.100 --> 00:05:09.470
+the genes interact through
+biochemical activity.
+
+74
+00:05:09.470 --> 00:05:12.040
+Because they are party to
+some biochemical process.
+
+75
+00:05:14.830 --> 00:05:18.130
+Clearly, there are different kinds
+of interaction between these
+
+76
+00:05:18.130 --> 00:05:18.910
+genes or proteins.
+
+77
+00:05:19.930 --> 00:05:24.684
+That means an attribute called
+interaction type can have a set of
+
+78
+00:05:24.684 --> 00:05:28.570
+possible values like physical,
+genetic and so on.
+
+79
+00:05:30.410 --> 00:05:35.055
+This set of possible values is
+called the domain of the attribute.
+
+80
+00:05:37.850 --> 00:05:40.670
+Putting these elements back
+into our mathematical model,
+
+81
+00:05:40.670 --> 00:05:45.040
+we get a more concrete specification of
+what a real live graph would contain.
+
+82
+00:05:46.340 --> 00:05:50.450
+We have already discussed edge types
+as well as node and edge properties.
+
+83
+00:05:52.450 --> 00:05:54.090
+Take a minute to look through this again.
+
+84
+00:05:55.910 --> 00:06:01.880
+Whenever you consider an application that
+needs graph analytics, the first task
+
+85
+00:06:01.880 --> 00:06:05.800
+should be to determine the informational
+model of the graph your application needs.
+
+86
+00:06:06.850 --> 00:06:10.630
+It's always a good exercise to
+document the information model,
+
+87
+00:06:10.630 --> 00:06:13.280
+in terms of the elements
+described on the slide.
+
+88
+00:06:15.365 --> 00:06:17.890
+Let's see a little more on
+the topic of edge properties.
+
+89
+00:06:19.468 --> 00:06:23.650
+Many application encode different
+kids of numeric knowledge
+
+90
+00:06:23.650 --> 00:06:26.370
+into edges of a graph in
+the form of edge points.
+
+91
+00:06:27.850 --> 00:06:31.050
+If we do not put weights
+in an adjacency metrics,
+
+92
+00:06:31.050 --> 00:06:36.290
+an edge is just represented by
+placing a one in the appropriate cell.
+
+93
+00:06:36.290 --> 00:06:38.800
+However, if we do use a weight,
+
+94
+00:06:38.800 --> 00:06:43.070
+the weight value can be placed in
+the adjacency matrix to facilitate
+
+95
+00:06:43.070 --> 00:06:45.939
+down stream computation as
+we'll show in the next lesson.
+
+96
+00:06:47.330 --> 00:06:48.130
+What do the weights mean?
+
+97
+00:06:49.440 --> 00:06:51.920
+That depends on the application.
+
+98
+00:06:51.920 --> 00:06:52.720
+Let's see some examples.
+
+99
+00:06:54.530 --> 00:07:00.440
+The most obvious example is a road map
+where the nodes are road intersections and
+
+100
+00:07:00.440 --> 00:07:02.960
+the edges represent
+stretches of the street or
+
+101
+00:07:02.960 --> 00:07:04.380
+highway between these intersections.
+
+102
+00:07:05.520 --> 00:07:09.200
+The edge weight can represent the distance
+of a particular segment of the road.
+
+103
+00:07:12.070 --> 00:07:16.500
+In a personal communication network,
+for example an email network,
+
+104
+00:07:16.500 --> 00:07:22.520
+we can count the average number of emails
+per week sent from John to Jill and
+
+105
+00:07:22.520 --> 00:07:25.700
+use it as a proxy for
+the strength of their connection.
+
+106
+00:07:25.700 --> 00:07:30.049
+So more emails means
+a stronger connection.
+
+107
+00:07:30.049 --> 00:07:34.276
+In a biological network, one often has
+to assess whether an interaction that
+
+108
+00:07:34.276 --> 00:07:38.699
+can occur is actually likely to occur
+given the concentration of the reactants,
+
+109
+00:07:38.699 --> 00:07:43.330
+the chemical environment at the site
+of the reaction and so forth.
+
+110
+00:07:43.330 --> 00:07:47.520
+This is represented as a weight that
+designates the likelihood of interaction.
+
+111
+00:07:48.930 --> 00:07:51.610
+Finally, consider a knowledge network
+
+112
+00:07:51.610 --> 00:07:55.830
+where nodes represent entities
+like people, places and events.
+
+113
+00:07:55.830 --> 00:08:00.920
+And edges represent relationships
+like a person visited a place or
+
+114
+00:08:00.920 --> 00:08:04.460
+movie actor Tom is dating
+movie actress Kim.
+
+115
+00:08:04.460 --> 00:08:07.780
+Now this kind of information may
+be important for some news media.
+
+116
+00:08:07.780 --> 00:08:12.716
+However, if the information does
+not come from an authentic source,
+
+117
+00:08:12.716 --> 00:08:17.200
+itself, it is more prudent to
+put a certainty value on it.
+
+118
+00:08:17.200 --> 00:08:20.150
+This certainty value may be
+treated as a weight on the edge.
+
+119
+00:08:21.530 --> 00:08:24.280
+Moving on from the information
+model of the graph,
+
+120
+00:08:24.280 --> 00:08:28.200
+the structure of the graph often
+contains valuable insights to a graph.
+
+121
+00:08:29.270 --> 00:08:32.060
+Many of the graph analytic techniques
+we will discuss in this section
+
+122
+00:08:33.130 --> 00:08:36.338
+will consider these structural
+properties of graphs.
+
+123
+00:08:36.338 --> 00:08:43.130
+One such structure is a loop,
+which is an edge from a node to itself.
+
+124
+00:08:43.130 --> 00:08:44.570
+In the example here,
+
+125
+00:08:44.570 --> 00:08:48.410
+you can see that a protein can interact
+with another protein of the same kind.
+
+126
+00:08:49.440 --> 00:08:51.420
+Many other examples abound.
+
+127
+00:08:51.420 --> 00:08:53.997
+People send emails to themselves.
+
+128
+00:08:53.997 --> 00:08:56.630
+A road segment circles back
+to the same intersection.
+
+129
+00:08:57.800 --> 00:09:00.814
+A website has a link to its own URL.
+
+130
+00:09:00.814 --> 00:09:05.578
+The existence of loops and the nodes that
+have such loops can be very informative
+
+131
+00:09:05.578 --> 00:09:09.790
+in some applications and
+can be problematic for other applications.
+
+132
+00:09:11.160 --> 00:09:14.910
+Another structure property of a graph
+is the occurrence of multiple
+
+133
+00:09:14.910 --> 00:09:17.230
+edges between the same node pair.
+
+134
+00:09:17.230 --> 00:09:21.170
+The graphs with this feature
+are called multi-graphs.
+
+135
+00:09:21.170 --> 00:09:25.330
+In this example, the two map kinase
+genes have five edges between them.
+
+136
+00:09:27.030 --> 00:09:28.396
+Why multiple edges?
+
+137
+00:09:28.396 --> 00:09:35.130
+It's because each edge has
+a different information content.
+
+138
+00:09:35.130 --> 00:09:35.760
+In this case,
+
+139
+00:09:35.760 --> 00:09:40.100
+these two genes can have five different
+types of interactions between them.
+
+140
+00:09:40.100 --> 00:09:44.540
+Where each interaction has a different
+value for the attribute interaction type.
+
+141
+00:09:45.830 --> 00:09:48.500
+We see this all the time
+in human networks too.
+
+142
+00:09:48.500 --> 00:09:53.080
+A person can be my spouse,
+a co-performer in music and
+
+143
+00:09:53.080 --> 00:09:55.050
+my financial adviser,
+all at the same time.
+
+144
+00:09:56.140 --> 00:10:00.100
+Many analytics algorithms
+are not natively designed for
+
+145
+00:10:00.100 --> 00:10:05.040
+multigraphs, and often need a little
+customization to handle them.
+
+146
+00:10:05.040 --> 00:10:09.130
+We will mention some of these
+customizations as we go forward and walk
+
+147
+00:10:09.130 --> 00:10:13.791
+through the different kinds of analytics
+applications preformed on graphs.
+
+1
+00:00:00.600 --> 00:00:02.180
+So we talked about local properties.
+
+2
+00:00:03.300 --> 00:00:04.160
+In this lecture,
+
+3
+00:00:04.160 --> 00:00:07.860
+we'll cover a global property based
+method of [INAUDIBLE] finding.
+
+4
+00:00:09.610 --> 00:00:13.000
+The specific property we focus on,
+is called modularity.
+
+5
+00:00:14.230 --> 00:00:16.990
+It tries to estimate
+the quality of clusters of
+
+6
+00:00:16.990 --> 00:00:17.855
+communities in the [INAUDIBLE].
+
+7
+00:00:19.270 --> 00:00:20.680
+The intuition is as follows.
+
+8
+00:00:21.890 --> 00:00:24.255
+If we consider the edges in a group and
+
+9
+00:00:24.255 --> 00:00:28.528
+try to see whether it's different
+from what you'd see if the edges
+
+10
+00:00:28.528 --> 00:00:32.588
+were assigned randomly with
+some probability distribution.
+
+11
+00:00:32.588 --> 00:00:36.730
+If there is a community, there will be
+more edges than would happen at random.
+
+12
+00:00:37.850 --> 00:00:42.692
+If there is no community in some part
+of the graph, the number of edges in
+
+13
+00:00:42.692 --> 00:00:47.637
+that part will either be close to
+the random case or even lower than that.
+
+14
+00:00:47.637 --> 00:00:53.136
+The modularity measure thus estimates
+the quality of the clusters in
+
+15
+00:00:53.136 --> 00:01:00.070
+the graph by evaluating this difference of
+the actual minus the random edge fraction.
+
+16
+00:01:01.260 --> 00:01:03.930
+So this is the mathematical
+formulation of what I just described.
+
+17
+00:01:05.290 --> 00:01:09.045
+The adjacency matrix, A,
+gives us the actual edges.
+
+18
+00:01:10.740 --> 00:01:15.547
+The Pij provides a probability
+of a random edge.
+
+19
+00:01:15.547 --> 00:01:19.500
+The m in the denominator gives
+us the fractional edges.
+
+20
+00:01:21.110 --> 00:01:25.654
+And the delta function's
+task is to evaluate if i and
+
+21
+00:01:25.654 --> 00:01:28.451
+j should be in the same cluster.
+
+22
+00:01:28.451 --> 00:01:33.502
+If they are,
+the contribution will be added to Q,
+
+23
+00:01:33.502 --> 00:01:38.449
+the quality metric,
+which is multi-layered.
+
+24
+00:01:39.590 --> 00:01:43.599
+Well, we have not defined what
+the probability model looks like.
+
+25
+00:01:43.599 --> 00:01:46.790
+There are many ways to figure
+out what Pij should look like.
+
+26
+00:01:48.360 --> 00:01:53.170
+One simple model says, that the chance
+that there is an edge between nodes i and
+
+27
+00:01:53.170 --> 00:02:00.240
+j, is proportional to the degree of
+node i times the degree of node j.
+
+28
+00:02:00.240 --> 00:02:02.510
+That means if nodes i and
+
+29
+00:02:02.510 --> 00:02:06.890
+j are already well connected, there is
+a high chance that they share an edge.
+
+30
+00:02:07.940 --> 00:02:10.520
+So if you're a mathematical person,
+you might be thinking, okay,
+
+31
+00:02:11.690 --> 00:02:16.500
+let's find clusters in the graph so
+that Q is maximum and then we're done.
+
+32
+00:02:17.960 --> 00:02:23.094
+Well sadly, maximizing Q is very hard.
+
+33
+00:02:23.094 --> 00:02:26.050
+So we need to find
+an approximate solution.
+
+34
+00:02:28.490 --> 00:02:31.180
+So we will illustrate a very
+
+35
+00:02:31.180 --> 00:02:35.660
+popular method of finding this
+modularity based community detection.
+
+36
+00:02:37.290 --> 00:02:40.500
+Well, the best way to describe
+this is through a YouTube video.
+
+37
+00:02:41.560 --> 00:02:42.060
+That's the URL.
+
+38
+00:02:43.600 --> 00:02:47.758
+Now, the next slide and
+the following slide,
+
+39
+00:02:47.758 --> 00:02:53.195
+describes it, but
+I think it's better to explain the method
+
+40
+00:02:53.195 --> 00:02:57.686
+through screenshots off
+the video as it happens.
+
+41
+00:02:59.748 --> 00:03:04.273
+We will show you some
+snapshots of this video.
+
+42
+00:03:04.273 --> 00:03:07.630
+There are 309 nodes in this graph.
+
+43
+00:03:08.670 --> 00:03:11.720
+Initially, they all have different colors.
+
+44
+00:03:11.720 --> 00:03:13.580
+That is,
+they belong to different communities.
+
+45
+00:03:15.270 --> 00:03:22.328
+This screenshot shows the graph at
+iteration 144 of the algorithm.
+
+46
+00:03:22.328 --> 00:03:26.586
+The number of communities now is 286.
+
+47
+00:03:26.586 --> 00:03:33.050
+The chart on the right side plots time on
+the x-axis and modularity on the y-axis.
+
+48
+00:03:33.050 --> 00:03:35.670
+As you see,
+the modularity's on the rights.
+
+49
+00:03:36.750 --> 00:03:39.730
+Roughly, at each iteration,
+
+50
+00:03:40.800 --> 00:03:45.910
+the system is trying to change the color
+of a node to that of its neighbors.
+
+51
+00:03:45.910 --> 00:03:50.593
+But it actually changes the color
+only if the modularity value of
+
+52
+00:03:50.593 --> 00:03:54.765
+the whole graph changes as
+a result of that color change.
+
+53
+00:03:54.765 --> 00:04:00.107
+After a few more iterations,
+the number of communities has become 241.
+
+54
+00:04:00.107 --> 00:04:05.990
+The three arrows show some parts of the
+graph where the nodes have changed colors.
+
+55
+00:04:05.990 --> 00:04:09.578
+Modularity is on the rise.
+
+56
+00:04:09.578 --> 00:04:15.115
+After 1,437 iterations, the modularity
+of the graph is still going up.
+
+57
+00:04:15.115 --> 00:04:17.610
+Now, there are 113 communities.
+
+58
+00:04:19.060 --> 00:04:23.220
+The errors show some new areas where
+the neighboring nodes have the same color.
+
+59
+00:04:24.580 --> 00:04:29.690
+At 1,842 iterations,
+the modulary gains slows down.
+
+60
+00:04:29.690 --> 00:04:34.992
+Meanwhile, the number of
+communities have reduced to 75.
+
+61
+00:04:34.992 --> 00:04:40.540
+At 4,179 iterations, the modularity
+growth has started becoming flat.
+
+62
+00:04:41.980 --> 00:04:47.657
+But in the meantime, the number of colors,
+that is communities, has reduced to 48.
+
+63
+00:04:47.657 --> 00:04:52.556
+At around 5,196 iterations, the algorithm
+decides that there is not enough
+
+64
+00:04:52.556 --> 00:04:55.041
+reduction in the number of communities,
+
+65
+00:04:55.041 --> 00:04:59.240
+which is reduced to only 45 in
+the last 1,000 iterations or so.
+
+66
+00:05:00.730 --> 00:05:05.440
+Now it collapses each community that
+is clustered to a single node, and
+
+67
+00:05:05.440 --> 00:05:08.180
+creates a cluster to cluster edges.
+
+68
+00:05:09.250 --> 00:05:14.140
+The orange box,
+an arrow shows this contraction.
+
+69
+00:05:14.140 --> 00:05:18.140
+Now compared to the previous slide,
+this collapsing or
+
+70
+00:05:18.140 --> 00:05:22.130
+contraction of the plastic creates
+a skeleton of the original draft.
+
+71
+00:05:23.400 --> 00:05:26.470
+Now the algorithm starts again
+with this reduced graph.
+
+72
+00:05:28.480 --> 00:05:31.509
+You will find many graph
+analysis software,
+
+73
+00:05:31.509 --> 00:05:35.658
+where you can run the Louvain
+method of community detection.
+
+74
+00:05:37.747 --> 00:05:39.837
+[INAUDIBLE].
+
+75
+00:05:39.837 --> 00:05:43.749
+I took my Linked-in network,
+which has me at the center, and
+
+76
+00:05:43.749 --> 00:05:45.640
+all my connections as nodes.
+
+77
+00:05:47.630 --> 00:05:50.483
+If two of my contacts are also
+connected in Linked-in,
+
+78
+00:05:50.483 --> 00:05:52.069
+there is an edge between them.
+
+79
+00:05:53.110 --> 00:05:57.350
+This kind of mean-centric network
+is often called an ego network.
+
+80
+00:05:58.806 --> 00:06:04.700
+When I [INAUDIBLE] the community direction
+algorithm here, I found six communities,
+
+81
+00:06:04.700 --> 00:06:08.420
+with one set of parameters and
+seven communities with another.
+
+82
+00:06:09.500 --> 00:06:12.390
+I could clearly see my
+connections in San Diego.
+
+83
+00:06:12.390 --> 00:06:16.190
+My connections in my professional network,
+my friends in India, and so forth.
+
+84
+00:06:17.380 --> 00:06:22.090
+There's always one false community,
+which stands for
+
+85
+00:06:22.090 --> 00:06:25.850
+others, nodes that do not clearly
+belong to any specific group.
+
+86
+00:06:27.730 --> 00:06:32.720
+Perhaps more interesting and
+important than the static
+
+87
+00:06:32.720 --> 00:06:37.490
+analysis of communities is to track
+communities over a length of time.
+
+88
+00:06:37.490 --> 00:06:39.300
+And determine how they evolve and why.
+
+89
+00:06:41.140 --> 00:06:45.400
+There are six large
+categories of evolution steps
+
+90
+00:06:45.400 --> 00:06:46.690
+that can happen within a community.
+
+91
+00:06:47.810 --> 00:06:50.340
+A community like a new
+Facebook group can be born.
+
+92
+00:06:51.850 --> 00:06:55.090
+A community, like a group of
+people who gathered for an event,
+
+93
+00:06:55.090 --> 00:06:59.570
+would dissolve because the event and
+the mutual interest around it has ended.
+
+94
+00:07:01.180 --> 00:07:04.986
+A community can grow because the members
+rally around a common cause.
+
+95
+00:07:04.986 --> 00:07:10.318
+Typically, new cross-community
+edges start getting
+
+96
+00:07:10.318 --> 00:07:14.977
+formed before the communities
+actually merge.
+
+97
+00:07:14.977 --> 00:07:17.930
+The communities can
+shrink like my book club.
+
+98
+00:07:17.930 --> 00:07:19.190
+Where do you see this in real life?
+
+99
+00:07:20.430 --> 00:07:21.510
+Well, how about company mergers?
+
+100
+00:07:23.520 --> 00:07:26.390
+Surely enough, the [INAUDIBLE] results
+will happen when a community splits.
+
+101
+00:07:27.510 --> 00:07:29.690
+Going along with the previous example,
+
+102
+00:07:29.690 --> 00:07:34.170
+a closely working group in a company may
+at some point create their own product and
+
+103
+00:07:34.170 --> 00:07:39.230
+form a new company with very
+little ties to the old company.
+
+104
+00:07:39.230 --> 00:07:44.081
+One standard symptom of a group splitting
+is that the nodes in the subgroup
+
+105
+00:07:44.081 --> 00:07:48.399
+show an increase in the number of
+edges just amongst themselves.

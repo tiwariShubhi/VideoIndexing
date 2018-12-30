@@ -1,0 +1,1509 @@
+﻿1
+00:00:00,299 --> 00:00:10,070
+.
+Welcome to module 24 of database management
+
+2
+00:00:10,070 --> 00:00:25,908
+systems ah in this module and the next we
+will take a look at the storage and file structure
+
+3
+00:00:25,908 --> 00:00:27,759
+of database systems. So, we will start with
+the storage.
+
+4
+00:00:27,760 --> 00:00:31,679
+So, specifically we want to look at various
+physical storage medium because. So, far we
+
+5
+00:00:31,678 --> 00:00:40,869
+have been ah talking only about the logical
+layer of the database design and now we want
+
+6
+00:00:40,869 --> 00:00:45,849
+to actually look at the in physical terms
+how the data will be stored ah what could
+
+7
+00:00:45,850 --> 00:00:48,590
+be the physical storage medium for high volume
+fast reliable inexpensive options for databases.
+
+8
+00:00:48,590 --> 00:00:56,839
+ah We would like to understand the structure
+and basic functionality of ah magnetic disks,
+
+9
+00:00:56,838 --> 00:01:03,710
+because they are they are most widely ah used
+we will try to take the glimpse about ah RAID
+
+10
+00:01:03,710 --> 00:01:09,799
+which is a ah kind of a good option in terms
+of reliable ah databases and also look at
+
+11
+00:01:09,799 --> 00:01:15,409
+ah options for the tertiary storage.
+So, these are the ah topics that we will quickly
+
+12
+00:01:15,409 --> 00:01:18,030
+cover in this. So, first let us take a overview
+of the physical storage medium I am sure all
+
+13
+00:01:18,030 --> 00:01:27,140
+of you have ah known all or parts of this.
+So, this is, but this is more for completeness
+
+14
+00:01:27,140 --> 00:01:33,450
+to look at from the perspective of a database
+application. So, some of the the classification
+
+15
+00:01:33,450 --> 00:01:38,659
+of storage media done on different factors
+the factors includes speed which is the first
+
+16
+00:01:38,659 --> 00:01:44,670
+thing the how fast the data can be accessed
+the cost per unit of data you can say the
+
+17
+00:01:44,670 --> 00:01:50,159
+ah ah rupees per bit or rupees per byte or
+rupees per kilobyte something like that.
+
+18
+00:01:50,159 --> 00:02:01,399
+So, which is a cost per unit of data the reliability
+that is the if ah we will the data get lost
+
+19
+00:02:01,400 --> 00:02:05,250
+if ah power fails or if the system crashes
+and ah or if this physical you know failure
+
+20
+00:02:05,250 --> 00:02:07,689
+of the storage device and so, on. So, what
+is the reliability on that; and broadly as
+
+21
+00:02:07,689 --> 00:02:13,870
+you ah all know we can differentiate storage
+into volatile storage which loses contents.
+
+22
+00:02:13,870 --> 00:02:19,819
+When the power is switched off and the non
+volatile storage which ah are secondary and
+
+23
+00:02:19,819 --> 00:02:26,140
+tertiary storage ah where the data will continue
+to stay even when power is off even ah you
+
+24
+00:02:26,140 --> 00:02:31,109
+have some parts of the memory which may be
+battery backup which also will be non volatile.
+
+25
+00:02:31,110 --> 00:02:41,190
+So, in terms of the physical storage ah certainly
+the ah absolute starting point of the storage
+
+26
+00:02:41,189 --> 00:02:43,000
+is ah registered in the CPU; we are not talking
+about that because they are primarily meant
+
+27
+00:02:43,000 --> 00:02:50,860
+for temporary computations. So, in terms of
+data the first possible level is the cache
+
+28
+00:02:50,860 --> 00:02:55,730
+which is the fastest and most costly form
+of storage it is volatile in nature and is
+
+29
+00:02:55,729 --> 00:03:03,060
+managed by the computer ah system hardware.
+So, cache ah typically is a ah fast ah semiconductor
+
+30
+00:03:03,060 --> 00:03:10,521
+ah memory that ah exist between your ah ah
+main memory and ah the disk system and it
+
+31
+00:03:10,520 --> 00:03:16,899
+is very fast to work with then comes the main
+memory which is ah which has fast ah access,
+
+32
+00:03:16,900 --> 00:03:24,689
+but ah compare to ah cache it may be ah may
+be much bigger, but overall it is too small
+
+33
+00:03:24,689 --> 00:03:32,120
+to store an entire database, but ah I mean
+every ah ah regularly the size of this main
+
+34
+00:03:32,120 --> 00:03:37,890
+memory is increasing. So, ah the capacity
+of couple of gigabytes are common these days,
+
+35
+00:03:37,889 --> 00:03:43,429
+but ah still it is small compare to the requirement
+of the databases and main memory typically
+
+36
+00:03:43,430 --> 00:04:03,780
+is ah volatile. So, if the power goes up the
+system crashes all the data is lost.
+
+37
+00:04:03,780 --> 00:04:32,240
+Ah 
+
+38
+00:04:32,240 --> 00:04:43,749
+we have flash memory where ah the data can
+survive ah ah across power failure; itcan
+
+39
+00:04:43,749 --> 00:04:44,749
+be they had data can be written at a location
+only once ah, but ah you can erase and write
+
+40
+00:04:44,749 --> 00:04:45,749
+it again.
+So, it is not ah not like in the main memory
+
+41
+00:04:45,749 --> 00:04:46,749
+where you can read write read write like that
+here you can write and then if you want to
+
+42
+00:04:46,749 --> 00:04:47,749
+write again then you will have to erase and
+write it. So, ah the read is very fast in
+
+43
+00:04:47,749 --> 00:04:48,749
+case of flash memory which is ah almost as
+fast as a main memory, but writes a slope
+
+44
+00:04:48,749 --> 00:04:49,749
+particularly when you have erase and write
+it will be a [slo/slow] slow process ah all
+
+45
+00:04:49,749 --> 00:04:50,749
+the kinds of ah USB keys ah pen drives ah
+digital phone ah memory that we are often
+
+46
+00:04:50,749 --> 00:04:51,749
+using are actually flash memory.
+Then you have the magnetic disk where the
+
+47
+00:04:51,749 --> 00:04:52,749
+data is stored on ah spinning ah disk and
+ahit is typically written and read magnetically.
+
+48
+00:04:52,749 --> 00:04:53,749
+So, this is the primary medium for long term
+storage of large volume of data. So, data
+
+49
+00:04:53,749 --> 00:04:55,979
+needs to be moved from disk to the main memory
+and written back for permanent storage. So,
+
+50
+00:04:55,978 --> 00:05:05,228
+it is ah ways slower compare to the main memory
+and ah , but ah it is ah has a kind of direct
+
+51
+00:05:05,228 --> 00:05:11,769
+access which means that it is possible to
+read ah data on this disk ah in any arbitrary
+
+52
+00:05:11,769 --> 00:05:16,459
+order in compare to magnetic disk.
+Which is the serial device here it is a it
+
+53
+00:05:16,459 --> 00:05:21,848
+is kind of a I can do things in parallel at
+random in in any order capacity is ah go up
+
+54
+00:05:21,848 --> 00:05:25,930
+to tens of ah terabytes ah ah easily and it
+can survive for failure and system crashes,
+
+55
+00:05:25,930 --> 00:05:37,150
+ah ah because it will the magnetic recording
+will still be there if the disk itself fails
+
+56
+00:05:37,149 --> 00:05:40,279
+then it will the data will get distract, but
+such a situation is usually rear.
+
+57
+00:05:40,279 --> 00:05:47,638
+We have ah different ah optical storage devices
+ah CD-ROM, DVD and so, on the juke box systems
+
+58
+00:05:47,639 --> 00:05:53,879
+and which are also non volatile and data is
+[ridd/written] written optically here, ah
+
+59
+00:05:53,879 --> 00:06:02,150
+that is by using a laser light on the spinning
+disk use a typically ah optical storages are
+
+60
+00:06:02,149 --> 00:06:09,871
+removable ah media.
+Then you have the tape storage which ah usually
+
+61
+00:06:09,872 --> 00:06:13,949
+is a largest volume of storage, but it is
+as a name suggests it is a tape it is a linear
+
+62
+00:06:13,949 --> 00:06:19,360
+device. So, access can only be sequential.
+So, if you want to read the 6th record you
+
+63
+00:06:19,360 --> 00:06:25,240
+have to skip of a record 1 to 5 ah, but it
+can be a very high capacity usually it is
+
+64
+00:06:25,240 --> 00:06:30,908
+ah ah slope.
+But ah very large in volume and tape juke
+
+65
+00:06:30,908 --> 00:06:33,748
+boxes ah can support hundreds of terabytes
+or even multiple of petabyte ah. So, that
+
+66
+00:06:33,749 --> 00:06:41,430
+is ah for offline storage.This is a big medium.
+So, his is the ah basic storage ah hierarchy.
+
+67
+00:06:41,430 --> 00:06:44,709
+So, we broadly classify them in to three groups
+primary storage which is volatile and very
+
+68
+00:06:44,709 --> 00:06:50,498
+fast cache and main memory is within that
+or secondary storage which is an online ah
+
+69
+00:06:50,499 --> 00:06:56,919
+store ah which is non volatile and moderately
+fast and tertiary storage is called the offline
+
+70
+00:06:56,918 --> 00:07:02,468
+store which is non volatile and slope. So,
+flash memory and magnetic disk are secondary
+
+71
+00:07:02,468 --> 00:07:06,639
+storage they are non volatile and moderately
+fast and they are online. So, they exist with
+
+72
+00:07:06,639 --> 00:07:11,158
+the system whereas, optical disk and magnetic
+disk can be removed and taken elsewhere.
+
+73
+00:07:11,158 --> 00:07:17,978
+So, let us quickly take a look into the magnetic
+disk this is how a typical magnetic ah disk
+
+74
+00:07:17,978 --> 00:07:26,258
+ah looks like; these are the different ah
+cylinders ah these are the different ah disks
+
+75
+00:07:26,259 --> 00:07:28,800
+that we have and these are all different read
+write head.
+
+76
+00:07:28,800 --> 00:07:34,199
+So, as you can see all of them can ah can
+work along a ah path ah backward forward like
+
+77
+00:07:34,199 --> 00:07:40,270
+this and ah they can come and parallelly all
+of them parallelly can read from the different
+
+78
+00:07:40,269 --> 00:07:46,049
+ah disks and this disks keep on spinning to
+help you look at the data anywhere on the
+
+79
+00:07:46,050 --> 00:07:50,228
+disk. So, that is a typical ah structure of
+a magnetic.
+
+80
+00:07:50,228 --> 00:07:57,288
+Disk if you look specifically into. So, this
+is this is the structure we saw and if you
+
+81
+00:07:57,288 --> 00:08:05,128
+specifically look into one particular disk
+then the disk is radically divided into different
+
+82
+00:08:05,129 --> 00:08:11,179
+ah sectors ah portions. So, these are these
+are all separate ah portions and you can at
+
+83
+00:08:11,178 --> 00:08:14,839
+a time the head can read one such ah sector.
+So, these are called the geometric sectors
+
+84
+00:08:14,839 --> 00:08:20,538
+and ah the whole of the ring that you can
+see the cylindrical ring that you can see
+
+85
+00:08:20,538 --> 00:08:27,800
+is called a track. So, this is a track sector
+the orange one is a track sector and ah often
+
+86
+00:08:27,800 --> 00:08:33,769
+we take multiple sectors from a particular
+track and combine them into one unit this
+
+87
+00:08:33,769 --> 00:08:37,528
+is called the block of data and we will often
+talk about the block of data.
+
+88
+00:08:37,528 --> 00:08:43,599
+So, here at the typical numbers of how these
+ah sizes of this different ah units ah turn
+
+89
+00:08:43,599 --> 00:08:51,310
+out to be. So, the early generation where
+ah of disk were susceptible to head crashes,
+
+90
+00:08:51,309 --> 00:08:57,369
+but ah now a days it is moved it quite ah
+stable there are disk controllers which regularly
+
+91
+00:08:57,370 --> 00:09:03,860
+check ah and manage the; ah read write into
+in terms of the sectors naturally the. So,
+
+92
+00:09:03,860 --> 00:09:09,089
+many heads being in parallel the data can
+be written on to multiple sectors at the same
+
+93
+00:09:09,089 --> 00:09:15,209
+time and so, ah for doing that.
+We we the we will see what is the mechanism
+
+94
+00:09:15,208 --> 00:09:22,189
+for that; and we also have disk subsystems
+where if you need a large ah ah a volume of
+
+95
+00:09:22,190 --> 00:09:27,290
+data to be managed which is larger than a
+single disk. Then you can connect multiple
+
+96
+00:09:27,289 --> 00:09:32,919
+disk and through a disk controller you can
+actually read write data on to them and there
+
+97
+00:09:32,919 --> 00:09:37,588
+are different such disk interface standards
+that you may have heard of.
+
+98
+00:09:37,589 --> 00:09:45,079
+We will just mentioned that these are the
+typical ah storages ah the san and are the
+
+99
+00:09:45,078 --> 00:09:49,739
+typical storages. So, if you come across these
+terms ah we will not go into details of that
+
+100
+00:09:49,740 --> 00:09:54,149
+that takes us into a different course of hardware
+ah discussion, but these are the very common
+
+101
+00:09:54,149 --> 00:10:02,470
+storages for database disk systems.
+Now basic question is ah for doing this ah
+
+102
+00:10:02,470 --> 00:10:31,600
+read write on the disk what kind of ah performance
+measures we should ah look at. So, one ah
+
+103
+00:10:31,600 --> 00:10:50,579
+main measure is access time if I want to access
+a record ah from the disk, then how much time
+
+104
+00:10:50,578 --> 00:11:12,528
+ah shall I need. So, this is based on two
+major components one is a seek time now naturally
+
+105
+00:11:12,528 --> 00:11:29,879
+as we have ah seen ah that the disk platter
+as a whole ah range of ah read heads which
+
+106
+00:11:29,879 --> 00:11:34,839
+are positioned.
+So, to be able to get the data the platter
+
+107
+00:11:34,839 --> 00:11:46,310
+has to the head has to move forward or backward
+to the right track on which the data is there.
+
+108
+00:11:46,309 --> 00:12:09,979
+So, this time it takes to go from current
+position to the correct track where, I find
+
+109
+00:12:09,980 --> 00:12:31,500
+the data is called the seek time. Now, even
+when it is come to the; ah correct position
+
+110
+00:12:31,500 --> 00:12:51,110
+in terms of the correct track it may not actually
+be on the correct sector.
+
+111
+00:12:51,110 --> 00:13:04,639
+Because, it is at the whole track is a is
+kind of a circle. So, it may be at one part
+
+112
+00:13:04,639 --> 00:13:16,500
+of the circle and the actual data may be in
+a sector which is in a different part of the
+
+113
+00:13:16,500 --> 00:13:21,620
+circle. So, the disk will have to rotate.
+So, that the correct sector comes under the
+
+114
+00:13:21,620 --> 00:13:32,188
+head which is already positioned through the
+seek. So, the time to seek plus the rotational
+
+115
+00:13:32,188 --> 00:13:44,410
+latency the time it takes the for the sake
+ah sector to be access is gives the total
+
+116
+00:13:44,410 --> 00:13:57,619
+access time and then comes the ah other measure
+which is the data transfer rate as to you
+
+117
+00:13:57,620 --> 00:14:20,879
+using this then ah what is the rate ah how
+many ah megabytes and so, on can be transferred
+
+118
+00:14:20,879 --> 00:14:41,670
+at from this. So, it that depends on a ah
+besides the access time you will have to see
+
+119
+00:14:41,669 --> 00:14:54,909
+[wh/what] what is the rate at which the disk
+can be copied from the magnetic medium to
+
+120
+00:14:54,909 --> 00:15:02,948
+the ah semiconductor medium and transferred.
+Ah the other performance measure that we are
+
+121
+00:15:02,948 --> 00:15:22,338
+concerned with in the database system is known
+as MTTF which is mean time to failure. Because,
+
+122
+00:15:22,339 --> 00:15:38,560
+database systems as you know are dealing with
+persistent data. So, data has to exist and
+
+123
+00:15:38,559 --> 00:15:50,419
+therefore, the disk on which we keep the data
+must be very very reliable. So, meantime to
+
+124
+00:15:50,419 --> 00:16:15,229
+failure is ah ah conceptually that if you
+consider two failures of the database ah of
+
+125
+00:16:15,230 --> 00:16:34,629
+the disk ah to consecutive failures then what
+is the time the time elapse between them the
+
+126
+00:16:34,629 --> 00:16:55,059
+average of the time that has elapse between
+them now ah. So, if we say the ah it is typically
+
+127
+00:16:55,059 --> 00:17:09,569
+now mean time to failure for this magnetic
+disk that we use today at typically 2 to 5
+
+128
+00:17:09,569 --> 00:17:23,389
+years.
+So, the probability of the failure of a new
+
+129
+00:17:23,390 --> 00:17:31,890
+disk is ah very very low. So, it is kind of
+a theoretical MTTF ah we which will be said
+
+130
+00:17:31,890 --> 00:17:43,780
+like this which which; obviously, in terms
+of hours it it does not really make a make
+
+131
+00:17:43,779 --> 00:17:57,559
+a physical science. So, what it in technical
+in in more practical terms, what it means
+
+132
+00:17:57,559 --> 00:18:16,079
+that ah if you are given thousand relatively
+new disks then ah on average one of them will
+
+133
+00:18:16,079 --> 00:18:24,000
+fail every 1200 hours.
+So, this is what ah is a. So, MTTF ah certainly
+
+134
+00:18:24,000 --> 00:18:32,980
+ah decrease it will it will ah decrease as
+a disk becomes old. So, it decreases with
+
+135
+00:18:32,980 --> 00:18:38,370
+age. So, they will start failing sooner than
+it is to do.
+
+136
+00:18:38,369 --> 00:18:51,809
+Now we have to ah basic objective is to transfer
+the data at a fast rate. So, ah what we try
+
+137
+00:18:51,809 --> 00:18:59,139
+to optimize is a; what is called a block the
+contiguous sequence of sectors from a single
+
+138
+00:18:59,140 --> 00:19:12,830
+track which I mentioned earlier. So, this
+is what ah we will be read at one go. So,
+
+139
+00:19:12,829 --> 00:19:36,619
+once you access the data one block will be
+read ah block size can ah range from ah 512
+
+140
+00:19:36,619 --> 00:19:50,539
+bytes to several kilobytes. ah If the blocks
+are smaller than naturally will need more
+
+141
+00:19:50,539 --> 00:20:04,619
+transfers from the disk if the blocks are
+larger then ah you might waste ah lot of space
+
+142
+00:20:04,619 --> 00:20:15,489
+because ah your part of the block will not
+can be used with the data. So, with all that
+
+143
+00:20:15,490 --> 00:20:24,500
+consideration the typical blocks size that
+ah use today is 4 to 16 kilobytes. So, you
+
+144
+00:20:24,500 --> 00:20:30,089
+will see that in in all our subsequent discussions
+particularly with the access and the file
+
+145
+00:20:30,089 --> 00:20:37,349
+organization and the indexing we will consider
+that a block is one unit.
+
+146
+00:20:37,349 --> 00:20:53,449
+Which can be fetched in one go and that determines
+the the size of ah the basic information node
+
+147
+00:20:53,450 --> 00:20:55,710
+where the information about the ah ah records
+will be maintained.
+
+148
+00:20:55,710 --> 00:21:02,079
+Ah this is the more details in terms of ah
+how you move your disk head. So, I think will
+
+149
+00:21:02,079 --> 00:21:10,000
+will skip this this is more advance material.
+So, to optimize the the block ah access ah
+
+150
+00:21:10,000 --> 00:21:19,819
+we need to organize the blocks ah corresponding
+to how the data will be access. So, ah certainly
+
+151
+00:21:19,819 --> 00:21:24,450
+if ah the related data are kept in nearby
+blocks then naturally you are ah disk head
+
+152
+00:21:24,450 --> 00:21:51,730
+and ah the rotation will have to be mean will
+get minimized. So, ah the basic idea is store
+
+153
+00:21:51,730 --> 00:22:12,910
+the related information in nearby cylinders
+in the nearby ah cylindrical practice, but
+
+154
+00:22:12,910 --> 00:22:28,100
+ah as you keep on using you may start with
+that, but as you keep on ah using for various
+
+155
+00:22:28,099 --> 00:22:29,519
+types of insert delete and overflows that
+ah keeps on happening. So, the data gets ah
+
+156
+00:22:29,519 --> 00:22:37,609
+very fragmented which means that the data
+gets spread over a whole lot of widely separated
+
+157
+00:22:37,609 --> 00:22:39,459
+cylinders and so, on.
+So, the time to actually seek the data increases.
+
+158
+00:22:39,460 --> 00:22:58,850
+So, we can correct that by doing ah what is
+called a defragmentation process. So, by defragmentation
+
+159
+00:22:58,849 --> 00:23:11,639
+what you do is your data which is got ah distributed
+all over the disk you try to bring them together
+
+160
+00:23:11,640 --> 00:23:21,190
+again to logically continuous ah physically
+contiguous blocks. So, that their access time
+
+161
+00:23:21,190 --> 00:23:34,769
+can improve. So, ah databases often will periodically
+defragment the file system.
+
+162
+00:23:34,769 --> 00:23:46,849
+ah The other way look at the optimize ah block
+access ah is ah by using buffers. So, idea
+
+163
+00:23:46,849 --> 00:24:02,959
+of the buffer is suppose ah you want to write
+some data to the disk. So, naturally for writing
+
+164
+00:24:02,960 --> 00:24:27,370
+the data also you will need a seek time you
+will need the rotational latency then we will
+
+165
+00:24:27,369 --> 00:24:42,229
+have to data do the data transfer. So, if
+you are ah trying to do some ah write ah you
+
+166
+00:24:42,230 --> 00:24:50,079
+have you can take another option that you
+actually write that to a buffer ah a buffer
+
+167
+00:24:50,079 --> 00:25:16,319
+which ah is ah in the memory in the it is
+a in the a semiconductor buffer ah ah where
+
+168
+00:25:16,319 --> 00:25:26,069
+you can very quickly write and then ah when
+you have enough data in the buffer then you
+
+169
+00:25:26,069 --> 00:25:37,240
+can take them in a single go to the disk.
+And write that or when the disk is not actually
+
+170
+00:25:37,240 --> 00:25:43,549
+doing something ah ah some access you can
+use those cycles to write that now naturally
+
+171
+00:25:43,549 --> 00:25:59,690
+if you write things onto the buffer ah then
+ah it is possible that while your buffer has
+
+172
+00:25:59,690 --> 00:26:16,090
+some data which has actually not been written
+to the disk if the power fails then ah you
+
+173
+00:26:16,089 --> 00:26:27,679
+will lose that data. So, parts of the data
+which you think have been written actually
+
+174
+00:26:27,680 --> 00:26:33,759
+have not gone to the disk. So, to ah take
+care of that often non volatile ah memory
+
+175
+00:26:33,759 --> 00:26:36,940
+ram are used which are [ba/battery] battery
+backed up or flash memory.
+
+176
+00:26:36,940 --> 00:26:40,820
+So, that even if power fails the ah right
+buffers will not be lost. So, we say that
+
+177
+00:26:40,819 --> 00:26:47,069
+use non volatile buffers and ah ah other ah
+option that is used often is you maintain
+
+178
+00:26:47,069 --> 00:26:48,099
+a log disk a log disk is ah nothing, but when
+you are writing ah to the disk you make a
+
+179
+00:26:48,099 --> 00:26:52,740
+sequential log of the updates that you are
+doing. So, this kind of is a report. So, you
+
+180
+00:26:52,740 --> 00:26:53,740
+are saying that I have written ah this data
+to this block written this data to this block.
+
+181
+00:26:53,740 --> 00:26:56,180
+So, if there is a failure, then ah if you
+can go through the log and you can actually
+
+182
+00:26:56,180 --> 00:27:05,120
+retrieve ah the information of what was lost
+how far it it actually worked correctly and
+
+183
+00:27:05,119 --> 00:27:10,150
+ah you can ah ah used exactly like the non
+ah volatile ram and using the log you can
+
+184
+00:27:10,151 --> 00:27:12,222
+find out. So, you are keeping a kind of a
+general link system you are keeping information
+
+185
+00:27:12,222 --> 00:27:13,222
+of this is what I did this is what I did.
+So, the all this write ah information are
+
+186
+00:27:13,222 --> 00:27:16,099
+maintained in terms of the log.
+Ah You can use ah flash storage ah nowadays
+
+187
+00:27:16,099 --> 00:27:25,719
+the NAND ah based flash storage is are very
+common. So, here are some details on that
+
+188
+00:27:25,720 --> 00:27:36,289
+ah let us move on to ah understanding. So,
+we we just took a a look into the basic ah
+
+189
+00:27:36,289 --> 00:27:40,829
+storage hierarchy and the use of ah magnetic
+disks and ah what are the parameters that
+
+190
+00:27:40,829 --> 00:27:42,000
+control the performance in terms of the read
+write in terms of the disk ah RAID is ah um
+
+191
+00:27:42,000 --> 00:27:43,000
+a ah the full ah form is redundant array of
+independent disks.
+
+192
+00:27:43,000 --> 00:27:47,210
+So, the disk organization that manage a large
+number of disk, but ah the view that you get
+
+193
+00:27:47,210 --> 00:27:52,539
+you do not get to see the multiple disk you
+get to see a single disk.
+
+194
+00:27:52,539 --> 00:27:57,839
+So, ah by this you can create very high capacity
+and very high speed and ah. So, because you
+
+195
+00:27:57,839 --> 00:28:03,439
+have multiple disks. So, ah you organize a
+data in in such a way that when you are writing
+
+196
+00:28:03,440 --> 00:28:06,980
+or you are reading actually you can parallelly
+read or write from multiple different ah disks.
+
+197
+00:28:06,980 --> 00:28:12,569
+So, that not only increases capacity, but
+actually increases a throughput and you can
+
+198
+00:28:12,569 --> 00:28:21,339
+get ah high reliability also by storing the
+data redundantly; that is keeping multiple
+
+199
+00:28:21,339 --> 00:28:28,789
+copies and that is what ah RAID is often ah
+quite known for.
+
+200
+00:28:28,789 --> 00:28:31,599
+So, originally when ah RAID was ah originally
+designed ah actually the I in red stood for
+
+201
+00:28:31,599 --> 00:28:35,240
+inexpensive. So, it was kind of a disk array
+which was ah inexpensive to afford, but now
+
+202
+00:28:35,240 --> 00:28:38,529
+it is ah not ah particularly the expenses
+is not the primary factor for which we do
+
+203
+00:28:38,529 --> 00:28:43,951
+go for red, but we go for red for the high
+capacity high speed and high reliability.
+
+204
+00:28:43,951 --> 00:28:46,089
+So, the I is now interpreted as independent
+array.
+
+205
+00:28:46,089 --> 00:28:49,720
+So, we can improve. So, now, the main issue
+in red is to improve reliability. So, the
+
+206
+00:28:49,720 --> 00:28:51,630
+main the key idea is ah have redundancy to
+improve ah the reliability that is stored
+
+207
+00:28:51,630 --> 00:28:57,550
+the data in multiple copies and can ah rebuild
+from the copies once a disk has failed. So,
+
+208
+00:28:57,549 --> 00:28:58,549
+we earlier looked at the MTTF mean time to
+failure. ah Now, we are look at ah another
+
+209
+00:28:58,549 --> 00:29:01,369
+parameter which we say is a mean time to data
+loss. So, which depends on mean time to failure,
+
+210
+00:29:01,369 --> 00:29:05,259
+because if you are if you are failed then
+you have lost the data, but when you have
+
+211
+00:29:05,259 --> 00:29:07,869
+failed you have a possibility. Now, to recover
+the data to repair it; because you have redundant
+
+212
+00:29:07,869 --> 00:29:10,859
+copies.
+So, mean time to data loss it depends on the
+
+213
+00:29:10,859 --> 00:29:19,059
+MTTF plus the mean time to repair how quickly
+can we use your redundant copies and get back
+
+214
+00:29:19,059 --> 00:29:28,089
+the original data. So, mean time to data loss
+is the actual key factor which ah needs to
+
+215
+00:29:28,089 --> 00:29:30,429
+be minimized and for this ah red does ah a
+mirroring or shadowing that is ah for every
+
+216
+00:29:30,430 --> 00:29:33,400
+disk there is a duplicate there is a clone.
+So, it the logically you have one disk, but
+
+217
+00:29:33,400 --> 00:29:35,490
+physically you have actually two disk. So,
+every write that you do is carried out to
+
+218
+00:29:35,490 --> 00:29:39,153
+both the disks and when you read the read
+happens on either of the disk usually it it
+
+219
+00:29:39,153 --> 00:29:40,153
+ah switches between the disks. So, if one
+of the ah disk in the pair would fail, then
+
+220
+00:29:40,153 --> 00:29:41,153
+the data can still be recovered from the other
+and the data loss would occur if a disk fail,
+
+221
+00:29:41,153 --> 00:29:42,153
+but the mediate disk also has to fail before
+the system has been repair.
+
+222
+00:29:42,153 --> 00:29:43,153
+So, if one of the disk fail you get the data
+from the middle disk you continue to do that
+
+223
+00:29:43,153 --> 00:29:44,153
+from the mirror disk you restore the ah the
+other disk you may be replace and put a new
+
+224
+00:29:44,153 --> 00:29:45,153
+one mirror it again and. So, on, but you can
+restore that. So, in between this time if
+
+225
+00:29:45,153 --> 00:29:54,339
+the mirror disk also fails; then you have
+actually lost data, but the probability of
+
+226
+00:29:54,339 --> 00:29:55,339
+that is very very small. So, mirroring gives
+a at the expense of ah naturally having lot
+
+227
+00:29:55,339 --> 00:29:56,339
+more of ah redundant storage ah the mirroring
+can actually give you a much higher reliability.
+
+228
+00:29:56,339 --> 00:29:57,339
+That we ah expect today another ah [sa/some]
+some of the other techniques ah which improve
+
+229
+00:29:57,339 --> 00:29:58,339
+ah reliability is ah ah bit level and byte
+level ah block level ah striping techniques.
+
+230
+00:29:58,339 --> 00:29:59,339
+So, what ah you in the basic bit level striping
+what you do is a say every byte has 8 bits.
+
+231
+00:29:59,339 --> 00:30:00,339
+So, when you are writing a byte you do not
+write all the bytes to the same disk you write
+
+232
+00:30:00,339 --> 00:30:01,339
+them to multiple disks. So, you take an array
+of 8 disks. So, write bit I of each byte to
+
+233
+00:30:01,339 --> 00:30:02,339
+disk I it is. So, did interesting concept
+you have fragmenting it in a very peculiar
+
+234
+00:30:02,339 --> 00:30:03,339
+way.
+So, you have 8 disks and every byte ah first
+
+235
+00:30:03,339 --> 00:30:04,339
+ah byte first bit is written to one disk second
+byte is second bit is written to the second
+
+236
+00:30:04,339 --> 00:30:05,339
+disk, third bit is written to the third disk
+and so, on. And when you ah access you can
+
+237
+00:30:05,339 --> 00:30:06,339
+ah access from all these 8; now naturally
+which means that ah ah this ah will decrease
+
+238
+00:30:06,339 --> 00:30:07,339
+your ah throughput to some extent, because
+ah you have to collect from all of that reconstruct
+
+239
+00:30:07,339 --> 00:30:08,339
+ah. So, bits levels striping is not ah much
+in use any more instead you have block level
+
+240
+00:30:08,339 --> 00:30:09,674
+striping where ah with end disk a block I
+of a file goes to the disk ah i mod n plus
+
+241
+00:30:09,674 --> 00:30:10,674
+1.
+So, circularly. So, the first goes ah if you
+
+242
+00:30:10,674 --> 00:30:11,674
+have say five disks in the first block goes
+to disk one second to disk two-fifth to disk
+
+243
+00:30:11,674 --> 00:30:12,674
+5 and the 6th again back to disk 1. So, the
+ah request to different blocks can run in
+
+244
+00:30:12,674 --> 00:30:13,879
+parallel and ah reside on different disk and
+if they can easily utilize this parallelism
+
+245
+00:30:13,880 --> 00:30:14,880
+to improve the throughput.
+At the same time improve the ah reliability
+
+246
+00:30:14,880 --> 00:30:17,480
+now how do you improve the reliability. So,
+for improving the reliability you use the
+
+247
+00:30:17,480 --> 00:30:19,440
+basic ah you know error correcting coding
+ah concept you just use a bit level ah that
+
+248
+00:30:19,440 --> 00:30:20,984
+again two options one is you can do a bit
+inter lift parity which means a single parity
+
+249
+00:30:20,983 --> 00:30:23,319
+bit is ah used which is good for error correction.
+Usually, we know that if we use a single parity
+
+250
+00:30:23,319 --> 00:30:25,710
+bit we can know a single error we can detect
+a single error, but here with a single bit
+
+251
+00:30:25,710 --> 00:30:29,470
+you can correct the single error also because
+you know in case of a failure you know which
+
+252
+00:30:29,470 --> 00:30:30,470
+particular disk has ah failed. So, then you
+can ah exalt with a ah data from the other
+
+253
+00:30:30,470 --> 00:30:31,470
+disk and [re/reconstruct] reconstruct the
+error bit.
+
+254
+00:30:31,470 --> 00:30:32,470
+So, the other is naturally block inter leaving
+of the parity which ah uses block level striping
+
+255
+00:30:32,470 --> 00:30:33,470
+and keeps a parity block on a separate disk
+for corresponding blocks from n other disks
+
+256
+00:30:33,470 --> 00:30:34,470
+and you can reconstruct in a very similar
+manner. So, by using block interleaved parity
+
+257
+00:30:34,470 --> 00:30:35,470
+with block striping you can really have a
+higher throughput with a better reliability.
+
+258
+00:30:35,470 --> 00:30:36,470
+So, it is a win win situation now naturally
+ah when you ah ah go for red ah you will ah
+
+259
+00:30:36,470 --> 00:30:37,470
+find that ah there are different levels ah
+ah of read that are available today goes up
+
+260
+00:30:37,470 --> 00:30:38,470
+to level 6 right. Now, and ah the factors
+that certainly has to be considered is ah
+
+261
+00:30:38,470 --> 00:30:39,470
+I mean different RAID at different kind of
+cost the what is the performance ah what is
+
+262
+00:30:39,470 --> 00:30:40,470
+the performance during failure; that is performance
+during failure is is typically the MTTF and
+
+263
+00:30:40,470 --> 00:30:41,470
+performance during rebuilt is a mean ah time
+to ah ah to [da/data] data loss. So, including
+
+264
+00:30:41,470 --> 00:30:42,470
+the rebuilding and so, on. So, based on these
+factors different rate levels can be ah looked
+
+265
+00:30:42,470 --> 00:30:43,470
+at RAID 0 is used only when data safety is
+not important. So, that is not very common
+
+266
+00:30:43,470 --> 00:30:44,470
+ah the RAID level 2 and 4 are never used ah.
+Because, ah they are they got subsumed in
+
+267
+00:30:44,470 --> 00:30:45,470
+level 3 and 5. So, you can ignore that ah
+level ah three is also not used anymore, because
+
+268
+00:30:45,470 --> 00:30:46,470
+ah it ah used bits striping and ah naturally
+we talked of that that is not ah that is words
+
+269
+00:30:46,470 --> 00:30:47,470
+compare to the block striping which level
+5 uses and ah level 6 is also really used.
+
+270
+00:30:47,470 --> 00:30:48,470
+Since level 1 and 5 ah adequately support
+all applications. So, ah the conclusions simply.
+
+271
+00:30:48,470 --> 00:30:49,470
+Is that ah you either use ah RAID level 1
+or you use RAID level 5. So, RAID level 1
+
+272
+00:30:49,470 --> 00:30:50,470
+gives a better right performance, than RAID
+5 and ah it is ah certainly ah ah level. So,
+
+273
+00:30:50,470 --> 00:30:51,470
+therefore, level 1 is preferred for high update
+environments such as log disks and so, on
+
+274
+00:30:51,470 --> 00:30:52,470
+whereas, ah ah level one has higher ah storage
+cost than than ah 5 also and ah level 5 is
+
+275
+00:30:52,470 --> 00:30:53,470
+preferred for applications that has low update
+rate and large volume of data. So, if you
+
+276
+00:30:53,470 --> 00:30:54,470
+have ah very high update you go for level
+one rate. So, which will ah give you which
+
+277
+00:30:54,470 --> 00:30:55,470
+will cost you more, but ah if you have a level
+5, then you will be able to ah get a low update,
+
+278
+00:30:55,470 --> 00:30:56,470
+but have large amount of data stored reliably
+ah with less amount of money invested into
+
+279
+00:30:56,470 --> 00:30:57,470
+that and ah.
+So, these are ah the RAID levels ah then ah
+
+280
+00:30:57,470 --> 00:30:58,470
+of course, finally there are different ah
+tertiary storages ah compact disk CD-ROM ah
+
+281
+00:30:58,470 --> 00:30:59,470
+we all are familiar that DVD ah the record
+once versions where you just record and ah
+
+282
+00:30:59,470 --> 00:31:00,470
+use that particularly for different kind of
+distribution these.
+
+283
+00:31:00,470 --> 00:31:01,470
+Ah storages are used there are magnetic tapes
+which are ah very large volume and ah provide
+
+284
+00:31:01,470 --> 00:31:02,470
+a high transfer rate and they are ah go currently
+they go into different ah couple of orders
+
+285
+00:31:02,470 --> 00:31:03,470
+of terabytes ah ah even petabytes in size
+ah, but ah the tapes are not ah really very
+
+286
+00:31:03,470 --> 00:31:04,470
+expensive. So, we can use them ah to hold
+ah really really large databases they are
+
+287
+00:31:04,470 --> 00:31:05,470
+good for Backups and so, on ah, but ah the
+tape drives are quite expensive. So, that
+
+288
+00:31:05,470 --> 00:31:06,470
+will have to keep in mind.
+So, ah to summarize ah we have looked at ah
+
+289
+00:31:06,470 --> 00:31:07,470
+different physical ah storage media. So, this
+was ah I mean besides all the details in the
+
+290
+00:31:07,470 --> 00:31:08,470
+discussion the key take way point ah for us
+here is ah to understand that ah ah primarily.
+
+291
+00:31:08,470 --> 00:31:09,470
+We have a a memory which is expensive and
+ah which is small in size very high speed.
+
+292
+00:31:09,470 --> 00:31:10,470
+So, all operations that we need that need
+to be done ah we will finally, have to happen
+
+293
+00:31:10,470 --> 00:31:11,470
+when the once the data is in memory and ah
+on the other side we have all the persistent
+
+294
+00:31:11,470 --> 00:31:12,470
+data in a in some kind of a magnetic disk
+ah in certain structure and ah that is ah
+
+295
+00:31:12,470 --> 00:31:13,470
+that can support large ah storage it is persistent
+it is reliable, but ah it is relatively slow
+
+296
+00:31:13,470 --> 00:31:14,470
+to access and ah ah. So, it needs to be used
+in a intelligent manner and one point that
+
+297
+00:31:14,470 --> 00:31:15,470
+you have specifically noted that there is
+some ah unit for every disk system there is
+
+298
+00:31:15,470 --> 00:31:16,470
+some unit called a block or disk block which
+is a basic unit of data that will be transferred
+
+299
+00:31:16,470 --> 00:31:17,470
+every time you access the disk. So, you are
+if your design is aligned with a size of the
+
+300
+00:31:17,470 --> 00:31:18,470
+disk block which is couple of kilobytes ah
+then it will be ah easier to be able to design
+
+301
+00:31:18,470 --> 00:31:19,470
+more optimal ah ah physical storage for your
+files and you can speed up the whole process
+
+302
+00:31:19,470 --> 00:31:19,481
+of search and update that you want to do in
+the database.
+

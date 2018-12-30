@@ -1,0 +1,1928 @@
+
+1
+00:00:01.260 --> 00:00:04.660
+If you recall, we have previously
+discussed that the main categories of
+
+2
+00:00:04.660 --> 00:00:09.170
+machine learning tasks are classification,
+regression,
+
+3
+00:00:09.170 --> 00:00:12.560
+cluster analysis, and
+association analysis.
+
+4
+00:00:12.560 --> 00:00:15.100
+We have discussed
+classification in detail.
+
+5
+00:00:15.100 --> 00:00:18.190
+Now let's look at the other categories,
+starting with regression.
+
+6
+00:00:19.840 --> 00:00:24.880
+After this video you will be able
+to define what regression is,
+
+7
+00:00:24.880 --> 00:00:28.870
+explain the difference between
+regression and classification, and
+
+8
+00:00:28.870 --> 00:00:30.630
+name some applications of regression.
+
+9
+00:00:32.140 --> 00:00:36.410
+Before we talk about regression,
+let's review classification.
+
+10
+00:00:36.410 --> 00:00:40.630
+In a classification problem the input
+data is presented to the machine learning
+
+11
+00:00:40.630 --> 00:00:46.450
+model, and the task is to predict the
+target corresponding to the input data.
+
+12
+00:00:46.450 --> 00:00:49.960
+The target is a categorical variable.
+
+13
+00:00:49.960 --> 00:00:54.132
+So the classification task is to
+predict the category or label of
+
+14
+00:00:54.132 --> 00:00:57.450
+the target, given the input data.
+
+15
+00:00:57.450 --> 00:01:01.870
+The classification example shown
+here is one we have seen before.
+
+16
+00:01:01.870 --> 00:01:06.950
+The input variables are measurements
+such as temperature, relative humidity,
+
+17
+00:01:06.950 --> 00:01:10.790
+atmospheric pressure,
+wind speed, wind direction, etc.
+
+18
+00:01:10.790 --> 00:01:11.500
+The task for
+
+19
+00:01:11.500 --> 00:01:16.590
+the model is to predict the weather
+category associated with the input data.
+
+20
+00:01:16.590 --> 00:01:17.730
+The possible values for
+
+21
+00:01:17.730 --> 00:01:22.180
+the weather category is sunny,
+windy, rainy, or cloudy.
+
+22
+00:01:22.180 --> 00:01:26.265
+Since we're predicting the category,
+this is a classification task.
+
+23
+00:01:26.265 --> 00:01:31.080
+With that context in mind,
+let's now discuss regression.
+
+24
+00:01:31.080 --> 00:01:35.220
+When the model has to predict
+a numeric value instead of a category,
+
+25
+00:01:35.220 --> 00:01:38.410
+then the task becomes
+a regression problem.
+
+26
+00:01:38.410 --> 00:01:42.170
+An example of regression is to
+predict the price of a stock.
+
+27
+00:01:42.170 --> 00:01:45.415
+The stock price is a numeric value,
+not a category.
+
+28
+00:01:45.415 --> 00:01:49.455
+So this is a regression task
+instead of a classification task.
+
+29
+00:01:49.455 --> 00:01:53.755
+Note that if you were to predict not
+the actual price of the stock, but whether
+
+30
+00:01:53.755 --> 00:01:58.505
+the stock price will go up or go down,
+then that would be a classification task.
+
+31
+00:01:58.505 --> 00:02:02.085
+That is the main difference between
+classification and regression.
+
+32
+00:02:02.085 --> 00:02:05.120
+In classification,
+you're predicting a category, and
+
+33
+00:02:05.120 --> 00:02:07.270
+in regression you're
+predicting a numeric value.
+
+34
+00:02:08.720 --> 00:02:11.810
+Here are some examples where
+regression can be used.
+
+35
+00:02:11.810 --> 00:02:16.610
+Forecast the high temperature for the next
+day, estimate the average housing price
+
+36
+00:02:16.610 --> 00:02:21.640
+for a particular region, determine the
+demand for a new product, a new book for
+
+37
+00:02:21.640 --> 00:02:26.980
+example, based on similar existing
+products, predict the power usage for
+
+38
+00:02:26.980 --> 00:02:28.160
+a particular power grid.
+
+39
+00:02:29.890 --> 00:02:31.780
+This is what the data
+set might look like for
+
+40
+00:02:31.780 --> 00:02:35.190
+the regression task of predicting
+tomorrow's high temperature.
+
+41
+00:02:35.190 --> 00:02:37.340
+The input variables could
+be the high temperature for
+
+42
+00:02:37.340 --> 00:02:40.940
+today, the low temperature for
+today, and the month.
+
+43
+00:02:40.940 --> 00:02:44.270
+And the target is the high temperature for
+tomorrow.
+
+44
+00:02:44.270 --> 00:02:48.220
+The model has to predict this
+target value for each sample.
+
+45
+00:02:48.220 --> 00:02:52.250
+Recall that in a supervised
+task the target is provided.
+
+46
+00:02:52.250 --> 00:02:57.070
+Well, for an unsupervised task the target
+is not available or not known.
+
+47
+00:02:57.070 --> 00:03:00.540
+Since the target label is provided for
+each sample here,
+
+48
+00:03:00.540 --> 00:03:04.370
+the regression task is a supervised one,
+similar to classification.
+
+49
+00:03:05.900 --> 00:03:10.580
+As with classification building a
+regression model also involve two phases.
+
+50
+00:03:10.580 --> 00:03:13.330
+A training phase in which
+the model is built, and
+
+51
+00:03:13.330 --> 00:03:16.410
+a testing phase in which
+the model is applied to new data.
+
+52
+00:03:17.590 --> 00:03:21.550
+The model is built using training data and
+evaluated on test data.
+
+53
+00:03:22.690 --> 00:03:27.011
+Similar to classification, the goal in
+building a regression model is also to
+
+54
+00:03:27.011 --> 00:03:31.340
+have a model perform well on training
+data, as well as generalize to new data.
+
+55
+00:03:32.850 --> 00:03:36.190
+The use of three different datasets
+that we have previously discussed
+
+56
+00:03:36.190 --> 00:03:38.470
+also apply to regression.
+
+57
+00:03:38.470 --> 00:03:41.650
+Recall that the three
+datasets are used as follows.
+
+58
+00:03:41.650 --> 00:03:46.130
+The training dataset is used to train the
+model, that is to adjust the parameters of
+
+59
+00:03:46.130 --> 00:03:48.408
+the model to learn the input
+to output mapping.
+
+60
+00:03:48.408 --> 00:03:53.380
+The validation dataset is used to
+determine when training should stop
+
+61
+00:03:53.380 --> 00:03:55.700
+in order to avoid over fitting.
+
+62
+00:03:55.700 --> 00:04:01.320
+And the test dataset is used to evaluate
+the performance of the model on new data.
+
+63
+00:04:01.320 --> 00:04:05.900
+In summary, in regression the model
+needs to predict the numeric value
+
+64
+00:04:05.900 --> 00:04:07.970
+corresponding to the input data.
+
+65
+00:04:07.970 --> 00:04:13.160
+Since a target is provided for each
+sample, regression is a supervised task.
+
+66
+00:04:13.160 --> 00:04:16.990
+The target is always a numerical
+variable in regression.
+
+67
+00:04:16.990 --> 00:04:18.042
+In the next lecture,
+
+68
+00:04:18.042 --> 00:04:21.323
+we will discuss a specific algorithm
+to build a regression model.
+
+1
+00:00:01.060 --> 00:00:02.330
+Hello.
+
+2
+00:00:02.330 --> 00:00:05.750
+Welcome to the Graph Analytics module
+in the Big Data specialization.
+
+3
+00:00:07.180 --> 00:00:11.250
+I'm Amarnath Gupta, a research scientist
+at the San Diego Supercomputer Center.
+
+4
+00:00:12.730 --> 00:00:14.080
+What do I do research on?
+
+5
+00:00:15.150 --> 00:00:20.380
+Well, a number of different areas,
+all generally related to data engineering.
+
+6
+00:00:21.570 --> 00:00:25.740
+But the area I'm recently very
+excited about has to do with graphs.
+
+7
+00:00:27.160 --> 00:00:30.650
+Now, graphs or
+networks has many people call them,
+
+8
+00:00:31.650 --> 00:00:37.270
+are about studying relationships and
+relationship patterns on objects.
+
+9
+00:00:39.570 --> 00:00:45.420
+I became interested in graphs
+when I was a graduate student and
+
+10
+00:00:45.420 --> 00:00:51.930
+the professor in our artificial
+intelligence class showed us how a part of
+
+11
+00:00:51.930 --> 00:00:58.240
+human knowledge can be represented as
+a kind of graphs called semantic networks.
+
+12
+00:01:00.560 --> 00:01:05.030
+She showed us how even
+very simple things like
+
+13
+00:01:05.030 --> 00:01:09.840
+relationships somewhere in a family can
+be represented and viewed as graphs.
+
+14
+00:01:10.960 --> 00:01:13.121
+Represent your knowledge huh?
+
+15
+00:01:13.121 --> 00:01:15.030
+Now, that got me really excited.
+
+16
+00:01:16.160 --> 00:01:22.042
+Someday, I thought this will be a really
+interesting topic to research on.
+
+17
+00:01:23.730 --> 00:01:29.660
+What I didn't realize then is that
+in just a few years graphs and
+
+18
+00:01:29.660 --> 00:01:35.787
+the need to model and analyze them would
+become so dominant in both academia and
+
+19
+00:01:35.787 --> 00:01:40.600
+industry that graphs will
+be found everywhere today.
+
+20
+00:01:41.980 --> 00:01:46.520
+Now we look at Facebook,
+LinkedIn, Twitter, and many,
+
+21
+00:01:46.520 --> 00:01:51.930
+many more companies that
+are thriving in the market with data
+
+22
+00:01:51.930 --> 00:01:56.450
+that are represented, modeled,
+and processed as graphs.
+
+23
+00:01:58.150 --> 00:02:01.210
+Now, even the entire World Wide Web,
+if you think about it,
+
+24
+00:02:01.210 --> 00:02:03.140
+is a giant graph that people analyze.
+
+25
+00:02:04.320 --> 00:02:06.710
+And that brings us to this course.
+
+26
+00:02:06.710 --> 00:02:11.400
+Now, in this course, I'll introduce you
+to the wonderful world of Graph Analytics
+
+27
+00:02:11.400 --> 00:02:14.700
+specifically, I'd like
+to show how different
+
+28
+00:02:14.700 --> 00:02:19.070
+kinds of real world data science problems
+can be viewed and modeled as graphs.
+
+29
+00:02:20.110 --> 00:02:24.856
+And how the process of solving
+them can apply analytical
+
+30
+00:02:24.856 --> 00:02:29.710
+techniques that used graph based methods,
+that is Algorithms.
+
+31
+00:02:32.180 --> 00:02:33.870
+This course would have four models.
+
+32
+00:02:35.000 --> 00:02:40.820
+In model one, we'll introduce graphs and
+different applications that use graphs.
+
+33
+00:02:43.280 --> 00:02:48.880
+In model two,
+we'll cover a number of common techniques,
+
+34
+00:02:48.880 --> 00:02:53.000
+mathematical and algorithm techniques,
+that are used in Graph Analytics.
+
+35
+00:02:54.190 --> 00:02:57.264
+In module three,
+we'll look at a graph database.
+
+36
+00:02:57.264 --> 00:03:00.288
+And through some sort
+of a hands on guidance,
+
+37
+00:03:00.288 --> 00:03:04.840
+we'll show you how to store and
+query graph data with the database.
+
+38
+00:03:05.870 --> 00:03:10.800
+In module four, we'll cover some
+strategies of handling very large
+
+39
+00:03:10.800 --> 00:03:15.855
+graphs and discuss how existing
+tools that are currently used by
+
+40
+00:03:15.855 --> 00:03:21.625
+the community are actually prints.
+
+41
+00:03:21.625 --> 00:03:23.585
+Thank you for joining this course and
+
+42
+00:03:23.585 --> 00:03:27.885
+I sincerely hope that you'll find
+it both exciting and useful.
+
+43
+00:03:29.265 --> 00:03:29.884
+Happy learning.
+
+1
+00:00:00.660 --> 00:00:04.950
+As we saw in these four examples
+what graphs are used for
+
+2
+00:00:04.950 --> 00:00:07.920
+are kind of different but they all show
+
+3
+00:00:07.920 --> 00:00:11.275
+different viewpoints from which you
+can use graphs for your analysis.
+
+4
+00:00:11.275 --> 00:00:16.380
+Since this course focuses
+on graph analytics,
+
+5
+00:00:16.380 --> 00:00:19.150
+I'd like to briefly recap
+what the term means.
+
+6
+00:00:20.430 --> 00:00:25.790
+Analytics is the ability to
+discover meaningful patterns and
+
+7
+00:00:25.790 --> 00:00:29.972
+interesting insights into data using
+mathematical properties of data.
+
+8
+00:00:31.150 --> 00:00:35.260
+It covers the process of computing
+with mathematical properties, and
+
+9
+00:00:35.260 --> 00:00:38.460
+accessing the data itself efficiently.
+
+10
+00:00:38.460 --> 00:00:40.970
+Further, it involves
+the ability to represent and
+
+11
+00:00:40.970 --> 00:00:44.910
+work with domain knowledge as we
+saw in use case two with biology.
+
+12
+00:00:44.910 --> 00:00:49.220
+Finally, analytics often involves
+statistical modeling techniques for
+
+13
+00:00:49.220 --> 00:00:52.180
+drawing inferences and
+making predictions on data.
+
+14
+00:00:53.510 --> 00:00:58.110
+With analytics, we should be able
+to achieve the goals shown here.
+
+15
+00:00:59.900 --> 00:01:00.977
+Take a minute to read.
+
+16
+00:01:10.544 --> 00:01:15.180
+Therefore, graph analytics is
+a special case of analytics where
+
+17
+00:01:15.180 --> 00:01:18.985
+the underlying data can be
+modeled as a set of graphs.
+
+1
+00:00:00.890 --> 00:00:05.257
+So in this video,
+we'll going to talk about graph analytics
+
+2
+00:00:05.257 --> 00:00:09.820
+within the context of this
+big data specialization.
+
+3
+00:00:12.080 --> 00:00:16.330
+So in the previous courses you know about
+the three important V's of big data.
+
+4
+00:00:17.410 --> 00:00:21.580
+So the three well-known V's are volume,
+velocity, and variety.
+
+5
+00:00:22.940 --> 00:00:27.440
+We will also talk about a lesser-known V,
+which is called valence.
+
+6
+00:00:29.170 --> 00:00:33.976
+Okay, what we want to talk about is,
+
+7
+00:00:33.976 --> 00:00:39.881
+what impact these things
+have on graph data.
+
+8
+00:00:39.881 --> 00:00:44.693
+So for volume, let's take a dataset like
+
+9
+00:00:44.693 --> 00:00:49.238
+the load network of the United States.
+
+10
+00:00:49.238 --> 00:00:51.770
+Well, that's a pretty large graph.
+
+11
+00:00:51.770 --> 00:00:55.870
+So when we say volume,
+I mean that the size of the graph
+
+12
+00:00:55.870 --> 00:00:59.790
+is much larger than what you might have
+
+13
+00:01:00.960 --> 00:01:05.400
+in the memory of a reasonable computer or
+real computing infrastructure.
+
+14
+00:01:07.130 --> 00:01:12.462
+Now, we will see what impact the size
+
+15
+00:01:12.462 --> 00:01:18.490
+of the graph has on analytic operations.
+
+16
+00:01:18.490 --> 00:01:21.497
+What we mean by velocity
+when it comes to graphs?
+
+17
+00:01:21.497 --> 00:01:22.620
+Well, think of Facebook again.
+
+18
+00:01:23.860 --> 00:01:25.680
+So these little graphs are updates.
+
+19
+00:01:26.700 --> 00:01:34.190
+So you write a post, then like somebody
+else's post, and make a comment.
+
+20
+00:01:34.190 --> 00:01:35.774
+That's a bunch of updates.
+
+21
+00:01:35.774 --> 00:01:37.810
+That comes and adds to your graph.
+
+22
+00:01:39.110 --> 00:01:43.440
+Well, then ten minutes later,
+you do something similar, and
+
+23
+00:01:43.440 --> 00:01:45.000
+that also comes and adds to the graph.
+
+24
+00:01:45.000 --> 00:01:48.060
+Then your friend does the same thing,
+it adds to your graph.
+
+25
+00:01:48.060 --> 00:01:53.530
+So as time goes by,
+you are sending more edges to your graph.
+
+26
+00:01:55.060 --> 00:01:59.240
+And the speed at which
+you are doing this for
+
+27
+00:01:59.240 --> 00:02:02.870
+at least like Facebook can be really,
+really high.
+
+28
+00:02:02.870 --> 00:02:05.590
+So the rate of update in
+Facebook is really high.
+
+29
+00:02:06.910 --> 00:02:13.997
+This is what is called
+streaming edges into graphs.
+
+30
+00:02:13.997 --> 00:02:19.314
+And there can be multiple streams for
+various reasons.
+
+31
+00:02:19.314 --> 00:02:20.515
+What do we mean by variety?
+
+32
+00:02:20.515 --> 00:02:28.790
+For graphs, it means that the graph is
+collecting data from various places.
+
+33
+00:02:28.790 --> 00:02:33.002
+And all these different places are giving
+different kinds of information to
+
+34
+00:02:33.002 --> 00:02:33.671
+the graph.
+
+35
+00:02:33.671 --> 00:02:36.905
+So in the end,
+the graph has more non-uniform and
+
+36
+00:02:36.905 --> 00:02:41.217
+complex information potentially
+coming from multiple sources.
+
+37
+00:02:41.217 --> 00:02:44.210
+That's what we mean by variety
+when we refer to graphs.
+
+38
+00:02:45.690 --> 00:02:48.930
+That picture there, by the way, is
+different kinds of protein interactions.
+
+39
+00:02:52.600 --> 00:02:55.850
+The next one,
+the less-known one is valence.
+
+40
+00:02:57.510 --> 00:03:02.578
+Now, if you remember your chemistry,
+this comes from valence electrons,
+
+41
+00:03:02.578 --> 00:03:06.470
+which are electrons in an atom
+which are used for bonding.
+
+42
+00:03:06.470 --> 00:03:09.790
+The other electrons
+are called core electrons.
+
+43
+00:03:09.790 --> 00:03:14.274
+So the idea is if we increase
+the valence of the graphs,
+
+44
+00:03:14.274 --> 00:03:18.183
+you increase the connectiveness
+of the graph.
+
+45
+00:03:18.183 --> 00:03:19.901
+How, we will see.
+
+46
+00:03:22.920 --> 00:03:27.894
+Now, graph size clearly impacts analytics.
+
+47
+00:03:27.894 --> 00:03:35.041
+Why, a, it takes more space, but more
+importantly, it increases the algorithmic
+
+48
+00:03:35.041 --> 00:03:40.190
+complexity of any operation that
+you want it to on the graph.
+
+49
+00:03:40.190 --> 00:03:45.344
+Now, we'll see an example of that,
+but what happens as
+
+50
+00:03:45.344 --> 00:03:50.948
+a result is that the data-to-analysis
+time becomes high.
+
+51
+00:03:50.948 --> 00:03:54.240
+So I put in some data, and
+I wanted to do this analysis.
+
+52
+00:03:54.240 --> 00:03:59.120
+But there is so much data, that my
+analysis takes way longer than it should.
+
+53
+00:04:00.620 --> 00:04:05.343
+Let's give a simple example,
+an example we have seen before.
+
+54
+00:04:05.343 --> 00:04:10.373
+Remember, we had this little graph
+from our biological example where we
+
+55
+00:04:10.373 --> 00:04:16.488
+were asking, find a simple path between
+Alzheimer's Disease and Colorectal Cancer.
+
+56
+00:04:16.488 --> 00:04:18.925
+And in this case, the result is obvious.
+
+57
+00:04:22.524 --> 00:04:25.589
+Now, let's pause and ask.
+
+58
+00:04:25.589 --> 00:04:29.248
+There are two nodes that I mentioned,
+in this case,
+
+59
+00:04:29.248 --> 00:04:33.170
+my Colorectal Cancer and
+Alzheimer's Disease nodes.
+
+60
+00:04:34.800 --> 00:04:39.940
+And we are asking,
+is there a simple path connecting them?
+
+61
+00:04:42.290 --> 00:04:44.470
+This is called a decision problem.
+
+62
+00:04:44.470 --> 00:04:51.988
+I give you a data, and I'm asking does
+such a simple path exist or not exist?
+
+63
+00:04:51.988 --> 00:04:55.124
+But this is actually a very
+hard decision problem.
+
+64
+00:04:55.124 --> 00:04:59.964
+And the computer scientists will tell you
+that this is a very complicated problem
+
+65
+00:04:59.964 --> 00:05:02.321
+because it has a very high complexity.
+
+66
+00:05:02.321 --> 00:05:04.340
+Let's ask another question.
+
+67
+00:05:04.340 --> 00:05:07.070
+Well, how many simple paths,
+now I want to count.
+
+68
+00:05:07.070 --> 00:05:09.430
+How many simple paths exist
+between these two nodes?
+
+69
+00:05:10.810 --> 00:05:13.580
+Indeed, it is another
+hard computing problem.
+
+70
+00:05:15.370 --> 00:05:19.750
+And if you really want to know,
+the size of the result,
+
+71
+00:05:19.750 --> 00:05:24.780
+in the worst case is exponential
+in the number of nodes.
+
+72
+00:05:24.780 --> 00:05:27.930
+So if we increase the number of nodes and
+edges, if we increase the size of
+
+73
+00:05:27.930 --> 00:05:35.490
+the graph such a seemingly simple question
+can take a very, very, very long time.
+
+74
+00:05:37.180 --> 00:05:40.890
+So that it's almost practically
+impossible to compute it for
+
+75
+00:05:40.890 --> 00:05:44.910
+a really large graph if we have
+no other information supporting.
+
+76
+00:05:44.910 --> 00:05:47.008
+That's the worst case.
+
+77
+00:05:47.008 --> 00:05:52.441
+But when we say algorithmic complexity
+increases, that's what we mean.
+
+78
+00:05:55.692 --> 00:06:00.894
+Let's talk about velocity, and
+I said our favorite example is Facebook.
+
+79
+00:06:00.894 --> 00:06:05.096
+So we are adding a bunch of updates, which
+means we are adding a bunch of edges.
+
+80
+00:06:05.096 --> 00:06:11.490
+We are streaming the edges into the data,
+and we want to compute a metric.
+
+81
+00:06:11.490 --> 00:06:15.791
+We want to see what is
+the shortest distance
+
+82
+00:06:15.791 --> 00:06:20.697
+between person a and
+person b or item a and item b.
+
+83
+00:06:20.697 --> 00:06:25.155
+Or I want to know that
+Facebook has communities.
+
+84
+00:06:25.155 --> 00:06:26.690
+Twitter has communities like we saw.
+
+85
+00:06:28.220 --> 00:06:32.540
+And how many people out there,
+in these communities, and
+
+86
+00:06:32.540 --> 00:06:35.600
+how many such communities are there,
+like a Facebook group?
+
+87
+00:06:37.560 --> 00:06:42.180
+Now, if you want to compute this metric,
+and you get this
+
+88
+00:06:42.180 --> 00:06:46.449
+edges very fast, it is very difficult
+to know when you have the answer.
+
+89
+00:06:47.480 --> 00:06:55.450
+Because you are going to get an increasing
+number of edges in the system,
+
+90
+00:06:56.450 --> 00:07:01.660
+and you keep computing this metric that
+you want to find the answer for, and
+
+91
+00:07:01.660 --> 00:07:07.040
+it will turn out that your continuous
+stream does not fit in memory.
+
+92
+00:07:07.040 --> 00:07:11.820
+Because your memory is limited
+compared to the amount of
+
+93
+00:07:13.930 --> 00:07:17.680
+edges, or edge updates you
+are streaming into the system.
+
+94
+00:07:19.010 --> 00:07:23.221
+So that's what's happened when you
+have high velocity information.
+
+95
+00:07:23.221 --> 00:07:28.584
+Very soon, your memory runs out,
+and you want to compute
+
+96
+00:07:28.584 --> 00:07:33.290
+your answer right now from
+the data that you have.
+
+97
+00:07:36.110 --> 00:07:39.640
+Okay, let's look at variety,
+also known as heterogeneity.
+
+98
+00:07:41.460 --> 00:07:44.881
+There are two aspects of heterogeneity.
+
+99
+00:07:44.881 --> 00:07:50.803
+One, we have already mentioned, graph data
+is often created through integration,
+
+100
+00:07:50.803 --> 00:07:53.449
+like we saw in the case of the biology.
+
+101
+00:07:56.446 --> 00:08:02.530
+And therefore, the variety comes because
+the nature of data is very different.
+
+102
+00:08:04.510 --> 00:08:07.800
+Also, they may not be all
+the same kind of data.
+
+103
+00:08:08.890 --> 00:08:13.340
+For example, the data may come
+from a relational database,
+
+104
+00:08:14.440 --> 00:08:16.580
+it may come from an XML database.
+
+105
+00:08:16.580 --> 00:08:18.900
+It may come from another graph.
+
+106
+00:08:18.900 --> 00:08:20.130
+It may come from a document.
+
+107
+00:08:21.470 --> 00:08:26.910
+It may even come from complex
+things like social networks,
+
+108
+00:08:26.910 --> 00:08:31.890
+like citation networks between papers or
+patents, between interaction networks,
+
+109
+00:08:33.070 --> 00:08:36.300
+between web entities,
+which are connected through links.
+
+110
+00:08:37.780 --> 00:08:43.360
+And from human knowledge that has been
+represented as graphs through ontologists.
+
+111
+00:08:43.360 --> 00:08:49.476
+So all of these graphs, the nodes and
+the edges do not mean the same thing.
+
+112
+00:08:49.476 --> 00:08:54.083
+And somehow in there,
+you need to capture what it means to have
+
+113
+00:08:54.083 --> 00:08:58.971
+an edge because that will determine
+what you can do with the edge.
+
+114
+00:08:58.971 --> 00:09:03.490
+A simple example, in an ontology,
+
+115
+00:09:03.490 --> 00:09:10.280
+is something that says a is a b,
+and b is a c, so a is a c.
+
+116
+00:09:11.730 --> 00:09:18.430
+The a is a c is an inference that you do,
+given the other two relationships.
+
+117
+00:09:18.430 --> 00:09:21.133
+What would be an example?
+
+118
+00:09:21.133 --> 00:09:27.570
+My pet is a dog, and the dog is a mammal,
+therefore, my pet is a mammal.
+
+119
+00:09:28.770 --> 00:09:32.320
+You want to do inferences for
+some edges likes is a.
+
+120
+00:09:33.480 --> 00:09:36.520
+Now, you need to know this.
+
+121
+00:09:36.520 --> 00:09:40.140
+You do not do this with the biology
+example where you are looking at genes and
+
+122
+00:09:40.140 --> 00:09:45.447
+proteins because that operation does
+not make sense when you have genes and
+
+123
+00:09:45.447 --> 00:09:46.230
+proteins.
+
+124
+00:09:46.230 --> 00:09:50.720
+So therefore, every graph may
+have a different semantics.
+
+125
+00:09:50.720 --> 00:09:53.880
+And what happens with variety is
+the number of sub-semantics and
+
+126
+00:09:53.880 --> 00:09:56.670
+the number of valid
+operations that you can do.
+
+127
+00:09:56.670 --> 00:09:58.730
+That changes, and
+that becomes more complex.
+
+128
+00:10:00.395 --> 00:10:04.720
+Now, valence I said,
+is about connectedness.
+
+129
+00:10:04.720 --> 00:10:07.760
+It is also about
+interdependency among data.
+
+130
+00:10:07.760 --> 00:10:12.844
+So if I have a higher valence which means,
+I have more data elements that
+
+131
+00:10:12.844 --> 00:10:18.040
+are more strongly related, and
+these relationships can be exploited.
+
+132
+00:10:20.820 --> 00:10:25.437
+In most cases,
+the part where valence becomes important,
+
+133
+00:10:25.437 --> 00:10:31.806
+is that it increases over time, which
+means, parts of the graph becomes denser,
+
+134
+00:10:31.806 --> 00:10:36.264
+and the average distance
+between node pairs decreases.
+
+135
+00:10:36.264 --> 00:10:39.210
+Let me show you, here is my Gmail.
+
+136
+00:10:41.080 --> 00:10:49.140
+And I have plotted my Gmail graphs
+from 2006 to about two months back.
+
+137
+00:10:50.950 --> 00:10:54.810
+When I first started using it,
+I had these users,
+
+138
+00:10:54.810 --> 00:10:59.140
+a very few users, and
+they are not really related.
+
+139
+00:11:00.170 --> 00:11:02.220
+Now with time, more and
+
+140
+00:11:02.220 --> 00:11:06.200
+more people started communicating
+with me through Gmail.
+
+141
+00:11:07.290 --> 00:11:11.618
+And more and more of these people were
+also talking amongst themselves and
+
+142
+00:11:11.618 --> 00:11:13.240
+copying me and responding to me.
+
+143
+00:11:14.410 --> 00:11:20.130
+By the end, you would see that
+you can find dense groups
+
+144
+00:11:20.130 --> 00:11:24.290
+within my Gmail because
+the information and
+
+145
+00:11:24.290 --> 00:11:31.020
+the connectedness between people have
+evolved and become more dense over time.
+
+146
+00:11:31.020 --> 00:11:36.620
+This is the phenomenon of valence, and
+this is very important to study because
+
+147
+00:11:36.620 --> 00:11:43.120
+you want to study things like, what parts
+of the graph have become more dense?
+
+148
+00:11:43.120 --> 00:11:44.801
+And why have they become more dense?
+
+149
+00:11:44.801 --> 00:11:46.490
+Maybe something was going on.
+
+150
+00:11:46.490 --> 00:11:49.010
+Maybe there was an event that
+brought these people together,
+
+151
+00:11:49.010 --> 00:11:52.550
+and you want to analyze that and
+find that out from your graph analytics.
+
+152
+00:11:54.090 --> 00:11:59.067
+That's why you want to understand
+the effect of valence.
+
+153
+00:11:59.067 --> 00:12:04.361
+You also want to understand what do I do
+if the graph becomes very, very dense
+
+154
+00:12:04.361 --> 00:12:09.840
+in a place, so that finding a path through
+that dense space becomes very hard.
+
+155
+00:12:11.830 --> 00:12:17.532
+You will see in a later video that when
+this happens, the computer system,
+
+156
+00:12:17.532 --> 00:12:23.597
+that is trying to process these graphs in
+a parallel and distributed way has to do
+
+157
+00:12:23.597 --> 00:12:29.507
+something special to handle these
+increasing density in parts of the graph.
+
+1
+00:00:01.190 --> 00:00:06.640
+So before we go into graph analytics,
+the first question we want to ask is,
+
+2
+00:00:06.640 --> 00:00:07.168
+what is a graph?
+
+3
+00:00:07.168 --> 00:00:10.332
+Let's see.
+
+4
+00:00:10.332 --> 00:00:15.360
+This is a plot of the sales of
+some items against time and
+
+5
+00:00:15.360 --> 00:00:20.190
+it gives you a nice visual representation
+of the data, but is it a graph?
+
+6
+00:00:21.470 --> 00:00:23.760
+While you think about it,
+let's try another one.
+
+7
+00:00:25.790 --> 00:00:29.170
+This is another common visual
+representation of data.
+
+8
+00:00:29.170 --> 00:00:31.450
+If you go to Google and type pie graph,
+
+9
+00:00:31.450 --> 00:00:34.750
+you will see many results
+that look like this.
+
+10
+00:00:34.750 --> 00:00:35.580
+But is this a graph?
+
+11
+00:00:36.750 --> 00:00:38.950
+In our research, this is not a graph.
+
+12
+00:00:40.260 --> 00:00:41.700
+We call it a chart.
+
+13
+00:00:43.420 --> 00:00:46.190
+Yes, you guessed it right this time.
+
+14
+00:00:46.190 --> 00:00:48.070
+This too is a chart, and not a graph.
+
+15
+00:00:49.760 --> 00:00:52.460
+So why do people call them graphs, then?
+
+16
+00:00:53.630 --> 00:00:56.460
+In a sense, they're abbreviating.
+
+17
+00:00:56.460 --> 00:00:59.519
+A chart depicts what's called
+a graph of a function.
+
+18
+00:01:00.580 --> 00:01:01.150
+Let me explain.
+
+19
+00:01:02.300 --> 00:01:03.970
+Look at the two column table on the right.
+
+20
+00:01:05.000 --> 00:01:08.170
+The first column has information
+about product category
+
+21
+00:01:08.170 --> 00:01:10.940
+with values like furniture,
+office supplies, and technology.
+
+22
+00:01:12.120 --> 00:01:17.170
+The second column represents another set
+of values called total containing 1724,
+
+23
+00:01:17.170 --> 00:01:21.570
+4610, and 2065.
+
+24
+00:01:21.570 --> 00:01:25.320
+Now we can define our mapping option.
+
+25
+00:01:25.320 --> 00:01:29.180
+Which means a correspondence
+from Product Category to Total.
+
+26
+00:01:30.190 --> 00:01:34.070
+So we map Furniture to the value 1,724,
+
+27
+00:01:34.070 --> 00:01:37.440
+Office Supplies to the value 4,610,
+and so forth.
+
+28
+00:01:37.440 --> 00:01:39.480
+If we visually portray this,
+
+29
+00:01:39.480 --> 00:01:42.820
+we can represent it like a bar chart or
+a pie chart.
+
+30
+00:01:42.820 --> 00:01:47.560
+This is why both the previous diagram and
+this diagram are charts and not graphs.
+
+31
+00:01:50.190 --> 00:01:54.990
+Graph analytics has its basis in a brand
+of mathematics called graph theory.
+
+32
+00:01:54.990 --> 00:01:55.830
+What's more interesting,
+
+33
+00:01:55.830 --> 00:02:00.640
+however, is that graph theory was
+born out of a very practical problem.
+
+34
+00:02:02.040 --> 00:02:06.900
+The problem started in a very old city
+in Prussia which is now in Russia
+
+35
+00:02:07.960 --> 00:02:08.995
+called Konigsberg.
+
+36
+00:02:10.890 --> 00:02:15.528
+Even if we look at in in Google Maps
+it would sort of look like this.
+
+37
+00:02:15.528 --> 00:02:20.135
+One of the interesting features of
+Konigsberg is that it has two islands and
+
+38
+00:02:20.135 --> 00:02:23.074
+these islands are connected
+by seven bridges.
+
+39
+00:02:23.074 --> 00:02:29.624
+Back in 1736, the city wanted to create
+a walkway, and the criteria was,
+
+40
+00:02:29.624 --> 00:02:35.083
+this walkway would traverse all
+seven bridges such that somebody
+
+41
+00:02:35.083 --> 00:02:41.556
+wanting to go from one part of the city
+to another can cross a bridge only once.
+
+42
+00:02:41.556 --> 00:02:46.120
+Now this is sort of an urban
+planning problem right?
+
+43
+00:02:46.120 --> 00:02:49.520
+Well in fact, it required
+a mathematician to solve the problem.
+
+44
+00:02:50.850 --> 00:02:54.440
+The mathematician named Euler shown
+on the left looked at this and
+
+45
+00:02:54.440 --> 00:02:58.260
+figured out that you really
+cannot create such a walk.
+
+46
+00:02:58.260 --> 00:02:59.510
+Why?
+
+47
+00:02:59.510 --> 00:03:03.030
+He said, it cannot be done, because
+there are an odd number of bridges, and
+
+48
+00:03:03.030 --> 00:03:04.870
+proved it mathematically.
+
+49
+00:03:04.870 --> 00:03:08.120
+From this problem, the whole field
+called graph theory emerged.
+
+50
+00:03:09.670 --> 00:03:14.600
+On the right, you can see Edsger Dijkstra,
+a well-known computer scientist who has
+
+51
+00:03:14.600 --> 00:03:19.330
+developed graph algorithms, one of which
+we will study later in the course.
+
+52
+00:03:19.330 --> 00:03:24.120
+His work has had far further impact on
+both the theoretical computer science and
+
+53
+00:03:24.120 --> 00:03:25.040
+practical applications.
+
+54
+00:03:26.760 --> 00:03:29.130
+What's the difference between
+the mathematics view and
+
+55
+00:03:29.130 --> 00:03:30.140
+the computer science view?
+
+56
+00:03:31.190 --> 00:03:33.170
+Let's try to define
+the mathematical view of graphs.
+
+57
+00:03:34.490 --> 00:03:36.970
+We start with a set of vertices.
+
+58
+00:03:36.970 --> 00:03:41.595
+Here we have a set of six nodes or
+vertices.
+
+59
+00:03:41.595 --> 00:03:44.060
+Now, I'll add another set.
+
+60
+00:03:44.060 --> 00:03:45.810
+I'll call this the set of edges.
+
+61
+00:03:47.020 --> 00:03:49.720
+In our diagram there are only four edges,
+but
+
+62
+00:03:49.720 --> 00:03:51.560
+there's something special
+about these edges.
+
+63
+00:03:52.990 --> 00:03:57.720
+Each edge is just not
+an ordinary atomic object.
+
+64
+00:03:57.720 --> 00:04:03.390
+An edge like e1, actually, is one term
+from v and then a second term from v.
+
+65
+00:04:04.510 --> 00:04:08.260
+So this edge, e1, goes from v1 to v5.
+
+66
+00:04:09.650 --> 00:04:12.230
+Pictorially, we can draw and
+arrow from v1 to v5.
+
+67
+00:04:13.800 --> 00:04:17.270
+Now if I had said v5 to v1,
+the arrow would be reversed.
+
+68
+00:04:18.370 --> 00:04:19.870
+So what do we have so far?
+
+69
+00:04:19.870 --> 00:04:23.070
+We have a set of vertices and
+a set of edges.
+
+70
+00:04:23.070 --> 00:04:25.550
+That is the mathematical
+definition of a graph.
+
+71
+00:04:27.900 --> 00:04:30.050
+What about the computer
+scientist's definition?
+
+72
+00:04:31.410 --> 00:04:35.760
+Of course a computer scientist needs to
+adhere to the mathematical definition, but
+
+73
+00:04:35.760 --> 00:04:39.120
+they want to represent and
+manipulate the same information.
+
+74
+00:04:39.120 --> 00:04:41.380
+So they need a data structure.
+
+75
+00:04:41.380 --> 00:04:44.220
+In other words,
+something they can operate on.
+
+76
+00:04:44.220 --> 00:04:45.720
+So what kind of operations would they do?
+
+77
+00:04:46.808 --> 00:04:47.650
+Well, with a graph,
+
+78
+00:04:47.650 --> 00:04:52.340
+they can say add edge, or add a new
+vertex, find the nearest neighbors of
+
+79
+00:04:52.340 --> 00:04:56.100
+the vertex where the term neighbor refers
+to the nodes connected to the vertex.
+
+80
+00:04:58.320 --> 00:05:02.590
+We said a computer scientist needs to
+represent graphs using data structures.
+
+81
+00:05:02.590 --> 00:05:04.400
+Here is one that you should recognize.
+
+82
+00:05:04.400 --> 00:05:07.360
+It's a matrix,
+called the adjacency matrix of a graph.
+
+83
+00:05:08.390 --> 00:05:11.560
+Both the rows and
+columns of this matrix represent notes.
+
+84
+00:05:13.080 --> 00:05:18.718
+If I go from v1 one along the row,
+I see that there's one at v3,
+
+85
+00:05:18.718 --> 00:05:22.597
+which means there is
+an edge from v1 to v3.
+
+86
+00:05:22.597 --> 00:05:27.543
+Similarly there is another from v1 to v5.
+
+87
+00:05:27.543 --> 00:05:29.563
+Let's look at some operation.
+
+88
+00:05:29.563 --> 00:05:33.580
+Let's say I first want to
+add an edge from v3 to v2.
+
+89
+00:05:33.580 --> 00:05:35.298
+What should I do?
+
+90
+00:05:35.298 --> 00:05:38.831
+I'll start from the row v3,
+
+91
+00:05:38.831 --> 00:05:44.493
+go up to the column v2,
+and add a 1 in that set.
+
+92
+00:05:44.493 --> 00:05:48.030
+So I've added an edge,
+which is an operation on the matrix.
+
+93
+00:05:49.890 --> 00:05:50.700
+Another operation.
+
+94
+00:05:52.020 --> 00:05:53.540
+I want to get the neighbors a v3.
+
+95
+00:05:54.600 --> 00:05:56.180
+This will be a little more complicated.
+
+96
+00:05:58.020 --> 00:06:01.090
+I look at the row v3 and
+paint that row and
+
+97
+00:06:01.090 --> 00:06:03.930
+I'll also look at the column v3 and
+paint that column.
+
+98
+00:06:05.370 --> 00:06:11.430
+If we go down the row of v3,
+we'll get v2, so v2 is neighbor.
+
+99
+00:06:11.430 --> 00:06:16.150
+And if we go down the column of v3,
+we'll get v1 and v6.
+
+100
+00:06:17.420 --> 00:06:20.930
+So v1 and v6 have alternators.
+
+101
+00:06:20.930 --> 00:06:21.540
+What's the difference?
+
+102
+00:06:24.250 --> 00:06:30.070
+Since the matrix has the From along
+the rows and the Tos along the columns,
+
+103
+00:06:30.070 --> 00:06:33.950
+following the row v3 gives us
+the edges outgoing from v3.
+
+104
+00:06:34.960 --> 00:06:38.910
+And following the column v3 gives
+us the edges coming into v3.
+
+105
+00:06:41.590 --> 00:06:44.340
+Is this the only
+representation of the graph?
+
+106
+00:06:44.340 --> 00:06:45.830
+No it's not.
+
+107
+00:06:45.830 --> 00:06:46.390
+Here is another one,
+
+108
+00:06:47.490 --> 00:06:51.300
+in this representation there
+are two kinds of data objects.
+
+109
+00:06:51.300 --> 00:06:55.800
+No data, which are the blue rectangles and
+edge data which are the triangles.
+
+110
+00:06:57.080 --> 00:07:01.000
+To get a sense of this representation,
+look at the note v1 and
+
+111
+00:07:01.000 --> 00:07:03.490
+follow the top yellow line.
+
+112
+00:07:03.490 --> 00:07:05.490
+It'll reach v3.
+
+113
+00:07:05.490 --> 00:07:10.330
+So this link structure directly captures
+the graph diagram we created before.
+
+114
+00:07:10.330 --> 00:07:15.150
+Now, start from v1 again and
+follow the blue link and
+
+115
+00:07:15.150 --> 00:07:18.450
+it will reach e1 and then v3.
+
+116
+00:07:18.450 --> 00:07:22.630
+So that tells you that e1 is
+an edge object between v1 and v3.
+
+117
+00:07:24.530 --> 00:07:30.020
+Next, let's stand on the edge triangle e1,
+and follow the red
+
+118
+00:07:30.020 --> 00:07:35.450
+dashed line to get to e2, which is
+the next edge from the same starting node.
+
+119
+00:07:36.570 --> 00:07:38.790
+Is this possibly too complex?
+
+120
+00:07:38.790 --> 00:07:40.200
+Yes it is.
+
+121
+00:07:40.200 --> 00:07:45.390
+However, as we'll see down the road, many
+graph database systems are using this kind
+
+122
+00:07:45.390 --> 00:07:50.050
+of data structure internally, so that the
+database operations become more efficient.

@@ -1,0 +1,448 @@
+WEBVTT
+
+1
+00:00:02.380 --> 00:00:06.830
+In data integration and
+processing pipelines,
+
+2
+00:00:06.830 --> 00:00:11.910
+data goes through a number of operations,
+which can apply
+
+3
+00:00:11.910 --> 00:00:17.960
+a specific function to it, can work
+the data from one format to another,
+
+4
+00:00:17.960 --> 00:00:24.097
+join data with other data sets, or
+filter some values out of a data set.
+
+5
+00:00:25.240 --> 00:00:31.350
+We generally refer to these as
+transformations, some of which can also
+
+6
+00:00:31.350 --> 00:00:36.950
+be specially named aggregations as you
+have seen in Amarnath's earlier lectures.
+
+7
+00:00:36.950 --> 00:00:43.010
+In this video we will reveal some common
+transformation operations that we see
+
+8
+00:00:43.010 --> 00:00:48.490
+in these pipelines, some of which,
+we refer to as data parallel patterns.
+
+9
+00:00:50.575 --> 00:00:55.265
+After this video you will
+be able to list common data
+
+10
+00:00:55.265 --> 00:01:00.355
+transformations within big data pipelines,
+and design
+
+11
+00:01:00.355 --> 00:01:05.235
+a conceptual data processing pipeline
+using the basic data transformations.
+
+12
+00:01:07.551 --> 00:01:12.770
+Simply speaking, transformations
+are higher order functions or
+
+13
+00:01:12.770 --> 00:01:17.960
+tools to convert your data from
+one form to another, just like
+
+14
+00:01:17.960 --> 00:01:23.530
+we would use tools at the wood shop
+to transform logs into furniture.
+
+15
+00:01:24.900 --> 00:01:27.630
+When we look at big data
+pipelines used today,
+
+16
+00:01:28.650 --> 00:01:32.840
+map is probably the most
+common transformation we find.
+
+17
+00:01:34.340 --> 00:01:39.230
+The map operation is one of the basic
+building blocks of the big data pipeline.
+
+18
+00:01:40.760 --> 00:01:46.200
+When you want to apply a process
+to each member of a collection,
+
+19
+00:01:46.200 --> 00:01:49.370
+such as adding 10% bonus to each
+
+20
+00:01:49.370 --> 00:01:53.770
+person's salary on a given month a map
+operation comes in very handy.
+
+21
+00:01:55.520 --> 00:02:00.490
+It takes your process and
+understand that it is required to perform
+
+22
+00:02:00.490 --> 00:02:04.370
+the same operation or
+process to each member of the set.
+
+23
+00:02:06.610 --> 00:02:10.970
+The figure on the left
+here shows the application
+
+24
+00:02:10.970 --> 00:02:15.396
+of a map function to data
+depicted in grey color.
+
+25
+00:02:15.396 --> 00:02:22.800
+Here colors red, blue, and
+yellow are keys to identify each data set.
+
+26
+00:02:24.480 --> 00:02:31.130
+As you see, each data set is executed
+separately even for the same colored key.
+
+27
+00:02:35.010 --> 00:02:39.944
+The reduce operation helps you then
+to collectively apply the same
+
+28
+00:02:39.944 --> 00:02:42.860
+process to objects of similar nature.
+
+29
+00:02:44.680 --> 00:02:50.030
+For example, when you want to add your
+monthly spending in different categories,
+
+30
+00:02:50.030 --> 00:02:56.350
+like grocery, fuel, and dining out,
+the reduce operation is very useful.
+
+31
+00:02:58.500 --> 00:03:01.900
+In our figure here on the top left,
+
+32
+00:03:01.900 --> 00:03:06.472
+we see that data sets in
+grey with the same color
+
+33
+00:03:06.472 --> 00:03:11.760
+are keys grouped together
+using a reduced function.
+
+34
+00:03:12.940 --> 00:03:16.320
+Reds together, blues together,
+and yellows together.
+
+35
+00:03:18.780 --> 00:03:23.579
+It would be a good idea to check out
+the Spark word count hands-on to see
+
+36
+00:03:23.579 --> 00:03:28.400
+how map and reduce can be used
+effectively for getting things done.
+
+37
+00:03:29.560 --> 00:03:34.550
+Map and reduce are types of
+transformations that work on a single
+
+38
+00:03:34.550 --> 00:03:39.460
+list of key and data pairings just
+like we see on the left of our figure.
+
+39
+00:03:42.460 --> 00:03:47.520
+Now let's consider a scenario where
+we have two data sets identified
+
+40
+00:03:47.520 --> 00:03:53.090
+by the same keys just like the two
+sets and colors in our diagram.
+
+41
+00:03:55.140 --> 00:04:00.120
+Many operations have such needs where
+we have to look at all the pairings of
+
+42
+00:04:00.120 --> 00:04:04.740
+all key value pairs,
+just like crossing two matrices.
+
+43
+00:04:06.900 --> 00:04:11.800
+For a practical example
+Imagine you have two teams,
+
+44
+00:04:11.800 --> 00:04:16.870
+a sales team with two people, and
+an operations team with four people.
+
+45
+00:04:18.050 --> 00:04:22.940
+In an event you would want each
+person to meet every other person.
+
+46
+00:04:24.030 --> 00:04:27.210
+In this case, a cross product, or
+
+47
+00:04:27.210 --> 00:04:32.200
+a cartesian product, becomes a good
+choice for organizing the event and
+
+48
+00:04:32.200 --> 00:04:36.000
+sharing each pairs' meeting location and
+travel time to them.
+
+49
+00:04:37.770 --> 00:04:43.470
+In a cross or cartesian product operation,
+each data partition gets
+
+50
+00:04:43.470 --> 00:04:49.450
+paired with all other data partitions,
+regardless of its key.
+
+51
+00:04:49.450 --> 00:04:52.370
+This sometimes gets
+referred to as all pairs.
+
+52
+00:04:54.990 --> 00:05:00.160
+Now add to the cross product by
+just grouping together the data
+
+53
+00:05:00.160 --> 00:05:05.490
+partitions with the same key,
+just like the red data.
+
+54
+00:05:07.090 --> 00:05:09.128
+And the yellow data partitions here.
+
+55
+00:05:12.005 --> 00:05:16.930
+This is a typical match or join operation.
+
+56
+00:05:16.930 --> 00:05:22.190
+As we see in the figure here, match
+is very similar to the cross product,
+
+57
+00:05:22.190 --> 00:05:25.760
+except that it is more
+selective in forming pairs.
+
+58
+00:05:26.810 --> 00:05:29.420
+Every pair must have something in common.
+
+59
+00:05:30.510 --> 00:05:34.920
+This something in common is
+usually referred to as a key.
+
+60
+00:05:36.490 --> 00:05:40.330
+For example,
+each person in your operations team and
+
+61
+00:05:40.330 --> 00:05:43.510
+sales team is assigned
+to a different product.
+
+62
+00:05:43.510 --> 00:05:48.500
+You only want those people to meet
+who are working on the same product.
+
+63
+00:05:48.500 --> 00:05:52.490
+In this case your key is product.
+
+64
+00:05:52.490 --> 00:05:55.290
+And you can perform and
+match operation and
+
+65
+00:05:55.290 --> 00:05:59.670
+send e-mails to those people
+who share a common product.
+
+66
+00:06:01.530 --> 00:06:06.756
+The number of e-mails is likely to be less
+than when you performed a cartesian or
+
+67
+00:06:06.756 --> 00:06:10.980
+a cross product, therefore reducing
+the cost of the operation.
+
+68
+00:06:12.270 --> 00:06:19.170
+In a match operation, only the keys
+with data in both sets get joined,
+
+69
+00:06:20.240 --> 00:06:23.920
+and become a part of the final
+output of the transformation.
+
+70
+00:06:26.600 --> 00:06:31.600
+Now let's consider listing
+the data sets with all the keys,
+
+71
+00:06:31.600 --> 00:06:33.790
+even if they don't exist in both sets.
+
+72
+00:06:35.850 --> 00:06:40.550
+Consider a scenario where you
+want to do brainstorming sessions
+
+73
+00:06:40.550 --> 00:06:43.690
+of people from operations and sales, and
+
+74
+00:06:43.690 --> 00:06:47.560
+get people who work on the same
+products in the same rooms.
+
+75
+00:06:50.390 --> 00:06:52.750
+A co-group operation will do this for you.
+
+76
+00:06:54.290 --> 00:06:58.160
+You give it a product name
+as they key to work with and
+
+77
+00:06:58.160 --> 00:07:01.530
+the two tables, the sales team and
+operations team.
+
+78
+00:07:02.800 --> 00:07:07.740
+The co-group will create groups
+which contain team members
+
+79
+00:07:07.740 --> 00:07:13.690
+working on common products even if a
+product doesn't exist in one of the sets.
+
+80
+00:07:16.520 --> 00:07:20.520
+The last operation we will
+see is the filter operation.
+
+81
+00:07:20.520 --> 00:07:23.760
+Filter works much like a test
+
+82
+00:07:23.760 --> 00:07:28.340
+where only elements that pass
+a test are shown in the output.
+
+83
+00:07:30.040 --> 00:07:34.770
+Consider as a set that contains teams and
+a number of members in their teams.
+
+84
+00:07:35.890 --> 00:07:38.930
+If your game requires people to pair up,
+
+85
+00:07:38.930 --> 00:07:42.570
+you may want to select teams which
+have an even number of members.
+
+86
+00:07:43.570 --> 00:07:49.130
+In this case, you can create a test
+that only passes the teams which have
+
+87
+00:07:49.130 --> 00:07:56.690
+an even number of team members shown as
+divided by 2 with 0 in the remainder.
+
+88
+00:07:59.608 --> 00:08:04.147
+The real effectiveness of the basic
+transformation we saw here
+
+89
+00:08:04.147 --> 00:08:09.025
+is in pipelining them in a way that
+helps you to solve your specific
+
+90
+00:08:09.025 --> 00:08:13.819
+problem just as you would perform
+a series of tasks on a real block
+
+91
+00:08:13.819 --> 00:08:18.610
+of wood to make a fine piece of
+woodwork that you can use to steer your
+
+92
+00:08:18.610 --> 00:08:22.495
+ship, which in this case is
+your business or research.

@@ -1,0 +1,524 @@
+WEBVTT
+
+1
+00:00:02.160 --> 00:00:05.540
+Next we'll consider queries
+where two tables are used.
+
+2
+00:00:06.610 --> 00:00:08.540
+Let's consider the query,
+
+3
+00:00:08.540 --> 00:00:13.320
+find the beers liked by drinkers who
+frequent The Great American Bar.
+
+4
+00:00:15.070 --> 00:00:21.540
+For this query, we need
+the relation's Frequents and Likes.
+
+5
+00:00:21.540 --> 00:00:24.330
+Now look at the scheme of these
+relations in the light blue box.
+
+6
+00:00:25.840 --> 00:00:28.390
+They have a common
+attribute called drinker.
+
+7
+00:00:29.940 --> 00:00:32.740
+So if we use the attribute drinker,
+
+8
+00:00:32.740 --> 00:00:35.760
+we need to tell the system
+which one we are referring to.
+
+9
+00:00:37.980 --> 00:00:44.710
+Now look at the SQL query, the FROM clause
+in the query has these two relations.
+
+10
+00:00:44.710 --> 00:00:46.530
+To handle a common attribute name issue,
+
+11
+00:00:46.530 --> 00:00:51.380
+we need to give nicknames,
+aliases to these relations.
+
+12
+00:00:51.380 --> 00:00:56.305
+Therefore in the FROM clause we say,
+Likes has the alias L and
+
+13
+00:00:56.305 --> 00:00:58.060
+Frequents has the alias F.
+
+14
+00:00:59.950 --> 00:01:05.290
+Since we want to find beers like before,
+we use a SELECT DISTINCT clause for beer.
+
+15
+00:01:06.880 --> 00:01:11.740
+As we saw before, using SELECT DISTINCT
+avoids duplicates in the result.
+
+16
+00:01:13.300 --> 00:01:16.850
+The WHERE clause has two
+kinds of conditions,
+
+17
+00:01:17.870 --> 00:01:22.280
+the first kind is
+a single table condition.
+
+18
+00:01:22.280 --> 00:01:30.170
+In this case, bar = The Great American Bar
+on the Frequents relation.
+
+19
+00:01:31.820 --> 00:01:38.215
+The second kind is a joined condition
+which says that the drinker's attribute in
+
+20
+00:01:38.215 --> 00:01:45.090
+the frequency relation is the same as the
+drinker's attribute of the Likes relation.
+
+21
+00:01:46.248 --> 00:01:50.420
+We encode this in SQL in the last
+line of the query using aliases.
+
+22
+00:01:52.140 --> 00:01:57.780
+Why did we not say L.beer in the SELECT
+clause or F.bar in the first condition?
+
+23
+00:01:57.780 --> 00:02:00.410
+We could have,
+the query would have been equally right.
+
+24
+00:02:01.480 --> 00:02:06.520
+But we are using a shortcut because we
+know that these attributes are unique
+
+25
+00:02:06.520 --> 00:02:07.680
+already in the query.
+
+26
+00:02:09.570 --> 00:02:11.690
+Now let's look at the query again,
+
+27
+00:02:11.690 --> 00:02:14.980
+this time from the viewpoint
+of evaluating the query.
+
+28
+00:02:16.280 --> 00:02:19.080
+There are many ways to evaluate the query,
+but
+
+29
+00:02:19.080 --> 00:02:21.789
+the way it's most likely
+to be evaluated is this.
+
+30
+00:02:23.610 --> 00:02:28.110
+The query will first look at the tables
+that have single table conditions.
+
+31
+00:02:29.260 --> 00:02:32.640
+So it would perform a select operation
+
+32
+00:02:33.980 --> 00:02:38.360
+on the Frequents table to match
+the records of the condition
+
+33
+00:02:38.360 --> 00:02:41.700
+that The Great American Bar
+equal to The Great American Bar.
+
+34
+00:02:42.950 --> 00:02:43.990
+Why is this strategy good?
+
+35
+00:02:45.120 --> 00:02:48.590
+It's because the selection operative
+reduces the number of triples to consider.
+
+36
+00:02:49.720 --> 00:02:53.390
+Thus, if there are thousand
+triples in the relation frequents,
+
+37
+00:02:53.390 --> 00:02:55.760
+maybe 60 of them matches the desired bar.
+
+38
+00:02:57.240 --> 00:03:03.010
+So in the next step, we have to deal with
+a fewer number of records than thousand.
+
+39
+00:03:04.170 --> 00:03:09.216
+All right, the next step will
+be a Join with a Likes relation.
+
+40
+00:03:09.216 --> 00:03:12.970
+A Join requires two relations
+in a Join condition,
+
+41
+00:03:14.070 --> 00:03:15.620
+the Join condition comes from the query.
+
+42
+00:03:17.410 --> 00:03:21.102
+The first relation shown with
+an underscore symbol here
+
+43
+00:03:24.008 --> 00:03:27.665
+is a result of the previous operation.
+
+44
+00:03:27.665 --> 00:03:31.610
+Another way of saying this
+is that the result of
+
+45
+00:03:31.610 --> 00:03:36.470
+the selection is piped
+into the Join operation.
+
+46
+00:03:36.470 --> 00:03:39.930
+That means we do not create
+
+47
+00:03:39.930 --> 00:03:43.400
+an intermediate table from
+the result of the selection.
+
+48
+00:03:43.400 --> 00:03:49.060
+The results are directly supplied to the
+next operator, which in this case is Join.
+
+49
+00:03:51.340 --> 00:03:56.017
+Now the result of the Join operator is an
+intermediate structure with columns beer
+
+50
+00:03:56.017 --> 00:03:57.373
+from Likes relation and
+
+51
+00:03:57.373 --> 00:04:01.116
+the drinker from the Frequents
+relation that we've processed.
+
+52
+00:04:03.510 --> 00:04:08.492
+This intermediate set of triples is
+piped to the Project operation that
+
+53
+00:04:08.492 --> 00:04:10.326
+picks up the beer column.
+
+54
+00:04:12.846 --> 00:04:17.216
+Now we need to process
+the DISTINCT clause for
+
+55
+00:04:17.216 --> 00:04:22.970
+Deduplicate elimination,
+which then goes to the Output.
+
+56
+00:04:24.950 --> 00:04:28.614
+We have already seen how the select
+project queries on single tables
+
+57
+00:04:28.614 --> 00:04:32.610
+are evaluated when the tables
+are partitioned across several machines.
+
+58
+00:04:33.720 --> 00:04:37.070
+We'll now see how we process Join
+queries in the same setting.
+
+59
+00:04:38.780 --> 00:04:44.546
+For our case, consider that the Likes and
+
+60
+00:04:44.546 --> 00:04:48.470
+Frequents tables are on
+two different machines.
+
+61
+00:04:49.830 --> 00:04:51.740
+In the first part of the query,
+
+62
+00:04:51.740 --> 00:04:54.699
+the selection happens on the machine
+with the Frequents table.
+
+63
+00:04:55.870 --> 00:05:00.550
+The output of the query is a smaller
+table with the same scheme as Frequents,
+
+64
+00:05:00.550 --> 00:05:03.550
+that is with drinkers and bars.
+
+65
+00:05:03.550 --> 00:05:05.480
+Now we define an operation
+called Semijoin,
+
+66
+00:05:07.420 --> 00:05:11.070
+in which we need to move data
+from one machine to another.
+
+67
+00:05:13.050 --> 00:05:17.400
+The goal of the Semijoin operation is
+to reduce the cost of data movement.
+
+68
+00:05:18.480 --> 00:05:22.420
+That is to move data from
+the machine which has
+
+69
+00:05:22.420 --> 00:05:27.196
+the Frequents data to
+the machine with the Likes data.
+
+70
+00:05:27.196 --> 00:05:30.670
+The cost is reduced if we ship less data.
+
+71
+00:05:30.670 --> 00:05:38.090
+The way to it is to first find which
+data the join operation actually needs.
+
+72
+00:05:38.090 --> 00:05:43.570
+Clearly, it needs only the drinkers
+column and not the bars column.
+
+73
+00:05:43.570 --> 00:05:49.070
+So the drinkers column is projected out,
+then
+
+74
+00:05:49.070 --> 00:05:52.440
+just this column is transmitted
+to the second machine.
+
+75
+00:05:54.140 --> 00:05:59.130
+Finally, the join is performed by looking
+at the values in the Likes column
+
+76
+00:05:59.130 --> 00:06:02.080
+that only matches the values
+in the shipped data.
+
+77
+00:06:04.270 --> 00:06:09.720
+That means only the data from Likes that
+matches the drinkers that are chosen.
+
+78
+00:06:11.410 --> 00:06:15.090
+These are then the join results which
+would go to the output of the operation.
+
+79
+00:06:16.460 --> 00:06:19.680
+Now here you can see the Semijoin
+operation graphically.
+
+80
+00:06:20.990 --> 00:06:24.800
+The red table on the left is the output
+of the selection operations on the left.
+
+81
+00:06:27.520 --> 00:06:31.820
+The white table on the right
+is the table to be joined to.
+
+82
+00:06:33.260 --> 00:06:36.120
+Since we need only the Drinkers column,
+
+83
+00:06:36.120 --> 00:06:38.870
+it is projected to create
+a one-column relation.
+
+84
+00:06:40.380 --> 00:06:46.490
+Notice that the red table has two entries
+for Pete, who frequented two bars.
+
+85
+00:06:46.490 --> 00:06:49.770
+But the output of the project
+is condensed in the yellow table
+
+86
+00:06:49.770 --> 00:06:52.490
+to just show the Drinkers,
+where Pete appears only once.
+
+87
+00:06:54.170 --> 00:06:57.940
+For those of you with
+a background in computer science,
+
+88
+00:06:57.940 --> 00:07:00.450
+this can be done using a hash
+map like data structure.
+
+89
+00:07:02.400 --> 00:07:06.180
+This one-column table is now shipped
+to Site2, which has the Likes relation.
+
+90
+00:07:07.290 --> 00:07:11.834
+Now at Site2, the Shipped relation
+is used to find matches from
+
+91
+00:07:11.834 --> 00:07:16.222
+the Drinkers column and
+it finds only one match called Sally.
+
+92
+00:07:16.222 --> 00:07:19.960
+So the corresponding result triples,
+in this case,
+
+93
+00:07:19.960 --> 00:07:23.956
+only one triple is produced
+at the end of this operation.
+
+94
+00:07:23.956 --> 00:07:29.414
+Now, the original table and
+the matching table are shipped
+
+95
+00:07:29.414 --> 00:07:35.350
+to the last of the operation
+to finish the Join operation.
+
+96
+00:07:35.350 --> 00:07:39.120
+And more efficient version of
+this is shown in the next slide.
+
+97
+00:07:40.120 --> 00:07:47.250
+In this version, the first two
+steps this and that are the same.
+
+98
+00:07:48.620 --> 00:07:52.938
+Then the result of the reduce
+is also shipped to Site1 to find
+
+99
+00:07:52.938 --> 00:07:55.490
+the matches from the red relation.
+
+100
+00:07:56.510 --> 00:08:00.060
+Another reduce operation
+is performed on Site1 now
+
+101
+00:08:00.060 --> 00:08:03.020
+to get the matching records
+on the red relation.
+
+102
+00:08:03.020 --> 00:08:06.103
+Finally, these two reduced
+relations are shipped to
+
+103
+00:08:06.103 --> 00:08:09.200
+the site where the final join happens.
+
+104
+00:08:09.200 --> 00:08:11.920
+And all of this may seem
+like a lot of detail.
+
+105
+00:08:13.070 --> 00:08:15.960
+Let me repeat something I've said before.
+
+106
+00:08:17.600 --> 00:08:23.850
+If we have a system like DB2 or Spark SQL
+that implements multi-site joins, it
+
+107
+00:08:23.850 --> 00:08:27.200
+will perform this kind of operation under
+the hood, you don't have to know them.
+
+108
+00:08:28.460 --> 00:08:34.020
+However, if we were to implement
+a similar operation and all that you have
+
+109
+00:08:34.020 --> 00:08:38.240
+is Hadoop, you may end up implementing
+this kind of algorithm yourself.

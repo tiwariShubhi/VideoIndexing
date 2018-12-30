@@ -1,0 +1,155 @@
+WEBVTT
+
+1
+00:00:02.020 --> 00:00:05.610
+We have now seen some
+simple transformations and
+
+2
+00:00:05.610 --> 00:00:10.900
+how Spark can create RDDs from
+each other using transformations.
+
+3
+00:00:10.900 --> 00:00:15.390
+We learned that transformations are
+evaluated after an action is performed.
+
+4
+00:00:16.810 --> 00:00:21.800
+So we can simply define actions as RDD
+operations that trigger the evaluation of
+
+5
+00:00:21.800 --> 00:00:27.530
+the transformation pipeline and return
+the final result to the driver program or
+
+6
+00:00:27.530 --> 00:00:29.810
+save the results to a persistent storage.
+
+7
+00:00:31.660 --> 00:00:36.580
+We can also call them the last
+step in a Spark pipeline.
+
+8
+00:00:36.580 --> 00:00:38.700
+Let's now look at a few action operations.
+
+9
+00:00:40.870 --> 00:00:46.150
+After this video, you will be able to
+explain the steps of a Spark pipeline
+
+10
+00:00:46.150 --> 00:00:52.010
+ending with a collect action and list
+four common action operations in Spark.
+
+11
+00:00:54.750 --> 00:00:57.740
+A very common action in Spark is collect.
+
+12
+00:00:59.090 --> 00:01:03.875
+In this example, we can imagine that
+initially we are reading from HDFS.
+
+13
+00:01:05.390 --> 00:01:10.020
+The RDD partitions that go through
+the transformation steps in our big data
+
+14
+00:01:10.020 --> 00:01:14.970
+pipeline are defined as flatMap and
+groupbyKey.
+
+15
+00:01:16.290 --> 00:01:21.625
+When the final step is done,
+the collect action is called and
+
+16
+00:01:21.625 --> 00:01:25.840
+Spark sends all the tasks for
+execution to the worker notes.
+
+17
+00:01:28.372 --> 00:01:32.940
+Collect will send all the resulting
+RDDs from the workers and
+
+18
+00:01:32.940 --> 00:01:37.140
+copy them to the Java virtual
+machine on the driver program.
+
+19
+00:01:37.140 --> 00:01:41.600
+And then, this will be piped
+also to our Python shell.
+
+20
+00:01:43.150 --> 00:01:48.076
+While collect copies all the data,
+another action, take,
+
+21
+00:01:48.076 --> 00:01:51.720
+copies the first n results of the driver.
+
+22
+00:01:53.690 --> 00:01:57.440
+If the results are too large
+to fit in the driver memory,
+
+23
+00:01:57.440 --> 00:02:01.290
+then there's an opportunity to write
+them directly to HDFS instead.
+
+24
+00:02:03.230 --> 00:02:07.850
+Among many other actions,
+reduce is probably the most famous one.
+
+25
+00:02:08.980 --> 00:02:13.300
+Reduce takes two elements and
+returns a result, like sum.
+
+26
+00:02:13.300 --> 00:02:19.680
+But in this case, we don't have a key,
+we just have a large area of some values.
+
+27
+00:02:19.680 --> 00:02:22.150
+And we are running this function over and
+
+28
+00:02:22.150 --> 00:02:26.580
+over again to reduce everything
+to one single value.
+
+29
+00:02:26.580 --> 00:02:29.210
+For example,
+to the global sum of everything.
+
+30
+00:02:30.905 --> 00:02:34.945
+Another very useful action Is saveAsText,
+
+31
+00:02:34.945 --> 00:02:38.585
+to save the results to local disk or
+HDFS, and
+
+32
+00:02:38.585 --> 00:02:44.485
+this is very useful if the output of
+the power computation is pretty large.

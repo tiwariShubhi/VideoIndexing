@@ -1,0 +1,2263 @@
+﻿1
+00:00:10,650 --> 00:00:22,980
+So, let us continue with a study of game playing,
+and we saw in the last class the notion
+
+2
+00:00:22,980 --> 00:00:35,340
+of a strategy, and a strategies constructed
+by making one choice for max, considering
+
+3
+00:00:35,340 --> 00:00:46,800
+all
+choices for min, and then one choice for max,
+
+4
+00:00:46,799 --> 00:00:58,429
+and then all choices for min. So, you can
+say that solving a game tree, means discovering
+
+5
+00:00:58,429 --> 00:01:14,960
+an optimal strategy we said, that the
+value of a strategy, is minimum of value of
+
+6
+00:01:14,959 --> 00:01:27,549
+leaves. Assuming that, we are talking in this
+minus 1 0 1 valuation, where 1 stands for
+
+7
+00:01:27,549 --> 00:01:31,149
+win for max, 0 stands for draw, and minus
+1
+
+8
+00:01:31,150 --> 00:01:36,620
+stands for loss for max. And if once maxes
+shows on the strategy, then the value of the
+
+9
+00:01:36,620 --> 00:01:44,260
+strategy is the lowest value, from the leaves
+in the strategy, remember the strategy is
+
+10
+00:01:44,260 --> 00:01:47,659
+a
+sub tree, and what are the value that the
+
+11
+00:01:47,659 --> 00:01:50,850
+leaves are to minimum of those is what the
+value
+
+12
+00:01:50,849 --> 00:01:56,759
+of the game will be. And assuming that the
+opponent is perfect and we assuming that the
+
+13
+00:01:56,760 --> 00:02:03,330
+opponent is perfect, my feel look at and and
+over graph.
+
+14
+00:02:03,329 --> 00:02:11,259
+We viewed our solution and and over graph,
+if you look at what on solution is, at all
+
+15
+00:02:11,259 --> 00:02:18,149
+level you have to choose one, we have to make
+one choice, and at end level we have to
+
+16
+00:02:18,150 --> 00:02:22,700
+make all choices. So, if for example, if they
+you had three choices here, then at all level
+
+17
+00:02:22,699 --> 00:02:28,649
+.you will choose one choice, to solution would
+be like this, and if this was an hand node,
+
+18
+00:02:28,650 --> 00:02:33,629
+you would have to solve for all three, and
+then if this was an all node, when you would
+
+19
+00:02:33,628 --> 00:02:35,620
+again make a one choice essentially.
+
+20
+00:02:35,620 --> 00:02:44,028
+So, we can see a similarity between and over
+trees and game trees, in and in and over
+
+21
+00:02:44,028 --> 00:02:51,568
+trees, if you added and node, you had to solve
+all the three, all the sub problems
+
+22
+00:02:51,568 --> 00:02:56,488
+emanating from there. If you had an all choice,
+you could choose any one of them
+
+23
+00:02:56,489 --> 00:03:01,209
+essentially. So, a max node is like an all
+choice, because max can choose anyone
+
+24
+00:03:01,209 --> 00:03:06,769
+essentially. But max has to en counter for
+all of min choices, so a min node is like
+
+25
+00:03:06,769 --> 00:03:10,550
+an and
+node essentially, the differences that the
+
+26
+00:03:10,550 --> 00:03:16,299
+value of the solution, is in this case a some
+of
+
+27
+00:03:16,299 --> 00:03:20,998
+the values of cost of these three nodes, solving
+this nodes.
+
+28
+00:03:20,998 --> 00:03:26,459
+In this case, it is the minimum of the cost
+of these nodes essentially, where it is a
+
+29
+00:03:26,459 --> 00:03:29,019
+min
+nodes sitting here, if this was minus 1, this
+
+30
+00:03:29,019 --> 00:03:36,169
+was 0, this was minus 1, and this was 1, then
+min with select minus 1, so it is a minimum
+
+31
+00:03:36,169 --> 00:03:43,930
+of these value essentially. You can see that,
+so also consistent with our logical notion
+
+32
+00:03:43,930 --> 00:03:48,058
+of, and always choose is the minimum. So,
+a
+
+33
+00:03:48,058 --> 00:03:52,979
+and b, if a (s) falls and the whole thing
+becomes falls essentially, so and also in
+
+34
+00:03:52,979 --> 00:03:55,518
+some
+sense chooses the minimum value or chooses
+
+35
+00:03:55,519 --> 00:03:57,438
+the maximum value essentially.
+
+36
+00:03:57,438 --> 00:04:05,519
+So, there is clearly an analogy, between and
+over trees and game trees; of course, game
+
+37
+00:04:05,519 --> 00:04:10,180
+trees have a very well defined layer structure,
+which we can always impose on some and
+
+38
+00:04:10,180 --> 00:04:13,819
+over problems, but we have an algorithm for
+solving and over trees, which is the A O
+
+39
+00:04:13,818 --> 00:04:17,719
+star algorithm. So, my question is can we
+use the A O star algorithm to solve the game
+
+40
+00:04:17,720 --> 00:04:23,680
+tree, what do you want, we want a strategy
+of optimal value, in this case a roundly three
+
+41
+00:04:23,680 --> 00:04:28,120
+possible values 1 0 minus 1, so if there is
+a winning strategy we want it. Otherwise we
+
+42
+00:04:28,120 --> 00:04:33,530
+want the strategy it will draw the game, otherwise
+we are force to accept a loosing
+
+43
+00:04:33,529 --> 00:04:34,529
+strategy.
+
+44
+00:04:34,529 --> 00:04:41,520
+So, can we use the A O star algorithm here,
+there is also there is analogy, in the and
+
+45
+00:04:41,521 --> 00:04:45,030
+over
+graph the solve nodes are nodes which have
+
+46
+00:04:45,029 --> 00:04:51,309
+a label attached to them, and leaves also
+have a label attached to them. In some sense,
+
+47
+00:04:51,310 --> 00:04:56,430
+the similar back up procedure is taking
+place in A O star, if you remember algorithm
+
+48
+00:04:56,430 --> 00:05:02,269
+essentially, in the forward phase. We
+expand the search a little bit, and the backward
+
+49
+00:05:02,269 --> 00:05:03,719
+phase we backup the values, which is
+
+50
+00:05:03,720 --> 00:05:08,210
+.very similar to the backup values that we
+using here. Except the of course, here we
+
+51
+00:05:08,209 --> 00:05:10,329
+I
+choosing min and max, there we I just summing
+
+52
+00:05:10,329 --> 00:05:22,508
+up the values essentially. So, the answer
+to this is actually yes, we can use the A
+
+53
+00:05:22,509 --> 00:05:27,470
+O star algorithm, provide it we have access
+to the
+
+54
+00:05:27,470 --> 00:05:30,470
+complete game tree.
+
+55
+00:05:30,470 --> 00:05:31,470
+.
+
+56
+00:05:31,470 --> 00:05:38,349
+And why is that not always a feasible thing,
+let us look at the game of chess, which is
+
+57
+00:05:38,348 --> 00:05:48,459
+been the game, which has fascinated most programmers
+or computer scientist essentially.
+
+58
+00:05:48,459 --> 00:05:59,299
+Now, if you count the size of a tree, as the
+number of leaves, which means, each leaf is
+
+59
+00:05:59,300 --> 00:06:03,520
+a
+different game that you can play. Every pass
+
+60
+00:06:03,519 --> 00:06:09,060
+that you can take in the game tree is a
+game, and the leaf is outcome of the game
+
+61
+00:06:09,060 --> 00:06:15,300
+essentially. So, the number of leaves is in
+some sense a measure of, the size of the game
+
+62
+00:06:15,300 --> 00:06:16,430
+tree essentially.
+
+63
+00:06:16,430 --> 00:06:29,000
+So, let us try an estimate, how could the
+tic tac to ((Refer Time.) not is a simple
+
+64
+00:06:29,000 --> 00:06:39,910
+computationally a simple game, because at
+one level you have 9 choices, assuming that
+
+65
+00:06:39,910 --> 00:06:45,129
+you could you cannot, distinguish between
+symmetric situations let see, you have 9
+
+66
+00:06:45,129 --> 00:06:50,479
+choices, you have then 8 choices, at the next
+level 7 choices and so on. It is a very, not
+
+67
+00:06:50,478 --> 00:06:53,370
+a
+very large game tree essentially, which is
+
+68
+00:06:53,370 --> 00:06:56,139
+not surprising, because we have figure out
+by
+
+69
+00:06:56,139 --> 00:07:01,360
+now, that it is the value of the tree is a
+draw essentially, what about the chess game
+
+70
+00:07:01,360 --> 00:07:02,360
+tree?
+
+71
+00:07:02,360 --> 00:07:11,788
+.As I said, at a max first level, there are
+20 choices, those of you know chess will agree
+
+72
+00:07:11,788 --> 00:07:17,199
+with me, eight pawns eight pawn moves with
+one step, another eight pawn moves with
+
+73
+00:07:17,199 --> 00:07:25,889
+two steps, and four knight moves for the two
+knight essentially. So, 20 at the first level
+
+74
+00:07:25,889 --> 00:07:31,060
+and as you start playing the game, the game
+board opens up, and more moves are
+
+75
+00:07:31,060 --> 00:07:34,759
+possible. So, for example, bishops can start
+moving, cooks can start moving, the queen
+
+76
+00:07:34,759 --> 00:07:41,419
+can start moving, and the number of the balancing
+factor in some sense increases, as you
+
+77
+00:07:41,418 --> 00:07:42,939
+go towards a middle game essentially.
+
+78
+00:07:42,939 --> 00:07:50,069
+So, chess players tend to categorize the game
+into opening, middle and the end game. So,
+
+79
+00:07:50,069 --> 00:07:54,569
+towards a middle game, it is a most complex
+part of the game. So, people say that on the
+
+80
+00:07:54,569 --> 00:08:03,718
+average b is equal to 35, that on the average,
+a chess game has 35 moves, that a player
+
+81
+00:08:03,718 --> 00:08:17,839
+has a choose from essentially. And on the
+average, a typical game is 50 moves long,
+
+82
+00:08:17,839 --> 00:08:24,528
+so
+average game of course, some games get over
+
+83
+00:08:24,528 --> 00:08:31,360
+earlier some games can long last and so
+on. But just to get an idea of the size of
+
+84
+00:08:31,360 --> 00:08:37,860
+this game tree, so we can say that, you can
+one
+
+85
+00:08:37,860 --> 00:08:45,889
+big estimate is set the number of games possible
+is 35 raise to 50.
+
+86
+00:08:45,889 --> 00:08:51,759
+So, if the punching factor was concert 25,
+then you can 35, then you can see, the top
+
+87
+00:08:51,759 --> 00:08:56,629
+level 35 moves and another 35 moves for each
+of these moves and so on. So, since it is
+
+88
+00:08:56,629 --> 00:09:07,970
+50 moves long 35 raise to 50, which is equal
+to what 10 raise to 120, which means of
+
+89
+00:09:07,970 --> 00:09:17,960
+course, just to remind the point, if I started
+writing this, and I label the zeros, this
+
+90
+00:09:17,960 --> 00:09:20,480
+is the
+first 0, this is the second 0, this is the
+
+91
+00:09:20,480 --> 00:09:23,440
+third 0, and I will have to keep writing to
+the end of
+
+92
+00:09:23,440 --> 00:09:27,870
+the board, till I write the one twentieth
+0 essentially.
+
+93
+00:09:27,870 --> 00:09:33,570
+We have already discussed this kind of numbers
+before, that this is not the number, you
+
+94
+00:09:33,570 --> 00:09:38,660
+can refill with, there is no hope ever of
+solving the game tree completely, chess tree
+
+95
+00:09:38,659 --> 00:09:42,350
+completely. And in fact, we do not we have
+an been able to solve it, still now even
+
+96
+00:09:42,350 --> 00:09:49,409
+though people, putting massive computing power
+towards solving game trees, and they
+
+97
+00:09:49,409 --> 00:09:54,600
+are using very sophisticated techniques like,
+analyzing the end games, and creating of
+
+98
+00:09:54,600 --> 00:10:02,440
+look up tables for them and then using those
+to, so all the games trees and that kind of
+
+99
+00:10:02,440 --> 00:10:03,440
+stuff.
+
+100
+00:10:03,440 --> 00:10:06,310
+Checkers incidentally I do not know, if you
+remember when you went through this
+
+101
+00:10:06,309 --> 00:10:11,699
+progress in computer science, at some time
+in this century 2005 or something, I do not
+
+102
+00:10:11,700 --> 00:10:15,370
+.remember exactly, the game of checkers was
+solved. So, it was known, what the
+
+103
+00:10:15,370 --> 00:10:19,019
+outcome of the game is, and this was done
+through use of massive amount of computing
+
+104
+00:10:19,019 --> 00:10:24,149
+power, and checkers as the much smaller game,
+because the choices available for each
+
+105
+00:10:24,149 --> 00:10:25,699
+piece are very limited essentially.
+
+106
+00:10:25,700 --> 00:10:30,950
+So, if you know the game, you can only move
+in one or two directions, one step or
+
+107
+00:10:30,950 --> 00:10:35,879
+sometimes you can jump over other than so
+on, is a much smaller game in terms of the
+
+108
+00:10:35,879 --> 00:10:39,439
+size of the game tree. And that we have just
+minus to ((Refer Time.) chess is
+
+109
+00:10:39,440 --> 00:10:44,720
+practically impossible, if you remember the
+kind of numbers you are talking about, 10
+
+110
+00:10:44,720 --> 00:10:50,279
+raise to 75 is the number of fundamental particles
+in the universe. And then, if the each
+
+111
+00:10:50,279 --> 00:10:53,959
+of them was a super computer, so we can do
+that argument again, and you can see that
+
+112
+00:10:53,960 --> 00:10:57,980
+you can, any fact not solves the game at all.
+
+113
+00:10:57,980 --> 00:11:02,909
+So, we do not know, where a why it will always
+been in chess or not, which is by the
+
+114
+00:11:02,909 --> 00:11:07,009
+game is still interesting, as oppose to cross
+and nodes, which we do not want to play
+
+115
+00:11:07,009 --> 00:11:16,110
+because we know that it is always a drawn
+game essentially. So, if we do not have access
+
+116
+00:11:16,110 --> 00:11:19,289
+to the leaf then how can we use this algorithm,
+we cannot use the algorithm. So, we have
+
+117
+00:11:19,289 --> 00:11:23,990
+to do some other approximation, and which
+is what we will look at, essentially is that
+
+118
+00:11:23,990 --> 00:11:26,230
+kind of variations of ((Refer Time.)
+
+119
+00:11:26,230 --> 00:11:33,180
+While I am talking about games, the most complex
+game, in terms of size of the game
+
+120
+00:11:33,179 --> 00:11:38,379
+tree, is the game called go, I do not how
+many of you are heard about it, it is a game
+
+121
+00:11:38,379 --> 00:11:49,470
+which is extremely popular in Japan, and size
+of the... and a feeling of the complexity
+
+122
+00:11:49,470 --> 00:11:52,860
+of
+the game, can be got by the fact that it is
+
+123
+00:11:52,860 --> 00:11:58,060
+plays on a ninteen by ninteen board, and you
+can plays, it is a game in which you plays
+
+124
+00:11:58,059 --> 00:12:03,250
+coins, on one on top of the, not one. So,
+their
+
+125
+00:12:03,250 --> 00:12:08,490
+specified locations at cells you can place
+coins, and you can imagine that in the first
+
+126
+00:12:08,490 --> 00:12:13,000
+move, we can place it an any those ninteen
+by ninteen locations and then so on, so it
+
+127
+00:12:13,000 --> 00:12:16,370
+is a
+huge game in that terms.
+
+128
+00:12:16,370 --> 00:12:22,519
+Go is something that we have not been able
+to program well, by view in the whole
+
+129
+00:12:22,519 --> 00:12:27,649
+computing community, has not been able to
+produce good go playing programs. And the
+
+130
+00:12:27,649 --> 00:12:33,059
+people who talk about go; they say that no
+you have to use other techniques like pattern
+
+131
+00:12:33,059 --> 00:12:41,369
+recognition. By pattern recognition, I mean
+you know, trying to make out which both
+
+132
+00:12:41,370 --> 00:12:45,500
+.positions are good, and which both positions
+are not good essentially. Some people use
+
+133
+00:12:45,500 --> 00:12:55,669
+the word zen with go and so on. So, games
+can be quite come, so go is much more
+
+134
+00:12:55,669 --> 00:13:01,879
+complex then chess in terms of, the size of
+the game tree which and be can really not
+
+135
+00:13:01,879 --> 00:13:05,389
+too
+much with that essentially.
+
+136
+00:13:05,389 --> 00:13:06,389
+.
+
+137
+00:13:06,389 --> 00:13:15,500
+One game that, is of interest to us, is a
+game call othello, also called as reversi,
+
+138
+00:13:15,500 --> 00:13:20,200
+and we
+have been using that for the last few years,
+
+139
+00:13:20,200 --> 00:13:24,250
+for the game competition and will do so this
+year also. So, maybe you should go and look
+
+140
+00:13:24,250 --> 00:13:28,649
+up the game, the idea of the game is that,
+it
+
+141
+00:13:28,649 --> 00:13:35,850
+is played on a chess board, like board, except
+that it is a single color board, and we start
+
+142
+00:13:35,850 --> 00:13:44,990
+of by playing, two kinds of coins. So, which
+let me say, I am representing by knots and
+
+143
+00:13:44,990 --> 00:13:52,009
+crosses like that game, but it practices like,
+red coin and white coin, and things like that.
+
+144
+00:13:52,009 --> 00:13:55,960
+So, let say cross stands for red coin, and
+this stands for white coin, this is the initial
+
+145
+00:13:55,960 --> 00:14:03,810
+position of the game, in the center of the
+board and a move, you a move is made by
+
+146
+00:14:03,809 --> 00:14:10,879
+capturing opponent pieces, which means that,
+if I have a piece coin here, I can place the
+
+147
+00:14:10,879 --> 00:14:15,480
+coin here. And in the process, I will capture
+this piece essentially, which means this
+
+148
+00:14:15,480 --> 00:14:20,649
+piece becomes actually mike piece. So, I have
+made one move, and this is a game, then it
+
+149
+00:14:20,649 --> 00:14:25,100
+is opponents turn, so opponent can also do
+something similar. So, opponent can for
+
+150
+00:14:25,100 --> 00:14:37,920
+example, put a coin here, and then this is
+captured back, in some sense, then I can place
+
+151
+00:14:37,919 --> 00:14:38,919
+a
+
+152
+00:14:38,919 --> 00:14:44,159
+.coin here, and capture this back again and
+again, and the game sort of goes on.
+
+153
+00:14:44,159 --> 00:14:49,860
+So, if I, if the opponent were to put a coin
+here, then I then you would simultaneously
+
+154
+00:14:49,860 --> 00:14:56,419
+capture this and this essentially. So, both
+will get captured, because by placing a coin
+
+155
+00:14:56,419 --> 00:15:01,529
+here, you are enclosing one end you have this,
+and this end you have this, and this end
+
+156
+00:15:01,529 --> 00:15:06,319
+you have this. So, both in both directions
+you can... so in all... So, you can captured
+
+157
+00:15:06,320 --> 00:15:08,629
+in
+four directions, and if you can make multiple
+
+158
+00:15:08,629 --> 00:15:12,889
+captures in one move, but you can, you
+allow to place only one coin on the board.
+
+159
+00:15:12,889 --> 00:15:19,889
+And essentially, the game ends, when either
+one side cannot make a move or every or all
+
+160
+00:15:19,889 --> 00:15:23,090
+the coins have been place on the board. So,
+it is not uncommon for the board to be
+
+161
+00:15:23,090 --> 00:15:29,470
+almost completely fill them, and you win the
+game, if you have more coins in the board
+
+162
+00:15:29,470 --> 00:15:33,680
+at the end of it, but we have will be also
+give you a score has to how many points we
+
+163
+00:15:33,679 --> 00:15:39,569
+have, one by essentially. So, if it is a massive
+win. So, let say eight by eight board, you
+
+164
+00:15:39,570 --> 00:15:43,600
+have sixty point coins, and opponent is four
+coins, then you have a big win essentially.
+
+165
+00:15:43,600 --> 00:15:52,389
+Whereas, if you have 30 and opponent has 34,
+then he has a smaller win. So, that is the
+
+166
+00:15:52,389 --> 00:15:56,199
+game that we will use for the competition,
+you will have to write a program, which will
+
+167
+00:15:56,200 --> 00:16:09,070
+compete against other peoples programs. So,
+how do we play a game, whose search
+
+168
+00:16:09,070 --> 00:16:23,790
+whose tree we cannot access essentially? So,
+we do what. What humans do is that we do
+
+169
+00:16:23,789 --> 00:16:27,278
+a partial look ahead.
+
+170
+00:16:27,278 --> 00:16:28,278
+..
+
+171
+00:16:28,278 --> 00:16:34,149
+So, in most game playing programs, you do
+a limited look ahead, which means, that if
+
+172
+00:16:34,149 --> 00:16:45,319
+my tree looks like this, this is max, then
+instead of search, so I have drawn with this
+
+173
+00:16:45,320 --> 00:16:49,410
+as a
+practically, and infinite tree growing exponentially,
+
+174
+00:16:49,409 --> 00:16:56,509
+we cannot explore this threes. So,
+what do we do we, cut off at some level, this
+
+175
+00:16:56,509 --> 00:17:09,430
+some people called as a horizon, we cannot
+see beyond that, and this is called a number
+
+176
+00:17:09,430 --> 00:17:20,339
+of plies. So, this is k ply, if the
+So, instead of searching the entire game tree,
+
+177
+00:17:20,338 --> 00:17:24,389
+I mean if you have the complete
+game tree, then you could have just pack up
+
+178
+00:17:24,390 --> 00:17:29,340
+the values, and you would have found the
+minimax value, and the best move for max in
+
+179
+00:17:29,339 --> 00:17:30,339
+the process.
+
+180
+00:17:30,339 --> 00:17:34,779
+But we do not; we cannot search the game tree,
+because we have seen that they can be
+
+181
+00:17:34,779 --> 00:17:43,309
+really huge. So, we decide that we will low
+or limited look ahead, and try to decide what
+
+182
+00:17:43,309 --> 00:17:50,639
+is the move. Now, incidentally, that is how
+human beings also tend to play, at least the
+
+183
+00:17:50,640 --> 00:17:56,259
+beginners, that is how they tend to play,
+they do a limited look ahead, may be two moves
+
+184
+00:17:56,259 --> 00:18:00,750
+ahead or three moves ahead, but they do not
+do a complete look ahead, in the sense they
+
+185
+00:18:00,750 --> 00:18:02,150
+do not look at all possibilities.
+
+186
+00:18:02,150 --> 00:18:07,300
+So, most chess players for example, would
+not even consider all the twenty moves that
+
+187
+00:18:07,299 --> 00:18:11,750
+you can make at the starting point, they would
+have a fancy for two or three different
+
+188
+00:18:11,750 --> 00:18:15,990
+possible moves. So, either this pawn opening,
+or that pawn opening, or something like
+
+189
+00:18:15,990 --> 00:18:20,380
+.that, and they would only explore that. So,
+we do a limited search, in the sense that
+
+190
+00:18:20,380 --> 00:18:22,140
+we
+do not look at the complete branching factor,
+
+191
+00:18:22,140 --> 00:18:26,110
+we only look at the few possible moves,
+and a few possible replies by the opponent,
+
+192
+00:18:26,109 --> 00:18:32,809
+and a few possible moves that I can make
+the, and in some sense of a search is incomplete
+
+193
+00:18:32,809 --> 00:18:33,809
+essentially.
+
+194
+00:18:33,809 --> 00:18:43,220
+Of course, expert chess players tend to do
+more exhaustive search, they also tend to
+
+195
+00:18:43,220 --> 00:18:46,930
+be
+able to judge positions. So, let us, let me
+
+196
+00:18:46,930 --> 00:18:50,519
+introduce that idea at this movement, then
+if
+
+197
+00:18:50,519 --> 00:18:59,039
+you are doing a limited look ahead, what is
+the use, because the nodes that you are going
+
+198
+00:18:59,039 --> 00:19:09,099
+to look at this level. They are not completed
+games they are sort of half way plate games,
+
+199
+00:19:09,099 --> 00:19:14,599
+but you have made a few moves, opponent as
+made a few moves, and based on this look
+
+200
+00:19:14,599 --> 00:19:21,849
+ahead, you want to decide, what you want to
+play essentially. So, what do we do, we
+
+201
+00:19:21,849 --> 00:19:31,070
+have to write algorithms, to go values to
+this nodes essentially, so what do we do,
+
+202
+00:19:31,070 --> 00:19:36,319
+we
+apply evaluation function.
+
+203
+00:19:36,319 --> 00:19:53,470
+So, again those of you might have played chess,
+sometimes or watch other people play
+
+204
+00:19:53,470 --> 00:20:00,269
+chess, then you can hear comments like, this
+is the good position for white or something
+
+205
+00:20:00,269 --> 00:20:04,849
+like that or white is winning. So, white is
+not yet one, but you look at it in say it
+
+206
+00:20:04,849 --> 00:20:07,859
+looks
+like white is winning, instead of making such
+
+207
+00:20:07,859 --> 00:20:14,789
+qualitative statements, we want to give
+quantitative values. So, we want to define
+
+208
+00:20:14,789 --> 00:20:23,069
+a function which is an evaluation function,
+which will give us a value for the board position.
+
+209
+00:20:23,069 --> 00:20:32,500
+Now, what do we do instead of this, 1 0
+minus 1 those three values, which are available
+
+210
+00:20:32,500 --> 00:20:38,259
+to us, when the game ends, instead of
+that we break it up into a larger range.
+
+211
+00:20:38,259 --> 00:20:49,119
+So, typically it is, let say minus 1000 to
+plus 1000, so the evaluation function returns
+
+212
+00:20:49,119 --> 00:20:56,159
+as a
+value in this range, which the understanding
+
+213
+00:20:56,160 --> 00:21:02,769
+that plus 1000 is equal to the original one,
+minus thousand is equal to the original minus,
+
+214
+00:21:02,769 --> 00:21:07,609
+one and all values in 0 is equal to the
+original 0, which means both sides are roughly
+
+215
+00:21:07,609 --> 00:21:14,459
+equal, but the actual number tells you,
+how good it is for max or how bad it is for
+
+216
+00:21:14,460 --> 00:21:18,110
+max. So, if it is plus seventy, it is a little
+good
+
+217
+00:21:18,109 --> 00:21:25,369
+for max, if it is plus 700, it is much better
+for a max, and if it is minus 600, it is quite
+
+218
+00:21:25,369 --> 00:21:28,459
+bad
+for max. So, we try to look at a board position,
+
+219
+00:21:28,460 --> 00:21:30,460
+and give it a value, give it a number.
+
+220
+00:21:30,460 --> 00:21:38,090
+Now; obviously, this means, different kind
+of reasoning, and in some science it involves
+
+221
+00:21:38,089 --> 00:21:42,720
+the use of knowledge, about the game essentially.
+So, you should be able to look at a
+
+222
+00:21:42,720 --> 00:21:55,690
+.game, board position and give a number essentially.
+So, if we can now apply the
+
+223
+00:21:55,690 --> 00:22:02,000
+evaluation function to each of these nodes,
+on the horizon, which is wherever search
+
+224
+00:22:02,000 --> 00:22:11,049
+ends; then we can apply the same minimax back
+up rule, to evaluate the value of this
+
+225
+00:22:11,049 --> 00:22:14,169
+game.
+
+226
+00:22:14,170 --> 00:22:22,840
+So, the backup rule let we said, that at min
+level, choose the lowest value from it is
+
+227
+00:22:22,839 --> 00:22:26,599
+successive, and at max level, choose the highest
+value from it successive. So, we can
+
+228
+00:22:26,599 --> 00:22:31,169
+back up these values, and determine what is
+the value for that, and in the process also
+
+229
+00:22:31,170 --> 00:22:40,779
+decide what is the best move to make essentially.
+Now, clearly the performance of this
+
+230
+00:22:40,779 --> 00:22:49,430
+algorithm will depend upon how good your evaluation
+function is, essentially, because if
+
+231
+00:22:49,430 --> 00:22:54,820
+your evaluation function is good, then it
+will tell you which of the board positions
+
+232
+00:22:54,819 --> 00:22:55,819
+are
+better.
+
+233
+00:22:55,819 --> 00:22:56,819
+.
+
+234
+00:22:56,819 --> 00:22:59,939
+Now, ideally we would like to have a perfect
+evaluation function, which in a game like
+
+235
+00:22:59,940 --> 00:23:06,870
+GO people have try to do, is that you look
+at all the choices, and apply the evaluation
+
+236
+00:23:06,869 --> 00:23:16,219
+function here. So, we will call this function
+e, and let say e of J, were J is a node. So,
+
+237
+00:23:16,220 --> 00:23:20,579
+we
+apply e of J here, ideally we say just look
+
+238
+00:23:20,579 --> 00:23:23,230
+at the all the options and see which one leads
+to a better move essentially.
+
+239
+00:23:23,230 --> 00:23:31,009
+.And then make them, but in practice, evaluation
+functions are never perfect, they are like
+
+240
+00:23:31,009 --> 00:23:34,750
+heuristic functions, you know you are making
+some judgment, and arriving at some
+
+241
+00:23:34,750 --> 00:23:42,089
+number that may not be accurate. So, in practice,
+it has been observed that a combination
+
+242
+00:23:42,089 --> 00:23:48,789
+of evaluation and look ahead does reasonably
+well for games. So, this is the situation
+
+243
+00:23:48,789 --> 00:23:52,799
+where a there is no look ahead, except that
+at this level, you just look at the choices,
+
+244
+00:23:52,799 --> 00:23:56,039
+we
+have and picking the bests base on a evaluation
+
+245
+00:23:56,039 --> 00:23:57,039
+function.
+
+246
+00:23:57,039 --> 00:23:58,039
+.
+
+247
+00:23:58,039 --> 00:24:04,309
+Here, you are saying, I will look at my choices,
+first and I will look at what the opponent
+
+248
+00:24:04,309 --> 00:24:13,808
+can place, in that position and so on. And
+I will keep doing that, to some k ply,
+
+249
+00:24:13,808 --> 00:24:23,619
+depending on how much computing power I have,
+go up to the k (s) ply, apply the
+
+250
+00:24:23,619 --> 00:24:30,569
+evaluation function there, and then back up
+the values essentially. So, in some sense,
+
+251
+00:24:30,569 --> 00:24:34,730
+what will happen is that, that is something
+will get captured in the look ahead.
+
+252
+00:24:34,730 --> 00:24:40,450
+So, again if I use a analogy of chess, then
+if you are doing, you are capturing the
+
+253
+00:24:40,450 --> 00:24:45,069
+opponents look, and the opponents is capturing
+you bishops or something than at least
+
+254
+00:24:45,069 --> 00:24:51,480
+those things are known, that this, this is
+are going away essentially. So, the absence
+
+255
+00:24:51,480 --> 00:24:53,720
+of an
+evaluation function is compensated by doing
+
+256
+00:24:53,720 --> 00:24:59,259
+more look ahead essentially, typical chess
+playing programs that you get, on laptops
+
+257
+00:24:59,259 --> 00:25:05,819
+for example, would do something like eight
+ply or something like that. And generally,
+
+258
+00:25:05,819 --> 00:25:07,119
+you can imagine that with this kind of
+
+259
+00:25:07,119 --> 00:25:15,409
+.branching factor, the number of games that
+you have to look at is growing exponentially.
+
+260
+00:25:15,410 --> 00:25:22,990
+And people have surmised, that if you do sixteen
+ply look ahead for chess, with risibly
+
+261
+00:25:22,990 --> 00:25:27,890
+good evaluation function, then you can play
+the grandmaster level essentially. So, it
+
+262
+00:25:27,890 --> 00:25:31,300
+is
+a... so nice in practice of course, we do
+
+263
+00:25:31,299 --> 00:25:35,099
+not do such simple searches, we will see,
+that
+
+264
+00:25:35,099 --> 00:25:41,178
+sometimes we do a little bit more search in
+some areas and so on and so far. So, what
+
+265
+00:25:41,179 --> 00:25:42,930
+is
+the game playing algorithm, we want to write,
+
+266
+00:25:42,930 --> 00:25:47,500
+see we want to still win the game; we do
+not want to make some move and say it is a
+
+267
+00:25:47,500 --> 00:25:55,059
+good move essentially. So, the game playing
+algorithm that we will use is. So, let us
+
+268
+00:25:55,059 --> 00:25:59,859
+just call this k ply search.
+
+269
+00:25:59,859 --> 00:26:00,859
+.
+
+270
+00:26:00,859 --> 00:26:22,269
+We will have an do in which will say, do k
+ply search, and then make a move, and then
+
+271
+00:26:22,269 --> 00:26:34,819
+get opponents move, and we will put this into
+a loop, till the game ends. So, what are we
+
+272
+00:26:34,819 --> 00:26:45,750
+doing now? If the game tree was something
+that we can explore completely, we would
+
+273
+00:26:45,750 --> 00:26:49,710
+have analyze the whole game tree once for
+all, and said this is the strategy, and it
+
+274
+00:26:49,710 --> 00:26:52,808
+is a
+winning strategy. And then, you just play
+
+275
+00:26:52,808 --> 00:26:54,399
+it according to that strategy, but the game
+tree,
+
+276
+00:26:54,400 --> 00:27:04,870
+we are not able to access and 
+what we are doing now, in this algorithm,
+
+277
+00:27:04,869 --> 00:27:08,769
+is that at every
+move you are doing a search, every time you
+
+278
+00:27:08,769 --> 00:27:13,950
+have to make a move, you do some search,
+limited search k ply search, and then decide
+
+279
+00:27:13,950 --> 00:27:15,080
+based on that.
+
+280
+00:27:15,079 --> 00:27:19,230
+.So, what does this amount to? This amount
+to saying that if you make a choice here,
+
+281
+00:27:19,230 --> 00:27:26,660
+let
+say this is your game tree, and you do a search,
+
+282
+00:27:26,660 --> 00:27:35,970
+let say up to this ply depth, which means
+you make a move based on this much search.
+
+283
+00:27:35,970 --> 00:27:41,569
+So, this is your move; then you wait for
+opponent move, so opponent makes a move, let
+
+284
+00:27:41,569 --> 00:27:47,039
+say opponent makes this move, so here.
+Somewhere inside that original search that
+
+285
+00:27:47,039 --> 00:27:57,558
+you did, now I this stage, you do another
+search, limited search, again k ply search,
+
+286
+00:27:57,558 --> 00:28:02,139
+and then make your second move. So, let say
+this is your second move; then opponent makes
+
+287
+00:28:02,140 --> 00:28:06,840
+a move; then again you do a search.
+
+288
+00:28:06,839 --> 00:28:16,919
+So, in this manner, you can see that for every
+move that you are making, you are doing a
+
+289
+00:28:16,920 --> 00:28:21,759
+limited search essentially, what is a advantage
+of that, is that there is a game and force
+
+290
+00:28:21,759 --> 00:28:25,039
+you are looking at those part of the three,
+which you are not seen originally. Originally
+
+291
+00:28:25,039 --> 00:28:30,940
+you have seen only till this part of the tree,
+and then after two moves, you can see two
+
+292
+00:28:30,940 --> 00:28:35,381
+plies deeper. Because you are made one move
+and opponent is made one move, then
+
+293
+00:28:35,381 --> 00:28:40,620
+your search will now look a little bit deeper,
+then again here, another two plies deeper
+
+294
+00:28:40,619 --> 00:28:51,329
+and so on. So, as it goes along, you are looking
+at different, so all that remains to do is
+
+295
+00:28:51,329 --> 00:28:52,589
+to
+write this k ply search algorithm that is
+
+296
+00:28:52,589 --> 00:28:54,829
+the simplest of game playing algorithms.
+
+297
+00:28:54,829 --> 00:28:55,829
+.
+
+298
+00:28:55,829 --> 00:29:10,849
+We will see, how to improve upon that in that
+following classes, so let we first write the
+
+299
+00:29:10,849 --> 00:29:21,189
+algorithm, it is a very simple algorithm minimax,
+it is call minimax, and it takes a node J
+
+300
+00:29:21,190 --> 00:29:26,080
+.as an argument, and it returns the minimax
+value essentially. So, let us say, this
+
+301
+00:29:26,079 --> 00:29:30,069
+algorithm only computes a minimax value, and
+on the process, we can put in a small
+
+302
+00:29:30,069 --> 00:29:33,939
+routine, which will tell you what is the best
+move, that is the secondary thing, which
+
+303
+00:29:33,940 --> 00:29:40,400
+comes out of it essentially. And rough you
+the algorithm we just follows, to let us
+
+304
+00:29:40,400 --> 00:29:46,300
+assume that you have a way of testing, whether
+you are on the horizon or not essentially.
+
+305
+00:29:46,299 --> 00:29:52,200
+So, you can have some kind of count, as you
+go searching into the tree essentially.
+
+306
+00:29:52,200 --> 00:29:58,539
+So, I am assuming that you will some of figure
+out how to do that, and then we do the
+
+307
+00:29:58,539 --> 00:30:15,819
+following, if J is terminal, so J is a node,
+and by terminal we mean a test, which tells
+
+308
+00:30:15,819 --> 00:30:17,928
+you
+whether you on the horizon or not. If you
+
+309
+00:30:17,929 --> 00:30:31,380
+are on the horizon, then we get V J is equal
+to e
+
+310
+00:30:31,380 --> 00:30:38,929
+J. So, you simply apply the evaluation function,
+and you get the value for that note, else
+
+311
+00:30:38,929 --> 00:30:55,230
+it is not terminal for i is equal to 1 to
+b, where b is the branching factor, generate
+
+312
+00:30:55,230 --> 00:31:10,360
+the J i
+the i th child of J, then if i equal to 1,
+
+313
+00:31:10,359 --> 00:31:13,919
+which means if you are looking at the first
+child,
+
+314
+00:31:13,920 --> 00:31:52,140
+then V J or let we uses slightly simpler is
+this.
+
+315
+00:31:52,140 --> 00:32:07,490
+Let say something called val is the minimax
+value of V J, if J, if i is equal to 1, then
+
+316
+00:32:07,490 --> 00:32:13,910
+V J
+gets val thus the first node, first child
+
+317
+00:32:13,910 --> 00:32:16,490
+that you have looked at. Otherwise you will
+update
+
+318
+00:32:16,490 --> 00:32:57,950
+to a better child, else if J is max, then
+V J get max, so I just use this devised, because
+
+319
+00:32:57,950 --> 00:33:00,970
+I do
+not want write this, this is a recursive call
+
+320
+00:33:00,970 --> 00:33:03,370
+notice, it is a recursive call, with an next
+node,
+
+321
+00:33:03,369 --> 00:33:08,279
+I just do not know to write it again and again.
+So, I am just writing in once, so once I
+
+322
+00:33:08,279 --> 00:33:13,500
+making a recursive call, and then if the first
+one of course that gets the value, V J gets
+
+323
+00:33:13,500 --> 00:33:19,089
+that value, if it is not the first child,
+then you compare with the current value, and
+
+324
+00:33:19,089 --> 00:33:20,970
+this
+new value that you are getting.
+
+325
+00:33:20,970 --> 00:33:29,650
+So, if it is max, it means that, you have
+got some value here, which is V J, and you
+
+326
+00:33:29,650 --> 00:33:32,190
+have
+looking at this child, and your getting a
+
+327
+00:33:32,190 --> 00:33:39,870
+value V J, let say k, which is return by this.
+So,
+
+328
+00:33:39,869 --> 00:33:54,339
+you have, you going to return V J, which is
+the minimax value of this node J, and so this
+
+329
+00:33:54,339 --> 00:34:01,279
+recursive call will return the minimax value
+of V J. And then as I scan from left to right,
+
+330
+00:34:01,279 --> 00:34:06,970
+going, I go going from 1 to b, I will keep
+seeing, if I am getting a better value, from
+
+331
+00:34:06,970 --> 00:34:09,289
+the
+next call and so on. And wherever I get the
+
+332
+00:34:09,289 --> 00:34:10,289
+better value I will store that.
+
+333
+00:34:10,289 --> 00:34:17,079
+So, it is a very simple algorithm, which will
+look ahead k ply deep, and compute the
+
+334
+00:34:17,079 --> 00:34:22,338
+minimax value of that game, based on the evaluation
+function, because you have at
+
+335
+00:34:22,338 --> 00:34:27,358
+.terminal level, you have applying the evaluation
+function. And I am assuming that you
+
+336
+00:34:27,358 --> 00:34:32,228
+will augment this with, be able to select,
+what is the move that max should make,
+
+337
+00:34:32,228 --> 00:34:38,219
+because that is really the task that you have
+doing, that you do this much search. And this
+
+338
+00:34:38,219 --> 00:34:43,238
+algorithm is basically doing this search here
+in this area, but you want to make the move
+
+339
+00:34:43,239 --> 00:34:46,349
+also. So, you must keep track a what, where
+the best move came from essentially.
+
+340
+00:34:46,349 --> 00:34:54,220
+So, you must keep track of that then you will
+make the move, wait for opponents move,
+
+341
+00:34:54,219 --> 00:34:58,879
+and then again make a call to V J to decide
+what is the next move? ((Refer Time.)
+
+342
+00:34:58,880 --> 00:35:06,509
+So, this is the simplest of all algorithms
+essentially, what is the nature of this search
+
+343
+00:35:06,509 --> 00:35:12,739
+can
+you tell you what kind of search is this doing.
+
+344
+00:35:12,739 --> 00:35:17,978
+Student: First depth.
+
+345
+00:35:17,978 --> 00:35:24,419
+It searching this part of the tree, game tree
+or in if you look at this diagram, it searching
+
+346
+00:35:24,420 --> 00:35:27,670
+this part of the game tree, would in what
+manner is searching.
+
+347
+00:35:27,670 --> 00:35:31,970
+Student: Depth bounder, depth first, depth
+burst.
+
+348
+00:35:31,969 --> 00:35:38,709
+Depth bounder yes, because we have doing k
+ply, but within that bound, how is it
+
+349
+00:35:38,710 --> 00:35:39,710
+searching in.
+
+350
+00:35:39,710 --> 00:35:40,880
+Student: Depth first search
+
+351
+00:35:40,880 --> 00:35:44,559
+It doing depth first search, so you should
+figure out, this is really doing depth first
+
+352
+00:35:44,559 --> 00:35:47,099
+search,
+which of course, give us ((Refer Time.) just
+
+353
+00:35:47,099 --> 00:35:53,200
+may not be the best way of looking at
+things essentially. So, in the next class;
+
+354
+00:35:53,199 --> 00:35:56,199
+of course, we will trying to improve upon
+this,
+
+355
+00:35:56,199 --> 00:36:03,058
+next may be one or two classes, but the, in
+the remaining time, today which is about five
+
+356
+00:36:03,059 --> 00:36:08,070
+minutes are so. I want to just spend a little
+bit of time on this evaluation function, how
+
+357
+00:36:08,070 --> 00:36:11,730
+do
+you write in evaluation function for a board
+
+358
+00:36:11,730 --> 00:36:20,769
+position.
+
+359
+00:36:20,768 --> 00:36:25,978
+Because it is the performance of the algorithm
+really depends on how good the
+
+360
+00:36:25,978 --> 00:36:34,318
+evaluation function is, if it can judge, accurately
+the value of a board, and by accurately
+
+361
+00:36:34,318 --> 00:36:39,451
+.you mean, whether it is you know how close
+to winning it is essentially. Then just one
+
+362
+00:36:39,451 --> 00:36:43,659
+play search would be enough essentially, if
+you have very good evaluation function, but
+
+363
+00:36:43,659 --> 00:36:47,558
+other side in practice it not so easy to get
+very good evaluation function.
+
+364
+00:36:47,559 --> 00:36:48,559
+.
+
+365
+00:36:48,559 --> 00:36:58,620
+So, what goes into an evaluation, so essentially
+you want to look at a board position, let
+
+366
+00:36:58,619 --> 00:37:02,259
+say we are talking about chess, but in practice
+of course, when you do you will be doing
+
+367
+00:37:02,259 --> 00:37:06,019
+othello, when you look at a goal port position,
+you want to give it a value between minus
+
+368
+00:37:06,018 --> 00:37:13,129
+1000 and plus 1000 essentially or minus large
+and plus large let us see, any ideas how
+
+369
+00:37:13,130 --> 00:37:14,460
+you could give this number.
+
+370
+00:37:14,460 --> 00:37:24,119
+Student: Any games practice from, wherever
+it means back tracken keep asign((Refer
+
+371
+00:37:24,119 --> 00:37:26,539
+Time.) keep it.
+
+372
+00:37:26,539 --> 00:37:34,761
+But you see, the whole point of this exercise,
+is that we are trying to our search problem
+
+373
+00:37:34,760 --> 00:37:38,509
+is so huge, that we cannot search the game
+tree.
+
+374
+00:37:38,509 --> 00:37:46,990
+Student: ((Refer Time.)
+How do you play many games?
+
+375
+00:37:46,989 --> 00:37:52,709
+.Student: May be initially begin with random
+assignment and you will ((Refer Time:
+
+376
+00:37:52,710 --> 00:37:53,710
+37:48)) and based on once you reach the end,
+go back track and ((Refer Time.)
+
+377
+00:37:53,710 --> 00:37:58,838
+So, I get a point, you are trying to say that,
+so you are a machine learning enthusiasts
+
+378
+00:37:58,838 --> 00:38:02,358
+and
+you are saying that, I want to learn the evaluation
+
+379
+00:38:02,358 --> 00:38:10,578
+function, that is that will come. In fact,
+Samuel Sekars playing program, improved it
+
+380
+00:38:10,579 --> 00:38:17,278
+is game, because it improved it is valuation
+function on the way, but that comes after
+
+381
+00:38:17,278 --> 00:38:23,539
+word essentially, before that what are the
+components of the evaluation, I mean.
+
+382
+00:38:23,539 --> 00:38:25,799
+Student: ((Refer Time.)
+
+383
+00:38:25,798 --> 00:38:32,298
+Oil all in machinery terms, what is the structure
+of a evaluation function, what I am
+
+384
+00:38:32,298 --> 00:38:38,889
+learning, am I learning parameters or weights,
+weights of what essentially. So, if you
+
+385
+00:38:38,889 --> 00:38:43,879
+look at Tom Michaels book the first chapter,
+he actually describes, how game playing
+
+386
+00:38:43,880 --> 00:38:48,220
+program can learn evaluation function, but
+then he gives it a linear combination of,
+
+387
+00:38:48,219 --> 00:38:51,480
+I
+thing is document checkers, of number of pieces
+
+388
+00:38:51,480 --> 00:38:55,380
+I have, and number of pieces opponent
+have, number of things I have, number of things
+
+389
+00:38:55,380 --> 00:39:01,619
+opponent has, and a linear combination
+of them is this thing. So, my question is
+
+390
+00:39:01,619 --> 00:39:04,470
+more fundamental, that if you are to write
+the
+
+391
+00:39:04,469 --> 00:39:08,838
+evaluation function, just for. Let say you
+are a chess expert and All right, let say
+
+392
+00:39:08,838 --> 00:39:11,949
+you
+have Viswanathan Anand sitting next to you,
+
+393
+00:39:11,949 --> 00:39:17,009
+and you say help me write this evaluation
+function, what could he say.
+
+394
+00:39:17,010 --> 00:39:24,349
+Student: The answers piece of the pieces will
+have particular value and then ((Refer
+
+395
+00:39:24,349 --> 00:39:28,778
+Time.), and there would be additional advantages,
+piece advantage.
+
+396
+00:39:28,778 --> 00:39:41,278
+So, typically an evaluation function will
+have two components, one is call material
+
+397
+00:39:41,278 --> 00:39:46,989
+and
+other is called positional. So, chess players
+
+398
+00:39:46,989 --> 00:39:49,808
+will say, white is winning, because white
+as
+
+399
+00:39:49,809 --> 00:39:53,950
+material advantage, which means you know,
+white is got let say, one row can one bishop
+
+400
+00:39:53,949 --> 00:39:58,809
+extra. And then any good chess player will
+say, if you have that much more fighting
+
+401
+00:39:58,809 --> 00:40:03,558
+power, I am not going to play against you
+or rather you would resigned essentially.
+
+402
+00:40:03,559 --> 00:40:14,798
+So,
+one thing is material, number of pieces, you
+
+403
+00:40:14,798 --> 00:40:36,650
+can say, some of now beginning chess
+players might say, that you know a queen as
+
+404
+00:40:36,650 --> 00:40:42,240
+value 9, and bishop has value 5 or 3 or 4
+or
+
+405
+00:40:42,239 --> 00:40:44,718
+whatever I do not know, look as value 5.
+
+406
+00:40:44,719 --> 00:40:51,710
+.And then you count, how many pieces, do I
+have, what is there values, and let say you
+
+407
+00:40:51,710 --> 00:40:56,858
+give negative value to opponents pieces, and
+from that I sub track how many pieces
+
+408
+00:40:56,858 --> 00:41:03,498
+opponent has. So, if I have more pieces or
+more valuable pieces, than the opponent, than
+
+409
+00:41:03,498 --> 00:41:09,159
+this, some will become positive essentially.
+Initially as you can guess, both sides of
+
+410
+00:41:09,159 --> 00:41:11,129
+the
+same number of pieces a value of material
+
+411
+00:41:11,130 --> 00:41:15,588
+value is 0, both are the same number of
+pieces, but as you capture some pieces, your
+
+412
+00:41:15,588 --> 00:41:17,798
+material value goes up essentially.
+
+413
+00:41:17,798 --> 00:41:25,228
+Now, in practice; of course, chess playing
+people have much final gradation of values.
+
+414
+00:41:25,228 --> 00:41:33,248
+So, they compute in 100, for example, let
+say bishop is 200, and knight is 220 or
+
+415
+00:41:33,248 --> 00:41:36,230
+something like that, it really depends on
+your prospective of the game essentially.
+
+416
+00:41:36,230 --> 00:41:39,588
+So,
+one is the material value, how many pieces
+
+417
+00:41:39,588 --> 00:41:45,548
+I have, and how many pieces opponent has,
+rather is positional, we says, how are the
+
+418
+00:41:45,548 --> 00:41:55,800
+pieces arranged. Now, this is of course, the
+trickier part essentially, this is the more
+
+419
+00:41:55,800 --> 00:41:58,160
+difficult part, because it is not looking
+a
+
+420
+00:41:58,159 --> 00:42:02,420
+structure, and not it is not just a method
+of counting, how many pieces I have, how are
+
+421
+00:42:02,420 --> 00:42:03,430
+they arranged essentially.
+
+422
+00:42:03,429 --> 00:42:14,929
+So, chess players, what say things like, if
+there are two rooks in the same. So, if this
+
+423
+00:42:14,929 --> 00:42:21,419
+is
+the chess board for example, then if I have
+
+424
+00:42:21,420 --> 00:42:26,099
+a rook here, and if I have a another rook
+here,
+
+425
+00:42:26,099 --> 00:42:30,450
+in the same column, then chess player say
+that, it stronger position, two rooks in the
+
+426
+00:42:30,449 --> 00:42:34,248
+same column are very powerful, and you know,
+you should try to arrive at such a
+
+427
+00:42:34,248 --> 00:42:39,439
+position essentially. All they might say,
+that you know some pawn structures, linked
+
+428
+00:42:39,440 --> 00:42:43,869
+pawn structures, if pawns are supporting each
+other, it is better than pawns, if their
+
+429
+00:42:43,869 --> 00:42:48,608
+scattered around the place, and not putting
+each other essentially.
+
+430
+00:42:48,608 --> 00:42:57,358
+Then you know that if there is a knight, if
+n stands for a knight, and if it is the opponent
+
+431
+00:42:57,358 --> 00:43:04,440
+has a queen here, and a rook here. Then you
+can see that knight is attacking both the
+
+432
+00:43:04,440 --> 00:43:10,239
+queen and the rook at the same time. So, chess
+plays called is a fork, and a fork is;
+
+433
+00:43:10,239 --> 00:43:14,338
+obviously, a good thing to have essentially,
+because it among to saying that in the next
+
+434
+00:43:14,338 --> 00:43:19,159
+move, I am going to either capture a queen
+or a rook. So, you are going to use lose
+
+435
+00:43:19,159 --> 00:43:22,460
+material in the process essentially, because
+queen and rook are important then knight is
+
+436
+00:43:22,460 --> 00:43:26,730
+not so important in ((Refer time.) material
+value essentially. And there are other
+
+437
+00:43:26,730 --> 00:43:31,650
+things like controlling the center, and attacking
+the center, and think like that.
+
+438
+00:43:31,650 --> 00:43:45,548
+.Now this program deep blue, and when I read
+about this is so in 2002 or something like
+
+439
+00:43:45,548 --> 00:43:52,329
+that, it had a 1000 components to positional
+evaluation. So, just as we said you know,
+
+440
+00:43:52,329 --> 00:43:58,230
+rooks in the same column or connected pawns,
+a protected king or mobile pieces, so you
+
+441
+00:43:58,230 --> 00:44:03,260
+know bishop is slap then it not very useful,
+hence things like that. It has a 1000 different
+
+442
+00:44:03,260 --> 00:44:08,049
+component, which were use to evaluate the
+board position, in the positional part. So,
+
+443
+00:44:08,048 --> 00:44:10,150
+that
+obviously is the key to the whole thing, if
+
+444
+00:44:10,150 --> 00:44:12,260
+you can look at a board position, and give
+a
+
+445
+00:44:12,260 --> 00:44:20,180
+value, and this is just an attempt to give
+an accurate value, it is looking at it piece
+
+446
+00:44:20,179 --> 00:44:24,440
+say this pattern is good, this pattern is
+good, this pattern is good,
+
+447
+00:44:24,440 --> 00:44:28,630
+And of course, if the opponent has that pattern
+you are going to subtract it from
+
+448
+00:44:28,630 --> 00:44:34,269
+essentially. So, really the secret is in devising
+a good evaluation function, if you have
+
+449
+00:44:34,268 --> 00:44:39,088
+good evaluation function, then you do not
+have to search very much deep in the game,
+
+450
+00:44:39,088 --> 00:44:44,429
+and you evaluation function itself will tell
+you what is the good position or not
+
+451
+00:44:44,429 --> 00:44:49,989
+essentially. So, what you will need to do,
+for your othello game is to, look at the game,
+
+452
+00:44:49,989 --> 00:44:54,260
+on the web or read about, what it in try to
+device an evaluation function, because that
+
+453
+00:44:54,260 --> 00:44:56,489
+is
+going to be critical part of your program
+
+454
+00:44:56,489 --> 00:44:59,929
+essentially.
+
+455
+00:44:59,929 --> 00:45:06,690
+So today, we have seen this, that we cannot
+search the entire game tree, we have to do
+
+456
+00:45:06,690 --> 00:45:11,470
+a
+limited look up, look ahead, and we have a
+
+457
+00:45:11,469 --> 00:45:15,989
+program to do k ply search. And we will
+repeatedly call this program, for the first
+
+458
+00:45:15,989 --> 00:45:19,978
+move, for the second move, for the third move,
+for every move that we make we will call the
+
+459
+00:45:19,978 --> 00:45:26,038
+program. And this simple version of k ply
+look ahead is essentially doing depth first
+
+460
+00:45:26,039 --> 00:45:31,820
+search, left to right and we want to improve
+upon that essentially. So, we will do that
+
+461
+00:45:31,820 --> 00:45:32,820
+in the next class.
+
+462
+00:45:32,820 --> 00:45:42,820
+.
+

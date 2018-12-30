@@ -1,0 +1,656 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:04.830
+In this lesson, we'll talk about
+two dominant systems developed for
+
+2
+00:00:04.830 --> 00:00:06.030
+large scale graph processing.
+
+3
+00:00:07.270 --> 00:00:10.630
+The first one, called Giraph,
+is from Apache and
+
+4
+00:00:10.630 --> 00:00:13.340
+implements a BSP model on Hadoop.
+
+5
+00:00:14.510 --> 00:00:19.440
+The second system is called Graphx,
+is developed on the Spark platform,
+
+6
+00:00:19.440 --> 00:00:24.450
+which as you know, emphasizes on
+interactive in memory computations.
+
+7
+00:00:24.450 --> 00:00:27.560
+While BSP is a popular
+graph processing model,
+
+8
+00:00:27.560 --> 00:00:32.200
+the actual implementation of
+BSP in an infrastructure needs
+
+9
+00:00:32.200 --> 00:00:35.230
+additional programmability beyond
+what we have discussed so far.
+
+10
+00:00:36.680 --> 00:00:41.390
+In Giraph, several additional capabilities
+are added to make it more practical.
+
+11
+00:00:42.760 --> 00:00:47.470
+A thorough coverage of the Giraph platform
+is beyond the scoop of these lectures.
+
+12
+00:00:47.470 --> 00:00:50.464
+However, we'll touch upon
+a few of these capabilities.
+
+13
+00:00:51.862 --> 00:00:57.126
+We'll first consider graph IO,
+that is how graphs can come into a system
+
+14
+00:00:57.126 --> 00:01:02.870
+represented inside the system, and
+when completed are written out.
+
+15
+00:01:02.870 --> 00:01:07.510
+Next, we'll describe how Giraph
+interacts with external data sources.
+
+16
+00:01:07.510 --> 00:01:10.600
+Some of these data sources
+use a different data model,
+
+17
+00:01:10.600 --> 00:01:12.070
+other sources include databases.
+
+18
+00:01:14.310 --> 00:01:16.100
+Once a graph is imported,
+
+19
+00:01:16.100 --> 00:01:18.900
+it is important to make sure that
+the system runs efficiently.
+
+20
+00:01:20.490 --> 00:01:25.070
+We will look at a method that uses a
+special kind of global aggregate operation
+
+21
+00:01:25.070 --> 00:01:28.400
+which saves time by reducing
+the amount of messaging
+
+22
+00:01:28.400 --> 00:01:30.730
+to compute aggregate functions
+like sum and products.
+
+23
+00:01:33.200 --> 00:01:37.000
+Finally, we'll recognize that
+even if Giraph is designed for
+
+24
+00:01:37.000 --> 00:01:40.150
+performing iterative,
+in memory computation,
+
+25
+00:01:40.150 --> 00:01:44.000
+there are times where it is absolutely
+necessary to store data on disk.
+
+26
+00:01:45.340 --> 00:01:49.490
+We'll briefly touch upon Giraph's
+ability to handle out of core graphs and
+
+27
+00:01:49.490 --> 00:01:50.820
+out of core messages.
+
+28
+00:01:51.920 --> 00:01:54.621
+A graph can be written in many ways.
+
+29
+00:01:54.621 --> 00:02:00.354
+For Neo4J, we saw how graphs can be
+important to the database from a CSV file.
+
+30
+00:02:00.354 --> 00:02:06.340
+In Giraph, two of the most common input
+formats are Adjacency List and Edge List.
+
+31
+00:02:08.010 --> 00:02:12.720
+For an Adjacency List,
+each line has the node ID, a node value
+
+32
+00:02:12.720 --> 00:02:16.200
+which is a single number here, and
+a list of destination, weight pairs.
+
+33
+00:02:18.050 --> 00:02:22.950
+Thus, in line one,
+A has a value of 10 and 2 neighbors B and
+
+34
+00:02:22.950 --> 00:02:25.970
+F with edge weights 2 and 5, respectively.
+
+35
+00:02:27.300 --> 00:02:30.850
+Since G has no outgoing edge,
+the adjacency list is empty.
+
+36
+00:02:32.350 --> 00:02:35.570
+The current way of representing
+graphs is in terms of triplets.
+
+37
+00:02:35.570 --> 00:02:40.880
+Containing the source and destination
+nodes followed by an [INAUDIBLE].
+
+38
+00:02:40.880 --> 00:02:42.580
+Notice the way we have shown it here.
+
+39
+00:02:43.620 --> 00:02:45.160
+And the node values is not represented.
+
+40
+00:02:46.280 --> 00:02:49.170
+Let us simplify the Adjacency List
+representation of it.
+
+41
+00:02:50.930 --> 00:02:54.400
+We remove the colons, commas, braces, and
+
+42
+00:02:54.400 --> 00:02:58.650
+parenthesis, and
+get a space separated set of lines.
+
+43
+00:02:58.650 --> 00:02:59.810
+One line for each vertex.
+
+44
+00:03:00.880 --> 00:03:05.210
+We further replace the node IDs A,
+B, C, etc., with 1, 2, 3, etc.,
+
+45
+00:03:05.210 --> 00:03:08.710
+so that these IDs are integers.
+
+46
+00:03:09.810 --> 00:03:13.700
+So what do we need to specify
+to parse this for Giraph?
+
+47
+00:03:13.700 --> 00:03:20.136
+One, the graph is a text subject and
+not, let's say, a database subject.
+
+48
+00:03:20.136 --> 00:03:25.170
+Two, it is a vertex based representation,
+each line is a vertex.
+
+49
+00:03:26.500 --> 00:03:27.800
+This splitter here is a space.
+
+50
+00:03:29.450 --> 00:03:31.830
+The idea of the node is a first value for
+each line.
+
+51
+00:03:33.220 --> 00:03:35.250
+The value is a second token.
+
+52
+00:03:36.740 --> 00:03:40.120
+The next pair of items you find an edge
+with the target and the weight,
+
+53
+00:03:40.120 --> 00:03:41.590
+respectively.
+
+54
+00:03:41.590 --> 00:03:45.420
+And lastly, there is a list of these
+pairs until the end of the line.
+
+55
+00:03:46.820 --> 00:03:51.124
+Therefore, each line would typically
+lead to the creation of both notes and
+
+56
+00:03:51.124 --> 00:03:52.006
+a set of edges.
+
+57
+00:03:53.687 --> 00:03:58.020
+This shows a typical reader formula
+decency matrix written in Java.
+
+58
+00:03:58.020 --> 00:04:01.770
+Again, you don't have to know Java
+to get the elements of this program.
+
+59
+00:04:03.280 --> 00:04:06.300
+Our reader is clearly customized for
+your specific input.
+
+60
+00:04:07.500 --> 00:04:12.020
+Very often the starting point is
+a basic reader provided by Giraph.
+
+61
+00:04:14.140 --> 00:04:18.181
+Like the reader that knows how to read
+vertices from each line of a text swipe.
+
+62
+00:04:19.330 --> 00:04:24.070
+To customize it, you extend it and
+create your own version.
+
+63
+00:04:25.350 --> 00:04:27.870
+Now, you need to define
+how to get the ID and
+
+64
+00:04:27.870 --> 00:04:31.430
+value of the vertex by writing
+separate message for them.
+
+65
+00:04:31.430 --> 00:04:36.455
+Notice that the ID comes from
+the zeroth item of each line after
+
+66
+00:04:36.455 --> 00:04:42.390
+the split by white space, and
+the value comes from the next open,
+
+67
+00:04:42.390 --> 00:04:45.170
+the second term, marked by 1 for
+the 0 base of the light.
+
+68
+00:04:46.370 --> 00:04:48.640
+The next code element is this block here.
+
+69
+00:04:50.000 --> 00:04:54.210
+This specifies how to create edges
+by iterating through every line.
+
+70
+00:04:55.390 --> 00:04:59.377
+To keep the short, we'll remove
+the part that gets the edges here.
+
+71
+00:04:59.377 --> 00:05:03.202
+As Giraph as mature it has
+included many specialized
+
+72
+00:05:03.202 --> 00:05:06.130
+to interoperate with compatible resources.
+
+73
+00:05:07.190 --> 00:05:10.410
+This diagram is from Giraph where
+the show some of these sources.
+
+74
+00:05:11.780 --> 00:05:14.690
+We can group them into
+three different categories.
+
+75
+00:05:16.210 --> 00:05:20.520
+Group one interoperates with Hive and
+HBase.
+
+76
+00:05:20.520 --> 00:05:24.360
+You possibly remember these
+systems from a prior course.
+
+77
+00:05:24.360 --> 00:05:27.290
+These systems are designed to give
+a higher level of data access on
+
+78
+00:05:27.290 --> 00:05:28.870
+interface on top of MapReduce.
+
+79
+00:05:30.170 --> 00:05:34.880
+Group two accesses relational
+systems like MySQL and Cassandra.
+
+80
+00:05:35.970 --> 00:05:40.150
+But these systems have accessed indirectly
+through a software module called Gora.
+
+81
+00:05:41.570 --> 00:05:46.164
+Gora uses a JSON schema to map
+the relation schema of the SQL database
+
+82
+00:05:46.164 --> 00:05:48.675
+to a structure that Giraph can read.
+
+83
+00:05:48.675 --> 00:05:52.864
+Group three accesses graph
+databases like Neo4J and DEX,
+
+84
+00:05:52.864 --> 00:05:55.050
+which is now called Sparksee.
+
+85
+00:05:56.370 --> 00:05:59.190
+These systems are all taxes indirectly.
+
+86
+00:05:59.190 --> 00:06:01.750
+Using the [INAUDIBLE]
+service of Tinkerpop.
+
+87
+00:06:01.750 --> 00:06:04.440
+Which is a graph API layer that can use
+
+88
+00:06:04.440 --> 00:06:07.800
+many different Giraph stores including
+[INAUDIBLE] graph and Titan.
+
+89
+00:06:09.130 --> 00:06:11.190
+Consider a relational
+table stored in Hive.
+
+90
+00:06:12.270 --> 00:06:15.280
+The table shown here is extracted
+from the bio grid data source that
+
+91
+00:06:15.280 --> 00:06:16.290
+we mentioned in module two.
+
+92
+00:06:17.330 --> 00:06:21.340
+Each row of the table represents
+a molecule interaction.
+
+93
+00:06:21.340 --> 00:06:25.190
+We can create a network from here just
+by considering the first two columns.
+
+94
+00:06:26.250 --> 00:06:30.207
+The first column represents the source
+node of an edge colored red.
+
+95
+00:06:30.207 --> 00:06:33.300
+And the second column represents
+the target node of the edge colored blue.
+
+96
+00:06:34.640 --> 00:06:37.820
+The label on the edge comes from
+the fifth column of the table
+
+97
+00:06:37.820 --> 00:06:39.670
+which is a black bold font.
+
+98
+00:06:41.100 --> 00:06:43.578
+Let's assume that these predict items,
+
+99
+00:06:43.578 --> 00:06:47.560
+these are items that we want to
+pick up from the Hive table.
+
+100
+00:06:48.730 --> 00:06:51.460
+The simplest way to get a record from hive
+
+101
+00:06:51.460 --> 00:06:56.195
+to Giraph is to extend the class
+called SimpleHiveRowToEdge.
+
+102
+00:06:57.970 --> 00:07:02.790
+For this class, we need to specify
+the source node, the target node, and
+
+103
+00:07:02.790 --> 00:07:05.580
+the edge value using three
+methods as shown here.
+
+104
+00:07:07.160 --> 00:07:10.325
+My extension is called MyHiveRowToEdge.
+
+105
+00:07:11.390 --> 00:07:15.440
+It shows the implementation of these
+methods where we just pick up the first,
+
+106
+00:07:16.850 --> 00:07:20.430
+second, and fifth columns,
+as we described before.
+
+107
+00:07:22.390 --> 00:07:26.640
+Now, as mentioned before,
+Giraph interacts with Neo4J through
+
+108
+00:07:26.640 --> 00:07:30.080
+the Gremlin API provided by Tinkerpop.
+
+109
+00:07:30.080 --> 00:07:34.470
+One can think of Gremlin as
+a traversal API, which means,
+
+110
+00:07:34.470 --> 00:07:39.220
+it allows one to start from some node and
+walk the graph step by step.
+
+111
+00:07:39.220 --> 00:07:43.280
+To show this,
+consider disease gene graph on the right.
+
+112
+00:07:43.280 --> 00:07:45.050
+Let's call this graph G.
+
+113
+00:07:46.210 --> 00:07:50.407
+So g.V represents all the vertices of G.
+
+114
+00:07:50.407 --> 00:07:55.524
+Therefore g.V has name
+MC4R selects the node that
+
+115
+00:07:55.524 --> 00:08:00.410
+has a property called
+name whose value is MC4R.
+
+116
+00:08:01.900 --> 00:08:06.010
+Let's add to this path the condition .out,
+
+117
+00:08:06.010 --> 00:08:09.640
+which chooses the out
+edges of the MC4R node and
+
+118
+00:08:09.640 --> 00:08:14.050
+then traverses the associatedWith edge
+to the orange node called obesity.
+
+119
+00:08:15.150 --> 00:08:17.250
+For this call, returns the vertex only.
+
+120
+00:08:18.940 --> 00:08:25.780
+Now, adding the path to values
+means gives us obesity.
+
+121
+00:08:25.780 --> 00:08:28.170
+We can also expand differently
+from the obesity node.
+
+122
+00:08:29.480 --> 00:08:33.600
+When we say inV() we refer
+to all nodes that have
+
+123
+00:08:33.600 --> 00:08:36.050
+incoming edges to the current node.
+
+124
+00:08:36.050 --> 00:08:38.400
+In this case, there is only one.
+
+125
+00:08:38.400 --> 00:08:39.000
+The LEPR node.
+
+126
+00:08:40.500 --> 00:08:44.190
+To this, we add the traversal out beam and
+
+127
+00:08:44.190 --> 00:08:48.320
+thus we get back the out going edge from
+the LEPR node highlighted in together.
+
+128
+00:08:49.550 --> 00:08:52.660
+We can also look at the Giraph Gremlin
+near project connection
+
+129
+00:08:52.660 --> 00:08:53.760
+from Tinkerpop's viewpoint.
+
+130
+00:08:55.050 --> 00:08:58.990
+Tinkerpop is trying to create
+a standard language for graph reversal,
+
+131
+00:08:58.990 --> 00:09:03.750
+just like Neo4J is trying to create Open
+Cypher as a standard query language for
+
+132
+00:09:03.750 --> 00:09:04.470
+graph databases.
+
+133
+00:09:05.960 --> 00:09:10.020
+In trying to create the standard,
+Tinkerpop recognizes that the actual
+
+134
+00:09:10.020 --> 00:09:14.019
+storage management for graph databases
+should be provided by another vendor.
+
+135
+00:09:15.050 --> 00:09:17.950
+The vendor needs to implement
+the Gremlin API for access.
+
+136
+00:09:19.310 --> 00:09:24.560
+Similarly for graphic processing,
+including expensive analytic operations
+
+137
+00:09:24.560 --> 00:09:27.460
+should be performed by what
+they call a graph computer.
+
+138
+00:09:28.460 --> 00:09:31.630
+This is the role played by
+Giraph as well as Spark.
+
+139
+00:09:31.630 --> 00:09:33.677
+Both of which interface with Tinkerpop.

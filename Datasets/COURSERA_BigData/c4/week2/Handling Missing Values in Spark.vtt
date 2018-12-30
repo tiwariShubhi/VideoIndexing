@@ -1,0 +1,329 @@
+WEBVTT
+
+1
+00:00:00.910 --> 00:00:05.280
+In this activity we will see how
+to handle missing values in Spark.
+
+2
+00:00:05.280 --> 00:00:08.320
+First, we will load weather
+data into a Spark DataFrame.
+
+3
+00:00:09.560 --> 00:00:14.092
+We'll then examine the summary
+statistics for air temperature, remove
+
+4
+00:00:14.092 --> 00:00:19.072
+the rows with missing values, and finally
+impute missing values with the mean.
+
+5
+00:00:22.037 --> 00:00:23.002
+Let's begin.
+
+6
+00:00:23.002 --> 00:00:27.900
+First, we'll open the notebook
+called handling missing values.
+
+7
+00:00:28.920 --> 00:00:31.910
+The first cell creates an SQLContext and
+
+8
+00:00:31.910 --> 00:00:34.720
+then loads the weather data
+csv into a data frame.
+
+9
+00:00:36.170 --> 00:00:41.060
+Let's execute this,
+we can view the summary statistics for
+
+10
+00:00:41.060 --> 00:00:47.570
+the DataFrame by running
+df.describe().show().
+
+11
+00:00:47.570 --> 00:00:50.238
+Let's just look at the summary
+statistics for the air temperature.
+
+12
+00:00:50.238 --> 00:00:51.913
+We'll run
+
+13
+00:00:51.913 --> 00:01:00.852
+df.describe(['air_score_9am']) .show.
+
+14
+00:01:03.730 --> 00:01:06.590
+This says that there are 1090 rows.
+
+15
+00:01:07.790 --> 00:01:11.490
+This does not include the rows of
+missing values for the air temperature.
+
+16
+00:01:12.630 --> 00:01:17.381
+We can count the total number of rows
+in the DataFrame by running df.count.()
+
+17
+00:01:19.027 --> 00:01:23.026
+Since there are 1095 total
+rows in the DataFrame, but
+
+18
+00:01:23.026 --> 00:01:25.801
+only 1090 in the air_temp column,
+
+19
+00:01:25.801 --> 00:01:30.630
+that means there are five rows in
+air_temp that have missing values.
+
+20
+00:01:32.240 --> 00:01:36.029
+Next, let's remove all the rows in
+the DataFrame that have missing values.
+
+21
+00:01:37.060 --> 00:01:40.220
+We'll put these in a new data
+frame called removeAllDF.
+
+22
+00:01:41.700 --> 00:01:46.476
+To drop the missing values
+we'll run df.na.drop.
+
+23
+00:01:48.971 --> 00:01:50.984
+Let's look at the summary statistics for
+
+24
+00:01:50.984 --> 00:01:54.160
+air_temp 9AM with
+the missing values dropped.
+
+25
+00:01:54.160 --> 00:02:00.384
+We'll run removeAllDF .describe([
+air_temp_9am]) show.()
+
+26
+00:02:03.051 --> 00:02:06.146
+We can see that the mean and
+standard deviation values
+
+27
+00:02:06.146 --> 00:02:10.840
+are close to the original values before
+we removed the rows with missing values.
+
+28
+00:02:12.650 --> 00:02:16.784
+Additionally, the count of
+the number of rows is 1064.
+
+29
+00:02:18.380 --> 00:02:22.768
+We can verify that this is the total
+number of rows in the new DataFrame by
+
+30
+00:02:22.768 --> 00:02:24.758
+running removeAllDF.count.
+
+31
+00:02:29.389 --> 00:02:32.075
+Next, let's impute the missing
+values with the mean,
+
+32
+00:02:32.075 --> 00:02:34.314
+instead of removing them
+from the DataFrame.
+
+33
+00:02:35.920 --> 00:02:39.712
+First, we'll need to load
+the average function from pyspark.
+
+34
+00:02:41.060 --> 00:02:50.030
+We'll do this by running from
+pyspark.sql.functions import avg.
+
+35
+00:02:50.030 --> 00:02:54.689
+Next, we'll create a copy of the DataFrame
+in which we will input the missing values.
+
+36
+00:02:55.910 --> 00:02:58.590
+We'll call the new DataFrame imputeDF.
+
+37
+00:03:02.000 --> 00:03:06.349
+To impute the missing values we'll
+iterate through each column of
+
+38
+00:03:06.349 --> 00:03:11.317
+the original DataFrame, first computing
+the mean value for that column and
+
+39
+00:03:11.317 --> 00:03:15.913
+then replacing the missing values
+in that column with the mean value.
+
+40
+00:03:15.913 --> 00:03:20.145
+To move through the columns
+in the data frame,
+
+41
+00:03:20.145 --> 00:03:24.704
+we'll enter for
+x in imputeDF.columns: next,
+
+42
+00:03:24.704 --> 00:03:29.061
+we'll compute the mean value for
+that column.
+
+43
+00:03:32.105 --> 00:03:36.296
+We'll use the data frame in which
+we removed all the missing values,
+
+44
+00:03:36.296 --> 00:03:39.630
+we'll call the agg function
+to compute an aggregate.
+
+45
+00:03:39.630 --> 00:03:42.900
+And the argument that we give it is avg.
+
+46
+00:03:42.900 --> 00:03:48.830
+The argument avg is x, which is the column
+we are trying to compute the average of.
+
+47
+00:03:50.730 --> 00:03:54.010
+The agg function returns to DataFrame and
+
+48
+00:03:54.010 --> 00:03:57.220
+we want to get the first
+row of that data frame.
+
+49
+00:03:57.220 --> 00:04:02.280
+We can do this by calling .first and
+then you get the first value in
+
+50
+00:04:02.280 --> 00:04:07.420
+this row or say [0].
+
+51
+00:04:07.420 --> 00:04:10.410
+Next let's print the column
+name in mean value.
+
+52
+00:04:11.890 --> 00:04:16.561
+print(x, meanValue)
+
+53
+00:04:19.522 --> 00:04:23.202
+Now let's update our new DataFrame,
+
+54
+00:04:23.202 --> 00:04:28.156
+replacing the missing
+values with the mean value.
+
+55
+00:04:28.156 --> 00:04:37.242
+imputeDF = imputeDF.na.fill(meanValue,
+[x]).
+
+56
+00:04:38.460 --> 00:04:39.135
+Let's run this.
+
+57
+00:04:44.273 --> 00:04:46.344
+We can see that the mean value for
+
+58
+00:04:46.344 --> 00:04:51.260
+air_temp 9am matches the mean value
+computed in the summary statistics of
+
+59
+00:04:51.260 --> 00:04:54.820
+the data frame where the missing
+values were removed.
+
+60
+00:04:56.710 --> 00:05:00.390
+Finally, let's print the imputed
+data summary statistics.
+
+61
+00:05:00.390 --> 00:05:04.450
+First we'll show the summary
+statistics for the original DataFrame.
+
+62
+00:05:04.450 --> 00:05:07.318
+And then the summary statistics for
+the imputed DataFrame.
+
+63
+00:05:07.318 --> 00:05:14.813
+We'll enter df.describe([
+air_temp_ 9am]) .show () and
+
+64
+00:05:14.813 --> 00:05:22.062
+imputeDF.describe(['air_temp_9am']).sho-
+w().
+
+65
+00:05:22.062 --> 00:05:24.997
+Run this.
+
+66
+00:05:24.997 --> 00:05:29.869
+We can see that the number of rows
+in the imputed DataFrame is larger
+
+67
+00:05:29.869 --> 00:05:33.612
+than the number of rows in
+the original DataFrame.
+
+68
+00:05:34.875 --> 00:05:38.500
+There were five rows in the original
+DataFrame with missing values.
+
+69
+00:05:38.500 --> 00:05:40.210
+And these have now been
+replaced with the mean.

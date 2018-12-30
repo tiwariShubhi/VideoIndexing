@@ -1,0 +1,729 @@
+WEBVTT
+
+1
+00:00:02.265 --> 00:00:06.497
+Next, we'll look at a data model
+that has been successfully used to
+
+2
+00:00:06.497 --> 00:00:10.150
+retrieve data from large
+collections of text and images.
+
+3
+00:00:11.170 --> 00:00:12.230
+Let's stay with text for now.
+
+4
+00:00:13.590 --> 00:00:17.490
+Text is often thought of
+as unstructured data.
+
+5
+00:00:17.490 --> 00:00:20.315
+Primarily because it doesn't really
+have attributes and relationships.
+
+6
+00:00:21.530 --> 00:00:25.740
+Instead, it is a sequence of strings
+punctuated by line and parent of breaks.
+
+7
+00:00:27.810 --> 00:00:34.370
+So one is to think of a different
+way to find and analyze text data.
+
+8
+00:00:34.370 --> 00:00:39.130
+In this video, we'll describe that
+finding text from a huge collection of
+
+9
+00:00:39.130 --> 00:00:42.880
+text data is a little different from
+the data modules we have seen so far.
+
+10
+00:00:44.080 --> 00:00:48.710
+To find text,
+we not only need the text data itself, but
+
+11
+00:00:48.710 --> 00:00:53.810
+we need a different structure that
+is computed from the text data.
+
+12
+00:00:53.810 --> 00:00:55.020
+To create the structure,
+
+13
+00:00:55.020 --> 00:01:01.000
+we'll introduce the notion of the document
+vector model which we call a vector model.
+
+14
+00:01:02.760 --> 00:01:05.510
+Further you will see
+that finding a document
+
+15
+00:01:05.510 --> 00:01:08.090
+is not really an exact search problem.
+
+16
+00:01:09.380 --> 00:01:13.090
+Here, we'll give a query document and
+
+17
+00:01:13.090 --> 00:01:17.130
+ask the system to find all
+documents that are similar to it.
+
+18
+00:01:18.440 --> 00:01:20.990
+After this video,
+you'll be able to describe
+
+19
+00:01:20.990 --> 00:01:25.380
+how the similarity is computed and
+how it is used to search documents.
+
+20
+00:01:26.930 --> 00:01:31.770
+Finally, you will see that search engines
+use some form of vector models and
+
+21
+00:01:31.770 --> 00:01:33.850
+similarity search to locate text data.
+
+22
+00:01:35.480 --> 00:01:39.970
+And you will see that the same principle
+can be use for finding similar images.
+
+23
+00:01:42.740 --> 00:01:45.410
+Let us describe the concept
+of a document to an example.
+
+24
+00:01:46.540 --> 00:01:49.170
+So lets consider three types
+of document shown here.
+
+25
+00:01:51.040 --> 00:01:52.470
+Now we'll create a matrix.
+
+26
+00:01:56.040 --> 00:01:57.790
+The rows of the matrix stand for
+
+27
+00:01:57.790 --> 00:02:02.950
+the documents and columns represent
+the words in the documents.
+
+28
+00:02:02.950 --> 00:02:05.770
+We put the number of occurrences
+of returning the document in
+
+29
+00:02:05.770 --> 00:02:07.400
+the appropriate cell of the matrix.
+
+30
+00:02:08.630 --> 00:02:14.380
+In this case, the count of each term
+in each document happens to be one.
+
+31
+00:02:14.380 --> 00:02:16.700
+This is called the term frequency matrix.
+
+32
+00:02:19.340 --> 00:02:22.620
+So now that we have created
+the term frequency matrix,
+
+33
+00:02:22.620 --> 00:02:24.540
+which we call tf for short.
+
+34
+00:02:25.595 --> 00:02:30.350
+We'll create a new vector called the
+inverse document frequency for each term.
+
+35
+00:02:31.810 --> 00:02:34.990
+We'll explain why we need this
+vector on the next slide.
+
+36
+00:02:34.990 --> 00:02:37.160
+First, let's see how it's computed.
+
+37
+00:02:39.280 --> 00:02:43.435
+The number of documents n here is 3.
+
+38
+00:02:43.435 --> 00:02:46.270
+The term new occurs
+twice in the collection.
+
+39
+00:02:47.520 --> 00:02:52.950
+So the inverse document frequency or
+IDF of the term new
+
+40
+00:02:52.950 --> 00:02:57.810
+is log to the base 2,
+n divided by term count.
+
+41
+00:02:57.810 --> 00:03:04.464
+That is, log to the base 2,
+3 divided by 2, which is 0.584.
+
+42
+00:03:05.980 --> 00:03:09.210
+We'll show the ideal score for
+all six terms here.
+
+43
+00:03:10.770 --> 00:03:15.735
+Now some of you may wonder why we use
+log to the base 2 instead of let's
+
+44
+00:03:15.735 --> 00:03:17.540
+say log to the base 10.
+
+45
+00:03:17.540 --> 00:03:20.350
+There is no deep scientific reason for it.
+
+46
+00:03:20.350 --> 00:03:23.970
+It's more of a convention in
+many areas of Computer Science
+
+47
+00:03:23.970 --> 00:03:26.110
+when many important
+numbers are powers of two.
+
+48
+00:03:27.150 --> 00:03:32.153
+In reality,
+log to the base two of x is the same
+
+49
+00:03:32.153 --> 00:03:39.156
+number as log to the base ten of x
+times log to the base two of ten.
+
+50
+00:03:39.156 --> 00:03:44.340
+The second number, that is log to
+the base two of ten is a constant.
+
+51
+00:03:44.340 --> 00:03:50.080
+So the relative score of IDF does not
+change regardless of the base we use.
+
+52
+00:03:50.080 --> 00:03:52.170
+Now let's understand this
+number one more time.
+
+53
+00:03:53.400 --> 00:03:57.829
+The document frequency of a term is
+the count of that term in the whole
+
+54
+00:03:57.829 --> 00:04:01.029
+collection divided by
+the number of documents.
+
+55
+00:04:02.748 --> 00:04:07.168
+Here, we take the inverse of
+the document frequency, so
+
+56
+00:04:07.168 --> 00:04:11.510
+that n, the number of documents,
+is in the numerator.
+
+57
+00:04:13.580 --> 00:04:18.270
+Now before we continue, let's understand
+the intuition behind the IDF vector.
+
+58
+00:04:19.500 --> 00:04:25.210
+Now suppose you have 100
+random newspaper articles and
+
+59
+00:04:25.210 --> 00:04:28.110
+let's say 10 of them cover elections.
+
+60
+00:04:29.210 --> 00:04:33.710
+Which means all the others
+cover all other subjects.
+
+61
+00:04:33.710 --> 00:04:39.730
+Now in this article, let's say we'll find
+the term election 50 times in total.
+
+62
+00:04:41.660 --> 00:04:46.000
+How often do you think you'll find
+the term is as in the verb is?
+
+63
+00:04:47.320 --> 00:04:50.440
+You can imagine that it will
+occur in all hundred of them and
+
+64
+00:04:50.440 --> 00:04:52.160
+that too, multiple times.
+
+65
+00:04:53.370 --> 00:04:57.240
+We can safely assume that
+the number of occurrences of is
+
+66
+00:04:57.240 --> 00:04:59.700
+will be 300 at the very least.
+
+67
+00:05:01.000 --> 00:05:06.940
+Thus the document frequency of is is six
+times the document frequency of election.
+
+68
+00:05:07.940 --> 00:05:10.460
+But that doesn't sound right, does it?
+
+69
+00:05:10.460 --> 00:05:15.030
+Is is such a common word that it's
+prevalence has a negative impact
+
+70
+00:05:15.030 --> 00:05:17.240
+on its informativeness.
+
+71
+00:05:17.240 --> 00:05:21.520
+So, now if you want to
+compute the IDF of is and
+
+72
+00:05:21.520 --> 00:05:24.990
+election, the IDF of is will be far lower.
+
+73
+00:05:26.170 --> 00:05:29.930
+So, IDF acts like a penalty factor for
+
+74
+00:05:29.930 --> 00:05:33.570
+terms which are too widely used
+to be considered informative.
+
+75
+00:05:36.340 --> 00:05:39.890
+Now that we have understood
+that IDF is a penalty factor,
+
+76
+00:05:39.890 --> 00:05:45.800
+we will multiply the tf numbers through
+the IDF numbers giving us this.
+
+77
+00:05:48.610 --> 00:05:53.550
+This is a column-wise multiplication
+of the tf numbers with the IDF
+
+78
+00:05:53.550 --> 00:05:57.677
+numbers giving us what we
+call the tf-idf matrix.
+
+79
+00:05:59.120 --> 00:06:06.070
+Therefore for each document, we have
+a vector represented here as a row.
+
+80
+00:06:06.070 --> 00:06:10.910
+So that row represents the relative
+importance of each term in the vocabulary.
+
+81
+00:06:10.910 --> 00:06:14.370
+Vocabulary means the collection of all
+words that appear in this collection.
+
+82
+00:06:16.160 --> 00:06:20.800
+If the vocabulary has 3 million entries,
+then this vector can get quite long.
+
+83
+00:06:22.150 --> 00:06:26.890
+Also, if the number of document
+grows let's just say to 1 billion,
+
+84
+00:06:26.890 --> 00:06:28.720
+then it becomes a big data problem.
+
+85
+00:06:30.460 --> 00:06:33.660
+Now the last column after
+each document of vector here
+
+86
+00:06:33.660 --> 00:06:35.180
+is the length of the document vector.
+
+87
+00:06:36.300 --> 00:06:41.060
+Which is really the square root of the sum
+of squares of the individual term scores
+
+88
+00:06:41.060 --> 00:06:42.060
+as shown in the formula.
+
+89
+00:06:45.560 --> 00:06:48.170
+To perform a search in the vector space,
+
+90
+00:06:48.170 --> 00:06:52.010
+we write a query just like
+we type terms in Google.
+
+91
+00:06:52.010 --> 00:06:55.170
+Here, the number of terms is three.
+
+92
+00:06:55.170 --> 00:06:57.910
+Out of which the term
+new appears two times.
+
+93
+00:06:59.260 --> 00:07:03.049
+In fact, this is the maximum frequency
+out of all terms in the query.
+
+94
+00:07:04.220 --> 00:07:08.660
+So we take the document vector of
+the query and multiply each term
+
+95
+00:07:08.660 --> 00:07:14.570
+by the number of occurrences divided by
+two which is the maximum term frequency.
+
+96
+00:07:14.570 --> 00:07:18.090
+Now in this case,
+it gives us two non-zero terms.
+
+97
+00:07:18.090 --> 00:07:20.950
+0.584 and
+
+98
+00:07:20.950 --> 00:07:26.460
+0.292 for new and york.
+
+99
+00:07:26.460 --> 00:07:30.726
+Then we compute the length of
+the query vector just like we did for
+
+100
+00:07:30.726 --> 00:07:33.730
+the document vectors
+on the previous slide.
+
+101
+00:07:33.730 --> 00:07:39.443
+Next, we will compute the similarity
+between the query vector and each document
+
+102
+00:07:39.443 --> 00:07:45.170
+with the idea that we'll measure how far
+the query vector is from each document.
+
+103
+00:07:47.730 --> 00:07:53.150
+Now there are many similar functions
+defined and used for different things.
+
+104
+00:07:53.150 --> 00:07:56.940
+A popular similarity measure
+is the cosine function,
+
+105
+00:07:56.940 --> 00:08:03.200
+which measures the cosine function of
+the angle between these two vectors.
+
+106
+00:08:03.200 --> 00:08:07.080
+The mathematical formula for
+computing the function is given here.
+
+107
+00:08:07.080 --> 00:08:11.250
+The intuition is that if
+the vectors are identical,
+
+108
+00:08:11.250 --> 00:08:14.330
+then the angle between them is zero.
+
+109
+00:08:14.330 --> 00:08:16.230
+And therefore,
+the cosine function evaluates to one.
+
+110
+00:08:18.250 --> 00:08:20.910
+As the angle increases,
+
+111
+00:08:20.910 --> 00:08:25.450
+the value of the cosine function
+decreases to make them more dissimilar.
+
+112
+00:08:26.780 --> 00:08:30.694
+The way to compute the function is to
+multiply the corresponding elements of
+
+113
+00:08:30.694 --> 00:08:32.170
+the two vectors.
+
+114
+00:08:32.170 --> 00:08:34.850
+That is the first element
+of one with the first
+
+115
+00:08:34.850 --> 00:08:37.340
+element of the second one and so forth.
+
+116
+00:08:37.340 --> 00:08:38.790
+And then sum of these products.
+
+117
+00:08:39.960 --> 00:08:45.610
+Here, the only contributing
+terms are from new and
+
+118
+00:08:45.610 --> 00:08:49.230
+york because, these are the only two
+non-zero terms in the query vector.
+
+119
+00:08:50.660 --> 00:08:55.630
+This sum is then divided by
+the product of the document length and
+
+120
+00:08:55.630 --> 00:08:58.040
+the query length that we
+have computed earlier.
+
+121
+00:08:59.310 --> 00:09:02.650
+Look at the result of the distance
+function and you will notice that
+
+122
+00:09:02.650 --> 00:09:07.570
+the document 1 is much more similar
+to the query than the other two.
+
+123
+00:09:08.810 --> 00:09:13.640
+So while similarity scoring and document
+ranking process working effectively,
+
+124
+00:09:13.640 --> 00:09:16.100
+the method is a little cotton dry.
+
+125
+00:09:16.100 --> 00:09:19.920
+More often than not users would
+like a little more control
+
+126
+00:09:19.920 --> 00:09:20.910
+over the ranking of terms.
+
+127
+00:09:22.270 --> 00:09:27.450
+One way of accomplishing this is to put
+different weights on each query term.
+
+128
+00:09:27.450 --> 00:09:33.460
+And in this example, the query term
+york has a default weight of one,
+
+129
+00:09:33.460 --> 00:09:36.530
+times has a weight of two.
+
+130
+00:09:36.530 --> 00:09:40.340
+And post has a weight of five
+as specified by the user.
+
+131
+00:09:41.350 --> 00:09:43.662
+So relatively speaking,
+
+132
+00:09:43.662 --> 00:09:49.765
+york has a weight of 1 divided
+by 1 + 5 + 2 is equal to 0.125.
+
+133
+00:09:49.765 --> 00:09:55.630
+Times has a weight of 0.25 and
+post has a weight of 0.625.
+
+134
+00:09:55.630 --> 00:09:59.280
+Now the scoring method we showed
+before will change a bit.
+
+135
+00:09:59.280 --> 00:10:04.091
+The query of vector and its length
+were exactly as computed before.
+
+136
+00:10:04.091 --> 00:10:08.777
+However, now each term in the query
+vector is further multiplied by these
+
+137
+00:10:08.777 --> 00:10:10.810
+relative weights.
+
+138
+00:10:10.810 --> 00:10:14.490
+In our case,
+the term york now has a much higher rate.
+
+139
+00:10:15.500 --> 00:10:21.237
+So as expected, this will change
+the ranking of the documents and
+
+140
+00:10:21.237 --> 00:10:24.900
+new york post will have the highest rank.
+
+141
+00:10:24.900 --> 00:10:30.580
+Now similarity search is often used for
+images using a vector space model.
+
+142
+00:10:30.580 --> 00:10:33.210
+One can compute futures from images.
+
+143
+00:10:33.210 --> 00:10:36.180
+And one common feature
+is a scatter histogram.
+
+144
+00:10:36.180 --> 00:10:38.000
+Consider the image here.
+
+145
+00:10:38.000 --> 00:10:40.820
+One can create the histogram of the red,
+green and
+
+146
+00:10:40.820 --> 00:10:46.170
+blue channels where histogram is the count
+of pixels having a certain density value.
+
+147
+00:10:47.360 --> 00:10:52.600
+This picture is mostly bright, so the
+count of dark pixels is relatively small.
+
+148
+00:10:53.690 --> 00:10:56.746
+Now one can think of
+histograms like a vector.
+
+149
+00:10:56.746 --> 00:11:01.430
+Very often the pixel values will
+be bend before creating a vector.
+
+150
+00:11:01.430 --> 00:11:06.424
+The table shown is a feature vector
+where the numbers for each row have been
+
+151
+00:11:06.424 --> 00:11:10.960
+normalized with the size of the image
+to make the row sum equal to one.
+
+152
+00:11:10.960 --> 00:11:15.320
+Similar vectors can be computed of
+the image texture, shapes of objects and
+
+153
+00:11:15.320 --> 00:11:16.790
+any other properties.
+
+154
+00:11:16.790 --> 00:11:20.700
+Thus making a vector space model
+significant for unstructured data.

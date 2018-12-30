@@ -1,0 +1,1876 @@
+1
+00:00:01,920 --> 00:00:03,770
+there are many ways of looking at scalability 
+
+2
+00:00:04,880 --> 00:00:07,600
+and we will consider them as we go forward in the course 
+
+3
+00:00:08,930 --> 00:00:12,870
+one way is to consider scaling up and scaling out 
+
+4
+00:00:14,360 --> 00:00:18,300
+simply put it is a decision between making a machine
+
+5
+00:00:18,300 --> 00:00:23,264
+that makes a server more powerful versus adding more machines 
+
+6
+00:00:23,264 --> 00:00:27,240
+the first choice will involve adding more memory 
+
+7
+00:00:27,240 --> 00:00:31,020
+replacing processes with process of more course and
+
+8
+00:00:31,020 --> 00:00:35,060
+adding more processes within a system with a very fast internet connection speed 
+
+9
+00:00:36,360 --> 00:00:41,520
+the second choice will involve adding more machines to a relatively slower network 
+
+10
+00:00:42,880 --> 00:00:44,290
+now there are no absolutes here 
+
+11
+00:00:45,560 --> 00:00:49,490
+in many cases we will choose the former to get more performance for
+
+12
+00:00:49,490 --> 00:00:50,740
+large leader systems 
+
+13
+00:00:52,920 --> 00:00:54,760
+the general trend in the big data world 
+
+14
+00:00:54,760 --> 00:00:57,590
+however is to target the scale out option 
+
+15
+00:00:59,330 --> 00:01:01,950
+most big data management systems today
+
+16
+00:01:01,950 --> 00:01:05,140
+are designed to operate over a cluster up machines and
+
+17
+00:01:05,140 --> 00:01:10,490
+have the ability to adjust as more machines are added and when machines fail 
+
+18
+00:01:11,740 --> 00:01:16,060
+cluster management and management of data operations over a cluster
+
+19
+00:01:16,060 --> 00:01:19,930
+is an important component in today big data management systems 
+
+20
+00:01:22,110 --> 00:01:25,990
+now we will briefly touch upon the complex issue of data security 
+
+21
+00:01:27,310 --> 00:01:31,700
+it is obvious that having more sensitive data implies the need for more security 
+
+22
+00:01:32,960 --> 00:01:35,650
+if the data is within the walls of an organization 
+
+23
+00:01:35,650 --> 00:01:38,180
+we will still need a security plan 
+
+24
+00:01:38,180 --> 00:01:41,700
+however if a big data system is deployed in the cloud 
+
+25
+00:01:41,700 --> 00:01:45,900
+over multiple machines security of data becomes an even bigger challenge 
+
+26
+00:01:47,200 --> 00:01:50,800
+so now we need to ensure the security for not only the machines 
+
+27
+00:01:50,800 --> 00:01:54,880
+but also the network which will be heavily used during data transfer
+
+28
+00:01:54,880 --> 00:01:57,610
+across different phases of data operations 
+
+29
+00:01:57,610 --> 00:02:03,200
+for example if the data store and the data analysis are performed over
+
+30
+00:02:03,200 --> 00:02:08,760
+different sets of servers that every analysis operation gets to
+
+31
+00:02:08,760 --> 00:02:13,630
+an additional overhead of encrypting the data as the data gets to the network and
+
+32
+00:02:13,630 --> 00:02:16,030
+decrypting when it gets to the processing server 
+
+33
+00:02:17,190 --> 00:02:19,880
+this effectively increases operational cost 
+
+34
+00:02:21,310 --> 00:02:26,050
+as of today while there are many security products the methods for
+
+35
+00:02:26,050 --> 00:02:31,290
+ensuring security and achieving data processing efficiency at the same time
+
+36
+00:02:31,290 --> 00:02:33,620
+remains a research issue in big data management 
+
+1
+00:02:33,530 --> 00:02:38,150
+now the goal of a storage infrastructure obviously is to store data 
+
+2
+00:02:38,150 --> 00:02:40,330
+there are two storage related issues we consider here 
+
+3
+00:02:42,590 --> 00:02:45,920
+the first is the issue of capacity 
+
+4
+00:02:45,920 --> 00:02:48,110
+how much storage should we allocate 
+
+5
+00:02:48,110 --> 00:02:51,990
+that means what should be the size of the memory how large and
+
+6
+00:02:51,990 --> 00:02:54,280
+how many disk units should we have and so forth 
+
+7
+00:02:55,700 --> 00:02:59,760
+there is also the issue of scalability 
+
+8
+00:02:59,760 --> 00:03:03,150
+should the storage devices be attached directly to the computers
+
+9
+00:03:03,150 --> 00:03:06,690
+to make the direct io fast but less scalable 
+
+10
+00:03:06,690 --> 00:03:09,310
+or should the storage be attached to the network
+
+11
+00:03:10,340 --> 00:03:12,820
+that connect the computers in the cluster 
+
+12
+00:03:12,820 --> 00:03:15,690
+this will make disk access a bit slower but
+
+13
+00:03:15,690 --> 00:03:18,210
+allows one to add more storage to the system easily 
+
+14
+00:03:19,230 --> 00:03:22,060
+now these questions do not have a simple answer 
+
+15
+00:03:22,060 --> 00:03:25,200
+if you are interested you may look up a website given on your reading list 
+
+16
+00:03:26,470 --> 00:03:31,080
+a different class of questions deals with the speed of the iu operation 
+
+17
+00:03:32,090 --> 00:03:36,620
+this question is often addressed with this kind of diagram here called a memory
+
+18
+00:03:36,620 --> 00:03:40,480
+hierarchy or storage hierarchy or sometimes memory storage hierarchy 
+
+19
+00:03:42,270 --> 00:03:46,740
+the top of the pyramid structure shows a part of memory called cache memory 
+
+20
+00:03:47,840 --> 00:03:50,410
+that lives inside the cpu and is very fast 
+
+21
+00:03:50,410 --> 00:03:54,650
+there are different levels of cache called l1 l2 l3 
+
+22
+00:03:54,650 --> 00:04:00,229
+where l3 is the slowest but still faster than what we call memory 
+
+23
+00:04:00,229 --> 00:04:03,110
+shown here in orange near the middle 
+
+24
+00:04:04,400 --> 00:04:06,990
+the figure shows their speed in terms of response times 
+
+25
+00:04:08,070 --> 00:04:11,410
+notice the memory streamed here is 65 nanoseconds per access 
+
+26
+00:04:12,930 --> 00:04:13,892
+in contrast 
+
+27
+00:04:13,892 --> 00:04:19,030
+the speed of the traditional hard disk is of the order of 10 milliseconds 
+
+28
+00:04:20,510 --> 00:04:24,918
+this gap has prompted the design of many data structures and
+
+29
+00:04:24,918 --> 00:04:29,768
+algorithms that use a hard disk but tries to minimize the cost of
+
+30
+00:04:29,768 --> 00:04:34,455
+the io operations between the fast memory and the slower disk 
+
+31
+00:04:34,455 --> 00:04:37,543
+but more recently a newer kind of storage 
+
+32
+00:04:40,329 --> 00:04:42,463
+very similar to the flash drives or
+
+33
+00:04:42,463 --> 00:04:46,738
+usbs that we regularly use have made an entry as a new storage medium 
+
+34
+00:04:46,738 --> 00:04:50,820
+these devices are called ssds or solid state devices 
+
+35
+00:04:50,820 --> 00:04:52,780
+they are much faster than spinning hard disks 
+
+36
+00:04:53,990 --> 00:04:57,795
+an even newer addition is the method called nvme 
+
+37
+00:04:57,795 --> 00:05:00,787
+nvm stands for non - volatile memory 
+
+38
+00:05:00,787 --> 00:05:05,600
+that makes data transfer between ssds and memory much faster 
+
+39
+00:05:06,940 --> 00:05:11,317
+what all this means in a big data system is that now we have the choice of
+
+40
+00:05:11,317 --> 00:05:16,077
+architecting a storage infrastructure by choosing how much of each type of
+
+41
+00:05:16,077 --> 00:05:17,684
+storage we need to have 
+
+42
+00:05:17,684 --> 00:05:22,842
+in my own research with large amounts of data i have found that using ssds
+
+43
+00:05:22,842 --> 00:05:28,597
+speed up all look up operations in data by at least a factor of ten over hard drives 
+
+44
+00:05:28,597 --> 00:05:32,057
+of course the flip side of this is the cost factor 
+
+45
+00:05:32,057 --> 00:05:36,305
+the components become increasingly more expensive as we go from the lower layers
+
+46
+00:05:36,305 --> 00:05:38,187
+of the pyramid to the upper layers 
+
+47
+00:05:38,187 --> 00:05:41,972
+so ultimately it becomes an issue of cost - benefit tradeoff 
+
+1
+00:05:41,025 --> 00:05:46,173
+ sound let us consider a real life application to
+
+2
+00:05:46,173 --> 00:05:52,360
+demonstrate the utility and the challenges of big data 
+
+3
+00:05:52,360 --> 00:05:55,540
+many industries naturally deal with large amounts of data 
+
+4
+00:05:56,540 --> 00:06:00,585
+for our discussion we consider an energy company that provides gas and
+
+5
+00:06:00,585 --> 00:06:03,248
+electricity to its consumers in an urban area 
+
+6
+00:06:05,230 --> 00:06:09,354
+in this news report you can see that commonwealth edison or con ed 
+
+7
+00:06:09,354 --> 00:06:11,829
+the gas and electric provider of new york 
+
+8
+00:06:11,829 --> 00:06:16,440
+decided to place smart meters all through its jurisdictions 
+
+9
+00:06:16,440 --> 00:06:19,000
+that comes to 4 7 million smart meters 
+
+10
+00:06:20,540 --> 00:06:26,150
+now smart meters are smart because aside from measuring energy consumption 
+
+11
+00:06:26,150 --> 00:06:29,730
+they have a two way communication capability between the meter and
+
+12
+00:06:29,730 --> 00:06:32,800
+the central system at the gas and electric company 
+
+13
+00:06:32,800 --> 00:06:37,590
+in other words they generate real time data from the meters to be stored and
+
+14
+00:06:37,590 --> 00:06:39,060
+processed at the central facility 
+
+15
+00:06:40,710 --> 00:06:41,280
+how much data 
+
+16
+00:06:42,610 --> 00:06:44,070
+according to this report 
+
+17
+00:06:44,070 --> 00:06:47,680
+the number of data received at the center is 1 5 billion per day 
+
+18
+00:06:47,680 --> 00:06:54,480
+so the system will not only consume this data but process it and
+
+19
+00:06:55,650 --> 00:07:01,750
+produce output at 15 - minute intervals and sometimes 5 minute intervals 
+
+20
+00:07:01,750 --> 00:07:03,270
+let do the math 
+
+21
+00:07:03,270 --> 00:07:05,650
+that comes to ingesting and processing
+
+22
+00:07:07,620 --> 00:07:11,360
+about 10 5 million data points per 15 minutes 
+
+23
+00:07:13,150 --> 00:07:17,830
+so what kind of computation must take place within these 15 minutes 
+
+24
+00:07:17,830 --> 00:07:22,760
+well one obvious computation is billing where one needs to compute who especially
+
+25
+00:07:22,760 --> 00:07:27,290
+in the commercial sector who actually owns the meter and should be billed 
+
+26
+00:07:28,490 --> 00:07:30,980
+this requires combining the meter data
+
+27
+00:07:30,980 --> 00:07:34,640
+with the data in the customer database maintained by the company 
+
+28
+00:07:34,640 --> 00:07:38,390
+but let just consider computation related to analytics 
+
+29
+00:07:38,390 --> 00:07:42,180
+we can list at least four different kinds of computations 
+
+30
+00:07:43,610 --> 00:07:48,980
+the first is computing the consumption pattern per user not per meter 
+
+31
+00:07:48,980 --> 00:07:53,840
+per user where the output is a histogram of hourly usage 
+
+32
+00:07:53,840 --> 00:07:57,270
+so the x axis of the histogram is hourly intervals and
+
+33
+00:07:57,270 --> 00:08:00,380
+the y - axis is a number of units consumed 
+
+34
+00:08:01,950 --> 00:08:06,310
+this leads to the computed both daily and over larger time periods 
+
+35
+00:08:06,310 --> 00:08:09,560
+to determine the hourly requirements for this consumer 
+
+36
+00:08:11,430 --> 00:08:14,970
+the second computation relates to estimating the effects of
+
+37
+00:08:14,970 --> 00:08:18,160
+outdoor temperature on the electricity consumption of each consumer 
+
+38
+00:08:19,380 --> 00:08:21,890
+for those you who are statistically inclined 
+
+39
+00:08:21,890 --> 00:08:26,860
+this often involves fitting a piece - wise linear progression model to the data 
+
+40
+00:08:29,000 --> 00:08:34,080
+the third task is to extract the daily consumption trends that occur
+
+41
+00:08:34,080 --> 00:08:36,470
+regardless of the outdoor temperature 
+
+42
+00:08:36,470 --> 00:08:40,590
+this is again a statistical computation and may require something like
+
+43
+00:08:40,590 --> 00:08:44,570
+a periodic alter regression algorithm for time series theta 
+
+44
+00:08:44,570 --> 00:08:46,290
+the algorithm is not that important there 
+
+45
+00:08:47,410 --> 00:08:52,360
+what is more important is the ability to make make good prediction has a direct
+
+46
+00:08:52,360 --> 00:08:56,690
+economic impact because the company needs to buy energy from others 
+
+47
+00:08:56,690 --> 00:09:01,280
+for example an under - prediction implies they will end up paying more for
+
+48
+00:09:01,280 --> 00:09:04,940
+buying energy at the last moment to meet the consumer requirements 
+
+49
+00:09:06,870 --> 00:09:11,590
+the fourth task is to find groups of similar consumers based on their usage
+
+50
+00:09:11,590 --> 00:09:15,860
+pattern so that the company can determine how many distinct groups of customers
+
+51
+00:09:15,860 --> 00:09:20,330
+there are and design targeted energy saving campaigns for each group 
+
+52
+00:09:21,370 --> 00:09:26,730
+this requires finding similarities over large number of time series data 
+
+53
+00:09:26,730 --> 00:09:28,140
+which is a complex computation 
+
+54
+00:09:29,430 --> 00:09:33,110
+regardless of the number and complexity of computation required 
+
+55
+00:09:33,110 --> 00:09:38,220
+the company constrained by the fact that it has only 15 minutes to process the data
+
+56
+00:09:38,220 --> 00:09:43,942
+before the next and computation has to be performed 
+
+57
+00:09:43,942 --> 00:09:47,550
+that issue is not just the bigness of the data but
+
+58
+00:09:47,550 --> 00:09:50,610
+the strip and strings of the arrival to output time 
+
+59
+00:09:52,520 --> 00:09:59,150
+the analytics has value only if it can be completed within the life - cycle deadline 
+
+60
+00:09:59,150 --> 00:10:03,220
+so if we were to design a big data system for such a company you would need to
+
+61
+00:10:03,220 --> 00:10:07,730
+understand how much are the computation can be executed in parallel and
+
+62
+00:10:07,730 --> 00:10:12,180
+how many machines with what kind of capability are required to handle the data
+
+63
+00:10:12,180 --> 00:10:16,510
+rate and the number and complexity of the analytical computations needed 
+
+1
+00:10:23,370 --> 00:10:24,820
+hi my name is chad berkley 
+
+2
+00:10:24,820 --> 00:10:29,750
+i am the cto of flightstats and i am here today to talk to you a little bit about
+
+3
+00:10:29,750 --> 00:10:33,740
+our platform and how we acquire and process data 
+
+4
+00:10:33,740 --> 00:10:37,320
+but first of all i would like to start by just kind of introducing the company and
+
+5
+00:10:37,320 --> 00:10:42,540
+telling you a little bit about what we are all about 
+
+6
+00:10:42,540 --> 00:10:46,940
+so flightstats is a data company and
+
+7
+00:10:46,940 --> 00:10:52,340
+we basically are the leading provider of global real - time flight status data 
+
+8
+00:10:52,340 --> 00:10:57,110
+we pull in data from over 500 sources and we aggregate that data back together and
+
+9
+00:10:57,110 --> 00:11:02,140
+we sell it out to our customers which our other businesses as well as consumers 
+
+10
+00:11:03,290 --> 00:11:06,920
+so just to give you a little bit of information about the scope and
+
+11
+00:11:06,920 --> 00:11:08,460
+scale of what we do 
+
+12
+00:11:08,460 --> 00:11:11,210
+like i said we have over 500 sources of data 
+
+13
+00:11:11,210 --> 00:11:16,300
+and on a daily basis we process about 15 million flight events 
+
+14
+00:11:16,300 --> 00:11:20,380
+those that includes landings arrivals departures 
+
+15
+00:11:21,510 --> 00:11:26,600
+any time the status of the flight changes we got some sort of message on that 
+
+16
+00:11:26,600 --> 00:11:31,790
+we process about 260 million aircraft positions per day so we have an extensive
+
+17
+00:11:31,790 --> 00:11:37,980
+network that monitors graph positions for realtime flight tracking applications 
+
+18
+00:11:37,980 --> 00:11:42,020
+and we also handle about one million pnrs or passenger name records 
+
+19
+00:11:42,020 --> 00:11:47,590
+which are the actual data type of an itenerary any time you
+
+20
+00:11:47,590 --> 00:11:52,520
+book travel a pnr is created for you for your travel 
+
+21
+00:11:52,520 --> 00:11:57,770
+and it includes all of the segments like air travel ferries 
+
+22
+00:11:57,770 --> 00:12:02,110
+hotels taxis anyhting that can be scheduled on your trip 
+
+23
+00:12:03,390 --> 00:12:05,650
+and we basically take in all that data and
+
+24
+00:12:05,650 --> 00:12:10,080
+we aggregate it together and we sell it back out 
+
+25
+00:12:10,080 --> 00:12:13,930
+and how most people kind of know us for flightstats com that our
+
+26
+00:12:13,930 --> 00:12:18,260
+consumer site for business where we handle about 2 million daily requests 
+
+27
+00:12:18,260 --> 00:12:20,550
+and we handle about 1 million mobile app requests 
+
+28
+00:12:21,790 --> 00:12:28,710
+that our b to b side we cert out a lot of data by apis and real time data feeds 
+
+29
+00:12:28,710 --> 00:12:32,480
+people make about 15 million api requests to us everyday 
+
+30
+00:12:32,480 --> 00:12:36,180
+and we also send out about one and half million flight and trip notifications 
+
+31
+00:12:36,180 --> 00:12:40,310
+so if you get a push notification to your phone 
+
+32
+00:12:40,310 --> 00:12:42,930
+telling you that your flight is delayed or on time 
+
+33
+00:12:42,930 --> 00:12:45,010
+that possibly has come from us 
+
+34
+00:12:45,010 --> 00:12:50,530
+so a little bit about how the data flows through our company 
+
+35
+00:12:50,530 --> 00:12:53,820
+we bring in all these different types of data and
+
+36
+00:12:53,820 --> 00:12:57,260
+our sources and it flows through our data acquisition team 
+
+37
+00:12:57,260 --> 00:13:03,380
+we have a team whose primary purpose is to pull in all sorts of raw data 
+
+38
+00:13:03,380 --> 00:13:05,520
+a very heterogeneous datasets 
+
+39
+00:13:05,520 --> 00:13:11,150
+and process that into a normalized form 
+
+40
+00:13:11,150 --> 00:13:14,420
+so if you kind of follow the blue arrow in this diagram you can see that it goes
+
+41
+00:13:14,420 --> 00:13:16,840
+through this raw data channel through the data hub 
+
+42
+00:13:16,840 --> 00:13:19,660
+which the data hub is a central component of our system that i will talk
+
+43
+00:13:19,660 --> 00:13:22,000
+a little bit more about in a second 
+
+44
+00:13:22,000 --> 00:13:25,960
+so the blue data the blue line is raw data coming in from the source
+
+45
+00:13:25,960 --> 00:13:28,300
+it goes through our data acquisition system 
+
+46
+00:13:28,300 --> 00:13:32,360
+it turns into that purple line which is a normalized form 
+
+47
+00:13:32,360 --> 00:13:36,640
+it then goes back through our data hub again and into our processing engine 
+
+48
+00:13:36,640 --> 00:13:40,210
+our processing engine is really where most of the business logic happens 
+
+49
+00:13:40,210 --> 00:13:43,210
+the first thing we have to do is we have to match any piece of
+
+50
+00:13:43,210 --> 00:13:46,390
+flight information against a flight that we know about and
+
+51
+00:13:46,390 --> 00:13:49,220
+primarily the way we know about flights is through schedules 
+
+52
+00:13:49,220 --> 00:13:54,560
+so we import schedules on a daily basis from one of our partner
+
+53
+00:13:54,560 --> 00:13:55,510
+schedule providers 
+
+54
+00:13:56,750 --> 00:14:01,065
+that data once it matched is then processed and
+
+55
+00:14:01,065 --> 00:14:05,635
+the processing basically looks at each message and tries to determine if
+
+56
+00:14:05,635 --> 00:14:08,825
+we think that that message needs to be passed on to consumers 
+
+57
+00:14:08,825 --> 00:14:12,940
+so you know it looks at things like have we seen that message before 
+
+58
+00:14:12,940 --> 00:14:14,560
+or is it a duplicate 
+
+59
+00:14:14,560 --> 00:14:16,530
+is it from a data source that we trust 
+
+60
+00:14:17,530 --> 00:14:21,120
+are there other things going on that we need to know about that
+
+61
+00:14:21,120 --> 00:14:24,300
+may impact whether that message is true or not 
+
+62
+00:14:24,300 --> 00:14:27,370
+and once we decide that a message should be passed through 
+
+63
+00:14:27,370 --> 00:14:29,020
+if you follow the green line 
+
+64
+00:14:29,020 --> 00:14:31,860
+it goes into our process data channel on our hub and
+
+65
+00:14:31,860 --> 00:14:34,400
+it then pushed out to a couple different places 
+
+66
+00:14:34,400 --> 00:14:35,080
+so first of all 
+
+67
+00:14:35,080 --> 00:14:39,510
+it goes into our production database which is where all of our real time data lives 
+
+68
+00:14:39,510 --> 00:14:43,750
+that database serves data to our websites 
+
+69
+00:14:43,750 --> 00:14:48,230
+to our mobile apps and a variety of other places 
+
+70
+00:14:48,230 --> 00:14:50,060
+it also goes into our data warehouse which 
+
+71
+00:14:50,060 --> 00:14:53,330
+is where our analytics products use it 
+
+72
+00:14:53,330 --> 00:14:55,670
+i will talk a bit more about that in a minute 
+
+73
+00:14:55,670 --> 00:14:59,910
+and then the stream of data actually goes up to so many of our customers 
+
+74
+00:14:59,910 --> 00:15:01,490
+we do not need a database on our side 
+
+75
+00:15:01,490 --> 00:15:03,650
+they would rather build a database on their side so
+
+76
+00:15:03,650 --> 00:15:07,490
+we actually just stream all of the processed data directly to them 
+
+77
+00:15:07,490 --> 00:15:10,930
+they then host it within their own systems 
+
+78
+00:15:13,600 --> 00:15:20,920
+so a little bit more about the hub the hub is central to how we move data around 
+
+79
+00:15:20,920 --> 00:15:23,960
+it a technology that we developed in - house 
+
+80
+00:15:23,960 --> 00:15:27,125
+and it an object storage based scalable highly available 
+
+81
+00:15:27,125 --> 00:15:31,810
+multi - channel data queuing and eventing system 
+
+82
+00:15:31,810 --> 00:15:37,690
+the object storage part is we use amazon s3 to store this data 
+
+83
+00:15:37,690 --> 00:15:40,310
+so it an object storage system 
+
+84
+00:15:40,310 --> 00:15:42,600
+it scalable we can scale it horizontally or
+
+85
+00:15:42,600 --> 00:15:48,140
+vertically depending on but the what type of data is flowing through it 
+
+86
+00:15:48,140 --> 00:15:49,250
+it highly available meaning 
+
+87
+00:15:49,250 --> 00:15:52,350
+that we have multiple instances of it in different data centers 
+
+88
+00:15:52,350 --> 00:15:55,410
+so if one that goes down we can easily pull another one up or
+
+89
+00:15:55,410 --> 00:15:58,490
+it we are going to cross multiple instances 
+
+90
+00:15:58,490 --> 00:16:00,600
+and then it multi channel 
+
+91
+00:16:00,600 --> 00:16:05,030
+so it got a rest interface and any surface can create
+
+92
+00:16:05,030 --> 00:16:09,760
+a new channel within the system and start posting data to it 
+
+93
+00:16:09,760 --> 00:16:14,260
+that data is then queued based on the time that it comes in and
+
+94
+00:16:14,260 --> 00:16:17,490
+other services can be listening for events on those channels 
+
+95
+00:16:17,490 --> 00:16:21,240
+so as soon as a new piece of data comes into one of those channels 
+
+96
+00:16:21,240 --> 00:16:25,330
+any service that listening on that channel gets an event notification 
+
+97
+00:16:25,330 --> 00:16:28,470
+they that service can then act upon that piece of data 
+
+98
+00:16:28,470 --> 00:16:32,700
+and do whatever processing it may need to do 
+
+99
+00:16:32,700 --> 00:16:37,690
+this project is open source and anybody can download it and use it 
+
+100
+00:16:40,490 --> 00:16:44,230
+so a little bit about some of the data that we collect and aggregate 
+
+101
+00:16:44,230 --> 00:16:49,560
+and flifo is kind of the industry term for flight information 
+
+102
+00:16:49,560 --> 00:16:55,360
+and primarily we look at kind of the five different parts of flight 
+
+103
+00:16:55,360 --> 00:16:59,870
+so we pull in information on gate departure and then that becomes a runway
+
+104
+00:16:59,870 --> 00:17:03,855
+departure basically when the wheels go up that is a runway departure 
+
+105
+00:17:03,855 --> 00:17:10,080
+we do in - flight positional tracking so when your flight is moving along 
+
+106
+00:17:10,080 --> 00:17:14,330
+about once every ten seconds we get notified of its latitude and longitude 
+
+107
+00:17:14,330 --> 00:17:16,530
+and its heading and its speed and
+
+108
+00:17:16,530 --> 00:17:20,790
+its vertical center descent rate and several other variables 
+
+109
+00:17:21,960 --> 00:17:23,230
+then once it lands 
+
+110
+00:17:23,230 --> 00:17:27,300
+as soon as the wheels touch the ground we are notified of a runway arrival and
+
+111
+00:17:27,300 --> 00:17:31,890
+when the door is opened at the gate we have gate arrival information 
+
+112
+00:17:31,890 --> 00:17:37,480
+all five of these data fields come in three different forms 
+
+113
+00:17:37,480 --> 00:17:40,460
+so we have a scheduled scheduled departure and arrival 
+
+114
+00:17:40,460 --> 00:17:45,310
+we have estimated departure and arrival which can come from a variety of sources 
+
+115
+00:17:45,310 --> 00:17:49,710
+either airlines airports positional data et cetera 
+
+116
+00:17:49,710 --> 00:17:54,120
+and then we have actuals so if we have an airport or
+
+117
+00:17:54,120 --> 00:17:58,460
+an airline that sending us data about exactly when the wheels touch down or
+
+118
+00:17:58,460 --> 00:18:02,770
+exactly when that door opens on that aircraft we push that data as well 
+
+119
+00:18:02,770 --> 00:18:07,100
+we also generate some data at flight stops 
+
+120
+00:18:07,100 --> 00:18:12,850
+so special incidents if an aircraft has an issue it in the news 
+
+121
+00:18:12,850 --> 00:18:17,920
+we do flag our content with a message from our support staff 
+
+122
+00:18:17,920 --> 00:18:20,790
+we do some prediction 
+
+123
+00:18:20,790 --> 00:18:24,030
+right now we are just starting to get into that market or we are actually trying to
+
+124
+00:18:24,030 --> 00:18:29,490
+predict 24 hours out whether a flight will be delayed disrupted or on time 
+
+125
+00:18:30,500 --> 00:18:35,550
+we do some synthetic positions so over oceans primarily 
+
+126
+00:18:35,550 --> 00:18:40,310
+we do not get tracking data on aircraft over the oceans 
+
+127
+00:18:40,310 --> 00:18:44,480
+there is currently no satellite - based tracking system for aircraft 
+
+128
+00:18:44,480 --> 00:18:50,010
+so we basically take the last known position a heading a speed 
+
+129
+00:18:50,010 --> 00:18:54,330
+and if we have a flight plan we will use a flight plan to synthesize the positions
+
+130
+00:18:54,330 --> 00:18:58,140
+when we are not getting actual positions over large bodies of water 
+
+131
+00:18:59,320 --> 00:19:03,560
+we also generate notifications so the push alerts 
+
+132
+00:19:03,560 --> 00:19:08,680
+the preflight emails delay notifications those types of things 
+
+133
+00:19:08,680 --> 00:19:12,570
+we create those based on what we see in the data that coming in to us 
+
+134
+00:19:14,970 --> 00:19:18,630
+we store all of our historical data in a data warehouse 
+
+135
+00:19:18,630 --> 00:19:21,860
+so right now we have six years of historical flight data 
+
+136
+00:19:21,860 --> 00:19:24,080
+and that powers our analytics products 
+
+137
+00:19:24,080 --> 00:19:28,570
+so we allow airlines to do competitive analysis and route analysis 
+
+138
+00:19:29,690 --> 00:19:31,320
+routes are very important to airlines 
+
+139
+00:19:31,320 --> 00:19:33,220
+that how they compete with each other and
+
+140
+00:19:33,220 --> 00:19:38,800
+that primarily how they are judged by the faa and
+
+141
+00:19:38,800 --> 00:19:43,429
+other governmental organizations on whether they are on - time or not 
+
+142
+00:19:43,429 --> 00:19:48,070
+we also do airport operations analysis things like taxi in and taxi out times 
+
+143
+00:19:48,070 --> 00:19:51,910
+very important for lots of airports runway utilization 
+
+144
+00:19:51,910 --> 00:19:56,230
+hourly passenger flows through airports that type of information 
+
+145
+00:19:56,230 --> 00:19:58,830
+and we do on - time performance metrics so 
+
+146
+00:19:58,830 --> 00:20:01,290
+airlines can look at how they are doing 
+
+147
+00:20:01,290 --> 00:20:03,020
+how many flights did they complete 
+
+148
+00:20:03,020 --> 00:20:05,870
+how many flights were on time within 14 minutes 
+
+149
+00:20:07,640 --> 00:20:10,630
+and they can compare themselves to their competitors 
+
+150
+00:20:12,890 --> 00:20:17,310
+so we host all of this in a hybrid cloud architecture 
+
+151
+00:20:17,310 --> 00:20:21,560
+hybrid cloud basically means that we have our own private datacenter resources and
+
+152
+00:20:21,560 --> 00:20:26,120
+we also host resources in the amazon web services cloud 
+
+153
+00:20:27,870 --> 00:20:31,680
+most of our core data processing and service layer is in our private data
+
+154
+00:20:31,680 --> 00:20:35,250
+center and we are getting ready to spin up a second private data center as well 
+
+155
+00:20:35,250 --> 00:20:40,270
+right now our main data center is in portland oregon and we are going to spin
+
+156
+00:20:40,270 --> 00:20:45,499
+another one up on the east coast of the united states probably in q2 or q3 
+
+157
+00:20:47,210 --> 00:20:51,050
+for our api we try to keep those close to our customers so
+
+158
+00:20:51,050 --> 00:20:54,810
+api end points and web end points live in amazon 
+
+159
+00:20:54,810 --> 00:21:00,170
+and they are automatically routed to whichever end point is closest to you 
+
+160
+00:21:00,170 --> 00:21:01,640
+you will automatically be routed to them 
+
+161
+00:21:02,720 --> 00:21:06,700
+all of our private infrastructure is virtualized with vmware 
+
+162
+00:21:06,700 --> 00:21:10,560
+we pretty much have a fully virtualized environment 
+
+163
+00:21:13,530 --> 00:21:20,870
+and we are an agile shop so we have six small fast teams 
+
+164
+00:21:20,870 --> 00:21:25,300
+those are product centric teams we allow them to be as customer interactive
+
+165
+00:21:25,300 --> 00:21:28,610
+as they need to be and we try to make our teams semi autonomous 
+
+166
+00:21:28,610 --> 00:21:32,300
+so teams get to choose their own tools they get to choose their
+
+167
+00:21:32,300 --> 00:21:37,340
+own development methodologies they choose a variety of things 
+
+168
+00:21:37,340 --> 00:21:40,020
+and we physically allow them
+
+169
+00:21:40,020 --> 00:21:42,770
+to do what they need to do to get their job done as quickly as possible 
+
+170
+00:21:44,030 --> 00:21:46,010
+we try to automate everything 
+
+171
+00:21:46,010 --> 00:21:49,120
+you do something once manually and then the next time you write a script or
+
+172
+00:21:49,120 --> 00:21:50,480
+program to do it 
+
+173
+00:21:50,480 --> 00:21:51,700
+and we also measure everything 
+
+174
+00:21:51,700 --> 00:21:55,190
+right now we are taking in about 2 5 billion metrics per month off
+
+175
+00:21:55,190 --> 00:21:56,480
+of our systems 
+
+176
+00:21:56,480 --> 00:22:00,680
+and we use those metrics to monitor our application performance 
+
+177
+00:22:00,680 --> 00:22:04,890
+to monitor revenue to monitor pretty much everything we do in the company 
+
+178
+00:22:04,890 --> 00:22:07,390
+we really try to enable total system awareness 
+
+179
+00:22:07,390 --> 00:22:12,200
+everything from the hardware layer up to the website is monitored 
+
+180
+00:22:13,240 --> 00:22:17,190
+and we use industry best practices and tools and of course we try to recruit and
+
+181
+00:22:17,190 --> 00:22:21,740
+hire the best talent possible a little bit about our software stock 
+
+182
+00:22:21,740 --> 00:22:23,140
+we are primarily a java shop 
+
+183
+00:22:24,220 --> 00:22:27,830
+our core processing services are all written in java 
+
+184
+00:22:27,830 --> 00:22:31,870
+we do use node js in our microservice edge layer 
+
+185
+00:22:31,870 --> 00:22:36,090
+and node js is actually starting to move more down into the processing service
+
+186
+00:22:36,090 --> 00:22:37,750
+layer as well 
+
+187
+00:22:37,750 --> 00:22:39,760
+we use many different types of data bases 
+
+188
+00:22:39,760 --> 00:22:43,220
+our primary realtime database is post press 
+
+189
+00:22:43,220 --> 00:22:47,140
+and we use mongo for the backend of our api services 
+
+190
+00:22:48,280 --> 00:22:52,940
+on the website we are all html5 and we are moving to react and redux and
+
+191
+00:22:52,940 --> 00:22:57,750
+we are making use of elasticsearch for quick searching and indexing on our data 
+
+192
+00:22:57,750 --> 00:23:01,750
+and of course we have ios and android mobile applications 
+
+193
+00:23:01,750 --> 00:23:07,610
+so you can find out more about flightstats on our website 
+
+194
+00:23:07,610 --> 00:23:09,950
+if you need data for your applications 
+
+195
+00:23:09,950 --> 00:23:13,860
+please go to the developer center at developer flightstats com 
+
+196
+00:23:13,860 --> 00:23:16,790
+you can sign up for a free test account and
+
+197
+00:23:16,790 --> 00:23:19,980
+be able to pull data directly off of our apis 
+
+198
+00:23:19,980 --> 00:23:22,660
+if you are interested in the hub like i said that open source 
+
+199
+00:23:22,660 --> 00:23:26,540
+please check out the git hub page and if you have any additional questions 
+
+200
+00:23:26,540 --> 00:23:30,270
+feel free to contact myself john berkeley and
+
+201
+00:23:30,270 --> 00:23:34,360
+i would be happy to answer any of your questions via email 
+
+202
+00:23:34,360 --> 00:23:36,690
+thanks for listening today and hope you have a great day 
+
+203
+00:23:36,690 --> 00:23:37,190
+bye 
+
+1
+00:23:47,512 --> 00:23:51,240
+different data sources in the game industry include using your finger 
+
+2
+00:23:51,240 --> 00:23:53,408
+what type of device is coming from 
+
+3
+00:23:53,408 --> 00:23:55,600
+the amount of headsets 
+
+4
+00:23:55,600 --> 00:23:56,953
+it pretty much infinite 
+
+5
+00:23:56,953 --> 00:23:59,720
+as far as the number of ways we can bring data in from the game 
+
+6
+00:23:59,720 --> 00:24:04,602
+and it could be joystick or mouse keyboards there lots of ways
+
+7
+00:24:04,602 --> 00:24:08,726
+as well as what happens inside the game itself as far cars or
+
+8
+00:24:08,726 --> 00:24:12,537
+the driving tires flying machines anything 
+
+9
+00:24:19,179 --> 00:24:22,479
+the volume of data it really depends on the type of game and
+
+10
+00:24:22,479 --> 00:24:24,592
+how often they want to send the data in 
+
+11
+00:24:24,592 --> 00:24:28,260
+how many types of events they have tagged and how many users are playing the game 
+
+12
+00:24:28,260 --> 00:24:31,891
+so if you have a user you have 5 million users that are playing your game and
+
+13
+00:24:31,891 --> 00:24:34,844
+you are tapping and you are tracking each tap of the screen 
+
+14
+00:24:34,844 --> 00:24:37,963
+of where they went or each click of the mouse as they were using it 
+
+15
+00:24:37,963 --> 00:24:39,982
+you are going to get a lot of volume of data 
+
+16
+00:24:39,982 --> 00:24:44,854
+and so you need to be prepared to bring in a lot
+
+17
+00:24:44,854 --> 00:24:50,140
+of different data very very quickly 
+
+18
+00:24:50,140 --> 00:24:53,322
+as far as the variety of data it depends 
+
+19
+00:24:53,322 --> 00:24:55,520
+you have round pizzas and you have round tires 
+
+20
+00:24:55,520 --> 00:24:56,513
+i mean they are completely different 
+
+21
+00:24:56,513 --> 00:25:00,816
+they are both round but there different ways that you are going to want to know how
+
+22
+00:25:00,816 --> 00:25:04,104
+many pepperoni are on one pizza and how many lug nuts go on a tire 
+
+23
+00:25:04,104 --> 00:25:06,510
+so the variety is really unlimited as well 
+
+24
+00:25:06,510 --> 00:25:08,122
+it really just depends on each game 
+
+25
+00:25:08,122 --> 00:25:11,430
+so you have to be prepared to bring in all kinds of data 
+
+26
+00:25:11,430 --> 00:25:15,851
+touch data wheel data track speeds anything 
+
+27
+00:25:15,851 --> 00:25:20,628
+and if you put taxonomy together that you can define as an example of verb 
+
+28
+00:25:20,628 --> 00:25:26,021
+object location value and any number of other sources then you can basically
+
+29
+00:25:26,021 --> 00:25:31,290
+track anything you want as long as they all fall into the same kind of buckets 
+
+30
+00:25:31,290 --> 00:25:33,705
+and the buckets can be different sizes based on the type of events 
+
+31
+00:25:33,705 --> 00:25:36,804
+they do not all need to be 4 some can be 2 some can be 20 
+
+32
+00:25:36,804 --> 00:25:38,218
+it does not really matter 
+
+33
+00:25:45,280 --> 00:25:49,384
+the modeling challenge has really come down to who designs the structure at which
+
+34
+00:25:49,384 --> 00:25:52,355
+you store your data and how you want to retrieve that data 
+
+35
+00:25:52,355 --> 00:25:56,488
+those kind of of storage and retrieval models are very very important 
+
+36
+00:25:56,488 --> 00:25:59,098
+because what it really comes down to is speed 
+
+37
+00:25:59,098 --> 00:26:02,119
+you can record a lot of data and it can take you five years to query it 
+
+38
+00:26:02,119 --> 00:26:03,710
+it does not really do you any good 
+
+39
+00:26:03,710 --> 00:26:08,347
+so you need to make sure you plan for reporting speed because that ultimately
+
+40
+00:26:08,347 --> 00:26:12,865
+what within the organisation needs is the ability to report on it very quickly 
+
+41
+00:26:12,865 --> 00:26:17,781
+the management challenges really come down to trying to figure out what data to
+
+42
+00:26:17,781 --> 00:26:18,306
+store 
+
+43
+00:26:18,306 --> 00:26:21,657
+a lot of times we go into various companies and you have got producers sitting
+
+44
+00:26:21,657 --> 00:26:24,810
+across the hall from designers and they do not even know each other 
+
+45
+00:26:24,810 --> 00:26:27,823
+they do not realize what they want and the programmer says 
+
+46
+00:26:27,823 --> 00:26:31,606
+i am going to put these events in and the product manager who wants to figure out
+
+47
+00:26:31,606 --> 00:26:35,118
+how many times somebody crashed says well i need these events in 
+
+48
+00:26:35,118 --> 00:26:39,436
+so unless they are communicating you are going to get the wrong type of data 
+
+49
+00:26:39,436 --> 00:26:43,241
+so the management challenge is trying to make sure everybody communicates 
+
+50
+00:26:43,241 --> 00:26:45,639
+they decide on the taxonomy and the structure and
+
+51
+00:26:45,639 --> 00:26:49,350
+then we can go forward with tagging and getting in the entire game working 
+
+52
+00:26:55,226 --> 00:26:57,469
+we process stayed in two main ways 
+
+53
+00:26:57,469 --> 00:26:59,107
+one is streaming data 
+
+54
+00:26:59,107 --> 00:27:01,667
+one is batched or scheduled data 
+
+55
+00:27:01,667 --> 00:27:05,653
+streaming data has scripts that run instantly the minute the data arrives 
+
+56
+00:27:05,653 --> 00:27:08,222
+and so as the data come in it gets processed and
+
+57
+00:27:08,222 --> 00:27:10,160
+then stored in a reporting format 
+
+58
+00:27:10,160 --> 00:27:16,347
+so they can easily generate reports up to the second very very quickly 
+
+59
+00:27:16,347 --> 00:27:19,671
+batch processing data really depends on the type of data where it coming from 
+
+60
+00:27:19,671 --> 00:27:23,689
+most of the time when we download data from itunes or youtube or
+
+61
+00:27:23,689 --> 00:27:27,885
+something like that it comes in a csv or a very similar format 
+
+62
+00:27:27,885 --> 00:27:30,038
+there not really a lot of processing we need to do 
+
+63
+00:27:30,038 --> 00:27:32,451
+it more of ingesting that data 
+
+64
+00:27:32,451 --> 00:27:36,788
+there are processes we need to run with some type of batch data but
+
+65
+00:27:36,788 --> 00:27:40,040
+most of the batch data we receive comes in as a csv or
+
+66
+00:27:40,040 --> 00:27:42,914
+other similar already processed formats 
+
+67
+00:27:42,914 --> 00:27:47,228
+so typically while you can do processing in both modes most processing typically
+
+68
+00:27:47,228 --> 00:27:51,497
+happens with the streaming real - time data than it does with offline batch data 
+
+69
+00:27:57,394 --> 00:28:03,260
+we actually did not use any technology in the a big data space 
+
+70
+00:28:03,260 --> 00:28:05,684
+we created our own from scratch 
+
+71
+00:28:05,684 --> 00:28:09,280
+what we did was we decided what kind of model we wanted 
+
+72
+00:28:09,280 --> 00:28:10,475
+how we were going to store data 
+
+73
+00:28:10,475 --> 00:28:12,112
+how we were going to retrieve data 
+
+74
+00:28:12,112 --> 00:28:14,574
+and ultimately how we were going to reduce the data 
+
+75
+00:28:14,574 --> 00:28:17,772
+because the more and more and more data you have the slower it is to actually do
+
+76
+00:28:17,772 --> 00:28:20,692
+a query because you have to look through all the different pieces of data 
+
+77
+00:28:20,692 --> 00:28:24,148
+a lot of databases solve this problem for you but they were really doing it in more
+
+78
+00:28:24,148 --> 00:28:27,170
+generic way were we needed something very specific 
+
+79
+00:28:27,170 --> 00:28:32,020
+so we started from scratch building our own data storage and retrieval and
+
+80
+00:28:32,020 --> 00:28:34,003
+reporting from the ground up 
+
+81
+00:28:34,003 --> 00:28:38,097
+when it came to scalability it was really about designing the parts of
+
+82
+00:28:38,097 --> 00:28:40,906
+the system that could be independently scaled 
+
+83
+00:28:40,906 --> 00:28:44,773
+so if data coming in in real - time we send that into what we call a gateway 
+
+84
+00:28:44,773 --> 00:28:47,155
+and the gateway could be three gateways let say 
+
+85
+00:28:47,155 --> 00:28:48,922
+but if the data starts getting over loaded 
+
+86
+00:28:48,922 --> 00:28:50,362
+i just have to add another gateway 
+
+87
+00:28:50,362 --> 00:28:53,383
+and a gateway is just this little light layer that just receives data 
+
+88
+00:28:53,383 --> 00:28:56,605
+passes it on and goes back to it job does not do anything else 
+
+89
+00:28:56,605 --> 00:28:59,296
+so it can receive a lot of data very quickly but
+
+90
+00:28:59,296 --> 00:29:01,124
+also i can just add another one 
+
+91
+00:29:01,124 --> 00:29:04,309
+and it just automatically logs in and adds itself to a list and
+
+92
+00:29:04,309 --> 00:29:07,813
+now the data is being distributed amongst four gateways instead 
+
+93
+00:29:07,813 --> 00:29:09,043
+query engine is the same way 
+
+94
+00:29:09,043 --> 00:29:11,720
+when you are doing queries to try to get data out of the system so
+
+95
+00:29:11,720 --> 00:29:12,704
+you can build reports 
+
+96
+00:29:12,704 --> 00:29:16,151
+if i need more query engines because people are doing more reporting 
+
+97
+00:29:16,151 --> 00:29:17,733
+we can add more query engines 
+
+98
+00:29:17,733 --> 00:29:21,722
+so the idea behind scalability is trying to break the services up into
+
+99
+00:29:21,722 --> 00:29:24,390
+the type of services that they most make sense 
+
+100
+00:29:24,390 --> 00:29:25,466
+so that if you need to 
+
+101
+00:29:25,466 --> 00:29:28,820
+you can add just the service without rebuilding the entire platform 
+
+102
+00:29:35,367 --> 00:29:38,825
+my advice for people designing systems for big data is to first 
+
+103
+00:29:38,825 --> 00:29:41,398
+try to understand what you want to accomplish 
+
+104
+00:29:41,398 --> 00:29:42,763
+what is the goal 
+
+105
+00:29:42,763 --> 00:29:45,695
+i mean we are going to ingest everything and we are going to report on everything 
+
+106
+00:29:45,695 --> 00:29:52,518
+it not really something that you can achieve without some special thought 
+
+107
+00:29:52,518 --> 00:29:55,790
+if you are going to focus on your area going to be say gardening 
+
+108
+00:29:55,790 --> 00:29:59,419
+then look at what kind of things you are going to do in the gardening area and
+
+109
+00:29:59,419 --> 00:30:01,880
+try to focus on what that type of data is going to be 
+
+110
+00:30:01,880 --> 00:30:04,722
+this is not going to restrict you to only being a gardener but
+
+111
+00:30:04,722 --> 00:30:07,507
+it is going to give you focus on how to design your system so
+
+112
+00:30:07,507 --> 00:30:09,701
+that they are actually going to work for you 
+
+113
+00:30:09,701 --> 00:30:13,912
+you are going to continually evolve your systems add more things to them and
+
+114
+00:30:13,912 --> 00:30:14,580
+grow them 
+
+115
+00:30:14,580 --> 00:30:17,804
+i would not suggest starting with an unlimited variety of options and
+
+116
+00:30:17,804 --> 00:30:19,944
+hoping you are going to solve all the problems 
+
+117
+00:30:19,944 --> 00:30:26,185
+start with the goal of what your current solution is and expand from there 
+
+118
+00:30:32,600 --> 00:30:35,971
+data can be fun but it can also be overwhelming 
+
+119
+00:30:35,971 --> 00:30:41,051
+so try to keep the data in mind without keeping the world in mind and
+
+120
+00:30:41,051 --> 00:30:43,291
+i think you will be just fine 
+

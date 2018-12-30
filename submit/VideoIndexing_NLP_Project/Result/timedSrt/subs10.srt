@@ -1,0 +1,916 @@
+1
+00:00:02,028 --> 00:00:04,748
+yarn the resource manager for hadoop 
+
+2
+00:00:21,825 --> 00:00:27,260
+yarn is a resource manage layer that sits just above the storage layer hdfs 
+
+3
+00:00:28,510 --> 00:00:33,210
+yarn interacts with applications and schedules resources for their use 
+
+4
+00:00:34,390 --> 00:00:39,390
+yarn enables running multiple applications over hdfc increases
+
+5
+00:00:39,390 --> 00:00:44,160
+resource efficiency and let you go beyond the map reduce or
+
+6
+00:00:44,160 --> 00:00:46,720
+even beyond the data parallel programming model 
+
+7
+00:00:48,910 --> 00:00:52,630
+when hadoop was first created this was not the case 
+
+8
+00:00:52,630 --> 00:00:57,560
+in fact the original hadoop stack had no resource manager 
+
+9
+00:00:57,560 --> 00:01:02,480
+these two stacked diagrams show some of it evolution over the last ten years 
+
+10
+00:01:03,980 --> 00:01:07,580
+one of the biggest limitations of hadoop one point zero 
+
+11
+00:01:07,580 --> 00:01:11,318
+was it inability to support non - mapreduce applications 
+
+12
+00:01:11,318 --> 00:01:15,200
+it had several terrible resource utilization 
+
+13
+00:01:15,200 --> 00:01:19,770
+this meant that for advanced applications such as graph analysis that
+
+14
+00:01:19,770 --> 00:01:22,020
+required different ways of modelling and
+
+15
+00:01:22,020 --> 00:01:26,950
+looking at data you would need to move your data to another platform 
+
+16
+00:01:26,950 --> 00:01:29,310
+that a lot of work if your data is big 
+
+17
+00:01:31,540 --> 00:01:36,510
+adding yarn in between hdfs and the applications enabled
+
+18
+00:01:36,510 --> 00:01:41,510
+new systems to be built focusing on different types of big data applications
+
+19
+00:01:41,510 --> 00:01:46,280
+such as giraph for graph data analysis storm for
+
+20
+00:01:46,280 --> 00:01:50,190
+streaming data analysis and spark for in - memory analysis 
+
+21
+00:01:51,360 --> 00:01:55,150
+yarn does so by providing a standard framework
+
+22
+00:01:55,150 --> 00:01:59,530
+that supports customized application development in the hadoop ecosystem 
+
+23
+00:02:00,990 --> 00:02:04,850
+yarn lets you extract maximum benefits from your data sets
+
+24
+00:02:04,850 --> 00:02:09,320
+by letting you use the tools you think are best for your big data 
+
+25
+00:02:10,860 --> 00:02:14,810
+let take a peek into the architecture of yarn without getting too technical 
+
+26
+00:02:16,430 --> 00:02:21,620
+in this picture notice the resource manager in the center and
+
+27
+00:02:21,620 --> 00:02:25,810
+the node managers on each of the three nodes on the right 
+
+28
+00:02:27,910 --> 00:02:32,450
+the resource manager controls all the resources and decides who gets what 
+
+29
+00:02:34,290 --> 00:02:39,580
+node manager operates at machine level and is in charge of a single machine 
+
+30
+00:02:41,490 --> 00:02:44,180
+together the resource manager and
+
+31
+00:02:44,180 --> 00:02:47,240
+the node manager form the data computation framework 
+
+32
+00:02:48,410 --> 00:02:51,530
+each application gets an application master 
+
+33
+00:02:52,560 --> 00:02:56,190
+it negotiates resource from the resource manager and
+
+34
+00:02:56,190 --> 00:02:59,640
+it talks to node manager to get its tasks completed 
+
+35
+00:03:01,820 --> 00:03:06,900
+notice the ovals labeled container the container
+
+36
+00:03:06,900 --> 00:03:12,240
+is an abstract notions that signifies a resource that is
+
+37
+00:03:12,240 --> 00:03:16,760
+a collection of cpu memory disk network and
+
+38
+00:03:16,760 --> 00:03:21,680
+other resources within the compute note to simplify and
+
+39
+00:03:21,680 --> 00:03:26,020
+be less precise you can think of a container and the machine 
+
+40
+00:03:27,440 --> 00:03:30,460
+we looked at the essential gears of the yarn
+
+41
+00:03:30,460 --> 00:03:34,880
+engine to give you an idea of the key components of yarn 
+
+42
+00:03:34,880 --> 00:03:38,580
+now when you hear terms like resource manager node manager and
+
+43
+00:03:38,580 --> 00:03:43,670
+container you will have an understanding of what tasks they are responsible for 
+
+44
+00:03:46,150 --> 00:03:52,400
+here is a real life example to show the strength hadoop 2 0 over 1 0 
+
+45
+00:03:52,400 --> 00:03:55,940
+yahoo was able to run almost
+
+46
+00:03:55,940 --> 00:03:59,910
+twice as many jobs per day with yarn than with hadoop 1 0 
+
+47
+00:03:59,910 --> 00:04:07,100
+they also experienced a substantial increase in cpu utilization 
+
+48
+00:04:07,100 --> 00:04:08,130
+yahoo ! 
+
+49
+00:04:08,130 --> 00:04:11,710
+even claimed that upgrading to yarn was equal into
+
+50
+00:04:11,710 --> 00:04:15,850
+adding 1000 machines to their 2500 machine cluster 
+
+51
+00:04:15,850 --> 00:04:16,480
+that big 
+
+52
+00:04:18,450 --> 00:04:22,790
+yarn success is evident from an explosive growth of
+
+53
+00:04:22,790 --> 00:04:25,940
+different application that the hadoop ecosystem now has 
+
+54
+00:04:27,330 --> 00:04:28,660
+new to yarn 
+
+55
+00:04:28,660 --> 00:04:32,750
+you can use the tool of your choice over your big data without any hassle 
+
+56
+00:04:33,920 --> 00:04:39,170
+compare this with hadoop 1 0 which was limited to mapreduce alone 
+
+57
+00:04:41,260 --> 00:04:45,630
+let review a summary of the key take - aways about yarn 
+
+58
+00:04:45,630 --> 00:04:50,540
+yarn gives you many ways for applications to extract value from data 
+
+59
+00:04:51,720 --> 00:04:56,490
+it lets you run many distributed applications over the same hadoop cluster 
+
+60
+00:04:57,860 --> 00:05:02,630
+in addition yarn reduces the need to move data around and
+
+61
+00:05:02,630 --> 00:05:07,110
+supports higher resource utilization resulting in lower costs 
+
+62
+00:05:08,690 --> 00:05:13,310
+it a scalable platform that has enabled growth of several applications
+
+63
+00:05:13,310 --> 00:05:17,490
+over the hdfs enriching the hadoop ecosystem 
+
+1
+00:05:17,880 --> 00:05:23,100
+at this point you hopefully have a good general idea of what big data means and
+
+2
+00:05:23,100 --> 00:05:24,380
+why big data is important 
+
+3
+00:05:25,590 --> 00:05:28,190
+so now we need to focus on what to do
+
+4
+00:05:28,190 --> 00:05:30,090
+when we have an application that uses big data 
+
+5
+00:05:31,980 --> 00:05:35,780
+in this video we focus on the problem of managing big data 
+
+6
+00:05:36,780 --> 00:05:37,970
+so at the end of the video 
+
+7
+00:05:37,970 --> 00:05:42,390
+you should be able to describe what data management means in general and then
+
+8
+00:05:42,390 --> 00:05:46,180
+specifically recognize the issues that are involved in the management of big data 
+
+9
+00:05:48,760 --> 00:05:51,620
+first let see what data management means in general 
+
+10
+00:05:52,910 --> 00:05:56,120
+instead of giving you definitions of data management 
+
+11
+00:05:56,120 --> 00:05:58,760
+let think of some questions that must be asked and
+
+12
+00:05:58,760 --> 00:06:01,880
+answered well if you are to manage a reasonable amount of data 
+
+13
+00:06:03,250 --> 00:06:06,350
+now we can not possibly cover all questions one should ask for
+
+14
+00:06:06,350 --> 00:06:11,020
+a data - centric application but here are some important ones which range from how
+
+15
+00:06:11,020 --> 00:06:16,290
+we get the data to how we work with it to how we secure it from malicious users 
+
+16
+00:06:17,300 --> 00:06:19,386
+we will visit these issues one at a time 
+
+1
+00:06:20,280 --> 00:06:22,990
+ingestion means the process of getting the data
+
+2
+00:06:22,990 --> 00:06:26,040
+into the data system that we are building or using 
+
+3
+00:06:26,040 --> 00:06:29,440
+now you might think why is it worth talking about 
+
+4
+00:06:30,600 --> 00:06:33,560
+we will just read the data from somewhere like a file 
+
+5
+00:06:33,560 --> 00:06:36,320
+and then using some command place it into the data system 
+
+6
+00:06:37,550 --> 00:06:41,180
+or we will have have some kind of a web form or
+
+7
+00:06:41,180 --> 00:06:44,870
+other visual interface and just fill it in so that the data goes into the system 
+
+8
+00:06:46,500 --> 00:06:50,180
+both of these ways of data ingestion are valid 
+
+9
+00:06:50,180 --> 00:06:51,650
+in fact they are valid for
+
+10
+00:06:51,650 --> 00:06:54,420
+some big data systems like your airline reservation system 
+
+11
+00:06:55,470 --> 00:06:58,850
+however when you think of a large scale system
+
+12
+00:06:58,850 --> 00:07:02,990
+you wold like to have more automation in the data ingestion processes 
+
+13
+00:07:02,990 --> 00:07:07,060
+and data ingestion then becomes a part of the big data management infrastructure 
+
+14
+00:07:08,200 --> 00:07:12,920
+so here are some questions you might want to ask when you automate data ingestion 
+
+15
+00:07:14,140 --> 00:07:15,830
+now take a minute to read the questions 
+
+16
+00:07:18,140 --> 00:07:22,350
+we will look at two examples to explore them in greater detail 
+
+17
+00:07:23,660 --> 00:07:27,380
+the first example is that of a hospital information system that we discussed in
+
+18
+00:07:27,380 --> 00:07:30,600
+course one in the context of precision medicine 
+
+19
+00:07:30,600 --> 00:07:34,650
+we said that hospitals collect terabytes of medical record
+
+20
+00:07:34,650 --> 00:07:37,780
+from different departments and be considered big data systems 
+
+21
+00:07:39,450 --> 00:07:43,630
+the second example is a cloud based data store where many people upload their
+
+22
+00:07:43,630 --> 00:07:48,030
+messages chats pictures videos music and so fourth 
+
+23
+00:07:48,030 --> 00:07:52,100
+the cloud storage also supports active communication between the members and
+
+24
+00:07:52,100 --> 00:07:53,920
+store their communication in real time 
+
+25
+00:07:55,650 --> 00:08:00,060
+so let think of a hypothetical hospital information information and
+
+26
+00:08:00,060 --> 00:08:02,970
+the answer to depressions that we are putting there 
+
+27
+00:08:02,970 --> 00:08:04,750
+now do not take the numbers to be very accurate 
+
+28
+00:08:04,750 --> 00:08:05,630
+they are just examples 
+
+29
+00:08:06,630 --> 00:08:09,330
+but it illustrates some important points 
+
+30
+00:08:09,330 --> 00:08:15,260
+one note that there are two kinds of likeness associated with data 
+
+31
+00:08:15,260 --> 00:08:19,410
+some data like medical images are large data objects by themselves 
+
+32
+00:08:21,300 --> 00:08:25,880
+secondly the records themselves are quite small but
+
+33
+00:08:25,880 --> 00:08:28,740
+the size of the total collection of records is very high 
+
+34
+00:08:30,580 --> 00:08:35,546
+two while there is a lot of patient data the number of data sources that is
+
+35
+00:08:35,546 --> 00:08:40,517
+the different departmental systems contributing to the total information
+
+36
+00:08:40,517 --> 00:08:43,408
+system does not change very much over time 
+
+37
+00:08:43,408 --> 00:08:48,739
+three the rate of data ingestion is not enormous and is often proportional
+
+38
+00:08:48,739 --> 00:08:53,668
+to the number of patient activities that takes place at the hospital 
+
+39
+00:08:53,668 --> 00:08:56,993
+four the system contains medical records so
+
+40
+00:08:56,993 --> 00:09:01,778
+data can never be discarded even when there are errors in the data 
+
+41
+00:09:01,778 --> 00:09:07,020
+the errors in this specific case are flagged but the data is retained 
+
+42
+00:09:08,590 --> 00:09:12,740
+now this is the kind of rule called an error handling policy 
+
+43
+00:09:12,740 --> 00:09:15,120
+which might be different for different application problems 
+
+44
+00:09:16,960 --> 00:09:22,180
+an air handling policy is part of a larger scheme of policies called
+
+45
+00:09:22,180 --> 00:09:23,050
+ingestion policies 
+
+46
+00:09:25,530 --> 00:09:29,630
+another kind of ingestion policy involves decisions regarding what the system should
+
+47
+00:09:29,630 --> 00:09:33,480
+do if the data rate suddenly increases or becomes suspiciously low 
+
+48
+00:09:34,540 --> 00:09:38,420
+in this example we have deliberately decided not to include it in the design 
+
+49
+00:09:39,630 --> 00:09:43,150
+now compare the previous case with the case of the online store of
+
+50
+00:09:43,150 --> 00:09:45,000
+personal information 
+
+51
+00:09:45,000 --> 00:09:47,800
+again this is just an imaginary example 
+
+52
+00:09:47,800 --> 00:09:50,270
+so do not think of all the parameters to be exact 
+
+53
+00:09:51,670 --> 00:09:56,390
+now in this case one the store will have a fast growing membership 
+
+54
+00:09:57,680 --> 00:10:01,370
+each member will use multiple devices to capture and ingest their data 
+
+55
+00:10:03,060 --> 00:10:09,510
+two over all members together the site will be updated at a really fast rate 
+
+56
+00:10:09,510 --> 00:10:15,182
+making this a large volume data store with a fast ingest rate 
+
+57
+00:10:15,182 --> 00:10:20,150
+three in this system our primary challenge is to keep up with the data
+
+58
+00:10:20,150 --> 00:10:25,780
+rate and hence erroneous data will be discarded after just one edit to reinvest 
+
+59
+00:10:27,760 --> 00:10:32,380
+four now there is an actual policy for handling data overflow 
+
+60
+00:10:32,380 --> 00:10:36,720
+which essentially says keep the excess data in a site store 
+
+61
+00:10:36,720 --> 00:10:39,560
+and ingest them when the data rate becomes slower 
+
+62
+00:10:39,560 --> 00:10:43,660
+but if the site store starts getting full
+
+63
+00:10:43,660 --> 00:10:47,980
+start dropping some incoming data at a rate of 0 1 at a time 
+
+64
+00:10:49,470 --> 00:10:52,220
+now we should see why data ingestion together with it 
+
+65
+00:10:52,220 --> 00:10:55,320
+policies should be an integral part of a big data system 
+
+66
+00:10:55,320 --> 00:10:58,390
+especially when it involves storing fast data 
+
+1
+00:10:58,770 --> 00:11:03,720
+a very significant aspect of data management is to document define 
+
+2
+00:11:03,720 --> 00:11:07,580
+implement and test the set of operations that are required for
+
+3
+00:11:07,580 --> 00:11:08,610
+a specific application 
+
+4
+00:11:09,910 --> 00:11:14,570
+as we will see later in the specialization some operations are independent of
+
+5
+00:11:14,570 --> 00:11:19,770
+the type of data and some others would require us to know the nature of the data
+
+6
+00:11:19,770 --> 00:11:22,890
+because the operations make use of a particular data model 
+
+7
+00:11:22,890 --> 00:11:24,180
+that is the way that it is structured 
+
+8
+00:11:25,760 --> 00:11:29,130
+in general there are two broad divisions of operations 
+
+9
+00:11:30,620 --> 00:11:33,950
+those that work on a singular object and
+
+10
+00:11:33,950 --> 00:11:36,590
+those that work on collections of data objects 
+
+11
+00:11:38,020 --> 00:11:42,520
+in the first case an operation that crops an image 
+
+12
+00:11:42,520 --> 00:11:47,120
+that means extracts a sub area from an area of pixels 
+
+13
+00:11:47,120 --> 00:11:51,280
+is a single object operation because we consider the image as a single object 
+
+14
+00:11:53,250 --> 00:11:56,860
+one can think of many subclasses of the second category
+
+15
+00:11:56,860 --> 00:11:59,790
+where the operations are on data collections 
+
+16
+00:11:59,790 --> 00:12:04,300
+we briefly referred to three very common operations that can be done
+
+17
+00:12:04,300 --> 00:12:05,640
+regardless of the nature of the data 
+
+18
+00:12:06,820 --> 00:12:11,610
+the first is to take a collection and filter out a subset of that collection 
+
+19
+00:12:11,610 --> 00:12:15,180
+the most obvious case is selecting a subset from a set 
+
+20
+00:12:15,180 --> 00:12:19,010
+in this example we select circles whose number is greater than three 
+
+21
+00:12:20,050 --> 00:12:24,830
+a second case is merging two collections together to form a larger collection 
+
+22
+00:12:26,220 --> 00:12:27,780
+in the example shown 
+
+23
+00:12:27,780 --> 00:12:33,380
+two three structure data items are merged by fusing the node with a common property 
+
+24
+00:12:33,380 --> 00:12:33,880
+that is two 
+
+25
+00:12:35,520 --> 00:12:39,650
+in the last case we compute a function on a collection and
+
+26
+00:12:39,650 --> 00:12:41,530
+return the value of the function 
+
+27
+00:12:41,530 --> 00:12:44,120
+so in this example the function is a simple count 
+
+28
+00:12:45,450 --> 00:12:49,230
+in the real world this kind of aggregate function can be very complicated 
+
+29
+00:12:50,540 --> 00:12:55,470
+we will come back to this issue when we talk more about map readings but
+
+30
+00:12:55,470 --> 00:12:58,670
+in this course we will talk about many different data operations 
+
+31
+00:12:59,750 --> 00:13:02,580
+every operator must be efficient 
+
+32
+00:13:02,580 --> 00:13:07,550
+that means every operator must perform its task as fast as possible
+
+33
+00:13:07,550 --> 00:13:11,400
+by taking up as little memory or our disk as possible 
+
+34
+00:13:12,580 --> 00:13:15,170
+obviously the time to perform an operation
+
+35
+00:13:15,170 --> 00:13:18,490
+will depend on the size of the input and the size of the output 
+
+36
+00:13:19,590 --> 00:13:24,300
+so if there is an opportunity to use concurrency where the operator can split
+
+37
+00:13:24,300 --> 00:13:28,880
+its data and have different threads operate on the pieces at the same time 
+
+38
+00:13:28,880 --> 00:13:30,080
+it should definitely do so 
+
+39
+00:13:31,820 --> 00:13:35,120
+we present a simple example of an operator we saw on the previous slide 
+
+40
+00:13:36,290 --> 00:13:38,600
+so this operator called selection 
+
+41
+00:13:38,600 --> 00:13:43,390
+refers to choosing a subset of a set based on some conditions 
+
+42
+00:13:43,390 --> 00:13:47,120
+here we are choosing a subset of circles whose numbers are even 
+
+43
+00:13:48,460 --> 00:13:53,080
+to make it more efficient we can take the input data and
+
+44
+00:13:53,080 --> 00:13:57,150
+partition it randomly into two groups 
+
+45
+00:13:57,150 --> 00:13:59,040
+now for each group 
+
+46
+00:13:59,040 --> 00:14:03,850
+we can concurrently run the subset algorithm and get the partial results 
+
+47
+00:14:05,020 --> 00:14:08,880
+for this operation the partial results can be directly sent to the output
+
+48
+00:14:08,880 --> 00:14:10,880
+without any additional processing step 
+
+1
+00:14:10,790 --> 00:14:14,740
+okay we in essence store the data efficiently 
+
+2
+00:14:14,740 --> 00:14:15,670
+but is it any good 
+
+3
+00:14:16,930 --> 00:14:20,970
+are there ways of knowing if the data is potentially error free and useful for
+
+4
+00:14:20,970 --> 00:14:21,770
+the intended purpose 
+
+5
+00:14:22,940 --> 00:14:25,500
+this is the issue of data quality 
+
+6
+00:14:25,500 --> 00:14:28,300
+there are many reasons why any data application 
+
+7
+00:14:28,300 --> 00:14:32,470
+especially larger applications need to be mindful of data quality 
+
+8
+00:14:33,490 --> 00:14:36,650
+here are three reasons of course there are more that we do not mention 
+
+9
+00:14:37,730 --> 00:14:42,480
+the first reason emphasizes that the ultimate use of big data
+
+10
+00:14:42,480 --> 00:14:45,040
+is its ability to give us actionable insight 
+
+11
+00:14:46,130 --> 00:14:50,030
+poor quality data leads to poor analysis and hence to poor decisions 
+
+12
+00:14:51,970 --> 00:14:56,820
+the second related data in regulated industries in areas like clinical
+
+13
+00:14:56,820 --> 00:15:00,710
+trials for pharmaceutical companies or financial data like from banks 
+
+14
+00:15:01,970 --> 00:15:06,440
+errors in data in these industries can regulate regulations leading to
+
+15
+00:15:06,440 --> 00:15:07,290
+legal complications 
+
+16
+00:15:08,980 --> 00:15:12,230
+the third factor is different than the first two 
+
+17
+00:15:12,230 --> 00:15:16,620
+it says if your big data should be used by other people or
+
+18
+00:15:16,620 --> 00:15:19,290
+a third party software it very important for
+
+19
+00:15:19,290 --> 00:15:23,059
+the data to give good quality to gain trust as a leader provider 
+
+20
+00:15:24,260 --> 00:15:28,270
+a class of big data applications is scientific where large 
+
+21
+00:15:28,270 --> 00:15:32,180
+integrated collections of data are created by human experts to
+
+22
+00:15:32,180 --> 00:15:34,570
+understand scientific questions 
+
+23
+00:15:34,570 --> 00:15:38,960
+ensuring accuracy of data will lead to correct human engagement and
+
+24
+00:15:38,960 --> 00:15:40,220
+interaction with the data system 
+
+25
+00:15:42,370 --> 00:15:45,170
+gartner the well known technology research and
+
+26
+00:15:45,170 --> 00:15:49,720
+advising company created a 2015 industry report on big data qualities 
+
+27
+00:15:51,300 --> 00:15:54,240
+in this report they identify the approaches to meeting
+
+28
+00:15:54,240 --> 00:15:56,210
+the data quality requirements in the industry 
+
+29
+00:15:57,240 --> 00:16:01,690
+this methods include the adherence to standards where applicable 
+
+30
+00:16:01,690 --> 00:16:05,150
+it also refers to the need to create the rules in the data system
+
+31
+00:16:05,150 --> 00:16:09,870
+that can be use to check if the data passes a set of correct this qualities 
+
+32
+00:16:09,870 --> 00:16:12,950
+like is even employed above 18 
+
+33
+00:16:12,950 --> 00:16:17,490
+it also includes methods to clean the data if it found to have errors or
+
+34
+00:16:17,490 --> 00:16:18,260
+inconsistencies 
+
+35
+00:16:19,720 --> 00:16:24,772
+further the data quality management should include a well define work flow on how
+
+36
+00:16:24,772 --> 00:16:29,690
+low quality data could be corrected to bring it back to a high level of quality 
+

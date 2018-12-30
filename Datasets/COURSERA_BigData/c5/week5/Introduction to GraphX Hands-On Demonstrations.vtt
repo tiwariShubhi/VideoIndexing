@@ -1,0 +1,256 @@
+WEBVTT
+
+1
+00:00:00.830 --> 00:00:02.950
+Now we are going to
+introduce you to Graphx,
+
+2
+00:00:04.080 --> 00:00:06.967
+which we'll primarily cover
+as a hands-on presentation.
+
+3
+00:00:08.490 --> 00:00:12.440
+Graphx was developed by the Amp
+lab at UC Berkeley, and
+
+4
+00:00:12.440 --> 00:00:14.020
+has now become an Apache product.
+
+5
+00:00:15.280 --> 00:00:19.610
+In this brief introduction, we are using
+a few slides from Amp lab presentations.
+
+6
+00:00:22.450 --> 00:00:26.540
+Like [INAUDIBLE] graphic
+uses a property graph model.
+
+7
+00:00:27.580 --> 00:00:31.690
+That means both nodes and
+edges can have attributes and values.
+
+8
+00:00:33.212 --> 00:00:37.700
+In Graphx, the node properties
+are stored in a Vertex Table.
+
+9
+00:00:37.700 --> 00:00:39.940
+And edge properties
+are stored in an Edge Table.
+
+10
+00:00:41.140 --> 00:00:45.680
+The connectivity information, that is
+which edge connects to which nodes,
+
+11
+00:00:45.680 --> 00:00:49.570
+is stored separately from the nodes and
+edge properties.
+
+12
+00:00:49.570 --> 00:00:51.700
+Since Graphx is based on spark,
+
+13
+00:00:51.700 --> 00:00:57.179
+whose central information representation
+is based on resilient data sets or RDDs.
+
+14
+00:00:58.230 --> 00:01:02.520
+You may recall that RDDs are typically
+in memory information objects.
+
+15
+00:01:03.700 --> 00:01:07.320
+These objects can be used to perform
+an action, which returns a value.
+
+16
+00:01:08.320 --> 00:01:12.420
+Or they can perform a transformation,
+which can produce another RDD.
+
+17
+00:01:13.865 --> 00:01:17.330
+Graphx is built on special RDDs for
+vertices and edges.
+
+18
+00:01:18.820 --> 00:01:22.810
+Note that VertexIDs are defined
+to be unique by design.
+
+19
+00:01:22.810 --> 00:01:28.680
+VertexRDD A represents a set of vertices
+all of which have an attribute called A.
+
+20
+00:01:30.400 --> 00:01:35.400
+The Edge class is an object with a source
+vertex, a destination vertex, and
+
+21
+00:01:35.400 --> 00:01:35.930
+edge attribute.
+
+22
+00:01:37.280 --> 00:01:42.230
+The EdgeRDD extends this
+basic edge by storing
+
+23
+00:01:42.230 --> 00:01:47.546
+edges in a columnar format on
+each partition of performance.
+
+24
+00:01:47.546 --> 00:01:52.140
+Very often, it's easier to operate
+on a data structure that has both
+
+25
+00:01:52.140 --> 00:01:54.120
+node properties and edge properties.
+
+26
+00:01:55.380 --> 00:01:59.620
+If you are familiar with this schema, you
+will readily see that this is a three-way
+
+27
+00:01:59.620 --> 00:02:03.990
+join operation between the node set,
+the edge set and the second node set.
+
+28
+00:02:05.010 --> 00:02:08.600
+Finally, GraphX implements
+it's own version of BSP.
+
+29
+00:02:09.820 --> 00:02:12.820
+This implementation,
+not surprisingly, is called Pregel.
+
+30
+00:02:13.950 --> 00:02:19.610
+It allows a user to write a vertex
+program, a send message routine,
+
+31
+00:02:19.610 --> 00:02:21.990
+and a message combiner routine,
+just like BSP.
+
+32
+00:02:23.160 --> 00:02:26.840
+However, this implementation also performs
+
+33
+00:02:26.840 --> 00:02:28.970
+vertex partitioning like
+we saw in graph lab.
+
+34
+00:02:30.210 --> 00:02:32.170
+Also, similarly to graph lab,
+
+35
+00:02:32.170 --> 00:02:36.770
+it enables the message sending computation
+to reach the attributes of both vertices.
+
+36
+00:02:37.960 --> 00:02:40.570
+The code limit shown here
+is written in Scala.
+
+37
+00:02:42.230 --> 00:02:46.495
+The hands on code after this you'll
+see are all certain in scatter.
+
+38
+00:02:46.495 --> 00:02:48.860
+Will have a notice here in no scatter.
+
+39
+00:02:48.860 --> 00:02:53.640
+We would like to show you
+here an example which uses
+
+40
+00:02:53.640 --> 00:02:58.600
+the Pregel runtime object in GraphX
+to implement the simple BSP desk.
+
+41
+00:02:59.870 --> 00:03:04.280
+We would like to show here how Pregel
+runtime objects in Graphx works.
+
+42
+00:03:05.890 --> 00:03:08.760
+We point out all the functions
+that are defined by users
+
+43
+00:03:08.760 --> 00:03:10.160
+in running the Pregel operation.
+
+44
+00:03:11.420 --> 00:03:16.301
+The vprogf function,
+which takes a vertex and a message and
+
+45
+00:03:16.301 --> 00:03:20.220
+returns a new attribute value for
+that vertex.
+
+46
+00:03:20.220 --> 00:03:25.660
+The sendMsgr function, which computes
+the new message along each edge.
+
+47
+00:03:26.880 --> 00:03:31.850
+The Option[M] construct says that it is
+optional for a vertex to send the message.
+
+48
+00:03:31.850 --> 00:03:34.520
+That is,
+the system should not show an error
+
+49
+00:03:34.520 --> 00:03:37.650
+if your message is not sent for
+the vertex.
+
+50
+00:03:37.650 --> 00:03:40.230
+The combinef function is
+a message combiner that we
+
+51
+00:03:40.230 --> 00:03:42.210
+mention in passive for graph.
+
+52
+00:03:42.210 --> 00:03:46.913
+Finally, the user can also specify
+the number of reiterations that
+
+53
+00:03:46.913 --> 00:03:49.483
+the GraphX BSP process will run for.

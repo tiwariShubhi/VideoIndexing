@@ -1,0 +1,2613 @@
+﻿1
+00:00:15,199 --> 00:00:27,229
+And we saw in a last class the alpha beta
+algorithm, and the tree that was explored
+
+2
+00:00:27,230 --> 00:00:29,689
+by
+alpha beta we saw here.
+
+3
+00:00:29,689 --> 00:00:35,590
+It is a binary game tree 4 ply deep and those
+shaded nodes are
+
+4
+00:00:35,590 --> 00:00:39,230
+the ones which alpha beta did not explore
+essentially.
+
+5
+00:00:39,229 --> 00:00:43,839
+Now, alpha beta algorithm
+searches from left to right and we want to
+
+6
+00:00:43,840 --> 00:00:50,960
+now look for a algorithm which is not
+uninformed, which is not blind in this manner,
+
+7
+00:00:50,960 --> 00:00:52,009
+but has a sense of direction.
+
+8
+00:00:52,009 --> 00:00:54,979
+So, just as we
+moved from death first search to best first
+
+9
+00:00:54,979 --> 00:00:58,328
+search by introducing heuristic function,
+we
+
+10
+00:00:58,329 --> 00:01:03,000
+want to look at an algorithm which will go
+towards what it thinks is a good solution
+
+11
+00:01:03,000 --> 00:01:04,390
+essentially.
+
+12
+00:01:04,390 --> 00:01:15,640
+And indeed such an algorithm was given by
+stockman in 1979 and it is called
+
+13
+00:01:15,640 --> 00:01:18,290
+SSS star.
+
+14
+00:01:18,290 --> 00:01:19,290
+..
+
+15
+00:01:19,290 --> 00:01:26,009
+Now, to understand this algorithm first we
+must understand what is the space in which
+
+16
+00:01:26,009 --> 00:01:31,829
+this best first search will happen, and look
+at what max does.
+
+17
+00:01:31,828 --> 00:01:38,349
+So, max is playing a game
+of the many choices that it has available,
+
+18
+00:01:38,349 --> 00:01:42,078
+it makes one choice.
+
+19
+00:01:42,078 --> 00:01:49,658
+So, of course, on the
+surface level it is selecting a choice, but
+
+20
+00:01:49,659 --> 00:01:57,979
+it is making a choice on the basis of having
+searched a key up to some depth, which is
+
+21
+00:01:57,978 --> 00:02:01,778
+let us say k ply search we are doing.
+
+22
+00:02:01,778 --> 00:02:07,468
+And it is, it is on a basis of this look ahead
+that max has made this move.
+
+23
+00:02:07,468 --> 00:02:11,180
+And on the
+basis of having applied a evaluation function
+
+24
+00:02:11,180 --> 00:02:12,980
+on the horizon essentially.
+
+25
+00:02:12,979 --> 00:02:20,789
+So, in effect max
+has force looked ahead at or foreseen what
+
+26
+00:02:20,789 --> 00:02:22,139
+would be min’s response?
+
+27
+00:02:22,139 --> 00:02:31,199
+So, in other words,
+max is comfortable with all of min’s responses,
+
+28
+00:02:31,199 --> 00:02:35,389
+and for each of those min’s responses
+max has thought ahead that I will make one
+
+29
+00:02:35,389 --> 00:02:45,309
+particular move and then, max is taken into
+account, all of min’s responses.
+
+30
+00:02:45,310 --> 00:02:50,650
+So, let us say, this is also a 4 ply search
+tree.
+
+31
+00:02:50,650 --> 00:02:57,930
+Max has
+looked at this entire set of possibilities,
+
+32
+00:02:57,930 --> 00:03:04,150
+and on the basis of this has made the move
+that
+
+33
+00:03:04,150 --> 00:03:06,020
+max has made essentially.
+
+34
+00:03:06,020 --> 00:03:13,379
+So, you can say that, this sub tree that we
+are seeing is what max has concluded at the
+
+35
+00:03:13,378 --> 00:03:14,378
+result of this search.
+
+36
+00:03:14,378 --> 00:03:18,548
+He says if max will make this move, whichever
+move min makes
+
+37
+00:03:18,549 --> 00:03:24,710
+max has an answer to that and then, whichever
+makes min makes max has taken that into
+
+38
+00:03:24,710 --> 00:03:28,319
+consideration while evaluating this thing.
+
+39
+00:03:28,318 --> 00:03:34,949
+Now, you will remember that, such a sub tree
+is called a strategy.
+
+40
+00:03:34,949 --> 00:03:49,098
+So, max has chosen a strategy of course, alpha
+beta algorithm does
+
+41
+00:03:49,098 --> 00:03:55,068
+not search in the space of strategies, it
+is does not even consider strategies as such,
+
+42
+00:03:55,068 --> 00:03:56,108
+but if
+
+43
+00:03:56,109 --> 00:04:01,329
+.we are going to look at a different algorithm
+which is SSS star.
+
+44
+00:04:01,329 --> 00:04:11,718
+SSS star searches in the
+space of strategies.
+
+45
+00:04:11,718 --> 00:04:22,170
+So, let us say, this strategy that max has
+chosen this strategy and let us call this
+
+46
+00:04:22,170 --> 00:04:30,331
+S, and we
+have discussed this earlier, what is the value
+
+47
+00:04:30,331 --> 00:04:40,450
+of this strategy?
+
+48
+00:04:40,449 --> 00:04:43,649
+And value in terms of the
+leaf nodes that max has taken into account.
+
+49
+00:04:43,649 --> 00:04:50,089
+So, let us say, this is 10, 20, 40, and let
+us say
+
+50
+00:04:50,089 --> 00:04:52,289
+all these are bigger values 60, 70.
+
+51
+00:04:52,290 --> 00:04:59,040
+Let us say this is 5, 10, 15, 30.
+
+52
+00:04:59,040 --> 00:05:01,030
+Some values, I am not
+filling all the values, but let us say we
+
+53
+00:05:01,029 --> 00:05:04,779
+have some values 10, 20, 40, 60, 70.
+
+54
+00:05:04,779 --> 00:05:08,750
+There is a 5
+here 10, 15, 30.
+
+55
+00:05:08,750 --> 00:05:13,750
+What is going to be the mini max value when
+max uses this key?
+
+56
+00:05:13,750 --> 00:05:19,139
+It is going to be the minimum of all these
+values.
+
+57
+00:05:19,139 --> 00:05:24,360
+Because once max has frozen max’s
+strategy, it is only up to min to choose and
+
+58
+00:05:24,360 --> 00:05:26,840
+min will lose some analysis and say that,
+okay
+
+59
+00:05:26,839 --> 00:05:31,979
+if I make this move and if then, if I make
+this move then, I will get a value of 5, which
+
+60
+00:05:31,980 --> 00:05:33,580
+is
+what min is going to drive it at.
+
+61
+00:05:33,579 --> 00:05:38,180
+And max has no more choices left because max’s
+strategy has frozen essentially.
+
+62
+00:05:38,180 --> 00:05:45,870
+So, the value of a strategy is the minimum
+of the value of
+
+63
+00:05:45,870 --> 00:05:53,590
+leaves in this strategy S. So, I just use
+this notation to say that these are the leaves
+
+64
+00:05:53,589 --> 00:05:56,649
+of the
+strategy S, and the value of the strategy
+
+65
+00:05:56,649 --> 00:06:05,419
+is the minimum of the value of the leaf of
+this of
+
+66
+00:06:05,420 --> 00:06:06,420
+the strategy.
+
+67
+00:06:06,420 --> 00:06:11,560
+Now, as a corollary, if were to choose a random
+leaf in a strategy.
+
+68
+00:06:11,560 --> 00:06:20,610
+So, if I chose some
+leaf L value of L. So, let us say this is
+
+69
+00:06:20,610 --> 00:06:24,470
+L, some leaf, it does not matter.
+
+70
+00:06:24,470 --> 00:06:29,440
+How does it
+influence us, what relation does it have with
+
+71
+00:06:29,439 --> 00:06:36,910
+value of S?
+
+72
+00:06:36,910 --> 00:06:42,831
+It is greater than or equal to the
+value of the strategy, which means the value
+
+73
+00:06:42,831 --> 00:06:50,500
+of a leaf is an upper bound on a strategy
+in
+
+74
+00:06:50,500 --> 00:06:52,170
+which contains that leaf.
+
+75
+00:06:52,170 --> 00:07:01,680
+Now, let us look at this binary search tree
+again, if I were to
+
+76
+00:07:01,680 --> 00:07:07,650
+select this leaf 50, which has this value
+50, how many strategies will this be a part
+
+77
+00:07:07,649 --> 00:07:09,449
+of?
+
+78
+00:07:09,449 --> 00:07:18,379
+You can see that, this of course, is min’s
+choice and here max has made a choice, and
+
+79
+00:07:18,379 --> 00:07:31,089
+that choice has 50 as this leaf.
+
+80
+00:07:31,089 --> 00:07:35,239
+Max has to encounter so, so this strategy
+would be this
+
+81
+00:07:35,240 --> 00:07:43,680
+choice for max, both these choices for min,
+this particular choice for max, and both these
+
+82
+00:07:43,680 --> 00:07:45,269
+for min essentially.
+
+83
+00:07:45,269 --> 00:07:53,649
+Now, since max has to consider both these
+choices for min, this as
+
+84
+00:07:53,649 --> 00:07:55,529
+well as this.
+
+85
+00:07:55,529 --> 00:08:01,819
+When max makes this move, max is either selecting
+a strategy in which max
+
+86
+00:08:01,819 --> 00:08:05,209
+is making this move here, and this move here.
+
+87
+00:08:05,209 --> 00:08:12,060
+I mean max is considering this move, max
+is considering a strategy in which max is
+
+88
+00:08:12,060 --> 00:08:17,560
+making that move and this move, and the
+strategy may have this move precisely.
+
+89
+00:08:17,560 --> 00:08:23,660
+.Alternatively, this leaf will also be part
+of a strategy where max makes that move, this
+
+90
+00:08:23,660 --> 00:08:30,300
+move here, but the other move at this place
+here, that also will contain this particular
+
+91
+00:08:30,300 --> 00:08:31,300
+strategy.
+
+92
+00:08:31,300 --> 00:08:38,549
+So, you need to visualize this a little bit,
+that in this particular game tree every
+
+93
+00:08:38,549 --> 00:08:44,449
+leaf belongs to 2 strategies, and that is
+the one strategy is when max makes this choice
+
+94
+00:08:44,450 --> 00:08:46,990
+here, and the other strategy is when max makes
+the other choice here.
+
+95
+00:08:46,990 --> 00:08:50,690
+Because max has
+to take into account this choice of min here.
+
+96
+00:08:50,690 --> 00:09:00,460
+So, there are 16 leaves, and how many
+choices, how many strategies does max have?
+
+97
+00:09:00,460 --> 00:09:05,590
+2 here, choices here, 2 choices here, and
+2
+
+98
+00:09:05,590 --> 00:09:11,129
+choices here so, max has 8 strategies available
+to that and as an.
+
+99
+00:09:11,129 --> 00:09:12,129
+.
+
+100
+00:09:12,129 --> 00:09:30,028
+So, I will just write it here number of strategies
+equal to 8 for a 4 ply binary search tree,
+
+101
+00:09:30,028 --> 00:09:35,581
+and as an exercise you can see that for 5
+or 6 ply it is the same it is.
+
+102
+00:09:35,581 --> 00:09:41,629
+So, 8 is equal to 2
+raised to 3, for 5 or 6 it is 2 raised to
+
+103
+00:09:41,629 --> 00:09:51,129
+7, for 7 or 8 it is 2 raised to 15, for 9
+or 10 it is 2
+
+104
+00:09:51,129 --> 00:09:55,320
+raised to 31 and you can extrapolate from
+here.
+
+105
+00:09:55,320 --> 00:10:00,480
+And I will just give this as figures, you
+can work this out yourselves that as you go
+
+106
+00:10:00,480 --> 00:10:04,629
+deeper, the number of strategies increases
+considerably.
+
+107
+00:10:04,629 --> 00:10:12,220
+And as an exercise you can so, this 2 is a
+branching factor that is playing
+
+108
+00:10:12,220 --> 00:10:13,269
+the role here.
+
+109
+00:10:13,269 --> 00:10:16,809
+If he replaces 2 with B what would the figure
+be like this?
+
+110
+00:10:16,809 --> 00:10:20,889
+It is an interesting exercise, but you can
+do that later.
+
+111
+00:10:20,889 --> 00:10:27,809
+For this particular tree, there are 8
+strategies and if I choose any arbitrary node,
+
+112
+00:10:27,809 --> 00:10:32,019
+I will get 2 of those 8 strategies, choose
+any
+
+113
+00:10:32,019 --> 00:10:35,610
+node and you will get 2 strategies.
+
+114
+00:10:35,610 --> 00:10:38,149
+So, what does SSS star do?
+
+115
+00:10:38,149 --> 00:10:42,840
+It is searches in the space
+of strategies, and it must be exhaustive in
+
+116
+00:10:42,840 --> 00:10:44,670
+the sense that it must not miss out on the
+best
+
+117
+00:10:44,669 --> 00:10:45,669
+.move.
+
+118
+00:10:45,669 --> 00:10:50,469
+So, it must consider all strategies to begin
+with and then, choose one from that.
+
+119
+00:10:50,470 --> 00:10:54,860
+That is of course, brute force, but we do
+not do brute force here especially.
+
+120
+00:10:54,860 --> 00:10:55,860
+.
+
+121
+00:10:55,860 --> 00:11:07,440
+Now, a leaf node, you can say is represents
+a partial strategy.
+
+122
+00:11:07,440 --> 00:11:15,910
+In other words, it is a
+strategy which is not completely refined,
+
+123
+00:11:15,909 --> 00:11:21,069
+if I have seen only one leaf in a strategy,
+I have
+
+124
+00:11:21,070 --> 00:11:22,070
+seen only part of the strategy.
+
+125
+00:11:22,070 --> 00:11:26,060
+So, for example, if I have seen this leaf
+20, its value is 20,
+
+126
+00:11:26,059 --> 00:11:30,869
+I have, I know that this part of this particular
+strategy, it may be part of other strategies
+
+127
+00:11:30,870 --> 00:11:32,049
+as well.
+
+128
+00:11:32,049 --> 00:11:36,471
+But whichever strategy it is a part of, it
+has this property that it is an upper bound
+
+129
+00:11:36,471 --> 00:11:39,769
+of the value of this strategy.
+
+130
+00:11:39,769 --> 00:11:53,600
+A leaf node also represents a cluster of strategies,
+which is what we were discussing in
+
+131
+00:11:53,600 --> 00:12:00,409
+the moment ago that, if I were to choose this
+node 50, the left most node then, it
+
+132
+00:12:00,409 --> 00:12:02,959
+represents a cluster of 2 strategies.
+
+133
+00:12:02,960 --> 00:12:05,778
+And the 2 strategies are the one where max
+makes the
+
+134
+00:12:05,778 --> 00:12:10,960
+left choice at the top level, and if min were
+to make this choice then, max has decided
+
+135
+00:12:10,960 --> 00:12:13,310
+the
+left choice, but if min were to make this
+
+136
+00:12:13,309 --> 00:12:15,750
+choice, max could either choose this or it
+could
+
+137
+00:12:15,750 --> 00:12:16,750
+choose that.
+
+138
+00:12:16,750 --> 00:12:18,049
+So, those are the 2 strategies.
+
+139
+00:12:18,049 --> 00:12:22,519
+This particular node 50 represents, and this
+50 would be an upper bound on both those
+
+140
+00:12:22,519 --> 00:12:24,439
+strategies.
+
+141
+00:12:24,440 --> 00:12:42,340
+So, what we need to do is to select leads
+to cover all strategies, that is the first
+
+142
+00:12:42,340 --> 00:12:48,320
+point of SSS star algorithm, that somehow
+you select the leaves in such a manner that,
+
+143
+00:12:48,320 --> 00:12:56,220
+you have a representative from all possible
+strategies, which means you have covered all
+
+144
+00:12:56,220 --> 00:12:57,220
+strategies.
+
+145
+00:12:57,220 --> 00:13:00,700
+How do you do that?
+
+146
+00:13:00,700 --> 00:13:14,110
+.It is very simple, you extract a sub tree
+from the game tree in the following fashion
+
+147
+00:13:14,110 --> 00:13:22,129
+that
+at max level choose all branches.
+
+148
+00:13:22,129 --> 00:13:30,470
+Why should we do that?
+
+149
+00:13:30,470 --> 00:13:32,360
+Because we want to cover all
+strategies.
+
+150
+00:13:32,360 --> 00:13:36,560
+We want to not miss out on any strategies
+so, for example, at the root level,
+
+151
+00:13:36,559 --> 00:13:41,059
+we must consider all possible moves that max
+makes, and likewise at deeper levels
+
+152
+00:13:41,059 --> 00:13:42,059
+essentially.
+
+153
+00:13:42,059 --> 00:13:49,019
+So, at max level choose all branches, at min
+level choose 1.
+
+154
+00:13:49,019 --> 00:14:09,789
+If I do this, so, I should write
+here set of, I will construct a set of leaves
+
+155
+00:14:09,789 --> 00:14:13,069
+which will cover all strategies essentially.
+
+156
+00:14:13,070 --> 00:14:19,778
+So,
+let us do that for this game tree that we
+
+157
+00:14:19,778 --> 00:14:26,600
+had considered for the alpha beta algorithm.
+
+158
+00:14:26,600 --> 00:14:29,800
+So,
+we want to now explore how SSS star will do
+
+159
+00:14:29,799 --> 00:14:33,528
+it, but first it starts off by selecting a
+set of
+
+160
+00:14:33,528 --> 00:14:40,169
+leaves where each leaf represents a cluster
+of 2 strategies in this case, but you must
+
+161
+00:14:40,169 --> 00:14:42,979
+select
+the leaves so, that all strategies are covered.
+
+162
+00:14:42,980 --> 00:14:45,420
+So, that we do not miss out on any strategy.
+
+163
+00:14:45,419 --> 00:14:46,419
+.
+
+164
+00:14:46,419 --> 00:14:55,639
+And the way to that is to select all choices
+for max, one choice and let us say, arbitrarily
+
+165
+00:14:55,639 --> 00:15:06,159
+we are choosing the left most choice for min
+then all choices for max and one choice for
+
+166
+00:15:06,159 --> 00:15:07,699
+min.
+
+167
+00:15:07,700 --> 00:15:21,240
+Likewise here, one choice for min all choices
+for max, one choice for min.
+
+168
+00:15:21,240 --> 00:15:27,930
+SSS star,
+this algorithm starts of by selecting this
+
+169
+00:15:27,929 --> 00:15:29,370
+set of nodes, leaves.
+
+170
+00:15:29,370 --> 00:15:40,799
+So, let me just underline these leaves here,
+we are looking at this one, this one, this
+
+171
+00:15:40,799 --> 00:15:48,549
+one,
+and this one.
+
+172
+00:15:48,549 --> 00:15:55,159
+And I will ask you to think about this and
+convince yourself that of the 8
+
+173
+00:15:55,159 --> 00:16:01,208
+strategies that we talked about, these 4 leaves
+cover 2 each, and they are all disjoint and
+
+174
+00:16:01,208 --> 00:16:03,919
+they cover all the 8 strategies essentially.
+
+175
+00:16:03,919 --> 00:16:07,679
+Now, max is basically tasked so, remember
+the
+
+176
+00:16:07,679 --> 00:16:20,278
+.best first algorithm that we had talked about
+and then, we also looked at the travelling
+
+177
+00:16:20,278 --> 00:16:30,110
+salesman problem which is the high level algorithm
+is that define.
+
+178
+00:16:30,110 --> 00:16:31,110
+.
+
+179
+00:16:31,110 --> 00:16:44,419
+Best looking partial strategy, a partial solution
+in that case, in our case the solution is
+
+180
+00:16:44,419 --> 00:17:06,869
+the
+strategy till best solution is fully refined.
+
+181
+00:17:06,869 --> 00:17:08,708
+This is the high level algorithm for best
+first
+
+182
+00:17:08,709 --> 00:17:16,328
+search A star fits into this, branch and bound
+fits into this, best first fits into this.
+
+183
+00:17:16,328 --> 00:17:21,798
+At all
+point, we are maintaining some sort a priority
+
+184
+00:17:21,798 --> 00:17:27,778
+queue in which we are able to pick the best
+value strategy.
+
+185
+00:17:27,778 --> 00:17:35,759
+So, in A star the best is defined in terms
+of the f value, which is h value plus g value.
+
+186
+00:17:35,759 --> 00:17:39,210
+If
+you remember the travelling salesman problem,
+
+187
+00:17:39,210 --> 00:17:55,429
+we said that at the top most root level,
+the set of cities represent all possible to
+
+188
+00:17:55,429 --> 00:17:56,610
+us.
+
+189
+00:17:56,609 --> 00:18:02,148
+And then, we partition this set into 2 sets
+one
+
+190
+00:18:02,148 --> 00:18:12,939
+which contain one edge, and the other which
+did not contain this edge.
+
+191
+00:18:12,940 --> 00:18:19,239
+So, this was a partial tour, both these are
+partial tours, they are not fully specified
+
+192
+00:18:19,239 --> 00:18:21,610
+and we
+had figured out a way to evaluate what is
+
+193
+00:18:21,609 --> 00:18:26,919
+the lower bound cost on those tours, and we
+always picked up best looking tour and refined
+
+194
+00:18:26,920 --> 00:18:28,600
+it further essentially.
+
+195
+00:18:28,599 --> 00:18:34,168
+We want to do
+something similar here in SSS star is that,
+
+196
+00:18:34,169 --> 00:18:38,879
+we first cover all the possible solutions
+and
+
+197
+00:18:38,878 --> 00:18:48,219
+that is what we have done by choosing the
+set of leaves to form the clusters which cover
+
+198
+00:18:48,220 --> 00:18:49,220
+all strategies.
+
+199
+00:18:49,220 --> 00:18:53,960
+.So, in this case we have 4 clusters, and
+in each cluster we have one representative
+
+200
+00:18:53,960 --> 00:19:01,369
+leaf
+50, 30, 30, and 70, and that leaf represents
+
+201
+00:19:01,368 --> 00:19:09,048
+an upper bound on the value of the strategy
+that this cluster belongs to, this leaf belongs
+
+202
+00:19:09,048 --> 00:19:13,509
+to, each leaf belongs to 2 strategies.
+
+203
+00:19:13,509 --> 00:19:18,579
+So, we
+will follow this, we find the best looking
+
+204
+00:19:18,579 --> 00:19:20,949
+partial solution until the best solution is
+fully
+
+205
+00:19:20,950 --> 00:19:26,308
+refined when it is fully refined, when the
+strategy is completely defined.
+
+206
+00:19:26,308 --> 00:19:37,480
+So, this
+algorithm SSS star, it uses a priority queue
+
+207
+00:19:37,480 --> 00:19:54,798
+of clusters, but clusters are not represented
+explicitly, they are represented by the representative
+
+208
+00:19:54,798 --> 00:19:57,750
+node essentially.
+
+209
+00:19:57,750 --> 00:20:03,128
+And each element
+in the priority queue is represented by the
+
+210
+00:20:03,128 --> 00:20:23,689
+name of the node by a value which is either
+live or solved and a bound.
+
+211
+00:20:23,690 --> 00:20:36,830
+So, initially when we start the algorithm,
+we start it with the root and we say it is
+
+212
+00:20:36,829 --> 00:20:40,859
+live by
+live we mean which is not solved essentially.
+
+213
+00:20:40,859 --> 00:20:46,689
+So, you can now also make a comparison
+or with the AO star algorithm that we had
+
+214
+00:20:46,690 --> 00:20:47,909
+seen.
+
+215
+00:20:47,909 --> 00:20:57,970
+The AO star algorithm keeps refining a
+solution till the root gets solved, root gets
+
+216
+00:20:57,970 --> 00:21:00,179
+level solved, which means that the solution
+is
+
+217
+00:21:00,179 --> 00:21:01,548
+completely refined.
+
+218
+00:21:01,548 --> 00:21:07,339
+And at some point I had also made this observation
+that, solving a game tree is similar to
+
+219
+00:21:07,339 --> 00:21:14,408
+solving an of problem because at the max level
+we have to make one choice, so it is an
+
+220
+00:21:14,409 --> 00:21:15,409
+odd node.
+
+221
+00:21:15,409 --> 00:21:19,419
+At min level you have to consider all choices,
+and it is like a min node except
+
+222
+00:21:19,419 --> 00:21:27,890
+that you do not sum up the pass cause of the
+parsing solutions as we did in A star, but
+
+223
+00:21:27,890 --> 00:21:29,739
+we
+take the minimum of the cost of the parsing
+
+224
+00:21:29,739 --> 00:21:30,980
+solutions here essentially.
+
+225
+00:21:30,980 --> 00:21:37,740
+So, it is very much like the A star, AO star
+algorithm and this is the terminology we use
+
+226
+00:21:37,740 --> 00:21:43,849
+in the AO star also that is we had nodes levels
+solved or not level solved.
+
+227
+00:21:43,849 --> 00:21:46,689
+In this case we
+are explicitly calling them live.
+
+228
+00:21:46,690 --> 00:21:50,990
+The algorithm will proceed till the root gets
+level solved
+
+229
+00:21:50,990 --> 00:21:53,200
+so, that is a similarity with AO star you
+should observe.
+
+230
+00:21:53,200 --> 00:21:56,940
+AO star was the best first
+algorithm if you remember and this is also
+
+231
+00:21:56,940 --> 00:21:58,639
+going to be the best first algorithm.
+
+232
+00:21:58,638 --> 00:22:04,469
+So, we start with this and this bounds.
+
+233
+00:22:04,470 --> 00:22:06,659
+Initially we insert this into the priority
+queue, this
+
+234
+00:22:06,659 --> 00:22:13,710
+triple where the root node and level it live
+and plus large.
+
+235
+00:22:13,710 --> 00:22:17,179
+And always the highest value
+will be the head of the root, the priority
+
+236
+00:22:17,179 --> 00:22:25,700
+queue a max queue then, the algorithm picks
+the
+
+237
+00:22:25,700 --> 00:22:33,350
+head element which is the value with the largest
+bound or heuristic value if you want to
+
+238
+00:22:33,349 --> 00:22:37,359
+call it, and does the following.
+
+239
+00:22:37,359 --> 00:22:46,928
+So, this is, these are the cases when you
+pick the head node from the root that, it
+
+240
+00:22:46,929 --> 00:22:59,240
+is max
+and it is live then, you add all the children
+
+241
+00:22:59,240 --> 00:23:05,409
+to the queue with the same bound and call
+
+242
+00:23:05,409 --> 00:23:08,269
+.them live essentially.
+
+243
+00:23:08,269 --> 00:23:15,899
+So, I should in fact, say non terminal.
+
+244
+00:23:15,898 --> 00:23:21,439
+So, some where there is a
+test so, remember the terminal nodes are those
+
+245
+00:23:21,440 --> 00:23:25,369
+on the horizon, and at the horizon we
+allowed to apply.
+
+246
+00:23:25,368 --> 00:23:29,368
+In fact we have to apply the evaluation function
+and get a value for that
+
+247
+00:23:29,368 --> 00:23:35,189
+node.
+
+248
+00:23:35,190 --> 00:23:42,399
+If it is max, it is a max node and if it is
+a live node and if it is non terminal then,
+
+249
+00:23:42,398 --> 00:23:51,349
+add all
+children to the queue.
+
+250
+00:23:51,349 --> 00:24:00,269
+So, you will see that this is the step, at
+max level choose all
+
+251
+00:24:00,269 --> 00:24:03,038
+branches, at max level we are adding all the
+children.
+
+252
+00:24:03,038 --> 00:24:07,970
+So, initially we would have added
+this root then, we will add both these children
+
+253
+00:24:07,970 --> 00:24:12,829
+to this thing and then, we will call them
+live essentially.
+
+254
+00:24:12,829 --> 00:24:28,408
+If it is a min and live and non terminal then,
+add one child.
+
+255
+00:24:28,409 --> 00:24:35,359
+So, you can see these two steps correspond
+to the initial formation of the clusters
+
+256
+00:24:35,358 --> 00:24:36,599
+essentially.
+
+257
+00:24:36,599 --> 00:24:40,089
+And since this is a priority queue with this
+plus large values, all this will be
+
+258
+00:24:40,089 --> 00:24:45,528
+taken care of first and this whole tree would
+be constructed here.
+
+259
+00:24:45,528 --> 00:24:53,339
+This tree that you see in
+this pinkish color here at max level we will
+
+260
+00:24:53,339 --> 00:24:58,099
+add both the children, we will remove max
+and add both the children.
+
+261
+00:24:58,099 --> 00:25:03,219
+At min level we will remove min and add one
+child.
+
+262
+00:25:03,220 --> 00:25:10,519
+In this case we arbitrarily choose a left
+side at max level we add both this children
+
+263
+00:25:10,519 --> 00:25:12,419
+at min
+level we add one child.
+
+264
+00:25:12,419 --> 00:25:15,830
+And all this will vanish and so, only 4 entries
+will remain in my
+
+265
+00:25:15,829 --> 00:25:28,859
+parity queue with the values initially large,
+but the moment we take a terminal node.
+
+266
+00:25:28,859 --> 00:25:41,219
+If it
+is terminal, you label it solved.
+
+267
+00:25:41,220 --> 00:25:48,319
+So, these 4 nodes will be terminal, we will
+label them
+
+268
+00:25:48,319 --> 00:25:54,819
+solved and we will put the values that we
+have, which is 50, 30, 30, and 70.
+
+269
+00:25:54,819 --> 00:26:00,479
+So, at the
+end of this so, if you remember the AO star
+
+270
+00:26:00,479 --> 00:26:05,440
+algorithm had these 2 phases, the forward
+phase and the backup phases essentially.
+
+271
+00:26:05,440 --> 00:26:09,899
+So, in some sense this is like the forward
+phase, whenever we are looking at the live
+
+272
+00:26:09,898 --> 00:26:13,349
+node it is like forward phase because we are
+adding the children.
+
+273
+00:26:13,349 --> 00:26:17,398
+Either all children, if it
+is a max node or one child if it is a min
+
+274
+00:26:17,398 --> 00:26:22,109
+node, but we are moving forward or moving
+down in the tree.
+
+275
+00:26:22,109 --> 00:26:26,878
+But once it is solved nodes, we go into the
+backward tree essentially.
+
+276
+00:26:26,878 --> 00:26:33,969
+So, now, we have these 4 nodes and all 4 will
+get label solved essentially.
+
+277
+00:26:33,970 --> 00:26:36,368
+Because they
+have this plus large value, they will always
+
+278
+00:26:36,368 --> 00:26:37,408
+be ahead of the queue.
+
+279
+00:26:37,409 --> 00:26:41,309
+Even if this one will gets label solved, it
+will go at the rear of the queue because those
+
+280
+00:26:41,308 --> 00:26:42,538
+will have plus large.
+
+281
+00:26:42,538 --> 00:26:45,970
+Then, eventually all 4 will get plus these
+values, and they get sorted
+
+282
+00:26:45,970 --> 00:26:51,019
+70, 50, 30, and 30 in the priority queue.
+
+283
+00:26:51,019 --> 00:26:55,499
+We always pick so, it is a priority queue,
+I do not
+
+284
+00:26:55,499 --> 00:26:59,358
+need to repeat that, we always take the node
+at the head of the queue.
+
+285
+00:26:59,358 --> 00:27:01,210
+So, once we have
+
+286
+00:27:01,210 --> 00:27:06,028
+.this 4 solved nodes in my, in the priority
+queue, the next node that will get picked
+
+287
+00:27:06,028 --> 00:27:08,720
+is this
+one 70, one is 70.
+
+288
+00:27:08,720 --> 00:27:17,979
+So, these represent 4 clusters let us call
+them A, B, C, D. Each of these clusters
+
+289
+00:27:17,979 --> 00:27:21,440
+represents 2 strategies, and each of these
+values represents an upper bound on those
+
+290
+00:27:21,440 --> 00:27:22,700
+2
+strategies.
+
+291
+00:27:22,700 --> 00:27:27,528
+And the best looking cluster is d, and d comes
+to ahead of the priority queue
+
+292
+00:27:27,528 --> 00:27:33,378
+and so, SSS star picks that algorithm, it
+is a max node.
+
+293
+00:27:33,378 --> 00:27:49,618
+So, if it is a max and solved, there
+are two cases, one is that, it has a sibling
+
+294
+00:27:49,618 --> 00:27:52,238
+left in the tree all the other cases when
+it does
+
+295
+00:27:52,239 --> 00:27:53,980
+not have a sibling left from the tree.
+
+296
+00:27:53,980 --> 00:27:57,558
+So, both these nodes 30 and 70 and in fact,
+all 4
+
+297
+00:27:57,558 --> 00:27:59,148
+have a sibling still left in the tree.
+
+298
+00:27:59,148 --> 00:28:02,199
+So, they have this case essentially.
+
+299
+00:28:02,200 --> 00:28:13,348
+So, in case they have a sibling, you replace
+with
+
+300
+00:28:13,348 --> 00:28:27,398
+sibling and lower value, whichever is the
+lower of the 2 values is you give that value
+
+301
+00:28:27,398 --> 00:28:28,979
+to
+that cluster, why?
+
+302
+00:28:28,980 --> 00:28:32,358
+Because remember that, the value of a strategy
+is always the minimum
+
+303
+00:28:32,358 --> 00:28:33,398
+of the value of the leaves essentially.
+
+304
+00:28:33,398 --> 00:28:35,768
+And if you are looking at one more leaf in
+the
+
+305
+00:28:35,769 --> 00:28:39,079
+strategy, and if it has a lower value, we
+must keep the lower value.
+
+306
+00:28:39,079 --> 00:28:41,269
+If it has a higher
+value, we must keep the lower value from the
+
+307
+00:28:41,269 --> 00:28:44,429
+first one, it does not matter where the
+lower value comes from.
+
+308
+00:28:44,429 --> 00:28:52,809
+So, keep the sibling as a representative,
+replace with sibling and with a lower value,
+
+309
+00:28:52,808 --> 00:28:54,950
+if
+there is no sibling.
+
+310
+00:28:54,950 --> 00:29:05,509
+So, I will write else here, and this else
+means that there is no sibling,
+
+311
+00:29:05,509 --> 00:29:17,569
+replace with parent.
+
+312
+00:29:17,569 --> 00:29:26,098
+So, we will come to this so, let us follow
+these steps.
+
+313
+00:29:26,098 --> 00:29:33,099
+So, this 70
+would be the head of the queue, and it will
+
+314
+00:29:33,099 --> 00:29:35,668
+get removed from the queue, and it is sibling
+would be added.
+
+315
+00:29:35,669 --> 00:29:39,669
+So, which amounts to say that we are exploring
+this node, and we are
+
+316
+00:29:39,669 --> 00:29:52,769
+looking at this node then, the value of this
+cluster would still be 70 because that is
+
+317
+00:29:52,769 --> 00:29:55,109
+the
+lower of this two values 70 and 80.
+
+318
+00:29:55,109 --> 00:30:00,008
+So, this would still be at the ahead of the
+queue because it has its value 70, it has
+
+319
+00:30:00,009 --> 00:30:03,470
+no more
+siblings left so, this will get added to the
+
+320
+00:30:03,470 --> 00:30:05,608
+queue and this will be get label solved.
+
+321
+00:30:05,608 --> 00:30:08,220
+So, let
+me say this represents label solved as a,
+
+322
+00:30:08,220 --> 00:30:13,079
+as we had done in the AO star algorithm.
+
+323
+00:30:13,079 --> 00:30:14,960
+If it
+has no sibling, we place it with the parent
+
+324
+00:30:14,960 --> 00:30:15,989
+with that value.
+
+325
+00:30:15,989 --> 00:30:20,569
+So, still this cluster D is
+represented by this node here and its value
+
+326
+00:30:20,569 --> 00:30:25,859
+is 70.
+
+327
+00:30:25,859 --> 00:30:35,988
+At this point, observe that because this is
+a max node here, this is never going to play
+
+328
+00:30:35,989 --> 00:30:40,759
+a
+role any further because it has an upper bound
+
+329
+00:30:40,759 --> 00:30:48,710
+of 30, and max is getting 70 from here,
+max knows it is getting 70 from here.
+
+330
+00:30:48,710 --> 00:30:50,749
+This is like an alpha cut off will take place
+this
+
+331
+00:30:50,749 --> 00:30:55,319
+.place, either you do it explicitly or it
+will languish at the end of the queue never
+
+332
+00:30:55,319 --> 00:31:11,319
+coming
+to the fore essentially does not matter.
+
+333
+00:31:11,319 --> 00:31:17,968
+That is, that step of alpha cut off is captured
+by this step here.
+
+334
+00:31:17,969 --> 00:31:30,570
+If it is min and solved
+now, just think carefully about this, if it
+
+335
+00:31:30,569 --> 00:31:34,439
+is a min node and it is solved and implicitly
+we
+
+336
+00:31:34,440 --> 00:31:39,009
+are not saying this here, it is at the head
+of the queue, it is at the head of the queue.
+
+337
+00:31:39,009 --> 00:31:42,480
+So,
+this is solved and it is at the head of the
+
+338
+00:31:42,480 --> 00:31:44,469
+queue.
+
+339
+00:31:44,469 --> 00:31:50,219
+It has a sibling, but the sibling is never
+going to play a role, why?
+
+340
+00:31:50,219 --> 00:31:55,669
+Because it is a min node, it is, it is got
+an upper, it is, it is value got a, got a
+
+341
+00:31:55,669 --> 00:32:03,580
+value of 70, it
+is sibling has an upper bound of 30, and this
+
+342
+00:32:03,579 --> 00:32:12,888
+sibling is never going to influence this max
+node, and it is going to not consider this
+
+343
+00:32:12,888 --> 00:32:13,888
+at all.
+
+344
+00:32:13,888 --> 00:32:17,798
+So, this is implemented by saying that, if
+it is a min node and if it is a solved node
+
+345
+00:32:17,798 --> 00:32:19,940
+then, just replace it with its parent.
+
+346
+00:32:19,940 --> 00:32:25,298
+So, now, this
+and the, parent gets label solved.
+
+347
+00:32:25,298 --> 00:32:34,418
+So, I should say that, parent and solved in
+both cases whether it is a max node or a min
+
+348
+00:32:34,419 --> 00:32:35,419
+node.
+
+349
+00:32:35,419 --> 00:32:39,619
+For a max node if there are no siblings then,
+the parent gets label solved and gets
+
+350
+00:32:39,618 --> 00:32:40,618
+the value.
+
+351
+00:32:40,618 --> 00:32:44,569
+If min node, it does not matter whether there
+are siblings or not, but its parent
+
+352
+00:32:44,569 --> 00:32:57,000
+will get label solved, and it will get a value
+of 70 in this case.
+
+353
+00:32:57,000 --> 00:33:05,819
+Now, we go back to this
+step that node is solved and that is a max
+
+354
+00:33:05,819 --> 00:33:18,749
+node, its sibling is not yet solved essentially
+it
+
+355
+00:33:18,749 --> 00:33:22,569
+is not a terminal node we are somewhere up
+in the tree.
+
+356
+00:33:22,569 --> 00:33:35,759
+So, we replace this with the sibling, the
+same process if max is solved replace with
+
+357
+00:33:35,759 --> 00:33:40,098
+sibling and lower value.
+
+358
+00:33:40,098 --> 00:33:43,210
+In this case the value is 70.
+
+359
+00:33:43,210 --> 00:33:53,730
+So, we basically this node becomes
+live with a value of 70.
+
+360
+00:33:53,730 --> 00:34:01,240
+It amounts to say that I want to evaluate
+this with a bound of 70
+
+361
+00:34:01,240 --> 00:34:02,669
+essentially.
+
+362
+00:34:02,669 --> 00:34:08,960
+Now, since it is a live node, it is like a
+recursive call essentially henceforth.
+
+363
+00:34:08,960 --> 00:34:12,389
+It
+is a live node, we follow this, add all children
+
+364
+00:34:12,389 --> 00:34:14,079
+for max, one child for min.
+
+365
+00:34:14,079 --> 00:34:19,849
+So, it is like a
+recursive call which means we add all children
+
+366
+00:34:19,849 --> 00:34:29,989
+for max and one child for min.
+
+367
+00:34:29,989 --> 00:34:44,329
+So, we first look at this and then so, all
+these added to the queue, this comes to the
+
+368
+00:34:44,329 --> 00:34:48,440
+head
+of the queue because it has a value of 80,
+
+369
+00:34:48,440 --> 00:34:49,829
+it is a terminal node.
+
+370
+00:34:49,829 --> 00:34:54,629
+The moment we see a
+terminal node we missed it.
+
+371
+00:34:54,628 --> 00:34:59,250
+This comes to the head of the queue then,
+it gets a played
+
+372
+00:34:59,250 --> 00:35:08,760
+biased child with a value of 80 then, there
+is no more siblings left, this is still at
+
+373
+00:35:08,760 --> 00:35:09,760
+the head
+of the queue.
+
+374
+00:35:09,760 --> 00:35:15,970
+So, this gets added to the queue with the
+value of 80 and solved.
+
+375
+00:35:15,969 --> 00:35:18,049
+The
+moment this gets label solved with a value
+
+376
+00:35:18,050 --> 00:35:25,490
+of 80 its parent gets label solved with a
+value
+
+377
+00:35:25,489 --> 00:35:32,500
+of 80, and when the, when a max node.
+
+378
+00:35:32,500 --> 00:35:36,940
+.So, remember that we are always considering
+the nodes at the head of the queue and the
+
+379
+00:35:36,940 --> 00:35:39,269
+highest value node we are looking at that
+all times.
+
+380
+00:35:39,269 --> 00:35:46,400
+This is at the head of the queue sorry,
+this is not correct with the value of 80,
+
+381
+00:35:46,400 --> 00:35:50,829
+but with value of 70 essentially the lower
+of the 2
+
+382
+00:35:50,829 --> 00:35:51,849
+values.
+
+383
+00:35:51,849 --> 00:35:57,670
+Now, there are no more siblings left for this
+max node at the head is the max
+
+384
+00:35:57,670 --> 00:36:01,349
+node with the label solved so, this is already
+gone away actually, it is been thrown away,
+
+385
+00:36:01,349 --> 00:36:02,809
+only one copy is been kept it is.
+
+386
+00:36:02,809 --> 00:36:08,809
+So, no more siblings are left so, this min
+node gets label
+
+387
+00:36:08,809 --> 00:36:11,140
+solved with the value of 80.
+
+388
+00:36:11,139 --> 00:36:20,099
+Now, since it is a min node and it is solved,
+it does not care about it, and it is at the
+
+389
+00:36:20,099 --> 00:36:23,589
+head
+of the queue, it does not care because this
+
+390
+00:36:23,590 --> 00:36:28,000
+means whatever the bounds that are coming
+from elsewhere will be lower than this, it
+
+391
+00:36:28,000 --> 00:36:32,778
+is in the hydraulic queue and max is going
+to.
+
+392
+00:36:32,778 --> 00:36:38,329
+So, max is getting a value of 80 from here
+it is getting a value of utmost 50 or 30 from
+
+393
+00:36:38,329 --> 00:36:41,588
+here depending on what happens in these other
+nodes which we have not seen, but
+
+394
+00:36:41,588 --> 00:36:43,108
+utmost the value of 50.
+
+395
+00:36:43,108 --> 00:36:48,750
+So, they are behind in the queue, the moment
+a min solved node comes into the head of
+
+396
+00:36:48,750 --> 00:36:53,420
+the queue as we have said here, we just replace
+the parent with the solved node.
+
+397
+00:36:53,420 --> 00:37:01,930
+In this
+case we replace this with a value of 70.
+
+398
+00:37:01,929 --> 00:37:06,949
+So, what have we done?
+
+399
+00:37:06,949 --> 00:37:15,858
+We have looked at this.
+
+400
+00:37:15,858 --> 00:37:26,159
+This SSS star algorithm has looked at 1, 2,
+3, 4, 5, 6, 7, nodes essentially before it
+
+401
+00:37:26,159 --> 00:37:27,250
+terminated.
+
+402
+00:37:27,250 --> 00:37:31,750
+Notice, it terminates with the same value
+of 70 which the alpha beta found
+
+403
+00:37:31,750 --> 00:37:34,838
+and which is of mini max would have found
+essentially.
+
+404
+00:37:34,838 --> 00:37:39,130
+So, all the three algorithms mini max algorithm,
+alpha beta algorithm, SSS star
+
+405
+00:37:39,130 --> 00:37:44,139
+algorithm, we find the same mini max value
+obviously, otherwise they would be
+
+406
+00:37:44,139 --> 00:37:45,150
+different.
+
+407
+00:37:45,150 --> 00:37:51,028
+So, they find the same move with the same
+mini max value.
+
+408
+00:37:51,028 --> 00:37:55,818
+Mini max would
+have seen all these 16 nodes, alpha beta sees
+
+409
+00:37:55,818 --> 00:38:05,219
+only these 10 unshaded nodes that we have
+drawn here, and SSS star sees only these 7
+
+410
+00:38:05,219 --> 00:38:08,308
+underlined pink nodes that we have seen here.
+
+411
+00:38:08,309 --> 00:38:10,730
+What is more important?
+
+412
+00:38:10,730 --> 00:38:15,480
+Observe that it is attention is always been
+focused towards this
+
+413
+00:38:15,480 --> 00:38:21,750
+side of the tree where the best moves lie
+for both the players, and it has basically
+
+414
+00:38:21,750 --> 00:38:24,239
+solved
+this part and ignored this part altogether
+
+415
+00:38:24,239 --> 00:38:25,239
+essentially.
+
+416
+00:38:25,239 --> 00:38:28,889
+It is not seen this node for example,
+which was seen by alpha beta of this node,
+
+417
+00:38:28,889 --> 00:38:31,119
+which was seen by alpha beta and so on
+essentially.
+
+418
+00:38:31,119 --> 00:38:39,088
+So, in fact, it was shown by stockman that,
+alpha beta that, SSS star, if any
+
+419
+00:38:39,088 --> 00:38:42,489
+node is seen by SSS star, alpha beta will
+also see that essentially.
+
+420
+00:38:42,489 --> 00:38:43,489
+Where?
+
+421
+00:38:43,489 --> 00:38:54,069
+Yes because
+this was 70, this also should be 70 and solved.
+
+422
+00:38:54,070 --> 00:39:07,510
+.So, SSS star is the best first variation
+of alpha beta you can see.
+
+423
+00:39:07,510 --> 00:39:10,039
+The only difference
+between what we said earlier when we talked
+
+424
+00:39:10,039 --> 00:39:11,170
+about best first search, we used a notion
+of
+
+425
+00:39:11,170 --> 00:39:14,950
+a heuristic function which was domain dependent.
+
+426
+00:39:14,949 --> 00:39:19,548
+In this case we do not use the heuristic
+function in that sense, but we use an estimate
+
+427
+00:39:19,548 --> 00:39:20,548
+of the solution.
+
+428
+00:39:20,548 --> 00:39:24,130
+A heuristic function also
+gives an estimate of a solution, but here
+
+429
+00:39:24,130 --> 00:39:25,630
+we have a different mechanism to arrive at
+an
+
+430
+00:39:25,630 --> 00:39:28,420
+estimate is that is by sampling.
+
+431
+00:39:28,420 --> 00:39:38,019
+By sampling all strategies to get upper bounds
+on all possible strategies, and that in the
+
+432
+00:39:38,019 --> 00:39:40,730
+process we found these clusters.
+
+433
+00:39:40,730 --> 00:39:43,278
+And then we always refined the best looking
+cluster.
+
+434
+00:39:43,278 --> 00:39:45,480
+So,
+that is where the best first nature of the
+
+435
+00:39:45,480 --> 00:39:50,690
+algorithm comes into play.
+
+436
+00:39:50,690 --> 00:40:01,829
+So, I want to end with
+a couple of things, one is that if you are
+
+437
+00:40:01,829 --> 00:40:10,829
+talking about a real world game playing
+program.
+
+438
+00:40:10,829 --> 00:40:11,829
+.
+
+439
+00:40:11,829 --> 00:40:21,159
+Then, you do a certain amount of search, you
+do a cape line look ahead, but there is a
+
+440
+00:40:21,159 --> 00:40:24,118
+danger of lurking here.
+
+441
+00:40:24,119 --> 00:40:26,980
+Of course, the farther you can see the better,
+but because the tree
+
+442
+00:40:26,980 --> 00:40:33,240
+is growing exponentially, you cannot do too
+much search and most algorithms do not go
+
+443
+00:40:33,239 --> 00:40:35,879
+beyond 10 ply also essentially.
+
+444
+00:40:35,880 --> 00:40:50,300
+Now, this something called the horizon effect,
+and this is as follows that, this supposing,
+
+445
+00:40:50,300 --> 00:40:57,028
+there is one particular line of play which
+is of interest, which is being evaluated by
+
+446
+00:40:57,028 --> 00:41:01,889
+certain mechanism as which happens naturally
+in this.
+
+447
+00:41:01,889 --> 00:41:08,929
+So, let us say this sequence of
+nodes has a role to play in determining that
+
+448
+00:41:08,929 --> 00:41:10,730
+either this better or something else is better,
+
+449
+00:41:10,730 --> 00:41:11,730
+.it does not matter.
+
+450
+00:41:11,730 --> 00:41:13,530
+It is an important sequence of events moves.
+
+451
+00:41:13,530 --> 00:41:15,220
+So, each is a move.
+
+452
+00:41:15,219 --> 00:41:17,528
+So,
+max move, min move and so on.
+
+453
+00:41:17,528 --> 00:41:27,989
+Now, supposing in this you were to insert
+a set of arbitrary moves which are pointless
+
+454
+00:41:27,989 --> 00:41:42,029
+let
+us say, max makes some move, max makes a move,
+
+455
+00:41:42,030 --> 00:41:45,359
+min makes a move, max makes a
+move, makes the move.
+
+456
+00:41:45,358 --> 00:41:51,219
+And let us for arguments sake say that, this
+state is equal to this
+
+457
+00:41:51,219 --> 00:41:52,629
+state.
+
+458
+00:41:52,630 --> 00:42:00,210
+It is possible, if you are looking at a game
+like chess for example, max might make
+
+459
+00:42:00,210 --> 00:42:05,369
+a knight move, min might make a knight move,
+max might take the knight move back,
+
+460
+00:42:05,369 --> 00:42:07,500
+and make min take its knight move back.
+
+461
+00:42:07,500 --> 00:42:12,298
+So, both have made a move and undone the move
+and so, they are in the same state here.
+
+462
+00:42:12,298 --> 00:42:14,489
+But what happens to the search?
+
+463
+00:42:14,489 --> 00:42:19,018
+In search supposing, we insert this whole
+sequence here
+
+464
+00:42:19,018 --> 00:42:27,229
+then, this part gets pushed out of the horizon
+because of this arbitrary move that you are
+
+465
+00:42:27,230 --> 00:42:30,619
+doing, this cart gets pushed out of the horizon
+which means that, something that is
+
+466
+00:42:30,619 --> 00:42:34,759
+important which was happening in these moves
+is no longer noticed by this algorithm
+
+467
+00:42:34,760 --> 00:42:37,319
+because it is search is only till the horizon.
+
+468
+00:42:37,318 --> 00:42:44,558
+So, this effect is called the horizon effect,
+and what people have done is that, we often
+
+469
+00:42:44,559 --> 00:42:56,910
+do
+a secondary search, before making a move they
+
+470
+00:42:56,909 --> 00:43:02,489
+do a little bit of secondary search to
+verify that the move is indeed not a there
+
+471
+00:43:02,489 --> 00:43:05,889
+are no catastrophic lurking behind that move
+or
+
+472
+00:43:05,889 --> 00:43:06,940
+something like that.
+
+473
+00:43:06,940 --> 00:43:09,039
+So, very often people do this.
+
+474
+00:43:09,039 --> 00:43:12,619
+Obviously, the secondary search will
+only do this much amount of search, which
+
+475
+00:43:12,619 --> 00:43:17,800
+is at last less than actually searching this
+whole thing up to this depth, that would have
+
+476
+00:43:17,800 --> 00:43:25,440
+been meant much more worth essentially.
+
+477
+00:43:25,440 --> 00:43:32,849
+And finally, I want to end with an example,
+which shows that there can be a limitation
+
+478
+00:43:32,849 --> 00:43:35,030
+to
+search.
+
+479
+00:43:35,030 --> 00:43:51,000
+So, this is a well known example which was
+fed to this hi-tech program, this hitech was
+
+480
+00:43:51,000 --> 00:43:57,130
+a multi processor, 64 processor chess playing
+machine developed by Berlino in
+
+481
+00:43:57,130 --> 00:44:09,289
+Seymour, and this position was given to hi
+tech and it illustrates that search is not
+
+482
+00:44:09,289 --> 00:44:15,460
+always
+capable of doing something, unless it is full
+
+483
+00:44:15,460 --> 00:44:23,338
+search of course, which are other forms of
+reasoning can do.
+
+484
+00:44:23,338 --> 00:44:28,639
+So, the position is as follows.
+
+485
+00:44:28,639 --> 00:44:46,818
+So, let us say, these are pawns P, P, P, P,
+P. So, white has this position.
+
+486
+00:44:46,818 --> 00:44:49,929
+So, it is a very
+contrite position somebody invented it just
+
+487
+00:44:49,929 --> 00:44:53,469
+to show that search can have its drawbacks.
+
+488
+00:44:53,469 --> 00:44:59,949
+So, these are pawns, 8 pawns white house,
+one in each column, and white has only the
+
+489
+00:44:59,949 --> 00:45:03,710
+king left here essentially.
+
+490
+00:45:03,710 --> 00:45:13,440
+Let us say, the opponent also has 8 pawns
+which are kind of
+
+491
+00:45:13,440 --> 00:45:17,059
+.head to head with these 8 pawns.
+
+492
+00:45:17,059 --> 00:45:21,839
+In some sense, creating the kind of a dead
+lock, but the
+
+493
+00:45:21,838 --> 00:45:23,078
+opponent has other pieces also.
+
+494
+00:45:23,079 --> 00:45:37,980
+So, opponent has for example, a bishop here
+and a rook here, and a rook here, and a king
+
+495
+00:45:37,980 --> 00:45:38,980
+here.
+
+496
+00:45:38,980 --> 00:45:43,858
+So, the opponent is strong in terms of material
+advantage.
+
+497
+00:45:43,858 --> 00:45:49,369
+This white player has 8
+pawns and the king, this red player or black
+
+498
+00:45:49,369 --> 00:45:55,500
+player whatever you want to call has 8
+pawns and a king, but also has 2 rooks and
+
+499
+00:45:55,500 --> 00:45:56,500
+a bishop essentially.
+
+500
+00:45:56,500 --> 00:46:01,778
+So, there is a significant
+material advantage essentially.
+
+501
+00:46:01,778 --> 00:46:09,710
+What happens if this red moves this rook here?
+
+502
+00:46:09,710 --> 00:46:13,039
+That
+makes this move and now its white’s turn
+
+503
+00:46:13,039 --> 00:46:26,049
+to move and this position was given to hi-tech
+essentially, this is called the poisoned rook.
+
+504
+00:46:26,048 --> 00:46:30,449
+So, if you just look up poisoned rook on the
+web, you will get this position and some
+
+505
+00:46:30,449 --> 00:46:31,769
+story behind this essentially.
+
+506
+00:46:31,769 --> 00:46:35,659
+So, what is the story?
+
+507
+00:46:35,659 --> 00:46:43,239
+Red moves the rook here, in some
+sense offering it to this pawn, right?
+
+508
+00:46:43,239 --> 00:46:47,159
+White can capture this rook like this, if
+you know
+
+509
+00:46:47,159 --> 00:46:54,239
+the chess rules, and white, the game playing
+algorithm that we have been talking about
+
+510
+00:46:54,239 --> 00:46:55,239
+will basically do this.
+
+511
+00:46:55,239 --> 00:46:58,429
+They will do some k ply search, apply the
+evaluation function.
+
+512
+00:46:58,429 --> 00:46:59,471
+What is the evaluation function?
+
+513
+00:46:59,471 --> 00:47:02,230
+We had seen it is a combination of material
+advantage
+
+514
+00:47:02,230 --> 00:47:04,150
+and positional advantage.
+
+515
+00:47:04,150 --> 00:47:06,809
+And then, choose a best move based on this
+evaluation function.
+
+516
+00:47:06,809 --> 00:47:09,639
+What will this poor
+white program do?
+
+517
+00:47:09,639 --> 00:47:14,788
+It will see that, it is getting to capture
+the rook.
+
+518
+00:47:14,789 --> 00:47:19,559
+As a result of which,
+it makes this move of capturing the rook,
+
+519
+00:47:19,559 --> 00:47:23,528
+but this rook as a title says, it is a poisoned
+rook because what happens?
+
+520
+00:47:23,528 --> 00:47:28,409
+Once this pawn moves away from here, this
+impregnable
+
+521
+00:47:28,409 --> 00:47:30,568
+fortress that right had.
+
+522
+00:47:30,568 --> 00:47:33,739
+So, observe that these rooks cannot attack
+any of the pawns
+
+523
+00:47:33,739 --> 00:47:40,118
+otherwise because rooks can move only in this
+direction, and the only bishop that black
+
+524
+00:47:40,119 --> 00:47:43,130
+has it is the one which will attack its own
+color.
+
+525
+00:47:43,130 --> 00:47:46,950
+So, if you know chess you will see that you
+will be for example, all black squares and
+
+526
+00:47:46,949 --> 00:47:51,169
+these will be all white squares, and it has
+a black bishop, it can never attack, it can
+
+527
+00:47:51,170 --> 00:47:54,318
+never
+break, left to itself black can never break
+
+528
+00:47:54,318 --> 00:47:58,969
+into this fortress that white has constructed.
+
+529
+00:47:58,969 --> 00:48:02,048
+But
+the moment white moves one pawn from this
+
+530
+00:48:02,048 --> 00:48:10,699
+chain, it opens its territory to black and
+then, black can actually as you might say,
+
+531
+00:48:10,699 --> 00:48:13,460
+invade from here and win the game
+essentially.
+
+532
+00:48:13,460 --> 00:48:19,088
+So, even players, most even players will look
+at this position and say yes.
+
+533
+00:48:19,088 --> 00:48:22,099
+The only thing
+that the white can do is to move the king
+
+534
+00:48:22,099 --> 00:48:25,920
+around and then, black cannot do anything,
+but
+
+535
+00:48:25,920 --> 00:48:31,579
+.this chess program which was not able to
+reason at a what you might say as a higher
+
+536
+00:48:31,579 --> 00:48:38,960
+level or a meta level, or see further it can
+only do this search of a tree thought that
+
+537
+00:48:38,960 --> 00:48:40,500
+it was
+going to get some material advantage.
+
+538
+00:48:40,500 --> 00:48:43,489
+So, it captured the rook and actually lost
+the game essentially.
+
+539
+00:48:43,489 --> 00:48:49,250
+So, which is the, thus the
+lesson here is that to build intelligence
+
+540
+00:48:49,250 --> 00:48:54,260
+systems, you need not just one form of reasoning,
+but many forms of reasoning working together.
+
+541
+00:48:54,260 --> 00:48:59,710
+The other form of reasoning is that kind
+of reasoning that we are talking about here
+
+542
+00:48:59,710 --> 00:49:02,599
+know, analyzing the structure in some way
+or
+
+543
+00:49:02,599 --> 00:49:09,298
+making some difference about this thing which
+this program is not able to do.
+
+544
+00:49:09,298 --> 00:49:16,960
+So, we will stop here with games, there are
+other games plays algorithm, game playing
+
+545
+00:49:16,960 --> 00:49:18,088
+algorithms that we will not consider.
+
+546
+00:49:18,088 --> 00:49:21,139
+For example, Berlino had a algorithm called
+B star,
+
+547
+00:49:21,139 --> 00:49:27,710
+which we will not consider, which is also
+a kind of a heuristic search algorithm which
+
+548
+00:49:27,710 --> 00:49:32,009
+had a sense of direction, but we will limit
+ourselves to the SSS star, which is a much
+
+549
+00:49:32,009 --> 00:49:33,980
+simpler algorithm to talk about essentially.
+
+550
+00:49:33,980 --> 00:49:45,019
+So, we will end with games here and move on
+from this place essentially.
+
+551
+00:49:45,018 --> 00:49:55,018
+.
+

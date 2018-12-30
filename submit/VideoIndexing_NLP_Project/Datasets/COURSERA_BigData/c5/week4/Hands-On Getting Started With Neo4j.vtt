@@ -1,0 +1,454 @@
+WEBVTT
+
+1
+00:00:02.654 --> 00:00:07.877
+Next we're going to get started with Neo4j
+by creating our first graph network.
+
+2
+00:00:08.960 --> 00:00:11.940
+To do this,
+first we will review a graphical or
+
+3
+00:00:11.940 --> 00:00:15.010
+a diagrammatic representation
+of a graph network.
+
+4
+00:00:15.010 --> 00:00:19.350
+Then, we'll introduce you to an equivalent
+text representation of that network.
+
+5
+00:00:19.350 --> 00:00:24.060
+Then, we will build on those text
+representations in the form of pseudocode,
+
+6
+00:00:24.060 --> 00:00:28.240
+with the ultimate goal being
+to develop an actual script
+
+7
+00:00:28.240 --> 00:00:30.010
+to create our network in Neo4j.
+
+8
+00:00:31.160 --> 00:00:35.423
+Then, we'll go ahead and run the script to
+create the network, and we'll explore it,
+
+9
+00:00:35.423 --> 00:00:37.333
+and confirm it structure and content.
+
+10
+00:00:41.776 --> 00:00:47.800
+You're looking at a simple graph network,
+consisting of five nodes and five edges.
+
+11
+00:00:47.800 --> 00:00:51.050
+Each node represents a person,
+an individual.
+
+12
+00:00:51.050 --> 00:00:54.450
+And, the edges represent
+relationships between those people.
+
+13
+00:00:54.450 --> 00:00:58.840
+Each node has a number associate with it,
+N1 through N5.
+
+14
+00:00:58.840 --> 00:01:04.732
+And, each edge has a corresponding number
+associated with it, E1 through E5.
+
+15
+00:01:04.732 --> 00:01:09.286
+Edges are relationships such
+as Harry is known by Tom,
+
+16
+00:01:09.286 --> 00:01:11.964
+or Julian is coworker of Harry.
+
+17
+00:01:11.964 --> 00:01:16.460
+We could have more or less edges, but we
+wanted to keep things relatively simple,
+
+18
+00:01:16.460 --> 00:01:20.050
+while still maintaining
+a reasonable degree of complexity.
+
+19
+00:01:20.050 --> 00:01:23.000
+What we want is a script that we can
+
+20
+00:01:23.000 --> 00:01:28.270
+process with Neo4j in order to
+create an actual graph network.
+
+21
+00:01:28.270 --> 00:01:31.273
+So, let's look at a text
+representation of this network.
+
+22
+00:01:35.494 --> 00:01:40.879
+So, here we list our five nodes and
+five edges, and we're going to begin
+
+23
+00:01:40.879 --> 00:01:46.940
+the process of extending the text
+descriptions of our graph network.
+
+24
+00:01:46.940 --> 00:01:50.210
+I'm going to scroll down briefly,
+and just show you the end result, so
+
+25
+00:01:50.210 --> 00:01:54.070
+you have a better idea of what
+the final goal is going to be.
+
+26
+00:01:54.070 --> 00:01:58.854
+This is the actual code that we're going
+to submit to Neo4j in order to create
+
+27
+00:01:58.854 --> 00:01:59.745
+our network.
+
+28
+00:01:59.745 --> 00:02:02.425
+But, we're going to back
+up a little bit and
+
+29
+00:02:02.425 --> 00:02:05.615
+look at some simplified
+versions of this syntax, so
+
+30
+00:02:05.615 --> 00:02:10.627
+we can better understand how simple the
+graph network relationships really are.
+
+31
+00:02:13.374 --> 00:02:18.930
+Here, we list the five nodes and
+five edges, as you saw just a moment ago.
+
+32
+00:02:18.930 --> 00:02:23.340
+And down below,
+we have a simple notation structure,
+
+33
+00:02:23.340 --> 00:02:26.490
+which attempts to describe
+the five edge relationships.
+
+34
+00:02:26.490 --> 00:02:30.600
+The first line represents the edge E1.
+
+35
+00:02:30.600 --> 00:02:34.820
+We can see that the nodes N1 and
+N2 are included,
+
+36
+00:02:34.820 --> 00:02:40.410
+because Harry is known by Tom, and
+Tom is node N1 and Harry is node N2.
+
+37
+00:02:40.410 --> 00:02:44.950
+The same goes for the second line,
+the relationship between Julian and Harry.
+
+38
+00:02:44.950 --> 00:02:47.770
+Julian is co-worker of Harry, and so on.
+
+39
+00:02:48.890 --> 00:02:53.830
+So, let's take this a step further
+by defining our graph network,
+
+40
+00:02:53.830 --> 00:02:57.300
+so that each node is
+a particular type of node.
+
+41
+00:02:57.300 --> 00:03:03.410
+In this case, we're going to define a node
+type as what we're calling a ToyNode.
+
+42
+00:03:03.410 --> 00:03:08.040
+As we introduce each node and
+its relationship with other nodes,
+
+43
+00:03:08.040 --> 00:03:11.248
+we'll define the node
+to be of type ToyNode.
+
+44
+00:03:11.248 --> 00:03:16.181
+So, on this first line,
+N1 goes through e1 to N2.
+
+45
+00:03:16.181 --> 00:03:18.822
+And, both of those are introduced for
+the first time, so
+
+46
+00:03:18.822 --> 00:03:21.370
+we'll define them as type ToyNode.
+
+47
+00:03:21.370 --> 00:03:25.380
+But, on the next line, since we
+already introduced N2 as type ToyNode,
+
+48
+00:03:25.380 --> 00:03:26.970
+we don't need to repeat that statement.
+
+49
+00:03:28.000 --> 00:03:33.200
+And, so we continue in the same manner
+with the remaining edge relationships.
+
+50
+00:03:33.200 --> 00:03:38.860
+Taking this even further, we'll apply
+a similar kind of constraint to our edges.
+
+51
+00:03:38.860 --> 00:03:44.880
+In this case, we'll define our network
+such that each edge is a particular type,
+
+52
+00:03:44.880 --> 00:03:47.120
+which we're calling ToyRelation.
+
+53
+00:03:47.120 --> 00:03:50.510
+Next, we're going to add
+properties to our nodes and edges.
+
+54
+00:03:50.510 --> 00:03:54.070
+Our nodes can have properties
+such as name or job,
+
+55
+00:03:54.070 --> 00:03:59.850
+so in this case, our first node,
+N1, will have the name Tom.
+
+56
+00:03:59.850 --> 00:04:04.700
+And, the appropriate syntax for this
+includes curly braces surrounding the key
+
+57
+00:04:04.700 --> 00:04:09.570
+value pairs, a colon separating
+the key value pairs, and
+
+58
+00:04:09.570 --> 00:04:13.500
+the values defined within single quotes.
+
+59
+00:04:13.500 --> 00:04:17.738
+Likewise, each edge may have
+a specific type of relationship,
+
+60
+00:04:17.738 --> 00:04:20.722
+including co-worker, wife, and friend.
+
+61
+00:04:22.534 --> 00:04:26.499
+So, finally this brings us to the actual
+code we're going to use to create our
+
+62
+00:04:26.499 --> 00:04:28.130
+graph network.
+
+63
+00:04:28.130 --> 00:04:31.057
+So, let's go ahead and copy this,
+and paste it into Neo4j, so
+
+64
+00:04:31.057 --> 00:04:32.587
+we can take a look at our network.
+
+65
+00:04:35.295 --> 00:04:38.410
+Here we are, running Neo4j in our browser.
+
+66
+00:04:38.410 --> 00:04:43.830
+So, I'm going to paste the code that
+I just copied from my text file
+
+67
+00:04:43.830 --> 00:04:46.360
+into the command line
+in the Neo4j interface.
+
+68
+00:04:47.450 --> 00:04:50.970
+And, I'll click the Play button
+to execute those commands, and
+
+69
+00:04:50.970 --> 00:04:55.250
+we'll see the results returned
+in this newly displayed panel.
+
+70
+00:04:55.250 --> 00:05:00.320
+We can see that we have 5 labels added,
+5 nodes were created, 13 properties were
+
+71
+00:05:00.320 --> 00:05:06.680
+set, 5 relationships were created, and the
+entire process required 31 milliseconds.
+
+72
+00:05:09.000 --> 00:05:14.550
+However, we still can't actually view our
+graph unless we issue yet another command.
+
+73
+00:05:14.550 --> 00:05:19.640
+So, let's shuffle to our text file,
+and take a look at that command.
+
+74
+00:05:19.640 --> 00:05:23.910
+What this command does,
+is it tries to identify a match
+
+75
+00:05:23.910 --> 00:05:29.600
+in which a particular node has
+a relationship with any other node.
+
+76
+00:05:29.600 --> 00:05:33.180
+And, then we'll return those nodes and
+relationships.
+
+77
+00:05:33.180 --> 00:05:36.020
+So, we'll go ahead and copy this, and
+
+78
+00:05:36.020 --> 00:05:40.280
+we'll paste it in to our command line,
+and we'll execute.
+
+79
+00:05:40.280 --> 00:05:41.970
+And, there's our graph.
+
+80
+00:05:41.970 --> 00:05:47.360
+When we mouse over the nodes, we can see
+information displayed on the bottom.
+
+81
+00:05:47.360 --> 00:05:51.770
+And, when we select those nodes, that
+information is displayed permanently along
+
+82
+00:05:51.770 --> 00:05:55.810
+the bottom,
+likewise with edge relationships.
+
+83
+00:05:55.810 --> 00:06:01.536
+So, we would expect to see things such
+as Michelle is the wife of Harry,
+
+84
+00:06:01.536 --> 00:06:06.110
+Julian is a co-worker of Harry, and so on.
+
+85
+00:06:06.110 --> 00:06:09.310
+So, it looks like our network
+has been created successfully.
+
+86
+00:06:09.310 --> 00:06:12.980
+We can also display
+information in a tabular format
+
+87
+00:06:12.980 --> 00:06:15.190
+by clicking the Rows icon on the left.
+
+88
+00:06:15.190 --> 00:06:19.030
+And, we'll see that this information
+is not constrained by the directed
+
+89
+00:06:19.030 --> 00:06:20.320
+nature of our graph.
+
+90
+00:06:20.320 --> 00:06:23.585
+For example, we see that Harry
+has a relationship with Tom,
+
+91
+00:06:23.585 --> 00:06:25.910
+in which Harry knows Tom.
+
+92
+00:06:25.910 --> 00:06:29.386
+But likewise, down here,
+Tom has a relationship with Harry,
+
+93
+00:06:29.386 --> 00:06:30.840
+in which Tom knows Harry.
+
+94
+00:06:32.400 --> 00:06:35.620
+Next, we're going to learn
+how to add to this graph and
+
+95
+00:06:35.620 --> 00:06:38.777
+modify some of the properties
+of the nodes and edges.

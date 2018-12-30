@@ -1,0 +1,1878 @@
+
+1
+00:00:01.850 --> 00:00:05.240
+Welcome to Big Data Integration and
+Processing.
+
+2
+00:00:05.240 --> 00:00:08.190
+ Welcome to course three of
+the big data specialization.
+
+3
+00:00:08.190 --> 00:00:09.710
+I'm Amarnath Gupta.
+
+4
+00:00:09.710 --> 00:00:11.650
+ And I'm Ilkay Altintas.
+
+5
+00:00:11.650 --> 00:00:14.590
+We are really excited to
+work with you in this course
+
+6
+00:00:14.590 --> 00:00:19.820
+to develop your understanding and skills
+in big data integration and processing.
+
+7
+00:00:19.820 --> 00:00:24.180
+By now you might have just
+finished our first two courses and
+
+8
+00:00:24.180 --> 00:00:27.870
+learned the basics of big data
+modelling and management.
+
+9
+00:00:27.870 --> 00:00:30.480
+If you haven't, it's not required.
+
+10
+00:00:30.480 --> 00:00:33.560
+But for those that less background
+in the data modelling and
+
+11
+00:00:33.560 --> 00:00:37.680
+data management areas you
+might find it valuable.
+
+12
+00:00:37.680 --> 00:00:42.030
+ We understand that you may not have
+any background on data management.
+
+13
+00:00:42.030 --> 00:00:47.382
+We are going to introduce Query languages,
+we'll first look at SQL in some detail,
+
+14
+00:00:47.382 --> 00:00:51.740
+and then move to Query languages for
+MongoDB which is a semi structured
+
+15
+00:00:51.740 --> 00:00:56.260
+data management system, and Aerospike,
+which is a key value store.
+
+16
+00:00:57.740 --> 00:01:02.200
+ We will also introduce concepts
+related to processing of big data as
+
+17
+00:01:02.200 --> 00:01:03.890
+big data pipelines.
+
+18
+00:01:03.890 --> 00:01:08.160
+We talk about data structures and
+transformations related to batch and
+
+19
+00:01:08.160 --> 00:01:11.230
+stream processing as steps in a pipeline.
+
+20
+00:01:11.230 --> 00:01:14.100
+Providing us a way to talk
+about big data processing
+
+21
+00:01:14.100 --> 00:01:17.180
+without getting into the details
+of the underlying technologies.
+
+22
+00:01:18.630 --> 00:01:23.710
+Once we have reviewed the concepts and
+related systems, we will switch gears
+
+23
+00:01:23.710 --> 00:01:28.370
+to hands on exercises with Spark,
+one of the most popular big data engines.
+
+24
+00:01:29.470 --> 00:01:34.060
+We will show you examples of patch and
+stream processing using Spark.
+
+25
+00:01:35.780 --> 00:01:39.410
+ As you know for
+many data science applications
+
+26
+00:01:39.410 --> 00:01:44.140
+one has to use many different databases
+and analyze the integrated data.
+
+27
+00:01:44.140 --> 00:01:50.160
+In fact, data integration is one leading
+cause leading to the bigness of data.
+
+28
+00:01:51.410 --> 00:01:54.780
+We'll give you a rapid exposure to
+information integration systems
+
+29
+00:01:54.780 --> 00:01:59.530
+through use cases and point out the big
+data aspects one should pay attention to.
+
+30
+00:02:00.760 --> 00:02:06.620
+ We are also excited to show you
+examples of data processing using Splunk.
+
+31
+00:02:06.620 --> 00:02:10.510
+Our goal here is to provide you
+with simple hands on exercises
+
+32
+00:02:10.510 --> 00:02:12.550
+that require no programming, but
+
+33
+00:02:12.550 --> 00:02:18.660
+show you how one can use interfaces like
+Splunk to manage and process big data.
+
+34
+00:02:18.660 --> 00:02:20.820
+We wish you a fun time learning and
+
+35
+00:02:20.820 --> 00:02:26.080
+hope to hear from you in the discussions
+forums and learner stories as usual.
+
+36
+00:02:26.080 --> 00:02:27.880
+ Well, happy learning and think big data
+
+1
+00:00:02.627 --> 00:00:07.359
+In this video, we will talk about
+the challenges of ingesting and
+
+2
+00:00:07.359 --> 00:00:12.178
+processing big data and
+remind ourselves why need any paradigm and
+
+3
+00:00:12.178 --> 00:00:14.690
+programming models for big data.
+
+4
+00:00:15.900 --> 00:00:20.710
+After this video, you will be able to
+summarize the requirements of programming
+
+5
+00:00:20.710 --> 00:00:23.650
+models for big data and
+why you should care about them.
+
+6
+00:00:24.730 --> 00:00:27.800
+You will also be able to explain
+how the challenges of big
+
+7
+00:00:27.800 --> 00:00:32.750
+data related to its variety, volume and
+velocity affects its processing.
+
+8
+00:00:36.090 --> 00:00:41.880
+Before we start,
+let's imagine an online gaming newscase,
+
+9
+00:00:41.880 --> 00:00:44.870
+just like the one we have for
+Catch the Pink Flamingo.
+
+10
+00:00:47.140 --> 00:00:52.123
+You just introduced the game,
+and users started signing up.
+
+11
+00:00:52.123 --> 00:00:55.101
+You start with a traditional
+relational database,
+
+12
+00:00:55.101 --> 00:00:57.950
+keeping track of user sessions and
+other events.
+
+13
+00:01:00.130 --> 00:01:05.030
+Your game server receives
+an event notification every time
+
+14
+00:01:05.030 --> 00:01:08.710
+a user opens his session and
+makes a point in the game.
+
+15
+00:01:09.990 --> 00:01:13.690
+Initially, everything is great,
+your game is working and
+
+16
+00:01:13.690 --> 00:01:17.230
+the database is able to handle the event
+streams coming into the server.
+
+17
+00:01:18.490 --> 00:01:23.960
+However, suddenly your game becomes
+highly popular a good problem to have.
+
+18
+00:01:25.890 --> 00:01:29.670
+The database management system in
+your game server won't be able to
+
+19
+00:01:29.670 --> 00:01:31.660
+handle the load anymore.
+
+20
+00:01:31.660 --> 00:01:35.630
+You start getting errors that the events
+can't be inserted into the database
+
+21
+00:01:35.630 --> 00:01:37.240
+at the speed they are coming in.
+
+22
+00:01:38.650 --> 00:01:45.240
+You decide that you will have a buffer or
+a queue to process the advancing chunks.
+
+23
+00:01:45.240 --> 00:01:50.600
+Maybe also at the same time processing
+them to be organized in windows of time or
+
+24
+00:01:50.600 --> 00:01:51.260
+game sessions.
+
+25
+00:01:53.390 --> 00:01:58.916
+However, in time as the demand goes up,
+you will need more processing nodes and
+
+26
+00:01:58.916 --> 00:02:02.638
+even more database servers
+that can handle the load.
+
+27
+00:02:02.638 --> 00:02:08.042
+This is, a typical scenario that
+most web sites face when confronted
+
+28
+00:02:08.042 --> 00:02:13.373
+with big data issues related to
+volume and velocity of information.
+
+29
+00:02:13.373 --> 00:02:15.894
+As this scenario demonstrates,
+
+30
+00:02:15.894 --> 00:02:20.580
+solving the problem in one step
+might be possible initially.
+
+31
+00:02:20.580 --> 00:02:25.382
+But the more reactive fixes
+the game developers add, the system
+
+32
+00:02:25.382 --> 00:02:29.630
+becomes less robust and
+more complicated to evolve.
+
+33
+00:02:31.880 --> 00:02:35.210
+While the developers initially
+started with an application and
+
+34
+00:02:35.210 --> 00:02:36.360
+the database to manage.
+
+35
+00:02:37.400 --> 00:02:41.614
+Now they have to manage a number
+of issues related to this
+
+36
+00:02:41.614 --> 00:02:46.920
+infrastructure management just to
+keep up with the load on the system.
+
+37
+00:02:46.920 --> 00:02:52.282
+Similarly, the database servers
+can be effected and corrupted.
+
+38
+00:02:52.282 --> 00:02:57.150
+The replication and fault tolerance of
+them need to be handled separately.
+
+39
+00:02:58.240 --> 00:03:01.745
+Let's start by going through these issues.
+
+40
+00:03:01.745 --> 00:03:05.300
+Let's say,
+one of the processing nodes went down.
+
+41
+00:03:06.470 --> 00:03:11.970
+The system needs to manage and
+restart the processing and
+
+42
+00:03:11.970 --> 00:03:14.920
+there will be potentially some
+data loss in the meantime.
+
+43
+00:03:16.400 --> 00:03:19.560
+The system would need to
+check every processing node
+
+44
+00:03:19.560 --> 00:03:21.020
+before it can discard data.
+
+45
+00:03:22.040 --> 00:03:28.373
+Each note and each database has
+to be replicated separately.
+
+46
+00:03:28.373 --> 00:03:35.255
+Batch computations that need data from
+multiple data servers need to access and
+
+47
+00:03:35.255 --> 00:03:42.453
+maintain use of the data separately which
+might end up being quite slow and costly.
+
+48
+00:03:42.453 --> 00:03:46.705
+Big data processing techniques
+we will address in this course,
+
+49
+00:03:46.705 --> 00:03:51.430
+will help you to reduce the management
+of the mentioned complexities,
+
+50
+00:03:51.430 --> 00:03:55.226
+including failing servers and
+breaking compute nodes.
+
+51
+00:03:55.226 --> 00:04:00.840
+While helping with the scalability of the
+management and processing infrastructure.
+
+52
+00:04:02.610 --> 00:04:07.170
+We will talk about using big data systems
+like Spark to achieve data parallel
+
+53
+00:04:07.170 --> 00:04:12.130
+processing scalability for
+data applications on commodity clusters.
+
+54
+00:04:13.450 --> 00:04:18.080
+We will use to Spark Runtime Libraries and
+Programming Models to
+
+55
+00:04:18.080 --> 00:04:22.230
+demonstrate how big data systems can
+be used for application management.
+
+56
+00:04:23.630 --> 00:04:28.260
+To summarize, what our imaginary game
+application needs from big data system.
+
+57
+00:04:29.830 --> 00:04:35.021
+First of all, there needs to be a way
+to use common big data operations
+
+58
+00:04:35.021 --> 00:04:39.778
+to manage and split large volumes
+of events data streaming in.
+
+59
+00:04:39.778 --> 00:04:43.740
+This means the partitioning and
+placement of data in and
+
+60
+00:04:43.740 --> 00:04:49.400
+out of computer memory along with a model
+to synchronize the datasets later on.
+
+61
+00:04:50.960 --> 00:04:54.410
+The access to data should
+be achieved in a fast way.
+
+62
+00:04:56.060 --> 00:04:58.710
+The game developers need
+to be able to deploy
+
+63
+00:04:58.710 --> 00:05:03.630
+many event processing jobs to
+distributed processing nodes at once.
+
+64
+00:05:03.630 --> 00:05:07.350
+And these are potentially the data
+nodes we move the computations to.
+
+65
+00:05:08.850 --> 00:05:13.430
+It should also enable
+reliability of the computing and
+
+66
+00:05:13.430 --> 00:05:16.190
+enable fault tolerance from failures.
+
+67
+00:05:16.190 --> 00:05:19.998
+This means enabling
+programmable replications and
+
+68
+00:05:19.998 --> 00:05:22.685
+recovery of event data when needed.
+
+69
+00:05:22.685 --> 00:05:24.119
+It should be easily
+
+70
+00:05:24.119 --> 00:05:29.238
+scalable to a distributed set of
+nodes where the data gets produced.
+
+71
+00:05:29.238 --> 00:05:32.639
+It should also enable scaling out.
+
+72
+00:05:32.639 --> 00:05:38.963
+Scaling out is simply adding new
+resources like distributed computers to
+
+73
+00:05:38.963 --> 00:05:44.681
+process more or faster data at
+scale without losing performance.
+
+74
+00:05:44.681 --> 00:05:47.360
+There are many data
+types in an online game.
+
+75
+00:05:48.360 --> 00:05:51.440
+Although, we talked about
+time click events and
+
+76
+00:05:51.440 --> 00:05:56.390
+scores, it would be easy to imagine
+there are graphs of players,
+
+77
+00:05:56.390 --> 00:05:59.790
+text-based chats, and
+images that need to be processed.
+
+78
+00:06:01.390 --> 00:06:04.700
+Our big data system should
+enable processing of such
+
+79
+00:06:04.700 --> 00:06:09.500
+a mixed variety of data and
+potentially optimize handling of
+
+80
+00:06:09.500 --> 00:06:12.870
+each type separately as well
+as together when needed.
+
+81
+00:06:15.180 --> 00:06:19.750
+In addition, our system should
+have been able both streaming and
+
+82
+00:06:19.750 --> 00:06:25.140
+batch processing, enabling all
+the processing to be debuggable and
+
+83
+00:06:25.140 --> 00:06:27.950
+extensible with minimal effort.
+
+84
+00:06:27.950 --> 00:06:32.110
+That means being able to handle
+operations at small chunks of data
+
+85
+00:06:32.110 --> 00:06:36.450
+streams with minimal delay,
+that is what we call low latency.
+
+86
+00:06:37.810 --> 00:06:44.050
+While at the same time handle processing
+of potentially all available data
+
+87
+00:06:44.050 --> 00:06:49.370
+in batch form and
+all through the same system architecture.
+
+88
+00:06:51.160 --> 00:06:56.330
+Latency is a word that we use and
+hear a lot in big data processing,
+
+89
+00:06:57.370 --> 00:07:02.340
+here we refer to how fast the data
+is being processed, or simply
+
+90
+00:07:02.340 --> 00:07:09.400
+the difference between production or event
+time and processing time of a data entry.
+
+91
+00:07:09.400 --> 00:07:13.560
+In other words, latency is quantification
+
+92
+00:07:13.560 --> 00:07:17.330
+of the delay in the processing of
+the streaming data in the system.
+
+93
+00:07:19.400 --> 00:07:22.700
+While some big data
+systems are good at it.
+
+94
+00:07:22.700 --> 00:07:27.220
+Hadoop for instance is not a great choice
+for operations that require low latency.
+
+95
+00:07:29.540 --> 00:07:32.962
+Let's finish by remembering
+the real reasons for
+
+96
+00:07:32.962 --> 00:07:36.310
+all these requirements
+of big data processing.
+
+97
+00:07:36.310 --> 00:07:41.559
+Making a different from processing
+in a traditional data architecture.
+
+98
+00:07:41.559 --> 00:07:47.148
+Big data has varying volume and
+velocity requiring the dynamic and
+
+99
+00:07:47.148 --> 00:07:50.575
+scalable batch and stream processing.
+
+100
+00:07:50.575 --> 00:07:55.048
+Big data has a variety requiring
+management of data in many
+
+101
+00:07:55.048 --> 00:07:59.626
+different data systems and
+integration of it all at scale.
+
+1
+00:00:01.250 --> 00:00:03.485
+Next, we'll describe
+aggregation functions.
+
+2
+00:00:04.760 --> 00:00:07.190
+We have seen the first query before.
+
+3
+00:00:07.190 --> 00:00:11.460
+Select count(*) simply
+translates to a count function.
+
+4
+00:00:12.710 --> 00:00:18.351
+Now we could also say
+db.Drinkers.find.count.
+
+5
+00:00:18.351 --> 00:00:20.880
+But using count directly
+is more straightforward.
+
+6
+00:00:23.190 --> 00:00:27.720
+Now, let's ask to count the number
+of unique addresses for drinkers.
+
+7
+00:00:29.160 --> 00:00:32.740
+So, we don't care what the address is.
+
+8
+00:00:32.740 --> 00:00:34.210
+We just care if it exists.
+
+9
+00:00:35.660 --> 00:00:41.605
+This is accomplished through
+the $exists:true expression.
+
+10
+00:00:41.605 --> 00:00:45.590
+Thus, if an address exists for
+a drinker, it will be counted.
+
+11
+00:00:47.740 --> 00:00:52.190
+Another area where we need to count is
+when we have an array valued attribute,
+
+12
+00:00:52.190 --> 00:00:53.040
+like places.
+
+13
+00:00:54.580 --> 00:00:59.200
+If we just want the number
+of elements in the raw list,
+
+14
+00:00:59.200 --> 00:01:05.267
+we'll write db.country.findplaces.length
+and we'll get six.
+
+15
+00:01:05.267 --> 00:01:10.538
+However, if we want distinct values, we'll
+use distinct instead of find and then
+
+16
+00:01:10.538 --> 00:01:15.531
+use the length for counting the number
+of distinct elements, in this case 4.
+
+17
+00:01:17.927 --> 00:01:24.178
+Now, MongoDB uses an internal machinery
+called the aggregation framework,
+
+18
+00:01:24.178 --> 00:01:29.208
+which is modeled on the concept
+of data processing pipelines.
+
+19
+00:01:29.208 --> 00:01:34.840
+That means documents enter
+a multi-stage pipeline which transforms
+
+20
+00:01:34.840 --> 00:01:40.286
+the documents at each stage until
+it becomes an aggregated result.
+
+21
+00:01:40.286 --> 00:01:44.078
+Now we have seeing a similar mechanism for
+relational data.
+
+22
+00:01:44.078 --> 00:01:48.440
+The aggregation pipelines starts
+by using the aggregate primitive.
+
+23
+00:01:49.680 --> 00:01:55.480
+The most basic pipeline stages provides
+filters that operate like queries and
+
+24
+00:01:55.480 --> 00:01:59.130
+the document transformations that
+modify the form of the output document.
+
+25
+00:02:00.310 --> 00:02:06.890
+The primary filter operation is $match,
+which is followed by a query condition.
+
+26
+00:02:06.890 --> 00:02:10.401
+In this case, status is A.
+
+27
+00:02:10.401 --> 00:02:14.652
+And expectedly, the $match operation
+produces a smaller number of documents
+
+28
+00:02:14.652 --> 00:02:16.500
+to be processed at the next stage.
+
+29
+00:02:17.960 --> 00:02:22.730
+This is usually followed
+by the $group operation.
+
+30
+00:02:22.730 --> 00:02:26.040
+Now this operation needs to know which
+attributes should be grouped together.
+
+31
+00:02:27.130 --> 00:02:31.258
+In the example here cust_id
+is the grouping attribute so
+
+32
+00:02:31.258 --> 00:02:35.750
+it is passed as a parameter
+to the $group function.
+
+33
+00:02:35.750 --> 00:02:38.143
+Now notice the syntax.
+
+34
+00:02:38.143 --> 00:02:44.649
+_id:$cust_id says that the grouped
+data will have an _id attribute,
+
+35
+00:02:44.649 --> 00:02:48.573
+and its value will be
+picked from the cust_id
+
+36
+00:02:48.573 --> 00:02:53.128
+attribute from the previous
+stage of computation.
+
+37
+00:02:53.128 --> 00:02:57.466
+Thus, the $ before the cust_id
+is telling the system that
+
+38
+00:02:57.466 --> 00:03:01.990
+cust_id is a known variable in
+the system and not a constant.
+
+39
+00:03:01.990 --> 00:03:04.639
+The $group operation also needs a reducer,
+
+40
+00:03:04.639 --> 00:03:10.250
+which is a function that operates on an
+activity to produce an aggregate result.
+
+41
+00:03:10.250 --> 00:03:13.590
+In this case, the reduce function is sum,
+
+42
+00:03:14.980 --> 00:03:17.720
+which operates on the amount
+attribute from the previous stage.
+
+43
+00:03:18.790 --> 00:03:23.560
+Like $cust_id, we use $amount to
+indicate that it's a variable.
+
+44
+00:03:25.070 --> 00:03:27.590
+As we saw in the relational case,
+
+45
+00:03:27.590 --> 00:03:32.580
+data can be partitioned into chunks on
+the same machine or on different machines.
+
+46
+00:03:32.580 --> 00:03:35.320
+These chunks are called chards.
+
+47
+00:03:35.320 --> 00:03:42.284
+The aggregation pipeline of MongoDB
+can operate on a charded collection.
+
+48
+00:03:42.284 --> 00:03:47.156
+The grouping operation in MongoDB
+can accept multiple attributes like
+
+49
+00:03:47.156 --> 00:03:48.650
+the four shown here.
+
+50
+00:03:48.650 --> 00:03:53.915
+Also shown is a post grouping directive
+to sort on the basis of two attributes.
+
+51
+00:03:55.380 --> 00:04:00.150
+The first is a computed count
+variable in ascending order.
+
+52
+00:04:00.150 --> 00:04:03.728
+So the one designates the ascending order.
+
+53
+00:04:03.728 --> 00:04:05.870
+The next sorting attribute is secondary.
+
+54
+00:04:05.870 --> 00:04:08.966
+That means if two groups have
+the same value for count,
+
+55
+00:04:08.966 --> 00:04:13.110
+then they'll be further sorted
+based on the category value.
+
+56
+00:04:13.110 --> 00:04:18.860
+But this time the order is descending
+because of the -1 directive
+
+57
+00:04:22.207 --> 00:04:27.280
+In course two we have seen Solar,
+a text search engine from Apache.
+
+58
+00:04:28.410 --> 00:04:32.830
+MongoDB has a built in text search engine
+which can be invoked through the same
+
+59
+00:04:32.830 --> 00:04:34.360
+aggregation framework we saw before.
+
+60
+00:04:35.360 --> 00:04:40.006
+Imagine that MongoDB documents in this
+case are really text documents placed in
+
+61
+00:04:40.006 --> 00:04:41.730
+a collection called articles.
+
+62
+00:04:43.270 --> 00:04:48.560
+In this case, the $match directive of
+the aggregate function must be told
+
+63
+00:04:48.560 --> 00:04:51.955
+it's going to perform a text
+function on the article's corpus.
+
+64
+00:04:53.320 --> 00:04:55.884
+The actual text function is $search.
+
+65
+00:04:55.884 --> 00:05:01.080
+We set search terms like "Hillary
+Democrat" such that having
+
+66
+00:05:01.080 --> 00:05:07.210
+either term in a document will
+satisfy the search requirement.
+
+67
+00:05:07.210 --> 00:05:11.260
+As is the case of any text engine,
+
+68
+00:05:11.260 --> 00:05:15.410
+the results of any search returns
+a list of documents, each with a score.
+
+69
+00:05:16.600 --> 00:05:21.780
+The next task is to tell MongDB to
+sort the results based on textScore.
+
+70
+00:05:23.050 --> 00:05:24.290
+What's the $meta here?
+
+71
+00:05:25.420 --> 00:05:29.532
+Meta stands for metadata,
+that is additional information.
+
+72
+00:05:29.532 --> 00:05:33.860
+Remember that the aggregation
+operations are executed in a pipeline.
+
+73
+00:05:35.090 --> 00:05:38.705
+Any step in the pipeline can
+produce some extra data, or
+
+74
+00:05:38.705 --> 00:05:41.780
+metadata, for each processed document.
+
+75
+00:05:41.780 --> 00:05:45.470
+In this example, the metadata
+produced by the search function
+
+76
+00:05:45.470 --> 00:05:48.670
+is a computed attribute called textScore.
+
+77
+00:05:48.670 --> 00:05:54.627
+So this directive tells the system to pick
+up this specific metadata attribute and
+
+78
+00:05:54.627 --> 00:05:59.828
+use it to populate the score attribute
+which would be used for sorting.
+
+79
+00:05:59.828 --> 00:06:04.501
+Finally, the $project class
+does exactly what is expected.
+
+80
+00:06:04.501 --> 00:06:09.006
+It tells the system to output only
+the title of each document and
+
+81
+00:06:09.006 --> 00:06:10.284
+suppress its id.
+
+82
+00:06:14.760 --> 00:06:19.120
+The last item in our
+discussion of MongoDB is join.
+
+83
+00:06:19.120 --> 00:06:22.820
+We have seen that join is a vital
+operation for data management operations.
+
+84
+00:06:25.010 --> 00:06:32.062
+Interestingly, MongoDB introduced this
+equivalent of join only in version 3.2.
+
+85
+00:06:32.062 --> 00:06:36.320
+So, the joining in MongoDB also
+happens in the aggregation framework.
+
+86
+00:06:37.740 --> 00:06:40.420
+There are a few ways of
+expressing joins in MongoDB.
+
+87
+00:06:41.470 --> 00:06:46.980
+We show one here that explicitly performs
+a join to a function called look up.
+
+88
+00:06:48.690 --> 00:06:51.445
+We use an example form
+the MongoDB documentation.
+
+89
+00:06:51.445 --> 00:06:58.380
+Now here are two document collections,
+order and inventory.
+
+90
+00:06:58.380 --> 00:07:03.600
+Notice that the item key in
+orders has values abc, jkl, etc.
+
+91
+00:07:04.830 --> 00:07:10.100
+And the sku key in the inventory has
+comparable values abc, def, etc.
+
+92
+00:07:10.100 --> 00:07:12.270
+So these two are joinable by value.
+
+93
+00:07:13.550 --> 00:07:19.167
+The way to specify this join,
+one can use this query.
+
+94
+00:07:19.167 --> 00:07:24.124
+The db.orders.aggregate
+declaration states that orders is
+
+95
+00:07:24.124 --> 00:07:27.311
+sort of the home, or local collection.
+
+96
+00:07:27.311 --> 00:07:32.592
+Now in the aggregate, the function
+$lookup needs to know what to look up for
+
+97
+00:07:32.592 --> 00:07:34.420
+each document in orders.
+
+98
+00:07:36.050 --> 00:07:41.010
+The from attribute specifies the name
+of the collection as inventory.
+
+99
+00:07:42.590 --> 00:07:44.410
+The next two parameters are the local and
+
+100
+00:07:44.410 --> 00:07:48.591
+foreign matching keys,
+which are item and sku, respectively.
+
+101
+00:07:49.976 --> 00:07:54.760
+The last item, as:,
+is a construction part of
+
+102
+00:07:54.760 --> 00:07:59.380
+the join operation which says how to
+structure the match items into the result.
+
+103
+00:08:00.780 --> 00:08:03.770
+Now before we show you the results,
+let's see what should match.
+
+104
+00:08:05.740 --> 00:08:10.020
+The abc item in order should
+match the abc in sku.
+
+105
+00:08:11.120 --> 00:08:16.050
+Similarly, the jkl item
+should match the jkl in sku.
+
+106
+00:08:17.260 --> 00:08:19.540
+Okay, but there is one more twist.
+
+107
+00:08:21.020 --> 00:08:22.920
+Here is the actual result.
+
+108
+00:08:22.920 --> 00:08:27.090
+The first two records show
+exactly what we expect.
+
+109
+00:08:27.090 --> 00:08:29.760
+There is a new field called
+inventory-docs in the batching record.
+
+110
+00:08:31.640 --> 00:08:34.580
+The third record however,
+shows something interesting.
+
+111
+00:08:36.170 --> 00:08:40.250
+Inventory has two records shown here,
+what do they match?
+
+112
+00:08:41.670 --> 00:08:46.890
+Now they match the empty
+document in orders because
+
+113
+00:08:46.890 --> 00:08:50.700
+orders has a document
+whose item field is null.
+
+114
+00:08:51.980 --> 00:08:57.355
+So it matches documents and
+inventory where the sku item is also null,
+
+115
+00:08:57.355 --> 00:09:02.290
+explicitly as in document 5, or
+implicitly as in document 6.
+
+116
+00:09:04.801 --> 00:09:08.948
+This concludes our discussion of
+queries in the context of MongoDB.
+
+1
+00:00:00.720 --> 00:00:05.150
+In this hands on activity, we'll be
+using Pandas to read CSV files and
+
+2
+00:00:05.150 --> 00:00:07.300
+perform various queries on them.
+
+3
+00:00:07.300 --> 00:00:10.070
+Pandas is a data analysis library for
+Python.
+
+4
+00:00:12.140 --> 00:00:14.730
+First, we'll create a new
+Jupyter Python Notebook.
+
+5
+00:00:16.070 --> 00:00:20.060
+Next, we will use Pandas to read
+a CSV file into a DataFrame.
+
+6
+00:00:21.375 --> 00:00:25.490
+We'll then view the contents of the
+DataFrame and see how to filter rows and
+
+7
+00:00:25.490 --> 00:00:26.130
+columns of it.
+
+8
+00:00:27.600 --> 00:00:31.410
+Next, we will perform average and
+sum operations on the DataFrame.
+
+9
+00:00:31.410 --> 00:00:36.760
+And finally, show how to merge two
+DataFrames by joining on a single column.
+
+10
+00:00:39.160 --> 00:00:39.660
+Let's begin.
+
+11
+00:00:41.420 --> 00:00:44.370
+We'll start by creating
+a new iPython notebook.
+
+12
+00:00:44.370 --> 00:00:48.570
+Clicking on New and
+selecting Python 3 under notebooks.
+
+13
+00:00:51.900 --> 00:00:56.350
+First, we'll import the Pandas
+library by writing import pandas.
+
+14
+00:00:58.010 --> 00:01:00.710
+Remember that in iPython notebooks,
+to run a command,
+
+15
+00:01:00.710 --> 00:01:02.980
+we hold down the shift key and hit Enter.
+
+16
+00:01:06.599 --> 00:01:12.395
+Next, let's read buyclicks.csv
+into a Pandas DataFrame.
+
+17
+00:01:12.395 --> 00:01:14.730
+We'll put it in a variable
+called buyclicksDF.
+
+18
+00:01:18.135 --> 00:01:22.751
+We'll read it using pandas.read_csv,
+
+19
+00:01:22.751 --> 00:01:27.630
+and we'll read the buy-clicks.csv file.
+
+20
+00:01:30.966 --> 00:01:34.870
+We can see the contents of the file by
+just running the variable by itself.
+
+21
+00:01:39.948 --> 00:01:44.398
+And notice that the file has many rows and
+then iPython truncates this,
+
+22
+00:01:44.398 --> 00:01:45.740
+the dot, dot, dot.
+
+23
+00:01:49.227 --> 00:01:52.027
+We can see only the top five
+rows by calling .head(5).
+
+24
+00:01:53.417 --> 00:01:58.343
+Next, let's look at only two
+
+25
+00:01:58.343 --> 00:02:04.500
+columns in the buyclicks data.
+
+26
+00:02:04.500 --> 00:02:06.310
+Let's look at price and user ID.
+
+27
+00:02:07.330 --> 00:02:13.680
+We can do these by first entering
+buyclicks DataFrame in the same text for
+
+28
+00:02:13.680 --> 00:02:19.040
+specifying only certain columns to
+show is open bracket open bracket and
+
+29
+00:02:19.040 --> 00:02:20.950
+then the name of the columns
+you want to view.
+
+30
+00:02:20.950 --> 00:02:25.700
+So, want your price and
+user ID, and again,
+
+31
+00:02:25.700 --> 00:02:31.395
+we only want to see the first five rows,
+so we'll do .head(5).
+
+32
+00:02:35.016 --> 00:02:39.350
+Now, let's query the buyclicks data for
+only the prices less than 3.
+
+33
+00:02:39.350 --> 00:02:44.494
+First, we'll enter buyclicksDF,
+One square bracket,
+
+34
+00:02:44.494 --> 00:02:49.007
+to filter our particular column,
+we enter buyclicksDF and then column name.
+
+35
+00:02:50.440 --> 00:02:54.440
+Now, we specify the limit of
+the query by entering <3.
+
+36
+00:03:02.378 --> 00:03:06.080
+This shows first five rows where
+the price is less than three.
+
+37
+00:03:08.409 --> 00:03:12.205
+We can also perform aggregate
+operations on Panda's DataFrames.
+
+38
+00:03:13.650 --> 00:03:21.673
+We can sum all the price data by
+entering buyclicksDF['price'].sum.
+
+39
+00:03:25.760 --> 00:03:29.470
+Another aggregate operation we can
+perform is looking at the average.
+
+40
+00:03:29.470 --> 00:03:31.820
+Let's look at the average for price.
+
+41
+00:03:31.820 --> 00:03:33.540
+The function is called mean.
+
+42
+00:03:34.720 --> 00:03:40.782
+So, once your buyclicksDF ['price'].mean.
+
+43
+00:03:45.341 --> 00:03:48.460
+Can also join two DataFrames
+on a single column.
+
+44
+00:03:49.870 --> 00:03:54.620
+First, let's read in another
+CSV into a different DataFrame.
+
+45
+00:03:54.620 --> 00:03:57.700
+We'll read in adclicks.csv.
+
+46
+00:03:57.700 --> 00:04:04.723
+So we'll says adclicksDF
+= pandas.read_csv,
+
+47
+00:04:04.723 --> 00:04:10.286
+we'll say ('ad-clicks.csv').
+
+48
+00:04:16.538 --> 00:04:20.870
+To verify that we read this data
+successfully, let's look at the contents.
+
+49
+00:04:29.077 --> 00:04:32.063
+Now, let's combine
+the buyclicks DataFrame and
+
+50
+00:04:32.063 --> 00:04:34.700
+the adclicks data frame
+on the user ID call.
+
+51
+00:04:36.690 --> 00:04:39.480
+We'll put the result in the new
+DataFrame called mergeDF.
+
+52
+00:04:39.480 --> 00:04:46.400
+So we'll say mergeDF = adclicksDF.merge
+
+53
+00:04:50.465 --> 00:04:54.820
+Then, we need to say which
+DataFrame we're merging with,
+
+54
+00:04:54.820 --> 00:04:59.590
+buyclicksDF, and
+the column that we're merging on.
+
+55
+00:04:59.590 --> 00:05:02.080
+So we'll say on='userid'.
+
+56
+00:05:08.461 --> 00:05:11.681
+Finally, we can look at the contents
+with this merged DataFrame.
+
+1
+00:00:01.510 --> 00:00:05.380
+So now from MongoDB we will go to
+Aerospike which is a key value store.
+
+2
+00:00:07.030 --> 00:00:09.120
+Key value stores typically offer an API.
+
+3
+00:00:10.480 --> 00:00:14.630
+That is the way to access data using a
+programming language like Python or Java.
+
+4
+00:00:15.850 --> 00:00:19.620
+We will take a very brief look
+at Aerospike, which offers both
+
+5
+00:00:19.620 --> 00:00:23.550
+a programmatic access and
+a limited amount of query access to data.
+
+6
+00:00:25.550 --> 00:00:27.910
+The data model of Aerospike
+is illustrated here.
+
+7
+00:00:29.310 --> 00:00:34.960
+Data are organized in lean spaces which
+can be in memory or on flash disks.
+
+8
+00:00:36.410 --> 00:00:38.840
+Name spaces are top level data containers.
+
+9
+00:00:39.980 --> 00:00:45.080
+The way you collect data in name spaces
+relates to how data is stored and managed.
+
+10
+00:00:46.270 --> 00:00:50.395
+So name space contains records,
+indexes, and policies.
+
+11
+00:00:50.395 --> 00:00:55.130
+Now policies dictate name space
+behavior like how data is stored,
+
+12
+00:00:55.130 --> 00:00:57.790
+whether it's on RAM or disk, or
+
+13
+00:00:57.790 --> 00:01:02.150
+how how many replicas exist for
+a record, and when records expire.
+
+14
+00:01:04.840 --> 00:01:08.606
+A name space can contain sets,
+you can think of them as tables.
+
+15
+00:01:08.606 --> 00:01:11.470
+So here there are two sets,
+people and places,
+
+16
+00:01:11.470 --> 00:01:15.140
+and a set of records
+which are not in any set.
+
+17
+00:01:16.750 --> 00:01:20.620
+Within a record,
+data is stored in one or many bins.
+
+18
+00:01:21.980 --> 00:01:25.490
+Bins consist of a name and a value.
+
+19
+00:01:27.820 --> 00:01:31.970
+The example written here is in Java, and
+
+20
+00:01:31.970 --> 00:01:34.230
+you don't have to know Java to
+follow the main point here.
+
+21
+00:01:36.068 --> 00:01:40.470
+Here we are creating indexes on key
+value data that's handled by Aerospike.
+
+22
+00:01:41.780 --> 00:01:43.500
+This data set comes from Twitter.
+
+23
+00:01:44.990 --> 00:01:50.310
+Each field of a tweet is extracted and
+put into Aerospike as a key value pair.
+
+24
+00:01:50.310 --> 00:01:55.420
+So we declare the namespace to be
+
+25
+00:01:55.420 --> 00:01:59.880
+example, and the record set to be tweet.
+
+26
+00:02:01.510 --> 00:02:07.460
+The name of the index to be TestIndex,
+and the name of the bin as user name.
+
+27
+00:02:09.490 --> 00:02:14.330
+Since this index is stored
+on disk an SQL-like command,
+
+28
+00:02:14.330 --> 00:02:18.638
+like SHOW INDEX, shows the content
+of the index as you can see here.
+
+29
+00:02:18.638 --> 00:02:23.220
+This routine shows
+
+30
+00:02:23.220 --> 00:02:27.419
+how data can be inserted into
+Aerospike programmatically.
+
+31
+00:02:27.419 --> 00:02:31.500
+Again, the goal is to point out a few
+salient aspects of data insertion
+
+32
+00:02:31.500 --> 00:02:33.090
+regardless of the syntax of the language.
+
+33
+00:02:33.090 --> 00:02:38.120
+Now since this is a key value store,
+one first needs to define the key.
+
+34
+00:02:40.220 --> 00:02:45.414
+This line here says that the key in
+the namespace call example, and set call
+
+35
+00:02:45.414 --> 00:02:50.699
+tweet, is the value of the function getId,
+which returns the ID of a tweet.
+
+36
+00:02:53.288 --> 00:02:57.028
+When the data is populated,
+we are essentially creating bins.
+
+37
+00:02:57.028 --> 00:03:01.500
+Here, user name is the attribute and
+
+38
+00:03:01.500 --> 00:03:04.290
+the screen name obtained
+from the tweet is the value.
+
+39
+00:03:05.510 --> 00:03:09.440
+The actual insertion
+happens here in the client.
+
+40
+00:03:11.200 --> 00:03:15.574
+The client.put statement,
+where we need to mention the key and
+
+41
+00:03:15.574 --> 00:03:18.510
+the bins we have just created.
+
+42
+00:03:18.510 --> 00:03:21.260
+Now why are we inserting
+two bins at a time?
+
+43
+00:03:21.260 --> 00:03:23.140
+Two bins with two ids and user name?
+
+44
+00:03:24.150 --> 00:03:27.180
+This is an idiosyncrasy
+of the Aerospike client.
+
+45
+00:03:29.810 --> 00:03:34.190
+After data is inserted one can
+create other data using AQL
+
+46
+00:03:34.190 --> 00:03:35.450
+which is very much like SQL.
+
+47
+00:03:36.870 --> 00:03:41.920
+This screenshot shows a part of
+the output of a simple select star query.
+
+48
+00:03:44.680 --> 00:03:49.100
+Now in your hands-on exercise, you'll be
+able to play with the Aerospike data.
+
+49
+00:03:50.520 --> 00:03:56.740
+This is just a screenshot showing
+the basic query syntax of AQL,
+
+50
+00:03:56.740 --> 00:04:00.110
+that is Aerospike Query Language,
+and a few examples.
+
+51
+00:04:01.370 --> 00:04:04.960
+The last two lines show a couple of
+interesting features of the language.
+
+52
+00:04:06.090 --> 00:04:12.200
+The operation between 0 and 99,
+is a nicer way of stating a range query,
+
+53
+00:04:12.200 --> 00:04:14.850
+which gives a lower and
+upper limits on a variable.
+
+54
+00:04:16.030 --> 00:04:20.550
+The last line shows the operation cost,
+
+55
+00:04:20.550 --> 00:04:24.670
+which transforms one type
+of data to another type.
+
+56
+00:04:24.670 --> 00:04:29.047
+Here it transforms coordinates,
+that is latitude and longitude data,
+
+57
+00:04:29.047 --> 00:04:33.784
+to a JSON format called GeoJSON which is
+designed to represent geographic data
+
+58
+00:04:33.784 --> 00:04:35.092
+in a JSON structure.
+
+59
+00:04:38.762 --> 00:04:42.421
+We will finish our coverage of queries
+with a quick reference to an advanced
+
+60
+00:04:42.421 --> 00:04:44.870
+topic, which is beyond
+the scope of this course.
+
+61
+00:04:46.068 --> 00:04:50.780
+Now you have seen in prior courses that
+streaming data is complex to process
+
+62
+00:04:50.780 --> 00:04:53.310
+because a stream is infinite in nature.
+
+63
+00:04:54.480 --> 00:04:57.640
+Now does this have any impact on
+query languages and evaluation?
+
+64
+00:04:58.790 --> 00:05:01.840
+The answer is that it absolutely does.
+
+65
+00:05:01.840 --> 00:05:03.590
+We'll mention one such impact here.
+
+66
+00:05:05.150 --> 00:05:08.700
+This shows a pictorial
+depiction of streaming data.
+
+67
+00:05:09.890 --> 00:05:14.170
+The data is segmented into five pieces,
+shown in the white boxes in the upper row.
+
+68
+00:05:15.620 --> 00:05:20.280
+These can be gathered, for example every
+few seconds, or every 200 data objects.
+
+69
+00:05:21.980 --> 00:05:24.970
+The query defines a window to select
+
+70
+00:05:24.970 --> 00:05:27.770
+key of these data objects
+as a unit of processing.
+
+71
+00:05:27.770 --> 00:05:28.860
+Here case three.
+
+72
+00:05:30.000 --> 00:05:34.120
+So three units of data
+are picked up in a window unit.
+
+73
+00:05:34.120 --> 00:05:37.020
+To get the next window it
+is moved by two units,
+
+74
+00:05:38.030 --> 00:05:40.280
+this is called a slide of the window.
+
+75
+00:05:41.970 --> 00:05:46.030
+Since the window size is three and
+the slide is two,
+
+76
+00:05:46.030 --> 00:05:50.130
+one unit of information overlaps
+between the two consecutive windows.
+
+77
+00:05:51.450 --> 00:05:56.056
+The lower line in this diagram shows
+the initialized item, let's ignore it,
+
+78
+00:05:56.056 --> 00:06:03.980
+followed by two window sets of
+data records for processing.
+
+79
+00:06:05.090 --> 00:06:08.670
+Thus the query language therefore,
+will have to specify a query
+
+80
+00:06:08.670 --> 00:06:14.650
+that's an SQL query, over a window,
+which is also specified in the query.
+
+81
+00:06:14.650 --> 00:06:18.980
+Now in a traffic data stream example,
+the SQL statement might look like this.
+
+82
+00:06:20.330 --> 00:06:23.490
+Where the window size is 30 second, and
+
+83
+00:06:23.490 --> 00:06:26.520
+the slide is the same size as window
+giving output every 30 seconds.
+
+84
+00:06:27.760 --> 00:06:32.650
+So streaming data results in changes
+in both the query language and
+
+85
+00:06:32.650 --> 00:06:34.560
+the way queries are processed.

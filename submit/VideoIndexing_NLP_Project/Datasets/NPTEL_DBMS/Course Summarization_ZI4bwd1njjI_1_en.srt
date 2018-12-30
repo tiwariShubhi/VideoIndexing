@@ -1,0 +1,2115 @@
+﻿1
+00:00:13,779 --> 00:00:18,379
+Welcome to module 40 of Database Management
+Systems.
+
+2
+00:00:18,379 --> 00:00:23,599
+Ah this is for course summarization, this
+is the last module of the course ah.
+
+3
+00:00:23,600 --> 00:00:31,910
+So, I would just start with ah doing a quick
+recap of what all did we cover and what we
+
+4
+00:00:31,910 --> 00:00:33,090
+expectedly learnt.
+
+5
+00:00:33,090 --> 00:00:39,300
+Ah in the week 1, we talked primarily of Introduction
+to Database Management System and the Relational
+
+6
+00:00:39,299 --> 00:00:42,468
+Model which is the foundation of a database
+system.
+
+7
+00:00:42,469 --> 00:00:49,149
+In week 2, we started off with query language
+SQL at an Introductory level and then at an
+
+8
+00:00:49,149 --> 00:00:57,858
+Intermediate level which are really really
+the first ah major ah aspect of a database
+
+9
+00:00:57,859 --> 00:01:01,649
+particularly relational database that a student
+must master.
+
+10
+00:01:01,649 --> 00:01:10,159
+In week 3, we continued with the advanced
+SQL and did the aspects of modeling from specification
+
+11
+00:01:10,159 --> 00:01:13,130
+in terms of Entity Relationship Model.
+
+12
+00:01:13,129 --> 00:01:19,879
+In ah week ah the next week, we did the design
+issues which was really the involved part
+
+13
+00:01:19,879 --> 00:01:27,239
+and ah possibly the most important aspect
+of the relational database design beyond ah
+
+14
+00:01:27,239 --> 00:01:31,250
+query coding query being able to write queries.
+
+15
+00:01:31,250 --> 00:01:37,289
+So, this is based on dependency and different
+normal forms and I am sure you have spent
+
+16
+00:01:37,289 --> 00:01:40,310
+a good time on mastering these.
+
+17
+00:01:40,310 --> 00:01:46,030
+We followed up in week 5 with application
+design and discussing aspects of ah storage
+
+18
+00:01:46,030 --> 00:01:55,030
+structure, how will actually the ah items,
+data items be stored in the different ah memory
+
+19
+00:01:55,030 --> 00:01:57,609
+and disk structure.
+
+20
+00:01:57,609 --> 00:02:03,868
+In the following week, in week 6, we discussed
+about indexing and hashing to for making the
+
+21
+00:02:03,868 --> 00:02:06,709
+accesses really efficient.
+
+22
+00:02:06,709 --> 00:02:13,019
+Ah in week 7, we did another critical aspect
+of ah database systems that is how to make
+
+23
+00:02:13,020 --> 00:02:14,900
+transactions work concurrently.
+
+24
+00:02:14,900 --> 00:02:22,150
+So, we defined transactions and define what
+is Concurrency and then we took in 2 different
+
+25
+00:02:22,150 --> 00:02:27,780
+critical aspects of Serializability that it
+is possible that we can execute transactions
+
+26
+00:02:27,780 --> 00:02:33,800
+in a manner so that their instructions are
+intermixed, but then even in that case, they
+
+27
+00:02:33,800 --> 00:02:39,100
+actually produce a result which is as if these
+transactions could have been executed in the
+
+28
+00:02:39,099 --> 00:02:47,289
+serial order and ah we talked about the issues
+of ah recoverability in this respect and we
+
+29
+00:02:47,289 --> 00:02:52,959
+specifically looked at different protocols,
+particularly 2 phase locking protocol for
+
+30
+00:02:52,959 --> 00:02:58,348
+managing this kind of concurrency and the
+evils of deadlock that may happen when you
+
+31
+00:02:58,348 --> 00:03:03,979
+do it concurrency and how simple protocols
+like time based protocol can handle that.
+
+32
+00:03:03,979 --> 00:03:10,030
+And in the current week, we have ah dwelt
+with different strategies of recovery, particularly
+
+33
+00:03:10,030 --> 00:03:14,989
+log based recovery and we have touched upon
+query processing and optimization.
+
+34
+00:03:14,989 --> 00:03:19,509
+So, this is you have got a very first level
+overview of this course.
+
+35
+00:03:19,509 --> 00:03:25,389
+Ah this is in a limited time and with limited
+number of assignments.
+
+36
+00:03:25,389 --> 00:03:32,179
+So, ah you will just get a first level idea,
+this is not to make you really an expert of
+
+37
+00:03:32,180 --> 00:03:36,730
+database systems, but this will certainly
+get you started well in terms of the database
+
+38
+00:03:36,729 --> 00:03:43,179
+management ah programs, in terms of you are
+ah taking up advanced courses later on or
+
+39
+00:03:43,180 --> 00:03:48,519
+in terms of actually taking up a job in different
+database area.
+
+40
+00:03:48,519 --> 00:03:58,230
+So, given that ah given that in this current
+module, I would discuss about ah few things
+
+41
+00:03:58,229 --> 00:04:04,238
+beyond the the textbook actually, the space
+of databases RDBMS bases are quite crowded,
+
+42
+00:04:04,239 --> 00:04:06,810
+the lot of RDBMS bases you will see.
+
+43
+00:04:06,810 --> 00:04:11,870
+So, I will just take a quick look in terms
+of the common RDBMS systems and there had
+
+44
+00:04:11,870 --> 00:04:16,879
+been a number of queries on the forum and
+ah in the live session about that ah.
+
+45
+00:04:16,879 --> 00:04:22,579
+I will also touch upon ah we would like to
+discuss about non relational database systems
+
+46
+00:04:22,579 --> 00:04:27,129
+which was not a part of the ah curriculum
+that we did here, but will just present a
+
+47
+00:04:27,129 --> 00:04:33,089
+brief overview and then finally, I would like
+to conclude with what should be the road forward
+
+48
+00:04:33,089 --> 00:04:41,448
+from you ah, presenting you a kind of a skill
+profile matrix so that what skills you must
+
+49
+00:04:41,449 --> 00:04:49,470
+pick up to actually get get a job off certain
+profile and ah what are the companies that
+
+50
+00:04:49,470 --> 00:04:51,740
+you might look at working for.
+
+51
+00:04:51,740 --> 00:04:57,949
+So, starting with the common databases, there
+are several relational database systems.
+
+52
+00:04:57,949 --> 00:05:03,580
+So, in this slide you summarize basically
+the what are the different aspects of ah relational
+
+53
+00:05:03,579 --> 00:05:06,459
+database systems which you have been discussing
+so far.
+
+54
+00:05:06,459 --> 00:05:08,060
+So, this is just a summary of that.
+
+55
+00:05:08,060 --> 00:05:10,850
+Now, these are the common database systems.
+
+56
+00:05:10,850 --> 00:05:18,680
+So, ah I have chosen the ones which are ah
+most widely used, most easily accessible and
+
+57
+00:05:18,680 --> 00:05:23,720
+kind of ah large companies use them, large
+databases exist on them.
+
+58
+00:05:23,720 --> 00:05:29,870
+So, there are primarily 2 classifications;
+one is a set of database systems are commercial
+
+59
+00:05:29,870 --> 00:05:36,769
+Oracle from the Oracle corporation, Sybase
+from Sybase corporation which is now SAP AG,
+
+60
+00:05:36,769 --> 00:05:44,469
+DB2 from IBM ah, SQL Server from Microsoft
+and the recent entrant to that who is making
+
+61
+00:05:44,470 --> 00:05:52,000
+a regular ripples is Teradata which is a you
+know joint ah database systems from Caltech
+
+62
+00:05:52,000 --> 00:05:55,259
+and ah certain group of Citibank.
+
+63
+00:05:55,259 --> 00:06:02,979
+So, I if you are working for a company who
+subscribes to any of these database ah software,
+
+64
+00:06:02,978 --> 00:06:09,889
+then you should be able to ah use them and
+understand ah what all you can do, but if
+
+65
+00:06:09,889 --> 00:06:15,900
+you are working with smaller companies or
+you are working as a student, then you will
+
+66
+00:06:15,899 --> 00:06:22,939
+need to use ah some of the database systems
+which are free or are on the ah GPL licensing
+
+67
+00:06:22,939 --> 00:06:23,939
+or open source.
+
+68
+00:06:23,939 --> 00:06:30,250
+So, most prominent amongst them is PostgreSQL
+which is from a Postgres global development
+
+69
+00:06:30,250 --> 00:06:31,250
+group.
+
+70
+00:06:31,250 --> 00:06:36,220
+So, these are ah non commercial ah the software
+in the sense that you do not need to pay for
+
+71
+00:06:36,220 --> 00:06:43,590
+them and they are on the GPL and some of some
+part of that would be open source as well
+
+72
+00:06:43,589 --> 00:06:50,919
+and a very commonly used is my SQL which is
+is ah was originally from a Swedish company
+
+73
+00:06:50,920 --> 00:06:57,560
+called ah my SQL AB, but now it is acquired
+by Oracle corporation, but it still ah does
+
+74
+00:06:57,560 --> 00:06:59,250
+not you do not need to pay for that.
+
+75
+00:06:59,250 --> 00:07:04,750
+So, these are the databases and systems to
+primarily look for and besides that there
+
+76
+00:07:04,750 --> 00:07:10,288
+are some other database systems which use
+ah certain object oriented features on top
+
+77
+00:07:10,288 --> 00:07:12,269
+of the relational features.
+
+78
+00:07:12,269 --> 00:07:17,818
+So, ah if you look in through these, then
+in most cases you will find in terms of the
+
+79
+00:07:17,819 --> 00:07:25,069
+gross functionality of ah the kind of SQL
+that you can write, a large subset of the
+
+80
+00:07:25,069 --> 00:07:31,310
+SQL that you can ah write on databases maintained
+through this database systems will be same.
+
+81
+00:07:31,310 --> 00:07:37,668
+So, what you have learnt here would be applicable
+irrespective of which database ah which of
+
+82
+00:07:37,668 --> 00:07:43,269
+these database systems you are using, but
+ah of course there are specifics which would
+
+83
+00:07:43,269 --> 00:07:45,659
+be different ah amongst them.
+
+84
+00:07:45,660 --> 00:07:52,220
+So, ah in the next couple of slides, ah I
+have 4 on each ah one slide, I have given
+
+85
+00:07:52,220 --> 00:07:55,580
+a brief background about the particular database
+system.
+
+86
+00:07:55,579 --> 00:08:00,719
+So that you know you know how stable, how
+old or you know ah what are the basic nuances
+
+87
+00:08:00,720 --> 00:08:04,110
+of that database system for example, Oracle
+started in 77.
+
+88
+00:08:04,110 --> 00:08:07,639
+So, you can say, it is a it is a 40 year old
+database system.
+
+89
+00:08:07,639 --> 00:08:13,750
+The latest version is 12 ah C and these are
+the different supports that it has.
+
+90
+00:08:13,750 --> 00:08:17,350
+Ah Sybase also started in 1987.
+
+91
+00:08:17,350 --> 00:08:25,139
+So, that is almost ah 30 years, but ah it
+is less you know less vibrant right now, the
+
+92
+00:08:25,139 --> 00:08:31,300
+last stable released happen in 2014 about
+nearly more than 3 and a half or 4 years ago
+
+93
+00:08:31,300 --> 00:08:37,850
+and ah, but Sybase is a has been a very good
+database systems for ah programming through
+
+94
+00:08:37,850 --> 00:08:42,040
+API's and it has really good support for that.
+
+95
+00:08:42,039 --> 00:08:48,419
+DB 2 is also a very old possibly the oldest
+surviving database systems which started in
+
+96
+00:08:48,419 --> 00:08:51,959
+1970 ah.
+
+97
+00:08:51,960 --> 00:09:00,980
+So, when when almost the ah E. F Codd of the
+Boyce Codd normal form published ah the data
+
+98
+00:09:00,980 --> 00:09:03,350
+manipulation schemes from IBM.
+
+99
+00:09:03,350 --> 00:09:08,389
+So, ah this is also a widely used, last release
+2016.
+
+100
+00:09:08,389 --> 00:09:16,340
+Ah Microsoft ah the started database systems
+in 1989, last release happened last year and
+
+101
+00:09:16,340 --> 00:09:19,820
+that is very widely used if you are particularly
+on windows system ah.
+
+102
+00:09:19,820 --> 00:09:25,850
+It is one of the most popular one in terms
+of the windows ah operating system.
+
+103
+00:09:25,850 --> 00:09:29,080
+Teradata is ah relatively new.
+
+104
+00:09:29,080 --> 00:09:36,590
+It was released in 1984 and it is, but it
+is it is one where lot of new developments
+
+105
+00:09:36,590 --> 00:09:42,660
+are still happening and new experiments keep
+on happening and the current version is a
+
+106
+00:09:42,659 --> 00:09:44,149
+Teradata 15.
+
+107
+00:09:44,149 --> 00:09:53,699
+And ah in terms of the ma free or open source
+GPL ah databases Postgres ah started in 1988
+
+108
+00:09:53,700 --> 00:10:01,920
+about 30 years back and as I said, this is
+ah this is ah has a release even half of this
+
+109
+00:10:01,919 --> 00:10:02,919
+year.
+
+110
+00:10:02,919 --> 00:10:05,379
+So, it is a very vibrant system.
+
+111
+00:10:05,379 --> 00:10:10,860
+MySQL probably most widely used amongst the
+free community among ah the open source community
+
+112
+00:10:10,860 --> 00:10:15,279
+also where the first internal release happened
+in 1995.
+
+113
+00:10:15,279 --> 00:10:17,539
+The recent releases happened this year.
+
+114
+00:10:17,539 --> 00:10:21,870
+So, these are the common ah database systems
+that you will come across.
+
+115
+00:10:21,870 --> 00:10:27,919
+So, I mean given the organization that you
+are working with, first find out which database
+
+116
+00:10:27,919 --> 00:10:33,969
+system it uses and then look into the specific
+manual for that and specific ah features.
+
+117
+00:10:33,970 --> 00:10:39,090
+Beyond these a ah Relational Database Systems
+also, there are certain database systems which
+
+118
+00:10:39,090 --> 00:10:42,600
+use ah Object oriented notions in that.
+
+119
+00:10:42,600 --> 00:10:47,379
+So, if you are familiar with object orientation
+then you would have understood that the relational
+
+120
+00:10:47,379 --> 00:10:52,169
+approach ah does not make keep things object
+oriented because you are always flattening
+
+121
+00:10:52,169 --> 00:10:57,789
+out in terms of attributes and you are trying
+to look at the attributes ah, but it went
+
+122
+00:10:57,789 --> 00:11:02,889
+for example, when you want to model the same
+thing in terms of a C plus plus or java program,
+
+123
+00:11:02,889 --> 00:11:08,000
+you would like to look at a course as an as
+an object, as a class you would like to look
+
+124
+00:11:08,000 --> 00:11:14,230
+at instructor as a class, you would like to
+look at teaches as a as a kind of class ah
+
+125
+00:11:14,230 --> 00:11:15,800
+and their instances.
+
+126
+00:11:15,799 --> 00:11:24,839
+So, ah there has been attempts to make ah
+give a object orientation ah kind of layer
+
+127
+00:11:24,840 --> 00:11:28,930
+on top of relational databases or define things
+in that way.
+
+128
+00:11:28,929 --> 00:11:34,829
+Objectivity DBO 2 objects store are some of
+the examples, but unfortunately this is have
+
+129
+00:11:34,830 --> 00:11:38,310
+not been as popular as a regular relational
+databases.
+
+130
+00:11:38,309 --> 00:11:46,609
+So, ah if you happen to use any one of them,
+then you should be ah cause a cautious that
+
+131
+00:11:46,610 --> 00:11:51,570
+you know ah you really know why you are using
+it and you would be able to go a long way
+
+132
+00:11:51,570 --> 00:11:52,810
+in terms of that.
+
+133
+00:11:52,809 --> 00:11:59,689
+Now, when you ah come across a particular
+system that your company or your university
+
+134
+00:11:59,690 --> 00:12:05,540
+needs to use and you would like to choose,
+then it will be good to look at the different
+
+135
+00:12:05,539 --> 00:12:07,679
+aspects of that system.
+
+136
+00:12:07,679 --> 00:12:14,750
+These are here are some of the parameters
+on which these database systems vary in a
+
+137
+00:12:14,750 --> 00:12:20,960
+in a minimal to a very large extent, in terms
+of what operating systems it supports, what
+
+138
+00:12:20,960 --> 00:12:24,540
+are the fundamental features, what are the
+limits for example, every database sets a
+
+139
+00:12:24,539 --> 00:12:30,199
+number of limits in terms of the index size,
+in terms of the table size and and whole lot
+
+140
+00:12:30,200 --> 00:12:31,200
+of that.
+
+141
+00:12:31,200 --> 00:12:35,650
+How are the tables and views created what
+the kind of restrictions you have that, what
+
+142
+00:12:35,649 --> 00:12:41,750
+kind of indexes has support the capabilities
+the data types, the the different databases
+
+143
+00:12:41,750 --> 00:12:42,750
+support.
+
+144
+00:12:42,750 --> 00:12:47,529
+We have talked about a very limited set of
+data types in terms of SQL, but in in an actual
+
+145
+00:12:47,529 --> 00:12:53,879
+commercial or even ah you know open source
+database, the data types could be wider than
+
+146
+00:12:53,879 --> 00:12:58,279
+that what kind of other objects partitioning
+access control mechanism.
+
+147
+00:12:58,279 --> 00:13:03,789
+Access control is very important for ensuring
+security and finally, what kind of programming
+
+148
+00:13:03,789 --> 00:13:05,559
+language support do you have.
+
+149
+00:13:05,559 --> 00:13:10,269
+Because as we have seen in the application
+development module, that it is not enough
+
+150
+00:13:10,269 --> 00:13:16,909
+to just have a you know the database firing
+SQL queries, no application user will actually
+
+151
+00:13:16,909 --> 00:13:17,909
+fire SQL queries.
+
+152
+00:13:17,909 --> 00:13:23,659
+The application user needs and in GUI possibly
+or a text interface through which it will
+
+153
+00:13:23,659 --> 00:13:31,019
+put queries in a different form and that needs
+to be processed by taking it to the ah database
+
+154
+00:13:31,019 --> 00:13:32,019
+engine.
+
+155
+00:13:32,019 --> 00:13:38,079
+So, you need possibly an interface which is
+in terms of C, C plus plus, Java, Python,
+
+156
+00:13:38,080 --> 00:13:39,540
+this kind of programming language.
+
+157
+00:13:39,539 --> 00:13:47,259
+So, how do you connect to or embed such embed
+your relational query into different languages
+
+158
+00:13:47,259 --> 00:13:50,370
+that differ between different database ah
+systems.
+
+159
+00:13:50,370 --> 00:13:54,480
+So, these are the parameters that you must
+look at.
+
+160
+00:13:54,480 --> 00:14:02,019
+In the next ah series of slides, which I will
+not you know discuss really because the these
+
+161
+00:14:02,019 --> 00:14:03,500
+are more like data.
+
+162
+00:14:03,500 --> 00:14:10,210
+But here after given a compilation of different
+you know on different aspects, how do these
+
+163
+00:14:10,210 --> 00:14:13,070
+common database RDMS systems agree or differ.
+
+164
+00:14:13,070 --> 00:14:17,580
+So, this is like a slide which shows what
+are the operating system support for different
+
+165
+00:14:17,580 --> 00:14:18,580
+databases.
+
+166
+00:14:18,580 --> 00:14:23,800
+So, if you are for example, working on android,
+then you can easily make out that you do not
+
+167
+00:14:23,799 --> 00:14:29,549
+have a choice to use SQL server or to use
+Oracle, but you can use ah Sybase.
+
+168
+00:14:29,549 --> 00:14:35,089
+But you can use Postgres and MySQL actually,
+if you look into ah these two columns, right
+
+169
+00:14:35,090 --> 00:14:38,730
+most columns which are for the open source
+databases, you will find that they have the
+
+170
+00:14:38,730 --> 00:14:41,409
+widest choice in terms of operating system.
+
+171
+00:14:41,409 --> 00:14:47,569
+In many aspects you will find that ah these
+free database systems have a better you know
+
+172
+00:14:47,570 --> 00:14:53,460
+options for you; obviously, when it comes
+to you know really the core, core of database
+
+173
+00:14:53,460 --> 00:14:58,350
+systems in terms of really really supporting
+very large databases, really really supporting
+
+174
+00:14:58,350 --> 00:15:04,970
+very fast operations, really really supporting
+very secure applications, you might need to
+
+175
+00:15:04,970 --> 00:15:10,950
+only work with commercial software because
+they offer that, but otherwise for a large
+
+176
+00:15:10,950 --> 00:15:19,730
+number of common you know medium scale or
+low cost applications the ah free database
+
+177
+00:15:19,730 --> 00:15:25,060
+systems, Postgres and MySQL are really good
+options there are different such features.
+
+178
+00:15:25,059 --> 00:15:28,319
+The basic features are compared to here.
+
+179
+00:15:28,320 --> 00:15:32,200
+At compile different limits of different database
+systems here.
+
+180
+00:15:32,200 --> 00:15:37,150
+So, you can see in terms of maximum row size,
+columns per row and and so on and so forth,
+
+181
+00:15:37,149 --> 00:15:38,389
+how do they differ.
+
+182
+00:15:38,389 --> 00:15:41,889
+So, if you are making a choice in terms of
+what database I will use.
+
+183
+00:15:41,889 --> 00:15:43,669
+You can use these information.
+
+184
+00:15:43,669 --> 00:15:49,610
+This talks about tables we use the type systems,
+what kind of typing is used.
+
+185
+00:15:49,610 --> 00:15:53,289
+The different data types that are used are
+given here.
+
+186
+00:15:53,289 --> 00:16:00,339
+The index mechanisms are ah discussed here
+the capabilities of the database, what it
+
+187
+00:16:00,340 --> 00:16:01,399
+can do overall.
+
+188
+00:16:01,399 --> 00:16:05,220
+Ah other kinds of objects that it supports.
+
+189
+00:16:05,220 --> 00:16:07,639
+Ah the different partitioning mechanism.
+
+190
+00:16:07,639 --> 00:16:14,309
+Ah the access control which is critical for
+ensuring good security and good management
+
+191
+00:16:14,309 --> 00:16:16,589
+of that database are given here.
+
+192
+00:16:16,590 --> 00:16:22,639
+So, these are ah kind of the different across
+different features, this is ah parameters,
+
+193
+00:16:22,639 --> 00:16:24,679
+this is how they compare.
+
+194
+00:16:24,679 --> 00:16:32,159
+So, ah well this is for your you know reference
+only, this is this is not ah for your assignment
+
+195
+00:16:32,159 --> 00:16:39,240
+or examination, but I just wanted to have
+a view that with all the ah theory and you
+
+196
+00:16:39,240 --> 00:16:45,139
+know a small hands on that you have seen ah,
+when you go to the real life what are the
+
+197
+00:16:45,139 --> 00:16:49,870
+expected things what are the expected system
+this will have to work with.
+
+198
+00:16:49,870 --> 00:16:57,250
+Now let us just ah move on and let us let
+me just briefly talk about the a group of
+
+199
+00:16:57,250 --> 00:17:02,120
+database systems which are non relational
+and of course I would warn you that the basis
+
+200
+00:17:02,120 --> 00:17:06,220
+for these DBMS is are not covered in this
+course, is beyond the course, but just for
+
+201
+00:17:06,220 --> 00:17:14,568
+your information and to keep in ah keep you
+in in tune with what is happening frequently
+
+202
+00:17:14,568 --> 00:17:16,599
+around the industry today.
+
+203
+00:17:16,599 --> 00:17:22,629
+So, the non-relational database systems have
+arisen from what they all have must have heard
+
+204
+00:17:22,630 --> 00:17:25,890
+of is is the whole aspect of Big Data.
+
+205
+00:17:25,890 --> 00:17:33,090
+Big Data as a name suggests is is certainly
+voluminous data, complex data and now the
+
+206
+00:17:33,089 --> 00:17:40,609
+question that you might have is if I i have
+done a good relational design, if I have a
+
+207
+00:17:40,609 --> 00:17:43,740
+good RDMS, can I not handle big data.
+
+208
+00:17:43,740 --> 00:17:49,329
+The question here really is, big data is not
+only about ah volume, the volume is only one
+
+209
+00:17:49,329 --> 00:17:51,509
+aspect which is really really large.
+
+210
+00:17:51,509 --> 00:17:55,470
+So, ah big data typically are characterized
+by certain Vs.
+
+211
+00:17:55,470 --> 00:18:02,950
+So, these are not any very standardized characterization,
+but these are more commonly accepted once.
+
+212
+00:18:02,950 --> 00:18:07,890
+So, one is volume, that the quantity of data
+when a for a big data situation has to be
+
+213
+00:18:07,890 --> 00:18:13,950
+very very large . Now again what is a very
+very large is again again a subjective question,
+
+214
+00:18:13,950 --> 00:18:17,930
+some you can say that a million record is
+large, someone else would say no no million
+
+215
+00:18:17,930 --> 00:18:23,789
+record is small, it is actually ah 10 million
+is large; some might say that it is a database
+
+216
+00:18:23,789 --> 00:18:26,629
+need to be petabytes to be large and so on.
+
+217
+00:18:26,630 --> 00:18:31,850
+But these are all subjectivity, but it is
+large has a voluminous existent in certain
+
+218
+00:18:31,849 --> 00:18:35,480
+sense, there has to be different variety different
+types of data.
+
+219
+00:18:35,480 --> 00:18:42,269
+So, all that we have seen in the relational
+database is basically your you know strings
+
+220
+00:18:42,269 --> 00:18:47,220
+and numbers if you look at it in different
+ways we are seeing, whatever we have dealt
+
+221
+00:18:47,220 --> 00:18:53,750
+with in all these through all this 39 modules
+so far, they are primarily about strings and
+
+222
+00:18:53,750 --> 00:18:59,319
+numbers, but nothing else we have not, but
+big data can be about ah free text, it could
+
+223
+00:18:59,319 --> 00:19:06,919
+be about natural language comments your ah
+regularly ah writing comments on on your Facebook.
+
+224
+00:19:06,920 --> 00:19:12,620
+So, those Facebook comments are phrases and
+if I want to make certain query based on that,
+
+225
+00:19:12,619 --> 00:19:21,769
+if I want to make a query that ok ah, how
+many ah Facebook users has commented on the
+
+226
+00:19:21,769 --> 00:19:28,549
+success of Virat Kohli as a captain of India
+if I want to ah make such a query, then the
+
+227
+00:19:28,549 --> 00:19:29,839
+question is how do I do that?
+
+228
+00:19:29,839 --> 00:19:34,539
+Because it is not something where you have
+a at the information in a very structured
+
+229
+00:19:34,539 --> 00:19:40,589
+way this is no there is no relational schema
+which says that well the values are put in
+
+230
+00:19:40,589 --> 00:19:47,309
+terms of Virat Kohli having done very good,
+moderately or marginally or you know the captain
+
+231
+00:19:47,309 --> 00:19:50,309
+Indian captains are successful, not successful
+and so on.
+
+232
+00:19:50,309 --> 00:19:55,539
+These are this happen in terms of various
+texts, phrases, clauses that we write.
+
+233
+00:19:55,539 --> 00:20:00,460
+So, variety is a major issue then, it could
+have word your images video.
+
+234
+00:20:00,460 --> 00:20:02,370
+So, big data includes all of that.
+
+235
+00:20:02,369 --> 00:20:08,919
+The third V is about velocity that the processing
+speed may need to be really really fast, often
+
+236
+00:20:08,920 --> 00:20:14,700
+in big data often ah we say that the processing
+has to be real time which means what is real
+
+237
+00:20:14,700 --> 00:20:15,700
+time.
+
+238
+00:20:15,700 --> 00:20:23,410
+Real time is is basically that ah from the
+time I fire the query and to the time I get
+
+239
+00:20:23,410 --> 00:20:27,090
+the result, there is a fixed time limit within
+which it has to happen.
+
+240
+00:20:27,089 --> 00:20:35,259
+So, if I if I if I really want to do a ah
+railway reservation that also is a kind of
+
+241
+00:20:35,259 --> 00:20:42,410
+real time, but that is not very critical because
+it is ok if I get the reservation done in
+
+242
+00:20:42,410 --> 00:20:48,590
+one minute, it is also ok, if it takes 5 minutes,
+it is good if we can happen in 10 seconds,
+
+243
+00:20:48,589 --> 00:20:53,119
+but I do not ever need it in in say 20 millisecond.
+
+244
+00:20:53,119 --> 00:20:59,769
+So, but in when you talk about real time,
+it could really be about getting all these
+
+245
+00:20:59,769 --> 00:21:04,369
+processing done in millisecond, microsecond,
+nanosecond and so on.
+
+246
+00:21:04,369 --> 00:21:08,779
+And those kind of real time systems with a
+large volume of varied data, it is a big challenge.
+
+247
+00:21:08,779 --> 00:21:14,190
+So, those are the challenges of big data,
+then there could be variability inconsistency
+
+248
+00:21:14,190 --> 00:21:20,059
+of the data that you are because ah maintaining
+integrity is a big problem; there could be
+
+249
+00:21:20,059 --> 00:21:23,750
+issues in terms of quality of the data that
+is called veracity.
+
+250
+00:21:23,750 --> 00:21:29,000
+So, actually these things characteristics
+that I have put, there are lot of debates
+
+251
+00:21:29,000 --> 00:21:36,740
+in terms of that or many people take these
+3 and say that there these are the 3 V s of
+
+252
+00:21:36,740 --> 00:21:37,740
+big data.
+
+253
+00:21:37,740 --> 00:21:43,180
+There is a 3 main characteristics, but off
+let more and more people are also considering
+
+254
+00:21:43,180 --> 00:21:47,090
+variability and veracity are as the characteristics
+of big data.
+
+255
+00:21:47,089 --> 00:21:53,859
+Now as it ah happens, is if you look into
+these ah requirements and what you have you
+
+256
+00:21:53,859 --> 00:22:00,250
+have a fairly good idea of relational databases
+now what they can do, how to design them,
+
+257
+00:22:00,250 --> 00:22:05,230
+how to query them, how to implement them,
+you will understand that it is not easy to
+
+258
+00:22:05,230 --> 00:22:08,529
+meet these requirements using the relational
+model.
+
+259
+00:22:08,529 --> 00:22:13,089
+So, we need their non-relational databases
+to effectively support big data.
+
+260
+00:22:13,089 --> 00:22:17,809
+That is that is a one major reason that you
+need big data.
+
+261
+00:22:17,809 --> 00:22:23,159
+So, that in non-relational databases certainly
+as the name suggests, do not follow relational
+
+262
+00:22:23,160 --> 00:22:25,759
+model, they offer flexible schema design.
+
+263
+00:22:25,759 --> 00:22:30,840
+The schema may itself change while the database
+is evolving which is not the case in the relational
+
+264
+00:22:30,840 --> 00:22:35,389
+schema is fixed, only the data can change,
+but here the schema itself can change.
+
+265
+00:22:35,390 --> 00:22:40,060
+It may be able to handle unstructured data,
+make natural language comments like images
+
+266
+00:22:40,059 --> 00:22:47,029
+like audio coming in which do not fit nearly
+into your you know table structure ah, some
+
+267
+00:22:47,029 --> 00:22:52,639
+of the other feature sites they are typically
+open source because you know still in an experimental
+
+268
+00:22:52,640 --> 00:22:59,110
+stage ah and ah needs to be scalable and some
+of the popular ones are ah, these are the
+
+269
+00:22:59,109 --> 00:23:06,479
+names you must have heard about at least some
+of them like MongoDB like Cassandra ah like
+
+270
+00:23:06,480 --> 00:23:08,190
+HBase and so on.
+
+271
+00:23:08,190 --> 00:23:14,440
+Now again again in terms of the non relational
+database, it ah does differ in terms of all
+
+272
+00:23:14,440 --> 00:23:18,980
+non relational database error are not of the
+same type, there are there have been 4 different
+
+273
+00:23:18,980 --> 00:23:25,920
+styles or strategies to actually ah generate
+realize these non relational databases, they
+
+274
+00:23:25,920 --> 00:23:31,289
+are called key value store graph, store columns
+stores and document store ah.
+
+275
+00:23:31,289 --> 00:23:34,509
+They are also known as no SQL databases.
+
+276
+00:23:34,509 --> 00:23:42,069
+I, I personally find the name no SQL a little
+misnomer ah, it it no SQL does not mean that
+
+277
+00:23:42,069 --> 00:23:47,740
+ah you are strictly prohibited from not using
+SQL in these databases.
+
+278
+00:23:47,740 --> 00:23:52,920
+But I would rather like to read it more as
+no SQL means that it is not only SQL like
+
+279
+00:23:52,920 --> 00:23:57,740
+in a relational database, you can use only
+SQL and solve problems; here you need to do
+
+280
+00:23:57,740 --> 00:23:59,779
+lot of other things beyond that.
+
+281
+00:23:59,779 --> 00:24:05,808
+So, here is a quick comparison between the
+relational and the non-relational ah, in terms
+
+282
+00:24:05,808 --> 00:24:11,279
+of the flexibility of the data model ah, relational
+is very structured when on relational has
+
+283
+00:24:11,279 --> 00:24:17,410
+to have ah handle unstructured data, semi
+structured data and therefore it has to be
+
+284
+00:24:17,410 --> 00:24:25,950
+ah flexible in terms of the data model, cost
+complexity and speed ah faster less capable,
+
+285
+00:24:25,950 --> 00:24:31,710
+but cheaper and less complex, but in non-relational,
+you are talking about much more database operations
+
+286
+00:24:31,710 --> 00:24:41,740
+highly complex ah in internal structure usually
+costlier, performance and scalability ah certainly
+
+287
+00:24:41,740 --> 00:24:47,259
+non-relational ones need to be better scalable,
+consistency have a very strict consistency
+
+288
+00:24:47,259 --> 00:24:54,650
+rules in relation, but in non-relational ah
+you use some kind of you know eventual consistent
+
+289
+00:24:54,650 --> 00:24:55,650
+system.
+
+290
+00:24:55,650 --> 00:25:00,710
+So, maybe not always not everything is consistent
+in that way, enterprise management and integration
+
+291
+00:25:00,710 --> 00:25:06,240
+ah, relational fits very well into because
+it is been around for as as you have seen
+
+292
+00:25:06,240 --> 00:25:10,951
+the little bit of history of all these ah
+common databases, it is more than 40 years
+
+293
+00:25:10,951 --> 00:25:11,951
+that they have been around.
+
+294
+00:25:11,951 --> 00:25:18,140
+So, they easily fit into the IT stack whereas,
+ah non-relational is still on the in the in
+
+295
+00:25:18,140 --> 00:25:24,390
+the agile form of development that is becoming
+more and more common it fits into the cloud
+
+296
+00:25:24,390 --> 00:25:26,110
+based development and so on.
+
+297
+00:25:26,109 --> 00:25:29,699
+So, these are some of the distinctions that
+exist.
+
+298
+00:25:29,700 --> 00:25:35,680
+And these are the different types of no SQL
+databases, there is a key value store strategy
+
+299
+00:25:35,680 --> 00:25:44,690
+ah Redis and MemcacheDB follow this strategy,
+graph store is used by orient DB and Neo4J;
+
+300
+00:25:44,690 --> 00:25:50,881
+column store is used by Cassandra and HBase
+document store, MongoDB, Couchbase, they use
+
+301
+00:25:50,881 --> 00:25:51,881
+document store.
+
+302
+00:25:51,881 --> 00:25:57,170
+So, these are I am in this is not just about
+going a deeper into what they are or how they
+
+303
+00:25:57,170 --> 00:26:02,050
+are distinguished, I just want you to have
+an idea that ah well.
+
+304
+00:26:02,049 --> 00:26:07,099
+These are different from the relational databases
+they can do lot of structured, handling of
+
+305
+00:26:07,099 --> 00:26:14,089
+unstructured data they can actually use a
+scalability of volume a variety which is relationships
+
+306
+00:26:14,089 --> 00:26:20,099
+cannot do and, but they have there are different
+principles for actually implementing them
+
+307
+00:26:20,099 --> 00:26:21,589
+and there is a deeper.
+
+308
+00:26:21,589 --> 00:26:27,130
+So, if you are interested, you can take specific
+courses which deal with the big data and and
+
+309
+00:26:27,131 --> 00:26:30,990
+prepare yourself for the bigger ah challenges
+ahead.
+
+310
+00:26:30,990 --> 00:26:36,420
+I have also done similar to the relational
+database, I have presented here a tentative
+
+311
+00:26:36,420 --> 00:26:44,300
+comparative study between these different
+ah non no SQL databases in terms of what is
+
+312
+00:26:44,299 --> 00:26:46,740
+the context in which you use them.
+
+313
+00:26:46,740 --> 00:26:52,529
+Or ah now now while you are doing this unstructured
+data handling, there will be lot of data which
+
+314
+00:26:52,529 --> 00:26:53,740
+is also structured.
+
+315
+00:26:53,740 --> 00:26:59,359
+So, how do you, along with this know SQL,
+how do you handle the relational data with
+
+316
+00:26:59,359 --> 00:27:00,359
+these?
+
+317
+00:27:00,359 --> 00:27:06,729
+Databases what how do how do the performance
+compare between these different no SQL databases
+
+318
+00:27:06,730 --> 00:27:14,089
+and based on all that you can make some judgment
+and it is it is very important to ah in today's
+
+319
+00:27:14,089 --> 00:27:19,109
+time ah naturally knowing relational databases
+the foundational ones are very important,
+
+320
+00:27:19,109 --> 00:27:24,509
+but it is always good to look forward be with
+the time and I will urge that if you have
+
+321
+00:27:24,509 --> 00:27:30,329
+started growing interest in handling of data
+ah do take specific courses on big data and
+
+322
+00:27:30,329 --> 00:27:31,759
+ah no SQL databases.
+
+323
+00:27:31,759 --> 00:27:37,941
+I will end this discussion with a very simple
+ah skill job profile matrix which Will give
+
+324
+00:27:37,941 --> 00:27:44,130
+you some idea in terms of ah, it will you
+can use it for a certain kind of self-assessment
+
+325
+00:27:44,130 --> 00:27:45,130
+as well.
+
+326
+00:27:45,130 --> 00:27:50,070
+So, let me just explain the the structure
+of this matrix, what I have tried to do is
+
+327
+00:27:50,069 --> 00:27:52,970
+here ah I am sorry.
+
+328
+00:27:52,970 --> 00:27:59,079
+Here on the left, I have given different typical
+job profiles this is if you look into LinkedIn,
+
+329
+00:27:59,079 --> 00:28:02,609
+Naukri and all that you will find ah these
+kind of profiles being.
+
+330
+00:28:02,609 --> 00:28:08,240
+So, then at the lowest level there are application
+programmers ah for which typically 0 to 4
+
+331
+00:28:08,240 --> 00:28:10,230
+years of experience are asked for.
+
+332
+00:28:10,230 --> 00:28:13,819
+Then the next level, this is so, this is your
+kind of your career progression also.
+
+333
+00:28:13,819 --> 00:28:20,029
+If you if you choose to ah take up databases
+as your primary job profession, ah this next
+
+334
+00:28:20,029 --> 00:28:26,379
+level is a senior application programmer which
+ah requires 2 to 6 years of experience depending
+
+335
+00:28:26,380 --> 00:28:29,170
+on the organization and depending on your
+skills ah.
+
+336
+00:28:29,170 --> 00:28:37,420
+Then you move on to database analyst or architect
+which you happen in 4 to 8 years of time and
+
+337
+00:28:37,420 --> 00:28:41,910
+ah on a little different track ah because
+these are these are primarily in terms of
+
+338
+00:28:41,910 --> 00:28:47,340
+application development and hierarchy on that
+and ah the other is an administrator track
+
+339
+00:28:47,339 --> 00:28:53,079
+who actually administers the database in an
+organization, controls all the all that is
+
+340
+00:28:53,079 --> 00:28:58,808
+happening in different database applications,
+typically 8 to 10 year's experience is required.
+
+341
+00:28:58,808 --> 00:29:05,329
+And ah some of that, so this these are the
+about actually in terms of ah you know profiles
+
+342
+00:29:05,329 --> 00:29:10,970
+that are related to applications and this
+is a profile which is related to, if you really
+
+343
+00:29:10,970 --> 00:29:16,490
+want to become a database engineer in a sense
+that you want to you know ah make changes
+
+344
+00:29:16,490 --> 00:29:22,660
+in Oracle, you want to make changes in say
+MySQL, you want to make changes in say MongoDB
+
+345
+00:29:22,660 --> 00:29:25,720
+or say that relation will say the Sybase.
+
+346
+00:29:25,720 --> 00:29:30,429
+So, if you want to become a database engineer
+who changes the database system itself or
+
+347
+00:29:30,429 --> 00:29:35,880
+develops the database system itself, then
+this is the kind of background you will need.
+
+348
+00:29:35,880 --> 00:29:39,590
+There is a kind of number of years, you would
+need and of course it is not a single grid
+
+349
+00:29:39,589 --> 00:29:44,419
+there are multiple grades, you know junior
+and mid levels in here and those kind and
+
+350
+00:29:44,420 --> 00:29:49,789
+last which have shown in different color are
+the whole set of profiles which relate to
+
+351
+00:29:49,789 --> 00:29:52,960
+programming the big data, analyzing the big
+data and so on.
+
+352
+00:29:52,960 --> 00:29:59,340
+We are at present, it is companies are typically
+asking for 0 to 6 years of experience depending
+
+353
+00:29:59,339 --> 00:30:02,490
+on ah actual skills that you have.
+
+354
+00:30:02,490 --> 00:30:07,299
+On this side, I have shown a whole grouping
+of skills, this is the first basic level that
+
+355
+00:30:07,299 --> 00:30:11,859
+you must understand specs and schema, without
+that you cannot do any of this and you must
+
+356
+00:30:11,859 --> 00:30:19,809
+have a skill for ah coding in inquire in SQL,
+the DML part significantly ah, without that
+
+357
+00:30:19,809 --> 00:30:26,058
+as you can see you cannot pick up any of these
+profiles whereas, if you go a little if you
+
+358
+00:30:26,058 --> 00:30:32,119
+go little senior you know gaining experience
+and you should be able to analyze specs that
+
+359
+00:30:32,119 --> 00:30:37,429
+is, you should be able to design schema do
+normalization and get into this.
+
+360
+00:30:37,430 --> 00:30:44,440
+So, at at at a very initial level, you ah
+may not be expected to do all of that schema
+
+361
+00:30:44,440 --> 00:30:48,980
+design and normalization by yourself, but
+it would be good to be able to do that, but
+
+362
+00:30:48,980 --> 00:30:53,640
+well there will be seniors to help you, but
+if you once you become a senior application
+
+363
+00:30:53,640 --> 00:30:59,200
+programmer that becomes onward that becomes
+a critical skill to have.
+
+364
+00:30:59,200 --> 00:31:05,519
+Then ah the next level would be in terms of
+application or database architecture management
+
+365
+00:31:05,519 --> 00:31:08,430
+deciding on how to index, performance optimization.
+
+366
+00:31:08,430 --> 00:31:14,420
+So, between between these two, there will
+be certain overlaps a senior application programmer
+
+367
+00:31:14,420 --> 00:31:18,580
+in addition to doing this might do some of
+these optimization techniques depending on
+
+368
+00:31:18,579 --> 00:31:21,029
+how competent he or she is ah.
+
+369
+00:31:21,029 --> 00:31:26,389
+Or some ah database architect may focus only
+on this, but but these are the typical skills
+
+370
+00:31:26,390 --> 00:31:27,390
+that you need.
+
+371
+00:31:27,390 --> 00:31:33,540
+But to be a database administrator, you need
+all of these skills , but you are specifically
+
+372
+00:31:33,539 --> 00:31:38,950
+administering a certain ah organizations enterprises
+whole database system.
+
+373
+00:31:38,950 --> 00:31:43,610
+So, it is just not one database application,
+but a whole lot of databases and whole lot
+
+374
+00:31:43,609 --> 00:31:46,629
+of user groups, security, network connectivity
+and all that.
+
+375
+00:31:46,630 --> 00:31:50,880
+So, that needs ah certainly bigger experience
+it can, you can see that experience level
+
+376
+00:31:50,880 --> 00:31:54,330
+is much higher and the skill sets ah.
+
+377
+00:31:54,329 --> 00:31:58,849
+If you want to become a database engineer,
+that is not focus only on the application
+
+378
+00:31:58,849 --> 00:32:06,000
+side, but also have ah some more ah understanding
+in terms of actually doing working in the
+
+379
+00:32:06,000 --> 00:32:10,849
+internals of the database systems, then you
+need whole lot of additional skills like ah
+
+380
+00:32:10,849 --> 00:32:17,689
+good knowledge and algorithms, in architecture,
+in compiler all of that ah; only then and
+
+381
+00:32:17,690 --> 00:32:22,440
+coupled with coupled with all the database
+knowledge, then you will be able to work as
+
+382
+00:32:22,440 --> 00:32:24,610
+a database system engineer.
+
+383
+00:32:24,609 --> 00:32:30,149
+And in the emerging areas of what is ah big
+data where, you need to have now of course,
+
+384
+00:32:30,150 --> 00:32:35,250
+the I am saying this is 0 to 6, it could be
+0 to 8 kind of, not more than that because
+
+385
+00:32:35,250 --> 00:32:41,750
+it did not exist ah quite a long time ago
+ah, but you need to have a basic level of
+
+386
+00:32:41,750 --> 00:32:47,819
+at least this much of the relational database
+understanding and knowledge, but what is critical
+
+387
+00:32:47,819 --> 00:32:53,928
+is a whole set of other skills like, you must
+be aware with big data the data mining, warehousing
+
+388
+00:32:53,929 --> 00:32:59,410
+strategies machine learning or is often very
+useful in this kind of big data applications
+
+389
+00:32:59,410 --> 00:33:04,120
+ah, python programming, tensor flow all these
+become critical.
+
+390
+00:33:04,119 --> 00:33:08,859
+You have to be a good programmer in any case
+I mean not only just an SQL program and you
+
+391
+00:33:08,859 --> 00:33:13,409
+might have to be a good program and in C or
+C plus plus or python of these, but that is
+
+392
+00:33:13,410 --> 00:33:15,620
+it that is a very very emerging area.
+
+393
+00:33:15,619 --> 00:33:21,539
+So, if you can acquire a little bit of besides
+database you know he said that the basics
+
+394
+00:33:21,539 --> 00:33:27,019
+of the database along with that if you pick
+up few basics or from here, you will be able
+
+395
+00:33:27,019 --> 00:33:32,660
+to enter into the space and that will give
+you a very very bright future ah in in in
+
+396
+00:33:32,660 --> 00:33:38,179
+my view otherwise you can focus on the application
+programming stat as I have mentioned.
+
+397
+00:33:38,179 --> 00:33:42,870
+So, this is the basically skill profile matrix
+ah that you have ah mapping that you have
+
+398
+00:33:42,869 --> 00:33:46,209
+that you can focus on.
+
+399
+00:33:46,210 --> 00:33:55,450
+So, ah finally, before I close here a glimpses
+of companies that are in the very active in
+
+400
+00:33:55,450 --> 00:34:02,080
+the RDMS space really really any big organization
+you talk ah about ah, they have consultancy
+
+401
+00:34:02,079 --> 00:34:08,289
+projects, product development different ah
+database management back end services and
+
+402
+00:34:08,289 --> 00:34:09,289
+so on.
+
+403
+00:34:09,289 --> 00:34:15,039
+So, DB application development, I have listed
+some around 20 companies, but there are really
+
+404
+00:34:15,039 --> 00:34:16,250
+100s of them almost.
+
+405
+00:34:16,250 --> 00:34:20,699
+Any big organization in any area you think
+of, they require databases.
+
+406
+00:34:20,699 --> 00:34:25,879
+So, in terms of beta based application programmer
+and senior programmer and to some extent architect,
+
+407
+00:34:25,880 --> 00:34:32,679
+you have a wide range of jobs available which
+you may just grab; if you have been able to
+
+408
+00:34:32,679 --> 00:34:36,398
+study write the basics of the database.
+
+409
+00:34:36,398 --> 00:34:41,210
+The second group of companies which I show
+here, these are system development companies
+
+410
+00:34:41,210 --> 00:34:47,980
+who are actually working on the new DBMS products
+and services around that.
+
+411
+00:34:47,980 --> 00:34:52,269
+So, these are companies like Oracle, Teradata
+or Microsoft and so on, naturally these are
+
+412
+00:34:52,269 --> 00:34:59,809
+big companies and you need ah more lot of
+more skills besides the database like I said
+
+413
+00:34:59,809 --> 00:35:05,840
+algorithms programming and all that to crack
+a job here and here are some of some companies
+
+414
+00:35:05,840 --> 00:35:11,350
+which I have mentioned, but there are many
+others who are focusing on the big data space.
+
+415
+00:35:11,349 --> 00:35:18,489
+So, I have tried to you know these may not
+be absolutely accurate because you know these
+
+416
+00:35:18,489 --> 00:35:23,509
+are all collected from different sources,
+but these are the different companies and
+
+417
+00:35:23,510 --> 00:35:27,670
+the kind of non relational database that they
+are focusing with working with.
+
+418
+00:35:27,670 --> 00:35:33,680
+So, if you pick up certain skills in those
+in a certain non-relational no SQL database,
+
+419
+00:35:33,679 --> 00:35:39,309
+then you can target the corresponding companies
+better or other companies and you can see
+
+420
+00:35:39,309 --> 00:35:40,309
+that all.
+
+421
+00:35:40,309 --> 00:35:45,090
+You know new generation companies, the companies
+were working for products for the next ah
+
+422
+00:35:45,090 --> 00:35:47,960
+10, 10, 15 years are in this space.
+
+423
+00:35:47,960 --> 00:35:52,740
+So, there are whole lot of opportunities for
+you all if you if you prepare a little hard,
+
+424
+00:35:52,739 --> 00:35:57,379
+then you will I mean job will run after, you
+will not have to run after the job.
+
+425
+00:35:57,380 --> 00:36:05,269
+So, ah with that I conclude this course a
+couple of final words ah the the hygiene words.
+
+426
+00:36:05,269 --> 00:36:07,630
+Read the DBMS textbook thoroughly and solve
+exercises.
+
+427
+00:36:07,630 --> 00:36:14,119
+There is no shortcut to that, there is no
+other way to master the horse other than this
+
+428
+00:36:14,119 --> 00:36:20,380
+you must practice query coding as much as
+you can, practice database design from specification.
+
+429
+00:36:20,380 --> 00:36:27,619
+We are releasing a tutorial on this where
+for a hospital management system we are showing
+
+430
+00:36:27,619 --> 00:36:33,358
+from the specification how you can do the
+initial schema and the refinements ah and
+
+431
+00:36:33,358 --> 00:36:37,630
+ah finally, how can you implement it using
+my SQL.
+
+432
+00:36:37,630 --> 00:36:41,400
+So, do similar practices very heavily ah.
+
+433
+00:36:41,400 --> 00:36:46,329
+Keep in mind the database the knowledge of
+database system alone will not be good enough
+
+434
+00:36:46,329 --> 00:36:49,049
+to get a good job, get a good placement.
+
+435
+00:36:49,050 --> 00:36:53,490
+So, develop good knowledge in programming
+data structure, algorithms and discrete structures;
+
+436
+00:36:53,489 --> 00:36:57,979
+these are the minimum required around the
+database systems which will really make you
+
+437
+00:36:57,980 --> 00:37:03,260
+powerful and if you need ah we are there to
+help you ah.
+
+438
+00:37:03,260 --> 00:37:05,450
+As long as the course is on, the forum would
+be on.
+
+439
+00:37:05,449 --> 00:37:10,269
+You can post in the forum beyond that also
+if you need help ah, please ask for it mail
+
+440
+00:37:10,269 --> 00:37:16,369
+us and wish you all the very best with your
+course in your examination and the future
+
+441
+00:37:16,369 --> 00:37:20,289
+course of your profession in life, all the
+very best.
+

@@ -1,0 +1,2730 @@
+﻿1
+00:00:10,619 --> 00:00:36,939
+So, today we start with first technical topic
+and that is 
+
+2
+00:00:36,939 --> 00:00:44,420
+state space search. So, let me
+begin by first putting this whole thing into
+
+3
+00:00:44,420 --> 00:00:47,760
+perspective.
+
+4
+00:00:47,759 --> 00:00:48,759
+..
+
+5
+00:00:48,759 --> 00:00:54,539
+I will just write this . these. So, we are
+looking at one aspect of A I,
+
+6
+00:00:54,539 --> 00:01:03,920
+which we will call as problem solving. As
+we said, there are many other aspects that
+
+7
+00:01:03,920 --> 00:01:07,090
+we
+will not cover in this course for example,
+
+8
+00:01:07,090 --> 00:01:14,230
+learning or using experience or reasoning
+with
+
+9
+00:01:14,230 --> 00:01:21,329
+knowledge. We will focus on problem solving
+and by problem solving we mean that, the
+
+10
+00:01:21,329 --> 00:01:29,509
+agent is in a desired, is in some situation
+and wants to be in some desired situation.
+
+11
+00:01:29,510 --> 00:01:40,420
+So,
+given to desired situation and the task of
+
+12
+00:01:40,420 --> 00:01:43,070
+the agent is to make a series of decisions
+or a
+
+13
+00:01:43,069 --> 00:01:48,829
+series of moves, which will transform the
+given situation to the desired situation.
+
+14
+00:01:48,829 --> 00:01:58,170
+So, the task is to find these decisions, and
+that is the task we will be addressing. Now,
+
+15
+00:01:58,170 --> 00:02:02,299
+in
+general, there are two approaches to this.
+
+16
+00:02:02,299 --> 00:02:11,620
+One is the one that we are following in this
+course, which is search. Our first principles
+
+17
+00:02:11,620 --> 00:02:18,890
+base approach, which means that, you have
+some kind of representation of the domain.
+
+18
+00:02:18,889 --> 00:02:25,068
+And you simulate, what would happen in the
+domain as the consequence of your decisions.
+
+19
+00:02:25,068 --> 00:02:30,378
+And then try to find those decisions, which
+will achieve the goal that you are aiming
+
+20
+00:02:30,378 --> 00:02:44,328
+at. The other is knowledge based, in which
+you
+
+21
+00:02:44,329 --> 00:02:50,159
+are trying to exploit knowledge, which has
+been accrued by some means essentially.
+
+22
+00:02:50,158 --> 00:02:57,200
+So, in general of course, knowledge says derived
+from experience, either your own
+
+23
+00:02:57,200 --> 00:03:02,539
+experience or somebody else with experience
+and convey through in a form of books and
+
+24
+00:03:02,539 --> 00:03:11,439
+lectures and things like that or stories.
+But, given the knowledge, we want to up exploit
+
+25
+00:03:11,439 --> 00:03:16,068
+.those techniques. The knowledge base techniques
+themselves could be classified into
+
+26
+00:03:16,068 --> 00:03:33,419
+two kinds, which is memory based and rule
+based. Memory based techniques try to
+
+27
+00:03:33,419 --> 00:03:40,589
+exploit stored experience directly essentially.
+So, this area is also known as case base
+
+28
+00:03:40,590 --> 00:03:41,890
+listening.
+
+29
+00:03:41,889 --> 00:03:45,388
+And in fact, we have a separate course, which
+will be offered next semester called
+
+30
+00:03:45,389 --> 00:03:49,480
+memory based listening in A I, which will
+focus entirely on this approaches to problem
+
+31
+00:03:49,479 --> 00:03:56,888
+solving. And what the memory based approach
+does is that it, stores experience and what
+
+32
+00:03:56,889 --> 00:04:05,639
+do we mean by experiences. Each case as we
+call it is the pair, made up of a problem
+
+33
+00:04:05,639 --> 00:04:10,370
+description and a solution that work for the
+problem description. So, every time is solve
+
+34
+00:04:10,370 --> 00:04:12,680
+a
+problem, he could be a human being solving
+
+35
+00:04:12,680 --> 00:04:15,510
+a problem and put in the case into the
+memory and so on.
+
+36
+00:04:15,509 --> 00:04:21,259
+So, every time is solve a problem, you store
+the problem and the description and the
+
+37
+00:04:21,259 --> 00:04:29,120
+solution description into this case base.
+And when a new problem occurs, you retrieve
+
+38
+00:04:29,120 --> 00:04:34,019
+the best matching problem description and
+use or reuse the solution that was told along
+
+39
+00:04:34,019 --> 00:04:38,000
+with that essentially. So, that is the way,
+. of using experience, that
+
+40
+00:04:38,000 --> 00:04:42,189
+is how, we learn many things for example,
+how to make . or
+
+41
+00:04:42,189 --> 00:04:49,969
+something like that or how to solve some kind
+of integral equations, whatever the case
+
+42
+00:04:49,970 --> 00:04:56,250
+may be. The rule base approach is on the other
+hand, does not use experiences directly,
+
+43
+00:04:56,250 --> 00:05:04,490
+but realize on rules or you might say negates
+of knowledge extracted from experiences.
+
+44
+00:05:04,490 --> 00:05:10,710
+And very often a rule base approach needs
+a human inter mediatory to convert
+
+45
+00:05:10,709 --> 00:05:14,899
+experience into rules. So, the standard approach
+that was forward an expert system,
+
+46
+00:05:14,899 --> 00:05:22,019
+which we is we talked about dendral and mycin
+and prospector. These were rule base
+
+47
+00:05:22,019 --> 00:05:28,609
+systems and the way there they were built
+was that so called, knowledge engineers went
+
+48
+00:05:28,610 --> 00:05:35,850
+and spoke to domain experts and try to elicit
+from them, the knowledge that the use for
+
+49
+00:05:35,850 --> 00:05:40,780
+solving their problem. It could be diagnosis
+of whatever the problem was and try to put
+
+50
+00:05:40,779 --> 00:05:45,658
+that knowledge in the form of rules essentially.
+So, we have knowledge base method as
+
+51
+00:05:45,658 --> 00:05:49,209
+suppose to search base method.
+
+52
+00:05:49,209 --> 00:05:54,739
+And we will be largely exploring search base
+methods in this course essentially. Of
+
+53
+00:05:54,740 --> 00:06:01,340
+course, it is not as a search base methods
+or divide of knowledge, because we have to
+
+54
+00:06:01,339 --> 00:06:07,508
+.still model the domain. We still have to
+create the platform on which this search will
+
+55
+00:06:07,509 --> 00:06:18,410
+happen. So, that extent we do need knowledge
+for search base methods essentially. As
+
+56
+00:06:18,410 --> 00:06:23,349
+we move along in the course, we will see that
+search by itself is not a very efficient
+
+57
+00:06:23,348 --> 00:06:29,829
+means of solving problem. Because, we will
+see that, we run into something call ((Refer
+
+58
+00:06:29,829 --> 00:06:34,818
+Time.) explosion, that as number of possibility
+that we have to explore with be
+
+59
+00:06:34,819 --> 00:06:36,408
+too high essentially.
+
+60
+00:06:36,408 --> 00:06:44,810
+So, very soon in fact, in the next week itself,
+we will introduce some element of
+
+61
+00:06:44,810 --> 00:06:49,500
+knowledge into search. We will try to see,
+how search can be guided by some kind of
+
+62
+00:06:49,500 --> 00:06:54,560
+domain knowledge and we call this heuristic
+search, and the knowledge that we will use
+
+63
+00:06:54,560 --> 00:07:04,399
+is called heuristic knowledge. After that,
+we will move towards standardizing
+
+64
+00:07:04,399 --> 00:07:08,579
+representation of the domain. So, I to when
+we begin with, we will just make some ad
+
+65
+00:07:08,579 --> 00:07:12,279
+hoc assumptions has to how the domain is going
+to be represented, because we will be
+
+66
+00:07:12,279 --> 00:07:16,500
+focusing more on search. But, towards a letter
+half of the course, we will also try to focus
+
+67
+00:07:16,500 --> 00:07:20,939
+on standardize behave to representing domains
+and you will see logic base approach for
+
+68
+00:07:20,939 --> 00:07:21,939
+doing that.
+
+69
+00:07:21,939 --> 00:07:30,839
+So, we will do little bit about logic representation
+and listing as we go along. Now,
+
+70
+00:07:30,839 --> 00:07:41,349
+search can be of course in many difference
+spaces. We begin with, what we call is state
+
+71
+00:07:41,350 --> 00:07:51,189
+space search. So, let us a topic today, state
+space search essentially. So, let me show
+
+72
+00:07:51,189 --> 00:07:55,629
+you
+this puzzle, which I might have spoken about
+
+73
+00:07:55,629 --> 00:08:04,099
+some time ago. So, you know this is a
+rubrics cube. And it is for this six faces
+
+74
+00:08:04,098 --> 00:08:06,829
+and you can move this face or you can move
+this
+
+75
+00:08:06,829 --> 00:08:12,709
+face or you can move any of this six faces
+by multiples of ninety degrees.
+
+76
+00:08:12,709 --> 00:08:20,299
+And so that is a problem that you have solve,
+what is the problem you have to solve that,
+
+77
+00:08:20,300 --> 00:08:26,079
+unlike these faces that you can see here,
+which have mixed up colors, you want all the
+
+78
+00:08:26,079 --> 00:08:30,029
+spaces to have only one color. So, every space
+should looks something like this. So, this
+
+79
+00:08:30,029 --> 00:08:36,309
+space is green color and if I can somehow
+make rest of the spaces of one color then
+
+80
+00:08:36,309 --> 00:08:38,649
+I can
+say I have solved the problem. So, the situation
+
+81
+00:08:38,649 --> 00:08:43,578
+is that I am given this rubrics cube as it
+is
+
+82
+00:08:43,578 --> 00:08:49,529
+and the goal is to solve it, meaning get all
+faces to have the same colors essentially.
+
+83
+00:08:49,529 --> 00:08:54,189
+Now, I am sure you must be familiar with this
+puzzle, it was a device in the mid
+
+84
+00:08:54,190 --> 00:09:01,000
+seventies, late seventies by architect called
+rubric. And it became quite a craze in those
+
+85
+00:09:01,000 --> 00:09:05,429
+.days; people would spend hours and days together
+trying to solve it essentially. Now,
+
+86
+00:09:05,429 --> 00:09:11,789
+you I want to, first thing I want to do with
+this is to highlight the case that, between
+
+87
+00:09:11,789 --> 00:09:13,399
+these
+two approaches the problem solving, search
+
+88
+00:09:13,399 --> 00:09:19,350
+base and knowledge base essentially. If I
+were to give someone this rubrics cube, who
+
+89
+00:09:19,350 --> 00:09:25,810
+has lots seen at before and ask that person
+to solve the rubrics cube. She or he would
+
+90
+00:09:25,809 --> 00:09:27,739
+essentially do it trial in error, he would
+try to
+
+91
+00:09:27,740 --> 00:09:32,950
+see, what to do with this and what to do this
+and try to explore a sequence of moves,
+
+92
+00:09:32,950 --> 00:09:36,009
+which will solve the puzzle.
+
+93
+00:09:36,009 --> 00:09:41,159
+Now, this puzzle is interesting it looks simple,
+because as you can see, if you look at the
+
+94
+00:09:41,159 --> 00:09:47,860
+top face, it has got three faces, the top
+faces is solved, everything green here and
+
+95
+00:09:47,860 --> 00:09:50,820
+these
+sides, cube let us are of one color essentially,
+
+96
+00:09:50,820 --> 00:09:56,480
+I need to solve the rest. The trouble is once
+I have solved this top face, I can only move
+
+97
+00:09:56,480 --> 00:09:58,159
+this bottom face and there is nothing yet,
+no
+
+98
+00:09:58,159 --> 00:10:01,219
+other movement I can make essentially. Remember
+there are six spaces, I could have
+
+99
+00:10:01,220 --> 00:10:05,790
+moved any of those six spaces, if I am not
+going to disturb this, I can move only this.
+
+100
+00:10:05,789 --> 00:10:10,328
+But, if I move anything else for example,
+if I make this change then you can see that
+
+101
+00:10:10,328 --> 00:10:12,479
+I am
+disturbing this faces essentially.
+
+102
+00:10:12,480 --> 00:10:16,620
+And in the process, if I am trying to solve
+the rest of the cube, I end up disturbing
+
+103
+00:10:16,620 --> 00:10:18,429
+this
+cubes that is why, this problem is an interesting
+
+104
+00:10:18,429 --> 00:10:27,669
+problem and has been given quite a bit
+of a study. Now, how many of you know how
+
+105
+00:10:27,669 --> 00:10:37,349
+to solve the rubrics cube, only one, two,
+three, it is, so some people at least. So,
+
+106
+00:10:37,350 --> 00:10:40,250
+noticed that the question was how many of
+you
+
+107
+00:10:40,250 --> 00:10:46,028
+know how to solve the rubrics cube, which
+means that, if I want to give you this cube,
+
+108
+00:10:46,028 --> 00:10:51,129
+you with virtually without thinking do a sequence
+of moves within then the making this
+
+109
+00:10:51,129 --> 00:10:52,129
+solve.
+
+110
+00:10:52,129 --> 00:10:55,448
+So, you are exploiting these techniques, which
+we call as knowledge base techniques
+
+111
+00:10:55,448 --> 00:11:01,250
+essentially. So, it could be there this knowledge
+has been given to you in a form of set of
+
+112
+00:11:01,250 --> 00:11:06,730
+macro moves that to achieve this into this
+corner, this is the sequence of moves and
+
+113
+00:11:06,730 --> 00:11:10,930
+that
+kind of thing essentially. So, that is the
+
+114
+00:11:10,929 --> 00:11:15,259
+knowledge base approach, this very once you
+have the knowledge, it is the very simple
+
+115
+00:11:15,259 --> 00:11:19,169
+way of solving a problem, whether trouble
+is
+
+116
+00:11:19,169 --> 00:11:25,379
+knowledge has to come from some were. And
+what happens, when you have a new
+
+117
+00:11:25,379 --> 00:11:26,799
+problem to solve.
+
+118
+00:11:26,799 --> 00:11:34,509
+.Then there is no knowledge to fall back on,
+it is then that we need to take records to
+
+119
+00:11:34,509 --> 00:11:38,669
+search base method. So, we call search base
+method, just first principle methods that
+
+120
+00:11:38,669 --> 00:11:42,809
+you
+want, you do not have any carry over from
+
+121
+00:11:42,809 --> 00:11:47,649
+the past. You are a given a problem and you
+have to model the problem and you have to
+
+122
+00:11:47,649 --> 00:11:51,409
+find the solution, we have solving the
+problem essentially. So, we does not matter
+
+123
+00:11:51,409 --> 00:11:55,199
+what the problem is, you can take any
+problem and we will try to solve the problem.
+
+124
+00:11:55,200 --> 00:12:01,070
+So, one of the thing that we want to do in
+A I is not to solve the rubrics you by itself,
+
+125
+00:12:01,070 --> 00:12:05,839
+but
+to find is problem solving strategy on mechanism,
+
+126
+00:12:05,839 --> 00:12:11,940
+which will solve virtually any
+problem, which can be posed as a state space
+
+127
+00:12:11,940 --> 00:12:17,389
+search problem. So, what do you mean by
+state space search, that I am given the cube,
+
+128
+00:12:17,389 --> 00:12:23,909
+this particular configuration of this cubic
+cube is a state. The desire configuration
+
+129
+00:12:23,909 --> 00:12:27,730
+of the cube is another state and in between
+there
+
+130
+00:12:27,730 --> 00:12:32,879
+are thousands of other states essentially.
+
+131
+00:12:32,879 --> 00:12:33,879
+.
+
+132
+00:12:33,879 --> 00:12:43,639
+And I need to find a mechanism. So, this state
+space is the set of states. So, let us say
+
+133
+00:12:43,639 --> 00:12:46,448
+we
+draw it as the set like this and I will use
+
+134
+00:12:46,448 --> 00:12:50,269
+S for a start state or the given state and
+G for a
+
+135
+00:12:50,269 --> 00:12:57,570
+goal state. So, each of the anything state
+and there are other states as well, some well
+
+136
+00:12:57,570 --> 00:13:03,850
+you
+know, which we. Now, how all these, how do
+
+137
+00:13:03,850 --> 00:13:09,690
+we transform the start stage to the goal
+stage, we have to have a sequence of moves
+
+138
+00:13:09,690 --> 00:13:11,889
+essentially. So, what are the sequences of
+
+139
+00:13:11,889 --> 00:13:18,990
+.moves in the rubrics cube? So, if I call
+this is a top face, I can say rotate the top
+
+140
+00:13:18,990 --> 00:13:23,560
+by 90
+degrees or rotate the top by 180 degrees or
+
+141
+00:13:23,559 --> 00:13:24,559
+by 270 degrees.
+
+142
+00:13:24,559 --> 00:13:29,329
+So, these three moves are possible on this
+space, more than that you will come back to
+
+143
+00:13:29,330 --> 00:13:35,449
+the same stage likewise, three moves for every
+faces essentially. So, 6 into 3, 18 moves
+
+144
+00:13:35,448 --> 00:13:38,588
+I
+have, which I can transform this state into
+
+145
+00:13:38,589 --> 00:13:42,690
+a different state essentially. So, we will
+model
+
+146
+00:13:42,690 --> 00:13:53,730
+this process as moves, which will transform
+you take you from one state to another state.
+
+147
+00:13:53,730 --> 00:14:00,819
+So, in this case I have drawn 6 states. So,
+if some problem has some 6 moves, you can
+
+148
+00:14:00,818 --> 00:14:05,318
+move in moves you can make in given state
+then the graph would look like that.
+
+149
+00:14:05,318 --> 00:14:10,578
+Now, you can see, that the once you incorporate
+this motion of a move, what is the
+
+150
+00:14:10,578 --> 00:14:18,129
+move? The move is something an action, which
+takes you from one state to neighboring
+
+151
+00:14:18,129 --> 00:14:25,049
+state essentially. And even any state, there
+is the set of neighboring state that you can
+
+152
+00:14:25,049 --> 00:14:31,528
+move to, that is define by the domain essentially.
+So, we will assume that we have a
+
+153
+00:14:31,528 --> 00:14:41,370
+function called Move Gen function. It will
+take a state as an input and it term set of
+
+154
+00:14:41,370 --> 00:14:46,230
+neighbors.
+
+155
+00:14:46,230 --> 00:15:00,940
+So, what we are trying to do is to separate
+the domain from the problem solving strategy.
+
+156
+00:15:00,940 --> 00:15:07,340
+So, what I am telling you at this moment is
+that, choose a domain and take this as a small
+
+157
+00:15:07,340 --> 00:15:12,330
+exercise that you should try out yourself,
+choose some domain of interest that you have
+
+158
+00:15:12,330 --> 00:15:21,920
+define, how to represent the state and define
+the move gen function. The move gen
+
+159
+00:15:21,919 --> 00:15:26,789
+function is the function in the programming
+sense, that it takes as input a state and
+
+160
+00:15:26,789 --> 00:15:31,539
+returns the set of neighbors for that state
+essentially.
+
+161
+00:15:31,539 --> 00:15:38,669
+So, that is one thing that we want, so let
+us take another small puzzle. So, if we look
+
+162
+00:15:38,669 --> 00:15:40,959
+at
+the A I text books, you will find that they
+
+163
+00:15:40,960 --> 00:15:47,610
+are sort of sprinkle with puzzles, because
+puzzles are easy to describe, easy to represent,
+
+164
+00:15:47,610 --> 00:15:54,860
+well defined and you know, you can do
+work with them. So, there is you might say
+
+165
+00:15:54,860 --> 00:16:03,440
+a younger cousin of this rubrics cubes, which
+is on a flat, two dimensional puzzle, which
+
+166
+00:16:03,440 --> 00:16:08,540
+is called things like 8 puzzle.
+
+167
+00:16:08,539 --> 00:16:09,539
+..
+
+168
+00:16:09,539 --> 00:16:21,568
+So, we are 8, 15, 24, in fact, any n square
+minus 1 puzzle. So, 8 is 3 square minus 1,
+
+169
+00:16:21,568 --> 00:16:24,419
+15 is
+4 square minus 4 and so on. So, the 8 puzzle
+
+170
+00:16:24,419 --> 00:16:35,299
+in particular is a puzzle any must have seen
+this, which is got 8 tiles that is why, it
+
+171
+00:16:35,299 --> 00:16:40,169
+is called 8 puzzles and these tiles have labels
+on
+
+172
+00:16:40,169 --> 00:16:50,509
+them. So, let us said number 1, 2, 3, 4, 5,
+6, 7, 8 and this is let us say the start state
+
+173
+00:16:50,509 --> 00:16:53,240
+and
+the goal state could be something like 1,
+
+174
+00:16:53,240 --> 00:17:03,549
+2, 3, 4, 5, 6, 7, 8, so I am not going the
+tiles
+
+175
+00:17:03,549 --> 00:17:08,759
+state, goal state.
+
+176
+00:17:08,759 --> 00:17:25,000
+Now, in this puzzle I can have, as we can
+see basically, four different kinds of moves
+
+177
+00:17:25,000 --> 00:17:29,240
+and
+some people can to think of it as a movement
+
+178
+00:17:29,240 --> 00:17:33,390
+of this blank, remember this, so what is the
+puzzle you can slide. So, there is a blank
+
+179
+00:17:33,390 --> 00:17:35,960
+square here, blank location here, you can
+slide
+
+180
+00:17:35,960 --> 00:17:40,288
+this tile here or you can slide this tile
+here or you slide this tile here, essentially.
+
+181
+00:17:40,288 --> 00:17:42,129
+And
+then in the process you will create the new
+
+182
+00:17:42,130 --> 00:17:58,420
+blanks. So, for example, you could do
+something like this, 1, 2, 3, 4, 6, I could
+
+183
+00:17:58,420 --> 00:18:04,169
+do this. So, this could be a move that I could
+make and you can give a label to this move.
+
+184
+00:18:04,169 --> 00:18:09,910
+So, you can either say that you are moved
+four to the left or you can say that, you
+
+185
+00:18:09,910 --> 00:18:12,110
+have
+moved the blank to the right; they are just
+
+186
+00:18:12,109 --> 00:18:14,008
+equivalent face of saying the same thing.
+So,
+
+187
+00:18:14,009 --> 00:18:18,829
+let us say that we call this right, which
+means I have move the blank to the right.
+
+188
+00:18:18,829 --> 00:18:21,869
+And
+then you can see that, I can have an up move
+
+189
+00:18:21,869 --> 00:18:25,469
+and I can also have a down move. So, I can
+
+190
+00:18:25,470 --> 00:18:30,870
+.generate three successes states for this
+particular stage essentially. The whole question
+
+191
+00:18:30,869 --> 00:18:33,269
+is
+how do you represent this, so I will not go
+
+192
+00:18:33,269 --> 00:18:36,269
+too much into that detail and I will ask you
+to
+
+193
+00:18:36,269 --> 00:18:45,079
+choose an interesting problem, describe the
+state representation and construct the move
+
+194
+00:18:45,079 --> 00:18:46,389
+gen function.
+
+195
+00:18:46,390 --> 00:18:50,820
+So, in this case the move gen function will
+return this state and this state, so it will
+
+196
+00:18:50,819 --> 00:18:54,230
+return
+a set of states. We will not give too much
+
+197
+00:18:54,230 --> 00:18:57,549
+of importance, so the names of this moves
+at
+
+198
+00:18:57,549 --> 00:19:03,779
+this moment, but later when we talk of planning,
+we will be more interest than that. So,
+
+199
+00:19:03,779 --> 00:19:11,529
+we are interested in the set of states. Let
+me take one more example, which is well
+
+200
+00:19:11,529 --> 00:19:18,210
+known river crossing puzzles. So, you must
+have heard about this river crossing puzzles,
+
+201
+00:19:18,210 --> 00:19:22,779
+which basically says that, in most puzzles
+there is a boat, in which only two things
+
+202
+00:19:22,779 --> 00:19:26,529
+can
+go it one time, and there is a whole set of
+
+203
+00:19:26,529 --> 00:19:29,220
+entities on one side of the river, and they
+have
+
+204
+00:19:29,220 --> 00:19:33,279
+to be transport to the other side of the river,
+and there are some constrains about what can
+
+205
+00:19:33,279 --> 00:19:35,038
+to go together and what cannot go together.
+
+206
+00:19:35,038 --> 00:19:38,360
+So, you must have heard about the machineries
+and the . puzzle
+
+207
+00:19:38,361 --> 00:19:41,070
+there, three machineries and three . and they
+have to cross the river
+
+208
+00:19:41,069 --> 00:19:45,099
+and the boat can take only two people, how
+do they cross essentially. So, as a simply
+
+209
+00:19:45,099 --> 00:20:04,000
+version of that is the man, goat, lion problem.
+So, what is this saying, this is saying that,
+
+210
+00:20:04,000 --> 00:20:07,579
+I
+have some river and on one side of the river,
+
+211
+00:20:07,579 --> 00:20:18,769
+there is the man, I forgot one more thing
+that is the cabbage. So, there is a man, there
+
+212
+00:20:18,769 --> 00:20:30,509
+is a goat, there is a lion and there is the
+cabbage and there is a boat of size two and
+
+213
+00:20:30,509 --> 00:20:32,210
+only the man can rode the boat.
+
+214
+00:20:32,210 --> 00:20:38,460
+And the man needs to take everything on the
+other side of the river, but he can take only
+
+215
+00:20:38,460 --> 00:20:44,630
+one thing at the time. And the difficulty
+is that, if he leaves the goat alone with
+
+216
+00:20:44,630 --> 00:20:47,600
+the
+cabbage, the goat will eat the cabbage, and
+
+217
+00:20:47,599 --> 00:20:51,500
+if we leave the lion alone with the goat,
+lion
+
+218
+00:20:51,500 --> 00:20:57,909
+will eat the goat. So, he does not want that
+situation, how can he get these three positions
+
+219
+00:20:57,909 --> 00:21:09,270
+across on the other side. You must have seen
+this recent movie, which these some boy
+
+220
+00:21:09,269 --> 00:21:15,279
+and lion in a boat together stuck for across
+the ocean.
+
+221
+00:21:15,279 --> 00:21:23,240
+So, obviously this is the very simple puzzle,
+it is not hard to solve, though the question
+
+222
+00:21:23,240 --> 00:21:25,859
+is
+not that the addressing here. The question
+
+223
+00:21:25,859 --> 00:21:34,158
+is that, how can we pose this problem or this
+problem or the rubrics cube as something that
+
+224
+00:21:34,159 --> 00:21:35,860
+we can apply some general purpose
+
+225
+00:21:35,859 --> 00:21:37,729
+.methods to solve essentially.
+
+226
+00:21:37,730 --> 00:21:38,730
+.
+
+227
+00:21:38,730 --> 00:21:51,099
+So, our goal would be to do something called
+our search should be domain independent.
+
+228
+00:21:51,099 --> 00:22:03,918
+The algorithm that we are going to look at
+should not depend upon the domain that we
+
+229
+00:22:03,919 --> 00:22:10,159
+are trying to solve the problem in. So, it
+could be the rubrics cube or it could be one
+
+230
+00:22:10,159 --> 00:22:11,799
+of
+these puzzles or it could be a scheduling
+
+231
+00:22:11,798 --> 00:22:18,668
+problem or it could be something different
+essentially. If we can abstract away from
+
+232
+00:22:18,669 --> 00:22:25,049
+the domain, then we do not leave need to look
+at the domain and what do a mean by obstructing
+
+233
+00:22:25,048 --> 00:22:26,250
+away from the domain.
+
+234
+00:22:26,250 --> 00:22:32,490
+In our case, the first thing is to design
+a move gen function for the domain, which
+
+235
+00:22:32,490 --> 00:22:37,640
+says
+that given a state, this function should tell
+
+236
+00:22:37,640 --> 00:22:40,720
+me, what the neighboring states are or should
+a turn the set of neighboring states to be
+
+237
+00:22:40,720 --> 00:22:43,710
+essentially. And obviously, when I say given
+a
+
+238
+00:22:43,710 --> 00:22:49,380
+state, I mean there is some representation
+of the state that you have to be concerned
+
+239
+00:22:49,380 --> 00:22:53,370
+with
+essentially. So, how can we represent? So,
+
+240
+00:22:53,369 --> 00:22:56,209
+these of course can possibly be represented
+as
+
+241
+00:22:56,210 --> 00:23:00,140
+the 3 by 3 array or something in that, and
+it might be useful to think about it like
+
+242
+00:23:00,140 --> 00:23:01,890
+that, but
+I will leave it for you to decide.
+
+243
+00:23:01,890 --> 00:23:12,080
+Let us talk about this problem, how do we
+represent this man, goats, lion, cabbage
+
+244
+00:23:12,079 --> 00:23:19,189
+problem? So, the solution is simple I am sure
+you know it, we should first take the goat
+
+245
+00:23:19,190 --> 00:23:26,880
+.then come back with the boat, take the lion,
+bring the goat back, take the cabbage, come
+
+246
+00:23:26,880 --> 00:23:31,170
+back and take the goat. So, you know likewise
+the mistake is in cabbage, all of these
+
+247
+00:23:31,170 --> 00:23:36,670
+puzzles have solutions, which are not so hard
+to find, can we write a program to do that
+
+248
+00:23:36,670 --> 00:23:40,940
+is the question, without having to write a
+programs specifically for this puzzle, can
+
+249
+00:23:40,940 --> 00:23:43,259
+we
+write general purpose program still solve
+
+250
+00:23:43,259 --> 00:23:44,259
+puzzles like these essentially.
+
+251
+00:23:44,259 --> 00:23:49,190
+So, there are many other puzzles, the water
+jug problem you are given a jug 5 litre jug
+
+252
+00:23:49,190 --> 00:23:54,809
+and a 4 litre jug or you have given a 4 litre
+jug and a 9 litre jug, can you measure out
+
+253
+00:23:54,809 --> 00:23:57,038
+6
+liters, these kind of problems essentially.
+
+254
+00:23:57,038 --> 00:23:59,869
+So, how do you represent this? So, I want
+some
+
+255
+00:23:59,869 --> 00:24:05,599
+input from the class, some suggestion how
+can I represent this problem? How can I, what
+
+256
+00:24:05,599 --> 00:24:11,009
+is the state representation and secondly,
+what is going to be the move gen function.
+
+257
+00:24:11,009 --> 00:24:14,048
+So,
+the move gen function will be obviously something,
+
+258
+00:24:14,048 --> 00:24:21,898
+which is operate upon the
+representation that we choose. A three cross
+
+259
+00:24:21,898 --> 00:24:24,398
+two arrays.
+
+260
+00:24:24,398 --> 00:24:25,648
+Student: .
+
+261
+00:24:25,648 --> 00:24:31,898
+Why three, why not four.
+
+262
+00:24:31,898 --> 00:24:33,148
+Student: .
+
+263
+00:24:33,148 --> 00:24:34,148
+.
+
+264
+00:24:34,148 --> 00:24:48,949
+.So, you are saying that, I have an array
+like this, and this stands for left show,
+
+265
+00:24:48,950 --> 00:24:51,190
+this stands
+for the boat and this stands for the right
+
+266
+00:24:51,190 --> 00:24:58,570
+show is that what you are saying. So, it is
+an
+
+267
+00:24:58,569 --> 00:25:04,569
+array of what, because there is more than
+one thing which is possible on each location.
+
+268
+00:25:04,569 --> 00:25:12,700
+Let us say, array of list show, so it is an
+array of list essentially, by how do you write
+
+269
+00:25:12,700 --> 00:25:14,419
+a
+move gen function. So, what is the initial
+
+270
+00:25:14,419 --> 00:25:16,649
+stage, the initial state is everything is
+in this
+
+271
+00:25:16,648 --> 00:25:22,449
+square, why do we have two, why do we have
+second row.
+
+272
+00:25:22,450 --> 00:25:24,798
+Student: .
+
+273
+00:25:24,798 --> 00:25:33,970
+Then you should have four I think. So, that
+is when possibility I think, but when you
+
+274
+00:25:33,970 --> 00:25:42,200
+create a representation, you should also worry
+about the algorithm that you write on the
+
+275
+00:25:42,200 --> 00:25:45,509
+representation, because very often represent
+the choose, the representation that you
+
+276
+00:25:45,509 --> 00:25:52,670
+choose is helpful in sort of writing algorithm
+for in our case, we are interest in this move
+
+277
+00:25:52,670 --> 00:26:01,351
+gen functional algorithms. So, let me make
+another suggestion, which is that I have a
+
+278
+00:26:01,351 --> 00:26:07,350
+list
+of two lists. So, a list of two lists, the
+
+279
+00:26:07,349 --> 00:26:09,629
+first list contains things which are on the
+left bank
+
+280
+00:26:09,630 --> 00:26:12,130
+and the second list contains things which
+are on the right bank.
+
+281
+00:26:12,130 --> 00:26:17,270
+So, I could choose that essentially. If I
+choose that list then my list were look like
+
+282
+00:26:17,269 --> 00:26:25,700
+this G,
+this is my given start state and my goal state
+
+283
+00:26:25,700 --> 00:26:34,460
+is. But, the question is how do I write the
+move gen function? So, that is the thing that
+
+284
+00:26:34,460 --> 00:26:41,480
+I am trying to derive at, what representation
+is goat and what is known. Now, how would
+
+285
+00:26:41,480 --> 00:26:48,620
+you write a move gen function for this
+representation, you would have to first search
+
+286
+00:26:48,619 --> 00:26:53,879
+the state. So, this is the state
+representation, you have to first. So, will
+
+287
+00:26:53,880 --> 00:26:59,149
+we have a make, made an implicit assumption
+here, that the boat, we are not talked where
+
+288
+00:26:59,148 --> 00:27:01,849
+the boat is.
+
+289
+00:27:01,849 --> 00:27:04,730
+And we can effort to do that, because we make
+an implicit assumption that, wherever the
+
+290
+00:27:04,730 --> 00:27:10,970
+man is the boat is there essentially, because
+the boat cannot go by itself some were. So,
+
+291
+00:27:10,970 --> 00:27:15,929
+having made that assumption, which is hidden
+into some were here, how do I write a
+
+292
+00:27:15,929 --> 00:27:21,070
+move gen function. I will first need to inspect
+this representation, this list of list find
+
+293
+00:27:21,069 --> 00:27:28,960
+out
+where M is and then copy something from there,
+
+294
+00:27:28,960 --> 00:27:32,940
+out cuts something from there other
+along with M and take it to the other side,
+
+295
+00:27:32,940 --> 00:27:34,720
+something could be nothing also essentially.
+
+296
+00:27:34,720 --> 00:27:46,630
+So, which means I can go from this state to
+this could be even successes state
+
+297
+00:27:46,630 --> 00:27:52,700
+.essentially. The question is how do I write
+this successes state. So, I will not spend
+
+298
+00:27:52,700 --> 00:27:59,048
+too
+much time here, but may be will, we will look
+
+299
+00:27:59,048 --> 00:28:13,528
+at one more possible representation. Now,
+one thing that you would observe is that,
+
+300
+00:28:13,528 --> 00:28:17,179
+this second list is . we do
+not really need the second list essentially.
+
+301
+00:28:17,179 --> 00:28:22,740
+If we know that they are these only four
+characters around, the first list is enough
+
+302
+00:28:22,740 --> 00:28:25,799
+to tell us what the state is, so that is one
+thing
+
+303
+00:28:25,799 --> 00:28:28,009
+essentially.
+
+304
+00:28:28,009 --> 00:28:32,759
+And what was the first list represent it to
+represent the entities, which are on the left
+
+305
+00:28:32,759 --> 00:28:36,129
+bank
+or something like this. So, let me suggest
+
+306
+00:28:36,130 --> 00:28:41,710
+another thing, which is that you do not
+represent things which are on the left bank,
+
+307
+00:28:41,710 --> 00:28:53,720
+but you represent things which are on the
+side of the board and you will also represent,
+
+308
+00:28:53,720 --> 00:29:00,539
+which side the boat is essentially. So,
+which means inside of this, I would have something
+
+309
+00:29:00,539 --> 00:29:07,720
+like this. So, let us say I do not
+represent the man; I am just trying to explore
+
+310
+00:29:07,720 --> 00:29:13,740
+different possibilities, I just say left G
+L C
+
+311
+00:29:13,740 --> 00:29:16,538
+and this is my representation.
+
+312
+00:29:16,538 --> 00:29:21,048
+So, what I mean by this is, their boat is
+on left hand side and which means the man
+
+313
+00:29:21,048 --> 00:29:23,028
+is
+also on the left hand side and along with
+
+314
+00:29:23,028 --> 00:29:28,288
+the man, there is the goat and the lion and
+the
+
+315
+00:29:28,288 --> 00:29:35,940
+cabbage all of them. So, the advantage I see
+of this representation is at my move gen
+
+316
+00:29:35,940 --> 00:29:41,240
+function would be simpler, at least that is
+what I feel. Because, it is going to be
+
+317
+00:29:41,240 --> 00:29:43,808
+symmetric, whether I am going from left hand
+side to right hand side or right hand side
+
+318
+00:29:43,808 --> 00:29:48,589
+to left hand side, the operations that I will
+have to do would have to be identical, which
+
+319
+00:29:48,589 --> 00:29:57,199
+means that I will delete some elements from
+my list and create a compliment set, which
+
+320
+00:29:57,200 --> 00:29:58,819
+will be the new list essentially.
+
+321
+00:29:58,819 --> 00:30:12,308
+So, for example from this, I will delete G
+and take it to the right hand side. So, this
+
+322
+00:30:12,308 --> 00:30:15,440
+could
+be a move essentially or if I want represent
+
+323
+00:30:15,440 --> 00:30:22,669
+the same move, I will delete L. So, I have
+taken the lion to the other side essentially,
+
+324
+00:30:22,669 --> 00:30:28,050
+it not a very good moves of course, because
+the goat will eat the cabbage, but the state
+
+325
+00:30:28,049 --> 00:30:33,740
+space algorithm has to search through all
+possibilities. So, we are trying to look at
+
+326
+00:30:33,740 --> 00:30:39,288
+that essentially.
+
+327
+00:30:39,288 --> 00:30:45,230
+I would leave it as an exercise for you to
+try out different representations for this
+
+328
+00:30:45,230 --> 00:30:48,509
+and see,
+and actually write a program, which will take
+
+329
+00:30:48,509 --> 00:30:52,660
+a state as an input and return the set of
+neighboring states as an output. So, there
+
+330
+00:30:52,660 --> 00:30:54,380
+are three moves possible in this case. In
+fact,
+
+331
+00:30:54,380 --> 00:30:59,830
+.there are four moves possible, the man can
+go alone or the man can take the lion or the
+
+332
+00:30:59,829 --> 00:31:03,980
+man can take the goat or the man can take
+the cabbage. So, it is the written this four
+
+333
+00:31:03,980 --> 00:31:07,711
+sets
+as my output to the function and this move
+
+334
+00:31:07,711 --> 00:31:10,278
+gen function is a function which will allow
+it
+
+335
+00:31:10,278 --> 00:31:12,239
+and navigate the state space.
+
+336
+00:31:12,239 --> 00:31:13,239
+.
+
+337
+00:31:13,239 --> 00:31:17,980
+So, I will apply the move gen function to
+this state, I will get a set of neighboring
+
+338
+00:31:17,980 --> 00:31:21,910
+states.
+I will go to the neighboring state and see
+
+339
+00:31:21,910 --> 00:31:24,519
+if that is the state I was interested in.
+Otherwise,
+
+340
+00:31:24,519 --> 00:31:30,259
+I will alive apply the move gen function to
+that state. And in this process, I will navigate
+
+341
+00:31:30,259 --> 00:31:42,109
+the state space, trying to reach the goal
+state that I will interest than essentially.
+
+342
+00:31:42,109 --> 00:31:47,859
+So, this
+general strategy that we are going to follow
+
+343
+00:31:47,859 --> 00:31:58,408
+is has a generic name, which is called
+generate and test. It says generate a candidate
+
+344
+00:31:58,409 --> 00:32:19,860
+in when we says, candidate we mean the
+candidate state and test whether it is a solution.
+
+345
+00:32:19,859 --> 00:32:23,619
+And we put this into a loop, and this is the
+high level strategy that we are going to refine
+
+346
+00:32:23,619 --> 00:32:32,408
+over the next few weeks generated. Generate
+a candidate and see if we that is the goal
+
+347
+00:32:32,409 --> 00:32:42,350
+say that we interested in our task is to explore
+this state space in search of the goal state
+
+348
+00:32:42,349 --> 00:32:47,509
+essentially. So, will keep trying out new
+states and seeing whether that is the goal
+
+349
+00:32:47,509 --> 00:32:49,480
+state or
+not, how do we see whether there is we are
+
+350
+00:32:49,480 --> 00:32:54,829
+in the goal state or not, we need another
+domain function and that domain function,
+
+351
+00:32:54,829 --> 00:32:59,230
+we will call as a goal test function.
+
+352
+00:32:59,230 --> 00:33:08,700
+.So, goal test will take a state as an input
+and output either yes or no. It will tell
+
+353
+00:33:08,700 --> 00:33:11,009
+me
+whether the state that I am looking at is
+
+354
+00:33:11,009 --> 00:33:14,640
+a goal state or not a goal state. These are
+the only
+
+355
+00:33:14,640 --> 00:33:21,649
+two functions I need, which know need to know
+anything about the domain at all. So,
+
+356
+00:33:21,648 --> 00:33:25,979
+once I have return this two functions for
+a domain, I can practically forget about the
+
+357
+00:33:25,980 --> 00:33:29,440
+domain, I can I do not have to worry about
+whether I am solving the rubrics cube or
+
+358
+00:33:29,440 --> 00:33:38,320
+whether I am solving this eight puzzle or
+whether I am solving the this river crossing
+
+359
+00:33:38,319 --> 00:33:39,658
+puzzle, does not matter.
+
+360
+00:33:39,659 --> 00:33:43,490
+I have a move gen function, I have a goal
+test function and I would not find the sequence
+
+361
+00:33:43,490 --> 00:33:47,970
+of moves which will taking to the goal test
+and so, this is a very abstract problem
+
+362
+00:33:47,970 --> 00:33:55,069
+essentially. Incidentally, while we are at
+the rubrics cube, only very recently and by
+
+363
+00:33:55,069 --> 00:34:03,569
+recently I mean in the last five to ten years
+have search algorithms been able to search
+
+364
+00:34:03,569 --> 00:34:06,339
+for
+optimal solutions of a rubrics of a problem
+
+365
+00:34:06,339 --> 00:34:13,289
+like this essentially. And by optimal
+solutions, I mean the shortest, the smallest
+
+366
+00:34:13,289 --> 00:34:16,400
+number of moves that you need to make
+essentially.
+
+367
+00:34:16,400 --> 00:34:20,840
+If you follow the message that somebody has
+thought you would says, take the top layer
+
+368
+00:34:20,840 --> 00:34:26,410
+first, then make the second layer, then get
+this bottom corners, get the bottom squares
+
+369
+00:34:26,409 --> 00:34:31,609
+and then get the orientation. So, these kinds
+of macro moves, they will not necessarily
+
+370
+00:34:31,610 --> 00:34:37,220
+give you the shortest solution essentially.
+So, they will solve the problem, but they
+
+371
+00:34:37,219 --> 00:34:38,980
+will
+not give you the optimal solution. So, this
+
+372
+00:34:38,980 --> 00:34:44,670
+is something that we had also mentioned about
+human problem solving, that we do not necessarily
+
+373
+00:34:44,670 --> 00:34:49,889
+always try to optimize things, as long
+as we can solve the problem reasonably well,
+
+374
+00:34:49,889 --> 00:34:52,119
+then we are happy with the solution
+essentially, which is where the knowledge
+
+375
+00:34:52,119 --> 00:34:55,889
+base techniques are so important essentially.
+
+376
+00:34:55,889 --> 00:35:01,690
+So, the move gen function was this would be
+an interesting exercise. As you can see
+
+377
+00:35:01,690 --> 00:35:06,730
+there would be 18 possible moves for every
+given state, corresponding to the 3 moves
+
+378
+00:35:06,730 --> 00:35:09,449
+for
+each space, so there are 6 spaces. So, any
+
+379
+00:35:09,449 --> 00:35:14,309
+of those 3 would give a move gen functions.
+So, we can see the state space for this is
+
+380
+00:35:14,309 --> 00:35:17,130
+quiet large essentially and whether I can
+leave it
+
+381
+00:35:17,130 --> 00:35:22,300
+as the small exercise for you to see, how
+many possible different configuration there
+
+382
+00:35:22,300 --> 00:35:24,660
+are
+to these puzzle.
+
+383
+00:35:24,659 --> 00:35:33,920
+So, whatever done we have abstracted away
+from the domain and our, we are only going
+
+384
+00:35:33,920 --> 00:35:39,639
+.to work with these two functions. So, the
+algorithm that we will write now, you will
+
+385
+00:35:39,639 --> 00:35:42,329
+just
+use this functions and do not worry about
+
+386
+00:35:42,329 --> 00:35:48,579
+what the domain is essentially. And what is
+that idea that once we have design these algorithm,
+
+387
+00:35:48,579 --> 00:35:53,579
+then we can plug in any domain and
+it will solve problems in the domain for us.
+
+388
+00:35:53,579 --> 00:35:58,929
+So, there is this generality about our
+approach essentially.
+
+389
+00:35:58,929 --> 00:35:59,929
+.
+
+390
+00:35:59,929 --> 00:36:08,259
+So, let us if find this algorithm a little
+bit and we will call it simple search one.
+
+391
+00:36:08,260 --> 00:36:24,470
+So, let us
+work with sets for this moment, we have to
+
+392
+00:36:24,469 --> 00:36:31,449
+see when we generate this successes or
+neighbors, we have to store there somewhere.
+
+393
+00:36:31,449 --> 00:36:35,480
+And we will store them in a set, which is
+traditionally has been called as the opened,
+
+394
+00:36:35,480 --> 00:36:39,460
+open list or open set essentially. So, we
+begin
+
+395
+00:36:39,460 --> 00:36:52,079
+by saying open gets start state. So, we put
+the start state in the open and though the
+
+396
+00:36:52,079 --> 00:37:54,380
+following, while or instead of y it is say
+true, remove, I am using the set union operation,
+
+397
+00:37:54,380 --> 00:38:08,670
+because I forgot one step and the step that
+is going to be here is pick some 
+
+398
+00:38:08,670 --> 00:38:12,990
+node N from
+open.
+
+399
+00:38:12,989 --> 00:38:26,799
+So, let us call this N now, because we are
+not only talking about the start state, but
+
+400
+00:38:26,800 --> 00:38:29,390
+of any
+note that we pick from this list, this set
+
+401
+00:38:29,389 --> 00:38:32,199
+open. So, what is this, this refinement of
+this
+
+402
+00:38:32,199 --> 00:38:40,149
+algorithm is s, I create this open set, set
+called open, in which I put the start state
+
+403
+00:38:40,150 --> 00:38:44,230
+to begin
+with. And in general, my algorithm says pick
+
+404
+00:38:44,230 --> 00:38:47,039
+some note, so we are calling it on note,
+
+405
+00:38:47,039 --> 00:38:51,679
+.because we are set of already started thinking
+about these as a graph over which we are
+
+406
+00:38:51,679 --> 00:38:52,679
+searching.
+
+407
+00:38:52,679 --> 00:39:00,169
+So, each state is a note, take some note N
+from open, test whether it is a goal state,
+
+408
+00:39:00,170 --> 00:39:06,349
+so the
+generate and test idea. If it is true, then
+
+409
+00:39:06,349 --> 00:39:09,400
+we should return, we are found the solution;
+if it
+
+410
+00:39:09,400 --> 00:39:18,789
+is not true, we will remove this N from open,
+and add instead the successors of open or
+
+411
+00:39:18,789 --> 00:39:23,239
+the neighbors of the open to that. So, I will
+keep adding things to my open list and keep
+
+412
+00:39:23,239 --> 00:39:26,079
+picking some elements from that test .. So,
+that is the simple basic
+
+413
+00:39:26,079 --> 00:39:44,590
+idea we start of it essentially, what this
+is . is a search tree will start
+
+414
+00:39:44,590 --> 00:39:48,710
+by criticizing this algorithm very shortly,
+because this is by no means an interesting
+
+415
+00:39:48,710 --> 00:39:49,710
+algorithm.
+
+416
+00:39:49,710 --> 00:39:55,300
+But, it gives as a basic idea for what we
+are trying to do, what this algorithm does
+
+417
+00:39:55,300 --> 00:39:59,700
+it
+generate the search tree. So, one thing that
+
+418
+00:39:59,699 --> 00:40:04,599
+I should sort of clarify is that, even though
+we
+
+419
+00:40:04,599 --> 00:40:09,659
+see the state spaces as a graph, because of
+every move we can go every state you can go
+
+420
+00:40:09,659 --> 00:40:13,699
+to the neighboring states. So, every edge
+is the move from one state to a neighboring
+
+421
+00:40:13,699 --> 00:40:17,429
+state and the whole state is a graph. And
+essentially, what we are trying to do is to
+
+422
+00:40:17,429 --> 00:40:20,339
+find a
+path from a start state to a goal state in
+
+423
+00:40:20,340 --> 00:40:21,440
+this graph essentially.
+
+424
+00:40:21,440 --> 00:40:24,960
+So, it is basic into the graph search algorithm
+that you must have encounter then some
+
+425
+00:40:24,960 --> 00:40:32,090
+other in this thing. The only difference here
+is that the graph is not given to you, that
+
+426
+00:40:32,090 --> 00:40:36,410
+nobody says that, this is the entire graph
+for the rubrics cube for example and then
+
+427
+00:40:36,409 --> 00:40:38,869
+finds
+the path essentially. You have to generate
+
+428
+00:40:38,869 --> 00:40:42,880
+the graph on the fly and that is done, that
+is
+
+429
+00:40:42,880 --> 00:40:47,960
+what generates the search tree essentially.
+So, we can visualize what is happening with
+
+430
+00:40:47,960 --> 00:40:48,960
+this algorithm.
+
+431
+00:40:48,960 --> 00:40:56,050
+Now, notice that, there is the very, I do
+not know whether you can read this, pick some
+
+432
+00:40:56,050 --> 00:41:04,030
+node N from open, so this some node is there
+N. A considerable amount of time would
+
+433
+00:41:04,030 --> 00:41:10,320
+be spent on refining this notion of some,
+because it really critically depends upon
+
+434
+00:41:10,320 --> 00:41:14,330
+this
+some has together your heading towards a goal
+
+435
+00:41:14,329 --> 00:41:18,569
+or not heading towards a goal essentially.
+So, will spent some time on that, but as of
+
+436
+00:41:18,570 --> 00:41:25,019
+now, we will has say that, we are not specified
+it, so you some criteria to pick a node from
+
+437
+00:41:25,019 --> 00:41:26,030
+open.
+
+438
+00:41:26,030 --> 00:41:27,030
+..
+
+439
+00:41:27,030 --> 00:41:32,460
+And so, what is the search tree we are generating.
+We start with some search, the start
+
+440
+00:41:32,460 --> 00:41:46,159
+node S. So, we will use state versus node
+interchangeably at least for now. So, search
+
+441
+00:41:46,159 --> 00:41:56,159
+node is equal to state, the same representation.
+We will move away from this in a
+
+442
+00:41:56,159 --> 00:42:04,289
+movement. So, the first, the route node is
+a search start state or start note and we
+
+443
+00:42:04,289 --> 00:42:06,860
+inspect
+that node, route note what do you mean by
+
+444
+00:42:06,860 --> 00:42:11,590
+inspect, we apply the goal test function and
+we see, whether that is a goal.
+
+445
+00:42:11,590 --> 00:42:15,410
+Because, sometime the problem may not need
+anything to be done essentially you know,
+
+446
+00:42:15,409 --> 00:42:19,009
+it is somebody gives you solved cube and says
+solve it, you will say here, it is solved
+
+447
+00:42:19,010 --> 00:42:24,320
+already essentially, you do not have to do
+anything, but so you test whether it is a
+
+448
+00:42:24,320 --> 00:42:31,580
+essentially. So, we inspect the start state
+of the route note. And let us say that, this
+
+449
+00:42:31,579 --> 00:42:35,489
+double
+circle stand for deleting it from open. So,
+
+450
+00:42:35,489 --> 00:42:39,109
+what I am drawing here is open list, I had
+S in
+
+451
+00:42:39,110 --> 00:42:49,870
+open and then I delete it, but I replace it
+with some successors of S. So, my open has
+
+452
+00:42:49,869 --> 00:42:51,569
+go
+now got four, four successors.
+
+453
+00:42:51,570 --> 00:42:57,830
+So, for example, in this situation I would
+have added three successors, because of the
+
+454
+00:42:57,829 --> 00:43:00,619
+3
+moves I can make or in this situation, I would
+
+455
+00:43:00,619 --> 00:43:05,609
+have added four successors. So, depending
+on the state, some numbers of the neighbors
+
+456
+00:43:05,610 --> 00:43:09,349
+would be generated and they would be
+added. Then my algorithm says, pick some node
+
+457
+00:43:09,349 --> 00:43:11,549
+from open, we have not specified which
+
+458
+00:43:11,550 --> 00:43:17,510
+.nodes. So, let us say we pick some node and
+we generate add it successors two. So, this
+
+459
+00:43:17,510 --> 00:43:22,140
+is the general process that our search algorithm
+is doing to follow.
+
+460
+00:43:22,139 --> 00:43:28,230
+We have this set of open nodes, we will pick
+one from there and see whether that is a
+
+461
+00:43:28,230 --> 00:43:38,679
+goal node or not essentially. So, this actually
+reminds me of this in a moment, green this
+
+462
+00:43:38,679 --> 00:43:47,859
+interesting story about Hercules and hydra
+in Greek methodology. So, as you know, how
+
+463
+00:43:47,860 --> 00:43:55,050
+many of you heard about this story. So, Hercules
+fighting this many headed monster
+
+464
+00:43:55,050 --> 00:44:04,430
+called hydra. And the problem is every time
+he cuts one head of the hydra many more
+
+465
+00:44:04,429 --> 00:44:11,359
+appearance essentially. So, we can see, that
+is what our search algorithm is facing.
+
+466
+00:44:11,360 --> 00:44:20,820
+Every time, you cut one head or one node from
+the search tree, you get many more. So,
+
+467
+00:44:20,820 --> 00:44:27,110
+as you can imagine this, the open is set is
+going and going and we have to find a way
+
+468
+00:44:27,110 --> 00:44:30,500
+of
+solving this. So, he does not have to be this,
+
+469
+00:44:30,500 --> 00:44:34,800
+the next one could be, so this is let us say,
+number 2, this is number 3, this could be
+
+470
+00:44:34,800 --> 00:44:38,110
+number 4 you are not specified, which node
+to
+
+471
+00:44:38,110 --> 00:44:41,660
+take, we will do that in a moment.
+
+472
+00:44:41,659 --> 00:44:43,889
+Student: .
+
+473
+00:44:43,889 --> 00:44:54,480
+So, we will start criticizing . in a moment.
+So, his question is what
+
+474
+00:44:54,480 --> 00:45:01,039
+stops you from going in a cycle. So, that
+is in fact, the first problem with our search
+
+475
+00:45:01,039 --> 00:45:03,994
+algorithm, I would have about to ask you,
+what is wrong with this algorithm and that
+
+476
+00:45:03,994 --> 00:45:06,971
+is
+the first thing, which is wrong. And so, if
+
+477
+00:45:06,971 --> 00:45:09,719
+I take this for example, rubrics cube again,
+I
+
+478
+00:45:09,719 --> 00:45:18,069
+can say make this move rotate right, this
+right face by 90 degrees. Then what are the
+
+479
+00:45:18,070 --> 00:45:22,190
+moves available to you, out of the 18 moves
+that are available to me, one of them is this
+
+480
+00:45:22,190 --> 00:45:27,159
+one, what if I choose this, then what if I
+choose this, then what if I choose this.
+
+481
+00:45:27,159 --> 00:45:30,859
+Then I have got in the cycle essentially and
+of course, you can imagine that there are
+
+482
+00:45:30,860 --> 00:45:36,039
+hundreds of cycles hidden there, I can just
+keep rotating this that is another cycle or
+
+483
+00:45:36,039 --> 00:45:43,389
+many other things are possible essentially,
+that is one problem with this. So, let us
+
+484
+00:45:43,389 --> 00:45:45,960
+first
+address that problem. So, one way of thinking
+
+485
+00:45:45,960 --> 00:45:56,220
+about this search algorithms is to imagine
+that, you are in a maze. So, you know . have
+
+486
+00:45:56,219 --> 00:46:05,069
+this mazes in olden
+times were there is some. So, you are at some
+
+487
+00:46:05,070 --> 00:46:11,580
+corner and you can see four roads, you are
+inside some building, you can see some four
+
+488
+00:46:11,579 --> 00:46:14,559
+paths going, you go to this path, then you
+
+489
+00:46:14,559 --> 00:46:17,590
+.see another four paths and so on.
+
+490
+00:46:17,590 --> 00:46:22,170
+So, every, so this is like a node and this
+is like an edge. So, you move from here to
+
+491
+00:46:22,170 --> 00:46:24,500
+here,
+you see more nodes, how do you get . of a
+
+492
+00:46:24,500 --> 00:46:28,469
+maze without getting lost
+without getting into cycles. There is again
+
+493
+00:46:28,469 --> 00:46:33,289
+this are another interesting story from Greek
+times, I do not remember who was this person
+
+494
+00:46:33,289 --> 00:46:42,619
+who solved it by taking the thread along
+with . said that he will mark every path,
+
+495
+00:46:42,619 --> 00:46:51,279
+if you see the thread again.
+Then he has he knows at his back to that,
+
+496
+00:46:51,280 --> 00:46:59,220
+something some state that he has visited before.
+So, in terms of looping, what do we want,
+
+497
+00:46:59,219 --> 00:47:00,379
+we want our search algorithm.
+
+498
+00:47:00,380 --> 00:47:05,230
+So, if I am going to start this particular
+state, I do not want to come back to this
+
+499
+00:47:05,230 --> 00:47:07,210
+state by
+going through a sequence of moves. I have
+
+500
+00:47:07,210 --> 00:47:13,030
+to somehow prevent that, which means one
+side waits this move from here, I should never
+
+501
+00:47:13,030 --> 00:47:21,210
+visit this state again how do I do that.
+
+502
+00:47:21,210 --> 00:47:22,449
+Student: .
+
+503
+00:47:22,449 --> 00:47:29,839
+Mark that state has visited, that is the simplest
+way of doing it. And traditionally, what
+
+504
+00:47:29,840 --> 00:47:39,800
+we do is we introduce another list and well
+I am, I already started calling with the list
+
+505
+00:47:39,800 --> 00:47:41,960
+. I will be calling with the list.
+
+506
+00:47:41,960 --> 00:47:42,960
+.
+
+507
+00:47:42,960 --> 00:47:46,240
+.Another set let us see and we call it closed
+essentially. So, the algorithm is modified
+
+508
+00:47:46,239 --> 00:47:50,729
+as
+this. So, this is simple search two, open
+
+509
+00:47:50,730 --> 00:48:00,949
+as before gets the start state closed as is
+the new
+
+510
+00:48:00,949 --> 00:48:16,179
+this thing, which start with the empty set
+and pick some node from open. So, the same
+
+511
+00:48:16,179 --> 00:48:26,299
+and the new step, which is add it to closed,
+I can right it as a set notation, but anyway
+
+512
+00:48:26,300 --> 00:48:30,651
+I
+am writing it in English. Then, so let us
+
+513
+00:48:30,650 --> 00:48:45,089
+say that note is N as before, if N, I do not
+know
+
+514
+00:48:45,090 --> 00:48:53,400
+whether you can read this I should write little
+bit more carefully, if goal state N then
+
+515
+00:48:53,400 --> 00:49:02,369
+return N that is what I am saying that returns
+the state, else before add.
+
+516
+00:49:02,369 --> 00:49:31,630
+So, what should I add to my open know, union
+what move gen N minus, anything in
+
+517
+00:49:31,630 --> 00:49:37,050
+closed. And let me prove upon that the little
+bit and say even anything in open
+
+518
+00:49:37,050 --> 00:49:44,750
+essentially, because it is possible that two
+states may be generated by the same
+
+519
+00:49:44,750 --> 00:49:48,289
+successors may be generated by two states
+essentially, two different states essentially.
+
+520
+00:49:48,289 --> 00:49:58,019
+So, for example, I can start with this state,
+then go this state, then go this state and
+
+521
+00:49:58,019 --> 00:50:02,059
+this
+state would have generated. This state would
+
+522
+00:50:02,059 --> 00:50:04,639
+have generated the 180 degree move, where
+I could have gone here.
+
+523
+00:50:04,639 --> 00:50:11,469
+So, it would have put it in open or not that
+move let us say this one. So, let me start
+
+524
+00:50:11,469 --> 00:50:18,759
+again, at this point on my open list is the
+270 degree move, which will bring the green
+
+525
+00:50:18,760 --> 00:50:25,670
+thing here. So, I have added it to open, but
+I have made this move, from this move I can
+
+526
+00:50:25,670 --> 00:50:30,250
+make a 180 degree move, which will again bring
+the green thing here. But, I do not want
+
+527
+00:50:30,250 --> 00:50:34,590
+to do that, because I have already added this
+in the open list essentially. So, you just
+
+528
+00:50:34,590 --> 00:50:54,019
+think a little bit about that, from this I
+will remove the set open union closed. So,
+
+529
+00:50:54,019 --> 00:50:57,170
+I will
+not add any note that I have generated before
+
+530
+00:50:57,170 --> 00:51:05,400
+or seen before to open, my open will get
+new notes essentially.
+
+531
+00:51:05,400 --> 00:51:20,960
+So, this will stop me from going into loop
+essentially. So, there is this, if right 
+
+532
+00:51:20,960 --> 00:51:27,190
+what if
+move gen this, this thing does not add anything
+
+533
+00:51:27,190 --> 00:51:34,039
+new. Then I am also getting into a loop
+or some kind essentially. So, I should have
+
+534
+00:51:34,039 --> 00:51:44,400
+a test here, pick some node from open, if
+open has become empty then I should say, there
+
+535
+00:51:44,400 --> 00:51:48,469
+is no possible solution. So, I am not
+adding it right now, but we will add it this
+
+536
+00:51:48,469 --> 00:51:53,989
+thing, how can open become empty, if we
+have seen all possible states and the solution
+
+537
+00:51:53,989 --> 00:51:58,969
+state is not available to you. So, for
+example, this puzzle that 8 puzzle that you
+
+538
+00:51:58,969 --> 00:52:04,639
+know, all the permutations of these 8 tiles
+are
+
+539
+00:52:04,639 --> 00:52:08,900
+actually into two disjoint spaces.
+
+540
+00:52:08,900 --> 00:52:15,389
+.So, there is one graph, where you can navigate
+from one set of state to any other state,
+
+541
+00:52:15,389 --> 00:52:20,659
+but there is a disjoint set, where you can
+also move from one set to another set, but
+
+542
+00:52:20,659 --> 00:52:23,679
+you
+cannot go from this set to that set essentially.
+
+543
+00:52:23,679 --> 00:52:29,349
+And that can be obtain with simplify you
+know flipping to two tiles essentially, they
+
+544
+00:52:29,349 --> 00:52:33,519
+are in . stage you can
+never get them back, likewise the rubrics
+
+545
+00:52:33,519 --> 00:52:40,090
+cubes. So, this is the tricks with some people
+know you can take it out, take out this thing
+
+546
+00:52:40,090 --> 00:52:43,519
+and reassembled the whole cube essentially.
+But, the thing is you can reassemble the cube
+
+547
+00:52:43,519 --> 00:52:44,519
+back in twelve different ways.
+
+548
+00:52:44,519 --> 00:52:52,000
+So, it is possible that, this particular set
+of states contains my goal state, but another
+
+549
+00:52:52,000 --> 00:52:57,179
+set
+of state does not contain goal state. There
+
+550
+00:52:57,179 --> 00:52:59,969
+is one more problem with this algorithm or
+this
+
+551
+00:52:59,969 --> 00:53:10,419
+algorithm, which we will. So, I will stop
+here now, we will when we come back, we will
+
+552
+00:53:10,420 --> 00:53:13,820
+look at what this other problem is. So, I
+wanted to think about this in the mean while
+
+553
+00:53:13,820 --> 00:53:15,820
+and
+when we come back, we want to look at this,
+
+554
+00:53:15,820 --> 00:53:20,670
+what is the second problem in this state and
+try to address that. And after that, we will
+
+555
+00:53:20,670 --> 00:53:23,889
+look at the behavior of difference strategy
+is
+
+556
+00:53:23,889 --> 00:53:27,980
+when he says some, what are the options available
+to us and how do the change the
+
+557
+00:53:27,980 --> 00:53:34,900
+behavior of our search essentially. So, we
+will do that in some sense in the next class,
+
+558
+00:53:34,900 --> 00:53:36,230
+which is after five minutes.
+
+559
+00:53:36,230 --> 00:53:46,230
+.
+

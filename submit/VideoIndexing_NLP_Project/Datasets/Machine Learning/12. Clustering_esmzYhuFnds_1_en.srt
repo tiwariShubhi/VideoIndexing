@@ -1,0 +1,4318 @@
+﻿1
+00:00:00,000 --> 00:00:00,790
+
+
+2
+00:00:00,790 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high-quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation, or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,570
+at ocw.mit.edu.
+
+9
+00:00:18,570 --> 00:00:21,461
+
+
+10
+00:00:21,461 --> 00:00:22,919
+JOHN GUTTAG: I'm
+a little reluctant
+
+11
+00:00:22,920 --> 00:00:25,880
+to say good afternoon,
+given the weather,
+
+12
+00:00:25,879 --> 00:00:28,500
+but I'll say it anyway.
+
+13
+00:00:28,500 --> 00:00:32,899
+I guess now we all do know
+that we live in Boston.
+
+14
+00:00:32,899 --> 00:00:34,879
+And I should say,
+I hope none of you
+
+15
+00:00:34,880 --> 00:00:39,740
+were affected too much by the
+fire yesterday in Cambridge,
+
+16
+00:00:39,740 --> 00:00:42,650
+but that seems to have been
+a pretty disastrous event
+
+17
+00:00:42,649 --> 00:00:44,000
+for some.
+
+18
+00:00:44,000 --> 00:00:45,740
+Anyway, here's the reading.
+
+19
+00:00:45,740 --> 00:00:48,840
+This is a chapter in
+the book on clustering,
+
+20
+00:00:48,840 --> 00:00:52,610
+a topic that Professor
+Grimson introduced last week.
+
+21
+00:00:52,609 --> 00:00:57,560
+And I'm going to try and finish
+up with respect to this course
+
+22
+00:00:57,560 --> 00:01:00,080
+today, though not with
+respect to everything
+
+23
+00:01:00,079 --> 00:01:02,780
+there is to know
+about clustering.
+
+24
+00:01:02,780 --> 00:01:07,700
+Quickly just reviewing
+where we were.
+
+25
+00:01:07,700 --> 00:01:10,640
+We're in the unit of a
+course on machine learning,
+
+26
+00:01:10,640 --> 00:01:13,189
+and we always follow
+the same paradigm.
+
+27
+00:01:13,189 --> 00:01:16,159
+We observe some set
+of examples, which
+
+28
+00:01:16,159 --> 00:01:18,439
+we call the training data.
+
+29
+00:01:18,439 --> 00:01:22,009
+We try and infer something
+about the process
+
+30
+00:01:22,010 --> 00:01:25,450
+that created those examples.
+
+31
+00:01:25,450 --> 00:01:28,390
+And then we use inference
+techniques, different kinds
+
+32
+00:01:28,390 --> 00:01:30,760
+of techniques, to
+make predictions
+
+33
+00:01:30,760 --> 00:01:33,820
+about previously unseen data.
+
+34
+00:01:33,819 --> 00:01:36,829
+We call that the test data.
+
+35
+00:01:36,829 --> 00:01:40,789
+As Professor Grimson said, you
+can think of two broad classes.
+
+36
+00:01:40,790 --> 00:01:44,450
+Supervised, where we have a
+set of examples and some label
+
+37
+00:01:44,450 --> 00:01:46,670
+associated with the example--
+
+38
+00:01:46,670 --> 00:01:50,600
+Democrat, Republican,
+smart, dumb,
+
+39
+00:01:50,599 --> 00:01:54,769
+whatever you want to
+associate with them--
+
+40
+00:01:54,769 --> 00:01:57,920
+and then we try and
+infer the labels.
+
+41
+00:01:57,920 --> 00:02:02,269
+Or unsupervised, where we're
+given a set of feature vectors
+
+42
+00:02:02,269 --> 00:02:05,659
+without labels, and
+then we attempt to group
+
+43
+00:02:05,659 --> 00:02:09,859
+them into natural clusters.
+
+44
+00:02:09,860 --> 00:02:13,470
+That's going to be
+today's topic, clustering.
+
+45
+00:02:13,469 --> 00:02:18,439
+So clustering is an
+optimization problem.
+
+46
+00:02:18,439 --> 00:02:20,780
+As we'll see later,
+supervised machine learning
+
+47
+00:02:20,780 --> 00:02:23,330
+is also an optimization problem.
+
+48
+00:02:23,330 --> 00:02:26,660
+Clustering's a
+rather simple one.
+
+49
+00:02:26,659 --> 00:02:31,180
+We're going to start first
+with the notion of variability.
+
+50
+00:02:31,180 --> 00:02:34,939
+So this little c is
+a single cluster,
+
+51
+00:02:34,939 --> 00:02:38,750
+and we're going to talk about
+the variability in that cluster
+
+52
+00:02:38,750 --> 00:02:45,439
+of the sum of the distance
+between the mean of the cluster
+
+53
+00:02:45,439 --> 00:02:47,879
+and each example in the cluster.
+
+54
+00:02:47,879 --> 00:02:50,919
+And then we square it.
+
+55
+00:02:50,919 --> 00:02:51,799
+OK?
+
+56
+00:02:51,800 --> 00:02:54,860
+Pretty straightforward.
+
+57
+00:02:54,860 --> 00:02:56,510
+For the moment,
+we can just assume
+
+58
+00:02:56,509 --> 00:02:59,719
+that we're using Euclidean
+distance as our distance
+
+59
+00:02:59,719 --> 00:03:00,909
+metric.
+
+60
+00:03:00,909 --> 00:03:04,079
+Minkowski with p equals two.
+
+61
+00:03:04,080 --> 00:03:10,030
+So variability should look
+pretty similar to something
+
+62
+00:03:10,030 --> 00:03:13,009
+we've seen before, right?
+
+63
+00:03:13,009 --> 00:03:16,099
+It's not quite variance,
+right, but it's very close.
+
+64
+00:03:16,099 --> 00:03:19,650
+In a minute, we'll look
+at why it's different.
+
+65
+00:03:19,650 --> 00:03:23,159
+And then we can look
+at the dissimilarity
+
+66
+00:03:23,159 --> 00:03:27,569
+of a set of clusters, a group
+of clusters, which I'm writing
+
+67
+00:03:27,569 --> 00:03:30,599
+as capital C, and
+that's just the sum
+
+68
+00:03:30,599 --> 00:03:32,189
+of all the variabilities.
+
+69
+00:03:32,189 --> 00:03:34,719
+
+
+70
+00:03:34,719 --> 00:03:40,150
+Now, if I had
+divided variability
+
+71
+00:03:40,150 --> 00:03:45,514
+by the size of the
+cluster, what would I have?
+
+72
+00:03:45,514 --> 00:03:46,680
+Something we've seen before.
+
+73
+00:03:46,680 --> 00:03:49,409
+What would that be?
+
+74
+00:03:49,409 --> 00:03:51,889
+Somebody?
+
+75
+00:03:51,889 --> 00:03:55,069
+Isn't that just the variance?
+
+76
+00:03:55,069 --> 00:03:57,909
+So the question is, why
+am I not doing that?
+
+77
+00:03:57,909 --> 00:04:02,169
+If up til now, we always
+wanted to talk about variance,
+
+78
+00:04:02,169 --> 00:04:05,309
+why suddenly am I not doing it?
+
+79
+00:04:05,310 --> 00:04:07,800
+Why do I define this
+notion of variability
+
+80
+00:04:07,800 --> 00:04:10,750
+instead of good old variance?
+
+81
+00:04:10,750 --> 00:04:11,395
+Any thoughts?
+
+82
+00:04:11,395 --> 00:04:15,120
+
+
+83
+00:04:15,120 --> 00:04:18,300
+What am I accomplishing
+by not dividing
+
+84
+00:04:18,300 --> 00:04:20,459
+by the size of the cluster?
+
+85
+00:04:20,459 --> 00:04:22,350
+Or what would happen
+if I did divide
+
+86
+00:04:22,350 --> 00:04:24,420
+by the size of the cluster?
+
+87
+00:04:24,420 --> 00:04:25,258
+Yes.
+
+88
+00:04:25,257 --> 00:04:26,710
+AUDIENCE: You normalize it?
+
+89
+00:04:26,711 --> 00:04:27,710
+JOHN GUTTAG: Absolutely.
+
+90
+00:04:27,709 --> 00:04:29,719
+I'd normalize it.
+
+91
+00:04:29,720 --> 00:04:31,820
+That's exactly what
+it would be doing.
+
+92
+00:04:31,819 --> 00:04:36,379
+And what might be good or
+bad about normalizing it?
+
+93
+00:04:36,379 --> 00:04:41,009
+
+
+94
+00:04:41,009 --> 00:04:44,279
+What does it essentially
+mean to normalize?
+
+95
+00:04:44,279 --> 00:04:48,419
+It means that the
+penalty for a big cluster
+
+96
+00:04:48,420 --> 00:04:51,540
+with a lot of variance
+in it is no higher
+
+97
+00:04:51,540 --> 00:04:53,520
+than the penalty of
+a tiny little cluster
+
+98
+00:04:53,519 --> 00:04:56,719
+with a lot of variance in it.
+
+99
+00:04:56,720 --> 00:05:00,590
+By not normalizing,
+what I'm saying is
+
+100
+00:05:00,589 --> 00:05:05,509
+I want to penalize big,
+highly-diverse clusters
+
+101
+00:05:05,509 --> 00:05:09,370
+more than small,
+highly-diverse clusters.
+
+102
+00:05:09,370 --> 00:05:09,870
+OK?
+
+103
+00:05:09,870 --> 00:05:12,990
+And if you think about it,
+that probably makes sense.
+
+104
+00:05:12,990 --> 00:05:15,769
+
+
+105
+00:05:15,769 --> 00:05:18,469
+Big and bad is worse
+than small and bad.
+
+106
+00:05:18,470 --> 00:05:21,500
+
+
+107
+00:05:21,500 --> 00:05:26,110
+All right, so now we define
+the objective function.
+
+108
+00:05:26,110 --> 00:05:29,250
+And can we say that the
+optimization problem
+
+109
+00:05:29,250 --> 00:05:34,470
+we want to solve by clustering
+is simply finding a capital
+
+110
+00:05:34,470 --> 00:05:37,860
+C that minimizes dissimilarity?
+
+111
+00:05:37,860 --> 00:05:41,500
+
+
+112
+00:05:41,500 --> 00:05:43,459
+Is that a reasonable definition?
+
+113
+00:05:43,459 --> 00:05:46,742
+
+
+114
+00:05:46,742 --> 00:05:51,050
+Well, hint-- no.
+
+115
+00:05:51,050 --> 00:05:54,680
+What foolish thing could
+we do that would optimize
+
+116
+00:05:54,680 --> 00:05:56,509
+that objective function?
+
+117
+00:05:56,509 --> 00:05:57,009
+Yeah.
+
+118
+00:05:57,009 --> 00:05:58,675
+AUDIENCE: You could
+have the same number
+
+119
+00:05:58,675 --> 00:05:59,719
+of clusters as points?
+
+120
+00:05:59,720 --> 00:06:00,500
+JOHN GUTTAG: Yeah.
+
+121
+00:06:00,500 --> 00:06:02,100
+I can have the same
+number of clusters
+
+122
+00:06:02,100 --> 00:06:07,700
+as points, assign each point
+to its own cluster, whoops.
+
+123
+00:06:07,699 --> 00:06:10,009
+Ooh, almost a relay.
+
+124
+00:06:10,009 --> 00:06:14,519
+The dissimilarity of
+each cluster would be 0.
+
+125
+00:06:14,519 --> 00:06:17,269
+The variability would be 0, so
+the dissimilarity would be 0,
+
+126
+00:06:17,269 --> 00:06:19,629
+and I just solved the problem.
+
+127
+00:06:19,629 --> 00:06:24,040
+Well, that's clearly not
+a very useful thing to do.
+
+128
+00:06:24,040 --> 00:06:28,870
+So, well, what do you think
+we do to get around that?
+
+129
+00:06:28,870 --> 00:06:29,370
+Yeah.
+
+130
+00:06:29,370 --> 00:06:30,750
+AUDIENCE: We apply a constraint?
+
+131
+00:06:30,750 --> 00:06:32,529
+JOHN GUTTAG: We
+apply a constraint.
+
+132
+00:06:32,529 --> 00:06:33,029
+Exactly.
+
+133
+00:06:33,029 --> 00:06:35,829
+
+
+134
+00:06:35,829 --> 00:06:38,729
+And so we have to
+pick some constraint.
+
+135
+00:06:38,730 --> 00:06:42,970
+
+
+136
+00:06:42,970 --> 00:06:48,020
+What would be a suitable
+constraint, for example?
+
+137
+00:06:48,019 --> 00:06:51,079
+Well, maybe we'd
+say, OK, the clusters
+
+138
+00:06:51,079 --> 00:06:53,449
+have to have some minimum
+distance between them.
+
+139
+00:06:53,449 --> 00:06:55,959
+
+
+140
+00:06:55,959 --> 00:06:59,579
+Or-- and this is the constraint
+we'll be using today--
+
+141
+00:06:59,579 --> 00:07:02,740
+we could constrain the
+number of clusters.
+
+142
+00:07:02,740 --> 00:07:07,160
+Say, all right, I only want
+to have at most five clusters.
+
+143
+00:07:07,160 --> 00:07:11,680
+Do the best you can to
+minimize dissimilarity,
+
+144
+00:07:11,680 --> 00:07:14,629
+but you're not allowed to
+use more than five clusters.
+
+145
+00:07:14,629 --> 00:07:17,230
+That's the most
+common constraint that
+
+146
+00:07:17,230 --> 00:07:20,550
+gets placed in the problem.
+
+147
+00:07:20,550 --> 00:07:23,036
+All right, we're going to
+look at two algorithms.
+
+148
+00:07:23,036 --> 00:07:24,910
+Maybe I should say two
+methods, because there
+
+149
+00:07:24,910 --> 00:07:28,780
+are multiple implementations
+of these methods.
+
+150
+00:07:28,779 --> 00:07:31,649
+The first is called
+hierarchical clustering,
+
+151
+00:07:31,649 --> 00:07:33,750
+and the second is
+called k-means.
+
+152
+00:07:33,750 --> 00:07:36,459
+There should be an S
+on the word mean there.
+
+153
+00:07:36,459 --> 00:07:38,649
+Sorry about that.
+
+154
+00:07:38,649 --> 00:07:41,000
+All right, let's look at
+hierarchical clustering first.
+
+155
+00:07:41,000 --> 00:07:44,329
+
+
+156
+00:07:44,329 --> 00:07:47,459
+It's a strange algorithm.
+
+157
+00:07:47,459 --> 00:07:51,870
+We start by assigning
+each item, each example,
+
+158
+00:07:51,870 --> 00:07:54,220
+to its own cluster.
+
+159
+00:07:54,220 --> 00:07:57,610
+So this is the trivial solution
+we talked about before.
+
+160
+00:07:57,610 --> 00:07:59,850
+So if you have N items,
+you now have N clusters,
+
+161
+00:07:59,850 --> 00:08:02,280
+each containing just one item.
+
+162
+00:08:02,279 --> 00:08:07,049
+
+
+163
+00:08:07,050 --> 00:08:12,870
+In the next step, we find
+the two most similar clusters
+
+164
+00:08:12,870 --> 00:08:17,470
+we have and merge them
+into a single cluster,
+
+165
+00:08:17,470 --> 00:08:19,300
+so that now instead
+of N clusters,
+
+166
+00:08:19,300 --> 00:08:20,860
+we have N minus 1 clusters.
+
+167
+00:08:20,860 --> 00:08:26,210
+
+
+168
+00:08:26,209 --> 00:08:29,139
+And we continue this
+process until all items
+
+169
+00:08:29,139 --> 00:08:34,009
+are clustered into a
+single cluster of size N.
+
+170
+00:08:34,009 --> 00:08:36,980
+Now of course,
+that's kind of silly,
+
+171
+00:08:36,980 --> 00:08:38,456
+because if all I
+wanted to put them
+
+172
+00:08:38,456 --> 00:08:39,830
+all it in is in
+a single cluster,
+
+173
+00:08:39,830 --> 00:08:40,829
+I don't need to iterate.
+
+174
+00:08:40,828 --> 00:08:43,279
+I just go wham, right?
+
+175
+00:08:43,279 --> 00:08:46,009
+But what's interesting about
+hierarchical clustering
+
+176
+00:08:46,009 --> 00:08:50,769
+is you stop it, typically,
+somewhere along the way.
+
+177
+00:08:50,769 --> 00:08:53,960
+You produce something
+called a [? dendogram. ?]
+
+178
+00:08:53,960 --> 00:08:55,240
+Let me write that down.
+
+179
+00:08:55,240 --> 00:09:02,960
+
+
+180
+00:09:02,960 --> 00:09:08,920
+At each step here, it shows you
+what you've merged thus far.
+
+181
+00:09:08,919 --> 00:09:11,329
+We'll see an example
+of that shortly.
+
+182
+00:09:11,330 --> 00:09:14,170
+And then you can have
+some stopping criteria.
+
+183
+00:09:14,169 --> 00:09:16,729
+We'll talk about that.
+
+184
+00:09:16,730 --> 00:09:19,820
+This is called
+agglomerative hierarchical
+
+185
+00:09:19,820 --> 00:09:23,000
+clustering because we start
+with a bunch of things
+
+186
+00:09:23,000 --> 00:09:24,200
+and we agglomerate them.
+
+187
+00:09:24,200 --> 00:09:28,050
+That is to say, we
+put them together.
+
+188
+00:09:28,049 --> 00:09:28,919
+All right?
+
+189
+00:09:28,919 --> 00:09:31,479
+Make sense?
+
+190
+00:09:31,480 --> 00:09:34,060
+Well, there's a catch.
+
+191
+00:09:34,059 --> 00:09:36,759
+What do we mean by distance?
+
+192
+00:09:36,759 --> 00:09:42,159
+And there are multiple plausible
+definitions of distance,
+
+193
+00:09:42,159 --> 00:09:44,469
+and you would get a
+different answer depending
+
+194
+00:09:44,470 --> 00:09:45,985
+upon which measure you used.
+
+195
+00:09:45,985 --> 00:09:50,409
+
+
+196
+00:09:50,409 --> 00:09:53,350
+These are called
+linkage metrics.
+
+197
+00:09:53,350 --> 00:09:58,040
+The most common one used
+is probably single-linkage,
+
+198
+00:09:58,039 --> 00:10:01,929
+and that says the distance
+between a pair of clusters
+
+199
+00:10:01,929 --> 00:10:06,129
+is equal to the shortest
+distance from any member of one
+
+200
+00:10:06,129 --> 00:10:08,990
+cluster to any member
+of the other cluster.
+
+201
+00:10:08,990 --> 00:10:12,100
+
+
+202
+00:10:12,100 --> 00:10:17,580
+So if I have two
+clusters, here and here,
+
+203
+00:10:17,580 --> 00:10:21,230
+and they have bunches
+of points in them,
+
+204
+00:10:21,230 --> 00:10:23,509
+single-linkage distance
+would say, well,
+
+205
+00:10:23,509 --> 00:10:27,259
+let's use these two points
+which are the closest,
+
+206
+00:10:27,259 --> 00:10:29,779
+and the distance
+between these two
+
+207
+00:10:29,779 --> 00:10:32,214
+is the distance
+between the clusters.
+
+208
+00:10:32,215 --> 00:10:37,090
+
+
+209
+00:10:37,090 --> 00:10:43,990
+You can also use
+complete-linkage,
+
+210
+00:10:43,990 --> 00:10:47,139
+and that says the distance
+between any two clusters
+
+211
+00:10:47,139 --> 00:10:50,169
+is equal to the greatest
+distance from any member
+
+212
+00:10:50,169 --> 00:10:53,440
+to any other member.
+
+213
+00:10:53,441 --> 00:10:53,940
+OK?
+
+214
+00:10:53,940 --> 00:10:56,150
+So if we had the same
+picture we had before--
+
+215
+00:10:56,149 --> 00:11:01,860
+
+
+216
+00:11:01,860 --> 00:11:04,810
+probably not the same
+picture, but it's a picture.
+
+217
+00:11:04,809 --> 00:11:07,449
+Whoops.
+
+218
+00:11:07,450 --> 00:11:10,930
+Then we would say, well, I guess
+complete-linkage is probably
+
+219
+00:11:10,929 --> 00:11:12,759
+the distance, maybe,
+between those two.
+
+220
+00:11:12,759 --> 00:11:19,077
+
+
+221
+00:11:19,077 --> 00:11:24,549
+And finally, not
+surprisingly, you
+
+222
+00:11:24,549 --> 00:11:28,529
+can take the average distance.
+
+223
+00:11:28,529 --> 00:11:31,049
+These are all plausible metrics.
+
+224
+00:11:31,049 --> 00:11:36,449
+They're all used and practiced
+for different kinds of results
+
+225
+00:11:36,450 --> 00:11:39,740
+depending upon the
+application of the clustering.
+
+226
+00:11:39,740 --> 00:11:42,740
+
+
+227
+00:11:42,740 --> 00:11:45,750
+All right, let's
+look at an example.
+
+228
+00:11:45,750 --> 00:11:49,070
+So what I have here
+is the air distance
+
+229
+00:11:49,070 --> 00:11:55,200
+between six different cities,
+Boston, New York, Chicago,
+
+230
+00:11:55,200 --> 00:11:59,890
+Denver, San Francisco,
+and Seattle.
+
+231
+00:11:59,889 --> 00:12:04,909
+And now let's say we're-- want
+to cluster these airports just
+
+232
+00:12:04,909 --> 00:12:07,469
+based upon their distance.
+
+233
+00:12:07,470 --> 00:12:09,620
+So we start.
+
+234
+00:12:09,620 --> 00:12:12,860
+The first piece of our
+[? dendogram ?] says,
+
+235
+00:12:12,860 --> 00:12:15,080
+well, all right,
+I have six cities,
+
+236
+00:12:15,080 --> 00:12:17,480
+I have six clusters,
+each containing one city.
+
+237
+00:12:17,480 --> 00:12:22,777
+
+
+238
+00:12:22,777 --> 00:12:23,985
+All right, what happens next?
+
+239
+00:12:23,985 --> 00:12:27,029
+
+
+240
+00:12:27,029 --> 00:12:30,549
+What's the next level
+going to look like?
+
+241
+00:12:30,549 --> 00:12:31,049
+Yeah?
+
+242
+00:12:31,049 --> 00:12:32,979
+AUDIENCE: You're going
+from Boston [INAUDIBLE]
+
+243
+00:12:32,980 --> 00:12:35,620
+JOHN GUTTAG: I'm going to
+join Boston and New York, as
+
+244
+00:12:35,620 --> 00:12:38,860
+improbable as that sounds.
+
+245
+00:12:38,860 --> 00:12:42,129
+All right, so that's
+the next level.
+
+246
+00:12:42,129 --> 00:12:45,639
+And if for some reason I only
+wanted to have five clusters,
+
+247
+00:12:45,639 --> 00:12:48,889
+well, I could stop here.
+
+248
+00:12:48,889 --> 00:12:50,330
+Next, what happens?
+
+249
+00:12:50,330 --> 00:12:53,259
+
+
+250
+00:12:53,259 --> 00:12:56,100
+Well, I look at it,
+I say well, I'll
+
+251
+00:12:56,100 --> 00:12:58,790
+join up Chicago with
+Boston and New York.
+
+252
+00:12:58,789 --> 00:13:04,319
+
+
+253
+00:13:04,320 --> 00:13:04,820
+All right.
+
+254
+00:13:04,820 --> 00:13:06,590
+What do I get at the next level?
+
+255
+00:13:06,590 --> 00:13:07,149
+Somebody?
+
+256
+00:13:07,149 --> 00:13:07,649
+Yeah.
+
+257
+00:13:07,649 --> 00:13:12,149
+AUDIENCE: Seattle [INAUDIBLE]
+
+258
+00:13:12,149 --> 00:13:14,110
+JOHN GUTTAG: Doesn't
+look like it to me.
+
+259
+00:13:14,110 --> 00:13:21,129
+If you look at San Francisco
+and Seattle, they are 808 miles,
+
+260
+00:13:21,129 --> 00:13:27,139
+and Denver and San
+Francisco is 1,235.
+
+261
+00:13:27,139 --> 00:13:31,240
+So I'd end up, in fact, joining
+San Francisco and Seattle.
+
+262
+00:13:31,240 --> 00:13:34,129
+AUDIENCE: That's what I said.
+
+263
+00:13:34,129 --> 00:13:38,083
+JOHN GUTTAG: Well, that explains
+why I need my hearing fixed.
+
+264
+00:13:38,083 --> 00:13:39,379
+[LAUGHTER]
+
+265
+00:13:39,379 --> 00:13:40,490
+All right.
+
+266
+00:13:40,490 --> 00:13:44,480
+So I combine San
+Francisco and Seattle,
+
+267
+00:13:44,480 --> 00:13:47,110
+and now it gets interesting.
+
+268
+00:13:47,110 --> 00:13:50,230
+I have two choices with Denver.
+
+269
+00:13:50,230 --> 00:13:57,519
+Obviously, there are
+only two choices,
+
+270
+00:13:57,519 --> 00:14:03,279
+and which I choose depends upon
+which linkage criterion I use.
+
+271
+00:14:03,279 --> 00:14:07,029
+If I'm using single-linkage,
+well, then Denver
+
+272
+00:14:07,029 --> 00:14:09,909
+gets joined with Boston,
+New York, and Chicago,
+
+273
+00:14:09,909 --> 00:14:13,569
+because it's closer to Chicago
+than it is to either San
+
+274
+00:14:13,570 --> 00:14:14,760
+Francisco or Seattle.
+
+275
+00:14:14,759 --> 00:14:17,419
+
+
+276
+00:14:17,419 --> 00:14:20,159
+But if I use
+complete-linkage, it
+
+277
+00:14:20,159 --> 00:14:23,949
+gets joined up with San
+Francisco and Seattle,
+
+278
+00:14:23,950 --> 00:14:31,060
+because it is further from
+Boston than it is from,
+
+279
+00:14:31,059 --> 00:14:32,919
+I guess it's San
+Francisco or Seattle.
+
+280
+00:14:32,919 --> 00:14:35,309
+Whichever it is, right?
+
+281
+00:14:35,309 --> 00:14:37,919
+So this is a place
+where you see what
+
+282
+00:14:37,919 --> 00:14:41,159
+answer I get depends upon
+the linkage criteria.
+
+283
+00:14:41,159 --> 00:14:44,100
+And then if I want, I can
+consider to the next step
+
+284
+00:14:44,100 --> 00:14:46,090
+and just join them all.
+
+285
+00:14:46,090 --> 00:14:47,100
+All right?
+
+286
+00:14:47,100 --> 00:14:50,670
+That's hierarchical clustering.
+
+287
+00:14:50,669 --> 00:14:56,110
+So it's good because you get
+this whole history of the
+
+288
+00:14:56,110 --> 00:14:59,320
+[? dendograms, ?] and
+you get to look at it,
+
+289
+00:14:59,320 --> 00:15:02,600
+say, well, all right,
+that looks pretty good.
+
+290
+00:15:02,600 --> 00:15:06,560
+I'll stick with this clustering.
+
+291
+00:15:06,559 --> 00:15:09,599
+It's deterministic.
+
+292
+00:15:09,600 --> 00:15:13,680
+Given a linkage criterion, you
+always get the same answer.
+
+293
+00:15:13,679 --> 00:15:14,899
+There's nothing random here.
+
+294
+00:15:14,899 --> 00:15:17,500
+
+
+295
+00:15:17,500 --> 00:15:20,500
+Notice, by the way,
+the answer might not
+
+296
+00:15:20,500 --> 00:15:23,679
+be optimal with regards
+to that linkage criteria.
+
+297
+00:15:23,679 --> 00:15:26,479
+Why not?
+
+298
+00:15:26,480 --> 00:15:29,132
+What kind of algorithm is this?
+
+299
+00:15:29,131 --> 00:15:29,839
+AUDIENCE: Greedy.
+
+300
+00:15:29,840 --> 00:15:32,420
+JOHN GUTTAG: It's a
+greedy algorithm, exactly.
+
+301
+00:15:32,419 --> 00:15:34,939
+And so I'm making
+locally optimal decisions
+
+302
+00:15:34,940 --> 00:15:38,510
+at each point which may or
+may not be globally optimal.
+
+303
+00:15:38,509 --> 00:15:43,159
+
+
+304
+00:15:43,159 --> 00:15:44,449
+It's flexible.
+
+305
+00:15:44,450 --> 00:15:46,070
+Choosing different
+linkage criteria,
+
+306
+00:15:46,070 --> 00:15:48,050
+I get different results.
+
+307
+00:15:48,049 --> 00:15:53,659
+But it's also potentially
+really, really slow.
+
+308
+00:15:53,659 --> 00:15:58,610
+This is not something you want
+to do on a million examples.
+
+309
+00:15:58,610 --> 00:16:02,570
+The naive algorithm, the one
+I just sort of showed you,
+
+310
+00:16:02,570 --> 00:16:05,730
+is N cubed.
+
+311
+00:16:05,730 --> 00:16:10,120
+N cubed is typically
+impractical.
+
+312
+00:16:10,120 --> 00:16:14,590
+For some linkage criteria, for
+example, single-linkage, there
+
+313
+00:16:14,590 --> 00:16:18,680
+exists very clever N
+squared algorithms.
+
+314
+00:16:18,679 --> 00:16:21,379
+For others, you
+can't beat N cubed.
+
+315
+00:16:21,379 --> 00:16:27,419
+But even N squared is
+really not very good.
+
+316
+00:16:27,419 --> 00:16:30,669
+Which gets me to a much
+faster greedy algorithm called
+
+317
+00:16:30,669 --> 00:16:31,169
+k-means.
+
+318
+00:16:31,169 --> 00:16:33,740
+
+
+319
+00:16:33,740 --> 00:16:40,350
+Now, the k in k-means is the
+number of clusters you want.
+
+320
+00:16:40,350 --> 00:16:42,509
+So the catch with
+k-means is if you
+
+321
+00:16:42,509 --> 00:16:46,049
+don't have any idea how
+many clusters you want,
+
+322
+00:16:46,049 --> 00:16:50,259
+it's problematical,
+whereas hierarchical, you
+
+323
+00:16:50,259 --> 00:16:53,639
+get to inspect it and
+see what you're getting.
+
+324
+00:16:53,639 --> 00:16:57,330
+If you know how many you
+want, it's a good choice
+
+325
+00:16:57,330 --> 00:16:59,009
+because it's much faster.
+
+326
+00:16:59,009 --> 00:17:02,169
+
+
+327
+00:17:02,169 --> 00:17:07,318
+All right, the algorithm,
+again, is very simple.
+
+328
+00:17:07,318 --> 00:17:11,088
+This is the one that Professor
+Grimson briefly discussed.
+
+329
+00:17:11,088 --> 00:17:16,348
+You randomly choose k examples
+as your initial centroids.
+
+330
+00:17:16,348 --> 00:17:19,970
+Doesn't matter which of
+the examples you choose.
+
+331
+00:17:19,970 --> 00:17:24,019
+Then you create k clusters
+by assigning each example
+
+332
+00:17:24,019 --> 00:17:31,440
+to the closest centroid,
+compute k new centroids
+
+333
+00:17:31,440 --> 00:17:35,470
+by averaging the
+examples in each cluster.
+
+334
+00:17:35,470 --> 00:17:40,950
+So in the first iteration,
+the centroids are all examples
+
+335
+00:17:40,950 --> 00:17:42,460
+that you started with.
+
+336
+00:17:42,460 --> 00:17:46,410
+But after that, they're
+probably not examples,
+
+337
+00:17:46,410 --> 00:17:49,620
+because you're now taking the
+average of two examples, which
+
+338
+00:17:49,619 --> 00:17:53,069
+may not correspond to
+any example you have.
+
+339
+00:17:53,069 --> 00:17:56,809
+Actually the average
+of N examples.
+
+340
+00:17:56,809 --> 00:17:59,119
+And then you just
+keep doing this
+
+341
+00:17:59,119 --> 00:18:02,729
+until the centroids don't move.
+
+342
+00:18:02,730 --> 00:18:03,230
+Right?
+
+343
+00:18:03,230 --> 00:18:04,875
+Once you go through
+one iteration
+
+344
+00:18:04,875 --> 00:18:06,500
+where they don't
+move, there's no point
+
+345
+00:18:06,500 --> 00:18:10,099
+in recomputing them again
+and again and again,
+
+346
+00:18:10,099 --> 00:18:12,439
+so it is converged.
+
+347
+00:18:12,440 --> 00:18:16,610
+
+
+348
+00:18:16,609 --> 00:18:20,729
+So let's look at the complexity.
+
+349
+00:18:20,730 --> 00:18:23,809
+Well, at the moment,
+we can't tell you
+
+350
+00:18:23,809 --> 00:18:25,970
+how many iterations
+you're going to have,
+
+351
+00:18:25,970 --> 00:18:28,370
+but what's the complexity
+of one iteration?
+
+352
+00:18:28,369 --> 00:18:34,639
+
+
+353
+00:18:34,640 --> 00:18:38,890
+Well, let's think about
+what you're doing here.
+
+354
+00:18:38,890 --> 00:18:43,240
+You've got k centroids.
+
+355
+00:18:43,240 --> 00:18:46,569
+Now I have to take each
+example and compare it
+
+356
+00:18:46,569 --> 00:18:50,019
+to each-- in a naively, at
+least-- to each centroid
+
+357
+00:18:50,019 --> 00:18:52,750
+to see which it's closest to.
+
+358
+00:18:52,750 --> 00:18:54,309
+Right?
+
+359
+00:18:54,309 --> 00:19:01,509
+So that's k comparisons
+per example.
+
+360
+00:19:01,509 --> 00:19:07,480
+So that's k times
+n times d, where
+
+361
+00:19:07,480 --> 00:19:10,480
+how much time each of
+these comparison takes,
+
+362
+00:19:10,480 --> 00:19:12,910
+which is likely to depend
+upon the dimensionality
+
+363
+00:19:12,910 --> 00:19:14,740
+of the features, right?
+
+364
+00:19:14,740 --> 00:19:17,309
+Just the Euclidean
+distance, for example.
+
+365
+00:19:17,309 --> 00:19:20,149
+
+
+366
+00:19:20,150 --> 00:19:25,600
+But this is a way small number
+than N squared, typically.
+
+367
+00:19:25,599 --> 00:19:27,490
+So each iteration
+is pretty quick,
+
+368
+00:19:27,490 --> 00:19:31,329
+and in practice, as
+we'll see, this typically
+
+369
+00:19:31,329 --> 00:19:34,539
+converges quite
+quickly, so you usually
+
+370
+00:19:34,539 --> 00:19:39,119
+need a very small
+number of iterations.
+
+371
+00:19:39,119 --> 00:19:41,579
+So it is quite
+efficient, and then there
+
+372
+00:19:41,579 --> 00:19:43,829
+are various ways
+you can optimize it
+
+373
+00:19:43,829 --> 00:19:45,899
+to make it even more efficient.
+
+374
+00:19:45,900 --> 00:19:49,920
+This is the most commonly-used
+clustering algorithm
+
+375
+00:19:49,920 --> 00:19:53,200
+because it works really fast.
+
+376
+00:19:53,200 --> 00:19:55,220
+Let's look at an example.
+
+377
+00:19:55,220 --> 00:19:58,880
+So I've got a bunch
+of blue points here,
+
+378
+00:19:58,880 --> 00:20:02,090
+and I actually wrote
+the code to do this.
+
+379
+00:20:02,089 --> 00:20:03,769
+I'm not going to
+show you the code.
+
+380
+00:20:03,769 --> 00:20:13,019
+And I chose four centroids
+at random, colored stars.
+
+381
+00:20:13,019 --> 00:20:18,389
+A green one, a fuchsia-colored
+one, a red one, and a blue one.
+
+382
+00:20:18,390 --> 00:20:21,410
+
+
+383
+00:20:21,410 --> 00:20:24,480
+So maybe they're not the
+ones you would have chosen,
+
+384
+00:20:24,480 --> 00:20:25,380
+but there they are.
+
+385
+00:20:25,380 --> 00:20:28,030
+
+
+386
+00:20:28,029 --> 00:20:33,629
+And I then, having chosen
+them, assign each point
+
+387
+00:20:33,630 --> 00:20:38,550
+to one of those centroids,
+whichever one it's closest to.
+
+388
+00:20:38,549 --> 00:20:40,659
+All right?
+
+389
+00:20:40,660 --> 00:20:41,290
+Step one.
+
+390
+00:20:41,289 --> 00:20:45,680
+
+
+391
+00:20:45,680 --> 00:20:50,350
+And then I recompute
+the centroid.
+
+392
+00:20:50,349 --> 00:20:51,259
+So let's go back.
+
+393
+00:20:51,259 --> 00:20:53,779
+
+
+394
+00:20:53,779 --> 00:20:59,019
+So we're here, and these
+are the initial centroids.
+
+395
+00:20:59,019 --> 00:21:03,279
+Now, when I find
+the new centroids,
+
+396
+00:21:03,279 --> 00:21:06,129
+if we look at where
+the red one is,
+
+397
+00:21:06,130 --> 00:21:10,540
+the red one is this point,
+this point, and this point.
+
+398
+00:21:10,539 --> 00:21:14,170
+Clearly, the new centroid
+is going to move, right?
+
+399
+00:21:14,170 --> 00:21:16,750
+It's going to move somewhere
+along in here or something
+
+400
+00:21:16,750 --> 00:21:19,950
+like that, right?
+
+401
+00:21:19,950 --> 00:21:24,153
+So we'll get those
+new centroids.
+
+402
+00:21:24,153 --> 00:21:26,460
+There it is.
+
+403
+00:21:26,460 --> 00:21:31,870
+And now we'll re-assign points.
+
+404
+00:21:31,869 --> 00:21:38,189
+And what we'll see is this point
+is now closer to the red star
+
+405
+00:21:38,190 --> 00:21:41,340
+than it is to the fuchsia
+star, because we've
+
+406
+00:21:41,339 --> 00:21:43,919
+moved the red star.
+
+407
+00:21:43,920 --> 00:21:44,970
+Whoops.
+
+408
+00:21:44,970 --> 00:21:46,194
+That one.
+
+409
+00:21:46,194 --> 00:21:47,069
+Said the wrong thing.
+
+410
+00:21:47,069 --> 00:21:48,659
+They were red to start with.
+
+411
+00:21:48,660 --> 00:21:53,490
+This one is now suddenly
+closer to the purple, so--
+
+412
+00:21:53,490 --> 00:21:54,150
+and to the red.
+
+413
+00:21:54,150 --> 00:21:55,920
+It will get recolored.
+
+414
+00:21:55,920 --> 00:21:57,350
+We compute the new centroids.
+
+415
+00:21:57,349 --> 00:21:59,969
+
+
+416
+00:21:59,970 --> 00:22:02,100
+We're going to move
+something again.
+
+417
+00:22:02,099 --> 00:22:03,569
+We continue.
+
+418
+00:22:03,569 --> 00:22:05,289
+Points will move around.
+
+419
+00:22:05,289 --> 00:22:08,619
+This time we move two points.
+
+420
+00:22:08,619 --> 00:22:09,819
+Here we go again.
+
+421
+00:22:09,819 --> 00:22:11,980
+Notice, again, the
+centroids don't
+
+422
+00:22:11,980 --> 00:22:14,089
+correspond to actual examples.
+
+423
+00:22:14,089 --> 00:22:16,419
+This one is close, but it's
+not really one of them.
+
+424
+00:22:16,420 --> 00:22:19,210
+
+
+425
+00:22:19,210 --> 00:22:20,930
+Move two more.
+
+426
+00:22:20,930 --> 00:22:24,039
+Recompute centroids,
+and we're done.
+
+427
+00:22:24,039 --> 00:22:29,299
+So here we've converged, and I
+think it was five iterations,
+
+428
+00:22:29,299 --> 00:22:31,480
+and nothing will move again.
+
+429
+00:22:31,480 --> 00:22:31,980
+All right?
+
+430
+00:22:31,980 --> 00:22:34,354
+Does that make
+sense to everybody?
+
+431
+00:22:34,354 --> 00:22:35,269
+So it's pretty simple.
+
+432
+00:22:35,269 --> 00:22:38,420
+
+
+433
+00:22:38,420 --> 00:22:39,769
+What are the downsides?
+
+434
+00:22:39,769 --> 00:22:45,170
+Well, choosing k foolishly
+can lead to strange results.
+
+435
+00:22:45,170 --> 00:22:49,100
+So if I chose k
+equal to 3, looking
+
+436
+00:22:49,099 --> 00:22:51,469
+at this particular
+arrangement of points,
+
+437
+00:22:51,470 --> 00:22:55,670
+it's not obvious what "the
+right answer" is, right?
+
+438
+00:22:55,670 --> 00:22:58,130
+Maybe it's making all
+of this one cluster.
+
+439
+00:22:58,130 --> 00:23:00,100
+I don't know.
+
+440
+00:23:00,099 --> 00:23:02,889
+But there are weird
+k's and if you
+
+441
+00:23:02,890 --> 00:23:08,050
+choose a k that is nonsensical
+with respect to your data,
+
+442
+00:23:08,049 --> 00:23:11,470
+then your clustering
+will be nonsensical.
+
+443
+00:23:11,470 --> 00:23:13,240
+So that's one problem
+we have think about.
+
+444
+00:23:13,240 --> 00:23:16,329
+How do we choose k?
+
+445
+00:23:16,329 --> 00:23:20,119
+Another problem, and this is
+one somebody raised last time,
+
+446
+00:23:20,119 --> 00:23:24,559
+is that the results can depend
+upon the initial centroids.
+
+447
+00:23:24,559 --> 00:23:29,329
+Unlike hierarchical clustering,
+k-means is non-deterministic.
+
+448
+00:23:29,329 --> 00:23:34,460
+Depending upon what
+random examples we choose,
+
+449
+00:23:34,460 --> 00:23:36,470
+we can get a different
+number of iterations.
+
+450
+00:23:36,470 --> 00:23:40,190
+If we choose them poorly, it
+could take longer to converge.
+
+451
+00:23:40,190 --> 00:23:44,110
+More worrisome, you
+get a different answer.
+
+452
+00:23:44,109 --> 00:23:45,669
+You're running this
+greedy algorithm,
+
+453
+00:23:45,670 --> 00:23:47,920
+and you might actually
+get to a different place,
+
+454
+00:23:47,920 --> 00:23:49,720
+depending upon which
+centroids you chose.
+
+455
+00:23:49,720 --> 00:23:52,390
+
+
+456
+00:23:52,390 --> 00:23:54,210
+So these are the
+two issues we have
+
+457
+00:23:54,210 --> 00:23:57,000
+to think about dealing with.
+
+458
+00:23:57,000 --> 00:24:00,980
+So let's first think
+about choosing k.
+
+459
+00:24:00,980 --> 00:24:04,400
+What often happens
+is people choose
+
+460
+00:24:04,400 --> 00:24:07,820
+k using a priori knowledge
+about the application.
+
+461
+00:24:07,819 --> 00:24:10,669
+
+
+462
+00:24:10,670 --> 00:24:13,070
+If I'm in medicine,
+I actually know
+
+463
+00:24:13,069 --> 00:24:15,079
+that there are only
+five different kinds
+
+464
+00:24:15,079 --> 00:24:17,279
+of bacteria in the world.
+
+465
+00:24:17,279 --> 00:24:19,109
+That's true.
+
+466
+00:24:19,109 --> 00:24:22,929
+I mean, there are subspecies,
+but five large categories.
+
+467
+00:24:22,930 --> 00:24:25,980
+And if I had a bunch of
+bacterium I wanted to cluster,
+
+468
+00:24:25,980 --> 00:24:30,049
+may just set k equal to 5.
+
+469
+00:24:30,049 --> 00:24:32,389
+Maybe I believe there are
+only two kinds of people
+
+470
+00:24:32,390 --> 00:24:35,585
+in the world, those who are
+at MIT and those who are not.
+
+471
+00:24:35,585 --> 00:24:37,549
+And so I'll choose k equal to 2.
+
+472
+00:24:37,549 --> 00:24:40,200
+
+
+473
+00:24:40,200 --> 00:24:45,059
+Often, we know enough about the
+application, we can choose k.
+
+474
+00:24:45,059 --> 00:24:49,109
+As we'll see later, often we
+can think we do, and we don't.
+
+475
+00:24:49,109 --> 00:24:51,939
+
+
+476
+00:24:51,940 --> 00:24:56,160
+A better approach is
+to search for a good k.
+
+477
+00:24:56,160 --> 00:25:01,050
+
+
+478
+00:25:01,049 --> 00:25:03,899
+So you can try
+different values of k
+
+479
+00:25:03,900 --> 00:25:08,050
+and evaluate the
+quality of the result.
+
+480
+00:25:08,049 --> 00:25:09,924
+Assume you have some
+metric, as to say yeah,
+
+481
+00:25:09,924 --> 00:25:13,289
+I like this clustering, I
+don't like this clustering.
+
+482
+00:25:13,289 --> 00:25:16,409
+And we'll talk about
+do that in detail.
+
+483
+00:25:16,410 --> 00:25:22,259
+Or you can run hierarchical
+clustering on a subset of data.
+
+484
+00:25:22,259 --> 00:25:23,970
+I've got a million points.
+
+485
+00:25:23,970 --> 00:25:27,059
+All right, what I'm going to
+do is take a subset of 1,000
+
+486
+00:25:27,059 --> 00:25:28,629
+of them or 10,000.
+
+487
+00:25:28,630 --> 00:25:31,550
+Run hierarchical clustering.
+
+488
+00:25:31,549 --> 00:25:36,750
+From that, get a sense of the
+structure underlying the data.
+
+489
+00:25:36,750 --> 00:25:41,650
+Decide k should be 6, and then
+run k-means with k equals 6.
+
+490
+00:25:41,650 --> 00:25:42,940
+People often do this.
+
+491
+00:25:42,940 --> 00:25:47,380
+They run hierarchical clustering
+on a small subset of the data
+
+492
+00:25:47,380 --> 00:25:48,570
+and then choose k.
+
+493
+00:25:48,569 --> 00:25:51,859
+
+
+494
+00:25:51,859 --> 00:25:57,829
+And we'll look-- but one we're
+going to look at is that one.
+
+495
+00:25:57,829 --> 00:26:00,809
+What about unlucky centroids?
+
+496
+00:26:00,809 --> 00:26:05,639
+So here I got the same
+points we started with.
+
+497
+00:26:05,640 --> 00:26:08,390
+Different initial centroids.
+
+498
+00:26:08,390 --> 00:26:11,310
+I've got a fuchsia
+one, a black one,
+
+499
+00:26:11,309 --> 00:26:16,129
+and then I've got red
+and blue down here,
+
+500
+00:26:16,130 --> 00:26:21,780
+which I happened to accidentally
+choose close to one another.
+
+501
+00:26:21,779 --> 00:26:24,960
+Well, if I start
+with these centroids,
+
+502
+00:26:24,960 --> 00:26:27,299
+certainly you
+would expect things
+
+503
+00:26:27,299 --> 00:26:29,470
+to take longer to converge.
+
+504
+00:26:29,470 --> 00:26:31,579
+But in fact, what
+happens is this--
+
+505
+00:26:31,579 --> 00:26:34,449
+
+
+506
+00:26:34,450 --> 00:26:40,059
+I get this assignment of
+blue, this assignment of red,
+
+507
+00:26:40,059 --> 00:26:43,159
+and I'm done.
+
+508
+00:26:43,160 --> 00:26:48,980
+It converges on this,
+which probably is not
+
+509
+00:26:48,980 --> 00:26:51,410
+what we wanted out of this.
+
+510
+00:26:51,410 --> 00:26:54,350
+Maybe it is, but the
+fact that I converged
+
+511
+00:26:54,349 --> 00:26:57,500
+on some very
+different place shows
+
+512
+00:26:57,500 --> 00:26:59,480
+that it's a real weakness
+of the algorithm,
+
+513
+00:26:59,480 --> 00:27:02,420
+that it's sensitive to the
+randomly-chosen initial
+
+514
+00:27:02,420 --> 00:27:05,738
+conditions.
+
+515
+00:27:05,738 --> 00:27:11,000
+Well, couple of things
+you can do about that.
+
+516
+00:27:11,000 --> 00:27:17,180
+You could be clever and try and
+select good initial centroids.
+
+517
+00:27:17,180 --> 00:27:20,150
+So people often will do that,
+and what they'll do is try
+
+518
+00:27:20,150 --> 00:27:24,740
+and just make sure that they're
+distributed over the space.
+
+519
+00:27:24,740 --> 00:27:27,289
+So they would look at
+some picture like this
+
+520
+00:27:27,289 --> 00:27:31,940
+and say, well, let's just put
+my centroids at the corners
+
+521
+00:27:31,940 --> 00:27:35,570
+or something like that so
+that they're far apart.
+
+522
+00:27:35,569 --> 00:27:39,759
+
+
+523
+00:27:39,759 --> 00:27:42,960
+Another approach is
+to try multiple sets
+
+524
+00:27:42,960 --> 00:27:46,279
+of randomly-chosen
+centroids, and then
+
+525
+00:27:46,279 --> 00:27:47,825
+just select the best results.
+
+526
+00:27:47,825 --> 00:27:50,830
+
+
+527
+00:27:50,829 --> 00:27:55,980
+And that's what this little
+algorithm on the screen does.
+
+528
+00:27:55,980 --> 00:28:00,539
+So I'll say best is equal
+to k-means of the points
+
+529
+00:28:00,539 --> 00:28:05,349
+themselves, or
+something, then for t
+
+530
+00:28:05,349 --> 00:28:10,629
+in range number of trials, I'll
+say C equals k-means of points,
+
+531
+00:28:10,630 --> 00:28:14,080
+and I'll just keep track and
+choose the one with the least
+
+532
+00:28:14,079 --> 00:28:15,405
+dissimilarity.
+
+533
+00:28:15,405 --> 00:28:16,779
+The thing I'm
+trying to minimize.
+
+534
+00:28:16,779 --> 00:28:17,279
+OK?
+
+535
+00:28:17,279 --> 00:28:21,450
+
+
+536
+00:28:21,450 --> 00:28:24,910
+The first one is got all
+the points in one cluster.
+
+537
+00:28:24,910 --> 00:28:27,460
+So it's very dissimilar.
+
+538
+00:28:27,460 --> 00:28:29,049
+And then I'll just
+keep generating
+
+539
+00:28:29,049 --> 00:28:31,210
+for different k's
+and I'll choose
+
+540
+00:28:31,210 --> 00:28:34,700
+the k that seems to
+be the best, that
+
+541
+00:28:34,700 --> 00:28:39,740
+does the best job of minimizing
+my objective function.
+
+542
+00:28:39,740 --> 00:28:42,650
+And this is a very common
+solution, by the way,
+
+543
+00:28:42,650 --> 00:28:46,009
+for any randomized
+greedy algorithm.
+
+544
+00:28:46,009 --> 00:28:49,279
+And there are a lot of
+randomized greedy algorithms
+
+545
+00:28:49,279 --> 00:28:53,269
+that you just choose
+multiple initial conditions,
+
+546
+00:28:53,269 --> 00:28:55,579
+try them all out
+and pick the best.
+
+547
+00:28:55,579 --> 00:28:59,449
+
+
+548
+00:28:59,450 --> 00:29:00,830
+All right, now I
+want to show you
+
+549
+00:29:00,829 --> 00:29:04,585
+a slightly more real example.
+
+550
+00:29:04,585 --> 00:29:07,529
+
+
+551
+00:29:07,529 --> 00:29:13,470
+So this is a file we've
+got with medical patients,
+
+552
+00:29:13,470 --> 00:29:17,279
+and we're going to try
+and cluster them and see
+
+553
+00:29:17,279 --> 00:29:19,170
+whether the clusters
+tell us anything
+
+554
+00:29:19,170 --> 00:29:21,990
+about the probability
+of them dying
+
+555
+00:29:21,990 --> 00:29:26,339
+of a heart attack in, say,
+the next year or some period
+
+556
+00:29:26,339 --> 00:29:27,909
+of time.
+
+557
+00:29:27,910 --> 00:29:30,570
+So to simplify things,
+and this is something
+
+558
+00:29:30,569 --> 00:29:33,059
+I have done with research,
+but we're looking
+
+559
+00:29:33,059 --> 00:29:35,549
+at only four features here--
+
+560
+00:29:35,549 --> 00:29:39,569
+the heart rate in
+beats per minute,
+
+561
+00:29:39,569 --> 00:29:46,250
+the number of previous heart
+attacks, the age, and something
+
+562
+00:29:46,250 --> 00:29:49,680
+called ST elevation,
+a binary attribute.
+
+563
+00:29:49,680 --> 00:29:52,700
+So the first three are obvious.
+
+564
+00:29:52,700 --> 00:29:57,509
+If you take an ECG of somebody's
+heart, it looks like this.
+
+565
+00:29:57,509 --> 00:29:59,900
+This is a normal one.
+
+566
+00:29:59,900 --> 00:30:01,850
+They have the S, the
+T, and then there's
+
+567
+00:30:01,849 --> 00:30:06,480
+this region between the
+S wave and the T wave.
+
+568
+00:30:06,480 --> 00:30:11,950
+And if it's higher, hence
+elevated, that's a bad thing.
+
+569
+00:30:11,950 --> 00:30:13,890
+And so this is about
+the first thing
+
+570
+00:30:13,890 --> 00:30:17,550
+that they measure if someone
+is having cardiac problems.
+
+571
+00:30:17,549 --> 00:30:19,490
+Do they have ST elevation?
+
+572
+00:30:19,490 --> 00:30:22,370
+
+
+573
+00:30:22,369 --> 00:30:24,289
+And then with each
+patient, we're
+
+574
+00:30:24,289 --> 00:30:28,269
+going to have an outcome,
+whether they died,
+
+575
+00:30:28,269 --> 00:30:31,389
+and it's related
+to the features,
+
+576
+00:30:31,390 --> 00:30:35,450
+but it's probabilistic
+not deterministic.
+
+577
+00:30:35,450 --> 00:30:39,920
+So for example, an older person
+with multiple heart attacks
+
+578
+00:30:39,920 --> 00:30:42,470
+is at higher risk than
+a young person who's
+
+579
+00:30:42,470 --> 00:30:44,692
+never had a heart attack.
+
+580
+00:30:44,692 --> 00:30:46,400
+That doesn't mean,
+though, that the older
+
+581
+00:30:46,400 --> 00:30:48,440
+person will die first.
+
+582
+00:30:48,440 --> 00:30:49,715
+It's just more probable.
+
+583
+00:30:49,714 --> 00:30:54,289
+
+
+584
+00:30:54,289 --> 00:30:57,326
+We're going to take this data,
+we're going to cluster it,
+
+585
+00:30:57,326 --> 00:30:58,910
+and then we're going
+to look at what's
+
+586
+00:30:58,910 --> 00:31:02,970
+called the purity
+of the clusters
+
+587
+00:31:02,970 --> 00:31:06,029
+relative to the outcomes.
+
+588
+00:31:06,029 --> 00:31:11,379
+So is the cluster, say,
+enriched by people who died?
+
+589
+00:31:11,380 --> 00:31:14,380
+If you have one cluster
+and everyone in it died,
+
+590
+00:31:14,380 --> 00:31:17,410
+then the clustering is
+clearly finding some structure
+
+591
+00:31:17,410 --> 00:31:18,490
+related to the outcome.
+
+592
+00:31:18,490 --> 00:31:23,990
+
+
+593
+00:31:23,990 --> 00:31:27,910
+So the file is in the
+zip file I uploaded.
+
+594
+00:31:27,910 --> 00:31:30,235
+It looks more or less like this.
+
+595
+00:31:30,234 --> 00:31:30,939
+Right?
+
+596
+00:31:30,940 --> 00:31:33,039
+So it's very straightforward.
+
+597
+00:31:33,039 --> 00:31:34,309
+The outcomes are binary.
+
+598
+00:31:34,309 --> 00:31:36,940
+1 is a positive outcome.
+
+599
+00:31:36,940 --> 00:31:39,220
+Strangely enough in
+the medical jargon,
+
+600
+00:31:39,220 --> 00:31:42,220
+a death is a positive outcome.
+
+601
+00:31:42,220 --> 00:31:44,799
+I guess maybe if you're
+responsible for the medical
+
+602
+00:31:44,799 --> 00:31:46,349
+bills, it's positive.
+
+603
+00:31:46,349 --> 00:31:50,409
+If you're the patient, it's hard
+to think of it as a good thing.
+
+604
+00:31:50,410 --> 00:31:53,529
+Nevertheless, that's
+the way that they talk.
+
+605
+00:31:53,529 --> 00:31:55,450
+And the others are
+all there, right?
+
+606
+00:31:55,450 --> 00:31:59,710
+Heart rate, other things.
+
+607
+00:31:59,710 --> 00:32:01,480
+All right, let's
+look at some code.
+
+608
+00:32:01,480 --> 00:32:04,160
+
+
+609
+00:32:04,160 --> 00:32:05,480
+So I've extracted some code.
+
+610
+00:32:05,480 --> 00:32:06,980
+I'm not going to
+show you all of it.
+
+611
+00:32:06,980 --> 00:32:10,910
+There's quite a lot
+of it, as you'll see.
+
+612
+00:32:10,910 --> 00:32:14,450
+So we'll start-- one
+of the files you've got
+
+613
+00:32:14,450 --> 00:32:17,180
+is called cluster dot pi.
+
+614
+00:32:17,180 --> 00:32:18,890
+I decided there
+was enough code, I
+
+615
+00:32:18,890 --> 00:32:21,020
+didn't want to put
+it all in one file.
+
+616
+00:32:21,019 --> 00:32:22,859
+I was getting confused.
+
+617
+00:32:22,859 --> 00:32:24,559
+So I said, let me
+create a file that
+
+618
+00:32:24,559 --> 00:32:27,950
+has some of the code
+and a different file
+
+619
+00:32:27,950 --> 00:32:30,110
+that will then
+import it and use it.
+
+620
+00:32:30,109 --> 00:32:33,500
+Cluster has things
+that are pretty much
+
+621
+00:32:33,500 --> 00:32:38,700
+unrelated to this example, but
+just useful for clustering.
+
+622
+00:32:38,700 --> 00:32:44,970
+So an example here has
+name, features, and label.
+
+623
+00:32:44,970 --> 00:32:47,740
+And really, the only
+interesting thing in it--
+
+624
+00:32:47,740 --> 00:32:50,880
+and it's not that
+interesting-- is distance.
+
+625
+00:32:50,880 --> 00:32:54,990
+And the fact that I'm
+using Minkowski with 2
+
+626
+00:32:54,990 --> 00:32:56,759
+says we're using
+Euclidean distance.
+
+627
+00:32:56,759 --> 00:33:02,289
+
+
+628
+00:33:02,289 --> 00:33:04,399
+Class cluster.
+
+629
+00:33:04,400 --> 00:33:08,410
+It's a lot more
+code to that one.
+
+630
+00:33:08,410 --> 00:33:11,350
+So we start with a
+non-empty list of examples.
+
+631
+00:33:11,349 --> 00:33:12,399
+That's what init does.
+
+632
+00:33:12,400 --> 00:33:14,380
+You can imagine what
+the code looks like,
+
+633
+00:33:14,380 --> 00:33:17,080
+or you can look at it.
+
+634
+00:33:17,079 --> 00:33:25,579
+Update is interesting in that it
+takes the cluster and examples
+
+635
+00:33:25,579 --> 00:33:35,549
+and puts them in-- if you
+think of k-means in the cluster
+
+636
+00:33:35,549 --> 00:33:38,639
+closest to the
+previous centroids
+
+637
+00:33:38,640 --> 00:33:43,500
+and then returns the amount
+the centroid has changed.
+
+638
+00:33:43,500 --> 00:33:45,700
+So if the centroid
+has changed by 0,
+
+639
+00:33:45,700 --> 00:33:48,140
+then you don't have
+anything, right?
+
+640
+00:33:48,140 --> 00:33:50,270
+Creates the new cluster.
+
+641
+00:33:50,269 --> 00:33:54,049
+And the most interesting
+thing is computeCentroid.
+
+642
+00:33:54,049 --> 00:33:55,430
+And if you look
+at this code, you
+
+643
+00:33:55,430 --> 00:33:58,820
+can see that I'm a slightly
+unreconstructed Python 2
+
+644
+00:33:58,819 --> 00:34:00,289
+programmers.
+
+645
+00:34:00,289 --> 00:34:01,909
+I just noticed this.
+
+646
+00:34:01,910 --> 00:34:04,610
+I really shouldn't
+have written 0.0.
+
+647
+00:34:04,609 --> 00:34:08,420
+I should have just written
+0, but in Python 2,
+
+648
+00:34:08,420 --> 00:34:10,760
+you had to write that 0.0.
+
+649
+00:34:10,760 --> 00:34:12,320
+Sorry about that.
+
+650
+00:34:12,320 --> 00:34:15,449
+Thought I'd fixed these.
+
+651
+00:34:15,449 --> 00:34:18,880
+Anyway, so how do we
+compute the centroid?
+
+652
+00:34:18,880 --> 00:34:25,750
+We start by creating
+an array of all 0s.
+
+653
+00:34:25,750 --> 00:34:30,349
+The dimensionality is the number
+of features in the example.
+
+654
+00:34:30,349 --> 00:34:34,099
+It's one of the methods from--
+
+655
+00:34:34,099 --> 00:34:37,130
+I didn't put up
+on the PowerPoint.
+
+656
+00:34:37,130 --> 00:34:40,309
+And then for e in
+examples, I'm going
+
+657
+00:34:40,309 --> 00:34:47,789
+to add to vals
+e.getFeatures, and then I'm
+
+658
+00:34:47,789 --> 00:34:52,860
+just going to divide vals by
+the length of self.examples,
+
+659
+00:34:52,860 --> 00:34:54,480
+the number of examples.
+
+660
+00:34:54,480 --> 00:34:59,480
+So now you see why I made it a
+pylab array, or a numpy array
+
+661
+00:34:59,480 --> 00:35:02,179
+rather than a
+list, so I could do
+
+662
+00:35:02,179 --> 00:35:07,889
+nice things like divide the
+whole thing in one expression.
+
+663
+00:35:07,889 --> 00:35:10,349
+As you do math, any
+kind of math things,
+
+664
+00:35:10,349 --> 00:35:14,009
+you'll find these arrays
+are incredibly convenient.
+
+665
+00:35:14,010 --> 00:35:16,440
+Rather than having to
+write recursive functions
+
+666
+00:35:16,440 --> 00:35:19,139
+or do bunches of
+iterations, the fact
+
+667
+00:35:19,139 --> 00:35:23,819
+that you can do it in one
+keystroke is incredibly nice.
+
+668
+00:35:23,820 --> 00:35:25,570
+And then I'm going to
+return the centroid.
+
+669
+00:35:25,570 --> 00:35:30,330
+
+
+670
+00:35:30,329 --> 00:35:33,565
+Variability is exactly
+what we saw in the formula.
+
+671
+00:35:33,565 --> 00:35:36,360
+
+
+672
+00:35:36,360 --> 00:35:39,690
+And then just for fun,
+so you could see this,
+
+673
+00:35:39,690 --> 00:35:42,269
+I used an iterator here.
+
+674
+00:35:42,269 --> 00:35:43,949
+I don't know that
+any of you have used
+
+675
+00:35:43,949 --> 00:35:47,339
+the yield statement in Python.
+
+676
+00:35:47,340 --> 00:35:48,480
+I recommend it.
+
+677
+00:35:48,480 --> 00:35:50,500
+It's very convenient.
+
+678
+00:35:50,500 --> 00:35:52,739
+One of the nice
+things about Python
+
+679
+00:35:52,739 --> 00:35:55,769
+is almost anything
+that's built in,
+
+680
+00:35:55,769 --> 00:35:58,539
+you can make your
+own version of it.
+
+681
+00:35:58,539 --> 00:36:04,469
+And so once I've done
+this, if c is a cluster,
+
+682
+00:36:04,469 --> 00:36:11,319
+I can now write something
+like for c in big C,
+
+683
+00:36:11,320 --> 00:36:17,740
+and this will make it work just
+like iterating over a list.
+
+684
+00:36:17,739 --> 00:36:21,779
+Right, so this makes it
+possible to iterate over it.
+
+685
+00:36:21,780 --> 00:36:24,360
+If you haven't read
+about yield, you probably
+
+686
+00:36:24,360 --> 00:36:27,660
+should read the probably
+about two paragraphs
+
+687
+00:36:27,659 --> 00:36:30,339
+in the textbook
+explaining how it works,
+
+688
+00:36:30,340 --> 00:36:33,320
+but it's very convenient.
+
+689
+00:36:33,320 --> 00:36:35,530
+Dissimilarity
+we've already seen.
+
+690
+00:36:35,530 --> 00:36:38,570
+
+
+691
+00:36:38,570 --> 00:36:41,870
+All right, now we
+get to patients.
+
+692
+00:36:41,869 --> 00:36:48,299
+This is in the file lec
+12, lecture 12 dot py.
+
+693
+00:36:48,300 --> 00:36:51,810
+In addition to importing
+the usual suspects of pylab
+
+694
+00:36:51,809 --> 00:36:57,259
+and numpy, and probably it
+should import random too,
+
+695
+00:36:57,260 --> 00:37:01,550
+it imports cluster, the
+one we just looked at.
+
+696
+00:37:01,550 --> 00:37:04,160
+
+
+697
+00:37:04,159 --> 00:37:11,589
+And so patient is a
+sub-type of cluster.Example.
+
+698
+00:37:11,590 --> 00:37:14,800
+Then I'm going to define
+this interesting thing called
+
+699
+00:37:14,800 --> 00:37:18,330
+scale attributes.
+
+700
+00:37:18,329 --> 00:37:21,719
+So you might remember,
+in the last lecture
+
+701
+00:37:21,719 --> 00:37:25,679
+when Professor Grimson was
+looking at these reptiles,
+
+702
+00:37:25,679 --> 00:37:28,769
+he ran into this
+problem about alligators
+
+703
+00:37:28,769 --> 00:37:31,199
+looking like chickens
+because they each have
+
+704
+00:37:31,199 --> 00:37:33,569
+a large number of legs.
+
+705
+00:37:33,570 --> 00:37:37,330
+And he said, well, what can
+we do to get around this?
+
+706
+00:37:37,329 --> 00:37:41,670
+Well, we can represent the
+feature as a binary number.
+
+707
+00:37:41,670 --> 00:37:43,215
+Has legs, doesn't have legs.
+
+708
+00:37:43,215 --> 00:37:45,210
+0 or 1.
+
+709
+00:37:45,210 --> 00:37:47,940
+And the problem he
+was dealing with
+
+710
+00:37:47,940 --> 00:37:51,860
+is that when you
+have a feature vector
+
+711
+00:37:51,860 --> 00:37:55,910
+and the dynamic range
+of some features
+
+712
+00:37:55,909 --> 00:37:59,210
+is much greater than
+the others, they
+
+713
+00:37:59,210 --> 00:38:03,260
+tend to dominate because the
+distances just look bigger when
+
+714
+00:38:03,260 --> 00:38:06,190
+you get Euclidean distance.
+
+715
+00:38:06,190 --> 00:38:08,760
+So for example, if we
+wanted to cluster the people
+
+716
+00:38:08,760 --> 00:38:13,980
+in this room, and I
+had one feature that
+
+717
+00:38:13,980 --> 00:38:18,510
+was, say, 1 for male
+and 0 for female,
+
+718
+00:38:18,510 --> 00:38:21,810
+and another feature that
+was 1 for wears glasses,
+
+719
+00:38:21,809 --> 00:38:26,489
+0 for doesn't wear glasses,
+and then a third feature which
+
+720
+00:38:26,489 --> 00:38:31,259
+was weight, and
+I clustered them,
+
+721
+00:38:31,260 --> 00:38:33,240
+well, weight would
+always completely
+
+722
+00:38:33,239 --> 00:38:36,689
+dominate the Euclidean
+distance, right?
+
+723
+00:38:36,690 --> 00:38:39,030
+Because the dynamic range
+of the weights in this
+
+724
+00:38:39,030 --> 00:38:45,450
+room is much higher than
+the dynamic range of 0 to 1.
+
+725
+00:38:45,449 --> 00:38:51,119
+And so for the reptiles,
+he said, well, OK, we'll
+
+726
+00:38:51,119 --> 00:38:53,639
+just make it a binary variable.
+
+727
+00:38:53,639 --> 00:38:55,409
+But maybe we don't
+want to make weight
+
+728
+00:38:55,409 --> 00:38:58,170
+a binary variable, because
+maybe it is something
+
+729
+00:38:58,170 --> 00:39:00,880
+we want to take into account.
+
+730
+00:39:00,880 --> 00:39:04,349
+So what we do is we scale it.
+
+731
+00:39:04,349 --> 00:39:09,089
+So this is a method
+called z-scaling.
+
+732
+00:39:09,090 --> 00:39:14,280
+More general than just
+making things 0 or 1.
+
+733
+00:39:14,280 --> 00:39:16,200
+It's a simple code.
+
+734
+00:39:16,199 --> 00:39:22,239
+It takes in all of the
+values of a specific feature
+
+735
+00:39:22,239 --> 00:39:26,029
+and then performs some
+simple calculations,
+
+736
+00:39:26,030 --> 00:39:34,970
+and when it's done, the
+resulting array it returns
+
+737
+00:39:34,969 --> 00:39:40,319
+has a known mean and a
+known standard deviation.
+
+738
+00:39:40,320 --> 00:39:41,960
+So what's the mean going to be?
+
+739
+00:39:41,960 --> 00:39:44,179
+It's always going to be
+the same thing, independent
+
+740
+00:39:44,179 --> 00:39:45,095
+of the initial values.
+
+741
+00:39:45,094 --> 00:39:47,659
+
+
+742
+00:39:47,659 --> 00:39:48,920
+Take a look at the code.
+
+743
+00:39:48,920 --> 00:39:50,510
+Try and see if you
+can figure it out.
+
+744
+00:39:50,510 --> 00:39:55,190
+
+
+745
+00:39:55,190 --> 00:39:57,970
+Anybody want to
+take a guess at it?
+
+746
+00:39:57,969 --> 00:39:59,549
+0.
+
+747
+00:39:59,550 --> 00:40:00,120
+Right?
+
+748
+00:40:00,119 --> 00:40:04,159
+So the mean will always be 0.
+
+749
+00:40:04,159 --> 00:40:07,039
+And the standard deviation,
+a little harder to figure,
+
+750
+00:40:07,039 --> 00:40:08,329
+but it will always be 1.
+
+751
+00:40:08,329 --> 00:40:13,319
+
+
+752
+00:40:13,320 --> 00:40:13,820
+OK?
+
+753
+00:40:13,820 --> 00:40:17,140
+So it's done this scaling.
+
+754
+00:40:17,139 --> 00:40:22,159
+This is a very common kind
+of scaling called z-scaling.
+
+755
+00:40:22,159 --> 00:40:25,149
+The other way people
+scale is interpolate.
+
+756
+00:40:25,150 --> 00:40:29,440
+They take the smallest value and
+call it 0, the biggest value,
+
+757
+00:40:29,440 --> 00:40:33,579
+they call it 1, and then they
+do a linear interpolation
+
+758
+00:40:33,579 --> 00:40:36,230
+of all the values
+between 0 and 1.
+
+759
+00:40:36,230 --> 00:40:39,570
+So the range is 0 to 1.
+
+760
+00:40:39,570 --> 00:40:43,230
+That's also very common.
+
+761
+00:40:43,230 --> 00:40:45,599
+So this is a general
+way to get all
+
+762
+00:40:45,599 --> 00:40:48,835
+of the features sort
+of in the same ballpark
+
+763
+00:40:48,835 --> 00:40:50,001
+so that we can compare them.
+
+764
+00:40:50,001 --> 00:40:53,099
+
+
+765
+00:40:53,099 --> 00:40:55,139
+And we'll look at what
+happens when we scale
+
+766
+00:40:55,139 --> 00:40:57,480
+and when we don't scale.
+
+767
+00:40:57,480 --> 00:41:01,199
+And that's why my getData
+function has this parameter
+
+768
+00:41:01,199 --> 00:41:02,819
+to scale.
+
+769
+00:41:02,820 --> 00:41:06,150
+It either creates a set of
+examples with the attributes
+
+770
+00:41:06,150 --> 00:41:10,090
+as initially or scaled.
+
+771
+00:41:10,090 --> 00:41:11,980
+And then there's k-means.
+
+772
+00:41:11,980 --> 00:41:14,920
+It's exactly the
+algorithm I showed you
+
+773
+00:41:14,920 --> 00:41:20,200
+with one little wrinkle,
+which is this part.
+
+774
+00:41:20,199 --> 00:41:23,199
+You don't want to end
+up with empty clusters.
+
+775
+00:41:23,199 --> 00:41:26,169
+If I tell you I
+want four clusters,
+
+776
+00:41:26,170 --> 00:41:28,240
+I don't mean I want
+three with examples
+
+777
+00:41:28,239 --> 00:41:30,389
+and one that's empty, right?
+
+778
+00:41:30,389 --> 00:41:34,049
+Because then I really
+don't have four clusters.
+
+779
+00:41:34,050 --> 00:41:36,840
+And so this is one
+of multiple ways
+
+780
+00:41:36,840 --> 00:41:39,510
+to avoid having empty clusters.
+
+781
+00:41:39,510 --> 00:41:41,470
+Basically what I
+did here is say,
+
+782
+00:41:41,469 --> 00:41:44,639
+well, I'm going to try a lot of
+different initial conditions.
+
+783
+00:41:44,639 --> 00:41:47,879
+If one of them is so unlucky
+to give me an empty cluster,
+
+784
+00:41:47,880 --> 00:41:51,550
+I'm just going to skip it
+and go on to the next one
+
+785
+00:41:51,550 --> 00:41:55,892
+by raising a value
+error, empty cluster.
+
+786
+00:41:55,891 --> 00:41:57,349
+And if you look at
+the code, you'll
+
+787
+00:41:57,349 --> 00:42:00,449
+see how this value
+error is used.
+
+788
+00:42:00,449 --> 00:42:02,689
+And then try k-means.
+
+789
+00:42:02,690 --> 00:42:07,490
+We'll call k-means numTrial
+times, each one getting
+
+790
+00:42:07,489 --> 00:42:11,059
+a different set of
+initial centroids,
+
+791
+00:42:11,059 --> 00:42:13,549
+and return the result with
+the lowest dissimilarity.
+
+792
+00:42:13,550 --> 00:42:16,820
+
+
+793
+00:42:16,820 --> 00:42:23,090
+Then I have various ways
+to examine the results.
+
+794
+00:42:23,090 --> 00:42:25,039
+Nothing very
+interesting, and here's
+
+795
+00:42:25,039 --> 00:42:28,190
+the key place where we're
+going to run the whole thing.
+
+796
+00:42:28,190 --> 00:42:31,970
+We'll get the data,
+initially not scaling it,
+
+797
+00:42:31,969 --> 00:42:34,199
+because remember,
+it defaults to true.
+
+798
+00:42:34,199 --> 00:42:38,769
+Then initially, I'm only going
+to try one k. k equals 2.
+
+799
+00:42:38,769 --> 00:42:47,949
+And we'll call testClustering
+with the patients.
+
+800
+00:42:47,949 --> 00:42:50,919
+The number of clusters, k.
+
+801
+00:42:50,920 --> 00:42:53,769
+I put in seed as
+a parameter here
+
+802
+00:42:53,769 --> 00:42:56,079
+because I wanted to be
+able to play with it
+
+803
+00:42:56,079 --> 00:42:59,710
+and make sure I got different
+things for 0 and 1 and 2
+
+804
+00:42:59,710 --> 00:43:01,630
+just as a testing thing.
+
+805
+00:43:01,630 --> 00:43:06,230
+And five trials
+it's defaulting to.
+
+806
+00:43:06,230 --> 00:43:12,480
+And then we'll look
+at testClustering
+
+807
+00:43:12,480 --> 00:43:17,099
+is returning the fraction
+of positive examples
+
+808
+00:43:17,099 --> 00:43:19,779
+for each cluster.
+
+809
+00:43:19,780 --> 00:43:21,730
+OK?
+
+810
+00:43:21,730 --> 00:43:23,530
+So let's see what
+happens when we run it.
+
+811
+00:43:23,530 --> 00:43:39,690
+
+
+812
+00:43:39,690 --> 00:43:41,460
+All right.
+
+813
+00:43:41,460 --> 00:43:43,710
+So we got two clusters.
+
+814
+00:43:43,710 --> 00:43:49,590
+Cluster of size 118 with
+.3305, and a cluster
+
+815
+00:43:49,590 --> 00:43:55,010
+of size 132 with a positive
+fraction of point quadruple 3.
+
+816
+00:43:55,010 --> 00:43:59,230
+
+
+817
+00:43:59,230 --> 00:44:03,230
+Should we be happy?
+
+818
+00:44:03,230 --> 00:44:07,869
+Does our clustering tell
+us anything, somehow
+
+819
+00:44:07,869 --> 00:44:13,219
+correspond to the expected
+outcome for patients here?
+
+820
+00:44:13,219 --> 00:44:15,629
+Probably not, right?
+
+821
+00:44:15,630 --> 00:44:18,599
+Those numbers are pretty
+much indistinguishable
+
+822
+00:44:18,599 --> 00:44:20,279
+statistically.
+
+823
+00:44:20,280 --> 00:44:23,070
+And you'd have to guess that
+the fraction of positives
+
+824
+00:44:23,070 --> 00:44:26,544
+in the whole population
+is around .33, right?
+
+825
+00:44:26,543 --> 00:44:27,960
+That about a third
+of these people
+
+826
+00:44:27,960 --> 00:44:30,349
+died of their heart attack.
+
+827
+00:44:30,349 --> 00:44:35,039
+And I might as well have
+signed them randomly
+
+828
+00:44:35,039 --> 00:44:36,583
+to the two clusters, right?
+
+829
+00:44:36,583 --> 00:44:38,250
+There's not much
+difference between this
+
+830
+00:44:38,250 --> 00:44:42,480
+and what you would get
+with the random result.
+
+831
+00:44:42,480 --> 00:44:44,490
+Well, why do we
+think that's true?
+
+832
+00:44:44,489 --> 00:44:47,269
+
+
+833
+00:44:47,269 --> 00:44:49,550
+Because I didn't scale, right?
+
+834
+00:44:49,550 --> 00:44:53,150
+And so one of the issues
+we had to deal with
+
+835
+00:44:53,150 --> 00:44:56,760
+is, well, age had a
+big dynamic range,
+
+836
+00:44:56,760 --> 00:45:02,300
+and, say, ST elevation, which I
+told you was highly diagnostic,
+
+837
+00:45:02,300 --> 00:45:04,600
+was either 0 or 1.
+
+838
+00:45:04,599 --> 00:45:06,279
+And so probably
+everything is getting
+
+839
+00:45:06,280 --> 00:45:12,820
+swamped by age or
+something else, right?
+
+840
+00:45:12,820 --> 00:45:17,350
+All right, so we have
+an easy way to fix that.
+
+841
+00:45:17,349 --> 00:45:20,440
+We'll just scale the data.
+
+842
+00:45:20,440 --> 00:45:21,670
+Now let's see what we get.
+
+843
+00:45:21,670 --> 00:45:26,659
+
+
+844
+00:45:26,659 --> 00:45:27,399
+All right.
+
+845
+00:45:27,400 --> 00:45:31,139
+That's interesting.
+
+846
+00:45:31,139 --> 00:45:33,089
+With casting rule?
+
+847
+00:45:33,090 --> 00:45:35,600
+Good grief.
+
+848
+00:45:35,599 --> 00:45:37,009
+That caught me by surprise.
+
+849
+00:45:37,010 --> 00:45:48,150
+
+
+850
+00:45:48,150 --> 00:45:51,360
+Good thing I have the answers
+in PowerPoint to show you,
+
+851
+00:45:51,360 --> 00:45:53,236
+because the code doesn't
+seem to be working.
+
+852
+00:45:53,235 --> 00:46:00,190
+
+
+853
+00:46:00,190 --> 00:46:01,130
+Try it once more.
+
+854
+00:46:01,130 --> 00:46:05,309
+
+
+855
+00:46:05,309 --> 00:46:05,809
+No.
+
+856
+00:46:05,809 --> 00:46:09,889
+All right, well, in
+the interest of getting
+
+857
+00:46:09,889 --> 00:46:11,629
+through this
+lecture on schedule,
+
+858
+00:46:11,630 --> 00:46:14,690
+we'll go look at the
+results that we get--
+
+859
+00:46:14,690 --> 00:46:16,291
+I got last time I ran it.
+
+860
+00:46:16,291 --> 00:46:20,280
+
+
+861
+00:46:20,280 --> 00:46:20,779
+All right.
+
+862
+00:46:20,780 --> 00:46:23,720
+
+
+863
+00:46:23,719 --> 00:46:32,109
+When I scaled, what we see here
+is that now there is a pretty
+
+864
+00:46:32,110 --> 00:46:34,769
+dramatic difference, right?
+
+865
+00:46:34,769 --> 00:46:37,170
+One of the clusters has
+a much higher fraction
+
+866
+00:46:37,170 --> 00:46:43,030
+of positive patients
+than others,
+
+867
+00:46:43,030 --> 00:46:46,910
+but it's still a
+bit problematic.
+
+868
+00:46:46,909 --> 00:46:52,670
+So this has pretty
+good specificity,
+
+869
+00:46:52,670 --> 00:46:57,275
+or positive predictive value,
+but its sensitivity is lousy.
+
+870
+00:46:57,275 --> 00:47:02,170
+
+
+871
+00:47:02,170 --> 00:47:06,639
+Remember, a third of our
+initial population more or less,
+
+872
+00:47:06,639 --> 00:47:08,259
+was positive.
+
+873
+00:47:08,260 --> 00:47:13,320
+26 is way less than a
+third, so in fact I've
+
+874
+00:47:13,320 --> 00:47:18,690
+got a class, a cluster,
+that is strongly enriched,
+
+875
+00:47:18,690 --> 00:47:23,250
+but I'm still lumping most
+of the positive patients
+
+876
+00:47:23,250 --> 00:47:24,349
+into the other cluster.
+
+877
+00:47:24,349 --> 00:47:27,029
+
+
+878
+00:47:27,030 --> 00:47:31,790
+And in fact, there
+are 83 positives.
+
+879
+00:47:31,789 --> 00:47:33,840
+Wrote some code to do that.
+
+880
+00:47:33,840 --> 00:47:37,870
+And so we see that
+of the 83 positives,
+
+881
+00:47:37,869 --> 00:47:41,799
+only this class,
+which is 70% positive,
+
+882
+00:47:41,800 --> 00:47:44,710
+only has 26 in it
+to start with it.
+
+883
+00:47:44,710 --> 00:47:48,980
+So I'm clearly missing
+most of the positives.
+
+884
+00:47:48,980 --> 00:47:51,130
+So why?
+
+885
+00:47:51,130 --> 00:47:54,640
+Well, my hypothesis was
+that different subgroups
+
+886
+00:47:54,639 --> 00:47:58,851
+of positive patients have
+different characteristics.
+
+887
+00:47:58,851 --> 00:48:01,589
+
+
+888
+00:48:01,590 --> 00:48:09,079
+And so we could test this
+by trying other values of k
+
+889
+00:48:09,079 --> 00:48:11,569
+to see with-- we would
+get more clusters.
+
+890
+00:48:11,570 --> 00:48:14,539
+So here, I said, let's
+try k equals 2, 4, and 6.
+
+891
+00:48:14,539 --> 00:48:18,090
+
+
+892
+00:48:18,090 --> 00:48:19,740
+And here's what I
+got when I ran that.
+
+893
+00:48:19,739 --> 00:48:23,869
+
+
+894
+00:48:23,869 --> 00:48:32,009
+So what you'll notice here, as
+we get to, say, 4, that I have
+
+895
+00:48:32,010 --> 00:48:39,030
+two clusters, this
+one and this one,
+
+896
+00:48:39,030 --> 00:48:43,230
+which are heavily enriched
+with positive patients.
+
+897
+00:48:43,230 --> 00:48:49,530
+26 as before in the first
+one, but 76 patients
+
+898
+00:48:49,530 --> 00:48:51,240
+in the third one.
+
+899
+00:48:51,239 --> 00:48:55,559
+So I'm now getting a much
+higher fraction of patients
+
+900
+00:48:55,559 --> 00:49:00,929
+in one of the "risky" clusters.
+
+901
+00:49:00,929 --> 00:49:08,929
+And I can continue to do that,
+but if I look at k equals 6,
+
+902
+00:49:08,929 --> 00:49:11,419
+we now look at the
+positive clusters.
+
+903
+00:49:11,420 --> 00:49:15,559
+There were three of them
+significantly positive.
+
+904
+00:49:15,559 --> 00:49:20,210
+But I'm not really getting
+a lot more patients total,
+
+905
+00:49:20,210 --> 00:49:22,260
+so maybe 4 is the right answer.
+
+906
+00:49:22,260 --> 00:49:24,860
+
+
+907
+00:49:24,860 --> 00:49:29,470
+So what you see here is that
+we have at least two parameters
+
+908
+00:49:29,469 --> 00:49:32,529
+to play with, scaling and k.
+
+909
+00:49:32,530 --> 00:49:35,200
+Even though I was only
+wanted a structure
+
+910
+00:49:35,199 --> 00:49:37,089
+that would separate the risk--
+
+911
+00:49:37,090 --> 00:49:39,640
+high-risk patients
+from the lower-risk,
+
+912
+00:49:39,639 --> 00:49:45,139
+which is why I started
+with 2, I later
+
+913
+00:49:45,139 --> 00:49:48,259
+discovered that, in fact,
+there are multiple reasons
+
+914
+00:49:48,260 --> 00:49:50,390
+for being high-risk.
+
+915
+00:49:50,389 --> 00:49:52,069
+And so maybe one
+of these clusters
+
+916
+00:49:52,070 --> 00:49:54,800
+is heavily enriched
+by old people.
+
+917
+00:49:54,800 --> 00:49:56,420
+Maybe another one
+is heavily enriched
+
+918
+00:49:56,420 --> 00:50:00,500
+by people who have had three
+heart attacks in the past,
+
+919
+00:50:00,500 --> 00:50:03,989
+or ST elevation or
+some combination.
+
+920
+00:50:03,989 --> 00:50:05,539
+And when I had
+only two clusters,
+
+921
+00:50:05,539 --> 00:50:08,639
+I couldn't get that
+fine gradation.
+
+922
+00:50:08,639 --> 00:50:11,519
+So this is what data
+scientists spend
+
+923
+00:50:11,519 --> 00:50:14,130
+their time doing when
+they're doing clustering,
+
+924
+00:50:14,130 --> 00:50:17,970
+is they actually have
+multiple parameters.
+
+925
+00:50:17,969 --> 00:50:19,769
+They try different things out.
+
+926
+00:50:19,769 --> 00:50:22,019
+They look at the
+results, and that's
+
+927
+00:50:22,019 --> 00:50:26,039
+why you actually have to think
+to manipulate data rather
+
+928
+00:50:26,039 --> 00:50:28,860
+than just push a button
+and wait for the answer.
+
+929
+00:50:28,860 --> 00:50:30,059
+All right.
+
+930
+00:50:30,059 --> 00:50:34,349
+More of this general
+topic on Wednesday
+
+931
+00:50:34,349 --> 00:50:37,440
+when we're going to talk
+about classification.
+
+932
+00:50:37,440 --> 00:50:38,827
+Thank you.
+
+933
+00:50:38,827 --> 00:50:39,327
+
+

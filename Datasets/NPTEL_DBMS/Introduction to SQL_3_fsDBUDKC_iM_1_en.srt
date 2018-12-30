@@ -1,0 +1,1269 @@
+﻿1
+00:00:16,109 --> 00:00:24,368
+Welcome to module 8 of Database Management
+Systems. We have been discussing basic SQL
+
+2
+00:00:24,368 --> 00:00:30,210
+queries and this is the third and closing
+part of that introductory discussion that
+
+3
+00:00:30,210 --> 00:00:36,850
+we started in the 6th module.
+So, just to quickly recap, this is these are
+
+4
+00:00:36,850 --> 00:00:42,710
+the things that, we did in the last module
+completing the understanding of basic operations
+
+5
+00:00:42,710 --> 00:00:48,439
+the null values and aggregate functions.
+In the current module, we want to understand
+
+6
+00:00:48,439 --> 00:00:54,820
+a feature which is very very important in
+SQL query forming it is called the nested
+
+7
+00:00:54,820 --> 00:01:02,829
+query or more formally nested sub query. In
+SQL and we would like to understand the process
+
+8
+00:01:02,829 --> 00:01:07,780
+of data modification.
+And those are the two things that are outlined
+
+9
+00:01:07,780 --> 00:01:19,849
+here. So, let us start with nested sub queries.
+A sub query is necessarily a select from where
+
+10
+00:01:19,849 --> 00:01:28,879
+expression that is nested within another query
+this is. So, these are the key things where
+
+11
+00:01:28,879 --> 00:01:37,890
+expression. So, it is nothing new over; what
+we have already learned? But it is a part
+
+12
+00:01:37,890 --> 00:01:41,750
+of another query it is nested within another
+query and that is the reason it is called
+
+13
+00:01:41,750 --> 00:01:49,560
+a sub query. So, it by itself is not the result
+this will be used, this is a select from where
+
+14
+00:01:49,560 --> 00:01:56,670
+expression that will be used in a nested form
+in another some other queries to actually
+
+15
+00:01:56,670 --> 00:02:06,400
+generate the result.
+So, that is a nested sub query. So, the nesting
+
+16
+00:02:06,400 --> 00:02:18,560
+can be done in one or more of the three clauses
+that a select from where SQL query has an
+
+17
+00:02:18,560 --> 00:02:27,640
+attribute can be replaced a relation can be
+any valid sub query or a sub query could form
+
+18
+00:02:27,639 --> 00:02:33,238
+the part of a predicate in the where clause
+all of these are possible. So, we will discuss
+
+19
+00:02:33,239 --> 00:02:41,610
+them one by one. So, first we will start by
+discussing how sub queries work in the where
+
+20
+00:02:41,610 --> 00:02:47,770
+clause.
+The common use for you having sub queries
+
+21
+00:02:47,770 --> 00:02:55,930
+in the where clause is to perform different
+kind of tests for membership comparison cardinality
+
+22
+00:02:55,930 --> 00:03:04,860
+and so, on. So, let us look at this; you have
+already seen this query before find courses
+
+23
+00:03:04,860 --> 00:03:12,940
+offered in fall 2009, and in fall in spring
+2010. Earlier we have shown different ways
+
+24
+00:03:12,939 --> 00:03:18,489
+of coding this, now we are showing yet another
+way to be able to code this in SQL.
+
+25
+00:03:18,489 --> 00:03:25,289
+So, first from the beginning certainly we
+need the courses. So, the select clause is
+
+26
+00:03:25,289 --> 00:03:30,530
+trivial it has to be the distinct course id
+is certainly the information will come from
+
+27
+00:03:30,530 --> 00:03:39,750
+section which has information about offering
+of courses as we have also seen already ah.
+
+28
+00:03:39,750 --> 00:03:48,009
+So, those two are no brainer. Now let us see
+what how do I find courses that are offered
+
+29
+00:03:48,009 --> 00:03:55,049
+in fall 2009 and in spring 2010. So, again
+the first part, the courses offered in fall
+
+30
+00:03:55,050 --> 00:04:01,590
+2009 is coded in this part; in part of that
+where clause predicate when he says semester
+
+31
+00:04:01,590 --> 00:04:06,340
+has to be fall and here is 2009. So, this
+part is also done.
+
+32
+00:04:06,340 --> 00:04:15,989
+Now, we need to ensure that whatever I mean
+e e if I assume that after this this part
+
+33
+00:04:15,989 --> 00:04:24,340
+were not there, then this will only give me
+courses which are offered in fall 2009, but
+
+34
+00:04:24,339 --> 00:04:32,149
+we want the courses that are in fall 2009
+and in spring 2010. So, we do something interesting
+
+35
+00:04:32,149 --> 00:04:40,728
+what I do is we write a separate query here
+which is courses that are offered in spring
+
+36
+00:04:40,728 --> 00:04:48,438
+2010. Select course I d just in the same way,
+select course I d section semester year. So,
+
+37
+00:04:48,439 --> 00:04:55,930
+this particular query will give me the courses
+offered in spring 2009. So, what do we have
+
+38
+00:04:55,930 --> 00:05:04,889
+in one part? I have so, if you look at this
+part this courses that happened in fall 2009;
+
+39
+00:05:04,889 --> 00:05:12,310
+if we look at this part courses that happened
+in spring 2010 good.
+
+40
+00:05:12,310 --> 00:05:19,038
+Now, what I want I need that the; it I am
+interested in the courses that happened in
+
+41
+00:05:19,038 --> 00:05:29,240
+both. So, for a course that exists here I
+want to specify that that course Id that course
+
+42
+00:05:29,240 --> 00:05:41,139
+Id must be present here. So, what I am checking
+for? I am checking for a set membership; this
+
+43
+00:05:41,139 --> 00:05:47,800
+is a set right. So, I am trying to check,
+whether that course Id which is being selected
+
+44
+00:05:47,800 --> 00:05:56,889
+in the first part exists in in is another
+keyword. In this particular, this particular
+
+45
+00:05:56,889 --> 00:06:03,978
+relation that is specified by the second part
+of this query which is courses offered in
+
+46
+00:06:03,978 --> 00:06:08,778
+spring 2010.
+If it is if the course Id is present, then
+
+47
+00:06:08,778 --> 00:06:14,110
+that course must have been offered in both
+the semesters if it is not present, then it
+
+48
+00:06:14,110 --> 00:06:20,689
+is offered only in fall 2009, and not in spring
+2010 and certainly the courses that were not
+
+49
+00:06:20,689 --> 00:06:26,249
+offered in fall 2009, and only offered in
+spring 2010 will feature here, but they do
+
+50
+00:06:26,249 --> 00:06:32,069
+not exist here. So, they will never come up
+for tests. So, as a result what I get finally,
+
+51
+00:06:32,069 --> 00:06:40,729
+is the effect of computing courses that are
+offered in fall 2009 and in spring 2010 this
+
+52
+00:06:40,728 --> 00:06:47,639
+part of the query which I used as a part of
+the where clause is my nested sub query.
+
+53
+00:06:47,639 --> 00:06:54,088
+And in this case as we have seen it is used
+for set membership and this is a basic idea
+
+54
+00:06:54,088 --> 00:07:01,368
+of using nested sub queries; that is a nested
+sub query will always give you a relation.
+
+55
+00:07:01,369 --> 00:07:06,719
+So, you try to put that relation in the right
+context of the where clause from clause or
+
+56
+00:07:06,718 --> 00:07:10,810
+select clause, and then make use of it in
+building up your logical.
+
+57
+00:07:10,810 --> 00:07:18,350
+So, let us run through some examples this
+is, what you are saying is is earlier one
+
+58
+00:07:18,350 --> 00:07:23,159
+was the courses offered in both here we are
+trying to do kind of the difference saying
+
+59
+00:07:23,158 --> 00:07:29,058
+the courses offered in fall 2009, but not
+in spring 2010 certainly we easily get that
+
+60
+00:07:29,059 --> 00:07:35,069
+by changing the membership to negation of
+the membership earlier it was in now you do
+
+61
+00:07:35,069 --> 00:07:40,860
+not in you will simply get that it is up to
+you to take some examples and convince yourself
+
+62
+00:07:40,860 --> 00:07:47,520
+that this kind of a nesting will work ah.
+We find the set of the find the total number
+
+63
+00:07:47,519 --> 00:07:54,549
+of distinct students, we have taken the course
+section taught by the instructor Id some Id
+
+64
+00:07:54,550 --> 00:08:02,400
+is given. So, again we form a nested query
+here is a nested query, which tells me the
+
+65
+00:08:02,399 --> 00:08:12,408
+courses taught by this particular teacher
+10101, and then we check set membership. In
+
+66
+00:08:12,408 --> 00:08:21,408
+terms of this course Id section Id that is
+fields of the takes relation to see that,
+
+67
+00:08:21,408 --> 00:08:29,469
+whether that particular tuple can exist in
+the course offered by the specific teacher;
+
+68
+00:08:29,470 --> 00:08:38,129
+if it does then take out that I d which is
+which will turn out to be the student Id.
+
+69
+00:08:38,129 --> 00:08:43,229
+In this case because that is the text relation
+has the student I d take out the student I
+
+70
+00:08:43,229 --> 00:08:51,910
+d and count it as distinct. So, this can simply
+give you the answer to this squared; obviously,
+
+71
+00:08:51,909 --> 00:08:58,679
+[laugher] we we agree that this can be written
+in a simpler form also, but we are including
+
+72
+00:08:58,679 --> 00:09:04,579
+it here just for the sake of illustrating
+the feature ah.
+
+73
+00:09:04,580 --> 00:09:14,631
+There is another clause called the some clause
+look at this fine names of instructor; salary
+
+74
+00:09:14,630 --> 00:09:20,778
+is greater than that of some which means at
+least one instructor in biology department
+
+75
+00:09:20,778 --> 00:09:27,278
+and we have already seen this coding before.
+Now, we can do this in terms of the nested
+
+76
+00:09:27,278 --> 00:09:37,078
+query by using again this is certainly the
+salary of instructors in biology department
+
+77
+00:09:37,078 --> 00:09:46,149
+and we are doing greater than sum; that means,
+that the salary here being checked must find
+
+78
+00:09:46,149 --> 00:09:52,629
+at least one record here. So, that it is greater
+than that salary value. So, it is greater
+
+79
+00:09:52,629 --> 00:10:01,539
+than some is a nice way to find existential
+records using the nested sub query.
+
+80
+00:10:01,539 --> 00:10:07,269
+The logic of some clause I have detailed out
+here. So, we will not go through each one
+
+81
+00:10:07,269 --> 00:10:12,740
+of them in this discussion. I leave it unto
+you to study and convince yourself, that you
+
+82
+00:10:12,740 --> 00:10:20,620
+understand the semantics of some. So, similarly
+we have an all clause which say that if we
+
+83
+00:10:20,620 --> 00:10:25,259
+want to say, they find the names of all instructors;
+whose salary is greater than the salary of
+
+84
+00:10:25,259 --> 00:10:30,580
+all instructors in the biology department
+in case of sum we can write or we will write
+
+85
+00:10:30,580 --> 00:10:38,730
+all and it will check every salary will check
+with the whole set of salaries in this sub
+
+86
+00:10:38,730 --> 00:10:45,159
+query. And only if that is greater than that
+particular record that particular name will
+
+87
+00:10:45,159 --> 00:10:51,559
+be included in the result. Otherwise it will
+be excluded from the result.
+
+88
+00:10:51,559 --> 00:11:00,388
+Similar to some there is a basic semantics
+of all which is also worked out here and I
+
+89
+00:11:00,389 --> 00:11:11,139
+leave that to your study at home. You can
+test for empty relations by using the existing
+
+90
+00:11:11,139 --> 00:11:20,970
+construct. So, if you say exists r, then that
+is a predicate which mean that r is not empty;
+
+91
+00:11:20,970 --> 00:11:31,930
+if r is empty then exist is false and not
+exist is the negation of exist. So, it can
+
+92
+00:11:31,929 --> 00:11:42,688
+be used to specify the query like find all
+courses taught both in fall 2009 and spring
+
+93
+00:11:42,688 --> 00:11:48,078
+2010. So, all that you have to do earlier
+you did it by set membership.
+
+94
+00:11:48,078 --> 00:11:54,549
+So, now you are trying to do this by this
+exists. So, you are saying that this is again
+
+95
+00:11:54,549 --> 00:12:06,519
+the same query which gives you the courses
+that are in spring 2010 and also in this fall
+
+96
+00:12:06,519 --> 00:12:20,610
+fall 2009 and you check whether this relation
+whether this particular nested query is an
+
+97
+00:12:20,610 --> 00:12:25,879
+empty one or not if it is an empty one, then
+exist will fill and the whole where clause
+
+98
+00:12:25,879 --> 00:12:30,958
+will fail, if it was not an empty one then
+you have found such an entry it was offered
+
+99
+00:12:30,958 --> 00:12:36,369
+and therefore, it will get included.
+So, these are just different ways of expressing
+
+100
+00:12:36,370 --> 00:12:43,028
+similar things, but what you should note is
+the nested sub query is a very convenient
+
+101
+00:12:43,028 --> 00:12:49,389
+way to frame up the logic in multiple different
+ways that you would like to do. So, these
+
+102
+00:12:49,389 --> 00:12:55,829
+are the different names given the correlation
+name and the correlated sub query incidentally;
+
+103
+00:12:55,828 --> 00:13:02,258
+the nested query is often referred to as the
+inner query and the query in which the nesting
+
+104
+00:13:02,259 --> 00:13:04,550
+has happened, is known as the outer query
+ah
+
+105
+00:13:04,549 --> 00:13:11,599
+Here is another example which illustrate the
+use of not exist; so which I leave it for
+
+106
+00:13:11,600 --> 00:13:23,980
+your own study. We can check for uniqueness
+that is; test for absence of duplicate tuples
+
+107
+00:13:23,980 --> 00:13:32,199
+by using the unique keyword. So, we can you
+can see here that here is a nested query and
+
+108
+00:13:32,198 --> 00:13:39,670
+using unique to find out all courses that
+were offered at most once in 2009. So, if
+
+109
+00:13:39,671 --> 00:13:45,540
+it a course was offered more than once, then
+naturally multiple records will feature and
+
+110
+00:13:45,539 --> 00:13:51,659
+the result the unique will fail unique will
+be true only if; there is only one entry which
+
+111
+00:13:51,659 --> 00:13:56,318
+shows that it is offered at most once in that
+semester.
+
+112
+00:13:56,318 --> 00:14:05,971
+Now, I move on. So, we have been discussing
+about sub queries in the where clause; now
+
+113
+00:14:05,971 --> 00:14:14,808
+we move on to sub queries in the clause. So,
+as we have already seen a nested sub query
+
+114
+00:14:14,808 --> 00:14:22,139
+is a relation. So, it can naturally be used
+in the place of any relation that we have
+
+115
+00:14:22,139 --> 00:14:31,980
+in the clause. So, we are trying to find out
+average instructor salaries of those departments
+
+116
+00:14:31,980 --> 00:14:44,688
+where the average salary is greater than 42,000.
+So, look at this is a nested sub query. So,
+
+117
+00:14:44,688 --> 00:14:51,849
+where what is been found here this will compute
+the average salary department wise average
+
+118
+00:14:51,850 --> 00:14:56,470
+salary which we have already seen group by
+department name and then you do average on
+
+119
+00:14:56,470 --> 00:15:00,009
+the salary and you give it a give me that
+field a new name.
+
+120
+00:15:00,009 --> 00:15:10,269
+So which means that; this is equivalent to
+having a relation which has two attributes
+
+121
+00:15:10,269 --> 00:15:26,409
+depth name and everyday salary. So, from that
+you are now trying to do the selection and
+
+122
+00:15:26,409 --> 00:15:30,149
+what is the condition that the average salary
+has to be written. So, you already have that
+
+123
+00:15:30,149 --> 00:15:35,028
+as a part of the field the average salary.
+So, you just need to put that in the where
+
+124
+00:15:35,028 --> 00:15:42,230
+clause and you have only those coming out
+of this particular relation where average
+
+125
+00:15:42,230 --> 00:15:48,949
+salary is greater than 42,000 to be selected
+in this select query. So, these will feature
+
+126
+00:15:48,948 --> 00:15:58,258
+in the output of this selection.
+So, that is how you can very easily use a
+
+127
+00:15:58,259 --> 00:16:03,860
+nested sub query in the; from clause and for
+this we did earlier. We solve this problem
+
+128
+00:16:03,860 --> 00:16:09,480
+using the having clause, but they here we
+will not need we did not need the having clause
+
+129
+00:16:09,480 --> 00:16:24,300
+to do this there is this is another way. So,
+here what we have done is the same; if we
+
+130
+00:16:24,299 --> 00:16:35,328
+if we look into the nested sub query. This
+is actually the same all that we have done
+
+131
+00:16:35,328 --> 00:16:43,758
+we have given it a new name by the renaming
+feature, and then this as if becomes a relation
+
+132
+00:16:43,759 --> 00:16:50,759
+and on that the computation is done rest of
+it is similar.
+
+133
+00:16:50,759 --> 00:17:00,068
+There is a clause that provides a way of computing
+a temporary relation and that can be subsequently
+
+134
+00:17:00,068 --> 00:17:03,719
+used.
+So, let us look at example. So, we are trying
+
+135
+00:17:03,720 --> 00:17:14,539
+to find all departments with maximum budget.
+So, this is my basic value we want to find
+
+136
+00:17:14,539 --> 00:17:22,788
+department name, department dot name, that
+is; a departments name from the department
+
+137
+00:17:22,788 --> 00:17:40,119
+table and the budget must be same as maximum
+budget. So, for that I need to know the maximum
+
+138
+00:17:40,119 --> 00:17:50,269
+budget that exists across the department.
+So, look at what has been done here we have
+
+139
+00:17:50,269 --> 00:17:59,898
+a nested query which aggregates the maximum
+budget from the departments.
+
+140
+00:17:59,898 --> 00:18:09,908
+So, this gives you the value of the maximum
+budget. We make that into a temporary table
+
+141
+00:18:09,909 --> 00:18:17,470
+max budget with an attribute value. So, this
+is renaming. So, you cannot see the renaming
+
+142
+00:18:17,470 --> 00:18:23,548
+is being used in very interesting ways. So,
+this is my nested query that gives me a relation
+
+143
+00:18:23,548 --> 00:18:30,889
+and this is my definition of the relation.
+So, max budget now is a temporary relation
+
+144
+00:18:30,890 --> 00:18:37,770
+a relation that I used subsequently in my;
+from clause and with allows me to do that
+
+145
+00:18:37,769 --> 00:18:41,509
+this relation will not be available.
+Otherwise after this query this relation will
+
+146
+00:18:41,509 --> 00:18:46,798
+not exist this is just a temporary one computed
+for this query. So, this gives me the budget
+
+147
+00:18:46,798 --> 00:18:54,950
+value this gives me the department and department
+specific budget, and this condition tells
+
+148
+00:18:54,950 --> 00:19:03,279
+me that I can choose all the departments which
+has the maximum budget very nice way of using
+
+149
+00:19:03,279 --> 00:19:09,369
+this.
+So, with clause can be used in even more involved
+
+150
+00:19:09,369 --> 00:19:16,668
+way again this is an example which is more
+complex use and I leave it to you to practice
+
+151
+00:19:16,669 --> 00:19:28,040
+study and understand we move on to sub queries
+in the select clause finally, ah. A scalar
+
+152
+00:19:28,039 --> 00:19:34,908
+sub query is one; where there is a single
+value is expected. So, we can very easily
+
+153
+00:19:34,909 --> 00:19:43,809
+use that in the select. So, what if you look
+at this part which is the sub query? So, you
+
+154
+00:19:43,808 --> 00:19:51,359
+are saying list all departments along with
+number of instructors each department has.
+
+155
+00:19:51,359 --> 00:20:04,819
+So, this condition tells that the from the
+instructor; we are taking out those that department
+
+156
+00:20:04,819 --> 00:20:17,418
+name where the instructor works to count them
+and then you form that in as a new attribute
+
+157
+00:20:17,419 --> 00:20:21,580
+mind you in while we were using this in the
+from clause.
+
+158
+00:20:21,579 --> 00:20:26,889
+We were treating that as a relation because
+nested query will give a relation, but here
+
+159
+00:20:26,890 --> 00:20:37,220
+in the select clause the entities are attributes.
+So, this as is renaming of attribute which
+
+160
+00:20:37,220 --> 00:20:43,579
+means, but this is a relation that is why
+this notion of scalar sub query is required
+
+161
+00:20:43,579 --> 00:20:49,500
+that is they though this is a relation what
+does the relation compute it computes a single
+
+162
+00:20:49,500 --> 00:20:59,599
+value. So, that value we are putting as an
+attribute named num instructors.
+
+163
+00:20:59,599 --> 00:21:09,769
+So, we have department name and the number
+of instructor, then for each and every department;
+
+164
+00:21:09,769 --> 00:21:16,640
+that we actually have from the department
+list. So, it is a very interesting way of
+
+165
+00:21:16,640 --> 00:21:27,980
+using this nested sub query in terms of the
+select clause naturally; since thus in the
+
+166
+00:21:27,980 --> 00:21:36,110
+select clause I cannot have I mean every entry
+in the select clause has to be an attribute
+
+167
+00:21:36,109 --> 00:21:43,479
+pure relations are not possible.
+So, if the sub query returns more than one
+
+168
+00:21:43,480 --> 00:21:50,950
+table which cannot be conceived as a as a
+as one or more attributes, then it will be
+
+169
+00:21:50,950 --> 00:21:58,179
+runtime error that will not be allowed; because
+we do not know how to handle multiple tuples
+
+170
+00:21:58,179 --> 00:22:09,980
+in terms of a select clause ok. Next we move
+on to discussing the modifications to the
+
+171
+00:22:09,980 --> 00:22:13,029
+database, how do we modify the database?
+
+172
+00:22:13,029 --> 00:22:22,069
+So, we will look into some of the ways of
+changing the records or removing records from
+
+173
+00:22:22,069 --> 00:22:28,319
+that earlier. We saw a delete of record which
+removed all records from a relation, but now
+
+174
+00:22:28,319 --> 00:22:33,480
+we will see selective deletion insertion and
+update of values.
+
+175
+00:22:33,480 --> 00:22:39,630
+Now, deleting all instructors are easy delete
+from instructor all records sorry this and
+
+176
+00:22:39,630 --> 00:22:46,059
+this becomes an empty table, but suppose we
+want to delete all instructors from the finance
+
+177
+00:22:46,058 --> 00:22:53,980
+department, then like we do in the select
+from where we again use the where clause as
+
+178
+00:22:53,980 --> 00:22:59,740
+a predicate and say that delete from instructor,
+but you do the deletion provided this condition
+
+179
+00:22:59,740 --> 00:23:06,329
+is satisfied that is; department name is same
+as finance. So, it is very similar to the
+
+180
+00:23:06,329 --> 00:23:12,439
+select from where, but the effect is unlike
+select from where where no tables change in
+
+181
+00:23:12,440 --> 00:23:16,960
+the database here.
+The table is actually changing; because these
+
+182
+00:23:16,960 --> 00:23:23,288
+instructor records are deleted whose department
+name was finance. The third example shows
+
+183
+00:23:23,288 --> 00:23:28,158
+delete all tuples in the instructor relation
+for those instructors, associated with the
+
+184
+00:23:28,159 --> 00:23:35,750
+department located in the Watson building.
+So, it Watson building may have multiple departments.
+
+185
+00:23:35,750 --> 00:23:43,788
+So, all instructors who worked on those departments
+which are located in the Watson building that
+
+186
+00:23:43,788 --> 00:23:49,240
+will go. So, you do this is again you are
+using nested query.
+
+187
+00:23:49,240 --> 00:23:56,609
+Now, you know how to use a nested query. So,
+you use nested query which will give you the
+
+188
+00:23:56,609 --> 00:24:02,259
+names of departments, which it gives you a
+relation with a single attribute with names
+
+189
+00:24:02,259 --> 00:24:09,009
+of departments housed in the Watson building,
+then you use the set membership to check whether
+
+190
+00:24:09,009 --> 00:24:15,009
+a particular department belongs to that set
+if it does then it is in Watson building;
+
+191
+00:24:15,009 --> 00:24:19,609
+otherwise, it is not in Watson building if
+it does belong to the Watson building then
+
+192
+00:24:19,609 --> 00:24:26,449
+this where clause becomes true and the corresponding
+instructor record is deleted and that is of
+
+193
+00:24:26,450 --> 00:24:33,220
+this whole different kinds of selective deletion
+can happen.
+
+194
+00:24:33,220 --> 00:24:37,980
+Delete all instructors whose salary is less
+than the average salary of instructor. Again
+
+195
+00:24:37,980 --> 00:24:47,630
+this is; so, you compute the selection sub
+query which computes the average salary and
+
+196
+00:24:47,630 --> 00:24:56,100
+check if the salary is less than the average
+salary and delete that sounds straightforward,
+
+197
+00:24:56,099 --> 00:25:02,759
+but just where you I just wait just wait I
+mean did we do it do a right thing an average
+
+198
+00:25:02,759 --> 00:25:12,398
+salary is computed by taking the sum of all
+salaries in the relation. And then dividing
+
+199
+00:25:12,398 --> 00:25:17,589
+it by the number of relations this has to
+be the average salary certainly if I remove
+
+200
+00:25:17,589 --> 00:25:29,649
+a record then the average itself will change.
+So, if I write the query in this manner then
+
+201
+00:25:29,650 --> 00:25:36,149
+what I am saying on the face of it looks correct,
+but then actually can it be correct because
+
+202
+00:25:36,148 --> 00:25:42,869
+the moment a condition is satisfied and that
+record is deleted this average value itself
+
+203
+00:25:42,869 --> 00:25:49,538
+has changed. So, that is not. So, that will
+depend then the result will depend on the
+
+204
+00:25:49,538 --> 00:25:53,859
+order in which the deletion is happening,
+but that is not what was meant what was meant
+
+205
+00:25:53,859 --> 00:26:01,229
+is take all the records for the present find
+out the average find out all records which
+
+206
+00:26:01,230 --> 00:26:04,839
+have a salary less than that average and remove
+them.
+
+207
+00:26:04,839 --> 00:26:14,528
+So, this initially you know easy trivial looking
+solution is not actually correct. So, you
+
+208
+00:26:14,528 --> 00:26:20,230
+will have to do the solution in two stages:
+first compute the average salary, find all
+
+209
+00:26:20,230 --> 00:26:27,798
+tuples to delete? Next delete all tuples found
+above without recomputing. The average in
+
+210
+00:26:27,798 --> 00:26:32,960
+the present solution the average is recomputed,
+which is the wrong thing.
+
+211
+00:26:32,960 --> 00:26:40,600
+So, again I will leave that for you to solve
+we move on to looking at modifications in
+
+212
+00:26:40,599 --> 00:26:48,839
+terms of insertion. So, we had seen this earlier
+we can add a new tuple by inserting to then
+
+213
+00:26:48,839 --> 00:26:56,949
+the relation names, and then you save values
+and the tuple of values. We can specify the;
+
+214
+00:26:56,950 --> 00:27:05,298
+if we if we do not remember the order of attributes
+in the relation. Then we can also specify
+
+215
+00:27:05,298 --> 00:27:08,929
+the order in which we are spaced actually
+giving the information.
+
+216
+00:27:08,929 --> 00:27:13,570
+So, you are saying insert into course and
+what we have done here is we have actually
+
+217
+00:27:13,569 --> 00:27:18,898
+specified the order in which that tributes
+occurred and that order and the order of values
+
+218
+00:27:18,898 --> 00:27:27,909
+must be the same. In the first case this order
+of values is decided by the order of the attributes
+
+219
+00:27:27,910 --> 00:27:38,288
+that exist in terms of the create table. Add
+a new tuple to student with total credit set
+
+220
+00:27:38,288 --> 00:27:44,519
+to null that is I do not know; we were adding
+a student initially does not have a credit
+
+221
+00:27:44,519 --> 00:27:47,778
+right. The credit is a nullable field the
+credit will be earned after the student has
+
+222
+00:27:47,778 --> 00:27:53,190
+gone through the courses and all that. So,
+if I do not know the value of a field then
+
+223
+00:27:53,190 --> 00:27:59,820
+I can write n u l l null which is a special
+value designating unknown for at the time
+
+224
+00:27:59,819 --> 00:28:04,069
+of insertion.
+And all instructors to the student relation
+
+225
+00:28:04,069 --> 00:28:13,888
+with total credit set to 0. So, I can also
+combine insert with select. So, we are taking
+
+226
+00:28:13,888 --> 00:28:21,740
+the first part this part is selection which
+generates a whole lot of records having ID,
+
+227
+00:28:21,740 --> 00:28:31,190
+name, department name and the total credit
+set to 0. From the instructor and insert them
+
+228
+00:28:31,190 --> 00:28:40,538
+into the students. So, these will get instruct
+in inserted into the students select from
+
+229
+00:28:40,538 --> 00:28:46,369
+where statement is evaluated fully. So, this
+first select from will be done before any
+
+230
+00:28:46,369 --> 00:28:54,609
+of its results are inserted in the relation.
+So, that is the basic condition that SQL guarantees;
+
+231
+00:28:54,609 --> 00:29:00,979
+because if that were not the case then such
+situations will become circular and will cause
+
+232
+00:29:00,980 --> 00:29:08,788
+problem.
+Updates can be done based on particular values.
+
+233
+00:29:08,788 --> 00:29:15,250
+So, you can update a table based and what
+it means that? It you could update the values
+
+234
+00:29:15,250 --> 00:29:20,240
+of specific fields.
+So, here in the in the first case; we are
+
+235
+00:29:20,240 --> 00:29:28,630
+giving trying to give a 3 percent salary raise
+for salaries which are more than 100, 1,000
+
+236
+00:29:28,630 --> 00:29:34,840
+and some 5 percent raise for salaries which
+are less than equal to 100, 1,000 and mind
+
+237
+00:29:34,839 --> 00:29:41,220
+you this order in which you do the update
+is important, because if you do the later
+
+238
+00:29:41,220 --> 00:29:47,210
+update first then someone who was what qualified
+in the later part was less than 100, 1,000
+
+239
+00:29:47,210 --> 00:29:51,650
+with the increase will become more than 100,
+1,000 and will also qualify for the second
+
+240
+00:29:51,650 --> 00:29:57,139
+one. So, that will become wrong. So, update
+often is dependent on the order.
+
+241
+00:29:57,138 --> 00:30:05,888
+And therefore, you have yet another ah feature
+to take care of this when you have a specific
+
+242
+00:30:05,888 --> 00:30:14,038
+order to do things it is called the case.
+So, you say when salary case is a new keyword,
+
+243
+00:30:14,038 --> 00:30:18,940
+when is a key word when salary is less than
+equal to 100, 1,000, then this is how you
+
+244
+00:30:18,940 --> 00:30:25,070
+hike otherwise this is how you hike. So
+It can it looks more like the; if statement
+
+245
+00:30:25,069 --> 00:30:35,609
+of c c plus plus you can do updates with scalar
+sub queries. We have seen scalar sub queries
+
+246
+00:30:35,609 --> 00:30:42,240
+already. So, you can use a scalar sub query,
+again I would not go through that details
+
+247
+00:30:42,240 --> 00:30:53,750
+please study and you will be able to understand.
+So, these are different examples. So to summarize,
+
+248
+00:30:53,750 --> 00:31:00,690
+we have introduced a very powerful feature
+or in SQL query known as nested sub query,
+
+249
+00:31:00,690 --> 00:31:11,149
+where we can write a select from where expression.
+As a part of the where predicate or as a relation
+
+250
+00:31:11,148 --> 00:31:19,839
+in the from clause or as one or more collection
+of attributes in the select clause and it
+
+251
+00:31:19,839 --> 00:31:27,019
+can be used in several other places also.
+We have seen the ways to perform data modification
+
+252
+00:31:27,019 --> 00:31:32,870
+in terms of deleting inserting and updating
+records. And we have also seen how nested
+
+253
+00:31:32,869 --> 00:31:39,869
+sub query often may be very useful not only
+in terms of performing a query, but also in
+
+254
+00:31:39,869 --> 00:31:43,739
+terms of performing certain data modifications
+.
+

@@ -1,0 +1,1622 @@
+
+1
+00:00:02.200 --> 00:00:06.550
+Hello, I hope you enjoyed your first
+programming experience with Spark.
+
+2
+00:00:07.580 --> 00:00:10.890
+Although the words count
+example is simple,
+
+3
+00:00:10.890 --> 00:00:14.420
+it is useful in starting to
+understand how to work with RDDs.
+
+4
+00:00:16.040 --> 00:00:22.820
+After this video, you'll be able to use
+two methods to create RDDs in Spark,
+
+5
+00:00:22.820 --> 00:00:28.500
+explain what immutable means,
+interpret a Spark program as a pipeline
+
+6
+00:00:28.500 --> 00:00:33.860
+of transformations and actions, and
+list the steps to create a Spark program.
+
+7
+00:00:36.390 --> 00:00:37.970
+So let's remember where we are.
+
+8
+00:00:39.540 --> 00:00:43.620
+We have a Driver Program that
+defines the Spark context.
+
+9
+00:00:44.700 --> 00:00:48.419
+This is the entry point
+to your application.
+
+10
+00:00:48.419 --> 00:00:53.980
+The driver converts all the data to RDDs,
+and
+
+11
+00:00:53.980 --> 00:00:59.720
+everything from this point on
+gets managed using the RDDs.
+
+12
+00:00:59.720 --> 00:01:03.320
+RDDs can be constructed from files or
+any other storage.
+
+13
+00:01:04.500 --> 00:01:08.650
+They can also be constructed from
+data structures for collections and
+
+14
+00:01:08.650 --> 00:01:10.150
+programs, like lists.
+
+15
+00:01:11.940 --> 00:01:18.306
+All the transformations and actions on
+these RDDs take place either locally,
+
+16
+00:01:18.306 --> 00:01:22.560
+or on the Worker Nodes
+managed by a Cluster Manager.
+
+17
+00:01:25.190 --> 00:01:29.560
+Each transformation results in
+a new updated version of the RDD.
+
+18
+00:01:29.560 --> 00:01:33.480
+The RDDs at the end get converted and
+
+19
+00:01:33.480 --> 00:01:37.319
+saved in a persistent storage like HDFS or
+your local drive.
+
+20
+00:01:40.000 --> 00:01:46.480
+As we mentioned before,
+RDDs get created in the Driver Program.
+
+21
+00:01:46.480 --> 00:01:48.680
+The developer of the Driver Program,
+
+22
+00:01:48.680 --> 00:01:52.820
+who in this case is you,
+is responsible for creating them.
+
+23
+00:01:55.030 --> 00:01:58.650
+You can just read in a file
+through your Spark Context, or
+
+24
+00:01:58.650 --> 00:02:04.300
+as we have in this example,
+you can provide an existing collection,
+
+25
+00:02:04.300 --> 00:02:07.820
+like a list to be turned into
+a distributed collection.
+
+26
+00:02:10.400 --> 00:02:15.130
+You can also create an integer
+RDD using parallelize,
+
+27
+00:02:16.340 --> 00:02:18.690
+and provide a number of partitions for
+
+28
+00:02:18.690 --> 00:02:23.000
+distribution as we do create
+the numbers RDD in this line.
+
+29
+00:02:25.850 --> 00:02:29.440
+Here, the range function in Python
+
+30
+00:02:30.460 --> 00:02:33.738
+will give us a list of
+numbers starting from 0 to 9.
+
+31
+00:02:33.738 --> 00:02:40.340
+The parallelize function
+will create three partitions
+
+32
+00:02:40.340 --> 00:02:45.160
+of the RDD to be distributed, based on
+the parameter that was provided to it.
+
+33
+00:02:46.440 --> 00:02:51.040
+Spark will decide how to assign partitions
+to our executors and worker nodes.
+
+34
+00:02:53.110 --> 00:02:58.037
+The distributed RDDs can in the end be
+gathered into a single partition on
+
+35
+00:02:58.037 --> 00:03:01.286
+the driver using
+the collect transformation.
+
+36
+00:03:07.478 --> 00:03:12.225
+Now let's think of a scenario were we
+start processing the created RDDs.
+
+37
+00:03:14.060 --> 00:03:19.252
+There are two types of operations
+that help with processing in Spark,
+
+38
+00:03:19.252 --> 00:03:22.158
+namely Transformations and Actions.
+
+39
+00:03:24.829 --> 00:03:29.734
+All partitions written in RDD,
+go through the same transformation in
+
+40
+00:03:29.734 --> 00:03:34.820
+the worker node, executors when
+a transformation is applied to an RDD.
+
+41
+00:03:36.420 --> 00:03:40.110
+Spark uses lazy evaluation for
+transformations.
+
+42
+00:03:41.470 --> 00:03:45.310
+That means they will not be
+immediately executed, but
+
+43
+00:03:45.310 --> 00:03:47.610
+instead wait for
+an action to be performed.
+
+44
+00:03:49.440 --> 00:03:53.890
+The transformations get computed
+when an action is executed.
+
+45
+00:03:53.890 --> 00:03:56.810
+For this reason,
+a lot of times you will see run
+
+46
+00:03:56.810 --> 00:04:01.300
+time errors showing up at the action stage
+and not at the transformation stages.
+
+47
+00:04:02.340 --> 00:04:04.840
+It is very similar to Haskell or Erlang,
+
+48
+00:04:04.840 --> 00:04:07.120
+if any of you are familiar
+with these languages.
+
+49
+00:04:09.730 --> 00:04:12.870
+Let's put some names on
+these transformations.
+
+50
+00:04:12.870 --> 00:04:18.530
+We can have a pipeline by converting a
+text file into an RDD with two partitions.
+
+51
+00:04:19.840 --> 00:04:25.440
+Filter some values out of it, and
+maybe apply a map function to it.
+
+52
+00:04:25.440 --> 00:04:30.350
+In the end, the run,
+the collect action on the mapped RDDs
+
+53
+00:04:30.350 --> 00:04:34.620
+to evaluate the results of the pipeline
+and convert the outputs into results.
+
+54
+00:04:35.680 --> 00:04:41.440
+Here, filter and map are transformations,
+and collect is the action.
+
+55
+00:04:43.340 --> 00:04:47.990
+Although the RDDs are in memory,
+and they are not persistent,
+
+56
+00:04:47.990 --> 00:04:51.240
+we can use the cash function
+to make them persistent cash.
+
+57
+00:04:53.090 --> 00:04:58.684
+For example, in order to reuse the RDD
+created from a database query that could
+
+58
+00:04:58.684 --> 00:05:03.792
+otherwise be costly to re-execute,
+we can instead cache these RDDs.
+
+59
+00:05:06.461 --> 00:05:09.883
+We need to use caution when
+using the cache option,
+
+60
+00:05:09.883 --> 00:05:14.432
+as it can consume too much memory and
+generate a bottleneck itself.
+
+61
+00:05:17.713 --> 00:05:25.070
+As a part of the Word Count example, we
+mapped the words RDD to generate tuples.
+
+62
+00:05:25.070 --> 00:05:29.350
+We then applied reduceByKey
+to tuples to generate counts.
+
+63
+00:05:30.470 --> 00:05:34.465
+In the end, we convert the number
+of partitions to one so
+
+64
+00:05:34.465 --> 00:05:38.120
+that output is one file
+when written to this later.
+
+65
+00:05:38.120 --> 00:05:41.980
+Otherwise, output will be spread
+over multiple files on disk.
+
+66
+00:05:43.572 --> 00:05:49.410
+Finally, saveAsTextFile is an action
+that kickstarts the computation and
+
+67
+00:05:49.410 --> 00:05:50.120
+writes to disk.
+
+68
+00:05:52.040 --> 00:05:55.700
+To summarize, in a typical Spark program
+
+69
+00:05:55.700 --> 00:06:00.400
+we create RDDs from external storage or
+local collections like lists.
+
+70
+00:06:01.610 --> 00:06:05.130
+Then we apply transformations
+to these RDDs,
+
+71
+00:06:05.130 --> 00:06:09.820
+like filter, map, and reduceByKey.
+
+72
+00:06:09.820 --> 00:06:14.800
+These transformations get lazily
+evaluated until an action is performed.
+
+73
+00:06:15.970 --> 00:06:22.330
+Actions are performed both for local and
+parallel computation to generate results.
+
+74
+00:06:22.330 --> 00:06:26.780
+Next, we will talk more about
+transformation and actions in Spark.
+
+1
+00:00:01.210 --> 00:00:05.330
+In the last video,
+we talked about the programming model for
+
+2
+00:00:05.330 --> 00:00:10.930
+Spark where RDD's get generated from
+external datasets and gets partitioned.
+
+3
+00:00:12.450 --> 00:00:18.710
+We said, RDDs are immutable meaning they
+can't be changed in place even partially.
+
+4
+00:00:19.740 --> 00:00:23.690
+They need a transformation
+operation applied to them and
+
+5
+00:00:23.690 --> 00:00:25.650
+get converted into a new RDD.
+
+6
+00:00:27.650 --> 00:00:32.652
+This is essential for keeping track
+of all the processing that has been
+
+7
+00:00:32.652 --> 00:00:38.094
+applied to our dataset providing the
+ability to keep a linear chain of RDDs.
+
+8
+00:00:38.094 --> 00:00:44.360
+In addition, as a part of a big data
+pipeline, we start with an RDD.
+
+9
+00:00:44.360 --> 00:00:48.842
+And through several transformation steps,
+many other RDDs as
+
+10
+00:00:48.842 --> 00:00:53.840
+intermediate products get executed
+until we get to our final result.
+
+11
+00:00:55.070 --> 00:00:58.910
+We also mention that
+an important feature of Spark
+
+12
+00:00:58.910 --> 00:01:02.060
+is that all these transformation are lazy.
+
+13
+00:01:03.820 --> 00:01:07.820
+This means they don't execute
+immediately when applied to an RDD.
+
+14
+00:01:09.040 --> 00:01:13.670
+So when we apply a transformation,
+nothing happens right away.
+
+15
+00:01:13.670 --> 00:01:17.850
+We are basically preparing our big
+data pipeline to be executed later.
+
+16
+00:01:18.990 --> 00:01:23.936
+When we are done defining all
+the transformations and perform an action,
+
+17
+00:01:23.936 --> 00:01:28.961
+Spark will take care of finding the best
+way to execute this computation and
+
+18
+00:01:28.961 --> 00:01:32.729
+then start all the necessary
+tasks in our worker nodes.
+
+19
+00:01:32.729 --> 00:01:37.108
+In this video, we will explain some
+common transformation in Spark.
+
+20
+00:01:38.985 --> 00:01:43.537
+After this video, you will be able
+to explain the difference between
+
+21
+00:01:43.537 --> 00:01:47.001
+a narrow transformation and
+wide transformation.
+
+22
+00:01:47.001 --> 00:01:51.748
+Describe map, flatmap,
+filter and coalesce as narrow
+
+23
+00:01:51.748 --> 00:01:56.404
+transformations and
+list two wide transformations.
+
+24
+00:01:59.240 --> 00:02:04.330
+Let's take at look at, probably the
+simplest transformation, which is a map.
+
+25
+00:02:06.280 --> 00:02:10.160
+By now,
+you're well versed in home networks.
+
+26
+00:02:10.160 --> 00:02:16.240
+It applies the function to each
+partition or element of an RDD.
+
+27
+00:02:16.240 --> 00:02:19.690
+This is a one to one transformation.
+
+28
+00:02:19.690 --> 00:02:24.599
+It is also in the category of element-wise
+transformations since it transforms
+
+29
+00:02:24.599 --> 00:02:26.847
+every element of an RDD separately.
+
+30
+00:02:30.805 --> 00:02:34.945
+The code example in the blue
+box here applies a function
+
+31
+00:02:34.945 --> 00:02:38.645
+called lower to all
+the elements in a text_RDD.
+
+32
+00:02:39.900 --> 00:02:40.960
+The lower function
+
+33
+00:02:42.180 --> 00:02:45.810
+turns all the characters in
+a line to lower case letters.
+
+34
+00:02:46.880 --> 00:02:51.650
+So the input is one line
+of text with any kind of
+
+35
+00:02:51.650 --> 00:02:56.360
+capitalization and the outfit is going
+to be the same line, all lower case.
+
+36
+00:02:58.130 --> 00:03:03.160
+In this example, we have two worker
+nodes drawn as orange boxes.
+
+37
+00:03:04.710 --> 00:03:08.328
+The black boxes are partitions
+of our dataset.
+
+38
+00:03:08.328 --> 00:03:11.842
+We work by partition and not by element.
+
+39
+00:03:11.842 --> 00:03:17.036
+As you would remember this, it is the
+difference between Spark and MapReduce.
+
+40
+00:03:19.488 --> 00:03:24.418
+The partition is just a chunk of our data
+with some number of elements in it and
+
+41
+00:03:24.418 --> 00:03:28.964
+the map function gets applied to all
+elements in that partition in each
+
+42
+00:03:28.964 --> 00:03:30.440
+worker node locally.
+
+43
+00:03:31.850 --> 00:03:35.748
+Each node applies the map
+function to the data or
+
+44
+00:03:35.748 --> 00:03:39.555
+RDD partition they received independently.
+
+45
+00:03:39.555 --> 00:03:43.560
+Let's look at a few more in
+element-wise transformation category.
+
+46
+00:03:46.251 --> 00:03:49.190
+FlatMap is very similar to map.
+
+47
+00:03:50.290 --> 00:03:55.573
+However, instead of returning
+an individual element for each map,
+
+48
+00:03:55.573 --> 00:04:01.323
+it returns an RDD with an aggregate of
+all the results for all the elements.
+
+49
+00:04:01.323 --> 00:04:03.888
+In the example in the blue box,
+
+50
+00:04:03.888 --> 00:04:08.132
+the split_words fuction
+takes a line as an input,
+
+51
+00:04:08.132 --> 00:04:13.970
+which is one element and it's output
+is each word as a single element.
+
+52
+00:04:13.970 --> 00:04:18.120
+So, it splits a line to words.
+
+53
+00:04:19.760 --> 00:04:21.570
+The same thing gets done for each line.
+
+54
+00:04:23.180 --> 00:04:26.130
+When the output for
+all the lines is flattened,
+
+55
+00:04:26.130 --> 00:04:29.520
+we get a simple
+one-dimensional list of words.
+
+56
+00:04:31.220 --> 00:04:36.480
+So, we'll get all the words in
+all the lines in just one list.
+
+57
+00:04:38.070 --> 00:04:43.703
+Depending on the line length the output
+partitions might be of different sizes.
+
+58
+00:04:43.703 --> 00:04:47.463
+Detected here by the height of
+each black box being different.
+
+59
+00:04:49.977 --> 00:04:54.750
+In Spark terms, map and
+flatMap are narrow transformations.
+
+60
+00:04:56.040 --> 00:05:01.390
+Narrow transformation refers to
+the processing where the processing
+
+61
+00:05:01.390 --> 00:05:06.827
+logic depends only on data that is
+already residing in the partition and
+
+62
+00:05:06.827 --> 00:05:09.466
+data shuffling is not necessary.
+
+63
+00:05:12.080 --> 00:05:16.030
+Another very important
+transformation is filter.
+
+64
+00:05:16.030 --> 00:05:21.957
+Often, we're interested just
+in a subset of our data or
+
+65
+00:05:21.957 --> 00:05:25.118
+we want to get rid of bad data.
+
+66
+00:05:25.118 --> 00:05:30.105
+Filter transformation takes the function
+take executes on each element
+
+67
+00:05:30.105 --> 00:05:31.575
+of a RDD partition and
+
+68
+00:05:31.575 --> 00:05:36.740
+returns only the elements that
+the transformation element returns true.
+
+69
+00:05:39.219 --> 00:05:44.281
+The example code in the blue box here,
+applies a filter
+
+70
+00:05:44.281 --> 00:05:50.014
+function that filters out words
+that start with the letter a.
+
+71
+00:05:50.014 --> 00:05:54.130
+The function starts with a,
+takes the input word,
+
+72
+00:05:54.130 --> 00:06:00.080
+then transforms it to lowercase and
+then checks if the word starts with a.
+
+73
+00:06:02.920 --> 00:06:08.640
+So, the output of this operation will be
+a list with only words that start with a.
+
+74
+00:06:10.870 --> 00:06:12.670
+This is another narrow transformation.
+
+75
+00:06:14.270 --> 00:06:17.930
+So, it only gets executed locally
+
+76
+00:06:17.930 --> 00:06:22.070
+without the need to shuffle any RDD
+partitions across the word kernels.
+
+77
+00:06:24.320 --> 00:06:30.486
+The output of filter depends on
+the input and the filter functions.
+
+78
+00:06:30.486 --> 00:06:31.663
+In some cases,
+
+79
+00:06:31.663 --> 00:06:37.003
+even if you started with even RDD
+partitions within the worker nodes,
+
+80
+00:06:37.003 --> 00:06:43.247
+the RDD size can significantly vary across
+the workers after a filter operation,
+
+81
+00:06:43.247 --> 00:06:48.588
+then this happens is a pretty good
+idea to join some of those partitions
+
+82
+00:06:48.588 --> 00:06:53.772
+to increase performance and
+even out processing across clusters.
+
+83
+00:06:53.772 --> 00:07:00.399
+This transformation is called coalesce.
+
+84
+00:07:00.399 --> 00:07:06.060
+Coalesce simply helps with balancing
+the data partition numbers and sizes.
+
+85
+00:07:07.220 --> 00:07:12.148
+When you have significantly reduced
+your initial data after some filters and
+
+86
+00:07:12.148 --> 00:07:13.817
+other transformations,
+
+87
+00:07:13.817 --> 00:07:18.311
+having a large number of partitions
+might not be very useful anymore.
+
+88
+00:07:18.311 --> 00:07:19.063
+In this case,
+
+89
+00:07:19.063 --> 00:07:23.521
+you can use coalesce to reduce the number
+of partitions to a more manageable number.
+
+90
+00:07:26.421 --> 00:07:31.941
+Until now, we talked about narrow
+transformations that happen in a worker
+
+91
+00:07:31.941 --> 00:07:36.947
+node locally without having to
+transfer data through the network.
+
+92
+00:07:36.947 --> 00:07:40.572
+Now, let's start talking
+about wide transformations.
+
+93
+00:07:43.048 --> 00:07:45.693
+Let's remember our Word Count example.
+
+94
+00:07:45.693 --> 00:07:52.420
+As a part of the Word Count example, we
+map the words RDD could generate tuples.
+
+95
+00:07:52.420 --> 00:07:58.110
+The output of map is a key value pair
+list where the key is the word and
+
+96
+00:07:58.110 --> 00:07:59.540
+the value is always one.
+
+97
+00:08:01.420 --> 00:08:07.390
+We then apply it reduceByKey
+to tuples to generate counts,
+
+98
+00:08:07.390 --> 00:08:10.360
+which simply sums the values for
+each key or word.
+
+99
+00:08:11.670 --> 00:08:18.555
+Let's imagine for a second that we use
+groupByKey instead of reduceByKey.
+
+100
+00:08:18.555 --> 00:08:23.453
+We will come back to reduceByKey
+in just a little bit.
+
+101
+00:08:23.453 --> 00:08:26.774
+Remember, mapped outputs tuples,
+
+102
+00:08:26.774 --> 00:08:31.920
+which is a list of key value
+pairs in the forms of word one.
+
+103
+00:08:33.670 --> 00:08:39.146
+At each worker node, we will have
+tuples that have the same word as key.
+
+104
+00:08:39.146 --> 00:08:45.213
+In this example, apple as the key and
+1 as the count and 2 worker nodes.
+
+105
+00:08:47.720 --> 00:08:52.367
+Trying to group together, all the counts
+of a word across worker nodes
+
+106
+00:08:52.367 --> 00:08:55.690
+requires shuffling of
+data between these nodes.
+
+107
+00:08:56.800 --> 00:09:00.466
+Just like we do for the word apple here.
+
+108
+00:09:00.466 --> 00:09:05.616
+GroupByKey is the transformation
+that helps us combine values with
+
+109
+00:09:05.616 --> 00:09:11.596
+the same key into a list without applying
+a special user define function to it.
+
+110
+00:09:11.596 --> 00:09:17.435
+As you see on the right, the result
+of a groupByKey transformation on all
+
+111
+00:09:17.435 --> 00:09:23.292
+the map outputs by the word apple is
+the key ends up in a list with all ones.
+
+112
+00:09:26.741 --> 00:09:32.109
+If you instead apply the function to
+list like summing up all the values,
+
+113
+00:09:32.109 --> 00:09:35.542
+then we could have had
+the word count results.
+
+114
+00:09:35.542 --> 00:09:36.715
+In this case, 2.
+
+115
+00:09:36.715 --> 00:09:43.346
+If we instead applied a function to
+the list like summing up all the values,
+
+116
+00:09:43.346 --> 00:09:47.468
+then we would have had
+the word count results.
+
+117
+00:09:47.468 --> 00:09:51.655
+If we need to apply such functions to
+a group of values related to a key like
+
+118
+00:09:51.655 --> 00:09:54.140
+this, we use the reduceByKey operation.
+
+119
+00:09:56.220 --> 00:10:01.670
+ReduceByKey helps us to combine
+the value using a reduce function,
+
+120
+00:10:01.670 --> 00:10:04.580
+which in the word count
+case is a simple summation.
+
+121
+00:10:06.420 --> 00:10:10.420
+In groupByKey and
+reduceByKey transformations,
+
+122
+00:10:11.650 --> 00:10:15.860
+we observe the behavior that require
+shuffling of the data across work nodes,
+
+123
+00:10:17.350 --> 00:10:20.830
+we call such transformations
+wide transformations.
+
+124
+00:10:22.340 --> 00:10:27.440
+In wide transformation operations,
+processing depends on data
+
+125
+00:10:27.440 --> 00:10:32.940
+residing in multiple partitions
+distributed across worker nodes and this
+
+126
+00:10:32.940 --> 00:10:37.430
+requires data shuffling over the network
+to bring related datasets together.
+
+127
+00:10:39.220 --> 00:10:44.630
+As a summary, we have listed a small
+number of transformations in Spark with
+
+128
+00:10:44.630 --> 00:10:49.240
+some examples and distinguished between
+them as narrow and wide transformations.
+
+129
+00:10:50.520 --> 00:10:55.743
+Although this is a good start,
+I advise you to go through the list
+
+130
+00:10:55.743 --> 00:11:01.760
+provided at the link shown here after
+you complete this beginner course.
+
+131
+00:11:01.760 --> 00:11:06.662
+Read about the rest of the transformations
+in Spark before you start programming in
+
+132
+00:11:06.662 --> 00:11:09.192
+Spark and have fun with transformations.
+
+1
+00:00:02.170 --> 00:00:05.580
+Lastly, we will introduce
+you to Spark GraphX.
+
+2
+00:00:07.970 --> 00:00:13.021
+After this video,
+you will be able to describe GraphX is,
+
+3
+00:00:13.021 --> 00:00:17.970
+explain how vertices and
+edges are stored in GraphX, and
+
+4
+00:00:17.970 --> 00:00:21.702
+describe how Pregel works at a high level.
+
+5
+00:00:24.295 --> 00:00:29.875
+GraphX is Apache Spark's Application
+Programming Interface for
+
+6
+00:00:29.875 --> 00:00:33.570
+graphs and graph-parallel computation.
+
+7
+00:00:33.570 --> 00:00:37.001
+GraphX uses a property graph model.
+
+8
+00:00:37.001 --> 00:00:40.420
+This means, both nodes.
+
+9
+00:00:40.420 --> 00:00:44.500
+And edges in a graph can
+have attributes and values.
+
+10
+00:00:46.860 --> 00:00:52.955
+In GraphX, the node properties
+are stored in a vertex table and
+
+11
+00:00:52.955 --> 00:00:57.330
+edge properties are stored
+in an edge table.
+
+12
+00:00:58.930 --> 00:01:04.429
+The connectivity information, that is,
+which edge connects which nodes,
+
+13
+00:01:04.429 --> 00:01:08.501
+is stored separately from the node and
+edge properties.
+
+14
+00:01:11.696 --> 00:01:16.400
+GraphX is built on special RDDs for
+vertices and edges.
+
+15
+00:01:17.890 --> 00:01:23.432
+VertexRDD represents a set of vertices,
+
+16
+00:01:23.432 --> 00:01:28.823
+all of which have an attribute called A.
+
+17
+00:01:28.823 --> 00:01:33.865
+The EdgeRDD here extends
+this basic edge storing by
+
+18
+00:01:33.865 --> 00:01:40.326
+the edges in columnar format on
+each partition for performance.
+
+19
+00:01:40.326 --> 00:01:46.740
+Note that VertexID are defined
+to be unique by design.
+
+20
+00:01:47.780 --> 00:01:52.257
+The edge class is an object
+with a source vertex and
+
+21
+00:01:52.257 --> 00:01:56.209
+destination vertex and an edge attribute.
+
+22
+00:01:58.257 --> 00:02:04.511
+In addition to the vortex and
+edge views of the property graph,
+
+23
+00:02:04.511 --> 00:02:07.584
+GraphX also has triplet view.
+
+24
+00:02:07.584 --> 00:02:14.350
+The triplet view logically joins
+vortex and edge properties.
+
+25
+00:02:17.003 --> 00:02:21.131
+GraphX has an operator that
+can execute operations
+
+26
+00:02:21.131 --> 00:02:24.880
+from the Pregel library for
+graph analytics.
+
+27
+00:02:26.420 --> 00:02:32.000
+This Pregel operator executes
+in a series of super steps
+
+28
+00:02:32.000 --> 00:02:35.700
+which defines a messaging protocol for
+vertices.
+
+29
+00:02:37.620 --> 00:02:39.824
+We will revisit graph analytics and
+
+30
+00:02:39.824 --> 00:02:43.946
+using GraphX in more detail in
+course five of the specialization.
+
+31
+00:02:45.934 --> 00:02:51.070
+In summary, Spark can be used for
+graph parallel computations.
+
+32
+00:02:52.300 --> 00:02:58.740
+GraphX uses special RDDs for
+storing vertex and edge information.
+
+33
+00:03:00.170 --> 00:03:04.165
+And the pregel operator works
+in a series of super steps.
+
+1
+00:00:01.580 --> 00:00:04.435
+Now, we will introduce you to Spark MLlib.
+
+2
+00:00:06.080 --> 00:00:11.020
+After this video, you will be
+able to describe what MLlib is,
+
+3
+00:00:11.020 --> 00:00:15.865
+list the main categories of
+techniques available in MLlib,
+
+4
+00:00:15.865 --> 00:00:20.530
+and explain code segments
+containing MLlib algorithms.
+
+5
+00:00:20.530 --> 00:00:26.750
+MLlib is a scalable machine learning
+library that runs on top of Spark Core.
+
+6
+00:00:26.750 --> 00:00:31.370
+It provides distributed implementations
+of commonly used machine learning
+
+7
+00:00:31.370 --> 00:00:32.750
+algorithms and utilities.
+
+8
+00:00:34.070 --> 00:00:40.260
+As with Spark Core, MLlib has APIs for
+Scala, Java, Python, and R.
+
+9
+00:00:42.520 --> 00:00:45.120
+MLlib offers many algorithms and
+
+10
+00:00:45.120 --> 00:00:48.170
+techniques commonly used in
+a machine learning process.
+
+11
+00:00:49.170 --> 00:00:51.710
+The main categories are machine learning,
+
+12
+00:00:51.710 --> 00:00:55.860
+statistics and some common utility
+tools for common techniques.
+
+13
+00:00:57.120 --> 00:00:58.970
+As the name suggests,
+
+14
+00:00:58.970 --> 00:01:02.380
+many machine learning algorithms
+are available in MLlib.
+
+15
+00:01:03.760 --> 00:01:08.440
+These are algorithms to build models for
+classification, regression, and
+
+16
+00:01:08.440 --> 00:01:08.990
+clustering.
+
+17
+00:01:10.140 --> 00:01:14.110
+There are also techniques for
+evaluating the resulting models.
+
+18
+00:01:14.110 --> 00:01:17.740
+For example,
+you can compute the values for
+
+19
+00:01:17.740 --> 00:01:22.560
+a receiver of creating characteristic
+that we call an ROC curve.
+
+20
+00:01:22.560 --> 00:01:25.350
+A common statistical technique for
+
+21
+00:01:25.350 --> 00:01:28.550
+plotting the performance
+of a binary classifier.
+
+22
+00:01:30.180 --> 00:01:34.040
+Statistical functions
+are also provided in MLlib.
+
+23
+00:01:34.040 --> 00:01:38.655
+Examples are summary statistics,
+means, standard deviation, etc.
+
+24
+00:01:39.850 --> 00:01:43.440
+Correlations and
+methods to sample a dataset.
+
+25
+00:01:45.420 --> 00:01:50.360
+MLlib also has techniques commonly
+used in the machine learning process,
+
+26
+00:01:50.360 --> 00:01:53.040
+such as dimensionality reduction and
+
+27
+00:01:53.040 --> 00:01:56.630
+feature transformation methods for
+preprocessing the data.
+
+28
+00:01:57.690 --> 00:02:01.550
+In short, Spark MLlib offers
+
+29
+00:02:01.550 --> 00:02:05.220
+many techniques often used in
+a machine learning pipeline.
+
+30
+00:02:07.280 --> 00:02:13.410
+Let's take a look at an example to
+compute summary statistics using MLlib.
+
+31
+00:02:13.410 --> 00:02:17.920
+Note that we will use the spark pipe
+of API similar to the ones used for
+
+32
+00:02:17.920 --> 00:02:19.520
+our other examples in this course.
+
+33
+00:02:20.980 --> 00:02:25.220
+Here is the code segment to
+compute summary statistics for
+
+34
+00:02:25.220 --> 00:02:29.180
+a data set consisting
+of columns of numbers.
+
+35
+00:02:29.180 --> 00:02:33.370
+Lines of code are in white, and
+the comments are in orange.
+
+36
+00:02:33.370 --> 00:02:38.759
+The first line imports statistics
+functions from the stat module.
+
+37
+00:02:38.759 --> 00:02:44.710
+The second line creates an RDD
+of Vectors with the data.
+
+38
+00:02:44.710 --> 00:02:48.500
+You can think of each vector
+as a column in a data matrix.
+
+39
+00:02:49.800 --> 00:02:53.670
+The next line denoted with three invokes
+
+40
+00:02:53.670 --> 00:02:58.210
+the column stats function to compute
+summary statistics for each column.
+
+41
+00:02:59.240 --> 00:03:04.820
+The last three lines show
+by four print out the mean,
+
+42
+00:03:04.820 --> 00:03:08.480
+variance and number of non-zero
+entries for each column.
+
+43
+00:03:10.070 --> 00:03:14.640
+As you can see from this example,
+computing the summary statistics for
+
+44
+00:03:14.640 --> 00:03:17.700
+a data set is very
+straightforward using a MLlib.
+
+45
+00:03:20.410 --> 00:03:22.490
+Here is another example.
+
+46
+00:03:22.490 --> 00:03:26.600
+Although we will go through the ratio
+learning details in our next course,
+
+47
+00:03:26.600 --> 00:03:30.260
+here we give you a hint of how to
+use two ratio learning techniques.
+
+48
+00:03:30.260 --> 00:03:32.920
+One for Classification,
+and one for Clustering.
+
+49
+00:03:34.270 --> 00:03:40.130
+This code segment, shows the six steps to
+build a DecisionTree for classification.
+
+50
+00:03:40.130 --> 00:03:43.138
+The first line imports
+the DecisionTree module,
+
+51
+00:03:43.138 --> 00:03:46.510
+the second line imports MLUtils module,
+
+52
+00:03:48.190 --> 00:03:53.600
+the next line fails the DecisionTree
+to classify the data for two classes.
+
+53
+00:03:53.600 --> 00:03:58.570
+Then, the model is printed out and
+finally the model is saved in a file.
+
+54
+00:04:01.580 --> 00:04:05.490
+Here is another MLlib example,
+this time for clustering.
+
+55
+00:04:05.490 --> 00:04:10.480
+This code segment shows the 5-step
+code to build a k-means clustering.
+
+56
+00:04:12.420 --> 00:04:17.520
+The first line imports the k-means module,
+the second line
+
+57
+00:04:17.520 --> 00:04:22.040
+imports an array module from numpy,
+
+58
+00:04:22.040 --> 00:04:27.048
+the next two lines read in the data and
+parses it using space as the limiter,
+
+59
+00:04:27.048 --> 00:04:31.100
+then the k-means model
+
+60
+00:04:31.100 --> 00:04:36.270
+is built by dividing the parsedData
+into three clusters.
+
+61
+00:04:36.270 --> 00:04:39.923
+Finally, the cluster centers
+are printed out for each.
+
+62
+00:04:43.259 --> 00:04:47.790
+In summary,
+MLlib is Spark's machine learning library.
+
+63
+00:04:49.240 --> 00:04:50.710
+It provides algorithms and
+
+64
+00:04:50.710 --> 00:04:53.880
+techniques that are implemented
+using distributors processing.
+
+65
+00:04:54.970 --> 00:04:57.327
+The main categories of algorithms and
+
+66
+00:04:57.327 --> 00:05:01.968
+techniques available in machine
+learning library are machine learning,
+
+67
+00:05:01.968 --> 00:05:06.324
+statistics and utility functions for
+the machine learning process.
+
+1
+00:00:02.072 --> 00:00:04.356
+Over the next couple of videos,
+
+2
+00:00:04.356 --> 00:00:09.020
+we will introduce you to the basic
+components of the Spark stack.
+
+3
+00:00:10.660 --> 00:00:13.440
+In this lecture, we start with Spark SQL.
+
+4
+00:00:15.000 --> 00:00:20.610
+After this video, you will be able to
+process structured data using Spark's SQL
+
+5
+00:00:20.610 --> 00:00:25.140
+module and explain the numerous
+benefits of Spark SQL.
+
+6
+00:00:28.240 --> 00:00:34.150
+Spark SQL is the component of Spark
+that enables querying structured and
+
+7
+00:00:34.150 --> 00:00:37.510
+unstructured data through
+a common query language.
+
+8
+00:00:38.630 --> 00:00:43.720
+It can connect to many data sources and
+provides APIs to convert
+
+9
+00:00:43.720 --> 00:00:48.430
+the query results to RDDs in Python,
+Scala, and Java programs.
+
+10
+00:00:50.670 --> 00:00:53.991
+Spark SQL gives a mechanism for
+
+11
+00:00:53.991 --> 00:00:58.467
+SQL users to deploy SQL queries on Spark.
+
+12
+00:01:01.047 --> 00:01:05.806
+Spark SQL enables business
+intelligence tools to connect to
+
+13
+00:01:05.806 --> 00:01:10.854
+Spark using standard connection
+protocols like JDBC and ODBC.
+
+14
+00:01:13.379 --> 00:01:18.346
+Spark SQL also provides APIs to
+convert the query data into DataFrames
+
+15
+00:01:18.346 --> 00:01:20.290
+to hold distributed data.
+
+16
+00:01:21.410 --> 00:01:26.757
+DataFrames are organized as named
+columns and basically look like tables.
+
+17
+00:01:30.248 --> 00:01:36.320
+The first step to run any SQL Spark
+is to create a SQLContext.
+
+18
+00:01:38.580 --> 00:01:43.360
+Once you have an SQLContext,
+you want to leverage it
+
+19
+00:01:43.360 --> 00:01:48.200
+to create a DataFrame so you can deploy
+complex operations on the data set.
+
+20
+00:01:49.200 --> 00:01:52.480
+DataFrames can be created
+from existing RDDs,
+
+21
+00:01:52.480 --> 00:01:55.270
+Hive tables or many other data sources.
+
+22
+00:01:57.910 --> 00:02:05.020
+A file can be read and converted into
+a DataFrame using a single command.
+
+23
+00:02:06.610 --> 00:02:14.440
+The show function here will display
+the DataFrame in your Spark show.
+
+24
+00:02:14.440 --> 00:02:18.950
+RDDs can be converted to DataFrames but
+require a little more work.
+
+25
+00:02:19.980 --> 00:02:23.130
+First you will have to
+convert each line into a row.
+
+26
+00:02:24.410 --> 00:02:28.640
+Once your data is in a DataFrame,
+you can perform all sorts of
+
+27
+00:02:28.640 --> 00:02:33.640
+transformation operations on it
+as shown here, including show,
+
+28
+00:02:33.640 --> 00:02:37.590
+printSchema, select, filter and groupBy.
+
+29
+00:02:39.850 --> 00:02:44.910
+To summarize, Spark SQL lets you
+run relational queries on Spark.
+
+30
+00:02:46.500 --> 00:02:51.110
+It also lets you connect to
+a variety of databases, and
+
+31
+00:02:51.110 --> 00:02:54.750
+deploy business intelligence
+tools over Spark.
+
+32
+00:02:54.750 --> 00:02:58.707
+We will go through some of this
+functionality in one of the readings and
+
+33
+00:02:58.707 --> 00:03:00.795
+in the upcoming hands-on session.

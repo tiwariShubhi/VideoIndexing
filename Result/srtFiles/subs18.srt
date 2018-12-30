@@ -1,0 +1,2626 @@
+
+1
+00:00:02.542 --> 00:00:07.110
+The first up in our rapid tour
+of modern systems is Redis.
+
+2
+00:00:08.420 --> 00:00:12.690
+Redis calls itself an in-memory
+data structure store.
+
+3
+00:00:12.690 --> 00:00:18.540
+In simple terms, Redis is not a full blown
+DBMS, in the sense we discussed earlier.
+
+4
+00:00:19.620 --> 00:00:24.490
+It can persist data on disks, and
+does so to save its state, but
+
+5
+00:00:24.490 --> 00:00:29.840
+it's intended use is to optimally
+use memory and memory based methods
+
+6
+00:00:29.840 --> 00:00:33.840
+to make a number of common data
+structures very fast for lots of users.
+
+7
+00:00:35.000 --> 00:00:37.649
+Here is a list of data
+structures that Redis supports.
+
+8
+00:00:41.084 --> 00:00:46.410
+A good way to think about them is
+to think of a data lookup problem.
+
+9
+00:00:46.410 --> 00:00:50.160
+Now, in the simplest case,
+a lookup needs a key value pair
+
+10
+00:00:50.160 --> 00:00:54.650
+where the key is a string and
+the value is also a string.
+
+11
+00:00:54.650 --> 00:00:59.000
+So for a lookup we provide the key and
+get back the value.
+
+12
+00:00:59.000 --> 00:01:00.550
+Simple, right?
+
+13
+00:01:00.550 --> 00:01:01.050
+Let's see.
+
+14
+00:01:02.760 --> 00:01:05.510
+I'm sure you've seen captures like this.
+
+15
+00:01:07.090 --> 00:01:11.770
+These are small images used by websites
+to ensure that the user is a human and
+
+16
+00:01:11.770 --> 00:01:12.370
+not a robot.
+
+17
+00:01:13.470 --> 00:01:17.810
+The images presented to the user,
+who is supposed to write the text he or
+
+18
+00:01:17.810 --> 00:01:20.990
+she sees in the image, into a text box.
+
+19
+00:01:20.990 --> 00:01:23.010
+Upon success, the user is let in.
+
+20
+00:01:24.100 --> 00:01:28.900
+To implement this,
+one obviously needs a key value stored,
+
+21
+00:01:28.900 --> 00:01:31.500
+where the key is the idea of the image.
+
+22
+00:01:31.500 --> 00:01:33.230
+And the value is the desired text.
+
+23
+00:01:34.610 --> 00:01:39.900
+Now what if we wanted to use
+the image itself as the key,
+
+24
+00:01:39.900 --> 00:01:42.940
+instead of an ID number that
+you generate separately?
+
+25
+00:01:44.580 --> 00:01:46.160
+The content of the image,
+
+26
+00:01:46.160 --> 00:01:51.400
+which let's say is a .jpg file,
+can be thought of as a binary string.
+
+27
+00:01:51.400 --> 00:01:52.706
+But can it serve as a key then?
+
+28
+00:01:52.706 --> 00:01:56.050
+According to the Redis specification,
+it can.
+
+29
+00:01:57.360 --> 00:02:00.050
+The Redis string can be binary and
+
+30
+00:02:00.050 --> 00:02:05.770
+can have a size of up to 512 megabytes,
+although its internal limit is higher.
+
+31
+00:02:06.840 --> 00:02:12.169
+So, small images like this can indeed
+be used as binary string keys.
+
+32
+00:02:14.040 --> 00:02:19.100
+In some application scenarios,
+keys may have an internal structure.
+
+33
+00:02:19.100 --> 00:02:23.090
+For example,
+product codes may have product family,
+
+34
+00:02:23.090 --> 00:02:28.040
+manufacturing batch, and the actual
+product ID strung together into one ID.
+
+35
+00:02:29.250 --> 00:02:33.710
+The example shown here is a typical
+Twitter style key to store the response
+
+36
+00:02:33.710 --> 00:02:35.500
+to comment one, two, three, four.
+
+37
+00:02:37.240 --> 00:02:40.980
+How long do we want to
+keep the comment around,
+
+38
+00:02:40.980 --> 00:02:45.240
+this is a standard big data issue
+when it comes to streaming data
+
+39
+00:02:45.240 --> 00:02:48.680
+whose data values have limited
+utility beyond the certain period.
+
+40
+00:02:50.540 --> 00:02:52.000
+One typically would not look for
+
+41
+00:02:52.000 --> 00:02:55.110
+this response possibly three
+months after the conversation.
+
+42
+00:02:56.410 --> 00:03:00.490
+One would certainly not like to keep
+such a value in memory for a long time.
+
+43
+00:03:00.490 --> 00:03:04.250
+Because the memory is being used as
+a cache for rapid access to current data.
+
+44
+00:03:05.510 --> 00:03:11.250
+In fact Redis has the ability
+to delete an expired key and
+
+45
+00:03:11.250 --> 00:03:14.230
+can be made to call a function
+to generate a new key.
+
+46
+00:03:16.210 --> 00:03:19.580
+An interesting side
+benefits to structured keys
+
+47
+00:03:19.580 --> 00:03:22.830
+that it can encode
+a hierarchy to the structure.
+
+48
+00:03:22.830 --> 00:03:23.490
+In the example,
+
+49
+00:03:23.490 --> 00:03:28.449
+we show keys that represent
+increasingly finer subgroups of users.
+
+50
+00:03:30.290 --> 00:03:31.730
+With this structure,
+
+51
+00:03:31.730 --> 00:03:36.433
+a lookup on user.commercial.entertainment
+will also retrieve values
+
+52
+00:03:36.433 --> 00:03:40.390
+from user.commercial.entertainment.movie
+industry.
+
+53
+00:03:43.330 --> 00:03:49.390
+A slightly more complex case occurs
+when the value is not atomic,
+
+54
+00:03:49.390 --> 00:03:54.300
+but a collection object like a list
+which by definition is an ordered set.
+
+55
+00:03:55.720 --> 00:03:58.218
+An example of such a list
+can come from Twitter,
+
+56
+00:03:58.218 --> 00:04:02.760
+that uses Redis list to store timelines.
+
+57
+00:04:02.760 --> 00:04:05.860
+Now borrowed from a Twitter presentation
+about their timeline architecture
+
+58
+00:04:06.920 --> 00:04:10.880
+our timeline service can
+take a specific ID, and
+
+59
+00:04:10.880 --> 00:04:14.550
+it quickly identifies all tweets of
+this user that are in the cache.
+
+60
+00:04:16.010 --> 00:04:19.310
+These tweets are then populated
+by the content of the tweet,
+
+61
+00:04:19.310 --> 00:04:21.460
+then returned as a result.
+
+62
+00:04:21.460 --> 00:04:26.000
+This list can be long, but the insertion
+and delete operations on the list
+
+63
+00:04:26.000 --> 00:04:28.970
+can be performed in constant
+time which is in milliseconds.
+
+64
+00:04:30.220 --> 00:04:35.110
+If a tweet is retweeted,
+the IDs of those tweets are also added
+
+65
+00:04:35.110 --> 00:04:38.820
+to the list of the first tweet, as you can
+see for the three cases in the figure.
+
+66
+00:04:41.099 --> 00:04:45.210
+When the lists are long,
+space saving becomes an important issue.
+
+67
+00:04:46.480 --> 00:04:50.370
+So Redis employs a method called
+Ziplists which essentially
+
+68
+00:04:50.370 --> 00:04:54.700
+compacts the size of the list in
+memory without changing the content.
+
+69
+00:04:54.700 --> 00:04:57.620
+Often producing significant
+reduction in memory used.
+
+70
+00:04:59.150 --> 00:05:01.890
+Of course,
+while Ziplists are very efficient for
+
+71
+00:05:01.890 --> 00:05:06.240
+retrieval, they are a little more complex
+for insertion and deletion operations.
+
+72
+00:05:08.100 --> 00:05:11.100
+Since Redis is an open source system,
+
+73
+00:05:11.100 --> 00:05:15.070
+Twitter made a few innovations
+on the Redis data structures.
+
+74
+00:05:15.070 --> 00:05:20.470
+One of these innovations is that
+they created lists of Ziplists.
+
+75
+00:05:20.470 --> 00:05:24.480
+This gave them the flexibility of
+having constant timing insertions and
+
+76
+00:05:24.480 --> 00:05:28.970
+deletions and at the same time used the
+compressed representation to save space.
+
+77
+00:05:30.880 --> 00:05:35.830
+In 2012, the timeline service has about
+
+78
+00:05:35.830 --> 00:05:41.220
+40 terabytes of main memory, serving
+30 million user queries per second.
+
+79
+00:05:41.220 --> 00:05:44.589
+Running on over 6,000
+machines in one data center.
+
+80
+00:05:45.870 --> 00:05:51.280
+For those interested I would like to point
+you to two wonderful Twitter presentation
+
+81
+00:05:51.280 --> 00:05:55.200
+explaining Twitter's use of Redis
+among other design issue for
+
+82
+00:05:55.200 --> 00:05:56.790
+a realtime data system like Twitter.
+
+83
+00:05:58.740 --> 00:06:01.800
+We also introduce links in
+the supplemental readings for this lesson.
+
+84
+00:06:05.843 --> 00:06:10.949
+Now the value to be looked up by the keys
+can actually be more complicated and
+
+85
+00:06:10.949 --> 00:06:15.260
+can be records containing
+attribute value pairs themselves.
+
+86
+00:06:17.110 --> 00:06:18.939
+Redis values can be hashes
+
+87
+00:06:20.010 --> 00:06:24.970
+which are essentially named containers
+of unique fields and their values.
+
+88
+00:06:26.010 --> 00:06:29.210
+In the example, the key, std:101,
+
+89
+00:06:29.210 --> 00:06:33.960
+is associated with five
+attributed value pairs.
+
+90
+00:06:35.150 --> 00:06:38.330
+The hashed attributes
+are stored very efficiently.
+
+91
+00:06:38.330 --> 00:06:43.570
+And even when the list of attributed
+value pairs in a hash is really long,
+
+92
+00:06:43.570 --> 00:06:45.110
+retrieval is efficient.
+
+93
+00:06:48.250 --> 00:06:50.240
+Horizontal scalability or
+
+94
+00:06:50.240 --> 00:06:54.710
+scale out capabilities refers
+to the ability of a system
+
+95
+00:06:54.710 --> 00:06:59.170
+to achieve scalability when the number
+of machines it operates on is increased.
+
+96
+00:07:00.720 --> 00:07:06.380
+Redis allows data partitioning through
+range partitioning and hash partitioning.
+
+97
+00:07:07.600 --> 00:07:13.110
+Rate partitioning takes a numeric key and
+breaks up the range of keys into bins.
+
+98
+00:07:13.110 --> 00:07:18.610
+In this case, by bins of 10,000
+each of bin is assigned a machine.
+
+99
+00:07:20.730 --> 00:07:24.940
+And ultimately, a partitioning is where
+computing a hashing function on a key.
+
+100
+00:07:26.060 --> 00:07:28.360
+Suppose we have 10 machines.
+
+101
+00:07:28.360 --> 00:07:31.690
+We pick the key and use the hash
+function to get back a number.
+
+102
+00:07:33.050 --> 00:07:37.560
+We represent the number, modular 10,
+and the result, in this case,
+
+103
+00:07:37.560 --> 00:07:40.920
+2, is the machine to which
+the record will be allocated.
+
+104
+00:07:43.979 --> 00:07:48.110
+Replication is accomplished in
+Redis through master-slave mode.
+
+105
+00:07:50.350 --> 00:07:54.110
+The slaves have a copy of the master node.
+
+106
+00:07:54.110 --> 00:07:55.940
+And can serve read queries.
+
+107
+00:07:58.090 --> 00:08:00.850
+Clients write to the master node.
+
+108
+00:08:00.850 --> 00:08:03.280
+And master node replicates to the slaves.
+
+109
+00:08:05.310 --> 00:08:08.090
+Clients read from the slaves to
+scale up the read performance.
+
+110
+00:08:09.190 --> 00:08:11.760
+The replication processes are synchronous.
+
+111
+00:08:11.760 --> 00:08:16.040
+That is that slaves do not get replicated
+data, it locks them with each other.
+
+112
+00:08:17.360 --> 00:08:20.540
+However, the replication
+process does ensure
+
+113
+00:08:20.540 --> 00:08:22.120
+that they're consistent with each other.
+
+1
+00:00:01.310 --> 00:00:04.510
+The next system we'll explore is Vertica.
+
+2
+00:00:04.510 --> 00:00:08.810
+Which is the relational DBMS
+designed to operate on top of HTFS.
+
+3
+00:00:10.450 --> 00:00:13.960
+It belongs to a family of DBMS
+architectures called column stores.
+
+4
+00:00:15.320 --> 00:00:18.410
+Other products in
+the same family are UCDV,
+
+5
+00:00:18.410 --> 00:00:21.540
+Carrot Cell Xvelocity from Microsoft and
+so forth.
+
+6
+00:00:23.070 --> 00:00:25.620
+The primary difference
+between a row store and
+
+7
+00:00:25.620 --> 00:00:28.010
+a column store is shown
+in the diagram here.
+
+8
+00:00:29.160 --> 00:00:32.094
+Logically, this table has five columns.
+
+9
+00:00:32.094 --> 00:00:35.935
+Emp number, department number,
+
+10
+00:00:35.935 --> 00:00:38.810
+hire date, employee last name and
+employee first name.
+
+11
+00:00:40.940 --> 00:00:45.760
+In a row oriented design the database
+internally organizes the record
+
+12
+00:00:45.760 --> 00:00:46.300
+two four by two.
+
+13
+00:00:48.390 --> 00:00:52.030
+In a column store,
+the data is organized column wise.
+
+14
+00:00:53.500 --> 00:00:58.100
+So the nth number column is stored
+separately from the department id
+
+15
+00:00:58.100 --> 00:00:59.280
+column and so forth.
+
+16
+00:01:00.740 --> 00:01:03.730
+Now suppose a query
+needs to find the ID and
+
+17
+00:01:03.730 --> 00:01:09.100
+department ID of all employees who were
+hired after first of January, 2001.
+
+18
+00:01:09.100 --> 00:01:12.990
+The system only needs to look up
+
+19
+00:01:12.990 --> 00:01:16.720
+the hire date column to figure
+out which records qualify.
+
+20
+00:01:16.720 --> 00:01:18.670
+And then pick up the values of the ID,
+
+21
+00:01:18.670 --> 00:01:22.450
+and the department of ID columns for
+the qualifying records.
+
+22
+00:01:22.450 --> 00:01:26.060
+The other columns are not touched.
+
+23
+00:01:26.060 --> 00:01:31.270
+So if a table has 30 to 50 columns, very
+often only a few of them are needed for
+
+24
+00:01:31.270 --> 00:01:31.950
+any single query.
+
+25
+00:01:33.730 --> 00:01:40.440
+So for tables with 500 million rows and
+40 columns a typical query is very fast,
+
+26
+00:01:40.440 --> 00:01:45.400
+and uses much less memory because a full
+record is not used most of the time.
+
+27
+00:01:46.990 --> 00:01:51.780
+My own experience is that with
+an application that needed a database
+
+28
+00:01:51.780 --> 00:01:53.830
+with 150 billion tuples in a table.
+
+29
+00:01:54.870 --> 00:01:58.860
+Accounting operation took a little
+under three minutes to complete.
+
+30
+00:02:00.330 --> 00:02:03.890
+A second advantage of the column store
+comes from the nature of the data.
+
+31
+00:02:05.350 --> 00:02:09.220
+In a column store,
+data in every column is sorted.
+
+32
+00:02:10.400 --> 00:02:13.900
+The figure on the right shows
+three sorted columns of a table
+
+33
+00:02:13.900 --> 00:02:15.110
+with three visible columns.
+
+34
+00:02:16.550 --> 00:02:18.940
+The bottom of the first column shown here
+
+35
+00:02:18.940 --> 00:02:22.670
+has many accurate sixteen
+transactions on the same day.
+
+36
+00:02:24.340 --> 00:02:29.170
+The second column has customer ids which
+can be numerically close to each other.
+
+37
+00:02:29.170 --> 00:02:31.930
+They are all within seventy
+values of the first customer.
+
+38
+00:02:33.430 --> 00:02:38.020
+So in the first case we can just
+say that the value is one, one,
+
+39
+00:02:38.020 --> 00:02:41.730
+2007, and
+the next 16 records have this value.
+
+40
+00:02:42.800 --> 00:02:48.580
+That means we do not have to store
+the next 16 values thus saving space.
+
+41
+00:02:50.770 --> 00:02:54.280
+Now this form of shortened
+representation is called compression.
+
+42
+00:02:55.300 --> 00:03:00.070
+And this specific variety is
+called run-length encoding or RLE.
+
+43
+00:03:01.760 --> 00:03:05.010
+Another form of encoding can
+be seen in the second column.
+
+44
+00:03:07.030 --> 00:03:10.990
+Here the customer ids a long integer,
+but for
+
+45
+00:03:10.990 --> 00:03:14.460
+the records shown there
+are nearby numbers.
+
+46
+00:03:14.460 --> 00:03:18.420
+So, if we pick a value in the column and
+just put the difference between
+
+47
+00:03:18.420 --> 00:03:22.340
+this value and
+other values The difference will be small.
+
+48
+00:03:22.340 --> 00:03:25.380
+It means,
+we'll need fewer bites to represent them.
+
+49
+00:03:27.330 --> 00:03:30.800
+This one of compression is called
+Frame-of-reference encoding.
+
+50
+00:03:32.440 --> 00:03:36.520
+The lesson to remember here is
+that compressed data presentation
+
+51
+00:03:36.520 --> 00:03:41.760
+can significantly reduce the total
+size of a database and if BDMS.
+
+52
+00:03:41.760 --> 00:03:44.970
+Should use all such tricks
+to improve space efficiency.
+
+53
+00:03:46.730 --> 00:03:50.020
+While the space efficiency and
+performance of Vertica is impressive for
+
+54
+00:03:50.020 --> 00:03:54.490
+large data, one has to be careful
+about how to design a system with it.
+
+55
+00:03:55.620 --> 00:03:57.570
+Like Google's Web Table, and
+
+56
+00:03:57.570 --> 00:04:02.844
+Apache Cassandra, Vertica allows
+the declaration of column-groups.
+
+57
+00:04:04.180 --> 00:04:05.830
+These are columns like first name and
+
+58
+00:04:05.830 --> 00:04:08.730
+last name which are very
+often accessed together.
+
+59
+00:04:09.980 --> 00:04:13.040
+In Vertica,
+a column group is like a mini table
+
+60
+00:04:13.040 --> 00:04:15.640
+which is treated like a little
+row storied in the system.
+
+61
+00:04:16.750 --> 00:04:22.070
+But because these groups represent
+activists that are frequently co accessed
+
+62
+00:04:22.070 --> 00:04:24.500
+the grouping actually
+improves performance.
+
+63
+00:04:25.560 --> 00:04:29.660
+So an application developer is
+better off when the nature and
+
+64
+00:04:29.660 --> 00:04:33.150
+the frequency of user queries
+are known to some degree.
+
+65
+00:04:33.150 --> 00:04:37.190
+And this knowledge is applies
+to designing the column groups.
+
+66
+00:04:37.190 --> 00:04:41.200
+An important side effect of column
+structure organization of vertical
+
+67
+00:04:41.200 --> 00:04:44.390
+Is that the writing of data into
+Vertica is a little slower.
+
+68
+00:04:45.590 --> 00:04:50.110
+When rows are added to a table,
+Vertica initially places
+
+69
+00:04:50.110 --> 00:04:53.750
+them in a row-wise data structure and
+
+70
+00:04:53.750 --> 00:04:58.029
+then converts them into a column-wise
+data structure, which is then compressed.
+
+71
+00:04:59.370 --> 00:05:02.920
+This lowness can be perceptible for
+large uploads or updates.
+
+72
+00:05:04.140 --> 00:05:08.050
+Vertica belongs to a new breed of
+database systems that call themselves
+
+73
+00:05:08.050 --> 00:05:09.220
+analytical databases.
+
+74
+00:05:10.620 --> 00:05:14.780
+This means two slightly different things.
+
+75
+00:05:14.780 --> 00:05:18.110
+First, Vertica offers many more
+statistical functions than in
+
+76
+00:05:18.110 --> 00:05:18.950
+classical DBMS.
+
+77
+00:05:20.140 --> 00:05:24.500
+For example one can perform
+operations over a Window
+
+78
+00:05:25.728 --> 00:05:32.150
+to see an example consider a table of
+stock ticks having a time attribute,
+
+79
+00:05:32.150 --> 00:05:35.520
+a stock name and
+a value of the stock called bid here.
+
+80
+00:05:36.570 --> 00:05:41.610
+This shows that data values in
+the table now we would like to compute
+
+81
+00:05:41.610 --> 00:05:45.220
+a moving average of
+the bit every 40 seconds.
+
+82
+00:05:46.510 --> 00:05:48.770
+We show the query in a frame below.
+
+83
+00:05:48.770 --> 00:05:53.450
+Now we aren't going into the details of
+the query just consider the blue part.
+
+84
+00:05:53.450 --> 00:05:57.930
+It says the average,
+which is the AVG function in yellow.
+
+85
+00:05:57.930 --> 00:06:00.760
+It must be computed on
+the last column which is bit.
+
+86
+00:06:01.920 --> 00:06:03.060
+But, this computation
+
+87
+00:06:04.200 --> 00:06:08.270
+must be over the range that is
+computed on the timestamp call.
+
+88
+00:06:09.740 --> 00:06:15.877
+So, the range is defined by a 40
+second row before that current row so,
+
+89
+00:06:15.877 --> 00:06:21.404
+here the computation of the average
+advances for the stock abc.
+
+90
+00:06:21.404 --> 00:06:26.293
+And for each computation,
+the system only considers the rows whose
+
+91
+00:06:26.293 --> 00:06:30.510
+timestamp is within 40 seconds
+before the current row.
+
+92
+00:06:31.840 --> 00:06:35.630
+The table on the right shows
+the result of the query.
+
+93
+00:06:35.630 --> 00:06:38.130
+The average value, 10.12.
+
+94
+00:06:38.130 --> 00:06:41.910
+Is the same as the actual value, because
+there are no other rows within 40 seconds.
+
+95
+00:06:41.910 --> 00:06:45.963
+The next two result rows average
+over the preceding rows,
+
+96
+00:06:45.963 --> 00:06:49.530
+was times R within 40
+seconds of the current row.
+
+97
+00:06:50.650 --> 00:06:51.670
+When we get to the blue row,
+
+98
+00:06:51.670 --> 00:06:58.020
+that we notice that it occurs 1 minute
+16 seconds after the previous row.
+
+99
+00:06:58.020 --> 00:07:00.950
+So we cannot consider the previous
+sort in the computation.
+
+100
+00:07:00.950 --> 00:07:04.660
+Instead, the result is just the value
+of the bid in the current row.
+
+101
+00:07:06.190 --> 00:07:10.180
+The takeaway from this example is
+that analytical computations like
+
+102
+00:07:10.180 --> 00:07:14.260
+this are happening inside the database and
+not in an external application.
+
+103
+00:07:15.880 --> 00:07:19.850
+This brings us to the second feature
+of Vertica as an analytical database.
+
+104
+00:07:21.200 --> 00:07:25.710
+R is a well known free statistics
+package that's used by statisticians,
+
+105
+00:07:25.710 --> 00:07:28.050
+data minors, predictive analytics experts.
+
+106
+00:07:28.050 --> 00:07:33.840
+Today, R can not only
+read data from files,
+
+107
+00:07:33.840 --> 00:07:37.660
+but it can go to an SQL database and
+grab data to perform statistical analysis.
+
+108
+00:07:39.300 --> 00:07:42.160
+Over time, R has evolved and
+
+109
+00:07:42.160 --> 00:07:47.830
+given rights to distributed R which
+is a high performance platform for R.
+
+110
+00:07:49.430 --> 00:07:51.810
+As expected in this distributed setting,
+
+111
+00:07:51.810 --> 00:07:55.050
+the system operates in
+a master slave mode.
+
+112
+00:07:55.050 --> 00:07:59.650
+The master node coordinates computations
+by sending commands to the workers.
+
+113
+00:07:59.650 --> 00:08:02.520
+The worker nodes maintain
+data partitions and
+
+114
+00:08:02.520 --> 00:08:05.470
+apply the computation
+functions to the data.
+
+115
+00:08:05.470 --> 00:08:09.070
+Just getting the data parallelly,
+
+116
+00:08:09.070 --> 00:08:12.310
+the essential data structure
+is a distributed array.
+
+117
+00:08:12.310 --> 00:08:15.266
+That is an array that is
+partitioned as shown here.
+
+118
+00:08:15.266 --> 00:08:18.480
+Now in this diagram
+the partitions are equal, but
+
+119
+00:08:18.480 --> 00:08:20.960
+in practice they may be
+all different sizes.
+
+120
+00:08:20.960 --> 00:08:26.320
+On which, one can compute a function for
+each of these mini-arrays.
+
+121
+00:08:26.320 --> 00:08:30.200
+The bottom diagram, shows a simple
+work flow of constructing and
+
+122
+00:08:30.200 --> 00:08:31.690
+deploying a predictive model.
+
+123
+00:08:32.730 --> 00:08:34.460
+The role of Vertica here,
+
+124
+00:08:34.460 --> 00:08:38.620
+is that it's a data supplier to the worker
+nodes of R, and a model consumer.
+
+125
+00:08:39.880 --> 00:08:43.730
+The data to be analyzed is
+the output of the vertica query,
+
+126
+00:08:43.730 --> 00:08:48.010
+which is transferred in memory through
+a protocol called vertica fast transfer
+
+127
+00:08:48.010 --> 00:08:49.780
+through distributed R as a dArray.
+
+128
+00:08:50.940 --> 00:08:52.120
+When the model is created in R,
+
+129
+00:08:52.120 --> 00:08:56.900
+it should come back as a code that
+goes through vertica as a function.
+
+130
+00:08:58.070 --> 00:09:00.870
+This function can be
+called from inside Vertica
+
+131
+00:09:00.870 --> 00:09:03.310
+as if it was a user defined function.
+
+132
+00:09:04.330 --> 00:09:07.690
+Now in sophisticated applications,
+the features of the data needed for
+
+133
+00:09:07.690 --> 00:09:13.670
+predicted modeling will also be
+computed inside the DBMS possibly
+
+134
+00:09:13.670 --> 00:09:16.389
+using the new analytical operations
+of Vertica that we've just shown.
+
+135
+00:09:17.770 --> 00:09:21.190
+Now this will make future
+computation much faster and
+
+136
+00:09:21.190 --> 00:09:24.930
+improve the efficiency of
+the entire analytics process.
+
+137
+00:09:26.240 --> 00:09:31.920
+Going forward, we believe that most DBMS's
+will want to play in the analytics field,
+
+138
+00:09:31.920 --> 00:09:33.290
+will support similar functions.
+
+1
+00:00:02.390 --> 00:00:06.010
+Most of you have heard of
+MongoDB as a dominant store for
+
+2
+00:00:06.010 --> 00:00:07.770
+JSON style semi-structured data.
+
+3
+00:00:09.070 --> 00:00:11.200
+MongoDB is very popular and
+
+4
+00:00:11.200 --> 00:00:13.860
+there are a number of excellent
+tutorials on it on the web.
+
+5
+00:00:15.460 --> 00:00:20.290
+In this module we would like to discuss
+a relatively new big data management
+
+6
+00:00:20.290 --> 00:00:25.910
+system for semistructured data that's
+currently being incubated by Apache.
+
+7
+00:00:25.910 --> 00:00:27.040
+It's called AsterixDB.
+
+8
+00:00:28.260 --> 00:00:32.500
+Originally, AsterixDB was conceived by
+the University of California Irvine.
+
+9
+00:00:33.910 --> 00:00:36.800
+Since it is a full fledged DBMS,
+
+10
+00:00:36.800 --> 00:00:42.310
+it provides ACID guarantees to
+understand the basic design of AsterixDB,
+
+11
+00:00:43.330 --> 00:00:48.140
+let's consider this incomplete JSON
+snippet taken from an actual tweet.
+
+12
+00:00:50.120 --> 00:00:51.900
+We have seen the structure of JSON before.
+
+13
+00:00:53.000 --> 00:00:59.090
+Here we point out that entities and
+user, the two parts
+
+14
+00:00:59.090 --> 00:01:03.910
+in blue are nested, that means embedded,
+within the structure of the tweet.
+
+15
+00:01:05.640 --> 00:01:10.540
+If we represent a part of the schema of
+this abbreviated structure in AsterixDB,
+
+16
+00:01:12.010 --> 00:01:13.270
+it will look like this.
+
+17
+00:01:14.890 --> 00:01:17.950
+Here a dataverse is like a name space for
+data.
+
+18
+00:01:19.610 --> 00:01:22.860
+Data is declared in terms of data types.
+
+19
+00:01:22.860 --> 00:01:28.030
+The top type, which looks like
+a standard data with stable declaration,
+
+20
+00:01:28.030 --> 00:01:32.030
+represents the user portion of the JSON
+object that we highlighted before.
+
+21
+00:01:33.130 --> 00:01:35.520
+The type below represents the message.
+
+22
+00:01:36.750 --> 00:01:39.820
+Now, instead of nesting it like JSON.
+
+23
+00:01:39.820 --> 00:01:44.520
+The user attribute highlighted in
+blue is declared to have the type
+
+24
+00:01:44.520 --> 00:01:49.240
+TwitterUserType, thus it captures
+the hierarchical structure of JSON.
+
+25
+00:01:51.450 --> 00:01:55.560
+We should also notice that
+the first type is declared as open.
+
+26
+00:01:57.160 --> 00:02:02.100
+It means that the actual data can have
+more attributes than specified here.
+
+27
+00:02:03.640 --> 00:02:08.900
+In contrast, the TweetMessage
+type is declared as closed,
+
+28
+00:02:08.900 --> 00:02:13.130
+meaning that the data instance must have
+the same attributes as in the schema.
+
+29
+00:02:15.020 --> 00:02:19.890
+AsterixDB can handle spatial data as given
+by the point data types shown in green.
+
+30
+00:02:21.380 --> 00:02:27.120
+The question mark at the end of the point
+type says that this attribute is optional.
+
+31
+00:02:27.120 --> 00:02:29.960
+That means all instances need not have it.
+
+32
+00:02:31.780 --> 00:02:37.810
+Finally, the create dataset actually
+asks the system to create a dataset
+
+33
+00:02:37.810 --> 00:02:43.010
+called TweetMessages, whose type is
+the just declared quick message type.
+
+34
+00:02:44.730 --> 00:02:50.060
+AstrerixDB which runs on HDFS provides
+several options for credit support.
+
+35
+00:02:53.350 --> 00:02:58.440
+First it has its own query language
+called the Asterix query language
+
+36
+00:02:58.440 --> 00:03:01.450
+which resembles the XML
+credit language query.
+
+37
+00:03:03.000 --> 00:03:05.340
+The details of this query language
+are not important right now.
+
+38
+00:03:06.720 --> 00:03:11.150
+We are illustrating the structure of
+a query just to show what it looks like.
+
+39
+00:03:12.330 --> 00:03:15.040
+This particular query asks for
+
+40
+00:03:15.040 --> 00:03:20.020
+all user objects from the dataset
+TwitterUsers in descending order of their
+
+41
+00:03:20.020 --> 00:03:25.010
+follower count and in alphabetical
+order of the user's preferred language.
+
+42
+00:03:26.740 --> 00:03:30.650
+What is more interesting and distinctive
+is that AsterixDB has a creative
+
+43
+00:03:30.650 --> 00:03:36.409
+processing engine that can process
+queries in multiple languages.
+
+44
+00:03:37.750 --> 00:03:41.680
+For its supported language
+they've developed a way to
+
+45
+00:03:41.680 --> 00:03:46.550
+transfer the query into a set of low
+level operations like select and
+
+46
+00:03:46.550 --> 00:03:49.895
+join which their query
+exchange can support.
+
+47
+00:03:49.895 --> 00:03:54.520
+Further, they've determined how
+a record described in one of these
+
+48
+00:03:54.520 --> 00:03:58.280
+languages can be transformed
+into an Asterix.
+
+49
+00:03:58.280 --> 00:04:02.449
+In this manner, the support hive queries,
+
+50
+00:04:02.449 --> 00:04:06.410
+which is expressed in like this.
+
+51
+00:04:06.410 --> 00:04:11.630
+Xquery, Hadoop map reduce,
+as wall as a new language
+
+52
+00:04:11.630 --> 00:04:15.930
+called SQL++ which extends SQL for JSON.
+
+53
+00:04:19.107 --> 00:04:20.781
+Like a typical DB BDms,
+
+54
+00:04:20.781 --> 00:04:25.660
+AsterixDB is designed to operate
+on a cluster of machines.
+
+55
+00:04:25.660 --> 00:04:31.395
+The basic idea, not surprisingly,
+is to use partition data parallellism.
+
+56
+00:04:31.395 --> 00:04:35.415
+Each data set is divided into
+instances of various types
+
+57
+00:04:35.415 --> 00:04:39.685
+which can be decomposed to different
+machines by either range partitioning or
+
+58
+00:04:39.685 --> 00:04:41.565
+hash partitioning like
+we discussed earlier.
+
+59
+00:04:43.572 --> 00:04:47.292
+A runtime distributed execution
+engine called Hyracks is used for
+
+60
+00:04:47.292 --> 00:04:51.172
+partitioned parallel
+execution of query plans.
+
+61
+00:04:51.172 --> 00:04:54.762
+For example, let's assume we have
+two relations, customers and orders,
+
+62
+00:04:54.762 --> 00:04:55.522
+as you can see here.
+
+63
+00:04:57.402 --> 00:05:00.249
+Our query is find the number of orders for
+
+64
+00:05:00.249 --> 00:05:03.946
+every market segment that
+the customers belong to.
+
+65
+00:05:05.526 --> 00:05:10.936
+Now this query need a join operation
+between the two relations,
+
+66
+00:05:10.936 --> 00:05:16.260
+using the O_CUSTKEY as a foreign
+key of customer into orders.
+
+67
+00:05:17.450 --> 00:05:21.090
+It also needs a grouping operation,
+which for
+
+68
+00:05:21.090 --> 00:05:25.330
+each market segment will pull together all
+the orders which will then be counted.
+
+69
+00:05:26.530 --> 00:05:29.960
+You don't have to understand the details
+of this diagram at this point.
+
+70
+00:05:29.960 --> 00:05:33.580
+We just want to point out that
+the different parts of the query
+
+71
+00:05:33.580 --> 00:05:38.180
+that are being marked,
+the customer filed here has two partitions
+
+72
+00:05:38.180 --> 00:05:41.760
+that reside on two nodes,
+NC one and NC two respectively.
+
+73
+00:05:43.300 --> 00:05:47.200
+The orders file also has two partitions.
+
+74
+00:05:47.200 --> 00:05:49.787
+But each partition is dually replicated.
+
+75
+00:05:51.567 --> 00:05:58.660
+One can be accessed either of nodes NC3 or
+NC2 and the other on NC1 and NC5.
+
+76
+00:06:01.540 --> 00:06:06.970
+Hyracks will also break up
+the query into a number of jobs and
+
+77
+00:06:06.970 --> 00:06:10.740
+then fill it out which tasks can
+be performed in parallel and
+
+78
+00:06:10.740 --> 00:06:13.020
+which ones must be
+executed stage by stage.
+
+79
+00:06:14.220 --> 00:06:17.650
+This whole thing will be managed
+by the cluster controller.
+
+80
+00:06:19.080 --> 00:06:22.930
+The cluster controller is also
+responsible for replanning and
+
+81
+00:06:22.930 --> 00:06:27.050
+reexecuting of a job
+if there is a failure.
+
+82
+00:06:27.050 --> 00:06:32.300
+AsteriskDB also has the provision
+
+83
+00:06:32.300 --> 00:06:35.990
+to accept real time data from external
+data sources at multiple rates.
+
+84
+00:06:37.610 --> 00:06:40.160
+One way is from files in a directory path.
+
+85
+00:06:41.400 --> 00:06:43.040
+Consider the example of tweets.
+
+86
+00:06:44.040 --> 00:06:46.480
+As you have seen with the hands-on demo,
+
+87
+00:06:46.480 --> 00:06:52.350
+usually people acquire tweets by accessing
+data through an api that twitter provides.
+
+88
+00:06:52.350 --> 00:06:55.590
+Very typically a certain volume of tweets,
+lets say for
+
+89
+00:06:55.590 --> 00:07:00.010
+every 5 minutes, is accumulated into
+a .json file in a specific directory.
+
+90
+00:07:00.010 --> 00:07:02.861
+The next 5 minutes,
+in another .json file, and so forth.
+
+91
+00:07:04.891 --> 00:07:07.205
+The way to get this
+data into asterisks DB,
+
+92
+00:07:07.205 --> 00:07:10.240
+is to first create an empty
+data set called Tweets here.
+
+93
+00:07:11.490 --> 00:07:13.420
+The next task is to create a feed.
+
+94
+00:07:14.470 --> 00:07:16.830
+That is an externally resource.
+
+95
+00:07:16.830 --> 00:07:21.450
+One has to specify that it's coming from
+the local file system called local fs here
+
+96
+00:07:22.640 --> 00:07:25.390
+and the location of the directory,
+the format and
+
+97
+00:07:25.390 --> 00:07:27.850
+the data type it's going to copy it.
+
+98
+00:07:27.850 --> 00:07:31.100
+Next, the feed is connected
+to the data set and
+
+99
+00:07:31.100 --> 00:07:33.770
+the system starts reading unread
+files from the directory.
+
+100
+00:07:35.960 --> 00:07:41.170
+Another way for AsteriskDB to access
+external data is directly from an API,
+
+101
+00:07:41.170 --> 00:07:43.020
+such as the Twitter API.
+
+102
+00:07:43.020 --> 00:07:47.750
+To do this,
+one would create a dataset as before.
+
+103
+00:07:47.750 --> 00:07:51.460
+But this time the data feed is
+not on the local file system.
+
+104
+00:07:52.580 --> 00:07:57.960
+Instead it uses the push Twitter
+method which invokes the Twitter
+
+105
+00:07:57.960 --> 00:08:01.830
+client with the four authentication
+parameters required by the API.
+
+106
+00:08:03.360 --> 00:08:06.700
+Once the feed is defined it is
+connected to the data set as before.
+
+1
+00:00:02.986 --> 00:00:05.186
+Now we move to another Apache product for
+
+2
+00:00:05.186 --> 00:00:07.720
+large scale text data
+searching called Solr.
+
+3
+00:00:09.100 --> 00:00:10.430
+Systems like Solr, and
+
+4
+00:00:10.430 --> 00:00:16.300
+its underlying text indexing engine, are
+typically designed for search problems.
+
+5
+00:00:16.300 --> 00:00:18.629
+So they would typically be
+part of a search engine.
+
+6
+00:00:19.860 --> 00:00:21.410
+But before we talk about Solr or
+
+7
+00:00:21.410 --> 00:00:26.770
+large scale text, we need to first
+appreciate some fundamental challenges
+
+8
+00:00:26.770 --> 00:00:29.590
+when it comes to storing,
+indexing, and matching text data.
+
+9
+00:00:31.690 --> 00:00:36.030
+The basic challenge comes from
+the numerous ways in which
+
+10
+00:00:36.030 --> 00:00:40.660
+a text string may vary, making it
+hard to define what a good match is.
+
+11
+00:00:41.830 --> 00:00:43.560
+Let us show some of these challenges.
+
+12
+00:00:44.750 --> 00:00:49.810
+Remember in each case,
+we're asking whether the strings shown on
+
+13
+00:00:49.810 --> 00:00:52.560
+either side of the double
+tilde sign should match.
+
+14
+00:00:55.100 --> 00:00:58.541
+The first issue is about spelling
+variations and capitalization.
+
+15
+00:01:02.049 --> 00:01:05.600
+The second issue relates
+structured strings.
+
+16
+00:01:05.600 --> 00:01:10.080
+Where different parts of a string
+represent different kind of information.
+
+17
+00:01:10.080 --> 00:01:16.420
+We have seen this before for file paths,
+URLs, and like in this case, product IDs.
+
+18
+00:01:16.420 --> 00:01:21.081
+The problem is that the searcher may
+not always know the structure or
+
+19
+00:01:21.081 --> 00:01:24.775
+my job on misposition,
+the internal punctuations.
+
+20
+00:01:28.014 --> 00:01:32.674
+The next problem is very common with
+proper nouns which are represented in
+
+21
+00:01:32.674 --> 00:01:38.248
+various ways, including dropping a part of
+the string, picking up only the initials.
+
+22
+00:01:38.248 --> 00:01:43.497
+But consider the last variation, should
+BH Obama really match the full name?
+
+23
+00:01:46.797 --> 00:01:50.120
+The next example is about
+frequently used synonyms.
+
+24
+00:01:51.210 --> 00:01:55.512
+If the document has one of the synonyms,
+while the query uses another,
+
+25
+00:01:55.512 --> 00:01:56.742
+should they match?
+
+26
+00:01:59.679 --> 00:02:03.400
+Example 5 illustrates
+a very common problem.
+
+27
+00:02:03.400 --> 00:02:05.710
+People use abbreviations all the time.
+
+28
+00:02:06.970 --> 00:02:09.160
+If we look at text and social media and
+
+29
+00:02:09.160 --> 00:02:12.930
+instant messaging, we see a much
+wider variety of abbreviations.
+
+30
+00:02:14.270 --> 00:02:17.270
+How well should they met with
+the real correct version of the term?
+
+31
+00:02:19.580 --> 00:02:22.510
+Now problem six is a special
+case of problem five.
+
+32
+00:02:24.350 --> 00:02:26.690
+Many long nouns are shortened
+
+33
+00:02:26.690 --> 00:02:30.440
+because we take the first initial
+letter of each significant word.
+
+34
+00:02:31.570 --> 00:02:37.580
+We say significant because we
+drop words like of as shown here.
+
+35
+00:02:37.580 --> 00:02:38.870
+This is called initialism.
+
+36
+00:02:40.390 --> 00:02:44.490
+Just so you know, when an initialism
+can be said like a real word,
+
+37
+00:02:44.490 --> 00:02:45.480
+it's called an acronym.
+
+38
+00:02:46.480 --> 00:02:51.620
+Thus IBM is an initialization,
+but NATO is an acronym.
+
+39
+00:02:53.160 --> 00:02:58.250
+Now problem seven and
+problem eight show two
+
+40
+00:02:58.250 --> 00:03:02.690
+different situation where we first must
+decide what to do with the period sign.
+
+41
+00:03:04.100 --> 00:03:09.322
+In the first case, we should not
+find a match because students and
+
+42
+00:03:09.322 --> 00:03:13.250
+American are in two different
+sentences punctuated by a period sign.
+
+43
+00:03:14.720 --> 00:03:18.330
+But in the second case we should
+find a match because the period
+
+44
+00:03:18.330 --> 00:03:20.310
+does not designate a sentence boundary.
+
+45
+00:03:23.055 --> 00:03:28.510
+Lucene, the engine on which Solr is
+built is effectively not a database,
+
+46
+00:03:28.510 --> 00:03:30.030
+but a modern inverted index.
+
+47
+00:03:31.040 --> 00:03:32.020
+What's an inverted index?
+
+48
+00:03:33.620 --> 00:03:37.590
+Let's first define a vocabulary
+as a collection of terms.
+
+49
+00:03:37.590 --> 00:03:42.090
+Where a term may be a single word or
+it can be multiple words.
+
+50
+00:03:42.090 --> 00:03:45.030
+It can a single term or
+it can be a collection of synonyms.
+
+51
+00:03:46.510 --> 00:03:48.730
+But how would a search
+engine know what a term is?
+
+52
+00:03:49.795 --> 00:03:52.558
+We'll revisit this question
+in a couple of slides.
+
+53
+00:03:52.558 --> 00:03:57.390
+For now, let's just say that if we
+have a corpus of documents, we can
+
+54
+00:03:57.390 --> 00:04:01.690
+extract most of the terms and construct
+a vocabulary for that collection.
+
+55
+00:04:03.500 --> 00:04:08.080
+We can then define occurrence, as a list
+
+56
+00:04:08.080 --> 00:04:12.270
+containing all the information necessary
+for each term in the vocabulary.
+
+57
+00:04:13.780 --> 00:04:17.790
+It would include information like,
+which documents have the term?
+
+58
+00:04:17.790 --> 00:04:21.050
+The positions in the document
+where the term occurs.
+
+59
+00:04:21.050 --> 00:04:25.404
+We can then go on to compute the count of
+the term in the document and the corpus.
+
+60
+00:04:26.540 --> 00:04:30.760
+Referring back to a previous module
+in this course, we can also compute
+
+61
+00:04:30.760 --> 00:04:34.370
+the term frequency and inverse
+document frequency for the collection.
+
+62
+00:04:36.470 --> 00:04:40.250
+An inverted index is
+essentially an index which for
+
+63
+00:04:40.250 --> 00:04:45.850
+every term stores at least the ID of
+the document where the term occurs.
+
+64
+00:04:45.850 --> 00:04:48.440
+Practically, other computed numbers or
+
+65
+00:04:48.440 --> 00:04:52.060
+properties associated with the terms
+will also be included in the index.
+
+66
+00:04:54.570 --> 00:04:58.820
+Solr is an open source
+enterprise search platform.
+
+67
+00:04:58.820 --> 00:05:04.190
+The heart of Solr is its search
+functionality built for full text search.
+
+68
+00:05:04.190 --> 00:05:07.110
+However, Solr provides much
+more than tech search.
+
+69
+00:05:08.620 --> 00:05:14.780
+It can take any structured document,
+even CSV files
+
+70
+00:05:14.780 --> 00:05:19.490
+which can be broken up into fields,
+and can index each field separately.
+
+71
+00:05:20.850 --> 00:05:24.640
+Full text indexes where text columns
+are supplemented by indexes for
+
+72
+00:05:24.640 --> 00:05:29.735
+other types of data, including numeric
+data, dates, geographic coordinates, and
+
+73
+00:05:29.735 --> 00:05:33.390
+fields where domains are limited
+to an emergent set of values.
+
+74
+00:05:35.190 --> 00:05:40.230
+Solr provides other facilities
+like faceted search and
+
+75
+00:05:40.230 --> 00:05:43.440
+highlighting of terms that match a query.
+
+76
+00:05:43.440 --> 00:05:46.970
+Now if you're not familiar
+with the term faceted search,
+
+77
+00:05:46.970 --> 00:05:50.550
+let's look at the screenshot
+from amazon.com.
+
+78
+00:05:50.550 --> 00:05:52.960
+I performed a search on the string,
+Dell laptop.
+
+79
+00:05:54.260 --> 00:05:56.680
+Consider the highlighted
+part of the image.
+
+80
+00:05:58.400 --> 00:06:02.230
+Each laptop record carries a lot of
+attributes like the display size,
+
+81
+00:06:02.230 --> 00:06:04.499
+the processor speed,
+the amount of memory, and so forth.
+
+82
+00:06:05.680 --> 00:06:10.480
+These attributes can be put into builds
+like processor type has Intel i5, i7, etc.
+
+83
+00:06:11.950 --> 00:06:17.098
+Faceted search essentially extracts
+the individual values of these fields and
+
+84
+00:06:17.098 --> 00:06:22.188
+displays them back to the user, usually
+with a count of the number of records.
+
+85
+00:06:22.188 --> 00:06:26.466
+We see this in the upper
+part of the marked portion,
+
+86
+00:06:26.466 --> 00:06:31.452
+which says there are 5619
+laptops per 411 tablets.
+
+87
+00:06:31.452 --> 00:06:32.600
+These are called facets.
+
+88
+00:06:33.750 --> 00:06:37.810
+If a user clicks on a facet,
+documents with only those values,
+
+89
+00:06:37.810 --> 00:06:40.250
+that's just the tablets,
+will be presented back to the user.
+
+90
+00:06:42.380 --> 00:06:45.860
+Now let's get back to the question
+of what a term is, and
+
+91
+00:06:45.860 --> 00:06:47.550
+how a Solr system should know it.
+
+92
+00:06:49.870 --> 00:06:55.730
+Solr allows the system designer to
+specify how to parse a document,
+
+93
+00:06:55.730 --> 00:07:01.770
+by instructing how to tokenize
+a document and how to filter it.
+
+94
+00:07:01.770 --> 00:07:06.720
+Tokenization is the process of
+breaking down the characters read.
+
+95
+00:07:06.720 --> 00:07:10.540
+For example, one can break
+the stream at white spaces, and
+
+96
+00:07:10.540 --> 00:07:13.170
+get all the words as tokens.
+
+97
+00:07:13.170 --> 00:07:17.803
+Then, it can filter out the punctuation
+like the period, the apostrophe, and so
+
+98
+00:07:17.803 --> 00:07:19.631
+on, just to get the pure words.
+
+99
+00:07:21.984 --> 00:07:24.410
+The code snippet on the right
+essentially achieves this.
+
+100
+00:07:25.510 --> 00:07:29.960
+It uses a standard tokenizer that gets
+the words with immediate punctuation.
+
+101
+00:07:31.100 --> 00:07:34.730
+The first filter removes the punctuations.
+
+102
+00:07:34.730 --> 00:07:38.040
+The second filter turns
+everything into lowercase.
+
+103
+00:07:38.040 --> 00:07:41.960
+And the third filter uses
+a synonym file to ensure that
+
+104
+00:07:41.960 --> 00:07:46.140
+all the synonyms get the same
+token after ignoring the case.
+
+105
+00:07:46.140 --> 00:07:50.828
+The last filter removes common
+English words like a and the.
+
+106
+00:07:52.401 --> 00:07:56.330
+While a similar process would need to
+happen when we get the query string.
+
+107
+00:07:58.080 --> 00:08:01.245
+It will also need to go through a
+tokenization and token filtering process.
+
+108
+00:08:03.933 --> 00:08:07.918
+In the query analyzer example, there
+are six filters within the tokenizer.
+
+109
+00:08:09.060 --> 00:08:12.130
+We use a pattern tokenizer which
+will remove the white spaces and
+
+110
+00:08:12.130 --> 00:08:15.020
+periods and semi-colon.
+
+111
+00:08:15.020 --> 00:08:19.710
+The common grams filter creates
+tokens out of pairs of terms, and
+
+112
+00:08:19.710 --> 00:08:23.470
+in doing so, makes sure that words
+in the stopword file are used.
+
+113
+00:08:23.470 --> 00:08:24.750
+So if we have the string,
+
+114
+00:08:24.750 --> 00:08:29.560
+the cat, the term the should
+not be ignored in this filter.
+
+115
+00:08:31.240 --> 00:08:34.520
+Now, the filters here
+are executed in order.
+
+116
+00:08:36.180 --> 00:08:39.720
+After the common grams
+filter is already done,
+
+117
+00:08:39.720 --> 00:08:42.500
+the next filter removes all
+the stopwords in the file.
+
+118
+00:08:44.320 --> 00:08:49.190
+The fifth filter makes sure that if
+the queries coming from a web form,
+
+119
+00:08:49.190 --> 00:08:51.240
+all the HTML characters are stripped off.
+
+120
+00:08:52.490 --> 00:08:57.360
+Finally, the remaining words are stemmed,
+so that runs and
+
+121
+00:08:57.360 --> 00:09:01.440
+running in the query would match
+the word run in the document.
+
+122
+00:09:04.170 --> 00:09:08.935
+We'll end this section with a discussion
+on Solr queries, that is searches.
+
+123
+00:09:12.370 --> 00:09:16.450
+We present a CSV file with nine
+records and seven attributes.
+
+124
+00:09:18.280 --> 00:09:23.900
+We issue queries against
+the system by posing a web query.
+
+125
+00:09:23.900 --> 00:09:27.850
+In these examples, we show some of
+the queries one can post to the system.
+
+126
+00:09:29.060 --> 00:09:32.187
+This will be covered in more detail
+during the hands-on session.
+
+127
+00:09:33.220 --> 00:09:39.200
+Just notice that the q equal to is a query
+and the fl is what you want to back.
+
+1
+00:00:01.230 --> 00:00:06.440
+Listens on activity who will be performing
+queries assessing the Postgres database.
+
+2
+00:00:06.440 --> 00:00:10.650
+First, will open a terminal window and
+start the Postgres shell.
+
+3
+00:00:10.650 --> 00:00:14.430
+Next, we will look at table and
+column definitions in database.
+
+4
+00:00:15.670 --> 00:00:19.000
+Who’s in query the content
+of the buy-clicks table?
+
+5
+00:00:19.000 --> 00:00:24.170
+And see how to do this query, but filter
+specific rows and columns from the table.
+
+6
+00:00:24.170 --> 00:00:25.950
+Next, we will perform average and
+
+7
+00:00:25.950 --> 00:00:28.780
+some aggregation operations
+on a specific column.
+
+8
+00:00:30.040 --> 00:00:30.590
+And finally,
+
+9
+00:00:30.590 --> 00:00:33.960
+we will see how to combine two tables
+by joining them on a single column.
+
+10
+00:00:35.900 --> 00:00:37.130
+Let's begin.
+
+11
+00:00:37.130 --> 00:00:40.300
+First, click on the terminal
+icon at the top of the toolbar
+
+12
+00:00:40.300 --> 00:00:41.390
+to open a Terminal window.
+
+13
+00:00:43.930 --> 00:00:48.347
+Next, let's start the Postgres
+shell by running psql.
+
+14
+00:00:51.821 --> 00:00:56.410
+The Postgres shell allows us to
+enter queries and run commands for
+
+15
+00:00:56.410 --> 00:00:58.180
+the postgres database.
+
+16
+00:00:58.180 --> 00:01:02.028
+We can see what tables are in
+the database by running \d.
+
+17
+00:01:06.453 --> 00:01:11.350
+This says that there are three
+tables in the database,
+
+18
+00:01:11.350 --> 00:01:14.980
+adclicks, buyclicks and gameclicks.
+
+19
+00:01:14.980 --> 00:01:19.689
+We could use \d table name to see
+the definition of one of these tables.
+
+20
+00:01:20.830 --> 00:01:26.786
+Let's look at the definition of buyclicks,
+
+21
+00:01:26.786 --> 00:01:30.084
+we enter \d buyclicks.
+
+22
+00:01:32.395 --> 00:01:35.090
+This shows that there's seven
+columns in the database.
+
+23
+00:01:36.400 --> 00:01:41.490
+These are the column names and here's
+the data type for each of the columns.
+
+24
+00:01:44.240 --> 00:01:46.630
+Now let's look at the contents
+of the buyclicks table.
+
+25
+00:01:48.310 --> 00:01:56.718
+We can query the contents by running
+the command select * from buyclicks;.
+
+26
+00:01:56.718 --> 00:02:00.050
+The select says that
+we want to do a query.
+
+27
+00:02:00.050 --> 00:02:03.730
+The star means we want to
+retrieve all the columns and
+
+28
+00:02:03.730 --> 00:02:07.450
+from buyclicks says,
+which table to perform the query from.
+
+29
+00:02:08.660 --> 00:02:14.226
+And finally, all commands in Postgres
+shell need to end with a semicolon.
+
+30
+00:02:14.226 --> 00:02:19.299
+When we run this command we see
+the contents of the buyclicks table.
+
+31
+00:02:21.120 --> 00:02:24.760
+Column header is at the top and
+the contents are below.
+
+32
+00:02:26.530 --> 00:02:31.609
+Again hit Space to scroll through
+the contents, and hit Q when we're done.
+
+33
+00:02:34.341 --> 00:02:37.250
+Now, let's view the contents
+of only two of the columns.
+
+34
+00:02:38.370 --> 00:02:42.889
+Let's query only the price and
+the user id from the buyclicks table.
+
+35
+00:02:42.889 --> 00:02:49.180
+To do this we run select price,
+userid from buyclicks.
+
+36
+00:02:52.020 --> 00:02:55.245
+This command says,
+we want to query only the price and
+
+37
+00:02:55.245 --> 00:02:57.747
+userid columns from the buyclicks table
+
+38
+00:03:00.568 --> 00:03:05.166
+When we run this,
+We only get those two columns.
+
+39
+00:03:07.416 --> 00:03:10.892
+We can also perform queries that
+just select certain rows and
+
+40
+00:03:10.892 --> 00:03:12.400
+meet a certain criteria.
+
+41
+00:03:13.570 --> 00:03:14.630
+For example,
+
+42
+00:03:14.630 --> 00:03:19.744
+let's make a query that only shows
+the rows containing the price over $10.
+
+43
+00:03:20.770 --> 00:03:25.538
+You can do this by running select price,
+
+44
+00:03:25.538 --> 00:03:30.736
+userid from buyclicks where price > 10.
+
+45
+00:03:30.736 --> 00:03:35.159
+This query says, we only want to see
+the price and userid columns from
+
+46
+00:03:35.159 --> 00:03:40.762
+the buyclicks table where the value in the
+price column has a value greater than 10.
+
+47
+00:03:43.008 --> 00:03:49.437
+We run this, we see that we always
+have price values greater than 10.
+
+48
+00:03:51.588 --> 00:03:55.650
+The SQL language has a number of
+aggregation operations built into it.
+
+49
+00:03:57.250 --> 00:04:04.277
+For example,
+we can take the average price by running,
+
+50
+00:04:04.277 --> 00:04:09.219
+select avg(price) from buyclicks.
+
+51
+00:04:09.219 --> 00:04:17.925
+This command will show the average price
+from all the data in the buyclicks table.
+
+52
+00:04:17.925 --> 00:04:20.920
+Another aggregate operation is sum.
+
+53
+00:04:20.920 --> 00:04:25.531
+We can see the total price by running,
+
+54
+00:04:25.531 --> 00:04:30.297
+select sum(price) from buyclicks.
+
+55
+00:04:34.474 --> 00:04:39.547
+We can also combine two tables
+by joining on a common column.
+
+56
+00:04:39.547 --> 00:04:44.050
+If you recall we have three
+tables in our database adclicks,
+
+57
+00:04:44.050 --> 00:04:46.180
+buyclicks and gameclicks.
+
+58
+00:04:47.870 --> 00:04:55.594
+We look at the description the definition
+of adclicks buy running \d adclicks.
+
+59
+00:04:59.061 --> 00:05:04.810
+You can see that it also
+has a column called userid.
+
+60
+00:05:04.810 --> 00:05:09.030
+Let's combine buyclicks and
+adclicks based on this common column.
+
+61
+00:05:10.180 --> 00:05:16.252
+You can do this by running, select adid,
+
+62
+00:05:16.252 --> 00:05:23.019
+buyid, adclicks.userid from adclicks join
+
+63
+00:05:23.019 --> 00:05:31.011
+buyclicks on adclicks.userid
+= buyclicks.userid
+
+64
+00:05:33.704 --> 00:05:38.278
+This query says,
+we want to just see the adid, buyid and
+
+65
+00:05:38.278 --> 00:05:43.252
+userid columns, and
+we want to combine the adclicks table,
+
+66
+00:05:43.252 --> 00:05:47.729
+the buyclicks table, and
+we will be combining them on
+
+67
+00:05:47.729 --> 00:05:52.524
+the userid column and
+it's common in both those tables.
+
+68
+00:05:55.767 --> 00:05:58.809
+When we run it,
+you see just the three columns.

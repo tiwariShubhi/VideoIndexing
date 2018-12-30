@@ -1,0 +1,540 @@
+WEBVTT
+
+1
+00:00:02.450 --> 00:00:06.680
+Now if the table of beers was large and
+had millions of entries,
+
+2
+00:00:07.820 --> 00:00:11.480
+the table would possibly need
+to be split over many machines.
+
+3
+00:00:12.600 --> 00:00:16.720
+Another way of saying that is that
+the table will be partitioned
+
+4
+00:00:16.720 --> 00:00:18.960
+across a number of machines.
+
+5
+00:00:18.960 --> 00:00:21.210
+Since a query simply
+performs a selection and
+
+6
+00:00:21.210 --> 00:00:24.330
+projection here,
+it can be evaluated in parallel.
+
+7
+00:00:25.860 --> 00:00:28.860
+Remember that name is
+the primary key of the table.
+
+8
+00:00:30.070 --> 00:00:32.790
+One standard way of partitioning the data
+
+9
+00:00:32.790 --> 00:00:35.260
+is called a range partitioning
+by the primary key.
+
+10
+00:00:37.210 --> 00:00:41.760
+This simply means that the rows
+of the table are put in groups
+
+11
+00:00:41.760 --> 00:00:45.440
+depending on the alphabetical
+order of the name value.
+
+12
+00:00:46.570 --> 00:00:50.950
+So beers with names starting with E and
+B here are placed in Machine 1.
+
+13
+00:00:50.950 --> 00:00:53.910
+Those starting with C and
+D are in Machine 2.
+
+14
+00:00:53.910 --> 00:00:58.337
+And if there are too many rows for
+entries where the name starts with H,
+
+15
+00:00:58.337 --> 00:01:00.902
+maybe H is split into Machines 5 and 6.
+
+16
+00:01:00.902 --> 00:01:02.260
+This is shown in the sketch here.
+
+17
+00:01:03.640 --> 00:01:08.620
+Next, we will show how queries
+are performed over partition tables.
+
+18
+00:01:08.620 --> 00:01:13.230
+But before we do that, you should know
+that all database management companies,
+
+19
+00:01:13.230 --> 00:01:18.090
+like IBM, Chair Data, Microsoft, and
+others, have a solution like this for
+
+20
+00:01:18.090 --> 00:01:21.670
+large volumes of data,
+where data partitioning is used.
+
+21
+00:01:21.670 --> 00:01:26.030
+Newer systems, like Spark and SQL,
+are naturally distributed, and
+
+22
+00:01:26.030 --> 00:01:27.419
+therefore, offer data partitioning.
+
+23
+00:01:30.470 --> 00:01:33.620
+So, we show the same partition
+tables as we saw before.
+
+24
+00:01:33.620 --> 00:01:35.180
+Now we'll ask two queries.
+
+25
+00:01:36.550 --> 00:01:41.340
+The first query asks for
+all tuples as records from the beers table
+
+26
+00:01:42.500 --> 00:01:45.290
+where the name of the beer starts with Am.
+
+27
+00:01:46.970 --> 00:01:49.400
+And the second query is
+exactly what we asked before.
+
+28
+00:01:52.544 --> 00:01:55.560
+The first query in
+the SQL looks like this.
+
+29
+00:01:56.730 --> 00:02:01.434
+We said SELECT* FROM Beers to mean
+all attributes from table beers.
+
+30
+00:02:01.434 --> 00:02:05.790
+The WHERE clause shows the syntax for
+a partial match query.
+
+31
+00:02:06.940 --> 00:02:10.850
+In this query,
+there are two new syntax elements.
+
+32
+00:02:10.850 --> 00:02:12.630
+The first is a predicate called like.
+
+33
+00:02:14.480 --> 00:02:18.080
+When we use like,
+we're telling the query engine
+
+34
+00:02:18.080 --> 00:02:21.870
+that we only have partial information
+about the string we want to match.
+
+35
+00:02:22.870 --> 00:02:25.870
+This partly specified string
+is called a string pattern.
+
+36
+00:02:27.290 --> 00:02:30.320
+That means, there is this part
+of the string we know and
+
+37
+00:02:30.320 --> 00:02:31.460
+a part that we do not know.
+
+38
+00:02:33.050 --> 00:02:39.300
+In this case, we know that our design
+string starts with Am, so we'd write Am,
+
+39
+00:02:39.300 --> 00:02:44.250
+and then we put % to refer to the part
+of the string that we do not know.
+
+40
+00:02:44.250 --> 00:02:48.410
+Putting them together, we get Am%.
+
+41
+00:02:48.410 --> 00:02:52.671
+If we wanted to find, say,
+Am somewhere in the middle of the string,
+
+42
+00:02:52.671 --> 00:02:55.027
+we would write the pattern as %Am%.
+
+43
+00:02:55.027 --> 00:03:01.680
+The second query is not new.
+
+44
+00:03:01.680 --> 00:03:03.580
+We saw it in the last slide.
+
+45
+00:03:03.580 --> 00:03:08.490
+However, as we'll see next, evaluating
+the second query will be a little more
+
+46
+00:03:08.490 --> 00:03:12.930
+tricky in a partition database than
+that we usually see for big data.
+
+47
+00:03:17.390 --> 00:03:20.780
+Let's talk about the first query
+in this data partition setting.
+
+48
+00:03:20.780 --> 00:03:27.160
+The question to ask is, do we need to
+touch all partitions to answer the query?
+
+49
+00:03:27.160 --> 00:03:33.720
+Of course not, we know that the name is
+a primary key for the table of beers.
+
+50
+00:03:33.720 --> 00:03:37.710
+We also know that the system did arrange
+partitioning on the name attribute.
+
+51
+00:03:38.710 --> 00:03:43.260
+This means that the evaluation
+process should only access Machine 1
+
+52
+00:03:43.260 --> 00:03:47.370
+because no other machine will have
+records for names starting with A.
+
+53
+00:03:48.670 --> 00:03:50.600
+Now this is exactly what we, as humans,
+
+54
+00:03:50.600 --> 00:03:55.780
+do when we look up an entry in
+a multivolume encyclopedia.
+
+55
+00:03:55.780 --> 00:03:59.300
+We look for the starting words, then
+figure out which specific volume would
+
+56
+00:03:59.300 --> 00:04:01.410
+have that entry,
+then pick up just that volume.
+
+57
+00:04:02.830 --> 00:04:06.330
+Thus, so long as the system
+knows the partitioning strategy,
+
+58
+00:04:07.380 --> 00:04:09.310
+it can make its job much more efficient.
+
+59
+00:04:10.760 --> 00:04:14.920
+When a system processes
+thousands of queries per second,
+
+60
+00:04:14.920 --> 00:04:17.430
+this kind of efficiency actually matters.
+
+61
+00:04:18.970 --> 00:04:22.785
+Now raised partitioning is
+only one of many partitioning
+
+62
+00:04:22.785 --> 00:04:25.650
+schemes used in a database system, okay.
+
+63
+00:04:26.790 --> 00:04:29.760
+Let's try to answer the second query
+in the same partition setting.
+
+64
+00:04:30.820 --> 00:04:34.650
+Now the query condition is on
+the second attribute, manf.
+
+65
+00:04:35.690 --> 00:04:37.900
+Now in one sense, it's a simpler query.
+
+66
+00:04:37.900 --> 00:04:39.392
+There is no light pattern here, and
+
+67
+00:04:39.392 --> 00:04:42.789
+we know exactly the string that we are
+looking for, namely the string Heineken.
+
+68
+00:04:43.930 --> 00:04:47.310
+However, this time,
+we really cannot get away
+
+69
+00:04:47.310 --> 00:04:51.520
+by using the partitioning information
+because the partitioning activity is
+
+70
+00:04:51.520 --> 00:04:55.130
+different from the attribute on which
+the query condition is applied.
+
+71
+00:04:56.300 --> 00:05:00.023
+So this query will need
+to go to all partitions.
+
+72
+00:05:00.023 --> 00:05:05.200
+Technically speaking,
+the query needs to be broadcast
+
+73
+00:05:05.200 --> 00:05:08.870
+from the primary machine to all machines,
+as shown here.
+
+74
+00:05:11.500 --> 00:05:15.320
+Next, this broadcast query
+will be independently, and
+
+75
+00:05:15.320 --> 00:05:19.470
+in parallel,
+execute the query on the local machine.
+
+76
+00:05:20.840 --> 00:05:24.420
+Then, these results need to be
+brought back into the primary machine.
+
+77
+00:05:25.690 --> 00:05:28.760
+And then,
+they need to be unioned together.
+
+78
+00:05:28.760 --> 00:05:31.880
+And only then, the results can be
+formed and returned to the client.
+
+79
+00:05:33.130 --> 00:05:35.490
+Now, this might seem
+like a lot of extra work.
+
+80
+00:05:36.510 --> 00:05:41.440
+However, remember, the shaded part of
+the query is executed in parallel,
+
+81
+00:05:41.440 --> 00:05:43.830
+which is the essence of
+dealing with large data.
+
+82
+00:05:46.350 --> 00:05:51.770
+Now, at this point, you might be thinking,
+wait a minute, what if I had 100 machines,
+
+83
+00:05:52.940 --> 00:05:55.800
+and the desired data
+is only in 20 of them?
+
+84
+00:05:57.340 --> 00:06:01.870
+Should we needlessly go through all 100
+machines, find nothing in 80 of them, and
+
+85
+00:06:01.870 --> 00:06:04.080
+return 0 results from those machines?
+
+86
+00:06:04.080 --> 00:06:05.760
+Then why do the extra work?
+
+87
+00:06:05.760 --> 00:06:06.790
+Can it not be avoided?
+
+88
+00:06:08.560 --> 00:06:12.280
+Well, to do this, it would need
+one more piece in the solution,
+
+89
+00:06:12.280 --> 00:06:13.700
+it's called an index structure.
+
+90
+00:06:14.990 --> 00:06:16.290
+Very simply,
+
+91
+00:06:16.290 --> 00:06:20.930
+an index can be thought of as a reverse
+table, where given the value in a column,
+
+92
+00:06:20.930 --> 00:06:25.220
+you would get back the records where the
+value appears as shown in the figure here.
+
+93
+00:06:26.810 --> 00:06:31.147
+Using an index speeds up query
+processing significantly.
+
+94
+00:06:31.147 --> 00:06:34.940
+With indexes, we can solve this
+problem in many different ways.
+
+95
+00:06:37.110 --> 00:06:41.930
+The top table shows the case where
+each machine has its own index for
+
+96
+00:06:41.930 --> 00:06:43.400
+the manf column.
+
+97
+00:06:43.400 --> 00:06:47.980
+This is called a local index because
+the index is in every machine
+
+98
+00:06:47.980 --> 00:06:51.050
+that holds the data for
+that table on that machine.
+
+99
+00:06:53.070 --> 00:06:55.670
+In this case,
+looking up Heineken in the index,
+
+100
+00:06:55.670 --> 00:06:57.950
+we would know which records
+would have the data.
+
+101
+00:06:59.500 --> 00:07:04.750
+Since the index is local, the main query
+will indeed go to all machines, but
+
+102
+00:07:04.750 --> 00:07:08.660
+the lookup will be really instant, and the
+empty results would return very quickly.
+
+103
+00:07:11.010 --> 00:07:13.410
+In the second case,
+we adopted a different solution.
+
+104
+00:07:14.610 --> 00:07:20.500
+Here, there is an index on the main
+machine, all on a separate index server.
+
+105
+00:07:20.500 --> 00:07:23.720
+Now when we place a data
+record in a machine,
+
+106
+00:07:23.720 --> 00:07:27.959
+this index keeps an account of the machine
+that contains the record with that value.
+
+107
+00:07:29.240 --> 00:07:30.720
+Look at the second table to the right.
+
+108
+00:07:32.510 --> 00:07:37.398
+Given the value of Heineken,
+we know that it is only in three machines,
+
+109
+00:07:37.398 --> 00:07:41.960
+and therefore,
+we can avoid going to the other machines.
+
+110
+00:07:41.960 --> 00:07:45.840
+Clearly, we can always use
+both indexing schemes.
+
+111
+00:07:45.840 --> 00:07:49.736
+This will use more space,
+but queries will be faster.
+
+112
+00:07:49.736 --> 00:07:54.717
+Now this gives you some of the choices
+you may need to make with big data,
+
+113
+00:07:54.717 --> 00:07:59.220
+whether you use a parallel DBMS or
+a distributed data solution.

@@ -1,0 +1,1436 @@
+1
+00:00:00,005 --> 00:00:06,278
+step 2 - b : pre - processing data
+
+2
+00:00:20,283 --> 00:00:24,904
+the raw data that you get directly from your sources are never in the format that
+
+3
+00:00:24,904 --> 00:00:26,875
+you need to perform analysis on 
+
+4
+00:00:27,995 --> 00:00:31,885
+there are two main goals in the data pre - processing step 
+
+5
+00:00:31,885 --> 00:00:36,455
+the first is to clean the data to address data quality issues and
+
+6
+00:00:36,455 --> 00:00:41,320
+the second is to transform the raw data to make it suitable for analysis 
+
+7
+00:00:43,850 --> 00:00:47,050
+a very important part of data preparation
+
+8
+00:00:47,050 --> 00:00:49,606
+is to address quality of issues in your data 
+
+9
+00:00:49,606 --> 00:00:54,000
+real - world data is messy 
+
+10
+00:00:54,000 --> 00:01:00,160
+there are many examples of quality issues with data from real applications including
+
+11
+00:01:00,160 --> 00:01:05,990
+inconsistent data like a customer with two different addresses duplicate customer
+
+12
+00:01:05,990 --> 00:01:11,460
+records for example customers address recorded at two different sales locations 
+
+13
+00:01:12,490 --> 00:01:14,600
+and the two recordings do not agree 
+
+14
+00:01:16,190 --> 00:01:19,160
+missing customer agent demographics or studies 
+
+15
+00:01:21,010 --> 00:01:25,750
+missing values like missing a customer age in the demographic studies 
+
+16
+00:01:27,000 --> 00:01:32,160
+invalid data like an invalid zip code for example a six digit code 
+
+17
+00:01:33,350 --> 00:01:39,060
+and outliers like a sense of failure causing values to be much higher or
+
+18
+00:01:39,060 --> 00:01:41,480
+lower than expected for a period of time 
+
+19
+00:01:43,340 --> 00:01:45,860
+since we get the data downstream
+
+20
+00:01:45,860 --> 00:01:48,960
+we usually have little control over how the data is collected 
+
+21
+00:01:50,390 --> 00:01:55,120
+preventing data quality problems as the data is being collected is not
+
+22
+00:01:55,120 --> 00:01:56,070
+often an option 
+
+23
+00:01:57,740 --> 00:01:59,950
+so we have the data that we get and
+
+24
+00:01:59,950 --> 00:02:03,770
+we have to address quality issues by detecting and correcting them 
+
+25
+00:02:05,710 --> 00:02:09,170
+here are some approaches we can take to address this quality issues 
+
+26
+00:02:11,780 --> 00:02:14,630
+we can remove data records with missing values 
+
+27
+00:02:16,330 --> 00:02:19,290
+we can merge duplicate records 
+
+28
+00:02:19,290 --> 00:02:23,430
+this will require a way to determine how to resolve conflicting values 
+
+29
+00:02:24,780 --> 00:02:29,320
+perhaps it makes sense to retain the newer value whenever there a conflict 
+
+30
+00:02:31,030 --> 00:02:34,500
+for invalid values the best estimate for
+
+31
+00:02:34,500 --> 00:02:38,330
+a reasonable value can be used as a replacement 
+
+32
+00:02:38,330 --> 00:02:42,800
+for example for a missing age value for an employee 
+
+33
+00:02:42,800 --> 00:02:47,320
+a reasonable value can be estimated based on the employee length of employment 
+
+34
+00:02:49,820 --> 00:02:54,340
+outliers can also be removed if they are not important to the task 
+
+35
+00:02:56,590 --> 00:03:00,370
+in order to address data quality issues effectively 
+
+36
+00:03:00,370 --> 00:03:04,590
+knowledge about the application such as how the data was collected 
+
+37
+00:03:04,590 --> 00:03:09,880
+the user population and the intended uses of the application is important 
+
+38
+00:03:11,680 --> 00:03:15,280
+this domain knowledge is essential to making informed
+
+39
+00:03:15,280 --> 00:03:19,070
+decisions on how to handle incomplete or incorrect data 
+
+40
+00:03:22,740 --> 00:03:25,480
+the second part of preparing data
+
+41
+00:03:25,480 --> 00:03:29,299
+is to manipulate the clean data into the format needed for analysis 
+
+42
+00:03:30,500 --> 00:03:32,910
+the step is known by many names 
+
+43
+00:03:34,940 --> 00:03:39,894
+data manipulation data preprocessing data wrangling 
+
+44
+00:03:39,894 --> 00:03:43,419
+and even data munging some operations for
+
+45
+00:03:43,419 --> 00:03:49,420
+this type of operation i mean data munging wrangling preprocessing 
+
+46
+00:03:49,420 --> 00:03:54,373
+include scaling transformation feature selection 
+
+47
+00:03:54,373 --> 00:03:58,778
+dimensionality reduction and data manipulation 
+
+48
+00:04:01,628 --> 00:04:08,840
+scaling involves changing the range of values to be between a specified range 
+
+49
+00:04:08,840 --> 00:04:10,970
+such as from zero to one 
+
+50
+00:04:12,220 --> 00:04:16,460
+this is done to avoid having certain features that large values from
+
+51
+00:04:16,460 --> 00:04:18,570
+dominating the results 
+
+52
+00:04:18,570 --> 00:04:22,990
+for example in analyzing data with height and weight 
+
+53
+00:04:22,990 --> 00:04:27,350
+to magnitude of weight values is much greater than of the height values 
+
+54
+00:04:29,220 --> 00:04:32,880
+so scaling all values to be between zero and
+
+55
+00:04:32,880 --> 00:04:37,670
+one will equalize contributions from both height and weight features 
+
+56
+00:04:40,900 --> 00:04:46,000
+various transformations can be performed on the data to reduce noise and
+
+57
+00:04:46,000 --> 00:04:46,720
+variability 
+
+58
+00:04:48,380 --> 00:04:50,970
+one such transformation is aggregation 
+
+59
+00:04:52,430 --> 00:04:57,260
+aggregate data generally results in data with less variability 
+
+60
+00:04:57,260 --> 00:04:58,890
+which may help with your analysis 
+
+61
+00:05:00,190 --> 00:05:05,720
+for example daily sales figures may have many serious changes 
+
+62
+00:05:06,730 --> 00:05:11,880
+aggregating values to weekly or monthly sales figures will result in similar data 
+
+63
+00:05:14,720 --> 00:05:19,340
+other filtering techniques can also be used to remove variability in the data 
+
+64
+00:05:19,340 --> 00:05:23,530
+of course this comes at the cost of less detailed data 
+
+65
+00:05:23,530 --> 00:05:27,760
+so these factors must be weighed for the specific application 
+
+66
+00:05:30,570 --> 00:05:36,400
+future selection can involve removing redundant or irrelevant features 
+
+67
+00:05:36,400 --> 00:05:40,300
+combining features and creating new features 
+
+68
+00:05:41,460 --> 00:05:44,070
+during the exploring data step 
+
+69
+00:05:44,070 --> 00:05:47,860
+you might have discovered that two features are correlated 
+
+70
+00:05:49,030 --> 00:05:52,350
+in that case one of these features can be removed
+
+71
+00:05:52,350 --> 00:05:55,090
+without negatively affecting the analysis results 
+
+72
+00:05:56,170 --> 00:05:59,870
+for example the purchase price of a product and
+
+73
+00:05:59,870 --> 00:06:03,360
+the amount of sales tax paid are likely to be correlated 
+
+74
+00:06:04,800 --> 00:06:08,550
+eliminating the sales tax amount then will be beneficial 
+
+75
+00:06:10,860 --> 00:06:12,810
+removing redundant or
+
+76
+00:06:12,810 --> 00:06:17,010
+irrelevant features will make the subsequent analysis much simpler 
+
+77
+00:06:19,320 --> 00:06:25,220
+in other cases you may want to combine features or create new ones 
+
+78
+00:06:25,220 --> 00:06:29,540
+for example adding the applicant education level
+
+79
+00:06:29,540 --> 00:06:32,820
+as a feature to a loan approval application would make sense 
+
+80
+00:06:34,940 --> 00:06:39,790
+there are also algorithms to automatically determine the most relevant features 
+
+81
+00:06:39,790 --> 00:06:42,130
+based on various mathematical properties 
+
+82
+00:06:45,440 --> 00:06:50,200
+dimensionality reduction is useful when the data set has a large number of
+
+83
+00:06:50,200 --> 00:06:50,750
+dimensions 
+
+84
+00:06:52,020 --> 00:06:55,830
+it involves finding a smaller subset of dimensions that
+
+85
+00:06:55,830 --> 00:06:58,350
+captures most of the variation in the data 
+
+86
+00:07:00,030 --> 00:07:03,600
+this reduces the dimensions of the data
+
+87
+00:07:03,600 --> 00:07:08,400
+while eliminating irrelevant features and makes analysis simpler 
+
+88
+00:07:10,130 --> 00:07:12,089
+a technique commonly used for
+
+89
+00:07:12,089 --> 00:07:16,878
+dimensional reduction is called principle component analysis or pca 
+
+90
+00:07:20,528 --> 00:07:26,120
+raw data often has to be manipulated to be in the correct format for analysis 
+
+91
+00:07:27,140 --> 00:07:32,890
+for example from samples recording daily changes in stock prices 
+
+92
+00:07:32,890 --> 00:07:35,520
+we may want the capture price changes for
+
+93
+00:07:35,520 --> 00:07:38,990
+a particular market segments like real estate or health care 
+
+94
+00:07:40,230 --> 00:07:45,150
+this would require determining which stocks belong to which market segment 
+
+95
+00:07:45,150 --> 00:07:49,540
+grouping them together and perhaps computing the mean range 
+
+96
+00:07:49,540 --> 00:07:51,530
+standard deviation for each group 
+
+97
+00:07:54,120 --> 00:07:54,760
+in summary 
+
+98
+00:07:55,910 --> 00:08:00,470
+data preparation is a very important part of the data science process 
+
+99
+00:08:00,470 --> 00:08:05,530
+in fact this is where you will spend most of your time on any data science effort 
+
+100
+00:08:06,710 --> 00:08:11,680
+it can be a tedious process but it is a crucial step 
+
+101
+00:08:11,680 --> 00:08:15,200
+always remember garbage in garbage out 
+
+102
+00:08:15,200 --> 00:08:16,987
+if you do not spend the time and
+
+103
+00:08:16,987 --> 00:08:21,250
+effort to create good data for the analysis you will not get good results
+
+104
+00:08:21,250 --> 00:08:25,399
+no matter how sophisticated the analysis technique you are using is 
+
+1
+00:08:25,005 --> 00:08:28,004
+step 3 : analyzing data 
+
+2
+00:08:37,608 --> 00:08:40,650
+now that you have your data nicely prepared 
+
+3
+00:08:40,650 --> 00:08:43,140
+the next step is to analyze the data 
+
+4
+00:08:44,350 --> 00:08:48,620
+data analysis involves building a model from your data 
+
+5
+00:08:48,620 --> 00:08:50,350
+which is called input data 
+
+6
+00:08:51,620 --> 00:08:57,370
+the input data is used by the analysis technique to build a model 
+
+7
+00:08:59,010 --> 00:09:03,340
+what your model generates is the output data 
+
+8
+00:09:03,340 --> 00:09:06,140
+there are different types of problems and
+
+9
+00:09:06,140 --> 00:09:08,890
+so there are different types of analysis techniques 
+
+10
+00:09:10,370 --> 00:09:15,424
+the main categories of analysis techniques are classification regression 
+
+11
+00:09:15,424 --> 00:09:21,330
+clustering association analysis and graph analysis 
+
+12
+00:09:21,330 --> 00:09:23,520
+we will describe each one 
+
+13
+00:09:23,520 --> 00:09:28,650
+in classification the goal is to predict the category of the input data 
+
+14
+00:09:29,740 --> 00:09:35,102
+an example of this is predicting the weather as being sunny 
+
+15
+00:09:35,102 --> 00:09:38,850
+rainy windy or cloudy in this case 
+
+16
+00:09:38,850 --> 00:09:44,820
+another example is to classify a tumor as either benign or malignant 
+
+17
+00:09:46,170 --> 00:09:52,270
+in this case the classification is referred to as binary classification 
+
+18
+00:09:52,270 --> 00:09:54,830
+since there are only two categories 
+
+19
+00:09:54,830 --> 00:09:57,660
+but you can have many categories as well 
+
+20
+00:09:57,660 --> 00:10:02,530
+as the weather prediction problem shown here having four categories 
+
+21
+00:10:02,530 --> 00:10:06,780
+another example is to identify handwritten digits as
+
+22
+00:10:06,780 --> 00:10:10,860
+being in one of the ten categories from zero to nine 
+
+23
+00:10:13,160 --> 00:10:18,310
+when your model has to predict a numeric value instead of a category 
+
+24
+00:10:18,310 --> 00:10:21,080
+then the task becomes a regression problem 
+
+25
+00:10:22,380 --> 00:10:26,210
+an example of regression is to predict the price of a stock 
+
+26
+00:10:27,410 --> 00:10:31,250
+the stock price is a numeric value not a category 
+
+27
+00:10:31,250 --> 00:10:34,560
+so this is a regression task instead of a classification task 
+
+28
+00:10:36,300 --> 00:10:40,020
+other examples of regression are estimating the weekly sales of a new
+
+29
+00:10:40,020 --> 00:10:44,740
+product and predicting the score on a test 
+
+30
+00:10:44,740 --> 00:10:50,910
+in clustering the goal is to organize similar items into groups 
+
+31
+00:10:50,910 --> 00:10:56,390
+an example is grouping a company customer base into distinct segments for
+
+32
+00:10:56,390 --> 00:11:01,360
+more effective targeted marketing like seniors adults and
+
+33
+00:11:01,360 --> 00:11:03,420
+teenagers as we see here 
+
+34
+00:11:03,420 --> 00:11:08,050
+another such example is identifying areas of similar topography 
+
+35
+00:11:08,050 --> 00:11:12,420
+like mountains deserts plains for land use application 
+
+36
+00:11:12,420 --> 00:11:17,300
+yet another example is determining different groups of weather patterns 
+
+37
+00:11:17,300 --> 00:11:20,150
+like rainy cold or snowy 
+
+38
+00:11:20,150 --> 00:11:23,740
+the goal in association analysis is to come up with a set
+
+39
+00:11:23,740 --> 00:11:28,330
+of rules to capture associations within items or events 
+
+40
+00:11:28,330 --> 00:11:32,935
+the rules are used to determine when items or events occur together 
+
+41
+00:11:32,935 --> 00:11:37,300
+a common application of association analysis is known as market
+
+42
+00:11:37,300 --> 00:11:42,710
+basket analysis which is used to understand customer purchasing behavior 
+
+43
+00:11:42,710 --> 00:11:47,660
+for example association analysis can reveal that banking customers
+
+44
+00:11:47,660 --> 00:11:52,040
+who have certificate of deposit accounts surety cds also
+
+45
+00:11:52,040 --> 00:11:56,790
+tend to be interested in other investment vehicles such as money market accounts 
+
+46
+00:11:56,790 --> 00:12:00,000
+this information can be used for cross - selling 
+
+47
+00:12:00,000 --> 00:12:04,140
+if you advertise money market accounts to your customers with cds 
+
+48
+00:12:04,140 --> 00:12:07,100
+they are likely to open such an account 
+
+49
+00:12:07,100 --> 00:12:12,150
+according to data mining folklore a supermarket chain used association
+
+50
+00:12:12,150 --> 00:12:16,990
+analysis to discover a connection between two seemingly unrelated products 
+
+51
+00:12:16,990 --> 00:12:21,940
+they discovered that many customers who go to the supermarket late on sunday night
+
+52
+00:12:21,940 --> 00:12:27,330
+to buy diapers also tend to buy beer who are likely to be fathers 
+
+53
+00:12:27,330 --> 00:12:30,590
+this information was then used to place beer and
+
+54
+00:12:30,590 --> 00:12:35,720
+diapers close together and they saw a jump in sales of both items 
+
+55
+00:12:35,720 --> 00:12:38,760
+this is the famous diaper beer connection 
+
+56
+00:12:38,760 --> 00:12:43,090
+when your data can be transformed into a graph representation with nodes and
+
+57
+00:12:43,090 --> 00:12:47,330
+links then you want to use graph analytics to analyze your data 
+
+58
+00:12:47,330 --> 00:12:51,220
+this kind of data comes about when you have a lot of entities and
+
+59
+00:12:51,220 --> 00:12:55,150
+connections between those entities like social networks 
+
+60
+00:12:55,150 --> 00:13:00,111
+some examples where graph analytics can be useful are exploring the spread of
+
+61
+00:13:00,111 --> 00:13:04,780
+a disease or epidemic by analyzing hospitals and doctors records 
+
+62
+00:13:04,780 --> 00:13:09,849
+identification of security threats by monitoring social media 
+
+63
+00:13:09,849 --> 00:13:11,483
+email and text data 
+
+64
+00:13:11,483 --> 00:13:16,015
+and optimization of mobile communications network traffic 
+
+65
+00:13:16,015 --> 00:13:21,110
+and optimization of mobile telecommunications network traffic 
+
+66
+00:13:21,110 --> 00:13:24,690
+to ensure call quality and reduce dropped calls 
+
+67
+00:13:24,690 --> 00:13:28,850
+modeling starts with selecting one of the techniques we listed
+
+68
+00:13:28,850 --> 00:13:33,680
+as the appropriate analysis technique depending on the type of problem you have 
+
+69
+00:13:33,680 --> 00:13:37,690
+then you construct the model using the data you have prepared 
+
+70
+00:13:37,690 --> 00:13:42,210
+to validate the model you apply it to new data samples 
+
+71
+00:13:42,210 --> 00:13:44,960
+this is to evaluate how well the model
+
+72
+00:13:44,960 --> 00:13:47,540
+does on data that was used to construct it 
+
+73
+00:13:47,540 --> 00:13:51,870
+the common practice is to divide the prepared data into a set of data for
+
+74
+00:13:51,870 --> 00:13:55,170
+constructing the model and reserving some of the data for
+
+75
+00:13:55,170 --> 00:13:58,330
+evaluating the model after it has been constructed 
+
+76
+00:13:58,330 --> 00:14:02,740
+you can also use new data prepared the same way as with the data that was used to
+
+77
+00:14:02,740 --> 00:14:04,060
+construct model 
+
+78
+00:14:04,060 --> 00:14:08,950
+evaluating the model depends on the type of analysis techniques you used 
+
+79
+00:14:08,950 --> 00:14:12,595
+let briefly look at how to evaluate each technique 
+
+80
+00:14:12,595 --> 00:14:17,595
+for classification and regression you will have the correct output for
+
+81
+00:14:17,595 --> 00:14:19,655
+each sample in your input data 
+
+82
+00:14:19,655 --> 00:14:21,945
+comparing the correct output and
+
+83
+00:14:21,945 --> 00:14:26,880
+the output predicted by the model provides a way to evaluate the model 
+
+84
+00:14:26,880 --> 00:14:30,150
+for clustering the groups resulting from clustering
+
+85
+00:14:30,150 --> 00:14:33,850
+should be examined to see if they make sense for your application 
+
+86
+00:14:33,850 --> 00:14:38,250
+for example do the customer segments reflect your customer base 
+
+87
+00:14:38,250 --> 00:14:42,310
+are they helpful for use in your targeted marketing campaigns 
+
+88
+00:14:42,310 --> 00:14:44,170
+for association analysis and
+
+89
+00:14:44,170 --> 00:14:49,940
+graph analysis some investigation will be needed to see if the results are correct 
+
+90
+00:14:49,940 --> 00:14:52,920
+for example network traffic delays
+
+91
+00:14:52,920 --> 00:14:58,220
+need to be investigated to see what your model predicts is actually happening 
+
+92
+00:14:58,220 --> 00:15:01,830
+and whether the sources of the delays are where they are predicted
+
+93
+00:15:01,830 --> 00:15:03,050
+to be in the real system 
+
+94
+00:15:04,160 --> 00:15:09,450
+after you have evaluated your model to get a sense of its performance on your data 
+
+95
+00:15:09,450 --> 00:15:12,510
+you will be able to determine the next steps 
+
+96
+00:15:12,510 --> 00:15:16,000
+some questions to consider are should the analysis be
+
+97
+00:15:16,000 --> 00:15:20,340
+performed with more data in order to get a better model performance 
+
+98
+00:15:20,340 --> 00:15:22,760
+would using different data types help 
+
+99
+00:15:22,760 --> 00:15:24,990
+for example in your clustering results 
+
+100
+00:15:24,990 --> 00:15:29,070
+is it difficult to distinguish customers from distinct regions 
+
+101
+00:15:29,070 --> 00:15:32,050
+would adding zip code to your input data help
+
+102
+00:15:32,050 --> 00:15:35,150
+to generate finer grained customer segments 
+
+103
+00:15:35,150 --> 00:15:39,060
+do the analysis results suggest a more detailed look at
+
+104
+00:15:39,060 --> 00:15:40,900
+some aspect of the problem 
+
+105
+00:15:40,900 --> 00:15:44,690
+for example predicting sunny weather gives very good results 
+
+106
+00:15:44,690 --> 00:15:47,390
+but rainy weather predictions are just so - so 
+
+107
+00:15:47,390 --> 00:15:52,840
+this means that you should take a closer look at your examples for rainy weather 
+
+108
+00:15:52,840 --> 00:15:56,520
+perhaps you just need more samples of rainy weather or
+
+109
+00:15:56,520 --> 00:15:59,845
+perhaps there are some anomalies in those samples 
+
+110
+00:15:59,845 --> 00:16:05,380
+or maybe there are some missing data that needs to be included in order
+
+111
+00:16:05,380 --> 00:16:07,440
+to completely capture rainy weather 
+
+112
+00:16:07,440 --> 00:16:12,037
+the ideal situation would be that your model platforms very well with respect to
+
+113
+00:16:12,037 --> 00:16:14,620
+the success criteria that were determined
+
+114
+00:16:14,620 --> 00:16:18,380
+when you defined the problem at the beginning of the project 
+
+115
+00:16:18,380 --> 00:16:21,920
+in that case you are ready to move on to communicating and
+
+116
+00:16:21,920 --> 00:16:25,870
+acting on the results that you obtained from your analysis 
+
+117
+00:16:25,870 --> 00:16:30,670
+as a summary data analysis involves selecting the appropriate technique for
+
+118
+00:16:30,670 --> 00:16:34,940
+your problem building the model then evaluating the results 
+
+119
+00:16:36,150 --> 00:16:38,516
+as there are different types of problems 
+
+120
+00:16:38,516 --> 00:16:41,678
+there are also different types of analysis techniques 
+
+1
+00:16:43,925 --> 00:16:46,646
+step four reporting insights 
+
+2
+00:16:56,628 --> 00:17:01,498
+the fourth step in our data science process is reporting the insights gained
+
+3
+00:17:01,498 --> 00:17:02,800
+from our analysis 
+
+4
+00:17:04,660 --> 00:17:08,840
+this is a very important step to communicate your insights and
+
+5
+00:17:08,840 --> 00:17:11,320
+make a case for what actions should follow 
+
+6
+00:17:13,040 --> 00:17:18,380
+it can change shape based on your audience and should not be taken lightly 
+
+7
+00:17:19,510 --> 00:17:20,760
+so how do you get started 
+
+8
+00:17:24,150 --> 00:17:29,040
+the first thing to do is to look at your analysis results and
+
+9
+00:17:29,040 --> 00:17:34,720
+decide what to present or report as the biggest value or biggest set of values 
+
+10
+00:17:35,990 --> 00:17:40,530
+in deciding what to present you should ask yourself these questions 
+
+11
+00:17:42,260 --> 00:17:43,740
+what is the punchline 
+
+12
+00:17:43,740 --> 00:17:46,330
+in other words what are the main results 
+
+13
+00:17:48,930 --> 00:17:53,590
+what added value do these results provide or
+
+14
+00:17:53,590 --> 00:17:55,870
+how can the model add to the application 
+
+15
+00:17:58,120 --> 00:18:02,840
+how do the results compare to the success criteria determined at
+
+16
+00:18:02,840 --> 00:18:04,260
+the beginning of the project 
+
+17
+00:18:07,030 --> 00:18:11,220
+answers to these questions are the items you need to include in your report or
+
+18
+00:18:11,220 --> 00:18:11,990
+presentation 
+
+19
+00:18:13,120 --> 00:18:17,336
+so make them the main topics and gather facts to back them up 
+
+20
+00:18:20,198 --> 00:18:25,330
+keep in mind that not all of your results may be rosy 
+
+21
+00:18:25,330 --> 00:18:30,650
+your analysis may show results that are counter to what you were hoping to find 
+
+22
+00:18:30,650 --> 00:18:34,410
+or results that are inconclusive or puzzling 
+
+23
+00:18:35,600 --> 00:18:37,530
+you need to show these results as well 
+
+24
+00:18:39,620 --> 00:18:43,950
+domain experts may find some of these results to be puzzling and
+
+25
+00:18:43,950 --> 00:18:47,932
+inconclusive findings may lead to additional analysis 
+
+26
+00:18:49,020 --> 00:18:52,920
+remember the point of reporting your findings
+
+27
+00:18:52,920 --> 00:18:55,410
+is to determine what the next step should be 
+
+28
+00:18:58,070 --> 00:19:02,538
+all findings must be presented so that informed decisions can be made 
+
+29
+00:19:05,818 --> 00:19:10,180
+visualization is an important tool in presenting your results 
+
+30
+00:19:11,220 --> 00:19:16,400
+the techniques that we discuss and explore in data can be used here as well 
+
+31
+00:19:16,400 --> 00:19:17,760
+what were they 
+
+32
+00:19:17,760 --> 00:19:22,690
+scatter plots line graphs heat maps and other types of graphs
+
+33
+00:19:24,040 --> 00:19:27,390
+are effective ways to present your results visually 
+
+34
+00:19:29,330 --> 00:19:33,150
+this time you are not plotting the input data but
+
+35
+00:19:33,150 --> 00:19:36,250
+you are plotting the output data with similar tools 
+
+36
+00:19:38,120 --> 00:19:42,238
+you should also have tables with details from your analysis as backups 
+
+37
+00:19:42,238 --> 00:19:45,418
+if someone wants to take a deeper dive into the results 
+
+38
+00:19:48,398 --> 00:19:51,080
+there are many visualization tools that are available 
+
+39
+00:19:52,660 --> 00:19:55,750
+some of the most popular open source ones are listed here 
+
+40
+00:19:57,205 --> 00:20:01,370
+r is a software package for general data analysis 
+
+41
+00:20:02,990 --> 00:20:05,830
+it has powerful visualization capabilities as well 
+
+42
+00:20:07,300 --> 00:20:11,800
+python is a general purpose programming language
+
+43
+00:20:11,800 --> 00:20:16,090
+that also has a number of packages to support data analysis and graphics 
+
+44
+00:20:17,510 --> 00:20:20,690
+d3 is a javascript library for
+
+45
+00:20:20,690 --> 00:20:25,820
+producing interactive web based visualizations and data driven documents 
+
+46
+00:20:27,500 --> 00:20:32,325
+leaflet is a lightweight mobile friendly javascript library
+
+47
+00:20:32,325 --> 00:20:34,650
+to create interactive maps 
+
+48
+00:20:36,360 --> 00:20:41,656
+tableau public allows you to create visualizations 
+
+49
+00:20:41,656 --> 00:20:48,916
+in your public profile and share them or put them on a site or blog 
+
+50
+00:20:48,916 --> 00:20:53,925
+google charts provides cross - browser compatibility 
+
+51
+00:20:53,925 --> 00:20:58,940
+and closed platform portability to iphones and android 
+
+52
+00:21:00,430 --> 00:21:08,865
+timeline is a javascript library that allows you to create timelines 
+
+53
+00:21:08,865 --> 00:21:14,787
+in summary you want to report your findings by presenting your results and
+
+54
+00:21:14,787 --> 00:21:18,780
+value add with graphs using visualization tools 
+
+1
+00:21:20,010 --> 00:21:23,922
+step 5 act turning insights into action 
+
+2
+00:21:33,758 --> 00:21:38,048
+now that you have evaluated the results from your analysis and
+
+3
+00:21:38,048 --> 00:21:43,329
+generated reports on the potential value of the results the next step is to
+
+4
+00:21:43,329 --> 00:21:49,075
+determine what action or actions should be taken based on the insights gained 
+
+5
+00:21:49,075 --> 00:21:52,290
+remember why we started bringing together the data and
+
+6
+00:21:52,290 --> 00:21:54,570
+analyzing it in the first place 
+
+7
+00:21:54,570 --> 00:21:59,100
+to find actionable insights within all these data sets 
+
+8
+00:21:59,100 --> 00:22:02,970
+to answer questions or for improving business processes 
+
+9
+00:22:04,120 --> 00:22:05,470
+for example 
+
+10
+00:22:05,470 --> 00:22:09,440
+is there something in your process that should change to remove bottle necks 
+
+11
+00:22:10,580 --> 00:22:14,640
+is there data that should be added to your application to make it more accurate 
+
+12
+00:22:15,810 --> 00:22:20,440
+should you segment your population into more well defined groups for
+
+13
+00:22:20,440 --> 00:22:22,240
+more effective targeted marketing 
+
+14
+00:22:23,510 --> 00:22:27,508
+this is the first step in turning insights into action 
+
+15
+00:22:27,508 --> 00:22:30,733
+now that you have determined what action to take 
+
+16
+00:22:30,733 --> 00:22:35,450
+the next step is figuring out how to implement the action 
+
+17
+00:22:35,450 --> 00:22:39,610
+what is necessary to add this action into your process or application 
+
+18
+00:22:40,820 --> 00:22:42,080
+how should it be automated 
+
+19
+00:22:43,440 --> 00:22:49,110
+the stakeholders need to be identified and become involved in this change 
+
+20
+00:22:49,110 --> 00:22:54,090
+just as with any process improvement changes we need to monitor and
+
+21
+00:22:54,090 --> 00:22:58,020
+measure the impact of the action on the process or application 
+
+22
+00:22:59,300 --> 00:23:03,600
+assessing the impact leads to an evaluation 
+
+23
+00:23:03,600 --> 00:23:07,710
+evaluating results from the implemented action will determine your next steps 
+
+24
+00:23:08,740 --> 00:23:13,640
+is there additional analysis that need to be performed in order to yield
+
+25
+00:23:13,640 --> 00:23:14,730
+even better results 
+
+26
+00:23:16,100 --> 00:23:17,740
+what data should be revisited 
+
+27
+00:23:18,950 --> 00:23:22,980
+are there additional opportunities that should be explored 
+
+28
+00:23:22,980 --> 00:23:27,685
+for example let not forget what big data enables us to do 
+
+29
+00:23:27,685 --> 00:23:34,553
+real - time actions based on high velocity streaming information 
+
+30
+00:23:34,553 --> 00:23:39,067
+we need to define what part of our business needs real - time action to be
+
+31
+00:23:39,067 --> 00:23:43,670
+able to influence the operations or the interaction with the customer 
+
+32
+00:23:45,450 --> 00:23:50,430
+once we define these real time actions we need to make sure that
+
+33
+00:23:50,430 --> 00:23:55,080
+there are automated systems or processes to perform such actions and
+
+34
+00:23:55,080 --> 00:23:59,320
+provide failure recovery in case of problems 
+
+35
+00:23:59,320 --> 00:24:01,547
+as a summary big data and
+
+36
+00:24:01,547 --> 00:24:07,320
+data science are only useful if the insights can be turned into action 
+
+37
+00:24:07,320 --> 00:24:12,198
+and if the actions are carefully defined and evaluated 
+
+1
+00:24:13,360 --> 00:24:15,545
+steps in the data science process 
+
+2
+00:24:23,405 --> 00:24:28,739
+we have already seen a simple linear form of data science process 
+
+3
+00:24:28,739 --> 00:24:33,900
+including five distinct activities that depend on each other 
+
+4
+00:24:35,140 --> 00:24:40,095
+let summarize each activity further before we go into the details of each 
+
+5
+00:24:40,095 --> 00:24:46,617
+acquire includes anything that makes us retrieve data including; finding 
+
+6
+00:24:46,617 --> 00:24:51,210
+accessing acquiring and moving data 
+
+7
+00:24:51,210 --> 00:24:57,640
+it includes identification of and authenticated access to all related data 
+
+8
+00:24:57,640 --> 00:25:02,000
+and transportation of data from sources to distributed files systems 
+
+9
+00:25:03,720 --> 00:25:09,340
+it includes way to subset and match the data to regions or times of interest 
+
+10
+00:25:09,340 --> 00:25:12,830
+as we sometimes refer to it as geo - spacial query 
+
+11
+00:25:14,150 --> 00:25:20,010
+the next activity is prepare data we divide the pre - data activity 
+
+12
+00:25:20,010 --> 00:25:23,574
+into two steps based on the nature of the activity 
+
+13
+00:25:23,574 --> 00:25:28,990
+namely explore data and pre - process data 
+
+14
+00:25:28,990 --> 00:25:33,890
+the first step in data preparation involves literally looking
+
+15
+00:25:33,890 --> 00:25:38,750
+at the data to understand its nature what it means its quality and format 
+
+16
+00:25:40,130 --> 00:25:44,320
+it often takes a preliminary analysis of data or
+
+17
+00:25:44,320 --> 00:25:46,230
+samples of data to understand it 
+
+18
+00:25:47,440 --> 00:25:50,230
+this is why this step is called explore 
+
+19
+00:25:51,350 --> 00:25:55,100
+once we know more about the data through exploratory analysis 
+
+20
+00:25:55,100 --> 00:25:58,625
+the next step is pre - processing of data for analysis 
+
+21
+00:25:58,625 --> 00:26:04,180
+pre - processing includes cleaning data sub - setting or
+
+22
+00:26:04,180 --> 00:26:09,660
+filtering data creating data which programs can read and
+
+23
+00:26:09,660 --> 00:26:15,660
+understand such as modeling raw data into a more defined data model 
+
+24
+00:26:15,660 --> 00:26:19,260
+or packaging it using a specific data format 
+
+25
+00:26:20,810 --> 00:26:23,630
+if there are multiple data sets involved 
+
+26
+00:26:23,630 --> 00:26:29,300
+this step also includes integration of multiple data sources or streams 
+
+27
+00:26:29,300 --> 00:26:34,070
+the prepared data then would be passed onto the analysis step 
+
+28
+00:26:34,070 --> 00:26:36,590
+which involves selection of analytical techniques to use 
+
+29
+00:26:37,800 --> 00:26:41,190
+building a model of the data and analyzing results 
+
+30
+00:26:42,330 --> 00:26:46,120
+this step can take a couple of iterations on its own or
+
+31
+00:26:46,120 --> 00:26:49,180
+might require data scientists to go back to steps one and
+
+32
+00:26:49,180 --> 00:26:54,350
+two to get more data or package data in a different way 
+
+33
+00:26:54,350 --> 00:27:00,070
+step four for communicating results includes evaluation of analytical results 
+
+34
+00:27:00,070 --> 00:27:04,400
+presenting them in a visual way creating reports that include
+
+35
+00:27:04,400 --> 00:27:08,080
+an assessment of results with respect to success criteria 
+
+36
+00:27:09,100 --> 00:27:13,690
+activities in this step can often be referred to with terms like interpret 
+
+37
+00:27:13,690 --> 00:27:16,780
+summarize visualize or post process 
+
+38
+00:27:17,900 --> 00:27:22,390
+the last step brings us back to the very first reason we do data science 
+
+39
+00:27:23,680 --> 00:27:24,240
+the purpose 
+
+40
+00:27:25,340 --> 00:27:30,470
+reporting insights from analysis and determining actions from insights based
+
+41
+00:27:30,470 --> 00:27:35,300
+on the purpose you initially defined is what we refer to as the act step 
+
+42
+00:27:36,700 --> 00:27:41,010
+we have now seen all the steps in a typical data science process 
+
+43
+00:27:42,220 --> 00:27:47,320
+please note that this is an iterative process and findings from one step
+
+44
+00:27:47,320 --> 00:27:50,970
+may require the previous step to be repeated with new information 
+

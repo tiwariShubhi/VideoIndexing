@@ -1,0 +1,944 @@
+WEBVTT
+
+1
+00:00:01.120 --> 00:00:02.080
+In this lecture,
+
+2
+00:00:02.080 --> 00:00:07.490
+we will look at the decision tree model,
+a popular method used for classification.
+
+3
+00:00:07.490 --> 00:00:12.500
+After this video, you will be able to
+explain how a decision tree is used for
+
+4
+00:00:12.500 --> 00:00:14.120
+classification.
+
+5
+00:00:14.120 --> 00:00:18.650
+Describe the process of constructing
+a decision tree for classification.
+
+6
+00:00:18.650 --> 00:00:22.520
+And interpret how a decision tree comes
+up with a classification decision.
+
+7
+00:00:23.530 --> 00:00:27.520
+The idea behind decision trees for
+classification is to split the data
+
+8
+00:00:27.520 --> 00:00:33.040
+into subsets where each subset
+belongs to only one class.
+
+9
+00:00:33.040 --> 00:00:37.900
+This is accomplished by dividing
+the input space into pure regions,
+
+10
+00:00:37.900 --> 00:00:41.210
+that is regions with samples
+from only one class.
+
+11
+00:00:42.420 --> 00:00:46.740
+With real data completely pure
+subsets may not be possible.
+
+12
+00:00:46.740 --> 00:00:52.006
+So the goal is to divide the data into
+subsets that are as pure as possible.
+
+13
+00:00:52.006 --> 00:00:57.320
+That is each subset contains as many
+samples as possible from a single class.
+
+14
+00:00:58.450 --> 00:01:03.050
+Graphically this is equivalent to dividing
+the input space into regions that are as
+
+15
+00:01:03.050 --> 00:01:04.940
+pure as possible.
+
+16
+00:01:04.940 --> 00:01:09.760
+Boundaries separating these regions
+are called decision boundaries.
+
+17
+00:01:09.760 --> 00:01:13.450
+And the decision tree model
+makes classification decisions
+
+18
+00:01:13.450 --> 00:01:15.600
+based on these decision boundaries.
+
+19
+00:01:16.760 --> 00:01:23.040
+A decision tree is a hierarchical
+structure with nodes and directed edges.
+
+20
+00:01:23.040 --> 00:01:25.560
+The node at the top is
+called the root node.
+
+21
+00:01:26.600 --> 00:01:28.870
+The nodes at the bottom
+are called the leaf nodes.
+
+22
+00:01:30.000 --> 00:01:35.810
+Nodes that are neither the root node or
+the leaf nodes are called internal nodes.
+
+23
+00:01:35.810 --> 00:01:38.530
+The root and
+internal nodes have test conditions,
+
+24
+00:01:39.580 --> 00:01:42.740
+each leaf node has a class
+label associated with it.
+
+25
+00:01:43.770 --> 00:01:48.250
+A classification decision is made
+by traversing the decision tree
+
+26
+00:01:48.250 --> 00:01:49.280
+starting with the root node.
+
+27
+00:01:50.620 --> 00:01:54.470
+At each node the answer to the test
+condition determines which
+
+28
+00:01:54.470 --> 00:01:56.740
+branch to traverse to.
+
+29
+00:01:56.740 --> 00:02:00.330
+When a leaf node is reached
+the category at the leaf node
+
+30
+00:02:00.330 --> 00:02:02.595
+determines the classification decision.
+
+31
+00:02:03.740 --> 00:02:09.590
+The depth of a node is the number of
+edges from the root node to that node.
+
+32
+00:02:09.590 --> 00:02:11.130
+The depth of the root node is 0.
+
+33
+00:02:11.130 --> 00:02:15.620
+The depth of a decision
+tree is the number of edges
+
+34
+00:02:15.620 --> 00:02:19.700
+in the longest path from
+the root node to the leaf node.
+
+35
+00:02:19.700 --> 00:02:23.280
+The size of a decision tree is
+the number of nodes in the tree.
+
+36
+00:02:24.460 --> 00:02:27.160
+This is an example of a decision tree.
+
+37
+00:02:27.160 --> 00:02:32.290
+It can be used to classify an animal
+as a mammal or not a mammal.
+
+38
+00:02:32.290 --> 00:02:36.530
+According to this decision tree,
+if an animal is warm-blooded,
+
+39
+00:02:36.530 --> 00:02:41.570
+gives live birth, and
+is a vertebrate, then it is a mammal.
+
+40
+00:02:41.570 --> 00:02:45.000
+If an animal does not have all
+of these three characteristics,
+
+41
+00:02:45.000 --> 00:02:46.350
+then it is not a mammal.
+
+42
+00:02:47.520 --> 00:02:51.790
+A decision tree is built by starting
+with all samples at a single node,
+
+43
+00:02:51.790 --> 00:02:53.400
+the root node.
+
+44
+00:02:53.400 --> 00:02:58.170
+Additional nodes are added when
+the data is split into subsets.
+
+45
+00:02:58.170 --> 00:03:02.449
+At a high level, constructing a decision
+tree consists of the following steps.
+
+46
+00:03:03.860 --> 00:03:05.650
+Start with all samples and a node,
+
+47
+00:03:07.180 --> 00:03:11.850
+partition the samples into subsets
+based in the input variables.
+
+48
+00:03:11.850 --> 00:03:16.250
+The goal is to create subsets of
+records that are purest, that is
+
+49
+00:03:16.250 --> 00:03:20.990
+each subset contains as many samples as
+possible, belonging to just one class.
+
+50
+00:03:22.260 --> 00:03:26.557
+Another way to say this is that
+the subsets should be as homogeneous or
+
+51
+00:03:26.557 --> 00:03:27.900
+as pure as possible.
+
+52
+00:03:29.120 --> 00:03:33.230
+Repeatedly partition data into
+successively purer subsets
+
+53
+00:03:33.230 --> 00:03:35.460
+until some stopping
+criterion is satisfied.
+
+54
+00:03:36.990 --> 00:03:37.930
+An algorithm for
+
+55
+00:03:37.930 --> 00:03:42.720
+constructing a decision tree model is
+referred to as an induction algorithm.
+
+56
+00:03:42.720 --> 00:03:46.410
+So you may hear the term tree induction
+used to describe the process of
+
+57
+00:03:46.410 --> 00:03:47.690
+building a decision tree.
+
+58
+00:03:49.330 --> 00:03:52.150
+Note that at each split
+the induction algorithm
+
+59
+00:03:52.150 --> 00:03:56.820
+only considers the best way to split
+that particular portion of the data.
+
+60
+00:03:56.820 --> 00:03:59.660
+This is referred to as a greedy approach.
+
+61
+00:03:59.660 --> 00:04:03.800
+Greedy algorithms solve a subset
+of the problem at a time, and
+
+62
+00:04:03.800 --> 00:04:08.510
+as a necessary approach when solving
+the entire problem is not feasible.
+
+63
+00:04:08.510 --> 00:04:11.020
+This is the case with decision trees.
+
+64
+00:04:11.020 --> 00:04:15.090
+It is not feasible to determine
+the best tree given a data set, so
+
+65
+00:04:15.090 --> 00:04:18.460
+the tree has to be built
+in piecemeal fashion
+
+66
+00:04:18.460 --> 00:04:21.978
+by determining the best way to split
+the current node at each step.
+
+67
+00:04:21.978 --> 00:04:26.485
+And combining these decisions together
+to form the final decision tree,
+
+68
+00:04:26.485 --> 00:04:31.600
+in constructing a decision tree
+how is the data partitioned?
+
+69
+00:04:31.600 --> 00:04:34.520
+How does a decision tree
+determine the best way to split
+
+70
+00:04:34.520 --> 00:04:36.920
+the set of samples at a node?
+
+71
+00:04:36.920 --> 00:04:41.530
+Again the goal is to partition data
+at a node into subsets that are as
+
+72
+00:04:41.530 --> 00:04:42.700
+pure as possible.
+
+73
+00:04:43.760 --> 00:04:45.110
+In this example,
+
+74
+00:04:45.110 --> 00:04:49.640
+the partition shown on the right
+results in more homogeneous subsets.
+
+75
+00:04:49.640 --> 00:04:54.620
+Since these subsets contain more
+samples belonging to a single class
+
+76
+00:04:54.620 --> 00:04:57.950
+than the resulting subsets
+shown on the left.
+
+77
+00:04:57.950 --> 00:05:01.800
+So the partition on the right
+results in purer subsets and
+
+78
+00:05:01.800 --> 00:05:03.180
+is the preferred partition.
+
+79
+00:05:04.440 --> 00:05:08.650
+Therefore, we need a way to
+measure the purity of a split
+
+80
+00:05:08.650 --> 00:05:12.910
+in order to compare different
+ways to partition a set of data.
+
+81
+00:05:12.910 --> 00:05:17.980
+It turns out that it works out better
+mathematically if we measure the impurity
+
+82
+00:05:17.980 --> 00:05:19.820
+rather than the purity of a split.
+
+83
+00:05:20.830 --> 00:05:23.370
+So the impurity measure of a node
+
+84
+00:05:23.370 --> 00:05:26.730
+specifies how mixed
+the resulting subsets are.
+
+85
+00:05:26.730 --> 00:05:30.580
+Since we want the resulting subsets
+to have homogeneous class labels,
+
+86
+00:05:30.580 --> 00:05:36.230
+not mixed class labels, we want the split
+that minimizes the impurity measure.
+
+87
+00:05:37.720 --> 00:05:39.610
+A common impurity measure used for
+
+88
+00:05:39.610 --> 00:05:41.900
+determining the best
+split is the Gini Index.
+
+89
+00:05:42.900 --> 00:05:47.440
+The lower the Gini Index the higher
+the purity of the split.
+
+90
+00:05:47.440 --> 00:05:52.470
+So the decision tree will select
+the split that minimizes the Gini Index.
+
+91
+00:05:52.470 --> 00:05:56.710
+Besides the Gini Index, other
+impurity measures include entropy, or
+
+92
+00:05:56.710 --> 00:05:59.571
+information gain, and
+misclassification rate.
+
+93
+00:06:01.140 --> 00:06:04.750
+The other factor in determining
+the best way to partition a node
+
+94
+00:06:04.750 --> 00:06:07.500
+is which variable to split on.
+
+95
+00:06:07.500 --> 00:06:12.910
+The decision tree will test all variables
+to determine the best way to split a node
+
+96
+00:06:12.910 --> 00:06:16.860
+using a purity measure such as
+the Gini index to compare the various
+
+97
+00:06:16.860 --> 00:06:17.709
+possibilities.
+
+98
+00:06:18.910 --> 00:06:23.880
+Recall that the tree induction algorithm
+repeatedly splits nodes to get more and
+
+99
+00:06:23.880 --> 00:06:25.890
+more homogeneous subsets.
+
+100
+00:06:25.890 --> 00:06:27.970
+So when does this process stop?
+
+101
+00:06:27.970 --> 00:06:30.150
+When does the algorithm
+stop growing the tree?
+
+102
+00:06:31.150 --> 00:06:35.670
+There's several criteria that can be used
+to determine when a node should no longer
+
+103
+00:06:35.670 --> 00:06:36.935
+be split into subsets.
+
+104
+00:06:38.830 --> 00:06:41.730
+The induction algorithm can
+stop expanding a node when
+
+105
+00:06:41.730 --> 00:06:45.500
+all samples in the node
+have the same class label.
+
+106
+00:06:45.500 --> 00:06:49.370
+This means that this set of data
+is as pure as possible, and
+
+107
+00:06:49.370 --> 00:06:53.030
+further splitting will not result in
+any better partition of the data.
+
+108
+00:06:54.230 --> 00:06:58.890
+Since getting completely pure subsets
+is difficult to achieve with real data,
+
+109
+00:06:58.890 --> 00:07:01.620
+this stopping criterion can be modified.
+
+110
+00:07:01.620 --> 00:07:05.961
+To when a certain percentage of
+the samples in the node, say 90% for
+
+111
+00:07:05.961 --> 00:07:08.400
+example, have the same class labels.
+
+112
+00:07:09.750 --> 00:07:13.710
+The algorithm can stop expanding a node
+when the number of samples in the node
+
+113
+00:07:13.710 --> 00:07:15.940
+falls below a certain minimum value.
+
+114
+00:07:16.940 --> 00:07:19.920
+A this point the number of
+samples is too small to make
+
+115
+00:07:19.920 --> 00:07:23.119
+much difference in the classification
+results with the further splitting.
+
+116
+00:07:24.570 --> 00:07:28.860
+The induction algorithm can stop expanding
+a node when the improvement in impurity
+
+117
+00:07:28.860 --> 00:07:33.540
+measure is too small to make much of
+a difference in classification results.
+
+118
+00:07:35.060 --> 00:07:39.980
+The algorithm can stop expanding a node
+when the maximum tree depth is reached.
+
+119
+00:07:39.980 --> 00:07:43.240
+This is to control the complexity
+of the resulting tree.
+
+120
+00:07:45.060 --> 00:07:48.590
+There can be other criteria that can be
+used to determine when tree induction
+
+121
+00:07:48.590 --> 00:07:49.090
+should stop.
+
+122
+00:07:50.720 --> 00:07:55.140
+Let's take a look at an example to
+illustrate the tree induction process.
+
+123
+00:07:55.140 --> 00:07:59.720
+Let's say that we want to classify loan
+applicants as being likely to repay a loan
+
+124
+00:07:59.720 --> 00:08:03.090
+or not likely to repay a loan
+based on their income and
+
+125
+00:08:03.090 --> 00:08:04.750
+amount of debt they already have.
+
+126
+00:08:06.090 --> 00:08:07.360
+Building a decision tree for
+
+127
+00:08:07.360 --> 00:08:10.490
+this classification problem
+could proceed as follows.
+
+128
+00:08:10.490 --> 00:08:14.230
+Consider the input space of this
+problem as shown in the left figure.
+
+129
+00:08:14.230 --> 00:08:18.990
+One way to split this
+data set into homogeneous
+
+130
+00:08:18.990 --> 00:08:23.380
+subsets is to consider the decision
+boundary where income equals t1.
+
+131
+00:08:24.800 --> 00:08:28.410
+To the right of this decision
+boundary are mostly red samples and
+
+132
+00:08:28.410 --> 00:08:30.140
+to the left are mostly blue samples.
+
+133
+00:08:31.340 --> 00:08:33.950
+The subsets are not
+completely homogeneous but
+
+134
+00:08:33.950 --> 00:08:38.100
+that is the best way to split the original
+data set based on the variable income.
+
+135
+00:08:40.120 --> 00:08:44.380
+This decision boundary is represented
+in the decision tree by the condition
+
+136
+00:08:44.380 --> 00:08:48.326
+Income is greater than
+t1 at the root node.
+
+137
+00:08:48.326 --> 00:08:51.894
+This is the condition used to
+split the original data set.
+
+138
+00:08:51.894 --> 00:08:55.350
+Samples with income greater
+than the threshold value
+
+139
+00:08:55.350 --> 00:08:59.800
+of t1 are placed in the right subset and
+samples with income less than or
+
+140
+00:08:59.800 --> 00:09:04.950
+equal to t1 are placed in the left subset,
+just as shown in the right diagram.
+
+141
+00:09:06.480 --> 00:09:08.748
+The right subset is now labeled as red,
+
+142
+00:09:08.748 --> 00:09:12.203
+meaning that the loan applicant
+is likely to be paid alone.
+
+143
+00:09:13.688 --> 00:09:18.980
+The second step then is to determine how
+to split the region outlined in red.
+
+144
+00:09:18.980 --> 00:09:24.000
+As shown in the left diagram, in input
+space, the best way to split this data
+
+145
+00:09:24.000 --> 00:09:27.940
+is specified by the second decision
+boundary with debt equals t2.
+
+146
+00:09:29.520 --> 00:09:32.580
+This is represented in
+the decision tree on the right
+
+147
+00:09:32.580 --> 00:09:36.760
+with the addition of the node with
+condition debt greater than t2.
+
+148
+00:09:38.050 --> 00:09:41.930
+Samples with the value of debt greater
+than t2 are shown in the region
+
+149
+00:09:41.930 --> 00:09:44.010
+above the decision boundary.
+
+150
+00:09:44.010 --> 00:09:49.370
+This region contains all blue samples and
+so the corresponding node is labeled blue.
+
+151
+00:09:49.370 --> 00:09:52.700
+Meaning that the loan applicant
+is not likely to repay the loan.
+
+152
+00:09:54.170 --> 00:09:58.180
+The third and final split looks at how
+to split the region outlined in red
+
+153
+00:09:58.180 --> 00:09:59.010
+in the left diagram.
+
+154
+00:10:00.210 --> 00:10:04.930
+The best split is specified by
+the boundary with income equals T3.
+
+155
+00:10:04.930 --> 00:10:08.190
+This splits the red region
+into two pure subsets.
+
+156
+00:10:09.250 --> 00:10:13.330
+This split is represented in the decision
+tree by adding a node with condition,
+
+157
+00:10:13.330 --> 00:10:15.629
+Income is greater than t3.
+
+158
+00:10:15.629 --> 00:10:19.210
+The left resulting node is labeled blue,
+and
+
+159
+00:10:19.210 --> 00:10:21.980
+the right resulting node is labeled red,
+
+160
+00:10:21.980 --> 00:10:26.200
+corresponding to the resulting subsets
+within the red border in the left diagram.
+
+161
+00:10:27.780 --> 00:10:30.810
+We end with the final
+decision tree on the right,
+
+162
+00:10:30.810 --> 00:10:35.400
+which implements the decision boundaries
+shown as dash lines in the left diagram.
+
+163
+00:10:36.630 --> 00:10:40.280
+These decision boundaries
+partition the data set as shown.
+
+164
+00:10:40.280 --> 00:10:45.200
+The label for each region is determined by
+the label of the majority of the samples.
+
+165
+00:10:45.200 --> 00:10:49.090
+These labels are reflected in
+the leaf nodes of the decision tree.
+
+166
+00:10:49.090 --> 00:10:49.910
+Shown on the right.
+
+167
+00:10:51.500 --> 00:10:55.850
+You may have noticed that the decision
+boundaries of a decision tree are parallel
+
+168
+00:10:55.850 --> 00:11:02.110
+to the axes formed by the variables,
+this is referred to as being rectilinear.
+
+169
+00:11:02.110 --> 00:11:06.410
+The boundaries are rectilinear
+because each split considers only
+
+170
+00:11:06.410 --> 00:11:08.370
+a single variable.
+
+171
+00:11:08.370 --> 00:11:12.185
+There are variance of the tree induction
+algorithm that consider more than one
+
+172
+00:11:12.185 --> 00:11:14.560
+attribute when splitting a note.
+
+173
+00:11:14.560 --> 00:11:19.550
+However, each split has to consider all
+combinations of combined variables and
+
+174
+00:11:19.550 --> 00:11:24.000
+so such induction algorithms are much
+more computationally expensive.
+
+175
+00:11:25.310 --> 00:11:28.650
+There are a few important things to
+note about the decision tree classifier.
+
+176
+00:11:30.160 --> 00:11:33.970
+The resulting tree is often simple
+to understand and interpret.
+
+177
+00:11:33.970 --> 00:11:38.500
+This is one of the biggest advantages
+of decision trees for classification.
+
+178
+00:11:38.500 --> 00:11:41.550
+It is often possible to look
+at the resulting tree to see
+
+179
+00:11:41.550 --> 00:11:45.570
+which variables are important to
+the classification problem and
+
+180
+00:11:45.570 --> 00:11:48.840
+understand how
+the classification is performed.
+
+181
+00:11:48.840 --> 00:11:52.590
+For this reason, many people will start
+out with the decision tree classifier
+
+182
+00:11:52.590 --> 00:11:55.690
+to get a feel for
+the classification problem.
+
+183
+00:11:55.690 --> 00:11:58.730
+Even if they end up using more
+sophisticated models later on.
+
+184
+00:12:00.730 --> 00:12:03.480
+The tree induction algorithm
+as described in this lesson
+
+185
+00:12:03.480 --> 00:12:06.990
+is relatively computationally inexpensive.
+
+186
+00:12:06.990 --> 00:12:10.940
+So training a decision tree for
+classification can be relatively fast.
+
+187
+00:12:12.985 --> 00:12:17.495
+The greedy approach used by tree induction
+algorithm determines the best way to split
+
+188
+00:12:17.495 --> 00:12:19.905
+the portion of the data at a node but
+
+189
+00:12:19.905 --> 00:12:23.823
+does not guarantee the best solution
+overall for the entire data set.
+
+190
+00:12:26.000 --> 00:12:28.490
+Decision boundaries are rectilinear.
+
+191
+00:12:28.490 --> 00:12:32.550
+This can limit the expressiveness
+of the resulting model which means
+
+192
+00:12:32.550 --> 00:12:36.480
+that it may not be able to solve
+complicated classification problems that
+
+193
+00:12:36.480 --> 00:12:39.400
+require more complex decision
+boundaries to be formed.
+
+194
+00:12:41.060 --> 00:12:46.280
+In summary, the decision tree classifier
+uses a tree like structure to specify
+
+195
+00:12:46.280 --> 00:12:51.600
+a series of conditions that are tested to
+determine the class label for a sample.
+
+196
+00:12:52.740 --> 00:12:57.230
+The decision tree is constructed by
+repeatedly splitting a data partition
+
+197
+00:12:57.230 --> 00:13:00.860
+into successively more
+homogeneous subsets.
+
+198
+00:13:00.860 --> 00:13:03.680
+The resulting tree can
+often be easy to interpret.

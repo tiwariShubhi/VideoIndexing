@@ -1,0 +1,2544 @@
+
+1
+00:00:01.140 --> 00:00:05.070
+Now that we went through an overview
+of the Spark ecosystem and
+
+2
+00:00:05.070 --> 00:00:09.640
+the components of the Spark stack, it is
+time for us to start learning more about
+
+3
+00:00:09.640 --> 00:00:13.960
+its architecture and run our first
+Spark program in the cloud VM.
+
+4
+00:00:15.580 --> 00:00:19.710
+After this video you will be
+able to describe how Spark
+
+5
+00:00:19.710 --> 00:00:24.690
+does in-memory processing using the
+Resilient Distributed Dataset abstraction,
+
+6
+00:00:25.890 --> 00:00:29.740
+explain the inner workings of
+the Spark architecture, and
+
+7
+00:00:29.740 --> 00:00:34.090
+summarize how Spark manages and
+executes code on Clusters.
+
+8
+00:00:35.510 --> 00:00:39.531
+I mentioned a few times that
+Spark is efficient because it
+
+9
+00:00:39.531 --> 00:00:43.739
+uses an abstraction called RDDs for
+in memory processing.
+
+10
+00:00:45.704 --> 00:00:48.970
+What this means might not be
+clear to some of you yet.
+
+11
+00:00:50.170 --> 00:00:52.660
+Let's remember the alternative.
+
+12
+00:00:52.660 --> 00:00:57.153
+In Hadoop MapReduce,
+each step, also pipeline,
+
+13
+00:00:57.153 --> 00:01:02.272
+reads from disk to memory,
+performs the computations and
+
+14
+00:01:02.272 --> 00:01:06.770
+writes back its output from
+the memory to the disk.
+
+15
+00:01:08.290 --> 00:01:13.520
+However, writing data to disk
+is a costly operation and
+
+16
+00:01:13.520 --> 00:01:17.220
+this cost becomes even more
+with large volumes of data.
+
+17
+00:01:18.650 --> 00:01:20.010
+Here is an interesting fact.
+
+18
+00:01:21.320 --> 00:01:25.664
+Memory operations can
+be up to 100,000 times
+
+19
+00:01:25.664 --> 00:01:28.250
+faster than disk operations in some cases.
+
+20
+00:01:29.510 --> 00:01:33.430
+Spark instead takes advantage of this and
+allows for
+
+21
+00:01:33.430 --> 00:01:37.810
+immediate results of transformations
+in different stages of the pipeline and
+
+22
+00:01:37.810 --> 00:01:40.650
+memory, like MAP and REDUCE here.
+
+23
+00:01:41.980 --> 00:01:45.540
+Here, we see that the outputs
+of MAP operations
+
+24
+00:01:45.540 --> 00:01:49.890
+are shared with reduce operations
+without being written to the disk.
+
+25
+00:01:50.980 --> 00:01:55.900
+The containers where the data
+gets stored in memory
+
+26
+00:01:55.900 --> 00:02:00.370
+are called resilient distributed
+datasets or RDDs for short.
+
+27
+00:02:02.210 --> 00:02:06.730
+RDDs are how Spark distributes data and
+computations across
+
+28
+00:02:06.730 --> 00:02:12.180
+the nodes of a commodity cluster,
+preferably with large memory.
+
+29
+00:02:12.180 --> 00:02:14.380
+Thanks to this abstraction,
+
+30
+00:02:14.380 --> 00:02:18.790
+Spark has proven to be 100 times
+faster for some applications.
+
+31
+00:02:20.360 --> 00:02:23.960
+Let's define all the words
+in this interesting name
+
+32
+00:02:23.960 --> 00:02:26.510
+beginning with the last one, datasets.
+
+33
+00:02:28.196 --> 00:02:36.790
+Datasets that RDD distributes comes
+from a batch data storage like HDFS,
+
+34
+00:02:36.790 --> 00:02:42.120
+no SQL databases, text files or streaming
+data ingestion systems like Cafco.
+
+35
+00:02:43.330 --> 00:02:47.760
+It can even conveniently read and
+distribute the data from your local disc
+
+36
+00:02:47.760 --> 00:02:52.600
+like text files into Spark, or
+even a hierarchy of folders.
+
+37
+00:02:54.750 --> 00:03:01.200
+When Spark reads data from these sources,
+it generates RDDs for them.
+
+38
+00:03:01.200 --> 00:03:07.930
+The Spark operations can transform RDDs
+into other RDDs like any other data.
+
+39
+00:03:07.930 --> 00:03:13.650
+Here it's important to mention
+that RDDs are immutable.
+
+40
+00:03:13.650 --> 00:03:17.610
+This means that you cannot
+change them partially.
+
+41
+00:03:17.610 --> 00:03:22.970
+However, you can create new RDDs by
+a series of one or many transformations.
+
+42
+00:03:24.570 --> 00:03:28.200
+Next, let's look at what distributed
+means in the RDD context.
+
+43
+00:03:29.480 --> 00:03:34.680
+As I mentioned before, RDDs distribute
+partitioned data collections and
+
+44
+00:03:34.680 --> 00:03:40.740
+computations on clusters even
+across a number of machines.
+
+45
+00:03:41.770 --> 00:03:44.860
+For example, running on the Amazon Cloud.
+
+46
+00:03:46.160 --> 00:03:50.880
+The complexity of this operation is
+hidden by this very simple interface.
+
+47
+00:03:52.140 --> 00:03:57.230
+Computations are a diverse set of
+transformations of RDDs like map,
+
+48
+00:03:57.230 --> 00:03:59.230
+filter and join.
+
+49
+00:03:59.230 --> 00:04:05.940
+And also actions on the RDDs like counting
+and saving them persistently on disk.
+
+50
+00:04:05.940 --> 00:04:10.560
+The partitioning of data can be changed
+dynamically to optimize Spark's
+
+51
+00:04:10.560 --> 00:04:11.170
+performance.
+
+52
+00:04:12.620 --> 00:04:17.420
+The last element is resilient, and
+it's very important because in a large
+
+53
+00:04:17.420 --> 00:04:21.640
+scale computing environment it is
+pretty common to have node failures.
+
+54
+00:04:22.850 --> 00:04:25.710
+It's very important to be
+able to recover from these
+
+55
+00:04:25.710 --> 00:04:28.480
+situations without losing
+any work already done.
+
+56
+00:04:29.570 --> 00:04:34.360
+For full tolerance in such situations,
+Spark tracks the history of each
+
+57
+00:04:34.360 --> 00:04:39.220
+partition, keeping a lineage
+over RDDs over time,
+
+58
+00:04:39.220 --> 00:04:44.170
+so every point in your calculations,
+Spark knows which are the partitions
+
+59
+00:04:44.170 --> 00:04:47.560
+needed to recreate the partition
+in case it gets lost.
+
+60
+00:04:48.710 --> 00:04:50.480
+And if that happens,
+
+61
+00:04:50.480 --> 00:04:55.730
+then Spark automatically figures out
+where it can start the recompute from and
+
+62
+00:04:55.730 --> 00:04:59.890
+optimizes the amount of processing
+needed to recover from the failure.
+
+63
+00:05:01.410 --> 00:05:06.087
+Before we create our first Spark program
+using RDDs in Pi Spark in the cloud
+
+64
+00:05:06.087 --> 00:05:09.343
+layer VM,
+let's review Spark's architecture.
+
+65
+00:05:12.239 --> 00:05:16.772
+From a bird's eye view,
+Spark has two main components,
+
+66
+00:05:16.772 --> 00:05:19.610
+a driver program and worker nodes.
+
+67
+00:05:21.900 --> 00:05:25.300
+The driver program is where
+your application starts.
+
+68
+00:05:26.900 --> 00:05:30.760
+It distributes RDDs on your
+computational cluster and
+
+69
+00:05:30.760 --> 00:05:35.435
+makes sure the transformations and
+actions on these RDDs are performed.
+
+70
+00:05:37.530 --> 00:05:42.250
+Driver programs create
+a connection to a Spark cluster or
+
+71
+00:05:42.250 --> 00:05:45.950
+your local Spark through
+a Spark context object.
+
+72
+00:05:47.010 --> 00:05:50.770
+The default Spark context
+in the Spark shell is
+
+73
+00:05:50.770 --> 00:05:54.680
+an object called SC for Spark context.
+
+74
+00:05:55.980 --> 00:06:01.260
+For example, in the upcoming reading for
+creating word counts in Spark,
+
+75
+00:06:01.260 --> 00:06:05.252
+we will use SC as the context to
+
+76
+00:06:05.252 --> 00:06:10.210
+generate RDDs for a text file
+using the line of code shown here.
+
+77
+00:06:11.650 --> 00:06:17.340
+The driver program manages a potentially
+large number of nodes called worker nodes.
+
+78
+00:06:18.780 --> 00:06:23.740
+On a local computer, we can assume
+that there's only one worker node and
+
+79
+00:06:23.740 --> 00:06:25.590
+it is where the Spark operations execute.
+
+80
+00:06:27.100 --> 00:06:32.230
+A worker node in Spark keeps
+a running Java virtual machine,
+
+81
+00:06:32.230 --> 00:06:36.000
+called JVM commonly, called the executor.
+
+82
+00:06:38.080 --> 00:06:40.913
+Depending on the illustration,
+
+83
+00:06:40.913 --> 00:06:45.566
+executor can execute task
+related to mapping stages or
+
+84
+00:06:45.566 --> 00:06:50.130
+reducing stages or
+other Spark specific pipelines.
+
+85
+00:06:50.130 --> 00:06:56.642
+This Java virtual machine is the core
+that all the computation is executed,
+
+86
+00:06:56.642 --> 00:07:03.780
+and this is the interface also to the rest
+of the Big Data storage systems and tools.
+
+87
+00:07:05.320 --> 00:07:10.560
+For example, if we ever had the Hadoop
+file system, HTFS, as the storage system,
+
+88
+00:07:10.560 --> 00:07:14.650
+then on each worker node,
+some of the data will be stored locally.
+
+89
+00:07:14.650 --> 00:07:19.445
+As you know, the most important point
+of this computing framework is to bring
+
+90
+00:07:19.445 --> 00:07:21.084
+the computation to data.
+
+91
+00:07:21.084 --> 00:07:24.770
+So Spark will send some
+computational jobs to be executed
+
+92
+00:07:24.770 --> 00:07:30.190
+on the data that are already available
+on the machine thanks to HDFS.
+
+93
+00:07:30.190 --> 00:07:32.930
+Data will be read from HDFS and
+
+94
+00:07:32.930 --> 00:07:38.580
+get processed in memory,
+the results will be stored as one RDD.
+
+95
+00:07:38.580 --> 00:07:45.012
+The actual computation is running
+straight in the executor,
+
+96
+00:07:45.012 --> 00:07:50.214
+that is the JVM that runs your Scala or
+Java codes.
+
+97
+00:07:50.214 --> 00:07:54.970
+Instead, if you are using PySpark
+then there will be several Python
+
+98
+00:07:54.970 --> 00:07:57.723
+processes generally, one for task but
+
+99
+00:07:57.723 --> 00:08:01.490
+you can configure it depending
+on your application.
+
+100
+00:08:03.999 --> 00:08:09.770
+In a real Big Data scenario, we have many
+worker nodes running tasks internally.
+
+101
+00:08:10.990 --> 00:08:15.220
+It is important to have a system that can
+automatically manage provisioning and
+
+102
+00:08:15.220 --> 00:08:16.420
+restarting of these nodes.
+
+103
+00:08:17.540 --> 00:08:20.550
+The cluster manager in
+Spark has this capability.
+
+104
+00:08:21.970 --> 00:08:27.660
+Spark currently supports mainly three
+interfaces for cluster management,
+
+105
+00:08:27.660 --> 00:08:34.620
+namely Spark's standalone cluster manager,
+the Apache Mesos, and Hadoop YARN.
+
+106
+00:08:36.190 --> 00:08:40.441
+Standalone means that there's a special
+Spark process that takes care of
+
+107
+00:08:40.441 --> 00:08:42.567
+restarting nodes that are failing or
+
+108
+00:08:42.567 --> 00:08:45.668
+starting nodes at the beginning
+of the computation.
+
+109
+00:08:45.668 --> 00:08:50.276
+YARN and Mesos are two external research
+measures that can be used also for
+
+110
+00:08:50.276 --> 00:08:51.400
+these purposes.
+
+111
+00:08:54.080 --> 00:08:57.400
+Choosing a cluster manager
+to fit your application and
+
+112
+00:08:57.400 --> 00:09:00.280
+infrastructure can be quite confusing.
+
+113
+00:09:00.280 --> 00:09:04.020
+Here, we give you a good
+article as a starting point on
+
+114
+00:09:04.020 --> 00:09:07.030
+how to pick the right cluster manager for
+your organization.
+
+115
+00:09:08.470 --> 00:09:13.130
+To summarize, the Spark architecture
+includes a driver program.
+
+116
+00:09:14.270 --> 00:09:18.918
+The driver program communicates
+with the cluster manager for
+
+117
+00:09:18.918 --> 00:09:22.404
+monitoring and
+provisioning of resources and
+
+118
+00:09:22.404 --> 00:09:27.783
+communicates directly with worker
+nodes to submit and execute tasks.
+
+119
+00:09:27.783 --> 00:09:33.410
+RDDs get created and passed within
+transformations running in the executable.
+
+120
+00:09:34.900 --> 00:09:39.691
+Finally, let's see how this
+setup works on the Cloudera VM.
+
+121
+00:09:39.691 --> 00:09:43.797
+In the Cloudera VM,
+we are using Spark in standalone mode and
+
+122
+00:09:43.797 --> 00:09:46.820
+everything is running locally.
+
+123
+00:09:46.820 --> 00:09:53.615
+So it's a single machine and on the same
+machine we have our driver program,
+
+124
+00:09:53.615 --> 00:09:58.089
+the executor JVM and
+our single PySpark process.
+
+125
+00:09:58.089 --> 00:10:02.771
+With that, we are ready to start with
+our first reading to install Spark and
+
+126
+00:10:02.771 --> 00:10:06.946
+then running our word count program
+using the Spark environment.
+
+1
+00:00:01.430 --> 00:00:05.170
+After a brief overview of some
+of the processing systems
+
+2
+00:00:05.170 --> 00:00:09.480
+in the Big Data Landscape, it is time for
+us to dive deeper into Spark.
+
+3
+00:00:10.820 --> 00:00:15.170
+Spark was initiated at
+UC Berkeley in 2009 and
+
+4
+00:00:15.170 --> 00:00:19.840
+was transferred to
+Apache Software Foundation in 2013.
+
+5
+00:00:19.840 --> 00:00:24.240
+Since then, Spark has become a top
+level project with many users and
+
+6
+00:00:24.240 --> 00:00:25.700
+contributors worldwide.
+
+7
+00:00:27.550 --> 00:00:32.530
+After this video, you will be able
+to list the main motivations for
+
+8
+00:00:32.530 --> 00:00:36.980
+the development of Spark,
+draw the Spark stack as a layer diagram,
+
+9
+00:00:38.320 --> 00:00:42.130
+And explain the functionality of
+the components in the Spark stack.
+
+10
+00:00:44.520 --> 00:00:49.810
+As we have discussed in our earlier
+discussions, while Hadoop is great for
+
+11
+00:00:49.810 --> 00:00:53.460
+batch processing using
+the MapReduce programming module,
+
+12
+00:00:53.460 --> 00:00:55.710
+it has shortcomings in a number of ways.
+
+13
+00:00:57.110 --> 00:01:02.000
+First of all, since it is limited to
+Map and Reduce based transformations,
+
+14
+00:01:02.000 --> 00:01:07.020
+one has to restrict their big data
+pipeline to map and reduce steps.
+
+15
+00:01:08.520 --> 00:01:11.680
+But the number of applications
+can be implemented using Map and
+
+16
+00:01:11.680 --> 00:01:14.970
+Reduce, it's not always possible and
+
+17
+00:01:14.970 --> 00:01:18.810
+it is often not the most efficient
+way to express a big data pipeline.
+
+18
+00:01:20.460 --> 00:01:25.920
+For example, you might want to do a join
+operation between different data sets or
+
+19
+00:01:25.920 --> 00:01:28.430
+you might want to filter or
+sample your data.
+
+20
+00:01:29.440 --> 00:01:32.460
+Or you might have a more
+complicated data pipeline with
+
+21
+00:01:32.460 --> 00:01:36.680
+several steps including joins and
+group byes.
+
+22
+00:01:36.680 --> 00:01:41.280
+It might have a Map and Reduce face,
+but maybe another map face after that.
+
+23
+00:01:42.660 --> 00:01:48.140
+These types of operations are hard or
+impossible to express using MapReduce and
+
+24
+00:01:48.140 --> 00:01:51.760
+cannot be accommodated by
+the MapReduce framework in Hadoop.
+
+25
+00:01:53.080 --> 00:01:56.830
+Another important bottleneck in
+Hadoop MapReduce that is critical for
+
+26
+00:01:56.830 --> 00:02:01.880
+performance, is that MapReduce relies
+heavily on reading data from disc.
+
+27
+00:02:03.680 --> 00:02:08.470
+This is especially a problem for iterative
+algorithms that require taking several
+
+28
+00:02:08.470 --> 00:02:12.800
+passes through the data using
+a number of transformations.
+
+29
+00:02:12.800 --> 00:02:16.940
+Since each transformation will need
+to read its inputs from the disk,
+
+30
+00:02:16.940 --> 00:02:20.670
+this will end up in a performance
+bottleneck due to IO.
+
+31
+00:02:22.730 --> 00:02:25.610
+Most machine learning pipelines
+are in this category,
+
+32
+00:02:25.610 --> 00:02:28.850
+making Hadoop MapReduce not ideal for
+machine learning.
+
+33
+00:02:29.900 --> 00:02:34.070
+And as I mentioned in the system overview,
+the only programming language
+
+34
+00:02:34.070 --> 00:02:38.190
+that MapReduce provides
+a native interface for is Java.
+
+35
+00:02:38.190 --> 00:02:43.500
+Although, it's possible to run Python code
+to implementation for it is more complex
+
+36
+00:02:43.500 --> 00:02:48.020
+and not very efficient especially when
+you are running not with text data, but
+
+37
+00:02:48.020 --> 00:02:49.320
+with floating point numbers.
+
+38
+00:02:50.650 --> 00:02:54.417
+The programming language issue
+also affects how interactive
+
+39
+00:02:54.417 --> 00:02:55.830
+the environment is.
+
+40
+00:02:55.830 --> 00:02:58.490
+Most data scientist
+prefer to use scripting
+
+41
+00:02:58.490 --> 00:03:02.120
+languages due to their
+interactive shell capabilities.
+
+42
+00:03:02.120 --> 00:03:06.670
+Not having such an interface in Hadoop
+really makes it difficult to use and
+
+43
+00:03:06.670 --> 00:03:07.940
+adapt my many in the field.
+
+44
+00:03:09.530 --> 00:03:13.410
+In addition in the big data
+era having support for
+
+45
+00:03:13.410 --> 00:03:16.280
+streaming data processing is a key for
+
+46
+00:03:16.280 --> 00:03:20.920
+being able to run similar analysis on
+both real time and historical data.
+
+47
+00:03:22.380 --> 00:03:26.160
+Spark came out of the need to
+extend the MapReduce framework
+
+48
+00:03:26.160 --> 00:03:28.690
+to overcome this shortcomings and
+
+49
+00:03:28.690 --> 00:03:33.080
+provide an expressive cluster computing
+environment that can provide interactive
+
+50
+00:03:33.080 --> 00:03:37.820
+querying, efficient iterative analytics
+and streaming data processing.
+
+51
+00:03:39.140 --> 00:03:42.970
+So, how does Apache Spark provide
+solutions for these problems?
+
+52
+00:03:44.810 --> 00:03:48.820
+Spark provides a very rich and
+expressive programming module that
+
+53
+00:03:48.820 --> 00:03:53.690
+gives you more than 20 highly efficient
+distributed operations or transformations.
+
+54
+00:03:54.695 --> 00:03:58.810
+Pipe-lining any of these steps in Spark
+simply takes a few lines of code.
+
+55
+00:04:00.470 --> 00:04:05.040
+Another important feature of Spark is
+the ability to run these computations
+
+56
+00:04:05.040 --> 00:04:05.550
+in memory.
+
+57
+00:04:06.610 --> 00:04:10.350
+It's ability to cache and
+process data in memory,
+
+58
+00:04:10.350 --> 00:04:14.325
+makes it significantly faster for
+iterative applications.
+
+59
+00:04:14.325 --> 00:04:19.665
+This is proven to provide a factor
+of ten or even 100 speed-up
+
+60
+00:04:19.665 --> 00:04:23.805
+in the performance of some algorithms,
+especially using large data sets.
+
+61
+00:04:25.635 --> 00:04:30.625
+Additionally, Spark provides support for
+batch and streaming workloads at once.
+
+62
+00:04:31.790 --> 00:04:36.675
+Last but not least,
+Spark provides simple APIs for Python,
+
+63
+00:04:36.675 --> 00:04:41.570
+Scala, Java and SQL programming
+through an interactive shell to
+
+64
+00:04:41.570 --> 00:04:46.590
+accomplish analytical tasks through both
+external and its built-in libraries.
+
+65
+00:04:48.750 --> 00:04:52.500
+The Spark layer diagram,
+also called Stack,
+
+66
+00:04:52.500 --> 00:04:57.250
+consists of components that build on
+top of the Spark computational engine.
+
+67
+00:04:58.510 --> 00:05:04.860
+This engine distributes and monitors tasks
+across the nodes of a commodity cluster.
+
+68
+00:05:05.960 --> 00:05:10.400
+The components built on top of this
+engine are designed to interact and
+
+69
+00:05:10.400 --> 00:05:12.320
+communicate through this common engine.
+
+70
+00:05:13.430 --> 00:05:17.520
+Any improvements to
+the underlying engine becomes
+
+71
+00:05:17.520 --> 00:05:21.980
+an improvement in the other components,
+thanks to such close interaction.
+
+72
+00:05:23.390 --> 00:05:28.790
+This also enables building applications
+that's span across these different
+
+73
+00:05:28.790 --> 00:05:33.950
+components like querying data using
+Spark SQL and applying machine learning
+
+74
+00:05:33.950 --> 00:05:39.230
+algorithms, the query results using Sparks
+machine learning library and MLlib.
+
+75
+00:05:41.120 --> 00:05:45.240
+The Spark Core is where
+the core capability is
+
+76
+00:05:45.240 --> 00:05:48.520
+of the Spark Framework are implemented.
+
+77
+00:05:48.520 --> 00:05:50.010
+This includes support for
+
+78
+00:05:50.010 --> 00:05:54.460
+distributed scheduling,
+memory management and full tolerance.
+
+79
+00:05:55.570 --> 00:05:59.460
+Interaction with different schedulers,
+like YARN and Mesos and
+
+80
+00:05:59.460 --> 00:06:04.030
+various NoSQL storage systems like
+HBase also happen through Spark Core.
+
+81
+00:06:06.020 --> 00:06:10.068
+A very important part of
+Spark Core is the APIs for
+
+82
+00:06:10.068 --> 00:06:15.422
+defining resilient distributed data sets,
+or RDDs for short.
+
+83
+00:06:15.422 --> 00:06:18.858
+RDDs are the main programming
+abstraction in Spark,
+
+84
+00:06:18.858 --> 00:06:23.910
+which carry data across many computing
+nodes in parallel, and transform it.
+
+85
+00:06:23.910 --> 00:06:29.614
+Spark SQL is the component of Spark
+that provides querying structured and
+
+86
+00:06:29.614 --> 00:06:33.763
+unstructured data through
+a common query language.
+
+87
+00:06:33.763 --> 00:06:38.830
+It can connect to many data sources and
+provide APIs to convert
+
+88
+00:06:38.830 --> 00:06:43.714
+query results to RDDs in Python,
+Scala and Java programs.
+
+89
+00:06:43.714 --> 00:06:49.780
+Spark Streaming is where data
+manipulations take place in Spark.
+
+90
+00:06:51.060 --> 00:06:57.120
+Although, not a native real-time interface
+to datastreams, Spark streaming enables
+
+91
+00:06:57.120 --> 00:07:01.140
+creating small aggregates of data coming
+from streaming data ingestion systems.
+
+92
+00:07:03.490 --> 00:07:08.000
+These aggregate datasets
+are called micro-batches and
+
+93
+00:07:08.000 --> 00:07:11.680
+they can be converted into RDBs in
+Spark Streaming for processing.
+
+94
+00:07:13.740 --> 00:07:16.740
+MLlib is Sparks native library for
+
+95
+00:07:16.740 --> 00:07:21.240
+machine learning algorithms
+as well as model evaluation.
+
+96
+00:07:21.240 --> 00:07:26.050
+All of the functionality is potentially
+ported to any programming language Sparks
+
+97
+00:07:26.050 --> 00:07:30.030
+supports and
+is designed to scale out using Spark.
+
+98
+00:07:31.190 --> 00:07:35.840
+GraphX is the graph analytics
+library of Spark and
+
+99
+00:07:35.840 --> 00:07:41.270
+enables the Vertex edge data model of
+graphs to be converted into RDDs as
+
+100
+00:07:41.270 --> 00:07:45.328
+well as providing scalable implementations
+of graph processing algorithms.
+
+101
+00:07:47.390 --> 00:07:52.655
+To summarize, through these
+layers Spark provides diverse,
+
+102
+00:07:52.655 --> 00:07:57.731
+scalable interactive management and
+analyses of big data.
+
+103
+00:07:57.731 --> 00:08:03.166
+The interactive shell enables data
+scientists to conduct exploratory
+
+104
+00:08:03.166 --> 00:08:08.416
+analysis and create big data pipelines,
+while also enabling the big
+
+105
+00:08:08.416 --> 00:08:13.941
+data system integration engineers
+to scale these analytical pipelines
+
+106
+00:08:13.941 --> 00:08:18.850
+across commodity computing clusters and
+cloud environments.
+
+1
+00:00:01.670 --> 00:00:05.470
+There are many big data
+processing systems, but
+
+2
+00:00:05.470 --> 00:00:09.260
+how do we make sense of them in order to
+take full advantage of these systems?
+
+3
+00:00:10.320 --> 00:00:13.820
+In this video,
+we will review some of them, and
+
+4
+00:00:13.820 --> 00:00:17.600
+a way to categorize big data processing
+systems as we go through our review.
+
+5
+00:00:19.290 --> 00:00:24.330
+After this video, you will be able
+to recall the Hadoop ecosystem,
+
+6
+00:00:25.490 --> 00:00:30.050
+draw a layer diagram with three layers for
+data storage, data processing and
+
+7
+00:00:30.050 --> 00:00:31.930
+workflow management.
+
+8
+00:00:31.930 --> 00:00:36.800
+Summarize an evaluation criteria for
+big data processing systems and
+
+9
+00:00:36.800 --> 00:00:41.363
+explain the properties of Hadoop,
+Spark, Flink,
+
+10
+00:00:41.363 --> 00:00:45.720
+Beam, and Storm as major big
+data processing systems.
+
+11
+00:00:46.750 --> 00:00:49.900
+In our introduction to big data course,
+
+12
+00:00:49.900 --> 00:00:53.500
+we talked about a version of
+the layer diagram for the tools
+
+13
+00:00:53.500 --> 00:00:59.030
+in the Hadoop ecosystem organized
+vertically based on the interface.
+
+14
+00:00:59.030 --> 00:01:03.225
+Lower level interface is the storage and
+scheduling on the bottom and
+
+15
+00:01:03.225 --> 00:01:06.560
+higher level languages and
+interactivity at the top.
+
+16
+00:01:07.830 --> 00:01:12.040
+Most of the tools in the Hadoop ecosystem
+are initially built to complement
+
+17
+00:01:12.040 --> 00:01:17.410
+the capabilities of Hadoop for distributed
+filesystem management using HDFS.
+
+18
+00:01:18.440 --> 00:01:23.240
+Data processing using the MapReduce
+engine, and resource scheduling and
+
+19
+00:01:23.240 --> 00:01:25.210
+negotiation using the YARN engine.
+
+20
+00:01:26.310 --> 00:01:30.170
+Over time,
+a number of new projects were built
+
+21
+00:01:30.170 --> 00:01:35.150
+either to add to these
+complimentary tools or to handle
+
+22
+00:01:35.150 --> 00:01:39.750
+additional types of big data management
+and processing not available in Hadoop.
+
+23
+00:01:41.520 --> 00:01:46.250
+Arguably, the most important
+change to Hadoop over time
+
+24
+00:01:46.250 --> 00:01:51.210
+was the separation of YARN from
+the MapReduce programming model
+
+25
+00:01:51.210 --> 00:01:54.510
+to solely handle resource
+management concerns.
+
+26
+00:01:55.780 --> 00:02:00.660
+This allowed for Hadoop to be extensible
+to different programming models.
+
+27
+00:02:00.660 --> 00:02:04.950
+And enabled the development of
+a number of processing engines for
+
+28
+00:02:04.950 --> 00:02:06.920
+batch and stream processing.
+
+29
+00:02:08.250 --> 00:02:12.580
+Another way to look at the vast number of
+tools that have been added to the Hadoop
+
+30
+00:02:12.580 --> 00:02:15.170
+ecosystem, is from the point of view of
+
+31
+00:02:15.170 --> 00:02:17.820
+their functionality in the big
+data processing pipeline.
+
+32
+00:02:18.870 --> 00:02:24.500
+Simply put, these associate to three
+distinct layers for data management and
+
+33
+00:02:24.500 --> 00:02:31.380
+storage, data processing, and resource
+coordination and workflow management.
+
+34
+00:02:32.550 --> 00:02:37.760
+In our second course,
+we talked about the bottom layer
+
+35
+00:02:37.760 --> 00:02:42.770
+in this diagram in detail,
+namely the data management and storage.
+
+36
+00:02:44.600 --> 00:02:50.440
+While this layer includs Hadoop's HDFS
+there are a number of other systems that
+
+37
+00:02:50.440 --> 00:02:56.250
+rely on HDFS as a file system or implement
+their own no SQL storage options.
+
+38
+00:02:58.290 --> 00:03:02.940
+As big data can have a variety of
+structure, semi structured and
+
+39
+00:03:02.940 --> 00:03:07.858
+unstructured formats, and
+gets analyzed through a variety of tools,
+
+40
+00:03:07.858 --> 00:03:12.890
+many tools were introduced to
+fit this variety of needs.
+
+41
+00:03:12.890 --> 00:03:15.180
+We call these big data management systems.
+
+42
+00:03:18.040 --> 00:03:22.630
+We reviewed redis and
+Aerospike as key value stores,
+
+43
+00:03:22.630 --> 00:03:25.670
+where each data item is
+identified with a unique key.
+
+44
+00:03:27.150 --> 00:03:30.827
+We got some practical
+experience with Lucene and
+
+45
+00:03:30.827 --> 00:03:35.048
+Gephi as vector and
+graph data stores, respectively.
+
+46
+00:03:36.800 --> 00:03:40.505
+We also talked about Vertica
+as a column store database,
+
+47
+00:03:40.505 --> 00:03:44.300
+where information is stored
+in columns rather than rows.
+
+48
+00:03:45.880 --> 00:03:49.070
+Cassandra and
+Hbase are also in this category.
+
+49
+00:03:50.270 --> 00:03:56.402
+Finally, we introduce Solr and
+Asterisk DB for managing unstructured and
+
+50
+00:03:56.402 --> 00:04:02.260
+semi-structured text, and
+mongoDB as a document store.
+
+51
+00:04:02.260 --> 00:04:07.547
+The processing layer is where these
+different varieties of data gets
+
+52
+00:04:07.547 --> 00:04:14.030
+retrieved, integrated, and analyzed,
+which is the primary focus of this class.
+
+53
+00:04:16.232 --> 00:04:19.061
+In the integration and processing layer
+
+54
+00:04:19.061 --> 00:04:23.966
+we roughly refer to the tools that
+are built on top of the HDFS and YARN,
+
+55
+00:04:23.966 --> 00:04:28.480
+although some of them work with
+other storage and file systems.
+
+56
+00:04:30.180 --> 00:04:37.140
+YARN is a significant enabler of many of
+these tools making a number of batch and
+
+57
+00:04:37.140 --> 00:04:42.111
+stream processing engines like Storm,
+Spark, Flink and being possible.
+
+58
+00:04:43.700 --> 00:04:47.340
+We will revisit these processing
+engines and explain why we have so
+
+59
+00:04:47.340 --> 00:04:48.890
+many later in this lecture.
+
+60
+00:04:49.970 --> 00:04:54.940
+This layer also includes tools like Hive,
+or Spark SQL, for
+
+61
+00:04:54.940 --> 00:04:59.120
+bringing a query interface
+on top of the storage layer.
+
+62
+00:04:59.120 --> 00:05:04.280
+Pig, for scripting simple big data
+pipelines using the MapReduce framework.
+
+63
+00:05:04.280 --> 00:05:09.009
+And a number of specialized analytical
+libraries for machine learning and
+
+64
+00:05:09.009 --> 00:05:14.262
+graph analytics, like Giraph as GraphX of
+Spark are examples of such libraries for
+
+65
+00:05:14.262 --> 00:05:15.551
+graph processing.
+
+66
+00:05:15.551 --> 00:05:20.187
+And Mahout on top of the Hadoop stack and
+MLlib of Spark are two options for
+
+67
+00:05:20.187 --> 00:05:21.480
+machine learning.
+
+68
+00:05:22.640 --> 00:05:26.760
+Although we have a basic overview of
+graph processing and machine learning for
+
+69
+00:05:26.760 --> 00:05:31.700
+big data analytics later in this course,
+we won't go into the details here.
+
+70
+00:05:31.700 --> 00:05:36.530
+Instead, we will have a dedicated
+course on each of them
+
+71
+00:05:36.530 --> 00:05:38.670
+later in this specialization.
+
+72
+00:05:38.670 --> 00:05:46.720
+The third and top layer in our diagram is
+the coordination and management layer.
+
+73
+00:05:46.720 --> 00:05:50.890
+This is where integration,
+scheduling, coordination, and
+
+74
+00:05:50.890 --> 00:05:56.410
+monitoring of applications across many
+tools in the bottom two layers take place.
+
+75
+00:05:57.440 --> 00:06:01.870
+This layer is also where the results of
+the big data analysis gets communicated to
+
+76
+00:06:01.870 --> 00:06:07.630
+other programs, websites, visualization
+tools, and business intelligence tools.
+
+77
+00:06:07.630 --> 00:06:12.830
+Workflow management systems help to
+develop automated solutions that can
+
+78
+00:06:12.830 --> 00:06:17.960
+manage and coordinate the process of
+combining data management and analytical
+
+79
+00:06:17.960 --> 00:06:23.264
+tests in a big data pipeline, as
+a configurable, structured set of steps.
+
+80
+00:06:25.020 --> 00:06:29.544
+The workflow driven thinking also
+matches this basic process of data
+
+81
+00:06:29.544 --> 00:06:31.970
+science that we overviewed before.
+
+82
+00:06:33.220 --> 00:06:37.420
+Oozie is an example of a workflow
+scheduler that can interact with
+
+83
+00:06:37.420 --> 00:06:40.295
+many of the tools in the integration and
+processing layer.
+
+84
+00:06:41.690 --> 00:06:46.390
+Zookeeper is the resource coordination and
+monitoring tool and
+
+85
+00:06:46.390 --> 00:06:50.990
+manages and coordinates all these tools
+and middleware named after animals.
+
+86
+00:06:52.460 --> 00:06:56.429
+Although virtual management is
+my personal research area and
+
+87
+00:06:56.429 --> 00:06:58.793
+I talk more about it in other venues,
+
+88
+00:06:58.793 --> 00:07:03.999
+in this specialization we focus mainly
+on big data integration and processing.
+
+89
+00:07:03.999 --> 00:07:09.450
+And we will not have a specific
+lecture on this layer in this course.
+
+90
+00:07:09.450 --> 00:07:13.430
+We give you a reading on big data
+workflows after this video as
+
+91
+00:07:13.430 --> 00:07:16.750
+further information and
+a starting point for the subject.
+
+1
+00:00:02.380 --> 00:00:06.830
+In data integration and
+processing pipelines,
+
+2
+00:00:06.830 --> 00:00:11.910
+data goes through a number of operations,
+which can apply
+
+3
+00:00:11.910 --> 00:00:17.960
+a specific function to it, can work
+the data from one format to another,
+
+4
+00:00:17.960 --> 00:00:24.097
+join data with other data sets, or
+filter some values out of a data set.
+
+5
+00:00:25.240 --> 00:00:31.350
+We generally refer to these as
+transformations, some of which can also
+
+6
+00:00:31.350 --> 00:00:36.950
+be specially named aggregations as you
+have seen in Amarnath's earlier lectures.
+
+7
+00:00:36.950 --> 00:00:43.010
+In this video we will reveal some common
+transformation operations that we see
+
+8
+00:00:43.010 --> 00:00:48.490
+in these pipelines, some of which,
+we refer to as data parallel patterns.
+
+9
+00:00:50.575 --> 00:00:55.265
+After this video you will
+be able to list common data
+
+10
+00:00:55.265 --> 00:01:00.355
+transformations within big data pipelines,
+and design
+
+11
+00:01:00.355 --> 00:01:05.235
+a conceptual data processing pipeline
+using the basic data transformations.
+
+12
+00:01:07.551 --> 00:01:12.770
+Simply speaking, transformations
+are higher order functions or
+
+13
+00:01:12.770 --> 00:01:17.960
+tools to convert your data from
+one form to another, just like
+
+14
+00:01:17.960 --> 00:01:23.530
+we would use tools at the wood shop
+to transform logs into furniture.
+
+15
+00:01:24.900 --> 00:01:27.630
+When we look at big data
+pipelines used today,
+
+16
+00:01:28.650 --> 00:01:32.840
+map is probably the most
+common transformation we find.
+
+17
+00:01:34.340 --> 00:01:39.230
+The map operation is one of the basic
+building blocks of the big data pipeline.
+
+18
+00:01:40.760 --> 00:01:46.200
+When you want to apply a process
+to each member of a collection,
+
+19
+00:01:46.200 --> 00:01:49.370
+such as adding 10% bonus to each
+
+20
+00:01:49.370 --> 00:01:53.770
+person's salary on a given month a map
+operation comes in very handy.
+
+21
+00:01:55.520 --> 00:02:00.490
+It takes your process and
+understand that it is required to perform
+
+22
+00:02:00.490 --> 00:02:04.370
+the same operation or
+process to each member of the set.
+
+23
+00:02:06.610 --> 00:02:10.970
+The figure on the left
+here shows the application
+
+24
+00:02:10.970 --> 00:02:15.396
+of a map function to data
+depicted in grey color.
+
+25
+00:02:15.396 --> 00:02:22.800
+Here colors red, blue, and
+yellow are keys to identify each data set.
+
+26
+00:02:24.480 --> 00:02:31.130
+As you see, each data set is executed
+separately even for the same colored key.
+
+27
+00:02:35.010 --> 00:02:39.944
+The reduce operation helps you then
+to collectively apply the same
+
+28
+00:02:39.944 --> 00:02:42.860
+process to objects of similar nature.
+
+29
+00:02:44.680 --> 00:02:50.030
+For example, when you want to add your
+monthly spending in different categories,
+
+30
+00:02:50.030 --> 00:02:56.350
+like grocery, fuel, and dining out,
+the reduce operation is very useful.
+
+31
+00:02:58.500 --> 00:03:01.900
+In our figure here on the top left,
+
+32
+00:03:01.900 --> 00:03:06.472
+we see that data sets in
+grey with the same color
+
+33
+00:03:06.472 --> 00:03:11.760
+are keys grouped together
+using a reduced function.
+
+34
+00:03:12.940 --> 00:03:16.320
+Reds together, blues together,
+and yellows together.
+
+35
+00:03:18.780 --> 00:03:23.579
+It would be a good idea to check out
+the Spark word count hands-on to see
+
+36
+00:03:23.579 --> 00:03:28.400
+how map and reduce can be used
+effectively for getting things done.
+
+37
+00:03:29.560 --> 00:03:34.550
+Map and reduce are types of
+transformations that work on a single
+
+38
+00:03:34.550 --> 00:03:39.460
+list of key and data pairings just
+like we see on the left of our figure.
+
+39
+00:03:42.460 --> 00:03:47.520
+Now let's consider a scenario where
+we have two data sets identified
+
+40
+00:03:47.520 --> 00:03:53.090
+by the same keys just like the two
+sets and colors in our diagram.
+
+41
+00:03:55.140 --> 00:04:00.120
+Many operations have such needs where
+we have to look at all the pairings of
+
+42
+00:04:00.120 --> 00:04:04.740
+all key value pairs,
+just like crossing two matrices.
+
+43
+00:04:06.900 --> 00:04:11.800
+For a practical example
+Imagine you have two teams,
+
+44
+00:04:11.800 --> 00:04:16.870
+a sales team with two people, and
+an operations team with four people.
+
+45
+00:04:18.050 --> 00:04:22.940
+In an event you would want each
+person to meet every other person.
+
+46
+00:04:24.030 --> 00:04:27.210
+In this case, a cross product, or
+
+47
+00:04:27.210 --> 00:04:32.200
+a cartesian product, becomes a good
+choice for organizing the event and
+
+48
+00:04:32.200 --> 00:04:36.000
+sharing each pairs' meeting location and
+travel time to them.
+
+49
+00:04:37.770 --> 00:04:43.470
+In a cross or cartesian product operation,
+each data partition gets
+
+50
+00:04:43.470 --> 00:04:49.450
+paired with all other data partitions,
+regardless of its key.
+
+51
+00:04:49.450 --> 00:04:52.370
+This sometimes gets
+referred to as all pairs.
+
+52
+00:04:54.990 --> 00:05:00.160
+Now add to the cross product by
+just grouping together the data
+
+53
+00:05:00.160 --> 00:05:05.490
+partitions with the same key,
+just like the red data.
+
+54
+00:05:07.090 --> 00:05:09.128
+And the yellow data partitions here.
+
+55
+00:05:12.005 --> 00:05:16.930
+This is a typical match or join operation.
+
+56
+00:05:16.930 --> 00:05:22.190
+As we see in the figure here, match
+is very similar to the cross product,
+
+57
+00:05:22.190 --> 00:05:25.760
+except that it is more
+selective in forming pairs.
+
+58
+00:05:26.810 --> 00:05:29.420
+Every pair must have something in common.
+
+59
+00:05:30.510 --> 00:05:34.920
+This something in common is
+usually referred to as a key.
+
+60
+00:05:36.490 --> 00:05:40.330
+For example,
+each person in your operations team and
+
+61
+00:05:40.330 --> 00:05:43.510
+sales team is assigned
+to a different product.
+
+62
+00:05:43.510 --> 00:05:48.500
+You only want those people to meet
+who are working on the same product.
+
+63
+00:05:48.500 --> 00:05:52.490
+In this case your key is product.
+
+64
+00:05:52.490 --> 00:05:55.290
+And you can perform and
+match operation and
+
+65
+00:05:55.290 --> 00:05:59.670
+send e-mails to those people
+who share a common product.
+
+66
+00:06:01.530 --> 00:06:06.756
+The number of e-mails is likely to be less
+than when you performed a cartesian or
+
+67
+00:06:06.756 --> 00:06:10.980
+a cross product, therefore reducing
+the cost of the operation.
+
+68
+00:06:12.270 --> 00:06:19.170
+In a match operation, only the keys
+with data in both sets get joined,
+
+69
+00:06:20.240 --> 00:06:23.920
+and become a part of the final
+output of the transformation.
+
+70
+00:06:26.600 --> 00:06:31.600
+Now let's consider listing
+the data sets with all the keys,
+
+71
+00:06:31.600 --> 00:06:33.790
+even if they don't exist in both sets.
+
+72
+00:06:35.850 --> 00:06:40.550
+Consider a scenario where you
+want to do brainstorming sessions
+
+73
+00:06:40.550 --> 00:06:43.690
+of people from operations and sales, and
+
+74
+00:06:43.690 --> 00:06:47.560
+get people who work on the same
+products in the same rooms.
+
+75
+00:06:50.390 --> 00:06:52.750
+A co-group operation will do this for you.
+
+76
+00:06:54.290 --> 00:06:58.160
+You give it a product name
+as they key to work with and
+
+77
+00:06:58.160 --> 00:07:01.530
+the two tables, the sales team and
+operations team.
+
+78
+00:07:02.800 --> 00:07:07.740
+The co-group will create groups
+which contain team members
+
+79
+00:07:07.740 --> 00:07:13.690
+working on common products even if a
+product doesn't exist in one of the sets.
+
+80
+00:07:16.520 --> 00:07:20.520
+The last operation we will
+see is the filter operation.
+
+81
+00:07:20.520 --> 00:07:23.760
+Filter works much like a test
+
+82
+00:07:23.760 --> 00:07:28.340
+where only elements that pass
+a test are shown in the output.
+
+83
+00:07:30.040 --> 00:07:34.770
+Consider as a set that contains teams and
+a number of members in their teams.
+
+84
+00:07:35.890 --> 00:07:38.930
+If your game requires people to pair up,
+
+85
+00:07:38.930 --> 00:07:42.570
+you may want to select teams which
+have an even number of members.
+
+86
+00:07:43.570 --> 00:07:49.130
+In this case, you can create a test
+that only passes the teams which have
+
+87
+00:07:49.130 --> 00:07:56.690
+an even number of team members shown as
+divided by 2 with 0 in the remainder.
+
+88
+00:07:59.608 --> 00:08:04.147
+The real effectiveness of the basic
+transformation we saw here
+
+89
+00:08:04.147 --> 00:08:09.025
+is in pipelining them in a way that
+helps you to solve your specific
+
+90
+00:08:09.025 --> 00:08:13.819
+problem just as you would perform
+a series of tasks on a real block
+
+91
+00:08:13.819 --> 00:08:18.610
+of wood to make a fine piece of
+woodwork that you can use to steer your
+
+92
+00:08:18.610 --> 00:08:22.495
+ship, which in this case is
+your business or research.
+
+1
+00:00:00.550 --> 00:00:03.512
+Now that we revealed all three layers,
+
+2
+00:00:03.512 --> 00:00:08.556
+we are ready to come back to
+the Integration and Processing layer.
+
+3
+00:00:08.556 --> 00:00:12.652
+Just a simple Google search for
+Big Data Processing Pipelines
+
+4
+00:00:12.652 --> 00:00:17.378
+will bring a vast number of pipelines
+with large number of technologies
+
+5
+00:00:17.378 --> 00:00:22.041
+that support scalable data cleaning,
+preparation, and analysis.
+
+6
+00:00:24.091 --> 00:00:28.286
+How do we make sense of it all to
+make sure we use the right tools for
+
+7
+00:00:28.286 --> 00:00:29.540
+our application?
+
+8
+00:00:30.660 --> 00:00:35.490
+We will continue our lecture to review
+a set of evaluation criteria for
+
+9
+00:00:35.490 --> 00:00:40.750
+these systems and some of the big data
+processing systems based on this criteria.
+
+10
+00:00:42.250 --> 00:00:47.850
+Depending on the resources we have access
+to and characteristics of our application,
+
+11
+00:00:47.850 --> 00:00:51.130
+we apply several
+considerations to evaluate and
+
+12
+00:00:51.130 --> 00:00:52.920
+pick a software stack for big data.
+
+13
+00:00:54.010 --> 00:00:59.410
+Of these, first one we consider
+is the Execution Model,
+
+14
+00:00:59.410 --> 00:01:04.450
+and the expressivity of it to support for
+various transformations of batch or
+
+15
+00:01:04.450 --> 00:01:07.430
+streaming data, or
+sometimes interactive computing.
+
+16
+00:01:08.920 --> 00:01:12.550
+Semantics of streaming,
+including exactly once or
+
+17
+00:01:12.550 --> 00:01:17.620
+at least one processing for each event, or
+being able to keep the state of the data,
+
+18
+00:01:17.620 --> 00:01:21.680
+is an important concern for
+this execution model.
+
+19
+00:01:21.680 --> 00:01:26.110
+Latency is another important criteria,
+depending on the application.
+
+20
+00:01:27.210 --> 00:01:30.760
+Having a low latency system
+is very important for
+
+21
+00:01:30.760 --> 00:01:34.345
+applications like online gaming and
+hazards management.
+
+22
+00:01:34.345 --> 00:01:38.340
+Whereas most applications
+are less time critical,
+
+23
+00:01:38.340 --> 00:01:43.800
+like search engine indexing, and would
+be fine with a batch processing ability.
+
+24
+00:01:44.820 --> 00:01:49.760
+Scalability for both small and
+large datasets and different
+
+25
+00:01:49.760 --> 00:01:54.070
+analytical methods and algorithms,
+is also an important evaluation criteria.
+
+26
+00:01:55.290 --> 00:01:59.430
+As well as support for
+different programming language
+
+27
+00:01:59.430 --> 00:02:03.470
+of the libraries used by the analytical
+tools that we have access to.
+
+28
+00:02:04.700 --> 00:02:09.030
+Finally, while all big data
+tools provide fault tolerance,
+
+29
+00:02:09.030 --> 00:02:14.390
+the mechanics of how the fault tolerance is
+handled is an important issue to consider.
+
+30
+00:02:15.790 --> 00:02:18.900
+Let's review five of
+the big data processing
+
+31
+00:02:18.900 --> 00:02:23.390
+engines supported by the Apache Foundation
+using this evaluation criteria.
+
+32
+00:02:25.300 --> 00:02:30.230
+The MapReduce implementation of
+Hadoop provides a batch execution
+
+33
+00:02:30.230 --> 00:02:35.230
+model where the data from HDFS gets
+loaded into mappers before processing.
+
+34
+00:02:36.440 --> 00:02:39.380
+There is no in-memory processing support,
+
+35
+00:02:39.380 --> 00:02:44.490
+meaning the mappers write the data on
+files before the reducers can read it,
+
+36
+00:02:44.490 --> 00:02:48.250
+resulting in a high-latency and
+less scalable execution.
+
+37
+00:02:49.960 --> 00:02:53.690
+This also hinders
+the performance of iterative and
+
+38
+00:02:53.690 --> 00:02:58.827
+interactive applications that require many
+steps of transformations using MapReduce.
+
+39
+00:03:01.150 --> 00:03:04.835
+Although the only native
+programming interface for
+
+40
+00:03:04.835 --> 00:03:09.870
+MapReduce is in Java, other programming
+languages like Python provide modules or
+
+41
+00:03:09.870 --> 00:03:14.370
+libraries for Hadoop MapReduce
+programming, however with less efficiency.
+
+42
+00:03:16.180 --> 00:03:20.730
+Data replication is the primary
+method of fault tolerance,
+
+43
+00:03:20.730 --> 00:03:26.270
+which in turn affects the scalability and
+execution speed further.
+
+44
+00:03:26.270 --> 00:03:29.560
+Spark was built to support iterative and
+
+45
+00:03:29.560 --> 00:03:34.730
+interactive big data processing
+pipelines efficiently using an in-memory
+
+46
+00:03:34.730 --> 00:03:39.800
+structure called Resilient Distributed
+Datasets, or shortly, RDDs.
+
+47
+00:03:41.040 --> 00:03:45.860
+In addition to map and reduce operations,
+it provides support for
+
+48
+00:03:45.860 --> 00:03:49.890
+a range of transformation
+operations like join and filter.
+
+49
+00:03:49.890 --> 00:03:55.711
+Any pipeline of transformations can
+be applied to these RDD's in-memory,
+
+50
+00:03:55.711 --> 00:04:00.829
+making Spark's performance very high for
+iterative processing.
+
+51
+00:04:02.538 --> 00:04:07.480
+The RDD extraction is also designed
+to handle fault tolerance with
+
+52
+00:04:07.480 --> 00:04:09.230
+less impact on performance.
+
+53
+00:04:10.886 --> 00:04:13.170
+In addition to HDFS,
+
+54
+00:04:13.170 --> 00:04:18.200
+Spark can read data from many storage
+platforms and it provides support for
+
+55
+00:04:18.200 --> 00:04:24.155
+streaming data applications using
+a technique called micro-batching.
+
+56
+00:04:24.155 --> 00:04:30.250
+Its latency can be on the order of
+seconds depending on the batch size,
+
+57
+00:04:30.250 --> 00:04:34.030
+which is relatively slower compared
+to native streaming platforms.
+
+58
+00:04:35.600 --> 00:04:40.320
+Spark has support for a number of
+programming languages, including Scala and
+
+59
+00:04:40.320 --> 00:04:44.260
+Python as the most popular ones,
+as well as built-in libraries for
+
+60
+00:04:44.260 --> 00:04:46.500
+graph processing and machine learning.
+
+61
+00:04:47.530 --> 00:04:51.415
+Although Flink has very
+similar transformations and
+
+62
+00:04:51.415 --> 00:04:55.890
+in-memory data extractions with Spark,
+it provides direct support for
+
+63
+00:04:55.890 --> 00:04:59.517
+streaming data,
+making it a lower-latency framework.
+
+64
+00:05:00.620 --> 00:05:04.720
+It provides connection interfaces to
+streaming data ingestion engines like
+
+65
+00:05:04.720 --> 00:05:06.020
+Kafka and Flume.
+
+66
+00:05:07.460 --> 00:05:11.340
+Flink supports application
+programming interfaces in Java and
+
+67
+00:05:11.340 --> 00:05:12.966
+Scala just like Spark.
+
+68
+00:05:12.966 --> 00:05:17.760
+Starting with it's original
+version called Stratosphere,
+
+69
+00:05:17.760 --> 00:05:23.010
+Flink had it's own execution engine
+called Nephele, and had an ability
+
+70
+00:05:23.010 --> 00:05:27.670
+to run both on Hadoop and also separately
+in its own execution environment.
+
+71
+00:05:29.060 --> 00:05:33.110
+In addition to map and reduce,
+Flink provides abstractions for
+
+72
+00:05:33.110 --> 00:05:37.055
+other data parallel database
+patterns like join and group by.
+
+73
+00:05:39.210 --> 00:05:44.010
+One of the biggest advantage of using
+Flink comes from it's optimizer
+
+74
+00:05:44.010 --> 00:05:47.460
+to pick and apply the best pattern and
+execution strategy.
+
+75
+00:05:48.490 --> 00:05:52.080
+There has been experiments comparing
+fault tolerance features of Flink
+
+76
+00:05:52.080 --> 00:05:56.720
+to those of Sparks, which conclude
+that Sparks slightly better for Spark.
+
+77
+00:05:57.840 --> 00:06:03.080
+The Beam system, from Google,
+is a relatively new system for
+
+78
+00:06:03.080 --> 00:06:06.890
+batch and stream processing with
+a data flow programming model.
+
+79
+00:06:08.080 --> 00:06:13.090
+It initially used Google's own Cloud data
+flow as an execution environment, but
+
+80
+00:06:13.090 --> 00:06:17.228
+Spark and Flink backends for
+it have been implemented recently.
+
+81
+00:06:17.228 --> 00:06:22.370
+It's a low-latency environment with
+high reviews on fault tolerance.
+
+82
+00:06:23.460 --> 00:06:28.456
+It currently provides application
+programming interfaces in Java and
+
+83
+00:06:28.456 --> 00:06:31.295
+Scala, and a Python SDK is in the works.
+
+84
+00:06:31.295 --> 00:06:34.532
+SDK means software development kit.
+
+85
+00:06:34.532 --> 00:06:40.690
+Beam provides a very strong streaming and
+windowing framework for streaming data.
+
+86
+00:06:40.690 --> 00:06:45.417
+And it is highly scalable and reliable,
+allowing it to make trade-off
+
+87
+00:06:45.417 --> 00:06:49.690
+decisions between accuracy,
+speed, and cost of processing.
+
+88
+00:06:51.710 --> 00:06:53.730
+Storm has been designed for
+
+89
+00:06:53.730 --> 00:06:58.960
+stream processing in real
+time with very low-latency.
+
+90
+00:06:58.960 --> 00:07:03.930
+It defined input stream interface
+abstractions called spouts, and
+
+91
+00:07:03.930 --> 00:07:06.080
+computation abstractions called bolts.
+
+92
+00:07:07.420 --> 00:07:11.700
+Spouts and bolts can be pipelined
+together using a data flow approach.
+
+93
+00:07:11.700 --> 00:07:15.430
+That data gets queued until
+the computation acknowledges
+
+94
+00:07:15.430 --> 00:07:16.190
+the receipt of it.
+
+95
+00:07:18.310 --> 00:07:21.080
+A master node tracks running jobs and
+
+96
+00:07:21.080 --> 00:07:24.860
+ensures all data is processed
+by the computations on workers.
+
+97
+00:07:26.430 --> 00:07:31.952
+Nathan Mars, the lead developer for
+Storm, built the Lambda Architecture
+
+98
+00:07:31.952 --> 00:07:37.744
+using Storm for stream processing and
+Hadoop MapReduce for batch processing.
+
+99
+00:07:40.660 --> 00:07:45.740
+The Lambda Architecture
+originally used Storm for
+
+100
+00:07:45.740 --> 00:07:50.229
+speed layer and Hadoop and
+HBase for batch and
+
+101
+00:07:50.229 --> 00:07:54.490
+serving layers, as seen in this diagram.
+
+102
+00:07:55.840 --> 00:08:00.760
+However, it was later used as a more
+general framework that can combine
+
+103
+00:08:00.760 --> 00:08:06.990
+the results of stream and batch processing
+executed in multiple big data systems.
+
+104
+00:08:06.990 --> 00:08:12.700
+This diagram shows a generalized Lambda
+Architecture containing some of the tools
+
+105
+00:08:12.700 --> 00:08:19.930
+we discussed earlier, including using
+Spark for both batch and speed layers.
+
+106
+00:08:21.540 --> 00:08:25.530
+In this course, we picked Spark
+as a big data integration and
+
+107
+00:08:25.530 --> 00:08:30.600
+processing environment since it supports
+most of our evaluation criteria.
+
+108
+00:08:30.600 --> 00:08:35.862
+And this hybrid data processing
+architecture using built-in data querying,
+
+109
+00:08:35.862 --> 00:08:38.619
+streaming, and analytical libraries.
+
+110
+00:08:38.619 --> 00:08:43.586
+We will continue our discussion with
+Spark and hands-on exercises in Spark.

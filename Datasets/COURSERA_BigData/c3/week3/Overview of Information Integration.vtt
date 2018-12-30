@@ -1,0 +1,1198 @@
+WEBVTT
+
+1
+00:00:01.860 --> 00:00:03.350
+Welcome.
+
+2
+00:00:03.350 --> 00:00:08.570
+In this short module we'll talk about
+information integration which refers
+
+3
+00:00:08.570 --> 00:00:13.470
+to the problem of using many different
+information sources to accomplish a task.
+
+4
+00:00:14.780 --> 00:00:19.939
+In this module, we'll look at the problems
+and solutions through a few use cases.
+
+5
+00:00:22.330 --> 00:00:27.830
+So after this video, you'll be able to
+explain the data integration problem,
+
+6
+00:00:29.250 --> 00:00:34.930
+define integrated views and schema
+mapping, describe the impact of increasing
+
+7
+00:00:34.930 --> 00:00:40.306
+the number of data sources, appreciate
+the need to use data compression,
+
+8
+00:00:40.306 --> 00:00:46.910
+And describe record linking,
+data exchange, and data fusion tasks.
+
+9
+00:00:50.008 --> 00:00:54.230
+Our first use case starts with
+an example given at an IBM website for
+
+10
+00:00:54.230 --> 00:00:55.760
+their information integration products.
+
+11
+00:00:57.150 --> 00:01:00.580
+It represents a very common
+scenario in today's business world.
+
+12
+00:01:02.100 --> 00:01:06.040
+Due to the changing market dynamics,
+companies
+
+13
+00:01:06.040 --> 00:01:09.620
+are always selling off a part of their
+company or acquiring another company.
+
+14
+00:01:11.330 --> 00:01:15.950
+As these mergers and acquisitions happen,
+databases which were developed and
+
+15
+00:01:15.950 --> 00:01:19.900
+stored separately in different companies
+would now need to be brought together.
+
+16
+00:01:21.680 --> 00:01:23.640
+Now take a minute to read this case.
+
+17
+00:01:28.134 --> 00:01:32.644
+This is the case of an expanding financial
+services group that's growing its customer
+
+18
+00:01:32.644 --> 00:01:34.260
+base in different countries.
+
+19
+00:01:36.420 --> 00:01:41.980
+And all they want is a single view
+of their entire customer base.
+
+20
+00:01:41.980 --> 00:01:46.590
+In other words, it does not matter
+which previous company originally had
+
+21
+00:01:46.590 --> 00:01:51.920
+the customers, Suncorp-Metway
+want to consolidate all customer
+
+22
+00:01:51.920 --> 00:01:58.130
+information as if they were
+in one single database.
+
+23
+00:01:58.130 --> 00:02:02.223
+And in reality, of course, they may
+not want to buy a huge machine and
+
+24
+00:02:02.223 --> 00:02:05.340
+migrate every subsidiary
+company's data into it.
+
+25
+00:02:06.680 --> 00:02:12.338
+What they're looking to create is possibly
+a software solution which would make all
+
+26
+00:02:12.338 --> 00:02:18.710
+customer-related data to appear as though
+they were together as a single database.
+
+27
+00:02:18.710 --> 00:02:22.290
+This software solution is called
+an information integration system.
+
+28
+00:02:23.590 --> 00:02:27.920
+This will help them ensure that they have
+a uniform set of marketing campaigns for
+
+29
+00:02:27.920 --> 00:02:29.040
+all their customers.
+
+30
+00:02:31.780 --> 00:02:36.893
+Let's try to see, hypothetically, of
+course, what might be involved in creating
+
+31
+00:02:36.893 --> 00:02:41.511
+this combined data and what kind of use
+the integrated data might result in.
+
+32
+00:02:41.511 --> 00:02:44.330
+So we first create
+a hypothetical scenario.
+
+33
+00:02:45.552 --> 00:02:48.920
+Although Suncorp have a large
+number of data sources,
+
+34
+00:02:48.920 --> 00:02:51.290
+we will take a much simpler situation and
+
+35
+00:02:51.290 --> 00:02:55.610
+have only two data sources from two
+different financial service companies.
+
+36
+00:02:57.010 --> 00:02:58.190
+The first data source,
+
+37
+00:02:58.190 --> 00:03:03.090
+which is an insurance company that manages
+it's data with a relation of DBMS,
+
+38
+00:03:03.090 --> 00:03:08.660
+this database has nine tables where the
+primary object of information is a policy.
+
+39
+00:03:10.040 --> 00:03:13.090
+The company offers many
+different types of policies
+
+40
+00:03:13.090 --> 00:03:16.380
+sold to individual people by their agents.
+
+41
+00:03:16.380 --> 00:03:20.740
+Now as it's true for all insurance
+companies, policyholders pay their monthly
+
+42
+00:03:20.740 --> 00:03:26.130
+dues, and sometimes people make claims
+against their insurance policies.
+
+43
+00:03:26.130 --> 00:03:30.080
+When they do, the details of the claims
+are maintained in the database.
+
+44
+00:03:31.170 --> 00:03:35.220
+These claims can belong to different
+categories, and when the claims have
+
+45
+00:03:35.220 --> 00:03:39.780
+paid to the claimants, the transaction
+is recorded in the transactions table.
+
+46
+00:03:41.350 --> 00:03:43.640
+As we have done several times now,
+
+47
+00:03:43.640 --> 00:03:46.930
+the primary keys of the table
+are the underlined attributes here.
+
+48
+00:03:48.900 --> 00:03:51.000
+The second company in
+our example is a bank,
+
+49
+00:03:52.060 --> 00:03:53.850
+which also uses a relational database.
+
+50
+00:03:55.240 --> 00:03:59.500
+In this bank, both individuals and
+businesses called corporations here,
+
+51
+00:03:59.500 --> 00:04:00.140
+can have accounts.
+
+52
+00:04:02.900 --> 00:04:05.050
+Now accounts can be of different types.
+
+53
+00:04:05.050 --> 00:04:07.900
+For example, a money market account
+is different from a savings account.
+
+54
+00:04:09.330 --> 00:04:13.910
+A bank also maintains its transactions
+in a table, which can be really large.
+
+55
+00:04:15.620 --> 00:04:20.050
+But the dispute in a bank record
+case happens when the bank is
+
+56
+00:04:20.050 --> 00:04:24.690
+charged a customer, or the customer has
+declined responsibility of the charge.
+
+57
+00:04:24.690 --> 00:04:29.030
+This can happen, for example, if a
+customer's Internet account was hacked or
+
+58
+00:04:29.030 --> 00:04:30.260
+a debit card got stolen.
+
+59
+00:04:31.700 --> 00:04:33.800
+The bank keeps a record
+of these anomalies and
+
+60
+00:04:33.800 --> 00:04:38.260
+fraudulent events in a disputes table,
+all right.
+
+61
+00:04:38.260 --> 00:04:42.730
+Let's see what happens after the data
+from these two subsidiary companies
+
+62
+00:04:42.730 --> 00:04:43.640
+are integrated.
+
+63
+00:04:46.410 --> 00:04:50.970
+After the merger the company wants to
+do a promotional goodwill activity.
+
+64
+00:04:51.970 --> 00:04:54.490
+They would like to offer
+a small discount to their
+
+65
+00:04:54.490 --> 00:04:59.130
+insurance policyholders if they're also
+customers of the newly acquired bank.
+
+66
+00:05:00.350 --> 00:05:02.650
+How do you identify these customers?
+
+67
+00:05:02.650 --> 00:05:03.960
+Let's see.
+
+68
+00:05:03.960 --> 00:05:08.882
+In other words, we need to use the table
+shown on the left to create the table
+
+69
+00:05:08.882 --> 00:05:12.103
+shown on the right called
+discount candidates.
+
+70
+00:05:12.103 --> 00:05:16.547
+One is to create a yellow tables from
+the insurance company database, and
+
+71
+00:05:16.547 --> 00:05:21.351
+the blue table from the bank database,
+and then join them to construct the table
+
+72
+00:05:21.351 --> 00:05:25.960
+with a common customer ID, and both
+the policyKey and bank account number.
+
+73
+00:05:27.290 --> 00:05:31.600
+Now, this relation, which is derived that
+is computed by querying two different
+
+74
+00:05:31.600 --> 00:05:36.260
+data sources and combining their results,
+is called an integrated view.
+
+75
+00:05:37.330 --> 00:05:42.400
+It is integrated because the data is
+retrieved from different data sources,
+
+76
+00:05:43.610 --> 00:05:47.640
+and it's called a view because
+in database terminology
+
+77
+00:05:47.640 --> 00:05:50.680
+it is a relation computed
+from other relations.
+
+78
+00:05:53.498 --> 00:05:56.780
+To populate the integrated
+view discount candidates,
+
+79
+00:05:56.780 --> 00:05:59.470
+we need to go through a step
+called schema mapping.
+
+80
+00:06:00.580 --> 00:06:04.550
+The term mapping means to
+establish correspondence between
+
+81
+00:06:04.550 --> 00:06:08.850
+the attributes of the view, which is
+also called a target relation, and
+
+82
+00:06:08.850 --> 00:06:10.120
+that of the source relations.
+
+83
+00:06:11.200 --> 00:06:16.270
+For example, we can map the full address
+from individuals to the address attribute
+
+84
+00:06:16.270 --> 00:06:21.380
+in discountCandidates, but
+this would only be true for
+
+85
+00:06:21.380 --> 00:06:25.300
+customers whose names and
+addresses match in the two databases.
+
+86
+00:06:27.040 --> 00:06:32.120
+As you can see, policyholders uses
+the full name of a customer, whereas
+
+87
+00:06:32.120 --> 00:06:36.050
+individuals has it broken down into first
+name, middle initial, and last name.
+
+88
+00:06:37.520 --> 00:06:42.760
+On the other hand, full address is
+a single field in individuals, but
+
+89
+00:06:42.760 --> 00:06:46.397
+represented in full attributes
+in the policyholders relation.
+
+90
+00:06:48.090 --> 00:06:51.650
+The mappings of account number and
+policyKey are more straightforward.
+
+91
+00:06:52.680 --> 00:06:55.752
+Well, what about customer ID which doesn't
+correspond to anything in the four
+
+92
+00:06:55.752 --> 00:06:57.300
+input relations?
+
+93
+00:06:57.300 --> 00:06:58.959
+We'll come back to this later on.
+
+94
+00:07:01.019 --> 00:07:04.470
+Okay, now we'll define
+an integrated relation.
+
+95
+00:07:04.470 --> 00:07:06.020
+How do we query?
+
+96
+00:07:06.020 --> 00:07:07.090
+For example,
+
+97
+00:07:07.090 --> 00:07:11.170
+how do you find the bank account number
+of a person whose policyKey is known?
+
+98
+00:07:12.530 --> 00:07:15.020
+You might think, what's the problem here?
+
+99
+00:07:15.020 --> 00:07:16.590
+We have a table.
+
+100
+00:07:16.590 --> 00:07:22.020
+Just say select account number from
+discount candidates where policyKey
+
+101
+00:07:22.020 --> 00:07:26.680
+is equal to 4-937528734, and we're done.
+
+102
+00:07:28.730 --> 00:07:35.310
+Well, yes, you can write this query,
+but how the query be evaluated?
+
+103
+00:07:35.310 --> 00:07:37.820
+That depends on what's called the query
+
+104
+00:07:37.820 --> 00:07:40.610
+architecture of the data
+integration system.
+
+105
+00:07:40.610 --> 00:07:43.130
+The figure on the left shows
+the elements of this architecture.
+
+106
+00:07:44.290 --> 00:07:47.694
+We'll discover it in more detail,
+but on this slide,
+
+107
+00:07:47.694 --> 00:07:50.810
+we'll just describe
+the three axes of this cube.
+
+108
+00:07:51.830 --> 00:07:57.090
+The vertical z axis specifies
+whether we have one data source or
+
+109
+00:07:57.090 --> 00:07:58.320
+multiple data sources.
+
+110
+00:07:59.320 --> 00:08:02.390
+Our interest is in the case where
+there are multiple data sources.
+
+111
+00:08:04.218 --> 00:08:10.110
+The x axis asks whether the integrated
+data is actually stored physically
+
+112
+00:08:10.110 --> 00:08:16.280
+in some place or whether it is computed
+on the fly, each time a query is asked.
+
+113
+00:08:16.280 --> 00:08:22.120
+If it is all precomputed and stored,
+we say that the data is materialized.
+
+114
+00:08:22.120 --> 00:08:24.940
+And if it is computed on the fly,
+we say it's virtual.
+
+115
+00:08:26.480 --> 00:08:30.174
+The y axis asks whether
+there is a single schema or
+
+116
+00:08:30.174 --> 00:08:34.319
+global schema defined all
+over the data integrated for
+
+117
+00:08:34.319 --> 00:08:39.364
+an application or whether the data
+stay in different computers and
+
+118
+00:08:39.364 --> 00:08:43.531
+it is accessed in a peer-to-peer
+manner at runtime.
+
+119
+00:08:43.531 --> 00:08:48.267
+Thus, the seemingly simple select
+project query will be evaluated
+
+120
+00:08:48.267 --> 00:08:53.870
+depending on which part of the cube
+our architecture implements.
+
+121
+00:08:53.870 --> 00:08:56.880
+But for now,
+let's return to our example use case.
+
+122
+00:08:59.900 --> 00:09:03.920
+An obvious goal of an information
+integration system
+
+123
+00:09:03.920 --> 00:09:05.260
+is to be complete and accurate.
+
+124
+00:09:06.770 --> 00:09:10.790
+Complete means no eligible record
+from the source should be absent in
+
+125
+00:09:10.790 --> 00:09:11.670
+the target relation.
+
+126
+00:09:12.970 --> 00:09:18.668
+Accurate means all the entries in
+the integrated relation should be correct.
+
+127
+00:09:18.668 --> 00:09:23.148
+Now we said on the previous
+slide that a matching
+
+128
+00:09:23.148 --> 00:09:27.740
+customer is a person who
+was in both databases and
+
+129
+00:09:27.740 --> 00:09:32.590
+has the same name and
+address in the two databases.
+
+130
+00:09:32.590 --> 00:09:34.310
+Now let's look at some example records.
+
+131
+00:09:35.390 --> 00:09:39.110
+Specifically, consider the records
+marked by the three arrows.
+
+132
+00:09:40.510 --> 00:09:45.320
+The two bank accounts and
+the policy record do not match for name or
+
+133
+00:09:45.320 --> 00:09:47.050
+for address.
+
+134
+00:09:47.050 --> 00:09:49.360
+So our previous method would discard them.
+
+135
+00:09:50.510 --> 00:09:52.030
+But look at the records closely.
+
+136
+00:09:53.380 --> 00:09:56.070
+Do you think they might all
+belong to the same customer?
+
+137
+00:09:57.560 --> 00:09:59.740
+Maybe this lady has a maiden name and
+
+138
+00:09:59.740 --> 00:10:03.150
+a married name, and
+has moved from one address to another.
+
+139
+00:10:04.290 --> 00:10:07.289
+Maybe she changed her Social Security
+number somewhere along the way.
+
+140
+00:10:08.820 --> 00:10:11.640
+So this is called
+a record linkage problem.
+
+141
+00:10:12.730 --> 00:10:17.510
+That means we would like to ensure that
+the set of data records that belong to
+
+142
+00:10:17.510 --> 00:10:22.040
+a single entity are recognized,
+perhaps by clustering
+
+143
+00:10:22.040 --> 00:10:26.790
+the values of different attributes or
+by using a set of matching rules so
+
+144
+00:10:26.790 --> 00:10:31.130
+that we know how to deal with it
+during the integration process.
+
+145
+00:10:31.130 --> 00:10:33.600
+For example, we need to determine
+
+146
+00:10:33.600 --> 00:10:36.250
+which of the addresses should be
+used in the integrated relation.
+
+147
+00:10:37.570 --> 00:10:38.650
+Which of the two bank accounts?
+
+148
+00:10:40.070 --> 00:10:44.800
+If the answer is both accounts 102 and
+103, we will need to change
+
+149
+00:10:44.800 --> 00:10:50.380
+the schema of the target's relation
+to a list instead of an atomic number
+
+150
+00:10:50.380 --> 00:10:53.290
+to avoid creating multiple tuples for
+the same entity.
+
+151
+00:10:55.990 --> 00:11:00.380
+As we saw, the schema of adding
+process is a task of figuring out
+
+152
+00:11:00.380 --> 00:11:04.850
+how elements of the schema from two
+sources would relate to each other and
+
+153
+00:11:04.850 --> 00:11:07.940
+determining how they would
+map the target schema.
+
+154
+00:11:08.980 --> 00:11:13.180
+You also saw that this is not really
+a simple process, that we are trying to
+
+155
+00:11:13.180 --> 00:11:18.600
+produce one integrated relation using
+a couple of relations from each source.
+
+156
+00:11:20.130 --> 00:11:25.250
+In a Big Data situation,
+there are dozens of data sources, or
+
+157
+00:11:25.250 --> 00:11:31.880
+more because the company's growing and
+each source may have a few hundred tables.
+
+158
+00:11:31.880 --> 00:11:35.370
+So it becomes very hard to actually solve
+
+159
+00:11:35.370 --> 00:11:40.419
+this correspondence-making problem
+completely and accurately just because
+
+160
+00:11:40.419 --> 00:11:44.920
+the number of combinations one has to
+go through is really, really high.
+
+161
+00:11:47.120 --> 00:11:52.250
+One practical way to tackle this problem
+is not to do a full-scale detail
+
+162
+00:11:52.250 --> 00:11:57.147
+integration in the beginning but
+adopt what's called a pay-as-you-go model.
+
+163
+00:11:57.147 --> 00:12:00.189
+The pay-as-you-go data
+management principle is simple.
+
+164
+00:12:01.380 --> 00:12:06.214
+The system should provide some basic
+integration services at the outset and
+
+165
+00:12:06.214 --> 00:12:11.123
+then evolve the schema mappings between
+the different sources on an as needed
+
+166
+00:12:11.123 --> 00:12:12.660
+basis.
+
+167
+00:12:12.660 --> 00:12:17.190
+So given a query, the system should
+generate a best effort or approximate
+
+168
+00:12:17.190 --> 00:12:21.310
+answers from the data sources for
+a perfect schema mappings do not exist.
+
+169
+00:12:22.310 --> 00:12:26.015
+When it discovers a large number
+of sophisticated queries or
+
+170
+00:12:26.015 --> 00:12:30.375
+data mining tasks over certain sources,
+it will guide the users to make
+
+171
+00:12:30.375 --> 00:12:34.387
+additional efforts to integrate
+these sources more precisely.
+
+172
+00:12:36.401 --> 00:12:40.270
+Okay, so how does the first
+approximate schema mapping performed?
+
+173
+00:12:41.660 --> 00:12:46.920
+One approach to do this is called
+Probabilistic Schema Mapping.
+
+174
+00:12:46.920 --> 00:12:48.920
+We'll describe it in more detail next.
+
+175
+00:12:51.120 --> 00:12:52.450
+In the previous step,
+
+176
+00:12:52.450 --> 00:12:58.050
+we just decided to create the disk count
+candidates rrelation in an ad hoc way.
+
+177
+00:12:58.050 --> 00:12:59.990
+And in a Big Data situation,
+
+178
+00:12:59.990 --> 00:13:03.920
+we need to carefully determine
+what the integrated schema,
+
+179
+00:13:03.920 --> 00:13:08.000
+also called mediated schemas, should be,
+and we should evaluate them properly.
+
+180
+00:13:09.640 --> 00:13:15.550
+Since our toy company is trying
+to create a single customer view,
+
+181
+00:13:15.550 --> 00:13:19.660
+it's natural to create an integrated
+table called customers.
+
+182
+00:13:19.660 --> 00:13:21.690
+But how can we design this table?
+
+183
+00:13:21.690 --> 00:13:22.550
+Here are some options.
+
+184
+00:13:23.820 --> 00:13:29.487
+We can create the customer table to
+include individuals and corporations and
+
+185
+00:13:29.487 --> 00:13:34.384
+then use a flag called customer
+type to distinguish between them.
+
+186
+00:13:34.384 --> 00:13:39.051
+Now in the mediated schema then,
+the individuals first name,
+
+187
+00:13:39.051 --> 00:13:43.191
+middle initial, last name,
+policyholder's name and
+
+188
+00:13:43.191 --> 00:13:48.140
+corporation's name would all
+map to Customer_Name similarly.
+
+189
+00:13:49.390 --> 00:13:53.978
+The individual's full address,
+the corporation's registered address,
+
+190
+00:13:53.978 --> 00:13:57.440
+and the policyholder's address,
+plus city, plus state,
+
+191
+00:13:57.440 --> 00:14:01.530
+plus zip would all map
+to customer address.
+
+192
+00:14:01.530 --> 00:14:06.010
+Now we can enumerate all such choices of
+which attributes to group together and
+
+193
+00:14:06.010 --> 00:14:09.230
+map for each single attribute
+in the target schema.
+
+194
+00:14:10.620 --> 00:14:15.630
+But no matter how you'll do it,
+it will never be a perfect fit because
+
+195
+00:14:15.630 --> 00:14:18.590
+not all these combinations
+would go well together.
+
+196
+00:14:18.590 --> 00:14:22.160
+For example, should that date of
+birth be included in this table?
+
+197
+00:14:23.550 --> 00:14:24.870
+Would it make sense for corporations?
+
+198
+00:14:26.810 --> 00:14:32.310
+In Probabilistic Mediated Schema Design,
+we answer this question by
+
+199
+00:14:32.310 --> 00:14:35.410
+associating probability values
+with each of these options.
+
+200
+00:14:38.040 --> 00:14:42.410
+To compute these values, we need to
+quantify the relationships between
+
+201
+00:14:42.410 --> 00:14:46.202
+attributes by figuring out which
+attributes should be grouped or
+
+202
+00:14:46.202 --> 00:14:48.710
+clustered together?
+
+203
+00:14:48.710 --> 00:14:52.140
+Now two pieces of information
+available in the source schemas
+
+204
+00:14:52.140 --> 00:14:55.497
+can serve as evidence for
+attribute clustering.
+
+205
+00:14:55.497 --> 00:14:59.740
+One, the parallel similarity
+of source attributes, and two,
+
+206
+00:14:59.740 --> 00:15:04.640
+statistical properties
+of service attributes.
+
+207
+00:15:05.800 --> 00:15:10.260
+The first piece of information indicates
+when two attributes are likely to be
+
+208
+00:15:10.260 --> 00:15:14.459
+similar and is used for
+creating multiple mediated schemas.
+
+209
+00:15:15.680 --> 00:15:19.050
+One can apply a collection of
+attribute matching modules
+
+210
+00:15:19.050 --> 00:15:21.650
+to compute pairwise similarity.
+
+211
+00:15:21.650 --> 00:15:23.755
+For example, individual names and
+
+212
+00:15:23.755 --> 00:15:26.700
+policyholder names
+are possibly quite similar.
+
+213
+00:15:27.930 --> 00:15:32.878
+Are individual names versus
+corporation names similar?
+
+214
+00:15:32.878 --> 00:15:37.283
+Now, the similarity between two
+source attributes, EIN and EZ,
+
+215
+00:15:37.283 --> 00:15:42.560
+measure how closely the two attributes
+represent the same real world concept.
+
+216
+00:15:44.520 --> 00:15:47.230
+The second piece of information indicates
+
+217
+00:15:47.230 --> 00:15:51.650
+when two attributes are likely
+to be different, and is used for
+
+218
+00:15:51.650 --> 00:15:54.599
+assigning probabilities to
+each of the mediated schemas.
+
+219
+00:15:56.370 --> 00:15:59.770
+For example, date of birth and
+
+220
+00:15:59.770 --> 00:16:02.410
+corporation name possibly
+will never co-occur together.
+
+221
+00:16:04.050 --> 00:16:07.250
+But for
+large schemas with large data volumes,
+
+222
+00:16:07.250 --> 00:16:11.980
+one can estimate these measures by
+taking samples from the actual database
+
+223
+00:16:11.980 --> 00:16:16.312
+to come up with reasonable
+similarity co-occurrence scores.
+
+224
+00:16:16.312 --> 00:16:22.658
+To illustrate attribute regrouping, we
+take a significant re-simplified example.
+
+225
+00:16:22.658 --> 00:16:27.543
+Here we want to create customer
+transactions as a mediated relation
+
+226
+00:16:27.543 --> 00:16:32.180
+based upon the bank transactions and
+insurance transactions.
+
+227
+00:16:33.530 --> 00:16:36.159
+Each attribute is given
+an abbreviation for simplicity.
+
+228
+00:16:38.030 --> 00:16:41.575
+Below, you can see three
+possible mediated schemas.
+
+229
+00:16:42.770 --> 00:16:47.140
+In the first one,
+the transaction begin and end times
+
+230
+00:16:47.140 --> 00:16:52.270
+from bank transactions are grouped into
+the same cluster as transaction date time
+
+231
+00:16:52.270 --> 00:16:56.040
+from the insurance transactions,
+because all of them are the same type.
+
+232
+00:16:57.280 --> 00:17:02.000
+Similarly, transaction party, that
+means who is giving or receiving money,
+
+233
+00:17:03.010 --> 00:17:06.610
+and transaction description are grouped
+together with transaction details.
+
+234
+00:17:08.490 --> 00:17:11.130
+The second schema keeps
+all of them separate.
+
+235
+00:17:12.320 --> 00:17:16.145
+And the third candidate schema
+groups some of them and not others.
+
+236
+00:17:19.998 --> 00:17:23.860
+Now that we have multiple mediated
+schemas, which one should we choose?
+
+237
+00:17:25.030 --> 00:17:27.990
+Now I'm presenting here
+a qualitative account of the method.
+
+238
+00:17:29.280 --> 00:17:32.730
+The primary goal is to look for
+what we can call consistency.
+
+239
+00:17:34.430 --> 00:17:38.260
+A source schema is consistent
+with a mediated schema if
+
+240
+00:17:38.260 --> 00:17:43.070
+two different attributes of the source
+schema do not occur in one cluster.
+
+241
+00:17:44.190 --> 00:17:48.990
+And in the example, Med3,
+that means related schema three,
+
+242
+00:17:48.990 --> 00:17:54.560
+is more consistent with bank
+transactions because, unlike Med1,
+
+243
+00:17:54.560 --> 00:17:58.700
+it keeps TBT,
+TET in two different clusters.
+
+244
+00:17:59.800 --> 00:18:06.090
+Once this is done, we can count the number
+of consistent sources for each candidate
+
+245
+00:18:06.090 --> 00:18:10.650
+mediated schema and then use this count
+to come up with a probability estimate.
+
+246
+00:18:11.890 --> 00:18:16.100
+This estimate can then be used
+to choose the k best schemas.
+
+247
+00:18:17.590 --> 00:18:22.030
+Should one ever choose more
+than one just best schema?
+
+248
+00:18:22.030 --> 00:18:23.860
+Well, that's a hard question
+to answer in general.
+
+249
+00:18:25.280 --> 00:18:29.932
+It is done when the top capability
+estimates are very close to each other.

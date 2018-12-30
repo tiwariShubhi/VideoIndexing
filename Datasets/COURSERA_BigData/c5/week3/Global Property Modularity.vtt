@@ -1,0 +1,500 @@
+WEBVTT
+
+1
+00:00:00.600 --> 00:00:02.180
+So we talked about local properties.
+
+2
+00:00:03.300 --> 00:00:04.160
+In this lecture,
+
+3
+00:00:04.160 --> 00:00:07.860
+we'll cover a global property based
+method of [INAUDIBLE] finding.
+
+4
+00:00:09.610 --> 00:00:13.000
+The specific property we focus on,
+is called modularity.
+
+5
+00:00:14.230 --> 00:00:16.990
+It tries to estimate
+the quality of clusters of
+
+6
+00:00:16.990 --> 00:00:17.855
+communities in the [INAUDIBLE].
+
+7
+00:00:19.270 --> 00:00:20.680
+The intuition is as follows.
+
+8
+00:00:21.890 --> 00:00:24.255
+If we consider the edges in a group and
+
+9
+00:00:24.255 --> 00:00:28.528
+try to see whether it's different
+from what you'd see if the edges
+
+10
+00:00:28.528 --> 00:00:32.588
+were assigned randomly with
+some probability distribution.
+
+11
+00:00:32.588 --> 00:00:36.730
+If there is a community, there will be
+more edges than would happen at random.
+
+12
+00:00:37.850 --> 00:00:42.692
+If there is no community in some part
+of the graph, the number of edges in
+
+13
+00:00:42.692 --> 00:00:47.637
+that part will either be close to
+the random case or even lower than that.
+
+14
+00:00:47.637 --> 00:00:53.136
+The modularity measure thus estimates
+the quality of the clusters in
+
+15
+00:00:53.136 --> 00:01:00.070
+the graph by evaluating this difference of
+the actual minus the random edge fraction.
+
+16
+00:01:01.260 --> 00:01:03.930
+So this is the mathematical
+formulation of what I just described.
+
+17
+00:01:05.290 --> 00:01:09.045
+The adjacency matrix, A,
+gives us the actual edges.
+
+18
+00:01:10.740 --> 00:01:15.547
+The Pij provides a probability
+of a random edge.
+
+19
+00:01:15.547 --> 00:01:19.500
+The m in the denominator gives
+us the fractional edges.
+
+20
+00:01:21.110 --> 00:01:25.654
+And the delta function's
+task is to evaluate if i and
+
+21
+00:01:25.654 --> 00:01:28.451
+j should be in the same cluster.
+
+22
+00:01:28.451 --> 00:01:33.502
+If they are,
+the contribution will be added to Q,
+
+23
+00:01:33.502 --> 00:01:38.449
+the quality metric,
+which is multi-layered.
+
+24
+00:01:39.590 --> 00:01:43.599
+Well, we have not defined what
+the probability model looks like.
+
+25
+00:01:43.599 --> 00:01:46.790
+There are many ways to figure
+out what Pij should look like.
+
+26
+00:01:48.360 --> 00:01:53.170
+One simple model says, that the chance
+that there is an edge between nodes i and
+
+27
+00:01:53.170 --> 00:02:00.240
+j, is proportional to the degree of
+node i times the degree of node j.
+
+28
+00:02:00.240 --> 00:02:02.510
+That means if nodes i and
+
+29
+00:02:02.510 --> 00:02:06.890
+j are already well connected, there is
+a high chance that they share an edge.
+
+30
+00:02:07.940 --> 00:02:10.520
+So if you're a mathematical person,
+you might be thinking, okay,
+
+31
+00:02:11.690 --> 00:02:16.500
+let's find clusters in the graph so
+that Q is maximum and then we're done.
+
+32
+00:02:17.960 --> 00:02:23.094
+Well sadly, maximizing Q is very hard.
+
+33
+00:02:23.094 --> 00:02:26.050
+So we need to find
+an approximate solution.
+
+34
+00:02:28.490 --> 00:02:31.180
+So we will illustrate a very
+
+35
+00:02:31.180 --> 00:02:35.660
+popular method of finding this
+modularity based community detection.
+
+36
+00:02:37.290 --> 00:02:40.500
+Well, the best way to describe
+this is through a YouTube video.
+
+37
+00:02:41.560 --> 00:02:42.060
+That's the URL.
+
+38
+00:02:43.600 --> 00:02:47.758
+Now, the next slide and
+the following slide,
+
+39
+00:02:47.758 --> 00:02:53.195
+describes it, but
+I think it's better to explain the method
+
+40
+00:02:53.195 --> 00:02:57.686
+through screenshots off
+the video as it happens.
+
+41
+00:02:59.748 --> 00:03:04.273
+We will show you some
+snapshots of this video.
+
+42
+00:03:04.273 --> 00:03:07.630
+There are 309 nodes in this graph.
+
+43
+00:03:08.670 --> 00:03:11.720
+Initially, they all have different colors.
+
+44
+00:03:11.720 --> 00:03:13.580
+That is,
+they belong to different communities.
+
+45
+00:03:15.270 --> 00:03:22.328
+This screenshot shows the graph at
+iteration 144 of the algorithm.
+
+46
+00:03:22.328 --> 00:03:26.586
+The number of communities now is 286.
+
+47
+00:03:26.586 --> 00:03:33.050
+The chart on the right side plots time on
+the x-axis and modularity on the y-axis.
+
+48
+00:03:33.050 --> 00:03:35.670
+As you see,
+the modularity's on the rights.
+
+49
+00:03:36.750 --> 00:03:39.730
+Roughly, at each iteration,
+
+50
+00:03:40.800 --> 00:03:45.910
+the system is trying to change the color
+of a node to that of its neighbors.
+
+51
+00:03:45.910 --> 00:03:50.593
+But it actually changes the color
+only if the modularity value of
+
+52
+00:03:50.593 --> 00:03:54.765
+the whole graph changes as
+a result of that color change.
+
+53
+00:03:54.765 --> 00:04:00.107
+After a few more iterations,
+the number of communities has become 241.
+
+54
+00:04:00.107 --> 00:04:05.990
+The three arrows show some parts of the
+graph where the nodes have changed colors.
+
+55
+00:04:05.990 --> 00:04:09.578
+Modularity is on the rise.
+
+56
+00:04:09.578 --> 00:04:15.115
+After 1,437 iterations, the modularity
+of the graph is still going up.
+
+57
+00:04:15.115 --> 00:04:17.610
+Now, there are 113 communities.
+
+58
+00:04:19.060 --> 00:04:23.220
+The errors show some new areas where
+the neighboring nodes have the same color.
+
+59
+00:04:24.580 --> 00:04:29.690
+At 1,842 iterations,
+the modulary gains slows down.
+
+60
+00:04:29.690 --> 00:04:34.992
+Meanwhile, the number of
+communities have reduced to 75.
+
+61
+00:04:34.992 --> 00:04:40.540
+At 4,179 iterations, the modularity
+growth has started becoming flat.
+
+62
+00:04:41.980 --> 00:04:47.657
+But in the meantime, the number of colors,
+that is communities, has reduced to 48.
+
+63
+00:04:47.657 --> 00:04:52.556
+At around 5,196 iterations, the algorithm
+decides that there is not enough
+
+64
+00:04:52.556 --> 00:04:55.041
+reduction in the number of communities,
+
+65
+00:04:55.041 --> 00:04:59.240
+which is reduced to only 45 in
+the last 1,000 iterations or so.
+
+66
+00:05:00.730 --> 00:05:05.440
+Now it collapses each community that
+is clustered to a single node, and
+
+67
+00:05:05.440 --> 00:05:08.180
+creates a cluster to cluster edges.
+
+68
+00:05:09.250 --> 00:05:14.140
+The orange box,
+an arrow shows this contraction.
+
+69
+00:05:14.140 --> 00:05:18.140
+Now compared to the previous slide,
+this collapsing or
+
+70
+00:05:18.140 --> 00:05:22.130
+contraction of the plastic creates
+a skeleton of the original draft.
+
+71
+00:05:23.400 --> 00:05:26.470
+Now the algorithm starts again
+with this reduced graph.
+
+72
+00:05:28.480 --> 00:05:31.509
+You will find many graph
+analysis software,
+
+73
+00:05:31.509 --> 00:05:35.658
+where you can run the Louvain
+method of community detection.
+
+74
+00:05:37.747 --> 00:05:39.837
+[INAUDIBLE].
+
+75
+00:05:39.837 --> 00:05:43.749
+I took my Linked-in network,
+which has me at the center, and
+
+76
+00:05:43.749 --> 00:05:45.640
+all my connections as nodes.
+
+77
+00:05:47.630 --> 00:05:50.483
+If two of my contacts are also
+connected in Linked-in,
+
+78
+00:05:50.483 --> 00:05:52.069
+there is an edge between them.
+
+79
+00:05:53.110 --> 00:05:57.350
+This kind of mean-centric network
+is often called an ego network.
+
+80
+00:05:58.806 --> 00:06:04.700
+When I [INAUDIBLE] the community direction
+algorithm here, I found six communities,
+
+81
+00:06:04.700 --> 00:06:08.420
+with one set of parameters and
+seven communities with another.
+
+82
+00:06:09.500 --> 00:06:12.390
+I could clearly see my
+connections in San Diego.
+
+83
+00:06:12.390 --> 00:06:16.190
+My connections in my professional network,
+my friends in India, and so forth.
+
+84
+00:06:17.380 --> 00:06:22.090
+There's always one false community,
+which stands for
+
+85
+00:06:22.090 --> 00:06:25.850
+others, nodes that do not clearly
+belong to any specific group.
+
+86
+00:06:27.730 --> 00:06:32.720
+Perhaps more interesting and
+important than the static
+
+87
+00:06:32.720 --> 00:06:37.490
+analysis of communities is to track
+communities over a length of time.
+
+88
+00:06:37.490 --> 00:06:39.300
+And determine how they evolve and why.
+
+89
+00:06:41.140 --> 00:06:45.400
+There are six large
+categories of evolution steps
+
+90
+00:06:45.400 --> 00:06:46.690
+that can happen within a community.
+
+91
+00:06:47.810 --> 00:06:50.340
+A community like a new
+Facebook group can be born.
+
+92
+00:06:51.850 --> 00:06:55.090
+A community, like a group of
+people who gathered for an event,
+
+93
+00:06:55.090 --> 00:06:59.570
+would dissolve because the event and
+the mutual interest around it has ended.
+
+94
+00:07:01.180 --> 00:07:04.986
+A community can grow because the members
+rally around a common cause.
+
+95
+00:07:04.986 --> 00:07:10.318
+Typically, new cross-community
+edges start getting
+
+96
+00:07:10.318 --> 00:07:14.977
+formed before the communities
+actually merge.
+
+97
+00:07:14.977 --> 00:07:17.930
+The communities can
+shrink like my book club.
+
+98
+00:07:17.930 --> 00:07:19.190
+Where do you see this in real life?
+
+99
+00:07:20.430 --> 00:07:21.510
+Well, how about company mergers?
+
+100
+00:07:23.520 --> 00:07:26.390
+Surely enough, the [INAUDIBLE] results
+will happen when a community splits.
+
+101
+00:07:27.510 --> 00:07:29.690
+Going along with the previous example,
+
+102
+00:07:29.690 --> 00:07:34.170
+a closely working group in a company may
+at some point create their own product and
+
+103
+00:07:34.170 --> 00:07:39.230
+form a new company with very
+little ties to the old company.
+
+104
+00:07:39.230 --> 00:07:44.081
+One standard symptom of a group splitting
+is that the nodes in the subgroup
+
+105
+00:07:44.081 --> 00:07:48.399
+show an increase in the number of
+edges just amongst themselves.

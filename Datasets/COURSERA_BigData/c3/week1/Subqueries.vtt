@@ -1,0 +1,522 @@
+WEBVTT
+
+1
+00:00:01.642 --> 00:00:06.010
+The queries in real life are little more
+complex than what we have seen before.
+
+2
+00:00:07.080 --> 00:00:09.180
+So let's consider a more complex query.
+
+3
+00:00:11.010 --> 00:00:17.190
+Let’s find bars where the price
+of Miller is the same as or
+
+4
+00:00:17.190 --> 00:00:21.600
+less than what the great American bar
+called TGAB here charges for Bud.
+
+5
+00:00:23.090 --> 00:00:28.026
+You may say, but we do not really
+know what TGAB charges for Bud.
+
+6
+00:00:28.026 --> 00:00:34.600
+That's correct, so
+we can break up the query into two parts.
+
+7
+00:00:34.600 --> 00:00:42.060
+First, we will find this unknown price,
+and then we'll use that price
+
+8
+00:00:42.060 --> 00:00:47.160
+to find the bars that would sell Miller
+for the same price or better price.
+
+9
+00:00:47.160 --> 00:00:52.119
+Now this is a classic situation where
+the result from the first part of
+
+10
+00:00:52.119 --> 00:00:56.326
+the query should be fed as
+a parameter to the second query.
+
+11
+00:00:56.326 --> 00:00:59.670
+Now this situation is called a subquery.
+
+12
+00:01:01.510 --> 00:01:04.090
+We write this in SQL as
+shown in the slide here.
+
+13
+00:01:05.730 --> 00:01:10.730
+What makes this query different is that
+the part where price is less than equal
+
+14
+00:01:10.730 --> 00:01:15.440
+to, instead of specifying
+a constant like $8,
+
+15
+00:01:15.440 --> 00:01:21.610
+we actually place another query which
+computes the price of a Bud at TGAB.
+
+16
+00:01:24.300 --> 00:01:28.600
+The shaded part is called the inner query,
+or the subquery.
+
+17
+00:01:29.870 --> 00:01:32.750
+In this case, both the outer query and
+
+18
+00:01:32.750 --> 00:01:36.110
+the inner query use the same relation,
+which is Sells.
+
+19
+00:01:37.820 --> 00:01:43.100
+Now in terms of evaluation,
+the inner query is evaluated first,
+
+20
+00:01:43.100 --> 00:01:45.520
+and the outer query uses its output.
+
+21
+00:01:46.750 --> 00:01:50.110
+Now while it may not be
+obvious at this time,
+
+22
+00:01:50.110 --> 00:01:53.930
+notice that the inner query is
+independent of the outer query.
+
+23
+00:01:54.960 --> 00:01:56.270
+In other words,
+
+24
+00:01:56.270 --> 00:02:00.930
+even if we did not have the outer query,
+we can still evaluate the inner query.
+
+25
+00:02:02.270 --> 00:02:06.550
+We say in this case that
+the subquery is uncorrelated.
+
+26
+00:02:09.180 --> 00:02:11.260
+Let's look at another
+example of a subquery.
+
+27
+00:02:12.350 --> 00:02:15.504
+In this example,
+we want to find the name and
+
+28
+00:02:15.504 --> 00:02:19.185
+manufacturer of each beer
+that Fred didn't like.
+
+29
+00:02:19.185 --> 00:02:22.953
+So how do we know what Fred didn't like?
+
+30
+00:02:22.953 --> 00:02:27.545
+We do however know that the set of
+beers that Fred likes because they
+
+31
+00:02:27.545 --> 00:02:29.925
+are listed in the Likes relation.
+
+32
+00:02:29.925 --> 00:02:34.324
+So we need to subtract this set from the
+total set of beers that the company has
+
+33
+00:02:34.324 --> 00:02:35.030
+recorded.
+
+34
+00:02:36.260 --> 00:02:40.180
+This subtraction of sets can
+be performed in several ways.
+
+35
+00:02:40.180 --> 00:02:43.660
+One of them is to use
+the NOT IN construct.
+
+36
+00:02:45.130 --> 00:02:50.270
+So the query class's job is to take
+every name from the Beers table and
+
+37
+00:02:50.270 --> 00:02:55.730
+output it only if it does not appear
+in the set produced by the inner query.
+
+38
+00:02:57.180 --> 00:03:01.990
+Similar to the previous query,
+the subquery here is also uncorrelated.
+
+39
+00:03:04.920 --> 00:03:06.640
+Now this is a more sophisticated query.
+
+40
+00:03:07.745 --> 00:03:11.490
+The intention is to find
+beers that are more expensive
+
+41
+00:03:11.490 --> 00:03:13.820
+than the average price of beer.
+
+42
+00:03:13.820 --> 00:03:17.250
+But since beers have different
+prices in different bars,
+
+43
+00:03:17.250 --> 00:03:19.520
+we have to find the average for every bar.
+
+44
+00:03:20.720 --> 00:03:24.340
+Therefore the idea is to find
+the average price of beer for
+
+45
+00:03:24.340 --> 00:03:29.340
+every bar and then compare the price of
+each beer with respect to this average.
+
+46
+00:03:30.670 --> 00:03:32.580
+Now look at the query and the table.
+
+47
+00:03:34.265 --> 00:03:37.110
+Let's assume we are processing
+the first table.
+
+48
+00:03:39.250 --> 00:03:43.134
+The beer is Bud, and the price is $5.
+
+49
+00:03:43.134 --> 00:03:50.741
+Now we need to know if $5 is greater than
+the average price of beer sold at HGAT.
+
+50
+00:03:50.741 --> 00:03:55.120
+To do this,
+we need to compute the inner query, okay?
+
+51
+00:03:55.120 --> 00:03:57.410
+So now let's look at the fourth row.
+
+52
+00:03:57.410 --> 00:04:03.490
+The price of Guinness needs to be
+compared to that average again for HGAT.
+
+53
+00:04:04.550 --> 00:04:07.869
+In fact for
+every table processed by the outer query,
+
+54
+00:04:07.869 --> 00:04:10.980
+one needs to compute the inner query for
+that bar.
+
+55
+00:04:12.240 --> 00:04:16.620
+This makes the inner subquery
+correlated with the outer query.
+
+56
+00:04:17.910 --> 00:04:22.013
+Now a smart query processor will store
+the average once it's computed and
+
+57
+00:04:22.013 --> 00:04:25.929
+then reuse the stored value instead
+of computing over and over again.
+
+58
+00:04:29.376 --> 00:04:31.521
+What's an aggregate query?
+
+59
+00:04:31.521 --> 00:04:36.440
+Let's use a simple example of
+finding the average price of Bud.
+
+60
+00:04:37.980 --> 00:04:42.100
+This is like a simple select project
+query with the additional aspect
+
+61
+00:04:42.100 --> 00:04:46.010
+that it takes a list of price values
+of Bud from different bars and
+
+62
+00:04:46.010 --> 00:04:47.250
+then computes an average.
+
+63
+00:04:48.280 --> 00:04:52.749
+In the example shown,
+the average of the five prices is 4.2.
+
+64
+00:04:52.749 --> 00:04:55.230
+In other words the average function,
+
+65
+00:04:55.230 --> 00:05:00.750
+the AVG function, takes a list of
+values and produces a single value.
+
+66
+00:05:00.750 --> 00:05:03.700
+Now there are many functions
+that have this behavior.
+
+67
+00:05:03.700 --> 00:05:06.090
+The SUM function takes
+a list of values and
+
+68
+00:05:06.090 --> 00:05:08.280
+adds them up to produce a single value.
+
+69
+00:05:08.280 --> 00:05:11.000
+The COUNT function takes
+a list of list of values and
+
+70
+00:05:11.000 --> 00:05:13.490
+counts the number of items
+in that list and so on.
+
+71
+00:05:16.020 --> 00:05:19.170
+These are called aggregate functions.
+
+72
+00:05:21.160 --> 00:05:26.208
+Now if we wanted to count only the price
+values that are different, that is 3,
+
+73
+00:05:26.208 --> 00:05:31.690
+4, and 5 just once, we can write
+the SELECT clause a little differently.
+
+74
+00:05:33.350 --> 00:05:38.852
+We would say that the average
+is over distinct values
+
+75
+00:05:38.852 --> 00:05:43.612
+of price which in this
+case will result in 4.
+
+76
+00:05:43.612 --> 00:05:48.481
+You should recognize that most analytical
+operations need to use statistical
+
+77
+00:05:48.481 --> 00:05:50.630
+functions which are aggregates.
+
+78
+00:05:52.150 --> 00:05:54.850
+So another important
+analytical requirement
+
+79
+00:05:54.850 --> 00:05:58.140
+is computing the statistical
+aggregate by groups.
+
+80
+00:05:58.140 --> 00:06:02.660
+For example, we often compute the average
+salaries of employees per department.
+
+81
+00:06:03.670 --> 00:06:09.070
+Now back to our example here,
+we want to find the average price paid for
+
+82
+00:06:09.070 --> 00:06:15.670
+Bud per drinker, where we know
+that a drinker visits many bars.
+
+83
+00:06:15.670 --> 00:06:18.520
+So the grouping variable here is drinker.
+
+84
+00:06:19.740 --> 00:06:24.900
+So we have three attributes at play,
+price which we need to aggregate,
+
+85
+00:06:24.900 --> 00:06:29.230
+drinker which we need to group by,
+and bar which is a join attribute.
+
+86
+00:06:30.660 --> 00:06:34.380
+The fourth attribute, namely beer,
+is used for selection and
+
+87
+00:06:34.380 --> 00:06:37.100
+does not participate in grouping.
+
+88
+00:06:37.100 --> 00:06:42.340
+So after the selection we will
+get an intermediate relation
+
+89
+00:06:42.340 --> 00:06:45.220
+containing drinker, bar, and price.
+
+90
+00:06:46.420 --> 00:06:50.660
+With this, the GROUP BY operation
+will create one result row for
+
+91
+00:06:50.660 --> 00:06:55.040
+each drinker and place the average
+price over all such rows.
+
+92
+00:06:57.650 --> 00:06:59.090
+Now how does GROUP BY and
+
+93
+00:06:59.090 --> 00:07:01.630
+aggregate computation work
+when the data is partitioned?
+
+94
+00:07:02.670 --> 00:07:03.570
+Let's take the same query.
+
+95
+00:07:04.680 --> 00:07:09.071
+We are looking for the average
+price of Bud grouped by drinker.
+
+96
+00:07:11.859 --> 00:07:17.090
+But this time the result of the selection
+are in two different machines.
+
+97
+00:07:17.090 --> 00:07:20.270
+Imagine that this time they are range
+partitioned by row numbers,
+
+98
+00:07:20.270 --> 00:07:22.170
+which we have not shown
+to maintain clarity.
+
+99
+00:07:23.480 --> 00:07:27.374
+Now with the GROUP BY operation the data
+will get repartitioned by the grouping
+
+100
+00:07:27.374 --> 00:07:28.970
+attribute, that's drinker.
+
+101
+00:07:31.730 --> 00:07:37.340
+And then the aggregate
+function is computed locally.
+
+102
+00:07:38.890 --> 00:07:44.453
+To accomplish this repartitioning task,
+each machine groups its own data locally,
+
+103
+00:07:44.453 --> 00:07:49.783
+determines which portions of data should
+be transmitted to a different machine,
+
+104
+00:07:49.783 --> 00:07:52.580
+and accordingly ships it to that machine.
+
+105
+00:07:53.630 --> 00:07:56.390
+Now there are several variants
+of this general scheme
+
+106
+00:07:56.390 --> 00:07:58.680
+which are even more efficient.
+
+107
+00:07:58.680 --> 00:08:02.870
+Now if this reminds you of the map
+operation you saw in your previous course,
+
+108
+00:08:02.870 --> 00:08:03.790
+you are exactly right.
+
+109
+00:08:04.910 --> 00:08:10.164
+This fundamental process of grouping,
+partitioning, and redistribution of data
+
+110
+00:08:10.164 --> 00:08:15.500
+is inherent in data-parallel computing and
+implemented inside database systems.

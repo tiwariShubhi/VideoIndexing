@@ -1,0 +1,1857 @@
+﻿1
+00:00:11,050 --> 00:00:31,810
+So, we are looking at this local search and
+your seen that which leads us to a problem
+
+2
+00:00:31,809 --> 00:00:34,839
+of
+local maximum because the algorithm does not
+
+3
+00:00:34,840 --> 00:00:40,690
+have the excess to the entire things space.
+It could get started; it could only see some
+
+4
+00:00:40,689 --> 00:00:43,070
+options and not all options and could get
+stuck
+
+5
+00:00:43,070 --> 00:00:54,189
+there essentially. So, you want to see how
+to get around and we saw that that again which
+
+6
+00:00:54,189 --> 00:01:04,229
+this algorithm is out of navigating is determine
+by the Heuristic function that actualities
+
+7
+00:01:04,230 --> 00:01:14,570
+this determines also by the more than function.
+We will see in a short life well given set
+
+8
+00:01:14,569 --> 00:01:20,159
+of states it is a move them function will
+tells you from which state you can go to which
+
+9
+00:01:20,159 --> 00:01:28,048
+other states essentially and we will see that
+we can play along that as well essentially.
+
+10
+00:01:28,049 --> 00:01:29,049
+..
+
+11
+00:01:29,049 --> 00:01:38,040
+So, I want now introduce this problem today
+which well known problem here familiar
+
+12
+00:01:38,040 --> 00:01:47,140
+with no doubt call sat this problem everybody
+familiar with satisfiability. So, we just
+
+13
+00:01:47,140 --> 00:01:55,210
+over quick recap that there is a formula and
+you we will assume for simplicity that this
+
+14
+00:01:55,209 --> 00:02:00,629
+formula is in conductive normal form we does
+not have to be, but it is contempt. So, it
+
+15
+00:02:00,629 --> 00:02:03,679
+is
+a Boolean formula we can say, so something
+
+16
+00:02:03,680 --> 00:02:17,360
+like a orb and all not all band, so on a
+formula like that were a, b, c, d, e, all
+
+17
+00:02:17,360 --> 00:02:23,030
+Boolean variables we can take two values either
+true or false and the semantics of and on
+
+18
+00:02:23,030 --> 00:02:26,150
+or is defined and naught is defined . We want
+to
+
+19
+00:02:26,150 --> 00:02:30,969
+find valuations for a, b, c and all the variables
+such that the formula evaluate is true
+
+20
+00:02:30,969 --> 00:02:34,120
+essentially.
+So, that is a satisfiability formula, which
+
+21
+00:02:34,120 --> 00:02:38,800
+says that can you find values for all the
+Boolean
+
+22
+00:02:38,800 --> 00:02:45,480
+variables such that the overall formula evaluates
+it true and obviously you can see that
+
+23
+00:02:45,479 --> 00:02:57,539
+this is a kind of search problem you can say
+something like you start. You say a is equal
+
+24
+00:02:57,539 --> 00:03:03,199
+to true or a is equals to false that is one
+way of looking at it that you that you pick
+
+25
+00:03:03,199 --> 00:03:06,209
+a
+variable a, sign a value to it, take another
+
+26
+00:03:06,210 --> 00:03:10,629
+value variable sign a value to it. You would
+generate a search tree in the process or you
+
+27
+00:03:10,629 --> 00:03:16,629
+can say pick you can have branches for b at
+the sense you can formulate it was the search
+
+28
+00:03:16,629 --> 00:03:27,639
+problem at various stages. Essentially, we
+want to do today is a different way of exploring
+
+29
+00:03:27,639 --> 00:03:40,849
+the space, what the space is, so let us say
+we have variables are five variables.
+
+30
+00:03:40,849 --> 00:03:48,129
+.So, we had some formula which is construct
+over this 5 variables what is the space the
+
+31
+00:03:48,129 --> 00:03:56,180
+space is for each variable a or b or c or
+d or e value of true or false. So, 2 raise
+
+32
+00:03:56,180 --> 00:04:07,300
+to 5
+possible states in this case if you have n
+
+33
+00:04:07,300 --> 00:04:19,769
+variables, then we have two raise to n states
+what if n equal to100. So, it is a similar
+
+34
+00:04:19,769 --> 00:04:26,139
+problem that if you have dealing with a large
+number of variables then this problem could
+
+35
+00:04:26,139 --> 00:04:32,500
+become hard. In fact, you know that sat
+problem was a first problem which was a first
+
+36
+00:04:32,500 --> 00:04:37,658
+problem which was used by cook to talk
+about n p complete next essentially where
+
+37
+00:04:37,658 --> 00:04:50,098
+n is equal to 100 we have 2 raise to 100 which
+is about 10 raised to 30 states.
+
+38
+00:04:50,098 --> 00:05:05,360
+So, we have a 10 raised to 300 bit number
+essentially and we you has to see in earlier
+
+39
+00:05:05,360 --> 00:05:11,770
+that we cannot trifled bit numbers like 10
+raise to 30, it is it is a huge number, little
+
+40
+00:05:11,769 --> 00:05:15,008
+take a
+billions of years to search through all these
+
+41
+00:05:15,009 --> 00:05:20,150
+things. Even if you could inspector billions
+states in a second, we have seen that argument
+
+42
+00:05:20,149 --> 00:05:29,128
+earlier essentially. So, it is a difficult
+problem to solve, of course you must familiar
+
+43
+00:05:29,129 --> 00:05:34,979
+with the fact that there are variations or
+special classes of sat problems which for
+
+44
+00:05:34,978 --> 00:05:46,758
+example, talk about the length. So, this is
+calling a clause and each is call a little,
+
+45
+00:05:46,759 --> 00:05:49,809
+so the number of literals in a clause actually
+is
+
+46
+00:05:49,809 --> 00:05:51,979
+characteristics take of how hard a problem
+is.
+
+47
+00:05:51,978 --> 00:05:55,680
+So, there is a variation called two sat, which
+means the there is only two little literals
+
+48
+00:05:55,680 --> 00:05:58,788
+for
+clause we can have many clauses has you want,
+
+49
+00:05:58,788 --> 00:06:04,658
+but only two literals per clause. You can
+have as many variables as you want, but, if
+
+50
+00:06:04,658 --> 00:06:09,759
+there only two literals per clause then the
+problem is actually quite easy to solve and
+
+51
+00:06:09,759 --> 00:06:15,449
+some of you must be knowing there well
+known will go some Davis Putnam method for
+
+52
+00:06:15,449 --> 00:06:23,098
+solving two sat. Essentially, 3 sat is m p
+complete the 3 movement you go from 2 to 3
+
+53
+00:06:23,098 --> 00:06:32,938
+that you allow 3 variables per clause, then
+the problem becomes m p complete essentially.
+
+54
+00:06:32,939 --> 00:06:33,939
+..
+
+55
+00:06:33,939 --> 00:06:50,330
+So, we want to explore something which we
+will call a solutions space search which is
+
+56
+00:06:50,329 --> 00:06:55,938
+lot radically different from what we called
+as state space search, but except for the
+
+57
+00:06:55,939 --> 00:06:59,599
+fact
+that we will in the search space every note
+
+58
+00:06:59,598 --> 00:07:05,050
+will be a candidate solution essentially.
+So,
+
+59
+00:07:05,050 --> 00:07:14,418
+for example, further 5 variables my state
+could be something like this one 0, 1, 1,
+
+60
+00:07:14,418 --> 00:07:19,698
+1 and it
+is a candidate solution. This means that I
+
+61
+00:07:19,699 --> 00:07:22,919
+am thinking weather if I put a equal to 1,
+1
+
+62
+00:07:22,918 --> 00:07:28,490
+meaning true and b is equal to 0 and c, d,
+e and equal to one Boolean formula we true
+
+63
+00:07:28,490 --> 00:07:32,649
+on
+notice easily. So, this is a candidate solution
+
+64
+00:07:32,649 --> 00:07:45,750
+and we will look at a process of perturbation
+which means we will take a candidate solution
+
+65
+00:07:45,750 --> 00:07:49,079
+and perturbation to give us a new
+candidate solution.
+
+66
+00:07:49,079 --> 00:07:53,618
+It is not other side; well not radically different
+from what you have doing earlier the
+
+67
+00:07:53,619 --> 00:07:57,240
+earlier my said could be called as constructive
+mechanism where you assemble a solution
+
+68
+00:07:57,240 --> 00:08:04,400
+piece by piece. So, that small diagram that
+I have drawn on there is illustrative of that,
+
+69
+00:08:04,399 --> 00:08:08,060
+that first you choose a variable a, then you
+choose a variable b, then you choose a
+
+70
+00:08:08,060 --> 00:08:11,709
+variable c and so on and so forth. We are
+doing that here, we are saying that we take
+
+71
+00:08:11,709 --> 00:08:15,459
+all
+the variables at one shot takes that as a
+
+72
+00:08:15,459 --> 00:08:17,348
+candidates and if it not the solution will
+do
+
+73
+00:08:17,348 --> 00:08:21,288
+something with this candidate to generate
+more candidates. Essentially, so in that sense
+
+74
+00:08:21,288 --> 00:08:25,918
+we call is a solution space search.
+Again, I would say it is not radically different
+
+75
+00:08:25,918 --> 00:08:31,088
+it is just a different way of looking at
+things essentially even in a for example,
+
+76
+00:08:31,088 --> 00:08:35,759
+city problem, you could say that if I had
+gone
+
+77
+00:08:35,759 --> 00:08:41,539
+.from IIT Madras to Marina beach the path
+from here to Adyar is that… That is a solution
+
+78
+00:08:41,539 --> 00:08:46,099
+or not you can think of it like that also
+as a candidate in some sense essentially,
+
+79
+00:08:46,100 --> 00:08:49,210
+but here
+we are saying that we have all the values
+
+80
+00:08:49,210 --> 00:08:56,420
+or all the features of variables such we can
+about. So, another example is a n queens problem,
+
+81
+00:08:56,419 --> 00:09:00,939
+you can have a constructive solution
+for the problem you can say place the first
+
+82
+00:09:00,940 --> 00:09:04,500
+queen then place the second queen. Then,
+place a third queen that and you can build
+
+83
+00:09:04,500 --> 00:09:10,409
+a solution step by step all you can say that
+I
+
+84
+00:09:10,409 --> 00:09:12,879
+will have a candidate placement for all the
+queens.
+
+85
+00:09:12,879 --> 00:09:23,059
+So, for example, in en queens in mike set
+let say 6 queens I could say this is a candidate
+
+86
+00:09:23,059 --> 00:09:35,619
+6, 1, 3, 4, 5, 2 and I would interpret this
+as saying that the that this is the first
+
+87
+00:09:35,620 --> 00:09:38,399
+column this
+is the second column third column. So, I am
+
+88
+00:09:38,399 --> 00:09:41,259
+saying the first column queen is a 6 row,
+the
+
+89
+00:09:41,259 --> 00:09:47,480
+second column queen is in the first row the
+third column queen is in a third row and so
+
+90
+00:09:47,480 --> 00:09:52,190
+on and so forth. This is my candidate solution
+and I will do something with this may be I
+
+91
+00:09:52,190 --> 00:09:56,190
+will do formulation of some sort to generate
+other candidates solutions. So, that is the
+
+92
+00:09:56,190 --> 00:10:01,259
+solutions space way of looking at things not
+radically different, but it sort of helps
+
+93
+00:10:01,259 --> 00:10:06,879
+us to
+visualize the space a little bit different.
+
+94
+00:10:06,879 --> 00:10:16,240
+Now, remember that for this problem there
+are 2 raise to n possible states essentially
+
+95
+00:10:16,240 --> 00:10:19,120
+and
+what move and function should give us is how
+
+96
+00:10:19,120 --> 00:10:27,460
+to navigate this spaces. So, one way we
+can divides several move then functions essentially
+
+97
+00:10:27,460 --> 00:10:38,720
+for this one simple, so we will call
+them as follows I will call this function
+
+98
+00:10:38,720 --> 00:10:47,209
+one, which says change one bit. Essentially,
+if
+
+99
+00:10:47,208 --> 00:10:51,369
+you look at this notation where they convey
+it is the big thing, you allowed changing
+
+100
+00:10:51,370 --> 00:10:58,198
+one
+bits. So, I have tables like 0, 1, 0, 0, 0,
+
+101
+00:10:58,198 --> 00:11:06,759
+sorry 0, 0, 1, 1, 1, so have change the first
+bit then
+
+102
+00:11:06,759 --> 00:11:28,480
+1, 1, 1, 1, 1, I change the second bit 1,
+0, 0, 1, I came the third bit here, so this
+
+103
+00:11:28,480 --> 00:11:31,580
+is one
+move than function that I have all her neighborhood
+
+104
+00:11:31,580 --> 00:11:34,810
+function.
+So, that is why am use a name n have, it is
+
+105
+00:11:34,809 --> 00:11:40,069
+a neighborhood function a given a candidate
+solution a this be a neighborhood of the solution
+
+106
+00:11:40,070 --> 00:11:48,389
+which is the same as what we called is a
+move then the start essentially. So, back
+
+107
+00:11:48,389 --> 00:11:58,060
+to our problem of local maximum why did we
+get into the silk limbic algorithm because
+
+108
+00:11:58,059 --> 00:12:10,729
+we wanted to save on space essentially? Now,
+a days space is hardly a problem essentially
+
+109
+00:12:10,730 --> 00:12:24,350
+I am in computer system I remember that in
+1990 I have the pc in the department which
+
+110
+00:12:24,350 --> 00:12:35,230
+had 30 megabits of hard disk and other day
+I
+
+111
+00:12:35,230 --> 00:12:40,039
+was talking to someone and he said this machine
+was only 2 GB RAM.
+
+112
+00:12:40,039 --> 00:12:45,719
+.Essentially, you know look space is now days
+is not so much, so, problem you had a
+
+113
+00:12:45,720 --> 00:12:52,210
+heard this is militates famously supposed
+to has said a some point that who will need
+
+114
+00:12:52,210 --> 00:13:00,769
+more than 64 k of RAM. So, space of course
+has change essentially, so we should also
+
+115
+00:13:00,769 --> 00:13:05,709
+add adopt to the changing world essentially.
+So, at a before we come to this till the very
+
+116
+00:13:05,708 --> 00:13:17,169
+simple variation to claiming this why do want
+to restrict yourself to only one success
+
+117
+00:13:17,169 --> 00:13:23,699
+essentially why not more than one essentially,
+I will just will illustrate that with a such
+
+118
+00:13:23,700 --> 00:13:25,040
+three as follows.
+.
+
+119
+00:13:25,039 --> 00:13:34,099
+It starts with a search the start note, then
+a next a there are five successes for a every
+
+120
+00:13:34,100 --> 00:13:40,269
+note
+may be like this. So, you generate five successes
+
+121
+00:13:40,269 --> 00:13:47,939
+fill claiming says move to the best one
+what is what is, so about moving to only 1
+
+122
+00:13:47,940 --> 00:13:52,269
+and a move to 2 essentially. So, let us take
+say
+
+123
+00:13:52,269 --> 00:13:57,839
+I move to this one or I move I consider both
+I do not throw I throw either I keep this
+
+124
+00:13:57,839 --> 00:14:04,550
+to
+best to once generate five children for this
+
+125
+00:14:04,549 --> 00:14:12,099
+five children’s. For this again thing the
+best
+
+126
+00:14:12,100 --> 00:14:37,159
+two cumulate five children and move on this
+algorithm is called main search and this
+
+127
+00:14:37,159 --> 00:14:47,949
+elastration has beam bits width into 2, so
+what have it done. Instead of hills claiming
+
+128
+00:14:47,950 --> 00:14:55,899
+which explore only one path in the space they
+are saying we are allowed to explore more
+
+129
+00:14:55,899 --> 00:15:00,460
+than one part simultaneously this space.
+So, in this example beam beats as to be called
+
+130
+00:15:00,460 --> 00:15:04,180
+as to, so this beam is like you can think
+of
+
+131
+00:15:04,179 --> 00:15:13,159
+a like a beam of thoughts light know you should
+shining into and you can have more than
+
+132
+00:15:13,159 --> 00:15:19,389
+one. So, at every level we have to notes this,
+so we will came going down the search
+
+133
+00:15:19,389 --> 00:15:27,649
+.space, but you will keep more than one option
+available essentially listen algorithm. It
+
+134
+00:15:27,649 --> 00:15:38,879
+has been use very successfully in speech recognition
+and it imagines that is useful in
+
+135
+00:15:38,879 --> 00:15:43,490
+situations where there are a few options which
+are likely to be candidates’ solution
+
+136
+00:15:43,490 --> 00:15:48,060
+essentially. So, if you can keep more than
+one option, so what is the problem in speak
+
+137
+00:15:48,059 --> 00:15:54,869
+recognition that you start with the speak
+signal then converted into phonemes, then
+
+138
+00:15:54,870 --> 00:16:03,688
+syllabus then words and so on.
+Now, it turns out that very often different
+
+139
+00:16:03,688 --> 00:16:10,919
+word combinations sounds similar essentially,
+so very often we think you said this or did
+
+140
+00:16:10,919 --> 00:16:20,248
+you say this, we know the such a thing is
+possible impact, this in the chapter on Maxwell
+
+141
+00:16:20,249 --> 00:16:27,139
+language processing. They are given an
+example of women who goes to New York and
+
+142
+00:16:27,139 --> 00:16:32,560
+says women come from New York. I do
+not remember and we say everything here cause
+
+143
+00:16:32,559 --> 00:16:39,379
+to nominal egg essentially. So, what was
+she saying what did a here what did the listener
+
+144
+00:16:39,379 --> 00:16:49,549
+here the listener said cost 
+whatever a
+
+145
+00:16:49,549 --> 00:16:57,559
+nominal eggs the listener thought that women
+is saying that everything is cause a
+
+146
+00:16:57,559 --> 00:16:59,669
+nominal.
+Essentially, the women was actually saying
+
+147
+00:16:59,669 --> 00:17:16,579
+work cost, but intended to say was
+everything a calls on arm in a egg, but you
+
+148
+00:17:16,579 --> 00:17:22,889
+know people speak with different actions and
+that kind of I am sure you can see make both
+
+149
+00:17:22,890 --> 00:17:28,860
+are them sound the similar. I cannot do that
+so easily, but that is what and what the twist
+
+150
+00:17:28,859 --> 00:17:34,189
+a heard was cost nominal egg we can see
+that this kind of problem is actually very
+
+151
+00:17:34,190 --> 00:17:37,240
+the case in speech recognition the people
+speak
+
+152
+00:17:37,240 --> 00:17:42,570
+with different actions. The listener cannot
+always make sense of what at the same time
+
+153
+00:17:42,570 --> 00:17:45,299
+in
+the number of variation options that one has.
+
+154
+00:17:45,299 --> 00:17:48,529
+I am not too many essentially and then
+algorithm. Then, I will go some which can
+
+155
+00:17:48,529 --> 00:17:52,309
+keep more than one options alive is likely
+to
+
+156
+00:17:52,309 --> 00:17:59,659
+succeed in recognizing the correct sequence
+of word.
+
+157
+00:17:59,660 --> 00:18:10,370
+Essentially, in signal processing circles
+called is a Viterbi algorithm basically is
+
+158
+00:18:10,369 --> 00:18:15,839
+beams
+search essentially now what is the complexity
+
+159
+00:18:15,839 --> 00:18:24,179
+of beam search space complexity level yes
+considered that it is a constant because the
+
+160
+00:18:24,180 --> 00:18:29,450
+beam builds is speaks instead of one known.
+You are going to keep beam known at every
+
+161
+00:18:29,450 --> 00:18:36,710
+stage alive and so times number of
+neighbors is a maximum have to deal with essentially
+
+162
+00:18:36,710 --> 00:18:42,631
+that is a constant space algorithm.
+It makes around the hill local maximum problem
+
+163
+00:18:42,631 --> 00:18:49,960
+where you know one bars may not have
+a good successor, but for example, all these
+
+164
+00:18:49,960 --> 00:18:56,000
+may be bad, but this may have too good
+successes. So, may be some were have this
+
+165
+00:18:56,000 --> 00:18:58,369
+solution will find which would not have
+
+166
+00:18:58,369 --> 00:19:02,529
+.worked out in this was better than this if
+this was better than this only this would
+
+167
+00:19:02,529 --> 00:19:05,950
+I am in
+selective only this launch should have gone.
+
+168
+00:19:05,950 --> 00:19:11,259
+It should be because we have kept two
+options both these branches are there so that
+
+169
+00:19:11,259 --> 00:19:15,450
+one variation of how to get around this local
+maximum.
+
+170
+00:19:15,450 --> 00:19:23,990
+Next, come back to this solutions space sat
+problem essentially, so I want to talk about
+
+171
+00:19:23,990 --> 00:19:35,289
+another algorithm which is. So, remember that
+I said that, so what is this is an about as
+
+172
+00:19:35,289 --> 00:19:38,759
+a
+move than function it connects givens state
+
+173
+00:19:38,759 --> 00:19:41,069
+in this case a given a candidate solution
+to
+
+174
+00:19:41,069 --> 00:19:55,939
+other candidates solutions, but why should
+I choose this neighborhood function. Now,
+
+175
+00:19:55,940 --> 00:20:03,710
+that is only cap what does the hill claiming
+algorithm do, it generates all this five
+
+176
+00:20:03,710 --> 00:20:13,110
+neighbors and picks the best amongst them
+if it is better than it moves, so otherwise
+
+177
+00:20:13,109 --> 00:20:18,379
+it is
+where it is. So, the complexity of the algorithm
+
+178
+00:20:18,380 --> 00:20:25,590
+will also move them function will depend
+on how many in move how many in neighbors,
+
+179
+00:20:25,589 --> 00:20:31,049
+we have will have to keep this.
+Essentially, I can think of another move them
+
+180
+00:20:31,049 --> 00:20:34,579
+function neighbor function, so just call it
+n
+
+181
+00:20:34,579 --> 00:20:58,939
+two and it says change any two bit. So, n
+1 says change one bit see that for this small
+
+182
+00:20:58,940 --> 00:21:04,430
+problem of five variables sat problem, next
+my end to will give me a different neighbor
+
+183
+00:21:04,430 --> 00:21:15,990
+function. So, for example, one of the neighbors
+would be 1, 1 or let me just see in the
+
+184
+00:21:15,990 --> 00:21:26,940
+first 2 bits 0, 1, 1, 1, 1 another neighbor
+could be I change first and third bit 0, 0,
+
+185
+00:21:26,940 --> 00:21:32,519
+0, 1, 1.
+It gives me a different set of neighbors not
+
+186
+00:21:32,519 --> 00:21:36,559
+only he keeps a different set of neighbors
+it
+
+187
+00:21:36,559 --> 00:21:45,230
+gives me more neighbors. So, this n 1 gives
+me 5 neighbors or n neighbors if n variables
+
+188
+00:21:45,230 --> 00:21:54,970
+are n there this n two gives me n c 2 neighbors
+in this example that is ten neighbors. So,
+
+189
+00:21:54,970 --> 00:22:02,279
+it is a different neighborhood function, I
+can choose between different functions how
+
+190
+00:22:02,279 --> 00:22:06,299
+can
+I explore this information can I device an
+
+191
+00:22:06,299 --> 00:22:10,089
+algorithm which it will try to make use of
+different neighborhood function.
+
+192
+00:22:10,089 --> 00:22:11,089
+..
+
+193
+00:22:11,089 --> 00:22:19,289
+So, I can have n one n two then I can have
+n three and up to n if I have n variables
+
+194
+00:22:19,289 --> 00:22:22,200
+and
+this case up to n five I can again say change
+
+195
+00:22:22,200 --> 00:22:24,200
+all five essentially of course, that will
+give
+
+196
+00:22:24,200 --> 00:22:33,860
+me only one neighbor. It move at me far from
+their all I can have combination I can
+
+197
+00:22:33,859 --> 00:22:42,979
+device n 1 2 which says change 1 or 2 bits
+or change up to 2 bits essentially, I can
+
+198
+00:22:42,980 --> 00:22:48,920
+say
+change up to 3 bits essentially or n 1, 2,
+
+199
+00:22:48,920 --> 00:23:08,500
+3, I can go up to none n which in our example
+would be n 1, 2, 3, 4, 5.
+
+200
+00:23:08,500 --> 00:23:18,789
+So, the first thing I want you to observe
+is that they are if you go down this path
+
+201
+00:23:18,789 --> 00:23:28,680
+they are
+more dense the neighborhood is more bun dense
+
+202
+00:23:28,680 --> 00:23:35,200
+as you go down this set of
+neighborhood function. So, I cannot write
+
+203
+00:23:35,200 --> 00:23:53,160
+this here, so I can choose a sequence of
+neighborhood functions, which are in cleansing
+
+204
+00:23:53,160 --> 00:23:59,300
+lead dense, which means they give me
+denser and denser neighborhood. Thus most
+
+205
+00:23:59,299 --> 00:24:05,549
+simplex other most parts is n one which
+allow we taken get by changing one bit and
+
+206
+00:24:05,549 --> 00:24:09,419
+then I can get n 2, we say 10, there I can
+get
+
+207
+00:24:09,420 --> 00:24:13,800
+n 1 2 which as 10 plus this 5 which is 15
+and so on.
+
+208
+00:24:13,799 --> 00:24:14,799
+..
+
+209
+00:24:14,799 --> 00:24:23,980
+I can create a sequence of neighborhood function
+n one n two which is increasing density
+
+210
+00:24:23,980 --> 00:24:43,529
+how should I choose bits neighborhood function
+to use remember neighborhood function
+
+211
+00:24:43,529 --> 00:24:47,750
+same as move then essentially. So, we have
+now the option of choosing move gen
+
+212
+00:24:47,750 --> 00:24:53,470
+function on and we on the keeping mind that
+we role on the gets struck in the local
+
+213
+00:24:53,470 --> 00:25:04,960
+maxima, so what will be the heuristic function
+here? If have a clause like this for a
+
+214
+00:25:04,960 --> 00:25:16,090
+formula like this h of n for a given candidate
+solution these are all candidate solution
+
+215
+00:25:16,089 --> 00:25:22,899
+say
+how do you give them a value any suggestion
+
+216
+00:25:22,900 --> 00:25:25,800
+number of clauses number of clauses it
+makes a true that is a simplest you have doing
+
+217
+00:25:25,799 --> 00:25:37,889
+it.
+So, will keep that in mind or we can modify
+
+218
+00:25:37,890 --> 00:25:43,600
+this to say weighted number, so if a clause
+has more literals then give it more weight.
+
+219
+00:25:43,599 --> 00:25:51,009
+So, another possibility and basically it gives
+you an idea how much of the solution is solved
+
+220
+00:25:51,009 --> 00:25:58,690
+in some sense if I have twenty clauses an
+I one candidates satisfies 7 and another one
+
+221
+00:25:58,690 --> 00:26:04,820
+satisfies is 12. Then, may be the 12 is better
+than 7, just again a take remember just takes
+
+222
+00:26:04,819 --> 00:26:14,399
+a not perfect this is only. We will basically
+assume that the most clauses the better the
+
+223
+00:26:14,400 --> 00:26:23,650
+heuristic function, so we want to know device
+a algorithm it will search in this solution
+
+224
+00:26:23,650 --> 00:26:27,269
+space and try to device in algorithm, which
+will
+
+225
+00:26:27,269 --> 00:26:34,690
+not get struck in a local maximum.
+So, what which what is a criteria one should
+
+226
+00:26:34,690 --> 00:26:48,570
+use for choosing a neighborhood function.
+So, two things one is that we want to also
+
+227
+00:26:48,569 --> 00:26:58,539
+keep a list on time complexity is time
+complexity going to all these going to affect
+
+228
+00:26:58,539 --> 00:27:01,470
+may time complexity all in what manner
+
+229
+00:27:01,470 --> 00:27:07,720
+.these functions will affect my time complexity.
+So, that is why I am saying remember the
+
+230
+00:27:07,720 --> 00:27:13,960
+hill claiming algorithm what will be do it
+generates all the neighbors and then picks
+
+231
+00:27:13,960 --> 00:27:16,370
+the
+best amongst them and moves to them moves
+
+232
+00:27:16,369 --> 00:27:20,099
+that neighbor then generates all the
+neighbors. Then, thus that what about this
+
+233
+00:27:20,099 --> 00:27:33,019
+function this one what is the neighborhood
+function take this all example five variables
+
+234
+00:27:33,019 --> 00:27:39,730
+a, b, c, d, e and this one is saying.
+You can change any number of bits you want
+
+235
+00:27:39,730 --> 00:27:50,490
+change 1 or 2 or 3 a when I say one or 2 I
+mean any one any 2, any 3, any 4, any 5, what
+
+236
+00:27:50,490 --> 00:27:59,099
+is the neighborhood function entire space
+is the neighborhood function. Every note is
+
+237
+00:27:59,099 --> 00:28:03,469
+connective directly to every other notes it
+can
+
+238
+00:28:03,470 --> 00:28:08,660
+you can move from any state to another any
+other state in one step. How many maxima
+
+239
+00:28:08,660 --> 00:28:21,531
+will this have? One only one which is the
+global maxima which is the solution, they
+
+240
+00:28:21,530 --> 00:28:26,769
+may
+be more than one maxima. So, that one is the
+
+241
+00:28:26,769 --> 00:28:38,940
+point, but what is going to be the
+complexity of the move gen function remembers
+
+242
+00:28:38,940 --> 00:28:45,970
+that we said generates all the neighbors
+this is choosing this the move gen function
+
+243
+00:28:45,970 --> 00:28:50,920
+and using hill climbing.
+What are you doing? You are just doing a force
+
+244
+00:28:50,920 --> 00:28:58,130
+saying generates all possible states and
+then pick the one best pronounce them, obviously
+
+245
+00:28:58,130 --> 00:29:03,460
+how many states are there we have
+major observation that there are two states
+
+246
+00:29:03,460 --> 00:29:08,410
+to n states essentially. If the neighborhood
+has
+
+247
+00:29:08,410 --> 00:29:13,710
+to a to n states then you have actually the
+problem and may be not a group force search
+
+248
+00:29:13,710 --> 00:29:18,370
+which is no point solving because you know
+to which instates part to many inspect any
+
+249
+00:29:18,369 --> 00:29:22,829
+way. So, this hill claiming algorithm if you
+want to use this use they function the of
+
+250
+00:29:22,829 --> 00:29:27,539
+5,
+but may be for 30 or 40 or 100 variables would
+
+251
+00:29:27,539 --> 00:29:32,510
+not even start of it would spend this
+whole life then waiting the neighborhood function
+
+252
+00:29:32,510 --> 00:29:37,879
+done that.
+So, what is the next base thing we can do,
+
+253
+00:29:37,880 --> 00:29:43,470
+so we cannot choose the dense function that
+what I am trying to say why all we in president
+
+254
+00:29:43,470 --> 00:29:48,950
+dense function because dense functions
+will not have this difficulty of getting struck
+
+255
+00:29:48,950 --> 00:30:01,711
+in local maximum? What is the advantage
+of choosing a farce neighborhood function
+
+256
+00:30:01,711 --> 00:30:10,289
+faster the neighborhood generate it faster
+essentially and choose us remember that hill
+
+257
+00:30:10,289 --> 00:30:14,539
+claiming algorithm. Basically, it says
+generate the neighbors pick the best amongst
+
+258
+00:30:14,539 --> 00:30:25,069
+them if is better move to that then generate
+the neighbors and so on.
+
+259
+00:30:25,069 --> 00:30:43,000
+So, what do we do can we device the nice algorithm
+which will give us which allow us to
+
+260
+00:30:43,000 --> 00:30:47,829
+see thus parcel the algorithm the neighborhood
+function the lesser the state you can. It
+
+261
+00:30:47,829 --> 00:30:51,329
+is
+true that is obliviously the milling of the
+
+262
+00:30:51,329 --> 00:30:55,419
+parts the mold likely it is that you not connected
+
+263
+00:30:55,420 --> 00:31:03,240
+.to the better state that denser the algorithm.
+The mold likely it is that for any given say
+
+264
+00:31:03,240 --> 00:31:07,809
+there is always a better state which the extreme
+example is this algorithm because any
+
+265
+00:31:07,809 --> 00:31:12,470
+state which is not a optimal solution a global
+maxima has is connected to the global
+
+266
+00:31:12,470 --> 00:31:15,650
+maxima.
+Every state has a better state and a only
+
+267
+00:31:15,650 --> 00:31:22,009
+state is do not have better state of the global
+maxima states. So, if you can try imagine
+
+268
+00:31:22,009 --> 00:31:31,460
+this that choosing move gen function is also
+devising the landscape. It is a difficult
+
+269
+00:31:31,460 --> 00:31:34,420
+for me to visualize it here, but it is what
+a move
+
+270
+00:31:34,420 --> 00:31:38,390
+gen function telling you will that one function
+is saying from here you can go to this to
+
+271
+00:31:38,390 --> 00:31:42,380
+this to this to this or to this one. Another
+one is saying that from here you can go to
+
+272
+00:31:42,380 --> 00:31:48,110
+some
+other set or together essentially and what
+
+273
+00:31:48,109 --> 00:31:51,609
+is the lotion of a local maxima lotion of
+a local
+
+274
+00:31:51,609 --> 00:32:00,419
+maxima is that this state is better than always
+neighbors that is a lotion of a local maxima
+
+275
+00:32:00,420 --> 00:32:07,090
+if all the neighbors are the entire set like
+in the example then it is a global maxima.
+
+276
+00:32:07,089 --> 00:32:15,209
+So, in another way of looking at it is that
+denser function in many if you to the denser
+
+277
+00:32:15,210 --> 00:32:20,390
+neighborhood function then probability of
+the likely hood of a state being as local
+
+278
+00:32:20,390 --> 00:32:26,590
+maxima becomes lesser because it has to be
+a better than more neighbors. Essentially,
+
+279
+00:32:26,589 --> 00:32:29,429
+it
+just a very naïve way of looking at it, but
+
+280
+00:32:29,430 --> 00:32:34,630
+you can get some intention or that essentially.
+So, we would like to use a denser function
+
+281
+00:32:34,630 --> 00:32:40,950
+because it is not likely to have states which
+are local maxima which mean the surface, it
+
+282
+00:32:40,950 --> 00:32:47,220
+generates would be smoother and a cooler
+surface is more amenable to hill claiming.
+
+283
+00:32:47,220 --> 00:32:57,690
+Essentially, if a surface has no local maxima,
+then you will restore global maxima, so
+
+284
+00:32:57,690 --> 00:33:05,151
+that will a simple approach to and is given
+in this book which has mention it also given
+
+285
+00:33:05,151 --> 00:33:12,769
+in my book, but, I first edit here which is
+how to solved by modern in. It will really
+
+286
+00:33:12,769 --> 00:33:15,509
+go
+and look at this book because begging in a
+
+287
+00:33:15,509 --> 00:33:19,200
+every chapter a given nice interesting puzzle
+that you can solve. Essentially, may be one
+
+288
+00:33:19,200 --> 00:33:28,190
+of these days I will give you one of the
+puzzles the algorithm is simple that you have
+
+289
+00:33:28,190 --> 00:33:35,429
+access to a set up neighborhood functions
+and you do the following.
+
+290
+00:33:35,429 --> 00:33:36,429
+..
+
+291
+00:33:36,429 --> 00:33:47,600
+So, I will just write it very briefly call
+hill claiming, so the meaning of this is,
+
+292
+00:33:47,599 --> 00:33:54,309
+so I call on
+sorry we just say hill claiming. So, H c stands
+
+293
+00:33:54,309 --> 00:33:56,990
+for hill claiming hills hill claiming with
+a
+
+294
+00:33:56,990 --> 00:34:10,789
+neighborhood function and you put i is equal
+to 1 and in a put i is equal to i plus 1 and
+
+295
+00:34:10,789 --> 00:34:15,539
+put it into a move, what is the meaning of
+this algorithm? So, we should work out the
+
+296
+00:34:15,539 --> 00:34:20,769
+details I am not going to write the details
+the meaning of this algorithm is and depending
+
+297
+00:34:20,769 --> 00:34:25,940
+on what the resource is is allow you will
+go into this loaf. Once you run out of resource
+
+298
+00:34:25,940 --> 00:34:31,450
+is you say stop something here, but inside
+this is a another loaf which is the hill claiming
+
+299
+00:34:31,449 --> 00:34:36,739
+loaf and that is saying use the I as neighborhood
+function.
+
+300
+00:34:36,739 --> 00:34:44,019
+I am assuming that their order crossing to
+increasing density use the i h neighborhood
+
+301
+00:34:44,019 --> 00:34:50,929
+function and when you terminate when you come
+out of hill claiming remember there we
+
+302
+00:34:50,929 --> 00:34:58,070
+no longer have the notional gold test. So,
+in fact it is of course you can put in a gold
+
+303
+00:34:58,070 --> 00:35:00,680
+test
+check, so for example, in a sat problem you
+
+304
+00:35:00,679 --> 00:35:06,769
+can say yes if all my clauses are satisfied
+then stop you can put then that extra check,
+
+305
+00:35:06,769 --> 00:35:10,869
+but we are looking at optimization more
+generally know. So, we want to find the maximum
+
+306
+00:35:10,869 --> 00:35:18,679
+value of this heuristic function, so
+what we are saying is it start with the most
+
+307
+00:35:18,679 --> 00:35:24,909
+sparse hill claiming most sparse
+neighborhood function claim us as claim up
+
+308
+00:35:24,909 --> 00:35:27,469
+as much as you can, using a hill claiming
+analogy.
+
+309
+00:35:27,469 --> 00:35:33,969
+Then, switch to a different neighborhood function
+the next one an en claim up again and
+
+310
+00:35:33,969 --> 00:35:39,179
+then keep doing that using neighborhood function.
+So, if you can visualize this somehow
+
+311
+00:35:39,179 --> 00:35:48,569
+.you can say think of the neighborhood function
+as you know giving you connection with
+
+312
+00:35:48,570 --> 00:35:55,960
+ladles from one state to another state so
+on. So, each of them is a ladder and if the
+
+313
+00:35:55,960 --> 00:35:58,099
+ladder
+is going up you claim up if you does not going
+
+314
+00:35:58,099 --> 00:36:03,989
+up you stop essentially and many stop
+suddenly get a different set of ladders. Let
+
+315
+00:36:03,989 --> 00:36:08,259
+us say this launch and see if you have better
+state then you keep claiming the different
+
+316
+00:36:08,260 --> 00:36:12,950
+set of ladders and so on.
+So, what is the advantage the intention behind
+
+317
+00:36:12,949 --> 00:36:22,119
+this is that you do most of the claiming in
+the early stages that you early sparse a function
+
+318
+00:36:22,119 --> 00:36:27,259
+will take you up quite a bit. Then, when
+you gets struck on some local maxima suddenly
+
+319
+00:36:27,260 --> 00:36:47,050
+you have different ladder take you two
+another this is the algorithm its call variable
+
+320
+00:36:47,050 --> 00:36:54,450
+neighborhood descent well they are talking
+about minimizing. So, it is imagined you are
+
+321
+00:36:54,449 --> 00:36:57,199
+going down a value into the claiming hill
+or
+
+322
+00:36:57,199 --> 00:37:11,710
+v d n were this is saying is that use sequence
+of denser neighborhood functions. Each
+
+323
+00:37:11,710 --> 00:37:18,550
+stage you do hill claiming and you can have
+variation on this you can work out
+
+324
+00:37:18,550 --> 00:37:25,170
+variations.
+For example, one could say that after having
+
+325
+00:37:25,170 --> 00:37:29,260
+using n to should that n 1 again allowed
+because now I am in a different states may
+
+326
+00:37:29,260 --> 00:37:31,750
+be a n one will help from there is a. So,
+this a
+
+327
+00:37:31,750 --> 00:37:36,869
+way essence that you try think of essentially
+for the basic idea is simple that if you us
+
+328
+00:37:36,869 --> 00:37:42,589
+talk on a local maxima use a denser function
+and try that. Essentially, this means that
+
+329
+00:37:42,590 --> 00:37:46,700
+depending on how were the resources you have
+you will explore it as many of this
+
+330
+00:37:46,699 --> 00:37:59,939
+neighborhood function as possible essentially.
+So, I was on the end with one example that
+
+331
+00:37:59,940 --> 00:38:09,039
+we of discuss earlier, which is the example
+and what with a I want into a visualize what
+
+332
+00:38:09,039 --> 00:38:12,750
+will the terrain look like men. Let us see
+call
+
+333
+00:38:12,751 --> 00:38:17,680
+when expert and by expert we mean not necessarily
+who will find optimal solution, but
+
+334
+00:38:17,679 --> 00:38:27,890
+who will solve it quickly according to alone
+solution, how will the terrain how will that
+
+335
+00:38:27,891 --> 00:38:28,900
+journey look like.
+
+336
+00:38:28,900 --> 00:38:29,900
+..
+
+337
+00:38:29,900 --> 00:38:44,050
+So, the idea that I am trying to talk about
+is this that this is the solution, so this
+
+338
+00:38:44,050 --> 00:38:46,610
+means
+you know what the solution that move 1 is,
+
+339
+00:38:46,610 --> 00:38:52,360
+move 2, move 3, move 4 and so on.
+Somebody else gave you a solution how will
+
+340
+00:38:52,360 --> 00:38:58,610
+the terrain look like given some heuristic
+function like the number of tiles in place
+
+341
+00:38:58,610 --> 00:39:03,890
+or something like that initially the number
+of
+
+342
+00:39:03,889 --> 00:39:11,739
+tiles out of place. Let us see initially little
+be some value which that a out of place finally,
+
+343
+00:39:11,739 --> 00:39:20,079
+of course it choose be 0, but how was the
+journey and remember that we said we makes
+
+344
+00:39:20,079 --> 00:39:25,449
+does observation. When, you have partially
+solve the rubrics you many mode to move
+
+345
+00:39:25,449 --> 00:39:30,449
+further from their you have to disrupts some
+of the earlier partial solution that is reflect
+
+346
+00:39:30,449 --> 00:39:36,309
+by saying that the journey is like this.
+You do like this and you have solve the top
+
+347
+00:39:36,309 --> 00:39:40,279
+row, but now you have on do the middle row
+you have to disrupt this, but you do something
+
+348
+00:39:40,280 --> 00:39:48,140
+better then like this then there a some
+variation then a. So, it will be something
+
+349
+00:39:48,139 --> 00:39:54,559
+like this, so whatever trying to illustrate
+here is
+
+350
+00:39:54,559 --> 00:40:03,469
+that if a expert the solving is the rubrics
+cube, then at each state on the way if you
+
+351
+00:40:03,469 --> 00:40:05,759
+want
+to flirt the heuristic value it would something
+
+352
+00:40:05,760 --> 00:40:14,950
+like this. Of course, it means that may be
+this is an excavation maybe it is like this
+
+353
+00:40:14,949 --> 00:40:21,289
+function like that that real one problems
+a
+
+354
+00:40:21,289 --> 00:40:27,800
+search there it is not. So, easy to devise
+heuristic function which will generates most
+
+355
+00:40:27,800 --> 00:40:30,610
+of
+surface essentially, so Rubik’s cube is
+
+356
+00:40:30,610 --> 00:40:33,860
+just an example of that which mean that I
+cannot
+
+357
+00:40:33,860 --> 00:40:34,860
+solve.
+
+358
+00:40:34,860 --> 00:40:38,610
+.I cannot even hope to solve rubric cubic
+hopes an using a hill climbing like algorithm
+
+359
+00:40:38,610 --> 00:40:46,320
+because I will find it extremely difficult
+to device a heuristic function whose surface
+
+360
+00:40:46,320 --> 00:40:51,340
+would be monotonically decreasing towards
+the goal state essentially. In practice since
+
+361
+00:40:51,340 --> 00:40:53,850
+I
+have to disrupt the cube on the way I will
+
+362
+00:40:53,849 --> 00:41:03,269
+be first two go against the heuristic function
+essentially. So, going with a heuristic function
+
+363
+00:41:03,269 --> 00:41:15,009
+we will call exploitation of the heuristic
+knowledge and as oppose to a exploitation
+
+364
+00:41:15,010 --> 00:41:21,020
+is following. Somebody told you do this
+sense, so you do that essentially as oppose
+
+365
+00:41:21,019 --> 00:41:24,489
+to exploitation is the notion of exploration
+to
+
+366
+00:41:24,489 --> 00:41:31,519
+explore new idea new areas of the space essentially.
+So, for our only attempted exploration has
+
+367
+00:41:31,519 --> 00:41:39,300
+been this beam search in which we have said
+you will keeps many candidates alive, but
+
+368
+00:41:39,300 --> 00:41:43,039
+in the next class then we meet we will see
+how
+
+369
+00:41:43,039 --> 00:41:51,400
+to try to increase component of exploration
+in search. The reason behind that is at exploit
+
+370
+00:41:51,400 --> 00:41:58,340
+pure exploitation which means purely following
+the heuristic function is going to end of
+
+371
+00:41:58,340 --> 00:42:03,869
+in local maxima even in the surface has local
+maxima what kind of algorithm. Can we
+
+372
+00:42:03,869 --> 00:42:11,230
+think of that will go beyond the local maxima
+and to the global maxima. So, I will stop
+
+373
+00:42:11,230 --> 00:42:13,289
+here and will take that of next week essentially.
+
+374
+00:42:13,289 --> 00:42:23,289
+.
+

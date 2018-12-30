@@ -1,0 +1,527 @@
+WEBVTT
+
+1
+00:00:00.520 --> 00:00:06.640
+Next, we'll import the GraphX libraries,
+import the Vertices, import the Edges,
+
+2
+00:00:06.640 --> 00:00:12.820
+create a Graph, and use Spark's filter
+method to return Vertices in the graph.
+
+3
+00:00:12.820 --> 00:00:15.670
+Hi, this is Cristine Kirkpatrick,
+division director for
+
+4
+00:00:15.670 --> 00:00:17.720
+Information Technology Systems and
+
+5
+00:00:17.720 --> 00:00:21.320
+Services at
+the San Diego Super Computer Center.
+
+6
+00:00:21.320 --> 00:00:23.810
+I'll guide you through
+the hands-on exercises.
+
+7
+00:00:23.810 --> 00:00:26.440
+I recommend you follow
+along with the video once.
+
+8
+00:00:26.440 --> 00:00:28.370
+Then, either using the video or
+
+9
+00:00:28.370 --> 00:00:32.360
+the hands-on reading, go through the
+hands-on exercise on your own computer.
+
+10
+00:00:33.460 --> 00:00:37.440
+This hands-on exercise will show you
+how to build a graph using GraphX,
+
+11
+00:00:37.440 --> 00:00:40.720
+Spark's API for graphs, and
+graph-parallel computation.
+
+12
+00:00:41.750 --> 00:00:44.720
+We'll start with importing the data and
+then build a simple graph.
+
+13
+00:00:45.890 --> 00:00:49.050
+Note that the first four hands on
+assignments are meant to be completed
+
+14
+00:00:49.050 --> 00:00:50.640
+sequentially.
+
+15
+00:00:50.640 --> 00:00:54.430
+That is, you will need to have your
+Cloudera VM running continuously.
+
+16
+00:00:54.430 --> 00:00:55.840
+If you must shut down your VM and
+
+17
+00:00:55.840 --> 00:01:00.460
+restart, you will need to run the commands
+from this first hands on assignment again.
+
+18
+00:01:01.470 --> 00:01:05.930
+Otherwise you may receive error messages
+because the data has not been imported.
+
+19
+00:01:05.930 --> 00:01:07.680
+The data references metro areas.
+
+20
+00:01:08.860 --> 00:01:13.190
+In an effort to disambiguate or
+distinguish between metropolitan areas and
+
+21
+00:01:13.190 --> 00:01:15.700
+an English word also used
+to refer to a train or
+
+22
+00:01:15.700 --> 00:01:19.240
+light rail, when we mean metro
+area we will say metropolis.
+
+23
+00:01:20.340 --> 00:01:23.070
+First, ensure your
+cloudera vm is started and
+
+24
+00:01:23.070 --> 00:01:26.780
+that you've downloaded the data set,
+examples of analytics.
+
+25
+00:01:26.780 --> 00:01:28.600
+The link is in the content for this week.
+
+26
+00:01:29.720 --> 00:01:32.780
+The download process might name
+the zip file something very long.
+
+27
+00:01:33.960 --> 00:01:39.170
+Copy the examples of analytics.zip
+file to the cloudera's home folder.
+
+28
+00:01:39.170 --> 00:01:41.300
+If the zip file is on the desktop,
+
+29
+00:01:41.300 --> 00:01:44.880
+simply drag it to the Cloudera's
+home folder on the desktop.
+
+30
+00:01:44.880 --> 00:01:47.820
+If the file is saved elsewhere,
+then you will need to navigate
+
+31
+00:01:47.820 --> 00:01:51.680
+to the folder where it is saved before
+dragging it to the Cloudera's home folder.
+
+32
+00:01:52.750 --> 00:01:57.490
+Open the terminal window by clicking the
+terminal icon at the top of the screen.
+
+33
+00:01:57.490 --> 00:02:01.860
+Use the unzip command to extract the zip
+file to the cloudera home directory.
+
+34
+00:02:01.860 --> 00:02:04.830
+You can copy and
+paste the name of the zip file.
+
+35
+00:02:04.830 --> 00:02:07.750
+Let it extract with the default name,
+ExamplesOfAnalytics.
+
+36
+00:02:08.960 --> 00:02:11.690
+Go into the ExamplesOfAnalytics
+directory and
+
+37
+00:02:11.690 --> 00:02:15.260
+list the contents of
+the EOA data directory.
+
+38
+00:02:15.260 --> 00:02:18.430
+You should see five .csv files and
+one .txt file.
+
+39
+00:02:19.720 --> 00:02:25.460
+In order to access the CSV and TXT files,
+we have to first copy the files to HDFS.
+
+40
+00:02:26.950 --> 00:02:32.500
+Rally HDFS foot command to copy
+the EOA data directory to HDFS
+
+41
+00:02:32.500 --> 00:02:35.990
+then less the contents of
+the EOA data directory on HDFS.
+
+42
+00:02:37.580 --> 00:02:42.140
+Start the spark shell and include the
+graph stream and breeze fizz libraries.
+
+43
+00:02:42.140 --> 00:02:45.030
+Don't worry about copying
+the full command from the video.
+
+44
+00:02:45.030 --> 00:02:48.526
+A text version will be included within
+the course reading that contains the full
+
+45
+00:02:48.526 --> 00:02:50.048
+command for you to copy and paste.
+
+46
+00:02:53.310 --> 00:02:57.083
+Import the log for j classes and
+suppress the notice in info messages.
+
+47
+00:03:03.571 --> 00:03:09.410
+Import sparks graphx and
+rdd classes along with scala source class.
+
+48
+00:03:09.410 --> 00:03:14.180
+The data set we are going to use in
+this hands on is from three files.
+
+49
+00:03:14.180 --> 00:03:18.860
+The metro.csv file and the country.csv
+file contain the vertices for
+
+50
+00:03:18.860 --> 00:03:22.700
+the graph and
+metro underscore country.csv.
+
+51
+00:03:22.700 --> 00:03:26.740
+contains the edges that make up the
+relationships between the metro areas and
+
+52
+00:03:26.740 --> 00:03:27.980
+the country they belong too.
+
+53
+00:03:29.010 --> 00:03:33.940
+Before importing any of the CSV files, we
+are going to list the first five lines of
+
+54
+00:03:33.940 --> 00:03:36.710
+each file to verify that
+they are indeed CSV files.
+
+55
+00:03:37.880 --> 00:03:44.540
+Notice that the metric.csv contains an ID,
+the metropolis name and the population.
+
+56
+00:03:44.540 --> 00:03:48.838
+The country.csv file contains
+only an ID and the country name.
+
+57
+00:03:48.838 --> 00:03:52.667
+The metro_country.csv file
+contains the metro ID and
+
+58
+00:03:52.667 --> 00:03:56.339
+the ID of the country that
+the metropolis belongs to.
+
+59
+00:04:02.179 --> 00:04:07.110
+Create a class called PlaceNode to store
+the information about the vertices.
+
+60
+00:04:07.110 --> 00:04:10.870
+Then extend the PlaceNode class
+with case classes specifically for
+
+61
+00:04:10.870 --> 00:04:12.920
+the metro's and the countries vertices.
+
+62
+00:04:13.920 --> 00:04:14.990
+Create attributes for
+
+63
+00:04:14.990 --> 00:04:19.900
+the metro class to store the name and
+the population from the CSV file.
+
+64
+00:04:19.900 --> 00:04:22.660
+The country class only needs
+an attribute to store the name.
+
+65
+00:04:23.930 --> 00:04:29.490
+To import the metro.csv file, create
+a spark resilient distributive data set or
+
+66
+00:04:29.490 --> 00:04:35.235
+rdd named metros made up of
+a vertex id in the metro class.
+
+67
+00:04:35.235 --> 00:04:38.310
+An rdd represents an immutable
+partition collection
+
+68
+00:04:38.310 --> 00:04:40.740
+of elements that can be
+operated on in parallel.
+
+69
+00:04:41.800 --> 00:04:44.630
+When the contents of
+the .csv files printed,
+
+70
+00:04:44.630 --> 00:04:47.900
+the line with the column names
+started with the symbol #.
+
+71
+00:04:47.900 --> 00:04:51.590
+So create a filter to ignore any
+line that starts with a # so
+
+72
+00:04:51.590 --> 00:04:54.080
+that the column names
+don't import into the RDD.
+
+73
+00:04:55.540 --> 00:04:59.870
+The .csv files being imported
+contain values separated by commas.
+
+74
+00:04:59.870 --> 00:05:03.770
+So you will need to split each line
+in the metro.csv file into rows,
+
+75
+00:05:03.770 --> 00:05:06.470
+by using a comma as a delimiter.
+
+76
+00:05:06.470 --> 00:05:08.970
+Map the first row to the vertex ID.
+
+77
+00:05:08.970 --> 00:05:11.610
+The second row is the metro
+name attribute, and
+
+78
+00:05:11.610 --> 00:05:13.630
+the third row is the population attribute.
+
+79
+00:05:14.700 --> 00:05:19.162
+You're going to import the country's .csv
+feed file the same way as the metro.csv
+
+80
+00:05:19.162 --> 00:05:20.080
+feed file.
+
+81
+00:05:20.080 --> 00:05:25.120
+However this time since the ids in both
+the metro.csv file and the country.csv
+
+82
+00:05:25.120 --> 00:05:30.350
+file start with one you will add 100
+to the vertex id of the countries.
+
+83
+00:05:30.350 --> 00:05:34.570
+So that the vertex ids are unique
+between both data sets.
+
+84
+00:05:34.570 --> 00:05:37.400
+If the ids are not unique
+that will prevent us from
+
+85
+00:05:37.400 --> 00:05:39.430
+creating an accurate graph.
+
+86
+00:05:39.430 --> 00:05:40.011
+This will be on the quiz.
+
+87
+00:05:46.001 --> 00:05:50.200
+Import the edges into
+an RDD named mclinks.
+
+88
+00:05:50.200 --> 00:05:53.550
+This is done the same way as
+the previous two examples.
+
+89
+00:05:53.550 --> 00:05:56.646
+Remember to add 100 to
+the countries vertex ID.
+
+90
+00:06:02.462 --> 00:06:07.142
+Concatenate the metros and countries
+vertices into a single variable and
+
+91
+00:06:07.142 --> 00:06:11.143
+use GraphX's graph function to
+create a graph of the metros and
+
+92
+00:06:11.143 --> 00:06:14.030
+countries vertices with
+the MC links edges.
+
+93
+00:06:15.140 --> 00:06:17.690
+Let us take a look at
+what is in the graph.
+
+94
+00:06:17.690 --> 00:06:20.879
+Use the vertices and edges attributes
+to print five vertices and
+
+95
+00:06:20.879 --> 00:06:22.599
+five edges from the metros graph.
+
+96
+00:06:28.613 --> 00:06:31.064
+Query the graph to find
+how the metropolises and
+
+97
+00:06:31.064 --> 00:06:33.340
+the countries are related.
+
+98
+00:06:33.340 --> 00:06:35.990
+Let us find which country Tokyo is in.
+
+99
+00:06:35.990 --> 00:06:38.850
+Tokyo has a vertex ID of 1.
+
+100
+00:06:38.850 --> 00:06:42.450
+Use RDD's filter method to filter
+all of the edges in metro's graph
+
+101
+00:06:42.450 --> 00:06:47.360
+that have a source for text ID of one and
+create a map of destination vertex ID's.
+
+102
+00:06:48.550 --> 00:06:51.420
+The result is 101 which is Japan.
+
+103
+00:06:51.420 --> 00:06:56.530
+You can verify this by looking at
+the metro.csv and country.csv files.
+
+104
+00:06:56.530 --> 00:07:01.470
+Remember, we added 100 to
+the IDs in country.csv.
+
+105
+00:07:01.470 --> 00:07:02.910
+Now, let us do the opposite and
+
+106
+00:07:02.910 --> 00:07:07.320
+find all of the metropolises that are in
+China which has a vertex ID of 103.
+
+107
+00:07:07.320 --> 00:07:11.880
+This time we're going to filter
+all of the edges in metro's graph
+
+108
+00:07:11.880 --> 00:07:17.530
+that have a vertex ID of 103 and
+create a map of all of the source IDs.
+
+109
+00:07:17.530 --> 00:07:21.480
+The result is 3,4, 7, 24, and 34.
+
+110
+00:07:21.480 --> 00:07:28.353
+You can look in metrostats.csv and verify
+that those metropolises are in China.

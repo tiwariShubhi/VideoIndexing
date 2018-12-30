@@ -1,0 +1,1364 @@
+﻿1
+00:00:20,079 --> 00:00:28,899
+welcome to module four of database management
+systems in the last two modules ah we have
+
+2
+00:00:28,899 --> 00:00:38,820
+introduced the basic notions of d b m s s
+in this module and the next we make an introduction
+
+3
+00:00:38,820 --> 00:00:46,890
+to the relational model which we said is a
+major data model that we are going to use
+
+4
+00:00:46,890 --> 00:00:54,770
+so this is a what we did in the last module
+and in the current one our objective will
+
+5
+00:00:54,770 --> 00:01:04,370
+be to understand key concepts of relational
+model that is attributes and their types the
+
+6
+00:01:04,370 --> 00:01:13,430
+basic mathematical structure of instance schema
+and what is known as keys and to familiarize
+
+7
+00:01:13,430 --> 00:01:23,790
+with different types of relational query languages
+this is a module outline that we will follow
+
+8
+00:01:23,790 --> 00:01:34,170
+so we again repeat this example from past
+this is an example of instructors in a university
+
+9
+00:01:34,170 --> 00:01:41,900
+a table of instructors given by attributes
+or columns i d name department name and salary
+
+10
+00:01:41,900 --> 00:01:48,600
+these are the four columns the four i ds and
+multiple rows which are specific rows or we
+
+11
+00:01:48,599 --> 00:01:55,349
+often refer to them as tuples so you can say
+that since there are four attributes that
+
+12
+00:01:55,349 --> 00:02:04,459
+is every row has four columns so this is a
+four tuple that we have and such a table is
+
+13
+00:02:04,459 --> 00:02:11,120
+called a relation is as simple as that so
+this is it whenever we talk about a relation
+
+14
+00:02:11,120 --> 00:02:18,340
+we have a number of fields number of attributes
+number of columns whatever way we said of
+
+15
+00:02:18,340 --> 00:02:27,390
+a table and that table according to those
+columns it has multiple zero one or any number
+
+16
+00:02:27,389 --> 00:02:33,369
+of rows of values filled in and that is what
+is a relation
+
+17
+00:02:33,370 --> 00:02:43,060
+now so let us look at attributes more specifically
+so attributes each column is an attribute
+
+18
+00:02:43,060 --> 00:02:50,009
+as you said this every attribute has a domain
+the domain is a set of possible values that
+
+19
+00:02:50,009 --> 00:02:56,479
+attribute can take so if you just look into
+the example here so i am trying to define
+
+20
+00:02:56,479 --> 00:03:05,560
+a table having different students so there
+is a roll number for a student there is a
+
+21
+00:03:05,560 --> 00:03:12,098
+first name last name the date of birth d o
+b the passport number the adhaar card number
+
+22
+00:03:12,098 --> 00:03:16,449
+the department to which the student belongs
+and so on so let us say these one two three
+
+23
+00:03:16,449 --> 00:03:23,359
+four five six seven are the different attributes
+now if we look into every attribute then every
+
+24
+00:03:23,360 --> 00:03:29,190
+attribute has a set of possible values of
+which some value is entered in a particular
+
+25
+00:03:29,189 --> 00:03:35,129
+row for example the roll number is an alphanumeric
+string as you can see it has numeric as well
+
+26
+00:03:35,129 --> 00:03:41,219
+as it has letters whereas the first name or
+the last name are simple alpha strings in
+
+27
+00:03:41,219 --> 00:03:45,319
+fact we can also say that the roll number
+actually is not only alphanumeric it has a
+
+28
+00:03:45,319 --> 00:03:50,699
+fixed length it has a length of here is its
+length of nine so you can say alphanumeric
+
+29
+00:03:50,699 --> 00:03:56,119
+strings of length nine are eligible for being
+values of this domain there could be more
+
+30
+00:03:56,120 --> 00:04:03,090
+restrictions but that the domain will be certain
+collection of values which are possible as
+
+31
+00:04:03,090 --> 00:04:09,319
+values of that attribute when you talk about
+d o b that certainly has to be a date so it
+
+32
+00:04:09,319 --> 00:04:16,709
+is written in the form of d d m m m y y y
+y that is two digit date three letter month
+
+33
+00:04:16,709 --> 00:04:26,620
+code and four digit year the passport number
+is a string a letter followed by seven digits
+
+34
+00:04:26,620 --> 00:04:31,550
+the other number is a twelve digit number
+the department is alpha string and so on so
+
+35
+00:04:31,550 --> 00:04:39,520
+the domain is a set corresponding to an attribute
+which define that all possible values that
+
+36
+00:04:39,519 --> 00:04:46,639
+attribute can take ok
+now ah these attribute values if you look
+
+37
+00:04:46,639 --> 00:04:56,009
+at they are atomic in nature that is you cannot
+divide them into smaller parts so what i mean
+
+38
+00:04:56,009 --> 00:05:03,550
+is say when we are talking about date of birth
+the whole date of birth type the date type
+
+39
+00:05:03,550 --> 00:05:12,460
+is one atomic value for example if you were
+to code this in c what you could do you could
+
+40
+00:05:12,459 --> 00:05:17,549
+ah possibly create a structure with three
+fields one is date one is a month one is a
+
+41
+00:05:17,550 --> 00:05:24,098
+year and we will say that this composite record
+composite structure is actually my date they
+
+42
+00:05:24,098 --> 00:05:29,278
+can do a l s type def you could do if you
+are working in c plus plus you will define
+
+43
+00:05:29,278 --> 00:05:35,389
+a class called date which has these components
+and as well as operations with them but that
+
+44
+00:05:35,389 --> 00:05:42,079
+kind of types are not allowed in a relational
+database it has to be an atomic type so in
+
+45
+00:05:42,079 --> 00:05:47,300
+a relational database will give you atomic
+type called date but all of these are pre
+
+46
+00:05:47,300 --> 00:05:58,000
+specified and has to be taken as one unit
+other atomic types are integer ah like we
+
+47
+00:05:58,000 --> 00:06:04,300
+do not have an integer field here there are
+strings there are numerical values which are
+
+48
+00:06:04,300 --> 00:06:12,610
+kind of floating point values and so on
+now some attribute may have a special value
+
+49
+00:06:12,610 --> 00:06:21,770
+called the null value which is ah the member
+of it is domain actually every attribute ah
+
+50
+00:06:21,769 --> 00:06:28,649
+of any domain can have this special value
+the null value is not actually a value it
+
+51
+00:06:28,649 --> 00:06:34,839
+is actually an absence of a value so it says
+that this value is not known so if you look
+
+52
+00:06:34,839 --> 00:06:42,769
+into the example above then you will see that
+for passport we have said that the passport
+
+53
+00:06:42,769 --> 00:06:48,680
+is a string ah letter followed by seven digits
+and it is nullable which means that in the
+
+54
+00:06:48,680 --> 00:06:55,329
+passport field i may have a value may have
+this null value which means that it is not
+
+55
+00:06:55,329 --> 00:07:03,498
+that the the passport is null what it is saying
+is the this passport number for this particular
+
+56
+00:07:03,499 --> 00:07:11,729
+student the row number two is not known is
+unknown now all fields may or may not be nullable
+
+57
+00:07:11,728 --> 00:07:17,699
+for example will not allow d o b to be nullable
+date of birth has to be there will not allow
+
+58
+00:07:17,699 --> 00:07:23,020
+roll number to be nullable will not allow
+first name to be nullable but we may allow
+
+59
+00:07:23,019 --> 00:07:29,998
+last name to be nullable it is been a been
+a style of let not to use your last name many
+
+60
+00:07:29,999 --> 00:07:35,149
+many people just use one name so you could
+allow that it is not known it is not there
+
+61
+00:07:35,149 --> 00:07:40,800
+whereas ah ah department may not be nullable
+it must be there so null is a very critical
+
+62
+00:07:40,800 --> 00:07:51,689
+concept and what it actually does it actually
+ah creates a lot of issues ah and complications
+
+63
+00:07:51,689 --> 00:07:57,099
+in terms of defining many operations so understanding
+null as a value in terms of an attribute is
+
+64
+00:07:57,098 --> 00:08:04,569
+a critical requirement for the design
+now coming to the schema and instance we have
+
+65
+00:08:04,569 --> 00:08:11,039
+ah discussed about the basic understanding
+of schema and instance so understanding them
+
+66
+00:08:11,038 --> 00:08:19,240
+formally now we say that if we have a schema
+so it is like a table having multiple columns
+
+67
+00:08:19,240 --> 00:08:27,689
+say there are n columns having names a one
+to a n then this a one to a n are the attributes
+
+68
+00:08:27,689 --> 00:08:34,720
+so these are the different attributes that
+it will have so ah i am so ah these are the
+
+69
+00:08:34,720 --> 00:08:41,360
+different attributes so if i have this then
+it it basically means that i have a table
+
+70
+00:08:41,360 --> 00:08:53,750
+where the these are the columns a one a two
+a n like this ok so then a relational schema
+
+71
+00:08:53,750 --> 00:09:00,620
+is a collection of these attributes so it
+is a collection of all these ah attributes
+
+72
+00:09:00,620 --> 00:09:07,060
+so we said r is a relational schema which
+has attributes a one to a n
+
+73
+00:09:07,059 --> 00:09:18,949
+now every attribute a i has a domain d i so
+for every attribute i have a set of values
+
+74
+00:09:18,950 --> 00:09:31,990
+that are possible so if you ah if you recall
+then here ah we had different these are the
+
+75
+00:09:31,990 --> 00:09:38,409
+different attributes and these are their different
+domain so d o b is an attribute and the domain
+
+76
+00:09:38,409 --> 00:09:49,000
+is date so any possible date other is an attribute
+and this is the domain which is a so all attributes
+
+77
+00:09:49,000 --> 00:09:56,720
+each attribute will need to have certain domain
+and those are marked by the d sets so we will
+
+78
+00:09:56,720 --> 00:10:06,300
+say that a particular relation a particular
+relation r so r is a schema schema so a particular
+
+79
+00:10:06,299 --> 00:10:20,859
+relation r is a subset of d one plus d two
+cross dot dot dot d l so recall the mathematical
+
+80
+00:10:20,860 --> 00:10:29,440
+notion of relation which say that a relation
+is basically a subset of a set so these are
+
+81
+00:10:29,440 --> 00:10:33,780
+the possible values so the first attribute
+can take values from d one second attribute
+
+82
+00:10:33,779 --> 00:10:39,279
+can take values from d two and so on and the
+nth attribute can take values from d n so
+
+83
+00:10:39,279 --> 00:10:48,089
+any specific row any specific record is a
+set of values for a one a two a n and therefore
+
+84
+00:10:48,090 --> 00:10:55,110
+is a member of this cartesian product and
+the relation is a subset of that so this is
+
+85
+00:10:55,110 --> 00:11:04,779
+a d value is an n tuple which is a subset
+of this a one a two a n this particular record
+
+86
+00:11:04,779 --> 00:11:22,759
+is an element of this cartesian product set
+and r necessarily is a set of such tuples
+
+87
+00:11:22,759 --> 00:11:28,500
+that is a mathematical view of the schema
+and the instance so this is the schema and
+
+88
+00:11:28,500 --> 00:11:37,029
+this is the instance corresponding to that
+schema based on the different domains of the
+
+89
+00:11:37,029 --> 00:11:44,860
+different attributes and this is the notion
+that we will continue using so ah please try
+
+90
+00:11:44,860 --> 00:11:54,649
+to follow this carefully
+now whenever we have an instance we mark that
+
+91
+00:11:54,649 --> 00:12:02,899
+as a table and every such table so here you
+have now understood it very well so these
+
+92
+00:12:02,899 --> 00:12:10,399
+are my attributes so this is a one this is
+a two this is a three this is a four and any
+
+93
+00:12:10,399 --> 00:12:18,179
+one i name is at the different values a two
+a three a one a two a three a four nine eight
+
+94
+00:12:18,179 --> 00:12:26,509
+three four five is a one kim is a two and
+so on now naturally this it is not visible
+
+95
+00:12:26,509 --> 00:12:30,600
+from the instance because we are taking an
+instance view we are not being able to see
+
+96
+00:12:30,600 --> 00:12:37,990
+what that domain is that will be visible if
+we look at the corresponding d d l the definition
+
+97
+00:12:37,990 --> 00:12:45,399
+language description of the schema which must
+have specified i d as a numeric value the
+
+98
+00:12:45,399 --> 00:12:49,879
+name as a string value the department name
+as another string value whereas salary as
+
+99
+00:12:49,879 --> 00:12:57,429
+a numeric value and so on ok
+now what is important to note here is a relation
+
+100
+00:12:57,429 --> 00:13:08,809
+necessarily is a set as as we said is is a
+set which is the ah as the relation r is a
+
+101
+00:13:08,809 --> 00:13:18,609
+is a set this is a set which is a subset of
+this set so a set we know the elements in
+
+102
+00:13:18,610 --> 00:13:25,960
+a set are do not have any ordering they are
+unordered so a relation is necessarily unordered
+
+103
+00:13:25,960 --> 00:13:33,530
+so it does not really matter that in terms
+of this collection of rows which row is at
+
+104
+00:13:33,529 --> 00:13:38,759
+what position if i reorder them the relation
+does not change it is just that they are a
+
+105
+00:13:38,759 --> 00:13:44,990
+collection of this set of rows so that lack
+of ordering is a critical information that
+
+106
+00:13:44,990 --> 00:13:55,230
+we will have to remember in mind next concept
+is key so r as we have seen is a relational
+
+107
+00:13:55,230 --> 00:14:05,629
+schema which is a collection of which is a
+collection of attributes a one a two a n now
+
+108
+00:14:05,629 --> 00:14:16,620
+k let k be a subset of r so it is one or more
+attributes it has to be a non empty subset
+
+109
+00:14:16,620 --> 00:14:26,000
+now we will say that k is a super key of r
+if if we consider the values of different
+
+110
+00:14:26,000 --> 00:14:36,899
+tuples in the attributes of k and we find
+that there cannot be two tuples which are
+
+111
+00:14:36,899 --> 00:14:51,000
+different but match on these attributes which
+mean that the values of the attributes of
+
+112
+00:14:51,000 --> 00:15:06,129
+k uniquely identify each row of the relation
+then we will say that k is a k is a super
+
+113
+00:15:06,129 --> 00:15:18,169
+key of r so the instructor table that we have
+seen i d is a super key similarly so k can
+
+114
+00:15:18,169 --> 00:15:27,500
+be taken as a singleton set of attribute i
+d or k can be thought of as the set comprising
+
+115
+00:15:27,500 --> 00:15:31,830
+i d and name both of them are super keys of
+instructor
+
+116
+00:15:31,830 --> 00:15:43,940
+now we say a super key k is a candidate key
+if k is minimal so the idea is like this that
+
+117
+00:15:43,940 --> 00:15:54,150
+this is a key super key this is also a super
+key but certainly this is a subset of this
+
+118
+00:15:54,149 --> 00:16:01,189
+this is smaller than this so we will say this
+is a candidate key but this is not a candidate
+
+119
+00:16:01,190 --> 00:16:13,860
+key because it does not satisfy the minimality
+condition 
+
+120
+00:16:13,860 --> 00:16:20,300
+there could be multiple candidate key in a
+relation if there are multiple candidates
+
+121
+00:16:20,299 --> 00:16:27,579
+key then we select one to be the primary key
+now obviously there is a question of which
+
+122
+00:16:27,580 --> 00:16:36,420
+one we select but anyone can be selected as
+a primary key which is the key of the relation
+
+123
+00:16:36,419 --> 00:16:44,000
+and we will see that in some cases ah there
+is concept of surrogate keys so if i have
+
+124
+00:16:44,000 --> 00:16:51,399
+a relation where there is no attribute which
+can whose value can uniquely identify each
+
+125
+00:16:51,399 --> 00:17:01,069
+and every row of the table then i might synthetically
+generate a value for example like a serial
+
+126
+00:17:01,070 --> 00:17:11,110
+number i can generate a serial number and
+say that this is my value so that serial number
+
+127
+00:17:11,109 --> 00:17:20,928
+or that computer generated field value has
+no business implication the real world did
+
+128
+00:17:20,929 --> 00:17:26,110
+not have this value it is not like a adhaar
+card number or like a passport number but
+
+129
+00:17:26,109 --> 00:17:34,689
+it is a value which is purely generated to
+identify every row uniquely so such keys are
+
+130
+00:17:34,690 --> 00:17:43,929
+known as surrogate keys or synthetic keys
+now let us look at some examples this is again
+
+131
+00:17:43,929 --> 00:17:52,629
+the same student database i just shown a while
+ago the same set of columns but i have added
+
+132
+00:17:52,628 --> 00:17:59,219
+few more rows now if we look at what could
+be a super key there are several candidates
+
+133
+00:17:59,220 --> 00:18:06,890
+but i have just written a few ah roll number
+is certainly a key because i am assuming that
+
+134
+00:18:06,890 --> 00:18:13,450
+the university assigns roll numbers to uniquely
+identify every student so there cannot be
+
+135
+00:18:13,450 --> 00:18:19,528
+two rows in this table which match in the
+value of the roll number and does not match
+
+136
+00:18:19,528 --> 00:18:25,829
+in the values of the other fields so roll
+number can uniquely identify if it can then
+
+137
+00:18:25,829 --> 00:18:31,649
+any super set of attributes which continual
+number will also be a super key so roll number
+
+138
+00:18:31,650 --> 00:18:39,210
+and date of birth together is a super key
+that can also unique to identify every row
+
+139
+00:18:39,210 --> 00:18:44,289
+trivial what are the candidate keys now there
+are of course that could be several other
+
+140
+00:18:44,289 --> 00:18:48,918
+super keys that has to be kept in mind the
+candidate keys are roll number is a candidate
+
+141
+00:18:48,919 --> 00:18:53,700
+key the first name last name together we can
+say is a candidate key
+
+142
+00:18:53,700 --> 00:18:58,700
+so we are saying that not only the first name
+but if we take this pair you remember the
+
+143
+00:18:58,700 --> 00:19:04,970
+key the set of attributes forming a super
+key is a is a set it is not an individual
+
+144
+00:19:04,970 --> 00:19:12,889
+field so i say the first name last name together
+from say key well this does make some assumption
+
+145
+00:19:12,888 --> 00:19:16,969
+because if i say the first name last name
+together from say key that means that there
+
+146
+00:19:16,970 --> 00:19:23,759
+cannot be two records in this student table
+where the first name and last name match but
+
+147
+00:19:23,759 --> 00:19:30,240
+the records are different so which mean that
+no two students having the same first name
+
+148
+00:19:30,240 --> 00:19:35,620
+and last name can be enrolled in the university
+this is a restrictive assumption right but
+
+149
+00:19:35,619 --> 00:19:44,428
+i am just making that assumption to illustrate
+the different possibilities then what is the
+
+150
+00:19:44,429 --> 00:19:48,788
+other possibility passport number everybody
+has a unique passport number so passport number
+
+151
+00:19:48,788 --> 00:19:56,048
+could also be a key could be a candidate key
+adhaar number everybody has a unique adhaar
+
+152
+00:19:56,048 --> 00:20:03,288
+number so that can be a key and so on
+so these are called the candidate keys now
+
+153
+00:20:03,288 --> 00:20:09,349
+of course we can observe that given the data
+it it is clear and it was also mentioned when
+
+154
+00:20:09,349 --> 00:20:15,178
+the schema was designed this passport number
+cannot be a key why can it not be a key can
+
+155
+00:20:15,179 --> 00:20:22,038
+two students have different same ah passport
+number of course not every student has a unique
+
+156
+00:20:22,038 --> 00:20:28,569
+passport number but it is possible that some
+student does not have a passport so if a some
+
+157
+00:20:28,569 --> 00:20:34,749
+student does not have a passport then the
+passport number field of that student is a
+
+158
+00:20:34,749 --> 00:20:39,659
+null the passport number is a nullable field
+if the passport number is null then it is
+
+159
+00:20:39,659 --> 00:20:45,980
+possible that multiple students may not have
+passports so as we can see here that this
+
+160
+00:20:45,980 --> 00:20:53,700
+student jatin chopra does not have a passport
+so similarly dipti dutta does not have a passport
+
+161
+00:20:53,700 --> 00:21:01,749
+either so certainly if this were to be the
+key then for all records for which passport
+
+162
+00:21:01,749 --> 00:21:07,659
+number is nil this value would not be able
+to distinguish them in terms of the rows of
+
+163
+00:21:07,659 --> 00:21:16,970
+the table so we have to say that passport
+number cannot be a key or in other words we
+
+164
+00:21:16,970 --> 00:21:25,860
+can say that no key can be a nullable field
+no key attribute or a participant to a key
+
+165
+00:21:25,859 --> 00:21:30,819
+attribute could be a nullable field right
+so this is one observation here and so that
+
+166
+00:21:30,819 --> 00:21:37,658
+clearly also implies that if we say that adhaar
+number is a valid candidate key that will
+
+167
+00:21:37,659 --> 00:21:43,110
+mean that for admission to that university
+having adhaar number would be mandatory if
+
+168
+00:21:43,109 --> 00:21:50,199
+somebody does not have a adhaar number that
+will have to be null which is not allowed
+
+169
+00:21:50,200 --> 00:21:56,990
+ok
+so let us ah move on so one of these candidate
+
+170
+00:21:56,990 --> 00:22:03,069
+keys have to be made the primary keys let
+us say we make roll number the primary key
+
+171
+00:22:03,069 --> 00:22:09,200
+and since we make roll number the primary
+key in the schema we underlined the roll number
+
+172
+00:22:09,200 --> 00:22:18,940
+attribute this would be a common way to show
+that roll number is a primary key so the others
+
+173
+00:22:18,940 --> 00:22:24,470
+that are not taken as a primary key are called
+the secondary or alternate key so first name
+
+174
+00:22:24,470 --> 00:22:32,490
+last name pair could be an alternate key adhaar
+number could be an alternate key and so on
+
+175
+00:22:32,490 --> 00:22:39,700
+a key is said to be simple if it consists
+of a single attribute so roll number is a
+
+176
+00:22:39,700 --> 00:22:45,298
+simple key adhaar numbered is a simple key
+if it were taken to be primary but first name
+
+177
+00:22:45,298 --> 00:22:49,720
+last name pair if we take that to be a primary
+that will not be considered assemble simple
+
+178
+00:22:49,720 --> 00:22:57,079
+key because it has more than one attribute
+naturally the other if you have a simple key
+
+179
+00:22:57,079 --> 00:23:02,759
+they have other side is a composite key a
+composite key is one which has more than one
+
+180
+00:23:02,759 --> 00:23:14,089
+field such that none of those fields individually
+can act as a key but together they can act
+
+181
+00:23:14,089 --> 00:23:19,470
+as a key so first name itself cannot be a
+key last name itself cannot be a key but together
+
+182
+00:23:19,470 --> 00:23:24,538
+they can be a key of course under the assumption
+that no two students with the same first name
+
+183
+00:23:24,538 --> 00:23:30,579
+last name are given admission so these are
+the different types of keys that can happen
+
+184
+00:23:30,579 --> 00:23:37,808
+let us have some more views with the keys
+we extend the schema and besides a student
+
+185
+00:23:37,808 --> 00:23:45,628
+i introduce two more schema one is called
+the courses which is given by course number
+
+186
+00:23:45,628 --> 00:23:52,939
+course name credits l t p l t p is number
+of hours of lectures tutorials and practicals
+
+187
+00:23:52,940 --> 00:23:59,159
+and the department so these are the different
+fields and from the convention already stated
+
+188
+00:23:59,159 --> 00:24:07,470
+you can figure out that course number is the
+key primary key of this relation i use another
+
+189
+00:24:07,470 --> 00:24:13,629
+schema which is enrolment which describes
+which student is attending which course so
+
+190
+00:24:13,628 --> 00:24:18,490
+it has a roll number and the course number
+so roll number of the student attending the
+
+191
+00:24:18,490 --> 00:24:24,489
+particular course number and it also has an
+instructor i d as to who is teaching that
+
+192
+00:24:24,489 --> 00:24:35,250
+course given this you can see that in a in
+the enrolment relationship i have this pair
+
+193
+00:24:35,250 --> 00:24:43,759
+roll number and course number which will certainly
+be the key for enrolment because if i have
+
+194
+00:24:43,759 --> 00:24:50,278
+two rows in enrolment how they will be distinguished
+they cannot be distinguished by roll number
+
+195
+00:24:50,278 --> 00:24:55,440
+because a particular student may take multiple
+courses so there will be multiple records
+
+196
+00:24:55,440 --> 00:25:00,480
+having the same roll number but different
+course number the course number by itself
+
+197
+00:25:00,480 --> 00:25:05,769
+cannot be the key because every course will
+have multiple students so there will be multiple
+
+198
+00:25:05,769 --> 00:25:10,210
+rows having the same course number but all
+different roll numbers but if we take this
+
+199
+00:25:10,210 --> 00:25:15,629
+together roll number and course number together
+then that forms a key
+
+200
+00:25:15,628 --> 00:25:24,589
+now such a key such a key having roll number
+the roll number itself is a key of another
+
+201
+00:25:24,589 --> 00:25:34,599
+relation the course number itself is a key
+of another relation so when we take the keys
+
+202
+00:25:34,599 --> 00:25:42,490
+of other relations to form the key of a relation
+then we say that these are foreign keys so
+
+203
+00:25:42,490 --> 00:25:50,710
+roll number and course number are foreign
+keys in student and course and since from
+
+204
+00:25:50,710 --> 00:25:57,390
+enrolment the student and courses are being
+referenced are being referred so we say enrolment
+
+205
+00:25:57,390 --> 00:26:05,379
+is a referencing relation and students and
+courses other reference relation and we will
+
+206
+00:26:05,378 --> 00:26:13,058
+often like to also mention as to what is a
+foreign key of a relational schema because
+
+207
+00:26:13,058 --> 00:26:21,658
+that will help us understand how the different
+schemas are interrelated and we will see that
+
+208
+00:26:21,659 --> 00:26:28,710
+this will come out directly from the notion
+of entities and relationships of a year model
+
+209
+00:26:28,710 --> 00:26:41,190
+of a year diagram a key key is called to be
+said to be compound if it consists of more
+
+210
+00:26:41,190 --> 00:26:47,038
+than one attribute to uniquely identify an
+entity occurrence so each attribute which
+
+211
+00:26:47,038 --> 00:26:53,388
+makes up the key is a simple key in its own
+right mind you there is a subtle it sounds
+
+212
+00:26:53,388 --> 00:26:58,449
+very similar we talked about composite key
+earlier we talked up we are talking about
+
+213
+00:26:58,450 --> 00:27:04,489
+compound key here the subtlety of the difference
+is in a composite key every component attribute
+
+214
+00:27:04,489 --> 00:27:13,190
+is not a simple key by itself but and the
+components come from the same table in a compound
+
+215
+00:27:13,190 --> 00:27:21,929
+key the components are simple key by their
+in their own right in some other table and
+
+216
+00:27:21,929 --> 00:27:27,690
+are put together as a compound key in the
+given table so the rule number course number
+
+217
+00:27:27,690 --> 00:27:37,980
+in the enrolment table is a compound key
+so with this i would request you to spend
+
+218
+00:27:37,980 --> 00:27:44,378
+some time with this relatively elaborated
+schema compared to what we have done already
+
+219
+00:27:44,378 --> 00:27:52,319
+of the university database so every every
+rectangular box shows a relational schema
+
+220
+00:27:52,319 --> 00:28:01,538
+on top of each in blue is written the name
+of that relation relational schema so it has
+
+221
+00:28:01,538 --> 00:28:14,950
+a relational schema like courses the students
+the instructors the departments the prerequisites
+
+222
+00:28:14,950 --> 00:28:25,538
+the time slots the classrooms and so on the
+sections and the relationships between them
+
+223
+00:28:25,538 --> 00:28:35,019
+for example the relationship is takes is a
+relationship which relates students with different
+
+224
+00:28:35,019 --> 00:28:43,378
+sections sections with courses teachers is
+another relationship which relates to instructors
+
+225
+00:28:43,378 --> 00:28:53,138
+with sections so it is showing you directly
+as to how the keys of this what are the attributes
+
+226
+00:28:53,138 --> 00:29:00,058
+what are the key attributes primary key attributes
+and also what are the foreign keys that we
+
+227
+00:29:00,058 --> 00:29:07,509
+have in this for example intakes this is a
+foreign key which is featured here course
+
+228
+00:29:07,509 --> 00:29:15,990
+i d section i d semester here are the foreign
+key part of the takes that exists here so
+
+229
+00:29:15,990 --> 00:29:22,220
+please study ah this schema we will keep on
+regularly referring to this schema in future
+
+230
+00:29:22,220 --> 00:29:31,341
+as well ah so this is what we have here
+now we move on to the relational query language
+
+231
+00:29:31,340 --> 00:29:37,008
+we briefly talk about the relational query
+language now we will have to ah in this the
+
+232
+00:29:37,009 --> 00:29:44,460
+key thing that we need to understand is ah
+the relational query language is somewhat
+
+233
+00:29:44,460 --> 00:29:49,579
+different from the programming languages that
+you have studied so far which are procedural
+
+234
+00:29:49,579 --> 00:29:55,178
+in nature in contrast the relational query
+language is non procedural or declarative
+
+235
+00:29:55,179 --> 00:30:01,840
+in nature a procedural programming language
+requires that the programmer tell the computer
+
+236
+00:30:01,839 --> 00:30:09,119
+how to get the output given the input a pro
+program is about finding output for a given
+
+237
+00:30:09,119 --> 00:30:15,168
+input and you write a procedure the sequence
+of steps that need to be done so that given
+
+238
+00:30:15,169 --> 00:30:21,369
+the input you can compute the output so you
+say how the that computation has to happen
+
+239
+00:30:21,368 --> 00:30:28,528
+and the programmer must know that algorithm
+in contrast in declarative programming you
+
+240
+00:30:28,528 --> 00:30:34,319
+say what you want you will do not say how
+that needs to be computed how that will be
+
+241
+00:30:34,319 --> 00:30:38,618
+computed you may not even know that you may
+not even know a single algorithm to compute
+
+242
+00:30:38,618 --> 00:30:45,599
+the output but you specify what output you
+need so this distinction between how and what
+
+243
+00:30:45,599 --> 00:30:50,038
+of programming differentiates procedural and
+declarative programming
+
+244
+00:30:50,038 --> 00:30:55,519
+so all that you have studied so far in terms
+of c c plus plus java python and all that
+
+245
+00:30:55,519 --> 00:31:01,130
+are procedural programming where you necessarily
+have to specify how you will have necessarily
+
+246
+00:31:01,130 --> 00:31:07,809
+have to specify what the algorithm is but
+in declarative you just say what you need
+
+247
+00:31:07,808 --> 00:31:13,428
+so just a a simple you know ah pathological
+example to understand this difference suppose
+
+248
+00:31:13,429 --> 00:31:17,809
+we were interested in computing the square
+root of a number n assuming n is a positive
+
+249
+00:31:17,808 --> 00:31:23,028
+number the procedural step would be something
+like this is an algorithm that you guess a
+
+250
+00:31:23,028 --> 00:31:28,358
+an x naught which is a square root which is
+close to the root of n i mean some guess you
+
+251
+00:31:28,358 --> 00:31:38,470
+make and then you repeatedly refine this estimate
+by taking the arithmetic mean of the estimate
+
+252
+00:31:38,470 --> 00:31:45,358
+and the quotient of the division of n by this
+estimate so you take an arithmetic mean and
+
+253
+00:31:45,358 --> 00:31:53,668
+find the new estimate and repeat the steps
+till you i mean as long as the difference
+
+254
+00:31:53,669 --> 00:31:59,080
+between the two conservative estimates is
+more than a certain value delta this is a
+
+255
+00:31:59,079 --> 00:32:02,529
+procedural algorithm you are giving an algorithm
+so given and following this algorithm we will
+
+256
+00:32:02,529 --> 00:32:08,878
+find the square root declaratively you can
+just say that what is the result i want i
+
+257
+00:32:08,878 --> 00:32:12,359
+want to result m such that m square equals
+n
+
+258
+00:32:12,359 --> 00:32:19,129
+so you are again asking for the same feel
+you are expecting the same output but the
+
+259
+00:32:19,130 --> 00:32:24,570
+way you are saying is not an algorithm you
+are rather specifying a predicate which must
+
+260
+00:32:24,569 --> 00:32:29,519
+be true in your output you are saying that
+the predicate is m square must be n so whatever
+
+261
+00:32:29,519 --> 00:32:36,339
+m is that square of it must equal n so this
+style is known as declarative whereas the
+
+262
+00:32:36,339 --> 00:32:43,189
+earlier style is known as procedure all query
+languages relational query languages are declarative
+
+263
+00:32:43,190 --> 00:32:50,019
+in nature um we have talked about the pure
+languages ah are they are all equivalent we
+
+264
+00:32:50,019 --> 00:32:56,829
+mentioned that earlier also and also again
+to remember that none of them are actually
+
+265
+00:32:56,829 --> 00:33:03,888
+turing equivalent that means that not all
+algorithms can be expressed in them or specifically
+
+266
+00:33:03,888 --> 00:33:10,819
+relational algebra which we are will look
+at in more depth and the relational algebra
+
+267
+00:33:10,819 --> 00:33:16,798
+will consist of six basic operations which
+we will discuss in the next module so to sum
+
+268
+00:33:16,798 --> 00:33:23,190
+up we have introduced the notion of attributes
+and their types we have taken an overview
+
+269
+00:33:23,190 --> 00:33:29,739
+of the mathematical structure of the relational
+model schema and instance we would say mathematically
+
+270
+00:33:29,739 --> 00:33:36,450
+they are relations mathematically they made
+a mapping and we have introduced the very
+
+271
+00:33:36,450 --> 00:33:43,819
+important concept of keys and in that very
+specifically what is a primary key as well
+
+272
+00:33:43,819 --> 00:33:49,118
+as what is a foreign key in the next module
+we will discuss about the different operations
+
+273
+00:33:49,118 --> 00:33:51,849
+of relational model relational logic
+

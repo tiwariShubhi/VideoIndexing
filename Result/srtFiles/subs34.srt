@@ -1,0 +1,2728 @@
+
+1
+00:00:00.970 --> 00:00:03.490
+How do you evaluate
+your model performance?
+
+2
+00:00:03.490 --> 00:00:06.870
+In this lecture, we will look at
+different metrics that can be used to
+
+3
+00:00:06.870 --> 00:00:09.360
+evaluate the performance of
+your classification model.
+
+4
+00:00:10.470 --> 00:00:13.280
+After this video, you will be able to
+
+5
+00:00:13.280 --> 00:00:17.480
+discuss how performance metrics
+can be used to evaluate models.
+
+6
+00:00:17.480 --> 00:00:22.270
+Name three model evaluation metrics, and
+explain why accuracy may be misleading.
+
+7
+00:00:24.110 --> 00:00:28.090
+For the classification task, an error
+occurs when the model's prediction of
+
+8
+00:00:28.090 --> 00:00:32.370
+the class label is different
+from the true class label.
+
+9
+00:00:32.370 --> 00:00:36.330
+We can also define the different types
+of errors in classification depending on
+
+10
+00:00:36.330 --> 00:00:37.920
+the predicted and true labels.
+
+11
+00:00:38.930 --> 00:00:43.535
+Let's take the case with the task is
+to predict whether a given animal is
+
+12
+00:00:43.535 --> 00:00:44.627
+a mammal or not.
+
+13
+00:00:44.627 --> 00:00:50.596
+This is a binary classification task
+with the class label being either yes,
+
+14
+00:00:50.596 --> 00:00:54.830
+indicating mammal, or
+no indicating non-mammal.
+
+15
+00:00:54.830 --> 00:00:57.450
+Then the different types
+of errors are as follows.
+
+16
+00:00:58.600 --> 00:01:03.693
+If the true label is yes and
+the predicted label is yes,
+
+17
+00:01:03.693 --> 00:01:08.367
+then this is a true positive,
+abbreviated as TP.
+
+18
+00:01:08.367 --> 00:01:12.380
+This is the case where the label is
+correctly predicted as positive.
+
+19
+00:01:14.270 --> 00:01:18.500
+If the true label is no and
+the predicted label is no,
+
+20
+00:01:18.500 --> 00:01:22.640
+then this is a true negative,
+abbreviated as TN.
+
+21
+00:01:24.080 --> 00:01:27.760
+This is the case where the label is
+correctly predicted as negative.
+
+22
+00:01:29.910 --> 00:01:34.120
+If the true label is no and
+the predicted label is yes,
+
+23
+00:01:34.120 --> 00:01:39.380
+then this is a false positive,
+abbreviated as FP.
+
+24
+00:01:39.380 --> 00:01:43.800
+This is the case with the label is
+incorrectly predicted as positive,
+
+25
+00:01:43.800 --> 00:01:44.660
+when it should be negative.
+
+26
+00:01:46.770 --> 00:01:48.720
+If the true label is yes and
+
+27
+00:01:48.720 --> 00:01:53.830
+the predicted label is no, then this
+is a false negative abbreviated as FN.
+
+28
+00:01:54.950 --> 00:01:59.380
+This is the case where the label is
+incorrectly predicted as negative,
+
+29
+00:01:59.380 --> 00:02:00.630
+when it should be positive.
+
+30
+00:02:01.990 --> 00:02:06.400
+These definitions can take a while to sink
+in, so feel free to hit the pause button
+
+31
+00:02:06.400 --> 00:02:09.080
+and replay button several times
+here to review this part.
+
+32
+00:02:11.110 --> 00:02:14.940
+These four different types of errors
+are used in calculating many evaluation
+
+33
+00:02:14.940 --> 00:02:17.110
+metrics for classifiers.
+
+34
+00:02:17.110 --> 00:02:21.270
+The most commonly used evaluation
+metric is the accuracy rate, or
+
+35
+00:02:21.270 --> 00:02:23.410
+accuracy for short.
+
+36
+00:02:23.410 --> 00:02:26.880
+For classication,
+accuracy is calculated as the number of
+
+37
+00:02:26.880 --> 00:02:30.160
+correct predictions divided by
+the total number of predictions.
+
+38
+00:02:31.300 --> 00:02:34.770
+Note that the number of correct
+predictions is the sum of the true
+
+39
+00:02:34.770 --> 00:02:39.660
+positives, and the true negatives, since
+the true and predicted labels match for
+
+40
+00:02:39.660 --> 00:02:41.160
+those cases.
+
+41
+00:02:41.160 --> 00:02:44.640
+The accuracy rate is an intuitive
+way to measure the performance
+
+42
+00:02:44.640 --> 00:02:45.780
+of a classification model.
+
+43
+00:02:47.410 --> 00:02:51.540
+Model performance can also be
+expressed in terms of error rate.
+
+44
+00:02:51.540 --> 00:02:54.140
+Error rate is the opposite
+of accuracy rate.
+
+45
+00:02:55.420 --> 00:03:00.290
+Let's look at an example to see how
+accuracy and error rates are calculated.
+
+46
+00:03:00.290 --> 00:03:04.660
+The table on the left, lists the true
+label along with the model's prediction
+
+47
+00:03:04.660 --> 00:03:06.760
+for a data set of ten samples.
+
+48
+00:03:08.130 --> 00:03:11.345
+First, let’s figure out
+the number of true positives.
+
+49
+00:03:11.345 --> 00:03:15.930
+Recall that a true positive occurs when
+the output is correctly predicted as
+
+50
+00:03:15.930 --> 00:03:17.250
+positive.
+
+51
+00:03:17.250 --> 00:03:21.820
+In other words the true label is yes,
+and the model's prediction is yes.
+
+52
+00:03:21.820 --> 00:03:26.298
+In this example there are three true
+positives as indicated by the red arrows.
+
+53
+00:03:26.298 --> 00:03:30.690
+So, TP=3, remember that value
+as we'll need it later.
+
+54
+00:03:32.870 --> 00:03:36.000
+Now, let's figure out
+the number of true negatives.
+
+55
+00:03:36.000 --> 00:03:40.860
+A true negative occurs when the output
+is correctly predicted as negative.
+
+56
+00:03:40.860 --> 00:03:44.940
+In other words, the true label is no and
+the model's prediction is no.
+
+57
+00:03:44.940 --> 00:03:48.719
+In this example there are four true
+negatives as indicated by the green
+
+58
+00:03:48.719 --> 00:03:49.239
+arrows.
+
+59
+00:03:49.239 --> 00:03:53.160
+So TN = 4,
+we'll need to remember this value as well.
+
+60
+00:03:55.330 --> 00:04:00.490
+Now we use the values for TP and
+TN to calculate the accuracy rate.
+
+61
+00:04:00.490 --> 00:04:06.660
+Using the equation for accuracy rate,
+we plug in three for TP and four for TN.
+
+62
+00:04:06.660 --> 00:04:10.270
+We get seven correct predictions for
+the numerator.
+
+63
+00:04:10.270 --> 00:04:15.480
+The denominator is simply the total number
+of samples in our data set, which is ten.
+
+64
+00:04:15.480 --> 00:04:18.201
+So the accuracy rate for
+
+65
+00:04:18.201 --> 00:04:24.063
+example is 7 out of 10 which is 0.7 or
+70%.
+
+66
+00:04:24.063 --> 00:04:27.890
+The error rate is the exact
+opposite of the accuracy rate.
+
+67
+00:04:27.890 --> 00:04:33.120
+To calculate the error rate, we simply
+subtract the accuracy rate from 1.
+
+68
+00:04:33.120 --> 00:04:38.555
+For our example that is
+1- 0.7 which is 0.3.
+
+69
+00:04:38.555 --> 00:04:43.771
+So the error rate for
+this example is 0.3 or 30%.
+
+70
+00:04:43.771 --> 00:04:47.440
+There's a limitation with accuracy and
+
+71
+00:04:47.440 --> 00:04:50.370
+error rates when you have
+a class imbalance problem.
+
+72
+00:04:51.740 --> 00:04:55.060
+This is when there are very few
+samples of the class of interest, and
+
+73
+00:04:55.060 --> 00:04:56.710
+the majority are negative examples.
+
+74
+00:04:57.870 --> 00:05:02.540
+An example of this is identifying
+if a tumor is cancerous or not.
+
+75
+00:05:02.540 --> 00:05:06.820
+What is of interest is identifying
+samples with cancerous tumors, but
+
+76
+00:05:06.820 --> 00:05:11.200
+these positive cases where the tumor
+is cancerous are very rare.
+
+77
+00:05:11.200 --> 00:05:15.110
+So, you end up with a very small
+fraction of positive samples, and
+
+78
+00:05:15.110 --> 00:05:17.150
+most of the samples are negative.
+
+79
+00:05:17.150 --> 00:05:19.310
+Thus the name, class imbalance problem.
+
+80
+00:05:20.880 --> 00:05:24.260
+What could be the problem with using
+accuracy for a class imbalance problem?
+
+81
+00:05:25.590 --> 00:05:30.130
+Consider the situation where only 3%
+of the cases are cancerous tumors.
+
+82
+00:05:31.400 --> 00:05:35.480
+If the classification model
+always predicts non-cancer,
+
+83
+00:05:35.480 --> 00:05:39.090
+it will have an accuracy rate of 97%,
+
+84
+00:05:39.090 --> 00:05:43.910
+since 97% of the samples will
+have non-cancerous tumors.
+
+85
+00:05:43.910 --> 00:05:49.370
+But note that in this case, the model
+fails to detect any cancer cases at all.
+
+86
+00:05:49.370 --> 00:05:52.600
+So the accuracy rate is
+very misleading here.
+
+87
+00:05:52.600 --> 00:05:55.430
+You may think that your model is
+performing very well with such
+
+88
+00:05:55.430 --> 00:05:56.740
+a high accuracy rate.
+
+89
+00:05:56.740 --> 00:06:02.190
+But in fact it cannot identify any of
+the cases in the class of interest.
+
+90
+00:06:02.190 --> 00:06:05.860
+In these cases we need evaluation
+metrics that can capture how
+
+91
+00:06:05.860 --> 00:06:09.680
+well the model classifies positive,
+versus negative classes.
+
+92
+00:06:11.290 --> 00:06:14.942
+A pair of evaluations metrics that
+are commonly used when there is a class
+
+93
+00:06:14.942 --> 00:06:18.220
+imbalance are precision and recall.
+
+94
+00:06:18.220 --> 00:06:22.950
+Precision is defined as the number of
+true positives divided by the sum of
+
+95
+00:06:22.950 --> 00:06:25.640
+true positives and false positives.
+
+96
+00:06:25.640 --> 00:06:29.670
+In other words, it is the number of true
+positives divided by the total number
+
+97
+00:06:29.670 --> 00:06:32.730
+of samples predicted as being positive.
+
+98
+00:06:34.060 --> 00:06:38.430
+Recall is defined as the number of
+true positives divided by the sum of
+
+99
+00:06:38.430 --> 00:06:40.860
+true positives and false negatives.
+
+100
+00:06:40.860 --> 00:06:45.440
+It is the number of true positives
+divided by the total number of samples,
+
+101
+00:06:45.440 --> 00:06:47.379
+actually belonging to the true class.
+
+102
+00:06:48.895 --> 00:06:52.050
+Here's an illustration that
+shows precision and recall.
+
+103
+00:06:52.050 --> 00:06:57.320
+The selected elements indicated by the
+green half circle are the true positives.
+
+104
+00:06:57.320 --> 00:07:01.240
+That is samples predicted as positive and
+are actually positive.
+
+105
+00:07:02.670 --> 00:07:05.830
+The relevant elements indicated
+by the green half circle and
+
+106
+00:07:05.830 --> 00:07:11.140
+the green half rectangle, are the true
+positives, plus the false negatives.
+
+107
+00:07:11.140 --> 00:07:15.520
+That is samples that are actually
+positive, but some are correctly predicted
+
+108
+00:07:15.520 --> 00:07:18.990
+as positive, and some are incorrectly
+predicted as negative.
+
+109
+00:07:19.990 --> 00:07:24.140
+Recall then is the number of samples
+correctly predicted as positive,
+
+110
+00:07:24.140 --> 00:07:27.250
+divided by all samples that
+are actually positive.
+
+111
+00:07:29.140 --> 00:07:32.200
+The entire circle indicated
+by the green half circle and
+
+112
+00:07:32.200 --> 00:07:37.000
+the pink half circle, are the true
+positives plus the false positives.
+
+113
+00:07:37.000 --> 00:07:39.710
+That is samples that were
+predicted as positive
+
+114
+00:07:39.710 --> 00:07:42.950
+although some were actually positive and
+some were actually negative.
+
+115
+00:07:44.175 --> 00:07:48.530
+Then precision is the number of samples
+correctly predicted as positive,
+
+116
+00:07:48.530 --> 00:07:52.670
+divided by the number of all
+samples predicted as positive.
+
+117
+00:07:54.230 --> 00:07:57.790
+Precision is considered a measure
+of exactness because it calculates
+
+118
+00:07:57.790 --> 00:08:00.710
+the percentage of samples
+predicted as positive,
+
+119
+00:08:00.710 --> 00:08:02.420
+which are actually in a positive class.
+
+120
+00:08:03.460 --> 00:08:07.270
+Recall is considered a measure of
+completeness, because it calculates
+
+121
+00:08:07.270 --> 00:08:10.940
+the percentage of positive samples
+that the model correctly identified.
+
+122
+00:08:12.720 --> 00:08:15.950
+There is a trade off between precision and
+recall.
+
+123
+00:08:15.950 --> 00:08:20.762
+A perfect precision score of one for
+a class C means that every sample
+
+124
+00:08:20.762 --> 00:08:25.506
+predicted as belonging to class C,
+does indeed belong to class C.
+
+125
+00:08:25.506 --> 00:08:29.674
+But this says nothing about the number of
+samples from class C that were predicted
+
+126
+00:08:29.674 --> 00:08:30.480
+incorrectly.
+
+127
+00:08:31.550 --> 00:08:33.790
+A perfect recall score of one for
+
+128
+00:08:33.790 --> 00:08:38.710
+a class C, means that every sample
+from class C was correctly labeled.
+
+129
+00:08:38.710 --> 00:08:41.870
+But this doesn't say anything
+about how many other samples were
+
+130
+00:08:41.870 --> 00:08:44.850
+incorrectly labeled as
+belonging to class C.
+
+131
+00:08:44.850 --> 00:08:46.640
+So they are used together.
+
+132
+00:08:46.640 --> 00:08:51.070
+For example, precision values can be
+compared for a fixed value of recall or
+
+133
+00:08:51.070 --> 00:08:52.360
+vice versa.
+
+134
+00:08:52.360 --> 00:08:56.140
+The goal for classification is to
+maximize both precision and recall.
+
+135
+00:08:57.870 --> 00:09:03.060
+Precision and recall can be combined into
+a single metric called the F-measure.
+
+136
+00:09:03.060 --> 00:09:06.830
+The equation for that is 2 times
+the product of precision and
+
+137
+00:09:06.830 --> 00:09:09.630
+recall divided by their sum.
+
+138
+00:09:09.630 --> 00:09:12.350
+There are different
+versions of the F-measure.
+
+139
+00:09:12.350 --> 00:09:13.910
+The equation on this side is for
+
+140
+00:09:13.910 --> 00:09:18.860
+the F1 measure which is the most
+commonly used variant of the F measure.
+
+141
+00:09:18.860 --> 00:09:22.990
+With the F1 measure, precision and
+recall are equally weighted.
+
+142
+00:09:22.990 --> 00:09:26.245
+The F2 measure weights recall
+higher than precision.
+
+143
+00:09:26.245 --> 00:09:31.410
+And the F0.5 measure weights
+precision higher than recall.
+
+144
+00:09:32.410 --> 00:09:35.560
+The value for
+the F1 measure ranges from zero to one,
+
+145
+00:09:35.560 --> 00:09:38.720
+with higher values giving better
+classification performance.
+
+146
+00:09:40.160 --> 00:09:42.580
+In summary, there are several metrics for
+
+147
+00:09:42.580 --> 00:09:45.990
+evaluating the performance
+of a classification model.
+
+148
+00:09:45.990 --> 00:09:49.170
+They are defined in terms of
+the types of errors you can get in
+
+149
+00:09:49.170 --> 00:09:50.390
+a classification problem.
+
+150
+00:09:51.450 --> 00:09:56.348
+We covered some of the most commonly
+used evaluation metrics in this lecture,
+
+151
+00:09:56.348 --> 00:10:00.960
+namely accuracy and error rates,
+precision and recall and F1 measure.
+
+1
+00:00:00.810 --> 00:00:05.170
+In this lecture, we will discuss how
+overfitting occurs with decision trees and
+
+2
+00:00:05.170 --> 00:00:06.210
+how it can be avoided.
+
+3
+00:00:07.300 --> 00:00:08.160
+After this video,
+
+4
+00:00:08.160 --> 00:00:14.120
+you will be able to discuss overfitting
+in the context of decision tree models.
+
+5
+00:00:14.120 --> 00:00:17.496
+Explain how overfitting is addressed
+in decision tree induction.
+
+6
+00:00:17.496 --> 00:00:21.370
+Define pre-pruning and post-pruning.
+
+7
+00:00:21.370 --> 00:00:25.260
+In our lecture on decision trees, we
+discussed that during the construction of
+
+8
+00:00:25.260 --> 00:00:30.830
+a decision tree, also referred to as
+tree induction, the tree repeatedly
+
+9
+00:00:30.830 --> 00:00:35.000
+splits the data in a node in order to
+get successively paired subsets of data.
+
+10
+00:00:36.320 --> 00:00:40.810
+Note that a decision tree classifier can
+potentially expand its nodes until it can
+
+11
+00:00:40.810 --> 00:00:44.230
+perfectly classify samples
+in the training data.
+
+12
+00:00:44.230 --> 00:00:48.280
+But if the tree grows nodes to fit
+the noise in the training data,
+
+13
+00:00:48.280 --> 00:00:51.370
+then it will not classify
+a new sample well.
+
+14
+00:00:51.370 --> 00:00:55.450
+This is because the tree has partitioned
+the input space according to the noise in
+
+15
+00:00:55.450 --> 00:00:59.410
+the data instead of to
+the true structure of a data.
+
+16
+00:00:59.410 --> 00:01:00.825
+In other words, it has overfit.
+
+17
+00:01:02.710 --> 00:01:05.580
+How can overfitting be
+avoided in decision trees?
+
+18
+00:01:05.580 --> 00:01:07.220
+There are two ways.
+
+19
+00:01:07.220 --> 00:01:10.510
+One is to stop growing the tree
+before the tree is fully grown
+
+20
+00:01:10.510 --> 00:01:12.590
+to perfectly fit the training data.
+
+21
+00:01:12.590 --> 00:01:15.890
+This is referred to as pre-pruning.
+
+22
+00:01:15.890 --> 00:01:19.770
+The other way to avoid overfitting in
+decision trees is to grow the tree to its
+
+23
+00:01:19.770 --> 00:01:24.860
+maximum size and then prune the tree
+back by removing parts of the tree.
+
+24
+00:01:24.860 --> 00:01:28.020
+This is referred to as post-pruning.
+
+25
+00:01:28.020 --> 00:01:32.300
+In general, overfitting occurs
+because the model is too complex.
+
+26
+00:01:32.300 --> 00:01:34.060
+For a decision tree model,
+
+27
+00:01:34.060 --> 00:01:38.250
+model complexity is determined by
+the number of nodes in the tree.
+
+28
+00:01:38.250 --> 00:01:43.300
+Addressing overfitting in decision trees
+means controlling the number of nodes.
+
+29
+00:01:43.300 --> 00:01:46.920
+Both methods of pruning control
+the growth of the tree and consequently,
+
+30
+00:01:46.920 --> 00:01:48.880
+the complexity of the resulting model.
+
+31
+00:01:50.380 --> 00:01:55.270
+With pre-pruning, the idea is to stop tree
+induction before a fully grown tree is
+
+32
+00:01:55.270 --> 00:01:58.540
+built that perfectly
+fits the training data.
+
+33
+00:01:58.540 --> 00:02:03.320
+To do this, restrictive stopping
+conditions for growing nodes must be used.
+
+34
+00:02:03.320 --> 00:02:08.121
+For example, a nose stops expanding if
+the number of samples in the node is less
+
+35
+00:02:08.121 --> 00:02:10.940
+than some minimum threshold.
+
+36
+00:02:10.940 --> 00:02:14.954
+Another example is to stop expanding
+a note if the improvement in the impurity
+
+37
+00:02:14.954 --> 00:02:17.190
+measure falls below a certain threshold.
+
+38
+00:02:18.480 --> 00:02:22.440
+In post-pruning,
+the tree is grown to its maximum size,
+
+39
+00:02:22.440 --> 00:02:27.280
+then the tree is pruned by removing
+nodes using a bottom up approach.
+
+40
+00:02:27.280 --> 00:02:31.250
+That is, the tree is trimmed
+starting with the leaf nodes.
+
+41
+00:02:31.250 --> 00:02:34.900
+The pruning is done by replacing
+a subtree with a leaf node if
+
+42
+00:02:34.900 --> 00:02:38.140
+this improves the generalization error,
+or if there is no
+
+43
+00:02:38.140 --> 00:02:41.580
+change to the generalization
+error with this replacement.
+
+44
+00:02:41.580 --> 00:02:45.590
+In other words, if removing a subtree
+does not have a negative effect
+
+45
+00:02:45.590 --> 00:02:49.240
+on the generalization error,
+then the nodes in that subtree only
+
+46
+00:02:49.240 --> 00:02:52.730
+add to the complexity of the tree,
+and not to its overall performance.
+
+47
+00:02:52.730 --> 00:02:54.058
+So those nodes should be removed.
+
+48
+00:02:54.058 --> 00:02:59.290
+In practice,
+post-pruning tends to give better results.
+
+49
+00:02:59.290 --> 00:03:03.250
+This is because pruning decisions are
+based on information from the full tree.
+
+50
+00:03:03.250 --> 00:03:08.510
+Pre-pruning, on the other hand, may stop
+the tree growing process prematurely.
+
+51
+00:03:08.510 --> 00:03:12.951
+However, post-pruning is more
+computationally expensive since the tree
+
+52
+00:03:12.951 --> 00:03:15.040
+has to be expanded to its full size.
+
+53
+00:03:16.490 --> 00:03:21.720
+In summary, to address overfitting in
+decision trees, tree pruning is used.
+
+54
+00:03:21.720 --> 00:03:26.030
+There are two pruning methods,
+pre-pruning and post-pruning.
+
+55
+00:03:26.030 --> 00:03:28.880
+Both methods control
+the complexity of the tree model.
+
+1
+00:00:00.980 --> 00:00:04.400
+In this lecture, we will discuss
+what a validation set is and
+
+2
+00:00:04.400 --> 00:00:07.610
+how it relates to overfitting and
+model performance evaluation.
+
+3
+00:00:09.150 --> 00:00:13.300
+After this video, you will be able to
+describe how validation sets can be
+
+4
+00:00:13.300 --> 00:00:15.450
+used to avoid overfitting.
+
+5
+00:00:15.450 --> 00:00:19.940
+Articulate how training,
+validation, and test sets are used.
+
+6
+00:00:19.940 --> 00:00:22.539
+And list three ways that
+validation can be performed.
+
+7
+00:00:23.920 --> 00:00:25.600
+In our lesson on classification,
+
+8
+00:00:25.600 --> 00:00:29.570
+we discussed that there is a training
+phase in which the model is built, and
+
+9
+00:00:29.570 --> 00:00:33.690
+a testing phase in which
+the model is applied to new data.
+
+10
+00:00:33.690 --> 00:00:38.580
+The model is built using training data and
+evaluated on test data.
+
+11
+00:00:38.580 --> 00:00:42.290
+The training and
+test data are two different datasets.
+
+12
+00:00:42.290 --> 00:00:46.490
+The goal in building a machine learning
+model is to have the model perform well
+
+13
+00:00:46.490 --> 00:00:51.110
+on the training set, as well as generalize
+well on new data in the test set.
+
+14
+00:00:52.750 --> 00:00:57.690
+Recall that a model that overfits
+does not generalize well to new data.
+
+15
+00:00:57.690 --> 00:01:03.630
+Recall also that overfitting generally
+occurs when a model is too complex.
+
+16
+00:01:03.630 --> 00:01:07.110
+So to have a model with good
+generalization performance,
+
+17
+00:01:07.110 --> 00:01:11.550
+model training has to stop before
+the model gets too complex.
+
+18
+00:01:11.550 --> 00:01:13.170
+How do you determine
+when this should occur?
+
+19
+00:01:14.730 --> 00:01:19.184
+A validation set can be used to guide the
+training process to avoid overfitting and
+
+20
+00:01:19.184 --> 00:01:22.450
+deliver good generalization performance.
+
+21
+00:01:22.450 --> 00:01:26.550
+We have discussed having a training
+set and a separate test set.
+
+22
+00:01:26.550 --> 00:01:29.000
+The training set is used
+to build a model and
+
+23
+00:01:29.000 --> 00:01:31.900
+the test set is used to see how
+the model performs a new data.
+
+24
+00:01:32.960 --> 00:01:37.450
+Now we want to further divide up
+the training data into a training set and
+
+25
+00:01:37.450 --> 00:01:39.200
+a validation set.
+
+26
+00:01:39.200 --> 00:01:42.680
+The training set is used to
+train the model as before and
+
+27
+00:01:42.680 --> 00:01:46.780
+the validation set is used to determine
+when to stop training the model
+
+28
+00:01:46.780 --> 00:01:50.800
+to avoid overfitting, in order to get
+the best generalization performance.
+
+29
+00:01:52.060 --> 00:01:55.010
+The idea is to look at the errors
+on both training set and
+
+30
+00:01:55.010 --> 00:01:58.500
+validation set during model
+training as shown here.
+
+31
+00:01:58.500 --> 00:02:02.670
+The orange solid line on the plot
+is the training error and
+
+32
+00:02:02.670 --> 00:02:05.960
+the green line is the validation error.
+
+33
+00:02:05.960 --> 00:02:09.760
+We see that as model building
+progresses along the x-axis,
+
+34
+00:02:09.760 --> 00:02:11.890
+the number of nodes increases.
+
+35
+00:02:11.890 --> 00:02:15.280
+That is the complexity
+of the model increases.
+
+36
+00:02:15.280 --> 00:02:21.200
+We can see that as the model complexity
+increases, the training error decreases.
+
+37
+00:02:21.200 --> 00:02:25.140
+On the other hand, the validation
+error initially decreases but
+
+38
+00:02:25.140 --> 00:02:26.370
+then starts to increase.
+
+39
+00:02:27.900 --> 00:02:32.960
+When the validation error increases, this
+indicates that the model is overfitting,
+
+40
+00:02:32.960 --> 00:02:35.800
+resulting in decreased
+generalization performance.
+
+41
+00:02:37.640 --> 00:02:40.950
+This can be used to determine
+when to stop training.
+
+42
+00:02:40.950 --> 00:02:45.390
+Where validation error starts to increase
+is when you get the best generalization
+
+43
+00:02:45.390 --> 00:02:48.340
+performance, so
+training should stop there.
+
+44
+00:02:48.340 --> 00:02:52.050
+This method of using a validation set
+to determine when to stop training
+
+45
+00:02:52.050 --> 00:02:54.610
+is referred to as model selection
+
+46
+00:02:54.610 --> 00:02:58.610
+since you're selecting one from
+many of varying complexities.
+
+47
+00:02:58.610 --> 00:03:02.831
+Note that this was illustrated for
+a decision tree classifier, but
+
+48
+00:03:02.831 --> 00:03:07.135
+the same method can be applied to
+any type of machine learning model.
+
+49
+00:03:07.135 --> 00:03:12.510
+There are several ways to create and use
+the validation set to avoid overfitting.
+
+50
+00:03:12.510 --> 00:03:16.482
+The different methods are holdout method,
+
+51
+00:03:16.482 --> 00:03:21.313
+random subsampling,
+k-fold cross-validation,
+
+52
+00:03:21.313 --> 00:03:25.300
+and leave-one-out cross-validation.
+
+53
+00:03:25.300 --> 00:03:29.050
+The first way to use a validation
+set is the holdout method.
+
+54
+00:03:29.050 --> 00:03:31.900
+This describes the scenario
+that we have been discussing,
+
+55
+00:03:31.900 --> 00:03:36.270
+where part of the training data
+is reserved as a validation set.
+
+56
+00:03:36.270 --> 00:03:38.300
+The validation set is
+then the holdout set.
+
+57
+00:03:39.300 --> 00:03:42.950
+Errors on the training set and the holdout
+set are calculated at each step
+
+58
+00:03:42.950 --> 00:03:47.080
+during model training and
+plotted together as we've seen before.
+
+59
+00:03:47.080 --> 00:03:50.950
+And the lowest error on the holdout
+set is when training should stop.
+
+60
+00:03:50.950 --> 00:03:54.240
+This is the just the process that
+we have described here before.
+
+61
+00:03:54.240 --> 00:03:56.670
+There's some limitations to
+the holdout method however.
+
+62
+00:03:57.710 --> 00:04:01.970
+First, since some samples are reserved for
+the holdout validation set,
+
+63
+00:04:01.970 --> 00:04:05.580
+the training set now has less data
+than it originally started out with.
+
+64
+00:04:06.770 --> 00:04:11.810
+Secondly, if the training and holdout sets
+do not have the same data distributions,
+
+65
+00:04:11.810 --> 00:04:14.140
+then the results will be misleading.
+
+66
+00:04:14.140 --> 00:04:18.750
+For example, if the training data has
+many more samples of one class and
+
+67
+00:04:18.750 --> 00:04:22.540
+the holdout dataset has many
+more samples of another class.
+
+68
+00:04:22.540 --> 00:04:27.100
+The next method for using
+a validation set is repeated holdout.
+
+69
+00:04:27.100 --> 00:04:28.260
+As the name implies,
+
+70
+00:04:28.260 --> 00:04:32.220
+this is essentially repeating
+the holdout method several times.
+
+71
+00:04:32.220 --> 00:04:37.170
+With each iteration, samples are randomly
+selected from the original training data
+
+72
+00:04:37.170 --> 00:04:40.040
+to create the holdout validation set.
+
+73
+00:04:40.040 --> 00:04:43.740
+This is repeated several times with
+different training and validation sets.
+
+74
+00:04:44.810 --> 00:04:48.010
+Then the iterates on the holdout set for
+the different iterations
+
+75
+00:04:48.010 --> 00:04:53.150
+are averaged together to get the overall
+iterate for model selection.
+
+76
+00:04:53.150 --> 00:04:57.420
+A potential problem with repeated holdout
+is that you could end up with some samples
+
+77
+00:04:57.420 --> 00:04:59.570
+being used more than others for training.
+
+78
+00:05:00.640 --> 00:05:05.470
+Since a sample can be used for either
+testing or training any number of times,
+
+79
+00:05:05.470 --> 00:05:10.050
+some samples may be put in the training
+set more times than other samples.
+
+80
+00:05:10.050 --> 00:05:14.250
+So you might end up with some
+samples being overrepresented while
+
+81
+00:05:14.250 --> 00:05:17.430
+other samples are underrepresented
+in training or testing.
+
+82
+00:05:19.520 --> 00:05:24.154
+A way to improve on the repeated
+holdout method is use cross-validation.
+
+83
+00:05:24.154 --> 00:05:26.628
+Cross-validation works as follows.
+
+84
+00:05:26.628 --> 00:05:31.440
+Segment the data into k number
+of disjoint partitions.
+
+85
+00:05:31.440 --> 00:05:36.420
+During each iteration, one partition
+is used as the validation set.
+
+86
+00:05:36.420 --> 00:05:38.690
+Repeat the process k times.
+
+87
+00:05:38.690 --> 00:05:42.230
+Each time using a different partition for
+validation.
+
+88
+00:05:42.230 --> 00:05:45.880
+So each partition is used for
+validation exactly once.
+
+89
+00:05:45.880 --> 00:05:48.230
+This is illustrated in this figure.
+
+90
+00:05:48.230 --> 00:05:52.520
+In the fist iteration, the first
+partition, specified in green, is used for
+
+91
+00:05:52.520 --> 00:05:53.960
+validation.
+
+92
+00:05:53.960 --> 00:05:56.950
+In the second iteration,
+the second partition is used for
+
+93
+00:05:56.950 --> 00:05:58.160
+validation and so on.
+
+94
+00:05:59.300 --> 00:06:03.920
+The overall validation error is calculated
+by averaging the validation errors for
+
+95
+00:06:03.920 --> 00:06:04.980
+all k iterations.
+
+96
+00:06:06.040 --> 00:06:10.490
+The model with the smallest average
+validation error then is selected.
+
+97
+00:06:10.490 --> 00:06:15.530
+The process we just described is
+referred to as k-fold cross-validation.
+
+98
+00:06:15.530 --> 00:06:19.390
+This is a very commonly used approach
+to model selection in practice.
+
+99
+00:06:20.440 --> 00:06:25.405
+This approach gives you a more structured
+way to divide available data up between
+
+100
+00:06:25.405 --> 00:06:30.371
+training and validation datasets and
+provides a way to overcome the variability
+
+101
+00:06:30.371 --> 00:06:35.134
+in performance that you can get when
+using a single partitioning of the data.
+
+102
+00:06:35.134 --> 00:06:39.401
+Leave-one-out cross-validation
+is a special case of k-fold
+
+103
+00:06:39.401 --> 00:06:44.220
+cross-validation where k equals N,
+where N is the size of your dataset.
+
+104
+00:06:45.260 --> 00:06:49.860
+Here, for each iteration the validation
+set has exactly one sample.
+
+105
+00:06:49.860 --> 00:06:53.240
+So the model is trained to
+using N minus one samples and
+
+106
+00:06:53.240 --> 00:06:55.920
+is validated on the remaining sample.
+
+107
+00:06:55.920 --> 00:07:01.600
+The rest of the process works the same
+way as regular k-fold cross-validation.
+
+108
+00:07:01.600 --> 00:07:06.391
+Note that cross-validation is often
+abbreviated CV and leave-one-out
+
+109
+00:07:06.391 --> 00:07:11.340
+cross-validation is in abbreviated
+L-O-O-C-V and pronounced LOOCV.
+
+110
+00:07:13.550 --> 00:07:17.990
+We have described several ways to use
+a validation set to address overfitting.
+
+111
+00:07:17.990 --> 00:07:21.750
+Error on the validation set is used
+to determine when to stop training so
+
+112
+00:07:21.750 --> 00:07:23.350
+that the model does not overfit.
+
+113
+00:07:24.400 --> 00:07:28.440
+Note that the validation error that comes
+out of this process can also be used
+
+114
+00:07:28.440 --> 00:07:31.720
+to estimate generalization
+performance of the model.
+
+115
+00:07:31.720 --> 00:07:32.780
+In other words,
+
+116
+00:07:32.780 --> 00:07:37.420
+the error on the validation set provides
+an estimate of the error on the test set.
+
+117
+00:07:38.890 --> 00:07:40.570
+With the addition of the validation set,
+
+118
+00:07:40.570 --> 00:07:44.460
+you really need three distinct
+datasets when you build a model.
+
+119
+00:07:44.460 --> 00:07:45.660
+Let's review these datasets.
+
+120
+00:07:47.080 --> 00:07:51.560
+The training dataset is used to train the
+model, that is to adjust the parameters of
+
+121
+00:07:51.560 --> 00:07:53.990
+the model to learn the input
+to output mapping.
+
+122
+00:07:55.640 --> 00:07:59.710
+The validation dataset is used to
+determine when training should stop
+
+123
+00:07:59.710 --> 00:08:01.370
+in order to avoid overfitting.
+
+124
+00:08:03.110 --> 00:08:07.490
+The test data set is used to evaluate
+the performance of the model on new data.
+
+125
+00:08:09.640 --> 00:08:14.320
+Note that the test data set should never,
+ever be used in any way to create or
+
+126
+00:08:14.320 --> 00:08:15.940
+tune the model.
+
+127
+00:08:15.940 --> 00:08:17.070
+It should not be used, for
+
+128
+00:08:17.070 --> 00:08:21.010
+example, in a cross-validation process
+to determine when to stop training.
+
+129
+00:08:22.020 --> 00:08:26.680
+The test dataset must always remain
+independent from model training and
+
+130
+00:08:26.680 --> 00:08:31.980
+remain untouched until the very end
+when all training has been completed.
+
+131
+00:08:31.980 --> 00:08:36.467
+Note that in sampling the original dataset
+to create the training, validation, and
+
+132
+00:08:36.467 --> 00:08:40.909
+test sets, all datasets must contain the
+same distribution of the target classes.
+
+133
+00:08:40.909 --> 00:08:46.362
+For example, if in the original dataset,
+70% of the samples belong to one class and
+
+134
+00:08:46.362 --> 00:08:51.297
+30% to the other class, then this same
+distribution should approximately
+
+135
+00:08:51.297 --> 00:08:55.427
+be present in each of the training,
+validation, and test sets.
+
+136
+00:08:55.427 --> 00:08:58.713
+Otherwise, analysis results
+will be misleading.
+
+137
+00:08:58.713 --> 00:09:01.667
+To summarize, we have discuss the need for
+
+138
+00:09:01.667 --> 00:09:04.900
+three different datasets
+in building model.
+
+139
+00:09:04.900 --> 00:09:09.588
+A training set to train the model,
+a validation set to determine when to stop
+
+140
+00:09:09.588 --> 00:09:12.920
+training, and a test to evaluate
+performance on new data.
+
+141
+00:09:14.210 --> 00:09:17.800
+We learned how a validation set can
+be used to avoid overfitting and
+
+142
+00:09:17.800 --> 00:09:22.600
+in the process, provide an estimate
+of generalization performance.
+
+143
+00:09:22.600 --> 00:09:24.982
+And we covered different
+ways to create and
+
+144
+00:09:24.982 --> 00:09:28.236
+use a validation set such
+as k-fold cross-validation.
+
+1
+00:00:00.930 --> 00:00:04.150
+Now that we have seen what
+association analysis is,
+
+2
+00:00:04.150 --> 00:00:07.460
+let's go over the association
+analysis process in more detail.
+
+3
+00:00:08.930 --> 00:00:13.970
+After this video, you will be able
+to define the terms support and
+
+4
+00:00:13.970 --> 00:00:18.790
+confidence, describe the steps
+in association analysis, and
+
+5
+00:00:18.790 --> 00:00:22.330
+explain how association rules
+are formed from item sets.
+
+6
+00:00:23.540 --> 00:00:26.240
+Let's review the set in
+association analysis.
+
+7
+00:00:26.240 --> 00:00:31.920
+They are create item the sets,
+then identify the frequent item sets.
+
+8
+00:00:31.920 --> 00:00:33.230
+Finally, generate the rules.
+
+9
+00:00:34.240 --> 00:00:37.010
+We will continue with
+this example dataset,
+
+10
+00:00:37.010 --> 00:00:39.530
+there are five transactions
+in the dataset.
+
+11
+00:00:39.530 --> 00:00:42.650
+Each with a set of items
+purchased together.
+
+12
+00:00:42.650 --> 00:00:46.770
+The goal is to come up with rules
+describing associations between items.
+
+13
+00:00:48.280 --> 00:00:50.390
+The first step is to create item sets.
+
+14
+00:00:51.450 --> 00:00:54.780
+Item sets have different sizes
+which need to be created.
+
+15
+00:00:54.780 --> 00:00:56.220
+We will color code the items so
+
+16
+00:00:56.220 --> 00:00:59.350
+that each one is easier to pick
+out from the transactions table.
+
+17
+00:01:00.880 --> 00:01:05.250
+We start out with just 1-item sets,
+that is, sets with just one item.
+
+18
+00:01:06.260 --> 00:01:09.530
+The left table is
+the dataset of transactions.
+
+19
+00:01:09.530 --> 00:01:13.920
+The right table contains the 1-item sets
+that can be created from this dataset.
+
+20
+00:01:15.170 --> 00:01:19.940
+As each item set is created, we also need
+to keep track of the frequency at which
+
+21
+00:01:19.940 --> 00:01:21.910
+these item set occurs in the dataset.
+
+22
+00:01:23.275 --> 00:01:27.130
+This is referred to support for
+the item set and
+
+23
+00:01:27.130 --> 00:01:32.580
+is calculated by dividing the number of
+times the item set occurs in the dataset
+
+24
+00:01:32.580 --> 00:01:35.250
+by the total number of transactions.
+
+25
+00:01:35.250 --> 00:01:39.050
+This is what is in the Support
+column in the right table.
+
+26
+00:01:39.050 --> 00:01:42.586
+For example, eggs the last
+item in the right table occurs
+
+27
+00:01:42.586 --> 00:01:46.502
+just occurs just once in the dataset,
+in the transaction two.
+
+28
+00:01:46.502 --> 00:01:51.838
+So if Support is 1/5 or
+one fifth,the item set with
+
+29
+00:01:51.838 --> 00:01:59.330
+diaper occurs in all transactions,
+so if Support is 5/5 or 1.
+
+30
+00:01:59.330 --> 00:02:03.410
+The Support for each item set will be
+used to identify frequent item sets
+
+31
+00:02:03.410 --> 00:02:07.930
+in the next step, specifically,
+the Support issues to prune, or
+
+32
+00:02:07.930 --> 00:02:10.990
+remove, item sets that
+do not occur frequently.
+
+33
+00:02:12.605 --> 00:02:15.825
+The support of each item set
+will be used to identify
+
+34
+00:02:15.825 --> 00:02:18.155
+frequent item sets in the next step.
+
+35
+00:02:18.155 --> 00:02:20.905
+Specifically, the support
+is used to prune or
+
+36
+00:02:20.905 --> 00:02:24.705
+remove item sets that do
+not occur frequently.
+
+37
+00:02:24.705 --> 00:02:28.525
+For example, the minimum support
+threshold is set to 3/5.
+
+38
+00:02:28.525 --> 00:02:33.271
+So looking at the 1-item sets table
+We can remove any item set with
+
+39
+00:02:33.271 --> 00:02:35.656
+the support of less than 3/5.
+
+40
+00:02:35.656 --> 00:02:40.348
+These item sets are highlighted in pink,
+they will be removed before the sets for
+
+41
+00:02:40.348 --> 00:02:42.360
+two items are created.
+
+42
+00:02:42.360 --> 00:02:48.300
+The final one item sets are then the item
+sets with bread, milk, beer and diaper.
+
+43
+00:02:49.770 --> 00:02:53.640
+We only consider items that were in
+the one item sets, that were not pruned.
+
+44
+00:02:54.740 --> 00:02:56.990
+The two item sets are shown
+in the right table.
+
+45
+00:02:58.000 --> 00:03:00.370
+We, again,
+need to keep track of the support for
+
+46
+00:03:00.370 --> 00:03:03.100
+these item sets,
+just as we did with the one item sets.
+
+47
+00:03:04.180 --> 00:03:06.730
+For example, for
+the last item set, with beer, and
+
+48
+00:03:06.730 --> 00:03:10.280
+diaper, we see, by looking at
+the left table, that beer and
+
+49
+00:03:10.280 --> 00:03:16.000
+diaper occur together three times In
+transactions two, three and four.
+
+50
+00:03:16.000 --> 00:03:18.700
+So with support is 3/5.
+
+51
+00:03:18.700 --> 00:03:21.870
+Again, we need to prune
+item sets with low support.
+
+52
+00:03:21.870 --> 00:03:25.450
+The ones highlighted in pink
+in the two item sets table.
+
+53
+00:03:25.450 --> 00:03:29.800
+Those would be the item set with bread and
+beer and the item set with milk and beer.
+
+54
+00:03:30.830 --> 00:03:33.120
+The remaining two items that end.
+
+55
+00:03:33.120 --> 00:03:36.150
+One item such or
+then use to create the three item sets.
+
+56
+00:03:37.560 --> 00:03:39.460
+Let's look now at
+creating three item sets.
+
+57
+00:03:40.750 --> 00:03:45.190
+The only three item sets that has a
+support value greater than minimum support
+
+58
+00:03:45.190 --> 00:03:47.320
+is the one shown in the right table.
+
+59
+00:03:47.320 --> 00:03:50.240
+Namely the items start with bread,
+milk and diaper.
+
+60
+00:03:51.940 --> 00:03:57.130
+The second step in association analysis
+is to identify the frequent item sets.
+
+61
+00:03:57.130 --> 00:03:59.860
+But note that the process
+that we just described for
+
+62
+00:03:59.860 --> 00:04:03.530
+creating item sets already
+identifies frequent item sets.
+
+63
+00:04:04.530 --> 00:04:07.880
+A frequent item set is one whose
+support is greater than or
+
+64
+00:04:07.880 --> 00:04:10.590
+equal to the minimum support.
+
+65
+00:04:10.590 --> 00:04:15.580
+So by keeping track of the support of
+each item set as it is being created and
+
+66
+00:04:15.580 --> 00:04:18.020
+removing item sets with low support,
+
+67
+00:04:18.020 --> 00:04:20.570
+we are already identifying
+frequent item sets.
+
+68
+00:04:21.650 --> 00:04:26.740
+For our example, the frequent one,
+two and three item sets are shown here.
+
+69
+00:04:28.230 --> 00:04:31.940
+Now that we identified the frequent
+item sets, the last step is to
+
+70
+00:04:31.940 --> 00:04:35.650
+generate the rules to capture
+associations that we see in the data.
+
+71
+00:04:37.050 --> 00:04:41.627
+Let's first define some terms we'll
+need to discuss association rules.
+
+72
+00:04:41.627 --> 00:04:45.690
+The format of an association
+rule is shown at the top.
+
+73
+00:04:45.690 --> 00:04:51.910
+It's written as X arrow Y and
+is read as if X, then Y.
+
+74
+00:04:51.910 --> 00:04:55.190
+The X part is called the antecedent and
+
+75
+00:04:55.190 --> 00:04:57.770
+the Y part is called
+the consequent of the rule.
+
+76
+00:04:58.870 --> 00:05:00.520
+X and Y are item sets.
+
+77
+00:05:01.560 --> 00:05:04.920
+An important term in rule
+generation is the rule confidence.
+
+78
+00:05:06.120 --> 00:05:08.680
+This is to find as a support for X and
+
+79
+00:05:08.680 --> 00:05:14.080
+Y together divided by the support for
+X only.
+
+80
+00:05:14.080 --> 00:05:16.680
+So rule confidence
+calculates the frequency of
+
+81
+00:05:16.680 --> 00:05:18.710
+instances to which the rule applies.
+
+82
+00:05:20.210 --> 00:05:24.830
+Recall that the support for
+X is the frequency of item set X and
+
+83
+00:05:24.830 --> 00:05:28.470
+is defined as the number of
+transactions containing items in X
+
+84
+00:05:28.470 --> 00:05:31.595
+divided by the total
+number of transactions.
+
+85
+00:05:31.595 --> 00:05:34.875
+The rule confidence measures
+how frequently items in
+
+86
+00:05:34.875 --> 00:05:38.585
+Y appear in the transaction
+that contain X.
+
+87
+00:05:38.585 --> 00:05:43.365
+In other words, the confidence measures
+the reliability of the rule by determining
+
+88
+00:05:43.365 --> 00:05:48.635
+how often, if X and
+Y is found to be true in the data.
+
+89
+00:05:48.635 --> 00:05:50.835
+How is rule confidence
+used in rule generation?
+
+90
+00:05:52.230 --> 00:05:57.160
+Association rules are generated from the
+frequent item sets created from the data.
+
+91
+00:05:57.160 --> 00:06:01.070
+Each item in an item set can be
+used as a part of the antecedent or
+
+92
+00:06:01.070 --> 00:06:03.200
+consequent of the rule.
+
+93
+00:06:03.200 --> 00:06:06.970
+And you can have many ways to combine
+items to form the antecedent and
+
+94
+00:06:06.970 --> 00:06:07.490
+consequent.
+
+95
+00:06:08.810 --> 00:06:12.210
+So if we just simply generate
+rules from each frequent item set,
+
+96
+00:06:12.210 --> 00:06:14.390
+we would end up with lots and
+lots of rules.
+
+97
+00:06:15.390 --> 00:06:20.680
+Each item set with k items can
+generate 2 to the k-2 rules.
+
+98
+00:06:20.680 --> 00:06:22.330
+That's a lot of rules.
+
+99
+00:06:22.330 --> 00:06:25.240
+And the majority of those rules
+would not be found in the data.
+
+100
+00:06:26.330 --> 00:06:28.070
+This is where rule confidence comes in.
+
+101
+00:06:29.380 --> 00:06:33.140
+We can use rule confidence to
+constrain the number of rules to keep.
+
+102
+00:06:34.190 --> 00:06:38.140
+Specifically, a minimum
+confidence threshold is set and
+
+103
+00:06:38.140 --> 00:06:40.810
+only rules with confidence greater than or
+
+104
+00:06:40.810 --> 00:06:45.410
+equal to the minimum confidence are
+significant and only those will be kept.
+
+105
+00:06:46.850 --> 00:06:49.320
+Let's look at how this works
+with our example dataset.
+
+106
+00:06:50.520 --> 00:06:55.150
+We call that only one three item set
+was created from the transactions.
+
+107
+00:06:55.150 --> 00:06:58.380
+That three items that contains
+items bread, milk and
+
+108
+00:06:58.380 --> 00:06:59.630
+diaper as shown at the top.
+
+109
+00:07:00.730 --> 00:07:05.000
+With these three item set let's see
+how we can generate rules from it and
+
+110
+00:07:05.000 --> 00:07:07.670
+determine which rules to keep and
+which one to prune.
+
+111
+00:07:09.150 --> 00:07:12.507
+Let's set the minimum confidence to 0.95.
+
+112
+00:07:12.507 --> 00:07:15.350
+And here again is the definition for
+confidence.
+
+113
+00:07:16.890 --> 00:07:21.250
+For candidate rule if bread and
+milk then diaper,
+
+114
+00:07:21.250 --> 00:07:24.940
+we can calculate it's confidence
+as follows the support for
+
+115
+00:07:24.940 --> 00:07:29.790
+both antecedent and consequent is
+the number of times we see bread, milk and
+
+116
+00:07:29.790 --> 00:07:35.570
+diaper together in the data, divided
+by the total number of transactions.
+
+117
+00:07:35.570 --> 00:07:40.240
+Items bread, milk and diaper appear
+together in transaction 1, 4 and
+
+118
+00:07:40.240 --> 00:07:43.720
+5 so the support is 3/5.
+
+119
+00:07:43.720 --> 00:07:47.570
+The support for just the antecedent is
+the number of times we see bread and
+
+120
+00:07:47.570 --> 00:07:50.690
+milk together divided by
+the total number of transactions.
+
+121
+00:07:51.770 --> 00:07:56.778
+Items bread and milk appear together
+also in transactions 1, 4, and 5.
+
+122
+00:07:56.778 --> 00:07:59.880
+So the support is 3/5.
+
+123
+00:07:59.880 --> 00:08:04.119
+The confidence of this rule is then 1,
+or 100%.
+
+124
+00:08:04.119 --> 00:08:07.743
+This means that the rule is correct 100%.
+
+125
+00:08:07.743 --> 00:08:11.540
+Every time bread and milk are bought
+together, diaper is bought as well.
+
+126
+00:08:12.780 --> 00:08:14.780
+For candidate rule if bread and
+
+127
+00:08:14.780 --> 00:08:19.170
+diaper than milk,
+we calculate its confidence the same way.
+
+128
+00:08:19.170 --> 00:08:23.780
+The support for bread, diaper and
+milk is 3/5 as before.
+
+129
+00:08:23.780 --> 00:08:29.920
+Items bread and diaper are paired
+together in transactions 1, 2, 4 and 5.
+
+130
+00:08:29.920 --> 00:08:34.230
+So the support for
+the items set with bread and milk is 4/5.
+
+131
+00:08:34.230 --> 00:08:39.324
+Then the confidence with
+this rule is 0.75 or 75%.
+
+132
+00:08:39.324 --> 00:08:42.845
+Since the minimum confidence is 0.95 or
+95%,
+
+133
+00:08:42.845 --> 00:08:47.710
+the first rule is kept and the second
+rule is removed from consideration.
+
+134
+00:08:49.430 --> 00:08:52.670
+There are several algorithms for
+association analysis.
+
+135
+00:08:52.670 --> 00:08:56.820
+Each uses a different set of methods
+to make frequent items set creation and
+
+136
+00:08:56.820 --> 00:08:58.970
+rule generation efficient.
+
+137
+00:08:58.970 --> 00:09:03.080
+The more popular algorithms are Apriori,
+FP Growth and Eclat.
+
+138
+00:09:04.560 --> 00:09:09.410
+As a summary, we just looked at the steps
+in association analysis in more detail.
+
+139
+00:09:09.410 --> 00:09:14.055
+We saw how items sets can be created from
+a dataset, how frequent items sets can be
+
+140
+00:09:14.055 --> 00:09:18.770
+identified, and how association rules can
+be created from frequent item sets and
+
+141
+00:09:18.770 --> 00:09:20.633
+pruned using rule confidence.
+
+1
+00:00:00.950 --> 00:00:04.990
+We've looked at classification,
+regression and cluster analysis.
+
+2
+00:00:04.990 --> 00:00:09.280
+Let's now discuss association
+analysis as a machine learning task.
+
+3
+00:00:09.280 --> 00:00:15.100
+After this video, you will be able to
+explain what association analysis entails,
+
+4
+00:00:15.100 --> 00:00:20.259
+list some applications of association
+analysis, define what an item set is.
+
+5
+00:00:21.490 --> 00:00:25.600
+In association analysis, the goal is to
+come up with a set of rules to capture
+
+6
+00:00:25.600 --> 00:00:29.070
+associations between items or events.
+
+7
+00:00:29.070 --> 00:00:33.870
+The rules are used to determine when
+items or events occur together.
+
+8
+00:00:33.870 --> 00:00:38.110
+You may remember seeing these images
+earlier in the course, where we introduced
+
+9
+00:00:38.110 --> 00:00:41.730
+the different categories of machine
+learning tasks and techniques.
+
+10
+00:00:41.730 --> 00:00:45.580
+But do you remember what
+the association is between these items?
+
+11
+00:00:45.580 --> 00:00:48.810
+Well, let's recap that story,
+in case you don't remember.
+
+12
+00:00:48.810 --> 00:00:50.380
+The story goes like this.
+
+13
+00:00:50.380 --> 00:00:54.100
+A supermarket chain used
+association analysis to discover
+
+14
+00:00:54.100 --> 00:00:58.050
+a connection between two
+seemingly unrelated products.
+
+15
+00:00:58.050 --> 00:01:01.200
+They discovered that many
+customers who go to the store
+
+16
+00:01:01.200 --> 00:01:05.860
+late on Sunday night to buy
+diapers also tend to buy beer.
+
+17
+00:01:05.860 --> 00:01:09.634
+This information was then used to
+place beer and diapers close together.
+
+18
+00:01:09.634 --> 00:01:12.780
+And they saw a jump in
+sales of both items.
+
+19
+00:01:12.780 --> 00:01:15.620
+This illustrates that you
+can uncover unexpected and
+
+20
+00:01:15.620 --> 00:01:19.040
+useful relationships with
+association analysis.
+
+21
+00:01:19.040 --> 00:01:23.530
+This diaper and beer story has become
+part of the data mining folklore.
+
+22
+00:01:23.530 --> 00:01:27.650
+It's unclear how much of it true, but it
+has become the prime example of what you
+
+23
+00:01:27.650 --> 00:01:31.600
+can discover with association analysis and
+machine learning in general.
+
+24
+00:01:32.990 --> 00:01:37.511
+A common application of association
+analysis is referred to as
+
+25
+00:01:37.511 --> 00:01:39.398
+market basket analysis.
+
+26
+00:01:39.398 --> 00:01:43.550
+This is used to understand
+the purchasing behavior of customers.
+
+27
+00:01:43.550 --> 00:01:47.190
+The idea is that you're looking into
+the shopping basket of customers
+
+28
+00:01:47.190 --> 00:01:48.650
+when they are at the market, and
+
+29
+00:01:48.650 --> 00:01:53.150
+analyzing that data to understand
+what items are purchased together.
+
+30
+00:01:53.150 --> 00:01:57.090
+This information can be used to
+place related items together, or
+
+31
+00:01:57.090 --> 00:02:00.290
+to have sales on items that
+are often purchased together.
+
+32
+00:02:01.310 --> 00:02:05.210
+Another application of association
+analysis is to recommend items that
+
+33
+00:02:05.210 --> 00:02:10.620
+a customer may be interested in, based
+on their purchasing or browsing history.
+
+34
+00:02:10.620 --> 00:02:13.720
+This is very commonly used
+on companies' websites
+
+35
+00:02:13.720 --> 00:02:15.379
+to get customers to buy more items.
+
+36
+00:02:16.470 --> 00:02:18.610
+There are medical applications as well.
+
+37
+00:02:18.610 --> 00:02:23.430
+Analysis of patients and treatments may
+reveal associations to identify effective
+
+38
+00:02:23.430 --> 00:02:27.080
+treatments for
+patients with certain medical histories.
+
+39
+00:02:27.080 --> 00:02:30.710
+this diagram illustrates how
+association analysis works.
+
+40
+00:02:30.710 --> 00:02:34.090
+The data set is a collection
+of transactions.
+
+41
+00:02:34.090 --> 00:02:36.519
+Each transaction contains one or
+more items.
+
+42
+00:02:37.530 --> 00:02:40.490
+This is referred to as the item set.
+
+43
+00:02:40.490 --> 00:02:42.070
+From the given items sets,
+
+44
+00:02:42.070 --> 00:02:46.250
+generate association rules that capture
+which item tend occur together.
+
+45
+00:02:47.390 --> 00:02:51.520
+In our example, the data set
+consists of five transactions.
+
+46
+00:02:51.520 --> 00:02:56.518
+In the first transaction,
+the items are diaper, bread and milk.
+
+47
+00:02:56.518 --> 00:03:01.900
+The second transaction has items bread,
+diaper, beer, and eggs, and so on.
+
+48
+00:03:03.258 --> 00:03:07.290
+Rules that could be generated from
+this data set are shown at the bottom.
+
+49
+00:03:07.290 --> 00:03:10.090
+For example,
+the first rule states that if bread and
+
+50
+00:03:10.090 --> 00:03:13.910
+milk are bought together,
+then diaper is also bought.
+
+51
+00:03:13.910 --> 00:03:17.870
+The second rule state that if milk is
+bought, then bread is also bought.
+
+52
+00:03:19.420 --> 00:03:22.690
+The association analysis process
+consist of the following steps.
+
+53
+00:03:24.060 --> 00:03:27.140
+The first step is to create item sets.
+
+54
+00:03:27.140 --> 00:03:31.690
+Item sets are generated for sets with one
+item, two items, three items and so on.
+
+55
+00:03:33.200 --> 00:03:36.300
+Then frequent item sets are identified.
+
+56
+00:03:36.300 --> 00:03:40.380
+Frequent item sets are those that occur
+at least a minimum number of times.
+
+57
+00:03:41.590 --> 00:03:45.580
+From the frequent item sets,
+association rules are generated.
+
+58
+00:03:45.580 --> 00:03:48.310
+We will take a more detailed look
+at these steps in the next lecture.
+
+59
+00:03:49.660 --> 00:03:52.800
+Some things to note about
+association analysis.
+
+60
+00:03:52.800 --> 00:03:57.480
+Like cluster analysis, each transaction
+does not have a label to specify which
+
+61
+00:03:57.480 --> 00:03:59.760
+item set or rule it belongs to.
+
+62
+00:03:59.760 --> 00:04:03.340
+So, association analysis
+is an unsupervised task.
+
+63
+00:04:04.540 --> 00:04:07.510
+You may end up with many rules
+at the end of the analysis.
+
+64
+00:04:07.510 --> 00:04:10.540
+But, whether those rules are interesting,
+useful,
+
+65
+00:04:10.540 --> 00:04:15.370
+or applicable, requires interpretation
+using domain knowledge of the application.
+
+66
+00:04:16.540 --> 00:04:17.720
+In addition,
+
+67
+00:04:17.720 --> 00:04:22.200
+the association analysis process will
+not tell you how to apply the rules.
+
+68
+00:04:22.200 --> 00:04:25.999
+This also requires knowledge
+of the application.
+
+69
+00:04:25.999 --> 00:04:30.245
+So as with cluster analysis,
+interpretation and analysis are required
+
+70
+00:04:30.245 --> 00:04:34.780
+to make sense of the resulting rules
+that you get from association analysis.
+
+71
+00:04:35.970 --> 00:04:37.020
+In summary,
+
+72
+00:04:37.020 --> 00:04:42.240
+association analysis finds rules to
+capture associations between items.
+
+73
+00:04:42.240 --> 00:04:46.670
+The association rules have intuitive
+appeal because they are in the form of
+
+74
+00:04:46.670 --> 00:04:50.420
+if this, then that,
+which is easy to understand.
+
+75
+00:04:50.420 --> 00:04:54.150
+The results of association
+analysis require analysis and
+
+76
+00:04:54.150 --> 00:04:58.430
+interpretation using domain knowledge
+to determine the usefulness and
+
+77
+00:04:58.430 --> 00:05:00.020
+applicability of the resulting rules.
+
+78
+00:05:01.310 --> 00:05:04.756
+Next we will cover the steps in
+the association analysis process in
+
+79
+00:05:04.756 --> 00:05:05.501
+more detail.

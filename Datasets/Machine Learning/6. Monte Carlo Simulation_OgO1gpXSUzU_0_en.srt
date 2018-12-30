@@ -1,0 +1,4283 @@
+﻿1
+00:00:00,000 --> 00:00:00,790
+
+
+2
+00:00:00,790 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,570
+at ocw.mit.edu.
+
+9
+00:00:18,570 --> 00:00:29,170
+
+
+10
+00:00:29,170 --> 00:00:31,300
+JOHN GUTTAG: Welcome
+to Lecture 6.
+
+11
+00:00:31,300 --> 00:00:34,899
+As usual, I want to start by
+posting some relevant reading.
+
+12
+00:00:34,899 --> 00:00:37,649
+
+
+13
+00:00:37,649 --> 00:00:39,949
+For those who don't
+know, this lovely picture
+
+14
+00:00:39,950 --> 00:00:46,300
+is of the Casino at Monte
+Carlo, and shortly you'll
+
+15
+00:00:46,299 --> 00:00:51,819
+see why we're talking about
+casinos and gambling today.
+
+16
+00:00:51,820 --> 00:00:54,549
+Not because I want to encourage
+you to gamble your life
+
+17
+00:00:54,549 --> 00:00:56,500
+savings away.
+
+18
+00:00:56,500 --> 00:00:59,390
+A little history about
+Monte Carlo simulation,
+
+19
+00:00:59,390 --> 00:01:02,060
+which is the topic
+of today's lecture.
+
+20
+00:01:02,060 --> 00:01:06,750
+The concept was invented by the
+Polish American mathematician,
+
+21
+00:01:06,750 --> 00:01:07,939
+Stanislaw Ulam.
+
+22
+00:01:07,939 --> 00:01:11,379
+
+
+23
+00:01:11,379 --> 00:01:15,250
+Probably more well known for his
+work on thermonuclear weapons
+
+24
+00:01:15,250 --> 00:01:17,769
+than on mathematics,
+but he did do
+
+25
+00:01:17,769 --> 00:01:19,659
+a lot of very
+important mathematics
+
+26
+00:01:19,659 --> 00:01:22,239
+earlier in his life.
+
+27
+00:01:22,239 --> 00:01:25,929
+The story here starts
+that he was ill,
+
+28
+00:01:25,930 --> 00:01:28,000
+recovering from some
+serious illness,
+
+29
+00:01:28,000 --> 00:01:30,159
+and was home and
+was bored and was
+
+30
+00:01:30,159 --> 00:01:33,819
+playing a lot of games
+of solitaire, a game I
+
+31
+00:01:33,819 --> 00:01:36,099
+suspect you've all played.
+
+32
+00:01:36,099 --> 00:01:38,949
+Being a mathematician,
+he naturally wondered,
+
+33
+00:01:38,950 --> 00:01:41,950
+what's the probability of my
+winning this stupid game which
+
+34
+00:01:41,950 --> 00:01:43,930
+I keep losing?
+
+35
+00:01:43,930 --> 00:01:46,480
+And so he actually spent
+quite a lot of time
+
+36
+00:01:46,480 --> 00:01:49,510
+trying to work out
+the combinatorics,
+
+37
+00:01:49,510 --> 00:01:52,540
+so that he could actually
+compute the probability.
+
+38
+00:01:52,540 --> 00:01:55,490
+And despite being a really
+amazing mathematician,
+
+39
+00:01:55,489 --> 00:01:56,709
+he failed.
+
+40
+00:01:56,709 --> 00:01:59,750
+The combinatorics were
+just too complicated.
+
+41
+00:01:59,750 --> 00:02:03,870
+So he thought, well suppose
+I just play lots of hands
+
+42
+00:02:03,870 --> 00:02:06,280
+and count the number I
+win, divide by the number
+
+43
+00:02:06,280 --> 00:02:07,954
+of hands I played.
+
+44
+00:02:07,954 --> 00:02:09,579
+Well then he thought
+about it and said,
+
+45
+00:02:09,580 --> 00:02:13,110
+well, I've already played a lot
+of hands and I haven't won yet.
+
+46
+00:02:13,110 --> 00:02:15,010
+So it probably
+will take me years
+
+47
+00:02:15,009 --> 00:02:18,669
+to play enough hands to
+actually get a good estimate,
+
+48
+00:02:18,669 --> 00:02:21,049
+and I don't want to do that.
+
+49
+00:02:21,050 --> 00:02:24,370
+So he said, well, suppose
+instead of playing the game,
+
+50
+00:02:24,370 --> 00:02:27,780
+I just simulate the
+game on a computer.
+
+51
+00:02:27,780 --> 00:02:30,719
+He had no idea how
+to use a computer,
+
+52
+00:02:30,719 --> 00:02:33,210
+but he had friends
+in high places.
+
+53
+00:02:33,210 --> 00:02:36,990
+And actually talked
+to John von Neumann,
+
+54
+00:02:36,990 --> 00:02:41,610
+who is often viewed as the
+inventor of the stored program
+
+55
+00:02:41,610 --> 00:02:43,140
+computer.
+
+56
+00:02:43,139 --> 00:02:46,469
+And said, John, could you do
+this on your fancy new ENIAC
+
+57
+00:02:46,469 --> 00:02:47,669
+machine?
+
+58
+00:02:47,669 --> 00:02:49,439
+And on the lower
+right here, you'll
+
+59
+00:02:49,439 --> 00:02:51,930
+see a picture of the ENIAC.
+
+60
+00:02:51,930 --> 00:02:54,140
+It was a very large machine.
+
+61
+00:02:54,139 --> 00:02:55,189
+It filled a room.
+
+62
+00:02:55,189 --> 00:02:57,710
+
+
+63
+00:02:57,710 --> 00:02:59,689
+And von Neumann said,
+sure, we could probably
+
+64
+00:02:59,689 --> 00:03:04,060
+do it in only a few
+hours of computation.
+
+65
+00:03:04,060 --> 00:03:07,599
+Today we would think
+of a few microseconds,
+
+66
+00:03:07,599 --> 00:03:09,849
+but those machines were slow.
+
+67
+00:03:09,849 --> 00:03:13,169
+Hence was born Monte
+Carlo simulation,
+
+68
+00:03:13,169 --> 00:03:16,409
+and then they actually used it
+in the design of the hydrogen
+
+69
+00:03:16,409 --> 00:03:17,919
+bomb.
+
+70
+00:03:17,919 --> 00:03:23,469
+So it turned out to be
+not just useful for cards.
+
+71
+00:03:23,469 --> 00:03:26,500
+So what is Monte
+Carlo simulation?
+
+72
+00:03:26,500 --> 00:03:29,500
+It's a method of
+estimating the values
+
+73
+00:03:29,500 --> 00:03:32,349
+of an unknown
+quantity using what is
+
+74
+00:03:32,349 --> 00:03:35,530
+called inferential statistics.
+
+75
+00:03:35,530 --> 00:03:37,620
+And we've been using
+inferential statistics
+
+76
+00:03:37,620 --> 00:03:40,700
+for the last several lectures.
+
+77
+00:03:40,699 --> 00:03:43,579
+The key concepts-- and I want
+to be careful about these things
+
+78
+00:03:43,580 --> 00:03:45,660
+will be coming back to them--
+
+79
+00:03:45,659 --> 00:03:48,240
+are the population.
+
+80
+00:03:48,240 --> 00:03:51,270
+So think of the
+population as the universe
+
+81
+00:03:51,270 --> 00:03:53,860
+of possible examples.
+
+82
+00:03:53,860 --> 00:03:55,560
+So in the case of
+solitaire, it's
+
+83
+00:03:55,560 --> 00:03:59,099
+a universe of all possible
+games of solitaire
+
+84
+00:03:59,099 --> 00:04:01,169
+that you could possibly play.
+
+85
+00:04:01,169 --> 00:04:06,059
+I have no idea how big that
+is, but it's really big,
+
+86
+00:04:06,060 --> 00:04:08,810
+Then we take that
+universe, that population,
+
+87
+00:04:08,810 --> 00:04:13,759
+and we sample it by
+drawing a proper subset.
+
+88
+00:04:13,759 --> 00:04:16,759
+Proper means not
+the whole thing.
+
+89
+00:04:16,759 --> 00:04:19,879
+Usually more than one
+sample to be useful.
+
+90
+00:04:19,879 --> 00:04:22,310
+Certainly more than 0.
+
+91
+00:04:22,310 --> 00:04:25,850
+And then we make an inference
+about the population
+
+92
+00:04:25,850 --> 00:04:32,150
+based upon some set of
+statistics we do on the sample.
+
+93
+00:04:32,149 --> 00:04:36,500
+So the population is typically
+a very large set of examples,
+
+94
+00:04:36,500 --> 00:04:40,389
+and the sample is a
+smaller set of examples.
+
+95
+00:04:40,389 --> 00:04:43,079
+And the key fact
+that makes them work
+
+96
+00:04:43,079 --> 00:04:46,949
+is that if we choose
+the sample at random,
+
+97
+00:04:46,949 --> 00:04:51,120
+the sample will tend to
+exhibit the same properties
+
+98
+00:04:51,120 --> 00:04:55,949
+as the population from
+which it is drawn.
+
+99
+00:04:55,949 --> 00:04:59,459
+And that's exactly what we did
+with the random walk, right?
+
+100
+00:04:59,459 --> 00:05:03,299
+There were a very large number
+of different random walks
+
+101
+00:05:03,300 --> 00:05:07,069
+you could take of
+say, 10,000 steps.
+
+102
+00:05:07,069 --> 00:05:12,230
+We didn't look at all possible
+random walks of 10,000 steps.
+
+103
+00:05:12,230 --> 00:05:16,400
+We drew a small sample
+of, say 100 such walks,
+
+104
+00:05:16,399 --> 00:05:20,329
+computed the mean of
+those 100, and said,
+
+105
+00:05:20,329 --> 00:05:25,519
+we think that's probably
+a good expectation
+
+106
+00:05:25,519 --> 00:05:29,745
+of what the mean would be of
+all the possible walks of 10,000
+
+107
+00:05:29,745 --> 00:05:30,245
+steps.
+
+108
+00:05:30,245 --> 00:05:33,199
+
+
+109
+00:05:33,199 --> 00:05:36,979
+So we were depending
+upon this principle.
+
+110
+00:05:36,980 --> 00:05:40,390
+And of course the key fact
+here is that the sample
+
+111
+00:05:40,389 --> 00:05:43,539
+has to be random.
+
+112
+00:05:43,540 --> 00:05:47,810
+If you start drawing the
+sample and it's not random,
+
+113
+00:05:47,810 --> 00:05:49,750
+then there's no
+reason to expect it
+
+114
+00:05:49,750 --> 00:05:54,029
+to have the same properties
+as that of the population.
+
+115
+00:05:54,029 --> 00:05:55,589
+And we'll go on
+throughout the term,
+
+116
+00:05:55,589 --> 00:05:59,159
+and talk about the various ways
+you can get fooled and think
+
+117
+00:05:59,160 --> 00:06:03,660
+of a random sample
+when exactly you don't.
+
+118
+00:06:03,660 --> 00:06:05,770
+All right, let's look at
+a very simple example.
+
+119
+00:06:05,769 --> 00:06:10,424
+People like to use flipping
+coins because coins are easy.
+
+120
+00:06:10,425 --> 00:06:13,120
+
+
+121
+00:06:13,120 --> 00:06:17,139
+So let's assume
+we have some coin.
+
+122
+00:06:17,139 --> 00:06:21,819
+All right, so I bought
+two coins slightly larger
+
+123
+00:06:21,819 --> 00:06:23,829
+than the usual coin.
+
+124
+00:06:23,829 --> 00:06:27,099
+And I can flip it.
+
+125
+00:06:27,100 --> 00:06:32,140
+Flip it once, and let's
+consider one flip,
+
+126
+00:06:32,139 --> 00:06:35,050
+and let's assume
+it came out heads.
+
+127
+00:06:35,050 --> 00:06:38,439
+I have to say the coin I flipped
+is not actually a $20 gold
+
+128
+00:06:38,439 --> 00:06:42,670
+piece, in case any of you
+were thinking of stealing it.
+
+129
+00:06:42,670 --> 00:06:48,590
+All right, so we've got one
+flip, and it came up heads.
+
+130
+00:06:48,589 --> 00:06:51,310
+And now I can ask
+you the question--
+
+131
+00:06:51,310 --> 00:06:56,680
+if I were to flip the same coin
+an infinite number of times,
+
+132
+00:06:56,680 --> 00:06:59,740
+how confident would
+you be about answering
+
+133
+00:06:59,740 --> 00:07:04,079
+that all infinite
+flips would be heads?
+
+134
+00:07:04,079 --> 00:07:05,909
+Or even if I were to
+flip it once more,
+
+135
+00:07:05,910 --> 00:07:08,939
+how confident would you be that
+the next flip would be heads?
+
+136
+00:07:08,939 --> 00:07:10,709
+And the answer is not very.
+
+137
+00:07:10,709 --> 00:07:13,549
+
+
+138
+00:07:13,550 --> 00:07:17,150
+Well, suppose I
+flip the coin twice,
+
+139
+00:07:17,149 --> 00:07:20,370
+and both times it came up heads.
+
+140
+00:07:20,370 --> 00:07:22,079
+And I'll ask you
+the same question--
+
+141
+00:07:22,079 --> 00:07:26,145
+do you think that the next
+flip is likely to be heads?
+
+142
+00:07:26,146 --> 00:07:30,670
+Well, maybe you would be
+more inclined to say yes
+
+143
+00:07:30,670 --> 00:07:34,060
+and having only seen one
+flip, but you wouldn't really
+
+144
+00:07:34,060 --> 00:07:36,550
+jump to say, sure.
+
+145
+00:07:36,550 --> 00:07:41,680
+On the other hand, if I flipped
+it 100 times and all 100 flips
+
+146
+00:07:41,680 --> 00:07:46,420
+came up heads, well,
+you might be suspicious
+
+147
+00:07:46,420 --> 00:07:51,650
+that my coin only has a head
+on both sides, for example.
+
+148
+00:07:51,649 --> 00:07:55,449
+Or is weighted in some funny way
+that it mostly comes up heads.
+
+149
+00:07:55,449 --> 00:07:59,050
+And so a lot of people,
+maybe even me, if you said,
+
+150
+00:07:59,050 --> 00:08:01,090
+I flipped it 100 times
+and it came up heads.
+
+151
+00:08:01,089 --> 00:08:03,569
+What do you think
+the next one will be?
+
+152
+00:08:03,569 --> 00:08:06,034
+My best guess would
+be probably heads.
+
+153
+00:08:06,035 --> 00:08:10,100
+
+
+154
+00:08:10,100 --> 00:08:11,870
+How about this one?
+
+155
+00:08:11,870 --> 00:08:15,230
+So here I've
+simulated 100 flips,
+
+156
+00:08:15,230 --> 00:08:22,545
+and we have 50 heads here,
+two heads here, And 48 tails.
+
+157
+00:08:22,545 --> 00:08:26,150
+
+
+158
+00:08:26,149 --> 00:08:28,729
+And now if I said, do you
+think that the probability
+
+159
+00:08:28,730 --> 00:08:32,178
+of the next flip
+coming up heads--
+
+160
+00:08:32,178 --> 00:08:33,678
+is it 52 out of 100?
+
+161
+00:08:33,678 --> 00:08:37,860
+
+
+162
+00:08:37,860 --> 00:08:45,720
+Well, if you had to guess, that
+should be the guess you make.
+
+163
+00:08:45,720 --> 00:08:48,960
+Based upon the
+available evidence,
+
+164
+00:08:48,960 --> 00:08:52,759
+that's the best guess
+you should probably make.
+
+165
+00:08:52,759 --> 00:08:55,054
+You have no reason to
+believe it's a fair coin.
+
+166
+00:08:55,054 --> 00:08:58,469
+It could well be weighted.
+
+167
+00:08:58,470 --> 00:09:00,720
+We don't see it with coins,
+but we see weighted dice
+
+168
+00:09:00,720 --> 00:09:02,759
+all the time.
+
+169
+00:09:02,759 --> 00:09:04,830
+We shouldn't, but they exist.
+
+170
+00:09:04,830 --> 00:09:06,210
+You can buy them
+on the internet.
+
+171
+00:09:06,210 --> 00:09:10,450
+
+
+172
+00:09:10,450 --> 00:09:16,930
+So typically our best
+guess is what we've seen,
+
+173
+00:09:16,929 --> 00:09:20,109
+but we really shouldn't
+have very much confidence
+
+174
+00:09:20,110 --> 00:09:22,050
+in that guess.
+
+175
+00:09:22,049 --> 00:09:26,990
+Because well, could've
+just been an accident.
+
+176
+00:09:26,990 --> 00:09:29,269
+Highly unlikely even
+if the coin is fair
+
+177
+00:09:29,269 --> 00:09:30,860
+that you'd get 50-50, right?
+
+178
+00:09:30,860 --> 00:09:34,769
+
+
+179
+00:09:34,769 --> 00:09:40,329
+So why when we see 100 samples
+and they all come up heads
+
+180
+00:09:40,330 --> 00:09:44,950
+do we feel better about
+guessing heads for the 101st
+
+181
+00:09:44,950 --> 00:09:47,725
+than we did when
+we saw two samples?
+
+182
+00:09:47,725 --> 00:09:50,310
+
+
+183
+00:09:50,309 --> 00:09:56,389
+And why don't we feel so good
+about guessing 52 out of 100
+
+184
+00:09:56,389 --> 00:10:00,595
+when we've seen a hundred
+flips that came out 52 and 48?
+
+185
+00:10:00,595 --> 00:10:03,230
+
+
+186
+00:10:03,230 --> 00:10:05,644
+And the answer is
+something called variance.
+
+187
+00:10:05,644 --> 00:10:08,899
+
+
+188
+00:10:08,899 --> 00:10:14,629
+When I had all heads, there was
+no variability in my answer.
+
+189
+00:10:14,629 --> 00:10:18,110
+I got the same
+answer all the time.
+
+190
+00:10:18,110 --> 00:10:21,980
+And so there was no variability,
+and that intuitively--
+
+191
+00:10:21,980 --> 00:10:25,279
+and in fact, mathematically--
+should make us feel confident
+
+192
+00:10:25,279 --> 00:10:28,389
+that, OK, maybe that's
+really the way the world is.
+
+193
+00:10:28,389 --> 00:10:31,299
+
+
+194
+00:10:31,299 --> 00:10:35,139
+On the other hand, when almost
+half are heads and almost half
+
+195
+00:10:35,139 --> 00:10:39,360
+are tails, there's
+a lot of variance.
+
+196
+00:10:39,360 --> 00:10:42,500
+Right, it's hard to predict
+what the next one will be.
+
+197
+00:10:42,500 --> 00:10:46,860
+And so we should have
+very little confidence
+
+198
+00:10:46,860 --> 00:10:48,810
+that it isn't an
+accident that it happened
+
+199
+00:10:48,809 --> 00:10:53,649
+to be 52-48 in one direction.
+
+200
+00:10:53,649 --> 00:10:57,360
+So as the variance grows,
+we need larger samples
+
+201
+00:10:57,360 --> 00:10:59,460
+to have the same
+amount of confidence.
+
+202
+00:10:59,460 --> 00:11:02,930
+
+
+203
+00:11:02,929 --> 00:11:06,229
+All right, let's look at
+that with a detailed example.
+
+204
+00:11:06,230 --> 00:11:10,685
+We'll look at roulette in
+keeping with the theme of Monte
+
+205
+00:11:10,684 --> 00:11:12,659
+Carlo simulation.
+
+206
+00:11:12,659 --> 00:11:17,449
+This is a roulette wheel that
+could well be at Monte Carlo.
+
+207
+00:11:17,450 --> 00:11:19,700
+There's no need to simulate
+roulette, by the way.
+
+208
+00:11:19,700 --> 00:11:24,860
+It's a very simple
+game, but as we've
+
+209
+00:11:24,860 --> 00:11:26,779
+seen with our earlier
+examples, it's
+
+210
+00:11:26,779 --> 00:11:30,559
+nice when we're learning about
+simulations to simulate things
+
+211
+00:11:30,559 --> 00:11:34,339
+where we actually can know
+what the actual answer is
+
+212
+00:11:34,340 --> 00:11:38,576
+so that we can then understand
+our simulation better.
+
+213
+00:11:38,576 --> 00:11:40,909
+For those of you who don't
+know how roulette is played--
+
+214
+00:11:40,909 --> 00:11:44,269
+is there anyone here who doesn't
+know how roulette is played?
+
+215
+00:11:44,269 --> 00:11:45,319
+Good for you.
+
+216
+00:11:45,320 --> 00:11:47,150
+You grew up virtuous.
+
+217
+00:11:47,149 --> 00:11:49,715
+All right, so-- well all right.
+
+218
+00:11:49,715 --> 00:11:51,530
+Maybe I won't go there.
+
+219
+00:11:51,529 --> 00:11:55,850
+So you have a wheel
+that spins around,
+
+220
+00:11:55,850 --> 00:11:58,250
+and in the middle are
+a bunch of pockets.
+
+221
+00:11:58,250 --> 00:11:59,975
+Each pocket has a
+number and a color.
+
+222
+00:11:59,975 --> 00:12:02,970
+
+
+223
+00:12:02,970 --> 00:12:05,950
+You bet in advance
+on what number
+
+224
+00:12:05,950 --> 00:12:07,950
+you think is going to
+come up, or what color you
+
+225
+00:12:07,950 --> 00:12:09,600
+think is going to come up.
+
+226
+00:12:09,600 --> 00:12:13,680
+Then somebody drops a ball in
+that wheel, gives it a spin.
+
+227
+00:12:13,679 --> 00:12:15,959
+And through centrifugal
+force, the ball
+
+228
+00:12:15,960 --> 00:12:18,519
+stays on the
+outside for a while.
+
+229
+00:12:18,519 --> 00:12:21,809
+But as the wheel slows down
+and heads towards the middle,
+
+230
+00:12:21,809 --> 00:12:24,899
+and eventually settles
+in one of those pockets.
+
+231
+00:12:24,899 --> 00:12:27,939
+And you win or you lose.
+
+232
+00:12:27,940 --> 00:12:32,720
+Now you can bet on
+it, and so let's look
+
+233
+00:12:32,720 --> 00:12:33,830
+at an example of that.
+
+234
+00:12:33,830 --> 00:12:37,430
+So here is a roulette game.
+
+235
+00:12:37,429 --> 00:12:39,620
+I've called it fair
+roulette, because it's
+
+236
+00:12:39,620 --> 00:12:44,120
+set up in such a way that
+in principle, if you bet,
+
+237
+00:12:44,120 --> 00:12:46,543
+your expected value should be 0.
+
+238
+00:12:46,543 --> 00:12:47,960
+You'll win some,
+you'll lose some,
+
+239
+00:12:47,960 --> 00:12:50,810
+but it's fair in the
+sense that it's not either
+
+240
+00:12:50,809 --> 00:12:54,719
+a negative or positive sum game.
+
+241
+00:12:54,720 --> 00:12:57,555
+So as always, we have an
+underbar underbar in it.
+
+242
+00:12:57,554 --> 00:13:01,399
+
+
+243
+00:13:01,399 --> 00:13:06,529
+Well we're setting up the
+wheel with 36 pockets on it,
+
+244
+00:13:06,529 --> 00:13:09,025
+so you can bet on the
+numbers 1 through 36.
+
+245
+00:13:09,025 --> 00:13:11,689
+
+
+246
+00:13:11,690 --> 00:13:14,660
+That's way range
+work, you'll recall.
+
+247
+00:13:14,659 --> 00:13:16,750
+Initially, we don't
+know where the ball is,
+
+248
+00:13:16,750 --> 00:13:18,740
+so we'll say it's none.
+
+249
+00:13:18,740 --> 00:13:23,899
+And here's the key thing
+is, if you make a bet,
+
+250
+00:13:23,899 --> 00:13:27,169
+this tells you
+what your odds are.
+
+251
+00:13:27,169 --> 00:13:30,349
+That if you bet on a
+pocket and you win,
+
+252
+00:13:30,350 --> 00:13:34,930
+you get [? len ?]
+of pockets minus 1.
+
+253
+00:13:34,929 --> 00:13:39,959
+So This is why it's
+a fair game, right?
+
+254
+00:13:39,960 --> 00:13:40,820
+You bet $1.
+
+255
+00:13:40,820 --> 00:13:47,210
+If you win, you get $36,
+your dollar plus $35 back.
+
+256
+00:13:47,210 --> 00:13:49,970
+If you lose, you lose.
+
+257
+00:13:49,970 --> 00:13:52,220
+All right, self dot
+spin will be random dot
+
+258
+00:13:52,220 --> 00:13:55,100
+choice among the pockets.
+
+259
+00:13:55,100 --> 00:13:58,870
+And then there is simply
+bet, where you just
+
+260
+00:13:58,870 --> 00:14:02,350
+can choose an amount to bet and
+the pocket you want to bet on.
+
+261
+00:14:02,350 --> 00:14:03,360
+I've simplified it.
+
+262
+00:14:03,360 --> 00:14:05,480
+I'm not allowing you
+to bet here on colors.
+
+263
+00:14:05,480 --> 00:14:09,870
+
+
+264
+00:14:09,870 --> 00:14:11,460
+All right, so then
+we can play it.
+
+265
+00:14:11,460 --> 00:14:12,540
+So here is play roulette.
+
+266
+00:14:12,539 --> 00:14:15,579
+
+
+267
+00:14:15,580 --> 00:14:18,100
+I've made game the
+class a parameter,
+
+268
+00:14:18,100 --> 00:14:22,600
+because later we'll look at
+other kinds of roulette games.
+
+269
+00:14:22,600 --> 00:14:25,120
+You tell it how many spins.
+
+270
+00:14:25,120 --> 00:14:26,590
+What pocket you want to bet on.
+
+271
+00:14:26,590 --> 00:14:28,840
+For simplicity, I'm going
+to bet on this same pocket
+
+272
+00:14:28,840 --> 00:14:30,519
+all the time.
+
+273
+00:14:30,519 --> 00:14:34,539
+Pick your favorite lucky number
+and how much you want to bet,
+
+274
+00:14:34,539 --> 00:14:36,730
+and then we'll have a
+simulation just like the ones
+
+275
+00:14:36,730 --> 00:14:40,009
+we've already looked at.
+
+276
+00:14:40,009 --> 00:14:43,689
+So the number you get
+right starts at 0.
+
+277
+00:14:43,690 --> 00:14:49,120
+For I and range number of
+spins, we'll do a spin.
+
+278
+00:14:49,120 --> 00:14:54,100
+And then tote pocket plus
+equal game dot that pocket.
+
+279
+00:14:54,100 --> 00:14:56,960
+And it will come back
+either 0 if you've lost,
+
+280
+00:14:56,960 --> 00:15:00,990
+or 35 if you've won.
+
+281
+00:15:00,990 --> 00:15:03,490
+And then we'll just
+print the results.
+
+282
+00:15:03,490 --> 00:15:06,084
+So we can do it.
+
+283
+00:15:06,083 --> 00:15:07,000
+In fact, let's run it.
+
+284
+00:15:07,000 --> 00:15:20,950
+
+
+285
+00:15:20,950 --> 00:15:23,430
+So here it is.
+
+286
+00:15:23,429 --> 00:15:26,399
+I guess I'm doing a million
+games here, so quite a few.
+
+287
+00:15:26,399 --> 00:15:29,209
+
+
+288
+00:15:29,210 --> 00:15:31,280
+Actually I'm going to do two.
+
+289
+00:15:31,279 --> 00:15:33,199
+What happens when you
+spin it 100 times?
+
+290
+00:15:33,200 --> 00:15:36,050
+What happens when you
+spin it a million times?
+
+291
+00:15:36,049 --> 00:15:37,519
+And we'll see what we get.
+
+292
+00:15:37,519 --> 00:15:48,840
+
+
+293
+00:15:48,840 --> 00:15:55,300
+So what we see here is
+that we do 100 spins.
+
+294
+00:15:55,299 --> 00:16:01,389
+The first time I did it my
+expected return was minus 100%.
+
+295
+00:16:01,389 --> 00:16:03,759
+I lost everything I bet.
+
+296
+00:16:03,759 --> 00:16:06,009
+Not so unlikely,
+given that the odds
+
+297
+00:16:06,009 --> 00:16:10,899
+are pretty long that you could
+do 100 times without winning.
+
+298
+00:16:10,899 --> 00:16:17,759
+Next time I did a 100, my return
+was a positive 44%, and then
+
+299
+00:16:17,759 --> 00:16:20,450
+a positive 28%.
+
+300
+00:16:20,450 --> 00:16:24,560
+So you can see, for 100 spins
+it's highly variable what
+
+301
+00:16:24,559 --> 00:16:27,819
+the expected return is.
+
+302
+00:16:27,820 --> 00:16:29,740
+That's one of the
+things that makes
+
+303
+00:16:29,740 --> 00:16:31,279
+gambling attractive to people.
+
+304
+00:16:31,279 --> 00:16:34,009
+
+
+305
+00:16:34,009 --> 00:16:37,689
+If you go to a casino, 100 spins
+would be a pretty long night
+
+306
+00:16:37,690 --> 00:16:39,300
+at the table.
+
+307
+00:16:39,299 --> 00:16:42,266
+And maybe you'd
+won 44%, and you'd
+
+308
+00:16:42,267 --> 00:16:43,350
+feel pretty good about it.
+
+309
+00:16:43,350 --> 00:16:46,250
+
+
+310
+00:16:46,250 --> 00:16:48,080
+What about a million spins?
+
+311
+00:16:48,080 --> 00:16:51,920
+Well people aren't interested in
+that, but the casino is, right?
+
+312
+00:16:51,919 --> 00:16:54,379
+They don't really care what
+happens with 100 spins.
+
+313
+00:16:54,379 --> 00:16:56,929
+They care what happens
+with a million spins.
+
+314
+00:16:56,929 --> 00:17:00,759
+What happens when everybody
+comes every night to play.
+
+315
+00:17:00,759 --> 00:17:04,118
+And there what we see is--
+
+316
+00:17:04,118 --> 00:17:07,509
+you'll notice much
+less variance.
+
+317
+00:17:07,509 --> 00:17:15,390
+Happens to be minus
+0.04 plus 0.6 plus 0.79.
+
+318
+00:17:15,390 --> 00:17:18,540
+So it's still not 0,
+but it's certainly,
+
+319
+00:17:18,539 --> 00:17:23,568
+these are all closer to
+0 than any of these are.
+
+320
+00:17:23,568 --> 00:17:25,379
+We know it should
+be 0, but it doesn't
+
+321
+00:17:25,380 --> 00:17:28,200
+happen to be in these examples.
+
+322
+00:17:28,200 --> 00:17:33,600
+But not only are they closer
+to 0, they're closer together.
+
+323
+00:17:33,599 --> 00:17:37,980
+There is much less variance
+in the results, right?
+
+324
+00:17:37,980 --> 00:17:40,559
+So here I show you
+these three numbers,
+
+325
+00:17:40,559 --> 00:17:42,690
+and ask what do you
+expect to happen?
+
+326
+00:17:42,690 --> 00:17:45,039
+You have no clue, right?
+
+327
+00:17:45,039 --> 00:17:47,009
+So I don't know,
+maybe I'll win a lot.
+
+328
+00:17:47,009 --> 00:17:48,794
+Maybe I'll lose everything.
+
+329
+00:17:48,794 --> 00:17:51,210
+I show you these three numbers,
+you're going to look at it
+
+330
+00:17:51,210 --> 00:17:53,190
+and say, well you
+know, I'm going
+
+331
+00:17:53,190 --> 00:17:56,910
+to be somewhere between
+around 0 and maybe 1%.
+
+332
+00:17:56,910 --> 00:17:58,490
+But you're never
+going to guess it's
+
+333
+00:17:58,490 --> 00:18:00,240
+going to be radically
+different from that.
+
+334
+00:18:00,240 --> 00:18:03,140
+
+
+335
+00:18:03,140 --> 00:18:06,830
+And if I were to change this
+number to be even higher,
+
+336
+00:18:06,829 --> 00:18:09,849
+it would go even closer to 0.
+
+337
+00:18:09,849 --> 00:18:10,779
+But we won't bother.
+
+338
+00:18:10,779 --> 00:18:20,789
+
+
+339
+00:18:20,789 --> 00:18:24,930
+OK, so these are
+the numbers we just
+
+340
+00:18:24,930 --> 00:18:29,940
+looked at, because I said
+the seed to be the same.
+
+341
+00:18:29,940 --> 00:18:31,710
+So what's going on
+here is something
+
+342
+00:18:31,710 --> 00:18:37,650
+called the law of large numbers,
+or sometimes Bernoulli's law.
+
+343
+00:18:37,650 --> 00:18:42,200
+This is a picture of
+Bernoulli on the stamp.
+
+344
+00:18:42,200 --> 00:18:45,400
+It's one of the two most
+important theorems in all
+
+345
+00:18:45,400 --> 00:18:49,390
+of statistics, and we'll come
+to the second most important
+
+346
+00:18:49,390 --> 00:18:52,000
+theorem in the next lecture.
+
+347
+00:18:52,000 --> 00:18:55,329
+Here it says, "in
+repeated independent tests
+
+348
+00:18:55,329 --> 00:19:00,759
+with the same actual
+probability, the chance
+
+349
+00:19:00,759 --> 00:19:03,309
+that the fraction of
+times the outcome differs
+
+350
+00:19:03,309 --> 00:19:07,000
+from p converges to 0
+as the number of trials
+
+351
+00:19:07,000 --> 00:19:09,470
+goes to infinity."
+
+352
+00:19:09,470 --> 00:19:12,700
+So this says if I were to
+spin this fair roulette
+
+353
+00:19:12,700 --> 00:19:16,450
+wheel an infinite
+number of times,
+
+354
+00:19:16,450 --> 00:19:20,620
+the expected-- the
+return would be 0.
+
+355
+00:19:20,619 --> 00:19:23,949
+The real true probability
+from the mathematics.
+
+356
+00:19:23,950 --> 00:19:27,039
+Well, infinite is a
+lot, but a million
+
+357
+00:19:27,039 --> 00:19:28,389
+is getting closer to infinite.
+
+358
+00:19:28,390 --> 00:19:31,570
+And what this says is the
+closer I get to infinite,
+
+359
+00:19:31,569 --> 00:19:35,139
+the closer it will be
+to the true probability.
+
+360
+00:19:35,140 --> 00:19:39,990
+So that's why we did better with
+a million than with a hundred.
+
+361
+00:19:39,990 --> 00:19:42,210
+And if I did a 100
+million, we'd do way better
+
+362
+00:19:42,210 --> 00:19:43,891
+than I did with a million.
+
+363
+00:19:43,891 --> 00:19:47,820
+
+
+364
+00:19:47,819 --> 00:19:52,079
+I want to take a minute to
+talk about a way this law is
+
+365
+00:19:52,079 --> 00:19:54,819
+often misunderstood.
+
+366
+00:19:54,819 --> 00:19:59,029
+This is something called
+the gambler's fallacy.
+
+367
+00:19:59,029 --> 00:20:01,250
+And all you have
+to do is say, let's
+
+368
+00:20:01,250 --> 00:20:03,650
+go watch a sporting event.
+
+369
+00:20:03,650 --> 00:20:05,450
+And you'll watch a
+batter strike out
+
+370
+00:20:05,450 --> 00:20:07,538
+for the sixth consecutive time.
+
+371
+00:20:07,538 --> 00:20:09,079
+The next time they
+come to the plate,
+
+372
+00:20:09,079 --> 00:20:12,120
+the idiot announcer says,
+well he struck out six times
+
+373
+00:20:12,121 --> 00:20:12,620
+in a row.
+
+374
+00:20:12,619 --> 00:20:17,029
+He's due for a hit this
+time, because he's usually
+
+375
+00:20:17,029 --> 00:20:18,379
+a pretty good hitter.
+
+376
+00:20:18,380 --> 00:20:20,320
+Well that's nonsense.
+
+377
+00:20:20,319 --> 00:20:24,299
+It says, people somehow
+believe that if deviations
+
+378
+00:20:24,299 --> 00:20:30,250
+from expected occur, they'll
+be evened out in the future.
+
+379
+00:20:30,250 --> 00:20:33,789
+And we'll see something
+similar to this that is true,
+
+380
+00:20:33,789 --> 00:20:36,379
+but this is not true.
+
+381
+00:20:36,380 --> 00:20:38,420
+And there is a great
+story about it.
+
+382
+00:20:38,420 --> 00:20:41,920
+This is told in a book by
+[INAUDIBLE] and [INAUDIBLE].
+
+383
+00:20:41,920 --> 00:20:46,289
+And this truly happened in
+Monte Carlo, with Roulette.
+
+384
+00:20:46,289 --> 00:20:49,379
+And you could either
+bet on black or red.
+
+385
+00:20:49,380 --> 00:20:53,620
+Black came up 26 times in a row.
+
+386
+00:20:53,619 --> 00:20:55,229
+Highly unlikely, right?
+
+387
+00:20:55,230 --> 00:20:59,390
+2 to the 26th is a giant number.
+
+388
+00:20:59,390 --> 00:21:03,830
+And what happened is, word
+got out on the casino floor
+
+389
+00:21:03,829 --> 00:21:07,099
+that black had kept
+coming up way too often.
+
+390
+00:21:07,099 --> 00:21:09,859
+And people more or less
+panicked to rush to the table
+
+391
+00:21:09,859 --> 00:21:14,159
+to bet on red, saying, well
+it can't keep coming up black.
+
+392
+00:21:14,160 --> 00:21:16,350
+Surely the next one will be red.
+
+393
+00:21:16,349 --> 00:21:20,059
+And as it happened when the
+casino totaled up its winnings,
+
+394
+00:21:20,059 --> 00:21:23,980
+it was a record
+night for the casino.
+
+395
+00:21:23,980 --> 00:21:26,589
+Millions of francs got
+bet, because people were
+
+396
+00:21:26,589 --> 00:21:29,639
+sure it would have to even out.
+
+397
+00:21:29,640 --> 00:21:32,580
+Well if we think
+about it, probability
+
+398
+00:21:32,579 --> 00:21:38,230
+of 26 consecutive reds is that.
+
+399
+00:21:38,230 --> 00:21:41,577
+A pretty small number.
+
+400
+00:21:41,577 --> 00:21:46,759
+But the probability
+of 26 consecutive reds
+
+401
+00:21:46,759 --> 00:21:49,670
+when the previous 25
+rolls were red is what?
+
+402
+00:21:49,670 --> 00:21:54,071
+
+
+403
+00:21:54,070 --> 00:21:56,026
+No, that.
+
+404
+00:21:56,027 --> 00:21:58,970
+AUDIENCE: Oh, I thought
+you meant [INAUDIBLE].
+
+405
+00:21:58,970 --> 00:22:02,380
+JOHN GUTTAG: No, if you
+had 25 reds and then
+
+406
+00:22:02,380 --> 00:22:05,560
+you spun the wheel once
+more, the probability
+
+407
+00:22:05,559 --> 00:22:10,269
+of it having 26 reds is
+now 0.5, because these
+
+408
+00:22:10,269 --> 00:22:12,369
+are independent events.
+
+409
+00:22:12,369 --> 00:22:15,189
+Unless of course the wheel
+is rigged, and we're assuming
+
+410
+00:22:15,190 --> 00:22:18,009
+it's not.
+
+411
+00:22:18,009 --> 00:22:20,049
+People have a hard
+time accepting this,
+
+412
+00:22:20,049 --> 00:22:21,849
+and I know it seems funny.
+
+413
+00:22:21,849 --> 00:22:24,819
+But I guarantee there will be
+some point in the next month
+
+414
+00:22:24,819 --> 00:22:28,720
+or so when you will find
+yourself thinking this way,
+
+415
+00:22:28,720 --> 00:22:30,579
+that something has to even out.
+
+416
+00:22:30,579 --> 00:22:32,679
+I did so badly on
+the midterm, I will
+
+417
+00:22:32,680 --> 00:22:34,090
+have to do better on the final.
+
+418
+00:22:34,089 --> 00:22:38,439
+
+
+419
+00:22:38,440 --> 00:22:41,380
+That was mean, I'm sorry.
+
+420
+00:22:41,380 --> 00:22:43,090
+All right, speaking of means--
+
+421
+00:22:43,089 --> 00:22:47,299
+
+
+422
+00:22:47,299 --> 00:22:47,799
+see?
+
+423
+00:22:47,799 --> 00:22:49,465
+Professor [? Grimm's ?]
+not the only one
+
+424
+00:22:49,465 --> 00:22:52,449
+who can make bad jokes.
+
+425
+00:22:52,450 --> 00:22:54,940
+There is something-- it's
+not the gambler's fallacy--
+
+426
+00:22:54,940 --> 00:22:56,680
+that's often confused
+with it, and that's
+
+427
+00:22:56,680 --> 00:22:59,810
+called regression to the mean.
+
+428
+00:22:59,809 --> 00:23:05,529
+This term was coined in
+1885 by Francis Galton
+
+429
+00:23:05,529 --> 00:23:09,970
+in a paper, of which I've
+shown you a page from it here.
+
+430
+00:23:09,970 --> 00:23:13,990
+And the basic
+conclusion here was--
+
+431
+00:23:13,990 --> 00:23:21,059
+what this table says is
+if somebody's parents are
+
+432
+00:23:21,059 --> 00:23:25,480
+both taller than
+average, it's likely
+
+433
+00:23:25,480 --> 00:23:27,625
+that the child will be
+smaller than the parents.
+
+434
+00:23:27,625 --> 00:23:31,259
+
+
+435
+00:23:31,259 --> 00:23:34,470
+Conversely, if the parents
+are shorter than average,
+
+436
+00:23:34,470 --> 00:23:39,170
+it's likely that the child
+will be taller than average.
+
+437
+00:23:39,170 --> 00:23:42,250
+Now you can think about this
+in terms of genetics and stuff.
+
+438
+00:23:42,250 --> 00:23:43,720
+That's not what he did.
+
+439
+00:23:43,720 --> 00:23:47,269
+He just looked at
+a bunch of data,
+
+440
+00:23:47,269 --> 00:23:51,430
+and the data actually
+supported this.
+
+441
+00:23:51,430 --> 00:23:56,160
+And this led him to this notion
+of regression to the mean.
+
+442
+00:23:56,160 --> 00:23:57,570
+And here's what
+it is, and here's
+
+443
+00:23:57,569 --> 00:24:00,450
+the way in which it is subtly
+different from the gambler's
+
+444
+00:24:00,450 --> 00:24:02,430
+fallacy.
+
+445
+00:24:02,430 --> 00:24:06,580
+What he said here is,
+following an extreme event--
+
+446
+00:24:06,579 --> 00:24:09,189
+parents being unusually tall--
+
+447
+00:24:09,190 --> 00:24:13,570
+the next random event is
+likely to be less extreme.
+
+448
+00:24:13,569 --> 00:24:15,279
+He didn't know much
+about genetics,
+
+449
+00:24:15,279 --> 00:24:18,549
+and he kind of assumed the
+height of people were random.
+
+450
+00:24:18,549 --> 00:24:20,789
+But we'll ignore that.
+
+451
+00:24:20,789 --> 00:24:25,000
+OK, but the idea is here
+that it will be less extreme.
+
+452
+00:24:25,000 --> 00:24:28,220
+So let's look at it in roulette.
+
+453
+00:24:28,220 --> 00:24:33,940
+If I spin a fair roulette
+wheel 10 times and get 10 reds,
+
+454
+00:24:33,940 --> 00:24:36,029
+that's an extreme event.
+
+455
+00:24:36,029 --> 00:24:42,940
+Right, here's a probability
+of basically 1.1024.
+
+456
+00:24:42,940 --> 00:24:45,330
+Now the gambler's
+fallacy says, if I
+
+457
+00:24:45,329 --> 00:24:48,359
+were to spin it
+another 10 times,
+
+458
+00:24:48,359 --> 00:24:50,490
+it would need to even out.
+
+459
+00:24:50,490 --> 00:24:54,660
+As in I should get more
+blacks than you would usually
+
+460
+00:24:54,660 --> 00:24:57,465
+get to make up for
+these excess reds.
+
+461
+00:24:57,464 --> 00:25:00,599
+
+
+462
+00:25:00,599 --> 00:25:04,794
+What regression to the
+mean says is different.
+
+463
+00:25:04,795 --> 00:25:08,640
+It says, it's likely that
+in the next 10 spins,
+
+464
+00:25:08,640 --> 00:25:11,030
+you will get fewer than 10 reds.
+
+465
+00:25:11,029 --> 00:25:14,869
+You will get a
+less extreme event.
+
+466
+00:25:14,869 --> 00:25:16,489
+Now it doesn't have to be 10.
+
+467
+00:25:16,490 --> 00:25:21,620
+If I'd gotten 7 reds instead of
+5, you'd consider that extreme,
+
+468
+00:25:21,619 --> 00:25:27,649
+and you would bet that the next
+10 would have fewer than 7.
+
+469
+00:25:27,650 --> 00:25:31,100
+But you wouldn't bet that
+it would have fewer than 5.
+
+470
+00:25:31,099 --> 00:25:37,159
+
+
+471
+00:25:37,160 --> 00:25:42,259
+Because of this, if you now look
+at the average of the 20 spins,
+
+472
+00:25:42,259 --> 00:25:46,789
+it will be closer to
+the mean of 50% reds
+
+473
+00:25:46,789 --> 00:25:50,809
+than you got from the
+extreme first spins.
+
+474
+00:25:50,809 --> 00:25:53,809
+So that's why it's called
+regression to the mean.
+
+475
+00:25:53,809 --> 00:25:57,619
+The more samples you
+take, the more likely
+
+476
+00:25:57,619 --> 00:26:00,331
+you'll get to the mean.
+
+477
+00:26:00,332 --> 00:26:01,814
+Yes?
+
+478
+00:26:01,814 --> 00:26:03,790
+AUDIENCE: So,
+roulette wheel spins
+
+479
+00:26:03,789 --> 00:26:05,271
+are supposed to be independent.
+
+480
+00:26:05,271 --> 00:26:05,980
+JOHN GUTTAG: Yes.
+
+481
+00:26:05,980 --> 00:26:07,730
+AUDIENCE: So it seems
+like the second 10--
+
+482
+00:26:07,730 --> 00:26:08,596
+JOHN GUTTAG: Pardon?
+
+483
+00:26:08,596 --> 00:26:10,531
+AUDIENCE: It seems like
+the second 10 times
+
+484
+00:26:10,531 --> 00:26:11,750
+that you spin it.
+
+485
+00:26:11,750 --> 00:26:13,420
+that shouldn't have
+to [INAUDIBLE].
+
+486
+00:26:13,420 --> 00:26:15,503
+JOHN GUTTAG: Has nothing
+to do with the first one.
+
+487
+00:26:15,502 --> 00:26:18,319
+AUDIENCE: But you said
+it's likely [INAUDIBLE].
+
+488
+00:26:18,319 --> 00:26:22,689
+JOHN GUTTAG: Right, because you
+have an extreme event, which
+
+489
+00:26:22,690 --> 00:26:25,309
+was unlikely.
+
+490
+00:26:25,309 --> 00:26:27,529
+And now if you
+have another event,
+
+491
+00:26:27,529 --> 00:26:31,309
+it's likely to be
+closer to the average
+
+492
+00:26:31,309 --> 00:26:33,691
+than the extreme
+was to the average.
+
+493
+00:26:33,691 --> 00:26:38,329
+
+
+494
+00:26:38,329 --> 00:26:42,089
+Precisely because
+it is independent.
+
+495
+00:26:42,089 --> 00:26:44,019
+That makes sense to everybody?
+
+496
+00:26:44,019 --> 00:26:44,519
+Yeah?
+
+497
+00:26:44,519 --> 00:26:47,309
+AUDIENCE: Isn't that the same
+as the gambler's fallacy, then?
+
+498
+00:26:47,309 --> 00:26:49,740
+By saying that, because
+this was super unlikely,
+
+499
+00:26:49,740 --> 00:26:52,000
+the next one [INAUDIBLE].
+
+500
+00:26:52,000 --> 00:26:55,140
+JOHN GUTTAG: No, the
+gambler's fallacy here--
+
+501
+00:26:55,140 --> 00:26:59,250
+and it's a good question,
+and indeed people often
+
+502
+00:26:59,250 --> 00:27:02,329
+do get these things confused.
+
+503
+00:27:02,329 --> 00:27:06,349
+The gambler's fallacy would
+say that the second 10
+
+504
+00:27:06,349 --> 00:27:09,019
+spins would--
+
+505
+00:27:09,019 --> 00:27:12,470
+we would expect to
+have fewer than 5 reds,
+
+506
+00:27:12,470 --> 00:27:15,710
+because you're trying to even
+out the unusual number of reds
+
+507
+00:27:15,710 --> 00:27:18,920
+in the first Spin
+
+508
+00:27:18,920 --> 00:27:22,150
+Whereas here we're not saying
+we would have fewer than 5.
+
+509
+00:27:22,150 --> 00:27:25,210
+We're saying we'd probably
+have fewer than 10.
+
+510
+00:27:25,210 --> 00:27:27,579
+That it'll be
+closer to the mean,
+
+511
+00:27:27,579 --> 00:27:29,750
+not that it would
+be below the mean.
+
+512
+00:27:29,750 --> 00:27:31,630
+Whereas the gambler's
+fallacy would say
+
+513
+00:27:31,630 --> 00:27:35,385
+it should be below that mean to
+quote, even out, the first 10.
+
+514
+00:27:35,384 --> 00:27:38,869
+Does that makes sense?
+
+515
+00:27:38,869 --> 00:27:40,079
+OK, great questions.
+
+516
+00:27:40,079 --> 00:27:40,579
+Thank you.
+
+517
+00:27:40,579 --> 00:27:43,299
+
+
+518
+00:27:43,299 --> 00:27:45,559
+All right, now you
+may not know this,
+
+519
+00:27:45,559 --> 00:27:47,829
+but casinos are not in the
+business of being fair.
+
+520
+00:27:47,829 --> 00:27:51,649
+
+
+521
+00:27:51,650 --> 00:27:55,700
+And the way they don't
+do that is in Europe,
+
+522
+00:27:55,700 --> 00:27:57,250
+they're not all red and black.
+
+523
+00:27:57,250 --> 00:28:01,059
+They sneak in one green.
+
+524
+00:28:01,059 --> 00:28:05,079
+And so now if you bet
+red, well sometimes
+
+525
+00:28:05,079 --> 00:28:06,879
+it isn't always red or black.
+
+526
+00:28:06,880 --> 00:28:09,840
+And furthermore,
+there is this 0.
+
+527
+00:28:09,839 --> 00:28:13,389
+They index from 0 rather
+than from one, and so
+
+528
+00:28:13,390 --> 00:28:17,040
+you don't get a full payoff.
+
+529
+00:28:17,039 --> 00:28:22,569
+In American roulette, they
+manage to sneak in two greens.
+
+530
+00:28:22,569 --> 00:28:26,329
+They have a 0 in a double 0.
+
+531
+00:28:26,329 --> 00:28:30,990
+Tilting the odds even more
+in favor of the casino.
+
+532
+00:28:30,990 --> 00:28:34,220
+So we can do that
+in our simulation.
+
+533
+00:28:34,220 --> 00:28:39,410
+We'll look at European roulette
+as a subclass of fair roulette.
+
+534
+00:28:39,410 --> 00:28:43,490
+I've just added this
+extra pocket, 0.
+
+535
+00:28:43,490 --> 00:28:46,730
+And notice I have
+not changed the odds.
+
+536
+00:28:46,730 --> 00:28:49,670
+So what you get if you get
+your number is no higher,
+
+537
+00:28:49,670 --> 00:28:52,230
+but you're a little bit
+less likely to get it
+
+538
+00:28:52,230 --> 00:28:54,440
+because we snuck in that 0.
+
+539
+00:28:54,440 --> 00:28:57,289
+Than American roulette is a
+subclass of European roulette
+
+540
+00:28:57,289 --> 00:28:59,921
+in which I add yet
+another pocket.
+
+541
+00:28:59,921 --> 00:29:04,160
+
+
+542
+00:29:04,160 --> 00:29:06,509
+All right, we can
+simulate those.
+
+543
+00:29:06,509 --> 00:29:08,539
+Again, nice thing
+about simulations,
+
+544
+00:29:08,539 --> 00:29:11,299
+we can play these games.
+
+545
+00:29:11,299 --> 00:29:16,909
+So I've simulated 20 trials
+of 1,000 spins, 10,000 spins,
+
+546
+00:29:16,910 --> 00:29:20,970
+100,000, and a million.
+
+547
+00:29:20,970 --> 00:29:24,710
+And what do we see
+as we look at this?
+
+548
+00:29:24,710 --> 00:29:33,890
+Well, right away we can see
+that fair roulette is usually
+
+549
+00:29:33,890 --> 00:29:36,710
+a much better bet than
+either of the other two.
+
+550
+00:29:36,710 --> 00:29:41,090
+That even with only 1,000
+spins the return is negative.
+
+551
+00:29:41,089 --> 00:29:44,929
+
+
+552
+00:29:44,930 --> 00:29:47,660
+And as we get more and
+more as I got to a million,
+
+553
+00:29:47,660 --> 00:29:50,840
+it starts to look much
+more like closer to 0.
+
+554
+00:29:50,839 --> 00:29:53,509
+And these, we have reason
+to believe at least,
+
+555
+00:29:53,509 --> 00:29:57,319
+are much closer to
+true expectation
+
+556
+00:29:57,319 --> 00:30:00,649
+saying that, while you
+break even in fair roulette,
+
+557
+00:30:00,650 --> 00:30:09,350
+you'll lose 2.7% in Europe
+and over 5% in Las Vegas,
+
+558
+00:30:09,349 --> 00:30:13,490
+or soon in Massachusetts.
+
+559
+00:30:13,490 --> 00:30:18,787
+All right, we're
+sampling, right?
+
+560
+00:30:18,787 --> 00:30:20,245
+That's why the
+results will change,
+
+561
+00:30:20,244 --> 00:30:22,049
+and if I ran a
+different simulation
+
+562
+00:30:22,049 --> 00:30:25,379
+with a different seed I'd
+get different numbers.
+
+563
+00:30:25,380 --> 00:30:29,610
+Whenever you're sampling,
+you can't be guaranteed
+
+564
+00:30:29,609 --> 00:30:32,099
+to get perfect accuracy.
+
+565
+00:30:32,099 --> 00:30:34,629
+It's always possible
+you get a weird sample.
+
+566
+00:30:34,630 --> 00:30:37,280
+
+
+567
+00:30:37,279 --> 00:30:41,359
+That's not to say that you won't
+get exactly the right answer.
+
+568
+00:30:41,359 --> 00:30:45,500
+I might have spun
+the wheel twice
+
+569
+00:30:45,500 --> 00:30:50,059
+and happened to get the exact
+right answer of the return.
+
+570
+00:30:50,059 --> 00:30:54,089
+
+
+571
+00:30:54,089 --> 00:30:56,309
+Actually not twice,
+because the math
+
+572
+00:30:56,309 --> 00:30:59,099
+doesn't work out, but
+35 times and gotten
+
+573
+00:30:59,099 --> 00:31:01,389
+exactly the right answer.
+
+574
+00:31:01,390 --> 00:31:04,830
+But that's not the point.
+
+575
+00:31:04,829 --> 00:31:06,809
+We need to be able
+to differentiate
+
+576
+00:31:06,809 --> 00:31:11,069
+between what happens to be
+true and what we actually know,
+
+577
+00:31:11,069 --> 00:31:13,809
+in a rigorous sense, is true.
+
+578
+00:31:13,809 --> 00:31:17,349
+Or maybe don't know it,
+but have real good reason
+
+579
+00:31:17,349 --> 00:31:19,449
+to believe it's true.
+
+580
+00:31:19,450 --> 00:31:23,460
+So it's not just a
+question of faith.
+
+581
+00:31:23,460 --> 00:31:25,380
+And that gets us to
+what's in some sense
+
+582
+00:31:25,380 --> 00:31:30,360
+the fundamental question of
+all computational statistics,
+
+583
+00:31:30,359 --> 00:31:32,490
+is how many samples
+do we need to look
+
+584
+00:31:32,490 --> 00:31:38,099
+at before we can have real,
+justifiable confidence
+
+585
+00:31:38,099 --> 00:31:41,139
+in our answer?
+
+586
+00:31:41,140 --> 00:31:43,610
+As we've just seen--
+
+587
+00:31:43,609 --> 00:31:45,740
+not just, a few minutes
+ago-- with the coins,
+
+588
+00:31:45,740 --> 00:31:48,259
+our intuition tells
+us that it depends
+
+589
+00:31:48,259 --> 00:31:53,210
+upon the variability in the
+underlying possibilities.
+
+590
+00:31:53,210 --> 00:31:56,360
+So let's look at
+that more carefully.
+
+591
+00:31:56,359 --> 00:31:58,459
+We have to look at the
+variation in the data.
+
+592
+00:31:58,460 --> 00:32:02,680
+
+
+593
+00:32:02,680 --> 00:32:07,930
+So let's look at first
+something called variance.
+
+594
+00:32:07,930 --> 00:32:09,539
+So this is variance of x.
+
+595
+00:32:09,539 --> 00:32:14,680
+Think of x as just a list of
+data examples, data items.
+
+596
+00:32:14,680 --> 00:32:19,100
+And the variance is we
+first compute the average
+
+597
+00:32:19,099 --> 00:32:23,149
+of value, that's mu.
+
+598
+00:32:23,150 --> 00:32:25,160
+So mu is for the mean.
+
+599
+00:32:25,160 --> 00:32:31,890
+
+
+600
+00:32:31,890 --> 00:32:37,290
+For each little x and big
+X, we compare the difference
+
+601
+00:32:37,289 --> 00:32:38,460
+of that and the mean.
+
+602
+00:32:38,460 --> 00:32:41,380
+How far is it from the mean?
+
+603
+00:32:41,380 --> 00:32:45,280
+And square of the difference,
+and then we just sum them.
+
+604
+00:32:45,279 --> 00:32:47,769
+So this takes, how far is
+everything from the mean?
+
+605
+00:32:47,769 --> 00:32:49,170
+We just add them all up.
+
+606
+00:32:49,170 --> 00:32:52,470
+
+
+607
+00:32:52,470 --> 00:32:57,910
+And then we end up dividing
+by the size of the set,
+
+608
+00:32:57,910 --> 00:33:00,430
+the number of examples.
+
+609
+00:33:00,430 --> 00:33:02,830
+Why do we have to
+do this division?
+
+610
+00:33:02,829 --> 00:33:05,829
+Well, because we don't want to
+say something has high variance
+
+611
+00:33:05,829 --> 00:33:09,279
+just because it has
+many members, right?
+
+612
+00:33:09,279 --> 00:33:12,700
+So this sort of normalizes
+is by the number of members,
+
+613
+00:33:12,700 --> 00:33:18,980
+and this just sums how different
+the members are from the mean.
+
+614
+00:33:18,980 --> 00:33:20,740
+So if everything
+is the same value,
+
+615
+00:33:20,740 --> 00:33:22,230
+what's the variance going to be?
+
+616
+00:33:22,230 --> 00:33:25,951
+If I have a set of 1,000
+6's, what's the variance?
+
+617
+00:33:25,951 --> 00:33:26,450
+Yes?
+
+618
+00:33:26,450 --> 00:33:27,299
+AUDIENCE: 0.
+
+619
+00:33:27,299 --> 00:33:27,924
+JOHN GUTTAG: 0.
+
+620
+00:33:27,924 --> 00:33:31,599
+
+
+621
+00:33:31,599 --> 00:33:35,868
+You think this is going to
+be hard, but I came prepared.
+
+622
+00:33:35,868 --> 00:33:37,159
+I was hoping this would happen.
+
+623
+00:33:37,160 --> 00:33:41,560
+
+
+624
+00:33:41,559 --> 00:33:43,849
+Look out, I don't know
+where this is going to go.
+
+625
+00:33:43,849 --> 00:33:49,420
+
+
+626
+00:33:49,421 --> 00:33:50,129
+[FIRES SLINGSHOT]
+
+627
+00:33:50,128 --> 00:33:53,509
+AUDIENCE: [LAUGHTER]
+
+628
+00:33:53,509 --> 00:33:57,700
+JOHN GUTTAG: All right, maybe
+it isn't the best technology.
+
+629
+00:33:57,700 --> 00:33:58,855
+I'll go home and practice.
+
+630
+00:33:58,855 --> 00:34:01,775
+
+
+631
+00:34:01,775 --> 00:34:03,400
+And then the thing
+you're more familiar
+
+632
+00:34:03,400 --> 00:34:06,946
+with is the standard deviation.
+
+633
+00:34:06,945 --> 00:34:08,819
+And if you look at the
+standard deviation is,
+
+634
+00:34:08,820 --> 00:34:10,653
+it's simply the square
+root of the variance.
+
+635
+00:34:10,652 --> 00:34:13,709
+
+
+636
+00:34:13,710 --> 00:34:18,179
+Now, let's understand
+this a little bit
+
+637
+00:34:18,179 --> 00:34:21,829
+and first ask, why am
+I squaring this here,
+
+638
+00:34:21,829 --> 00:34:23,579
+especially because
+later on I'm just going
+
+639
+00:34:23,579 --> 00:34:26,389
+to take a square root anyway?
+
+640
+00:34:26,389 --> 00:34:29,730
+Well squaring it has
+one virtue, which
+
+641
+00:34:29,730 --> 00:34:32,070
+is that it means I don't care
+whether the difference is
+
+642
+00:34:32,070 --> 00:34:35,440
+positive or negative.
+
+643
+00:34:35,440 --> 00:34:36,969
+And I shouldn't, right?
+
+644
+00:34:36,969 --> 00:34:38,949
+I don't care which side
+of the mean it's on,
+
+645
+00:34:38,949 --> 00:34:42,030
+I just care it's
+not near the mean.
+
+646
+00:34:42,030 --> 00:34:43,889
+But if that's all
+I wanted to do I
+
+647
+00:34:43,889 --> 00:34:45,320
+could take the absolute value.
+
+648
+00:34:45,320 --> 00:34:48,929
+
+
+649
+00:34:48,929 --> 00:34:50,989
+The other thing we
+see with squaring
+
+650
+00:34:50,989 --> 00:34:56,809
+is it gives the outliers
+extra emphasis, because I'm
+
+651
+00:34:56,809 --> 00:34:59,559
+squaring that distance.
+
+652
+00:34:59,559 --> 00:35:02,469
+Now you can think
+that's good or bad,
+
+653
+00:35:02,469 --> 00:35:04,105
+but it's worth
+knowing it's a fact.
+
+654
+00:35:04,105 --> 00:35:06,860
+
+
+655
+00:35:06,860 --> 00:35:09,710
+The more important
+thing to think about
+
+656
+00:35:09,710 --> 00:35:17,159
+is standard deviation all by
+itself is a meaningless number.
+
+657
+00:35:17,159 --> 00:35:21,879
+You always have to think about
+it in the context of the mean.
+
+658
+00:35:21,880 --> 00:35:27,710
+If I tell you the
+standard deviation is 100,
+
+659
+00:35:27,710 --> 00:35:30,409
+you then say, well-- and I ask
+you whether it's big or small,
+
+660
+00:35:30,409 --> 00:35:32,599
+you have no idea.
+
+661
+00:35:32,599 --> 00:35:35,630
+If the mean is 100 and the
+standard deviation is 100,
+
+662
+00:35:35,630 --> 00:35:37,730
+it's pretty big.
+
+663
+00:35:37,730 --> 00:35:40,670
+If the mean is a billion and
+the standard deviation is 100,
+
+664
+00:35:40,670 --> 00:35:42,579
+it's pretty small.
+
+665
+00:35:42,579 --> 00:35:49,670
+So you should never want to look
+at just the standard deviation.
+
+666
+00:35:49,670 --> 00:35:51,220
+All right, here
+is just some code
+
+667
+00:35:51,219 --> 00:35:54,719
+to compute those, easy enough.
+
+668
+00:35:54,719 --> 00:35:56,759
+Why am I doing this?
+
+669
+00:35:56,760 --> 00:36:01,370
+Because we're now getting
+to the punch line.
+
+670
+00:36:01,369 --> 00:36:07,039
+We often try and estimate
+values just by giving the mean.
+
+671
+00:36:07,039 --> 00:36:10,579
+So we might report on an exam
+that the mean grade was 80.
+
+672
+00:36:10,579 --> 00:36:15,940
+
+
+673
+00:36:15,940 --> 00:36:19,440
+It's better instead
+of trying to describe
+
+674
+00:36:19,440 --> 00:36:22,240
+an unknown value by it--
+
+675
+00:36:22,239 --> 00:36:25,089
+an unknown parameter
+by a single value,
+
+676
+00:36:25,090 --> 00:36:29,680
+say the expected return on
+betting a roulette wheel,
+
+677
+00:36:29,679 --> 00:36:34,119
+to provide a
+confidence interval.
+
+678
+00:36:34,119 --> 00:36:36,000
+So what a confidence
+interval is is
+
+679
+00:36:36,000 --> 00:36:41,360
+a range that's likely to
+contain the unknown value,
+
+680
+00:36:41,360 --> 00:36:44,990
+and a confidence that
+the unknown value is
+
+681
+00:36:44,989 --> 00:36:46,189
+within that range.
+
+682
+00:36:46,190 --> 00:36:48,970
+
+
+683
+00:36:48,969 --> 00:36:50,909
+So I might say on
+a fair roulette
+
+684
+00:36:50,909 --> 00:37:00,789
+wheel I expect that your
+return will be between minus 1%
+
+685
+00:37:00,789 --> 00:37:07,389
+and plus 1%, and I expect that
+to be true 95% of the time
+
+686
+00:37:07,389 --> 00:37:12,500
+you play the game if you
+play 100 rolls, spins.
+
+687
+00:37:12,500 --> 00:37:15,159
+If you take 100 spins
+of the roulette wheel,
+
+688
+00:37:15,159 --> 00:37:18,069
+I expect that 95% of
+the time your return
+
+689
+00:37:18,070 --> 00:37:19,610
+will be between this and that.
+
+690
+00:37:19,610 --> 00:37:23,930
+
+
+691
+00:37:23,929 --> 00:37:28,019
+So here, we're saying the return
+on betting a pocket 10 times,
+
+692
+00:37:28,019 --> 00:37:34,590
+10,000 times in European
+roulette is minus 3.3%.
+
+693
+00:37:34,590 --> 00:37:37,170
+I think that was the
+number we just saw.
+
+694
+00:37:37,170 --> 00:37:41,320
+And now I'm going to add to
+that this margin of error,
+
+695
+00:37:41,320 --> 00:37:46,670
+which is plus or minus 3.5%
+with a 95% level of confidence.
+
+696
+00:37:46,670 --> 00:37:49,849
+
+
+697
+00:37:49,849 --> 00:37:52,989
+What does this mean?
+
+698
+00:37:52,989 --> 00:37:57,000
+If I were to conduct an
+infinite number of trials
+
+699
+00:37:57,000 --> 00:38:02,539
+of 10,000 bets each, my
+expected average return
+
+700
+00:38:02,539 --> 00:38:06,829
+would indeed be
+minus 3.3%, and it
+
+701
+00:38:06,829 --> 00:38:12,047
+would be between these
+values 95% of the time.
+
+702
+00:38:12,047 --> 00:38:15,039
+
+
+703
+00:38:15,039 --> 00:38:20,980
+I've just subtracted
+and added this 3.5,
+
+704
+00:38:20,980 --> 00:38:23,050
+saying nothing about
+what would happen
+
+705
+00:38:23,050 --> 00:38:25,150
+in the other 5% of the time.
+
+706
+00:38:25,150 --> 00:38:27,099
+How far away I
+might be from this,
+
+707
+00:38:27,099 --> 00:38:28,819
+this is totally silent
+on that subject.
+
+708
+00:38:28,820 --> 00:38:29,320
+Yes?
+
+709
+00:38:29,320 --> 00:38:33,304
+AUDIENCE: I think
+you want 0.2 not 9.2.
+
+710
+00:38:33,304 --> 00:38:37,804
+JOHN GUTTAG: Oh, let's see.
+
+711
+00:38:37,804 --> 00:38:38,690
+Yep, I do.
+
+712
+00:38:38,690 --> 00:38:39,662
+Thank you.
+
+713
+00:38:39,661 --> 00:38:44,529
+
+
+714
+00:38:44,530 --> 00:38:46,596
+We'll fix it on the spot.
+
+715
+00:38:46,596 --> 00:38:48,219
+This is why you have
+to come to lecture
+
+716
+00:38:48,219 --> 00:38:49,719
+rather than just
+reading the slides,
+
+717
+00:38:49,719 --> 00:38:52,203
+because I make mistakes.
+
+718
+00:38:52,204 --> 00:38:52,870
+Thank you, Eric.
+
+719
+00:38:52,869 --> 00:39:01,009
+
+
+720
+00:39:01,010 --> 00:39:05,610
+All right, so it's telling me
+that, and that's all it means.
+
+721
+00:39:05,610 --> 00:39:09,599
+And it's amazing how
+often people don't quite
+
+722
+00:39:09,599 --> 00:39:10,559
+know what this means.
+
+723
+00:39:10,559 --> 00:39:13,829
+For example, when they
+look at a political pole
+
+724
+00:39:13,829 --> 00:39:17,610
+and they see how many votes
+somebody is expected to get.
+
+725
+00:39:17,610 --> 00:39:19,829
+And they see this
+confidence interval and say,
+
+726
+00:39:19,829 --> 00:39:21,449
+what does that really mean?
+
+727
+00:39:21,449 --> 00:39:23,759
+Most people don't know.
+
+728
+00:39:23,760 --> 00:39:26,870
+But it does have a very precise
+meaning, and this is it.
+
+729
+00:39:26,869 --> 00:39:29,819
+
+
+730
+00:39:29,820 --> 00:39:33,380
+How do we compute
+confidence intervals?
+
+731
+00:39:33,380 --> 00:39:36,019
+Most of the time we compute
+them using something
+
+732
+00:39:36,019 --> 00:39:37,320
+called the empirical rule.
+
+733
+00:39:37,320 --> 00:39:40,350
+
+
+734
+00:39:40,349 --> 00:39:44,099
+Under some assumptions, which
+I'll get to a little bit later,
+
+735
+00:39:44,099 --> 00:39:50,339
+the empirical rule says that if
+I take the data, find the mean,
+
+736
+00:39:50,340 --> 00:39:53,850
+compute the standard
+deviation as we've just seen,
+
+737
+00:39:53,849 --> 00:39:59,250
+68% of the data will be within
+one standard deviation in front
+
+738
+00:39:59,250 --> 00:40:01,719
+of or behind the mean.
+
+739
+00:40:01,719 --> 00:40:04,209
+Within one standard
+deviation of the mean.
+
+740
+00:40:04,210 --> 00:40:11,059
+95% will be within 1.96
+standard deviations.
+
+741
+00:40:11,059 --> 00:40:13,000
+And that's what
+people usually use.
+
+742
+00:40:13,000 --> 00:40:16,219
+Usually when people talk
+about confidence intervals,
+
+743
+00:40:16,219 --> 00:40:19,689
+they're talking about the
+95% confidence interval.
+
+744
+00:40:19,690 --> 00:40:23,170
+And they use this 1.6 number.
+
+745
+00:40:23,170 --> 00:40:27,220
+And 99.7% of the data
+will be within three
+
+746
+00:40:27,219 --> 00:40:29,869
+standard deviations.
+
+747
+00:40:29,869 --> 00:40:32,359
+So you can see if you are
+outside the third standard
+
+748
+00:40:32,360 --> 00:40:35,180
+deviation, you are
+a pretty rare bird,
+
+749
+00:40:35,179 --> 00:40:37,460
+for better or worse
+depending upon which side.
+
+750
+00:40:37,460 --> 00:40:41,360
+
+
+751
+00:40:41,360 --> 00:40:44,890
+All right, so let's
+apply the empirical rule
+
+752
+00:40:44,889 --> 00:40:48,440
+to our roulette game.
+
+753
+00:40:48,440 --> 00:40:52,610
+So I've got my three
+roulette games as before.
+
+754
+00:40:52,610 --> 00:40:54,420
+I'm going to run a
+simple simulation.
+
+755
+00:40:54,420 --> 00:40:57,099
+
+
+756
+00:40:57,099 --> 00:41:02,690
+And the key thing
+to notice is really
+
+757
+00:41:02,690 --> 00:41:03,880
+this print statement here.
+
+758
+00:41:03,880 --> 00:41:07,090
+
+
+759
+00:41:07,090 --> 00:41:13,230
+Right, that I'll print the
+mean, which I'm rounding.
+
+760
+00:41:13,230 --> 00:41:17,579
+And then I'm going to give
+the confidence intervals,
+
+761
+00:41:17,579 --> 00:41:22,909
+plus or minus, and I'll just
+take the standard deviation
+
+762
+00:41:22,909 --> 00:41:26,389
+times 1.6 times
+100, y times 100,
+
+763
+00:41:26,389 --> 00:41:28,379
+because I'm showing
+you percentages.
+
+764
+00:41:28,380 --> 00:41:31,140
+
+
+765
+00:41:31,139 --> 00:41:35,159
+All right so again, very
+straightforward code.
+
+766
+00:41:35,159 --> 00:41:37,920
+Just simulation, just like the
+ones we've been looking at.
+
+767
+00:41:37,920 --> 00:41:40,720
+
+
+768
+00:41:40,719 --> 00:41:42,126
+And well, I'm just going--
+
+769
+00:41:42,126 --> 00:41:43,960
+I don't think I'll
+bother running it for you
+
+770
+00:41:43,960 --> 00:41:45,909
+in the interest of time.
+
+771
+00:41:45,909 --> 00:41:47,659
+You can run it yourself.
+
+772
+00:41:47,659 --> 00:41:51,079
+But here's what I
+got when I ran it.
+
+773
+00:41:51,079 --> 00:41:56,500
+So when I simulated betting
+a pocket for 20 trials,
+
+774
+00:41:56,500 --> 00:41:58,170
+we see that the--
+
+775
+00:41:58,170 --> 00:42:01,869
+of 1,000 spins each,
+for 1,000 spins
+
+776
+00:42:01,869 --> 00:42:06,519
+the expected return for fair
+roulette happened to be 3.68%.
+
+777
+00:42:06,519 --> 00:42:08,190
+A bit high.
+
+778
+00:42:08,190 --> 00:42:11,000
+But you'll notice the confidence
+interval plus or minus
+
+779
+00:42:11,000 --> 00:42:15,440
+27 includes the actual
+answer, which is 0.
+
+780
+00:42:15,440 --> 00:42:20,190
+
+
+781
+00:42:20,190 --> 00:42:22,349
+And we have very large
+confidence intervals
+
+782
+00:42:22,349 --> 00:42:24,559
+for the other two games.
+
+783
+00:42:24,559 --> 00:42:28,730
+If you go way down to the bottom
+where I've spun, spun the wheel
+
+784
+00:42:28,730 --> 00:42:36,920
+many more times,
+what we'll see is
+
+785
+00:42:36,920 --> 00:42:43,409
+that my expected return for fair
+roulette is much closer to 0
+
+786
+00:42:43,409 --> 00:42:45,480
+than it was here.
+
+787
+00:42:45,480 --> 00:42:47,699
+But more importantly,
+my confidence interval
+
+788
+00:42:47,699 --> 00:42:53,389
+is much smaller, 0.8.
+
+789
+00:42:53,389 --> 00:42:58,299
+So now I really have
+constrained it pretty well.
+
+790
+00:42:58,300 --> 00:43:02,870
+Similarly, for the other
+two games you will see--
+
+791
+00:43:02,869 --> 00:43:05,299
+maybe it's more accurate,
+maybe it's less accurate,
+
+792
+00:43:05,300 --> 00:43:10,050
+but importantly the confidence
+interval is smaller.
+
+793
+00:43:10,050 --> 00:43:15,950
+So I have good reason to believe
+that the mean I'm computing
+
+794
+00:43:15,949 --> 00:43:20,239
+is close to the true mean,
+because my confidence
+
+795
+00:43:20,239 --> 00:43:23,029
+interval has shrunk.
+
+796
+00:43:23,030 --> 00:43:26,030
+So that's the really
+important concept here,
+
+797
+00:43:26,030 --> 00:43:28,430
+is that we don't just guess--
+
+798
+00:43:28,429 --> 00:43:30,889
+compute the value
+in the simulation.
+
+799
+00:43:30,889 --> 00:43:33,650
+We use, in this case,
+the empirical rule
+
+800
+00:43:33,650 --> 00:43:39,440
+to tell us how much faith we
+should have in that value.
+
+801
+00:43:39,440 --> 00:43:43,659
+All right, the empirical
+rule doesn't always work.
+
+802
+00:43:43,659 --> 00:43:46,779
+There are a couple
+of assumptions.
+
+803
+00:43:46,780 --> 00:43:51,410
+One is that the mean
+estimation error is 0.
+
+804
+00:43:51,409 --> 00:43:52,309
+What is that saying?
+
+805
+00:43:52,309 --> 00:43:57,289
+That I'm just as likely
+to guess high as gas low.
+
+806
+00:43:57,289 --> 00:44:01,159
+In most experiments of this
+sort, most simulations,
+
+807
+00:44:01,159 --> 00:44:04,699
+that's a very fair assumption.
+
+808
+00:44:04,699 --> 00:44:07,369
+There's no reason to guess
+I'd be systematically off
+
+809
+00:44:07,369 --> 00:44:10,230
+in one direction or another.
+
+810
+00:44:10,230 --> 00:44:14,539
+It's different when you use
+this in a laboratory experiment,
+
+811
+00:44:14,539 --> 00:44:17,570
+where in fact, depending upon
+your laboratory technique,
+
+812
+00:44:17,570 --> 00:44:22,590
+there may be a bias in your
+results in one direction.
+
+813
+00:44:22,590 --> 00:44:25,555
+So we have to assume that
+there's no bias in our errors.
+
+814
+00:44:25,554 --> 00:44:28,309
+
+
+815
+00:44:28,309 --> 00:44:31,369
+And we have to assume that
+the distribution of errors
+
+816
+00:44:31,369 --> 00:44:34,449
+is normal.
+
+817
+00:44:34,449 --> 00:44:36,409
+And we'll come back to
+this in just a second.
+
+818
+00:44:36,409 --> 00:44:37,989
+But this is a
+normal distribution,
+
+819
+00:44:37,989 --> 00:44:38,822
+called the Gaussian.
+
+820
+00:44:38,822 --> 00:44:41,989
+
+
+821
+00:44:41,989 --> 00:44:45,869
+Under those two assumptions
+the empirical rule
+
+822
+00:44:45,869 --> 00:44:48,889
+will always hold.
+
+823
+00:44:48,889 --> 00:44:51,049
+All right, let's talk
+about distributions,
+
+824
+00:44:51,050 --> 00:44:54,630
+since I just introduced one.
+
+825
+00:44:54,630 --> 00:44:57,750
+We've been using a
+probability distribution.
+
+826
+00:44:57,750 --> 00:45:01,440
+And this captures the notion
+of the relative frequency
+
+827
+00:45:01,440 --> 00:45:04,994
+with which some random variable
+takes on different values.
+
+828
+00:45:04,994 --> 00:45:07,509
+
+
+829
+00:45:07,510 --> 00:45:11,320
+There are two kinds. , Discrete
+and these when the values are
+
+830
+00:45:11,320 --> 00:45:14,330
+drawn from a finite
+set of values.
+
+831
+00:45:14,329 --> 00:45:17,019
+So when I flip
+these coins, there
+
+832
+00:45:17,019 --> 00:45:20,630
+are only two possible
+values, head or tails.
+
+833
+00:45:20,630 --> 00:45:23,720
+And so if we look at the
+distribution of heads
+
+834
+00:45:23,719 --> 00:45:27,829
+and tails, it's pretty simple.
+
+835
+00:45:27,829 --> 00:45:30,579
+We just list the
+probability of heads.
+
+836
+00:45:30,579 --> 00:45:33,400
+We list the
+probability of tails.
+
+837
+00:45:33,400 --> 00:45:37,389
+We know that those two
+probabilities must add up to 1,
+
+838
+00:45:37,389 --> 00:45:42,659
+and that fully describes
+our distribution.
+
+839
+00:45:42,659 --> 00:45:46,739
+Continuous random variables
+are a bit trickier.
+
+840
+00:45:46,739 --> 00:45:51,971
+They're drawn from a set of
+reals between two numbers.
+
+841
+00:45:51,972 --> 00:45:53,430
+For the sake of
+argument, let's say
+
+842
+00:45:53,429 --> 00:45:57,129
+those two numbers are 0 and 1.
+
+843
+00:45:57,130 --> 00:46:00,519
+Well, we can't just
+enumerate the probability
+
+844
+00:46:00,519 --> 00:46:03,639
+for each number.
+
+845
+00:46:03,639 --> 00:46:08,829
+How many real numbers are
+there between 0 and 1?
+
+846
+00:46:08,829 --> 00:46:11,289
+An infinite number, right?
+
+847
+00:46:11,289 --> 00:46:14,289
+And so I can't say, for each of
+these infinite numbers, what's
+
+848
+00:46:14,289 --> 00:46:16,420
+the probability of it occurring?
+
+849
+00:46:16,420 --> 00:46:20,769
+Actually the probability is
+close to 0 for each of them.
+
+850
+00:46:20,769 --> 00:46:23,349
+Is 0, if they're truly infinite.
+
+851
+00:46:23,349 --> 00:46:26,139
+So I need to do
+something else, and what
+
+852
+00:46:26,139 --> 00:46:30,339
+I do that is what's called the
+probability density function.
+
+853
+00:46:30,340 --> 00:46:35,329
+This is a different kind of
+PDF than the one Adobe sells.
+
+854
+00:46:35,329 --> 00:46:37,819
+So there, we don't
+give the probability
+
+855
+00:46:37,820 --> 00:46:42,059
+of the random variable
+taking on a specific value.
+
+856
+00:46:42,059 --> 00:46:44,219
+We give the
+probability of it lying
+
+857
+00:46:44,219 --> 00:46:45,730
+somewhere between two values.
+
+858
+00:46:45,730 --> 00:46:49,969
+
+
+859
+00:46:49,969 --> 00:46:54,454
+And then we define a curve,
+which shows how it works.
+
+860
+00:46:54,454 --> 00:46:55,989
+So let's look at an example.
+
+861
+00:46:55,989 --> 00:46:58,519
+
+
+862
+00:46:58,519 --> 00:47:01,969
+So we'll go back to
+normal distributions.
+
+863
+00:47:01,969 --> 00:47:05,931
+This is-- for the continuous
+normal distribution,
+
+864
+00:47:05,931 --> 00:47:07,264
+it's described by this function.
+
+865
+00:47:07,264 --> 00:47:09,900
+
+
+866
+00:47:09,900 --> 00:47:13,019
+And for those of you who don't
+know about the magic number e,
+
+867
+00:47:13,019 --> 00:47:16,670
+this is one of many
+ways to define it.
+
+868
+00:47:16,670 --> 00:47:20,634
+But I really don't care
+whether you remember this.
+
+869
+00:47:20,634 --> 00:47:22,300
+I don't care whether
+you know what e is.
+
+870
+00:47:22,300 --> 00:47:24,310
+I don't care if you
+know what this is.
+
+871
+00:47:24,309 --> 00:47:27,349
+What we really want to say
+is, it looks like this.
+
+872
+00:47:27,349 --> 00:47:31,150
+
+
+873
+00:47:31,150 --> 00:47:33,400
+In this case, the mean is 0.
+
+874
+00:47:33,400 --> 00:47:34,555
+It doesn't have to be 0.
+
+875
+00:47:34,554 --> 00:47:37,879
+
+
+876
+00:47:37,880 --> 00:47:41,140
+I've [INAUDIBLE] a mean of 0
+and a standard deviation of 1.
+
+877
+00:47:41,139 --> 00:47:45,119
+This is called the so-called
+standard normal distribution.
+
+878
+00:47:45,119 --> 00:47:49,440
+But it's symmetric
+around the mean.
+
+879
+00:47:49,440 --> 00:47:51,950
+And that gets back to,
+it's equally likely
+
+880
+00:47:51,949 --> 00:47:54,919
+that our errors are in
+either direction, right?
+
+881
+00:47:54,920 --> 00:47:57,409
+So it peaks at the mean.
+
+882
+00:47:57,409 --> 00:47:59,449
+The peak is always at the mean.
+
+883
+00:47:59,449 --> 00:48:01,250
+That's the most
+probable value, and it's
+
+884
+00:48:01,250 --> 00:48:03,460
+symmetric about the mean.
+
+885
+00:48:03,460 --> 00:48:05,970
+
+
+886
+00:48:05,969 --> 00:48:09,629
+So if we look at it,
+for example, and I say,
+
+887
+00:48:09,630 --> 00:48:17,630
+what's the probability of the
+number being between 0 and 1?
+
+888
+00:48:17,630 --> 00:48:19,460
+I can look at it here
+and say, all right,
+
+889
+00:48:19,460 --> 00:48:24,929
+let's draw a line
+here, and a line here.
+
+890
+00:48:24,929 --> 00:48:29,589
+And then I can integrate
+the curve under here.
+
+891
+00:48:29,590 --> 00:48:31,800
+And that tells me
+the probability
+
+892
+00:48:31,800 --> 00:48:35,760
+of this random variable
+being between 0 and 1.
+
+893
+00:48:35,760 --> 00:48:40,000
+
+
+894
+00:48:40,000 --> 00:48:44,119
+If I want to know
+between minus 1 and 1.
+
+895
+00:48:44,119 --> 00:48:46,679
+I just do this and then I
+integrate over that area.
+
+896
+00:48:46,679 --> 00:48:49,190
+
+
+897
+00:48:49,190 --> 00:48:52,260
+All right, so the area
+under the curve in this case
+
+898
+00:48:52,260 --> 00:48:55,560
+defines the likelihood.
+
+899
+00:48:55,559 --> 00:48:57,929
+Now I have to divide and
+normalize to actually get
+
+900
+00:48:57,929 --> 00:49:00,215
+the answer between 0 and 1.
+
+901
+00:49:00,215 --> 00:49:01,589
+So the question
+is, what fraction
+
+902
+00:49:01,590 --> 00:49:06,800
+of the area under the curve
+is between minus 1 and 1?
+
+903
+00:49:06,800 --> 00:49:11,110
+And that will tell
+me the probability.
+
+904
+00:49:11,110 --> 00:49:13,349
+So what does the
+empirical rule tell us?
+
+905
+00:49:13,349 --> 00:49:16,299
+What fraction is between
+minus 1 and 1, roughly?
+
+906
+00:49:16,300 --> 00:49:19,210
+
+
+907
+00:49:19,210 --> 00:49:20,670
+Yeah?
+
+908
+00:49:20,670 --> 00:49:22,740
+68%, right?
+
+909
+00:49:22,739 --> 00:49:27,239
+So that tells me 68% of
+the area under this curve
+
+910
+00:49:27,239 --> 00:49:30,839
+is between minus 1 and 1,
+because my standard deviation
+
+911
+00:49:30,840 --> 00:49:34,450
+is 1, roughly 68%.
+
+912
+00:49:34,449 --> 00:49:36,519
+And maybe your eyes
+will convince you
+
+913
+00:49:36,519 --> 00:49:40,130
+that's a reasonable guess.
+
+914
+00:49:40,130 --> 00:49:43,559
+OK, we'll come back and look
+at this in a bit more detail
+
+915
+00:49:43,559 --> 00:49:45,909
+on Monday of next week.
+
+916
+00:49:45,909 --> 00:49:48,210
+And also look at
+the question of,
+
+917
+00:49:48,210 --> 00:49:51,929
+why does this work
+in so many cases
+
+918
+00:49:51,929 --> 00:49:54,269
+where we don't actually
+have a normal distribution
+
+919
+00:49:54,269 --> 00:49:56,239
+to start with?
+
+920
+00:49:56,239 --> 00:50:04,126
+
+

@@ -1,0 +1,339 @@
+WEBVTT
+
+1
+00:00:01.020 --> 00:00:03.990
+We will go over the logic of Dijkstra's
+algorithm without writing code.
+
+2
+00:00:05.460 --> 00:00:06.940
+If you are an advanced student and
+
+3
+00:00:06.940 --> 00:00:09.350
+know the algorithm,
+you can skip to the next lecture.
+
+4
+00:00:11.010 --> 00:00:14.840
+The basic plan is to start from node I and
+
+5
+00:00:14.840 --> 00:00:17.210
+progressively traverse
+a sequence of notes.
+
+6
+00:00:18.580 --> 00:00:22.450
+When the method attempts to choose
+the next node to traverse to,
+
+7
+00:00:22.450 --> 00:00:27.850
+it chooses a node for which the total rate
+of the path to that node is the lowest.
+
+8
+00:00:29.120 --> 00:00:32.130
+In the beginning,
+the algorithm is on the start node I.
+
+9
+00:00:33.530 --> 00:00:36.311
+The distance from I to I is 0.
+
+10
+00:00:36.311 --> 00:00:38.677
+And the distance to all
+other nodes is infinity,
+
+11
+00:00:38.677 --> 00:00:40.820
+because the system doesn't know them yet.
+
+12
+00:00:42.560 --> 00:00:45.921
+A second table, called a priority queue,
+
+13
+00:00:45.921 --> 00:00:51.255
+is currently exactly the same as
+the distance row of the first array.
+
+14
+00:00:52.330 --> 00:00:55.350
+The system starts with processing node I,
+the source node.
+
+15
+00:00:56.350 --> 00:01:01.050
+That means it finds the nodes
+that can reach from I, F and J.
+
+16
+00:01:02.270 --> 00:01:07.121
+Note that the respective total weights,
+that is 5 for F,
+
+17
+00:01:07.121 --> 00:01:11.882
+and 15 for J,
+to get to these nodes in the distance row.
+
+18
+00:01:11.882 --> 00:01:13.520
+Then it marks I as done.
+
+19
+00:01:14.710 --> 00:01:18.330
+We have made the node I agree,
+because the node is processed.
+
+20
+00:01:20.080 --> 00:01:26.640
+Next it looks at row d to find
+the least distance, which is 5.
+
+21
+00:01:28.560 --> 00:01:30.470
+The corresponding vertex is F.
+
+22
+00:01:31.870 --> 00:01:36.170
+So next, the method traverses to F.
+
+23
+00:01:36.170 --> 00:01:41.086
+Now the algorithm on node F and
+has determined that out of its possible
+
+24
+00:01:41.086 --> 00:01:46.040
+destinations, E, G, and J,
+J is the least expensive.
+
+25
+00:01:46.040 --> 00:01:52.081
+The total path, that is the weight
+of the path to J, is 10.
+
+26
+00:01:52.081 --> 00:01:56.320
+5 from I to F, plus 5 from F to J.
+
+27
+00:01:56.320 --> 00:02:00.440
+This diagram shows that the priority
+is now shorter because it has
+
+28
+00:02:00.440 --> 00:02:03.510
+popped out the already processed load, I.
+
+29
+00:02:03.510 --> 00:02:08.260
+At step three, we are processing node
+J but face the following situation.
+
+30
+00:02:09.450 --> 00:02:12.454
+We can go back to F from J, but
+
+31
+00:02:12.454 --> 00:02:17.227
+that will cost 10 plus 15, that is 25.
+
+32
+00:02:17.227 --> 00:02:22.470
+25 is worse than the cost of the current
+path to F, which is 5 directly from I.
+
+33
+00:02:23.680 --> 00:02:28.220
+Thus we do not go from F to J, and
+do not update the distance shown.
+
+34
+00:02:28.220 --> 00:02:34.775
+The other option is to go from J to G,
+which incurs a cost of 10 plus 5, 15.
+
+35
+00:02:34.775 --> 00:02:39.559
+Hm, this does not improve the current
+cost to reach G through F,
+
+36
+00:02:39.559 --> 00:02:42.710
+which is now at 15 already.
+
+37
+00:02:42.710 --> 00:02:46.720
+Therefore, we do not
+update the distance for G.
+
+38
+00:02:46.720 --> 00:02:50.880
+So at this point,
+we see that while J is processed,
+
+39
+00:02:50.880 --> 00:02:54.230
+it had no impact on
+the traversal process.
+
+40
+00:02:54.230 --> 00:02:58.916
+We consider the distance row again, and
+find that the next node to expand is G,
+
+41
+00:02:58.916 --> 00:03:00.630
+which is reached through F.
+
+42
+00:03:01.630 --> 00:03:04.531
+Continuing as before, G's processed.
+
+43
+00:03:04.531 --> 00:03:09.191
+It opens up the possibility of
+diverging to C, at a cost of 35.
+
+44
+00:03:09.191 --> 00:03:12.430
+Or to D, at the cost of 25.
+
+45
+00:03:12.430 --> 00:03:17.254
+But wait, we have an issue,
+there are two competing nodes,
+
+46
+00:03:17.254 --> 00:03:23.760
+E coming form F or D coming from G,
+that are both expansion candidates.
+
+47
+00:03:23.760 --> 00:03:24.705
+At this point,
+
+48
+00:03:24.705 --> 00:03:29.516
+the algorithm can make a random choice
+because there is no other information.
+
+49
+00:03:29.516 --> 00:03:32.640
+Let's say we make an arbitrary choice,
+we expand to E next.
+
+50
+00:03:33.650 --> 00:03:37.240
+In an optional video, we will see
+
+51
+00:03:37.240 --> 00:03:42.140
+how we can use the additional information
+to make a more informed decision.
+
+52
+00:03:42.140 --> 00:03:43.930
+After expanding to E,
+
+53
+00:03:43.930 --> 00:03:47.700
+we can find that we have already
+reached the node B, so we are done.
+
+54
+00:03:49.000 --> 00:03:54.080
+The other choice, that is to go to D from
+G, costs less than the path through B, but
+
+55
+00:03:54.080 --> 00:03:56.690
+it doesn't matter now,
+because the destination is reached.
+
+56
+00:03:57.960 --> 00:04:03.390
+Just for the sake of completeness, if we
+did let the algorithm continue to operate,
+
+57
+00:04:03.390 --> 00:04:06.440
+it will terminate when all
+reachable nodes are reached.
+
+58
+00:04:07.480 --> 00:04:11.310
+We say all reachable nodes,
+become some nodes like H,
+
+59
+00:04:12.850 --> 00:04:15.220
+are not reachable because
+it has no incoming edge.
+
+60
+00:04:16.220 --> 00:04:20.060
+Such a node, as we said before,
+is called the root node of the graph.
+
+61
+00:04:20.060 --> 00:04:23.400
+In general,
+a graph can have more than one root node.
+
+62
+00:04:25.040 --> 00:04:29.824
+Now that we have reached our destination,
+we need to construct the shortest path.
+
+63
+00:04:29.824 --> 00:04:35.630
+We start by taking the destination B and
+find its predecessor, E.
+
+64
+00:04:37.350 --> 00:04:43.069
+Then we find the node E, and
+check its predecessor, which is F.
+
+65
+00:04:43.069 --> 00:04:46.347
+Finally, we find the predecessor
+of F to obtain I,
+
+66
+00:04:46.347 --> 00:04:48.645
+which is a source node for the task.
+
+67
+00:04:49.880 --> 00:04:52.610
+So these nodes can then be
+stretched together in reverse,
+
+68
+00:04:52.610 --> 00:04:57.570
+thus building I to F, to E, to B,
+which is highlighted in the film.
+
+69
+00:04:58.590 --> 00:05:03.380
+So, how well does this algorithm work for
+big graphs?
+
+70
+00:05:03.380 --> 00:05:06.020
+Actually, not very well.
+
+71
+00:05:06.020 --> 00:05:08.940
+We often measure
+the performance of an algorithm
+
+72
+00:05:08.940 --> 00:05:10.710
+in terms of the size of the data.

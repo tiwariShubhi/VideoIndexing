@@ -1,0 +1,1991 @@
+
+1
+00:00:02.450 --> 00:00:06.090
+So we have seen how to compute
+degree histograms of a graph.
+
+2
+00:00:07.760 --> 00:00:11.100
+While degree histograms are useful
+to characterize a graph,
+
+3
+00:00:11.100 --> 00:00:13.110
+it is usually a means to an end.
+
+4
+00:00:14.130 --> 00:00:18.400
+It's a known practice in statistics to
+compute a mathematical expression for
+
+5
+00:00:18.400 --> 00:00:22.390
+a statistical distribution
+Using histograms.
+
+6
+00:00:23.910 --> 00:00:28.600
+For graphs, we often look for a function
+to describe the degree distribution.
+
+7
+00:00:29.620 --> 00:00:33.510
+But this is expressed as
+a distribution of the probability
+
+8
+00:00:33.510 --> 00:00:38.090
+that a random vertex will
+have exactly k neighbors.
+
+9
+00:00:38.090 --> 00:00:40.669
+Now, this problem has been
+investigated by many.
+
+10
+00:00:41.780 --> 00:00:45.300
+One popular, well known model,
+is a Power Law.
+
+11
+00:00:46.770 --> 00:00:52.910
+A graph follows a Power Law if,
+the best probability is given by k,
+
+12
+00:00:52.910 --> 00:00:55.380
+erased to a negative
+exponent called alpha.
+
+13
+00:00:56.890 --> 00:01:01.660
+The value of alpha, for many practical
+networks, is between two and three.
+
+14
+00:01:03.240 --> 00:01:04.310
+More recently,
+
+15
+00:01:04.310 --> 00:01:07.750
+people have suggested other distributions
+that look like the power law graph.
+
+16
+00:01:08.880 --> 00:01:12.611
+One of them is a log-normal graph.
+
+17
+00:01:12.611 --> 00:01:16.148
+Here, the logarithm of k has
+a Gaussian distribution.
+
+18
+00:01:16.148 --> 00:01:20.630
+So this log-normal distribution
+seems to have the better fit to
+
+19
+00:01:20.630 --> 00:01:23.120
+natural graphs that are observed.
+
+20
+00:01:25.200 --> 00:01:27.280
+So, why are power law graphs important?
+
+21
+00:01:28.930 --> 00:01:31.290
+Interestingly, many very,
+
+22
+00:01:31.290 --> 00:01:34.810
+very different real life graphs in
+the world seem to follow the power law.
+
+23
+00:01:36.030 --> 00:01:41.860
+If a graph does follow the power law, it
+would have one large connected component
+
+24
+00:01:41.860 --> 00:01:49.030
+with a very high proportion of notes
+connected to it In a power law graph,
+
+25
+00:01:50.060 --> 00:01:54.036
+most nodes have a low degree and
+some nodes will be disconnected.
+
+26
+00:01:54.036 --> 00:01:59.260
+The low degree nodes belong to
+a very dense sub graphs and
+
+27
+00:01:59.260 --> 00:02:01.600
+those sub graphs are connected
+to each other through hubs.
+
+28
+00:02:03.150 --> 00:02:06.700
+In the center of the graph
+has a high density,
+
+29
+00:02:06.700 --> 00:02:09.690
+power law graphs can be
+difficult to compute with.
+
+30
+00:02:09.690 --> 00:02:13.907
+For example, the shortest path
+algorithm operating in the dense part
+
+31
+00:02:13.907 --> 00:02:18.695
+will possibly be very inefficient, not
+because of the size of the network, but
+
+32
+00:02:18.695 --> 00:02:22.928
+because there are too many paths to
+explore inside the denser pieces.
+
+33
+00:02:27.090 --> 00:02:31.574
+The more interesting reason why
+people study power-law graphs
+
+34
+00:02:31.574 --> 00:02:35.570
+is because power-law graphs
+are supposed to be robust.
+
+35
+00:02:36.840 --> 00:02:42.329
+So in nature, all biological networks
+show power-law graphs because
+
+36
+00:02:42.329 --> 00:02:47.552
+It gives you a high rate of redundancy
+against failure and attacks.
+
+1
+00:00:00.760 --> 00:00:05.528
+The most primitive path analytics
+question one can ask is to find the best
+
+2
+00:00:05.528 --> 00:00:07.570
+path from node one to node two.
+
+3
+00:00:08.980 --> 00:00:11.220
+What does best mean?
+
+4
+00:00:11.220 --> 00:00:13.621
+Well, that depends on the actual
+needs of the application.
+
+5
+00:00:13.621 --> 00:00:16.975
+But in general, to specify the best path,
+
+6
+00:00:16.975 --> 00:00:21.274
+we need to define when one
+path is better than another.
+
+7
+00:00:21.274 --> 00:00:28.010
+This is usually expressed in
+terms of an optimization problem.
+
+8
+00:00:28.010 --> 00:00:32.790
+Where we need to minimize and maximize
+our subfunction subject to constraints.
+
+9
+00:00:32.790 --> 00:00:34.420
+What kind of constraints?
+
+10
+00:00:34.420 --> 00:00:39.280
+Two common criteria for graphs are,
+inclusion and exclusion conditions.
+
+11
+00:00:40.310 --> 00:00:46.860
+Inclusion criteria may specify which
+nodes we have to include in the path.
+
+12
+00:00:46.860 --> 00:00:50.050
+And exclusion criteria
+specifies which nodes and
+
+13
+00:00:50.050 --> 00:00:52.440
+edges should be excluded from the path.
+
+14
+00:00:52.440 --> 00:00:57.390
+In addition,
+one specify a preference criteria
+
+15
+00:00:57.390 --> 00:01:01.030
+that act as a softer or
+less strict constraint.
+
+16
+00:01:01.030 --> 00:01:04.880
+For example, we would like to
+minimize highways on my trip.
+
+17
+00:01:04.880 --> 00:01:05.900
+Or avoid condition.
+
+18
+00:01:06.980 --> 00:01:11.179
+These are soft because although
+the users would like to have them
+
+19
+00:01:11.179 --> 00:01:15.779
+enforced completely, it is all right
+if they are not fully enforced.
+
+20
+00:01:15.779 --> 00:01:20.362
+A good practical use case occurs when I'm
+trying to drive to work in the morning.
+
+21
+00:01:20.362 --> 00:01:25.284
+Ideally, I would like to take a path
+having the shortest distance from my home.
+
+22
+00:01:25.284 --> 00:01:30.620
+For example, node I, to my workplace,
+which is node B in the graph.
+
+23
+00:01:31.850 --> 00:01:35.680
+But I have to drop off my son at school.
+
+24
+00:01:35.680 --> 00:01:39.210
+So my path must include his school,
+the J here.
+
+25
+00:01:41.130 --> 00:01:45.150
+However, I would like to avoid roads
+around the new construction that's
+
+26
+00:01:45.150 --> 00:01:49.580
+happening about five miles from my
+workplace, like the node E in the graph.
+
+27
+00:01:51.140 --> 00:01:55.260
+Because there is usually a huge traffic
+delay around that construction site.
+
+28
+00:01:56.620 --> 00:01:59.210
+I could also add
+a preference criteria like
+
+29
+00:01:59.210 --> 00:02:01.290
+I don't prefer to drive on the highway.
+
+30
+00:02:01.290 --> 00:02:03.982
+But for this discussion,
+we'll skip the preference idea.
+
+31
+00:02:03.982 --> 00:02:06.059
+Too complicated?
+
+32
+00:02:06.059 --> 00:02:10.900
+Okay, let's start with a simpler problem.
+
+33
+00:02:10.900 --> 00:02:15.895
+To start with, let's drop the constraints
+and look at the problem with just
+
+34
+00:02:15.895 --> 00:02:20.280
+the optimization part of the problem,
+having a single variable.
+
+35
+00:02:22.150 --> 00:02:27.115
+In our case, that variable is the sum
+of edge weights from the source,
+
+36
+00:02:27.115 --> 00:02:31.086
+that is the starting node I,
+to the target, which is B.
+
+37
+00:02:33.095 --> 00:02:38.000
+This problem is handled by all mapping and
+road direction software.
+
+38
+00:02:38.000 --> 00:02:41.820
+Here is a Google map screenshot,
+in which I am trying to go from my home
+
+39
+00:02:41.820 --> 00:02:45.450
+in North San Diego,
+to a collision center in a nearby city.
+
+40
+00:02:47.030 --> 00:02:50.760
+Google Maps shows three different routes,
+and
+
+41
+00:02:50.760 --> 00:02:53.040
+highlights one as a preferred solution.
+
+42
+00:02:54.876 --> 00:03:00.170
+You should readily see that the real
+shortest path of 26.6 miles
+
+43
+00:03:00.170 --> 00:03:04.000
+will take the longest time at the time of
+the day when I was looking at the map.
+
+44
+00:03:05.080 --> 00:03:10.980
+So this means the weights here are not
+raw distances but estimated travel time.
+
+45
+00:03:10.980 --> 00:03:13.574
+You should also notice the blue, red, and
+
+46
+00:03:13.574 --> 00:03:17.482
+orange segments in the preferred
+path are presented by Google.
+
+47
+00:03:17.482 --> 00:03:22.731
+The orange and red street segments
+clearly represent congestion areas and
+
+48
+00:03:22.731 --> 00:03:26.570
+therefore have higher weight
+than the blue segments.
+
+49
+00:03:27.840 --> 00:03:32.070
+Therefore, the weights of the street
+segments are not really static but
+
+50
+00:03:32.070 --> 00:03:35.370
+change with many other factors,
+like weather or the time of the day.
+
+51
+00:03:36.510 --> 00:03:41.360
+This is why the least weight path problem
+is an important problem to solve for
+
+52
+00:03:41.360 --> 00:03:42.680
+the benefit of the commuter.
+
+53
+00:03:43.710 --> 00:03:46.960
+A widely applied algorithm
+that is applied for
+
+54
+00:03:46.960 --> 00:03:49.990
+shortest path problems is
+called Dijkstra's algorithm.
+
+55
+00:03:51.360 --> 00:03:56.280
+Originally, Dijkstra considered a variant
+of the problem where the task is
+
+56
+00:03:56.280 --> 00:04:00.580
+to find the shortest path from a single
+source node to all other nodes.
+
+57
+00:04:02.230 --> 00:04:04.110
+We'll go through the algorithm here.
+
+58
+00:04:04.110 --> 00:04:08.290
+However, there are many good online
+resources including tutorials and
+
+59
+00:04:08.290 --> 00:04:10.230
+YouTube videos describing the algorithm.
+
+60
+00:04:11.570 --> 00:04:15.284
+For our discussion, we'll confine
+ourselves to the case where both
+
+61
+00:04:15.284 --> 00:04:18.175
+the source and
+the target nodes are known in advance.
+
+1
+00:00:00.840 --> 00:00:06.150
+As you probably already know, Cypher is
+the scripting language used in Neo4j and
+
+2
+00:00:06.150 --> 00:00:10.120
+it's what we have been using
+already in the previous lectures.
+
+3
+00:00:10.120 --> 00:00:15.160
+In this lecture, we're going to go through
+a series of basic queries using Cypher
+
+4
+00:00:15.160 --> 00:00:18.900
+with the focus on the data sets
+that we've already been using.
+
+5
+00:00:18.900 --> 00:00:22.787
+Here's a listing of the basic queries
+we will go through step by step.
+
+6
+00:00:31.424 --> 00:00:32.341
+So let's get started.
+
+7
+00:00:36.764 --> 00:00:42.167
+To keep things simple we will be using a
+text file containing the basic queries and
+
+8
+00:00:42.167 --> 00:00:47.930
+we'll make this file available for
+download as a reading in the module.
+
+9
+00:00:47.930 --> 00:00:51.130
+I will briefly review the queries and
+
+10
+00:00:51.130 --> 00:00:56.255
+then we'll toggle to the browser to view
+the results of the queries in Neo4j.
+
+11
+00:00:57.680 --> 00:01:03.120
+Neo4j has a very nice feature which
+allows us to retain individual queries
+
+12
+00:01:03.120 --> 00:01:09.620
+in multiple panels as we're going through
+the process of exploring each query.
+
+13
+00:01:09.620 --> 00:01:13.470
+So for the first few queries we'll be
+using the simple road network data set
+
+14
+00:01:13.470 --> 00:01:16.250
+that we used in previous demonstrations.
+
+15
+00:01:16.250 --> 00:01:18.800
+And here we've already loaded
+the data set into Neo4j.
+
+16
+00:01:19.910 --> 00:01:21.185
+So let's look at our first query.
+
+17
+00:01:21.185 --> 00:01:23.530
+Our first query is a very a simple one,
+
+18
+00:01:23.530 --> 00:01:27.280
+in which we're counting the number
+of nodes in the network.
+
+19
+00:01:27.280 --> 00:01:31.770
+So the first line of code simply matches
+all of the nodes with the label MyNode and
+
+20
+00:01:31.770 --> 00:01:34.200
+it returns a count of those nodes.
+
+21
+00:01:34.200 --> 00:01:36.120
+So let's look at the results.
+
+22
+00:01:36.120 --> 00:01:40.100
+The results are very simple,
+the value of eleven.
+
+23
+00:01:40.100 --> 00:01:43.520
+And we can visually confirm this
+by inspecting the graph itself and
+
+24
+00:01:43.520 --> 00:01:46.140
+see it has 11 nodes and
+we can see that up here.
+
+25
+00:01:49.510 --> 00:01:54.540
+The next query is almost as simple,
+we want to count the number of edges.
+
+26
+00:01:54.540 --> 00:01:59.290
+Now, first thing to keep in mind
+is in order to count edges,
+
+27
+00:01:59.290 --> 00:02:03.970
+we also need to declare nodes that
+are associated with those edges.
+
+28
+00:02:03.970 --> 00:02:07.070
+So this first line of codes
+includes a declaration
+
+29
+00:02:07.070 --> 00:02:09.840
+of the nodes associated with the edges.
+
+30
+00:02:09.840 --> 00:02:12.231
+Here we're identifying
+with thevariable r and
+
+31
+00:02:12.231 --> 00:02:14.570
+then we're returning
+a count of those edges.
+
+32
+00:02:15.580 --> 00:02:20.850
+So let's take a look in Neo4j and the
+results of this query are a value of 14.
+
+33
+00:02:20.850 --> 00:02:24.938
+And once again we can confirm this
+visually by looking at our network and
+
+34
+00:02:24.938 --> 00:02:26.720
+counting the number of edges.
+
+35
+00:02:29.749 --> 00:02:35.290
+The next query involves finding all
+of the leaf nodes in the network.
+
+36
+00:02:35.290 --> 00:02:37.535
+Now as you may remember
+from a previous lecture,
+
+37
+00:02:37.535 --> 00:02:42.810
+leaf nodes are defined as those
+nodes which have no outgoing edges.
+
+38
+00:02:44.400 --> 00:02:48.300
+Notice that we're returning the node
+represented by the variable M,
+
+39
+00:02:48.300 --> 00:02:50.950
+which is the target node in this query.
+
+40
+00:02:50.950 --> 00:02:55.750
+So here we're matching all nodes
+associated with edges having the label two
+
+41
+00:02:56.780 --> 00:02:59.000
+and we want to place
+a constraint on those nodes,
+
+42
+00:02:59.000 --> 00:03:02.180
+such that they have no outgoing edges.
+
+43
+00:03:02.180 --> 00:03:03.930
+And then we return all those nodes.
+
+44
+00:03:04.950 --> 00:03:07.170
+So let's take a look at the results.
+
+45
+00:03:07.170 --> 00:03:10.380
+We're going to see a single node returned,
+the node with the label p.
+
+46
+00:03:12.020 --> 00:03:17.490
+And if we inspect our graph, we can
+see over here on the right the node p,
+
+47
+00:03:17.490 --> 00:03:20.630
+and sure enough it has no outgoing edges,
+only one incoming edge.
+
+48
+00:03:24.290 --> 00:03:26.170
+The next query is also similar,
+
+49
+00:03:26.170 --> 00:03:29.390
+we're looking for
+root nodes instead of leaf notes.
+
+50
+00:03:29.390 --> 00:03:30.650
+And as you may also remember,
+
+51
+00:03:30.650 --> 00:03:35.180
+root nodes are defined as a node
+which has no incoming edges.
+
+52
+00:03:36.230 --> 00:03:40.550
+You may notice that this segment of
+the first line of code is sort of a mirror
+
+53
+00:03:40.550 --> 00:03:46.040
+image of the same segment in the first
+line of code from the previous query.
+
+54
+00:03:46.040 --> 00:03:50.540
+We also want to place the constraint
+on the nodes that we want to return
+
+55
+00:03:50.540 --> 00:03:54.150
+by specifying that they can
+have no incoming edges.
+
+56
+00:03:54.150 --> 00:03:58.340
+And then, we return all of those nodes
+When we look at our results in Neo4j.
+
+57
+00:03:58.340 --> 00:04:00.420
+Once again,
+
+58
+00:04:00.420 --> 00:04:04.270
+we see we only get a single node
+return it's the node with the label H.
+
+59
+00:04:05.500 --> 00:04:09.640
+And if we inspect our graph,
+we see over here the node H and
+
+60
+00:04:09.640 --> 00:04:11.480
+sure enough it has no incoming edges.
+
+61
+00:04:11.480 --> 00:04:15.382
+Only a single outgoing edge which
+means it's a root node of the network.
+
+62
+00:04:18.388 --> 00:04:23.740
+The next query can be described
+as a pattern matching query.
+
+63
+00:04:23.740 --> 00:04:26.990
+We're looking for a pattern that
+we're describing as triangles.
+
+64
+00:04:26.990 --> 00:04:29.880
+This is a pattern that's
+a bit more complex than
+
+65
+00:04:29.880 --> 00:04:33.540
+the patterns we've been looking for
+in our previous queries.
+
+66
+00:04:33.540 --> 00:04:38.750
+A triangle can also be described as a
+three cycle, consisting of three nodes and
+
+67
+00:04:38.750 --> 00:04:43.010
+three edges where the beginning and
+end node are the same.
+
+68
+00:04:43.010 --> 00:04:47.420
+So here we're matching a node A which
+goes through an edge to node B
+
+69
+00:04:47.420 --> 00:04:51.480
+which goes through a second
+edge to a second node C and
+
+70
+00:04:51.480 --> 00:04:54.960
+through a third edge back
+to the original node A.
+
+71
+00:04:54.960 --> 00:04:57.500
+And then we return all of those notes.
+
+72
+00:04:57.500 --> 00:04:59.600
+Let's look at our results.
+
+73
+00:04:59.600 --> 00:05:03.390
+And here we see we have five
+distinct nodes returned.
+
+74
+00:05:03.390 --> 00:05:06.720
+And we have two triangles or
+two three cycles.
+
+75
+00:05:06.720 --> 00:05:10.804
+From D to E to G and from D to C to B.
+
+76
+00:05:13.868 --> 00:05:17.788
+Finally the last query we're going
+to execute with this data set,
+
+77
+00:05:17.788 --> 00:05:21.290
+is going to explore the neighborhood
+of a particular node.
+
+78
+00:05:21.290 --> 00:05:23.220
+In this case, the node with the label d.
+
+79
+00:05:23.220 --> 00:05:27.290
+And we're going to be looking for
+what we're calling second neighbors of D.
+
+80
+00:05:27.290 --> 00:05:31.480
+This means nodes that
+are two nodes away from d.
+
+81
+00:05:31.480 --> 00:05:36.230
+So the first line of code matches
+all nodes that are two nodes away
+
+82
+00:05:36.230 --> 00:05:38.130
+from a specific node.
+
+83
+00:05:38.130 --> 00:05:43.150
+And then the second line of codes
+specifies the actual node that we
+
+84
+00:05:43.150 --> 00:05:47.240
+we want to consider by constraining
+its name to have the label d,
+
+85
+00:05:47.240 --> 00:05:50.240
+and then we return those nodes.
+
+86
+00:05:50.240 --> 00:05:53.040
+And here we're using the command distinct
+
+87
+00:05:53.040 --> 00:05:56.440
+because we want to make sure that we
+don't return any duplicate nodes.
+
+88
+00:05:56.440 --> 00:05:58.650
+All of our nodes must be unique.
+
+89
+00:05:59.760 --> 00:06:00.930
+So let's look at the results.
+
+90
+00:06:02.130 --> 00:06:07.040
+And here we have a network that
+consists of nine nodes and 11 edges and
+
+91
+00:06:07.040 --> 00:06:13.710
+we can see that each node is
+two nodes away from the node D.
+
+92
+00:06:13.710 --> 00:06:17.510
+Some nodes appear to be only one
+node away from the node D but
+
+93
+00:06:17.510 --> 00:06:21.890
+we can get to those nodes indirectly
+through another node, which means that
+
+94
+00:06:21.890 --> 00:06:24.660
+they're not only a first neighbor but
+they're also a second neighbor.
+
+95
+00:06:26.390 --> 00:06:28.930
+So we encourage you to play
+around with these queries,
+
+96
+00:06:28.930 --> 00:06:32.320
+and make minor changes with them,
+and see what the results might be.
+
+1
+00:00:01.190 --> 00:00:06.030
+For our next three queries,
+we're going to switch to the terrorist
+
+2
+00:00:06.030 --> 00:00:08.820
+data set that we had used in
+our previous demonstration.
+
+3
+00:00:10.740 --> 00:00:15.480
+Our first query involves finding
+the types of a particular node.
+
+4
+00:00:15.480 --> 00:00:19.740
+So, as you may recall in the terrorist
+data set there were node types
+
+5
+00:00:19.740 --> 00:00:22.010
+corresponding to a country.
+
+6
+00:00:22.010 --> 00:00:25.240
+So, in this case we
+want to match all nodes,
+
+7
+00:00:25.240 --> 00:00:28.420
+where the name is equal to Afghanistan.
+
+8
+00:00:28.420 --> 00:00:33.450
+And we will return the labels for
+that particular match.
+
+9
+00:00:33.450 --> 00:00:35.990
+And the results for
+this query are relatively simple.
+
+10
+00:00:35.990 --> 00:00:41.450
+The label for the node named Afghanistan
+is country, as you might expect.
+
+11
+00:00:44.685 --> 00:00:48.650
+Next, we're going to do something
+similar but with an edge.
+
+12
+00:00:48.650 --> 00:00:51.740
+In this case, we want to find the label
+
+13
+00:00:51.740 --> 00:00:56.690
+of a edge associated with
+a node named Afghanistan.
+
+14
+00:00:56.690 --> 00:01:01.230
+And also, if you can recall from that
+particular network, the label for
+
+15
+00:01:01.230 --> 00:01:08.038
+an edge associated with a country named
+Afghanistan would be an IS_FROM label.
+
+16
+00:01:11.218 --> 00:01:16.330
+And the final query, we would like to
+demonstrate with this terrorist data set,
+
+17
+00:01:16.330 --> 00:01:19.500
+involves finding all of
+the properties of a node.
+
+18
+00:01:20.590 --> 00:01:24.520
+Now, based on how we defined
+our data import script,
+
+19
+00:01:25.540 --> 00:01:29.370
+we defined all of our
+nodes to be of type Actor.
+
+20
+00:01:29.370 --> 00:01:33.430
+So in this query, we're going to
+search for all nodes of type Actor and
+
+21
+00:01:33.430 --> 00:01:38.700
+then, we're going to return all of the
+properties associated with those nodes.
+
+22
+00:01:38.700 --> 00:01:39.990
+But, since there are thousands of nodes,
+
+23
+00:01:39.990 --> 00:01:42.630
+we're going to limit
+the results to the first 20.
+
+24
+00:01:42.630 --> 00:01:45.920
+So, let's go ahead and submit our query.
+
+25
+00:01:46.970 --> 00:01:48.980
+And here are the results.
+
+26
+00:01:48.980 --> 00:01:54.750
+Each node represents a terrorist and
+if we look at the rows data
+
+27
+00:01:54.750 --> 00:02:00.030
+behind the scenes we can see the various
+properties associated with each node.
+
+28
+00:02:00.030 --> 00:02:01.920
+Each node has a name.
+
+29
+00:02:01.920 --> 00:02:05.330
+Each node has aliases,
+one or more aliases.
+
+30
+00:02:05.330 --> 00:02:07.960
+And they have a type property.
+
+31
+00:02:07.960 --> 00:02:11.090
+Now, depending on how we defined our
+import script in the first place,
+
+32
+00:02:11.090 --> 00:02:14.820
+these nodes could have
+different types of properties.
+
+33
+00:02:14.820 --> 00:02:17.950
+In this case, we only defined them
+to have three different properties.
+
+34
+00:02:22.091 --> 00:02:26.460
+For our next two queries,
+we're going to use a different data set,
+
+35
+00:02:26.460 --> 00:02:31.149
+it's a biological data set consisting
+of genetics data representing
+
+36
+00:02:31.149 --> 00:02:33.960
+interactions between genes.
+
+37
+00:02:33.960 --> 00:02:36.690
+We will be providing the data for
+you to download.
+
+38
+00:02:36.690 --> 00:02:39.280
+In fact, there are two separate data sets.
+
+39
+00:02:39.280 --> 00:02:44.150
+One is a complete data set
+consisting of 250,000 rows,
+
+40
+00:02:44.150 --> 00:02:48.425
+and the other data set consists
+of the first 50,000 rows,
+
+41
+00:02:48.425 --> 00:02:51.780
+and that's what we'll be using for
+this demonstration.
+
+42
+00:02:51.780 --> 00:02:55.060
+So, let's take a look at
+a small sample of the data.
+
+43
+00:02:55.060 --> 00:03:00.390
+Here you see a graph network
+in which each node is a gene.
+
+44
+00:03:00.390 --> 00:03:03.540
+And each edge represents
+the association between genes.
+
+45
+00:03:05.200 --> 00:03:10.248
+To load this data set, this is the smaller
+
+46
+00:03:10.248 --> 00:03:15.152
+data set, required 1446 seconds,
+
+47
+00:03:15.152 --> 00:03:19.768
+and it consists of 9656 labels and
+
+48
+00:03:19.768 --> 00:03:23.388
+46621 relationships.
+
+49
+00:03:23.388 --> 00:03:28.133
+So, the first query involves finding
+loops in the data which represent genes
+
+50
+00:03:28.133 --> 00:03:30.980
+that have associations
+with there own types.
+
+51
+00:03:32.200 --> 00:03:35.257
+So, it's a very simple query
+in which the source node and
+
+52
+00:03:35.257 --> 00:03:39.335
+the target node are the same and we'll
+be returning those along the edges and
+
+53
+00:03:39.335 --> 00:03:41.644
+we'll limit our results to the first ten.
+
+54
+00:03:41.644 --> 00:03:43.920
+So, here are the results of our query.
+
+55
+00:03:43.920 --> 00:03:45.840
+We can see a few different loops.
+
+56
+00:03:46.870 --> 00:03:52.600
+If we look at the rows, our query returned
+not only the node but the edge type.
+
+57
+00:03:53.610 --> 00:03:57.234
+So, on the left we see the particular
+gene and on the right,
+
+58
+00:03:57.234 --> 00:03:59.201
+we see the type of association.
+
+59
+00:03:59.201 --> 00:04:01.616
+And there are a range of different types.
+
+60
+00:04:05.749 --> 00:04:08.560
+So, this data set also
+contains multigraphs.
+
+61
+00:04:08.560 --> 00:04:12.520
+If you recall from a previous lecture,
+the definition of a multigraph
+
+62
+00:04:12.520 --> 00:04:17.370
+is any two nodes which have two or
+more edges between them.
+
+63
+00:04:17.370 --> 00:04:22.370
+So in this case, we'll be matching
+two separate node edge relationships.
+
+64
+00:04:22.370 --> 00:04:27.190
+And we'll apply a constraint in which
+the edges must be different for
+
+65
+00:04:27.190 --> 00:04:28.940
+the same pairs of nodes.
+
+66
+00:04:28.940 --> 00:04:32.490
+And then we will return those nodes and
+those edges.
+
+67
+00:04:32.490 --> 00:04:34.610
+We'll limit our results to the first ten.
+
+68
+00:04:34.610 --> 00:04:36.120
+And here's the results.
+
+69
+00:04:36.120 --> 00:04:41.377
+Here we see a set of four genes, and
+there are two pairs that have three
+
+70
+00:04:41.377 --> 00:04:46.738
+edges between them and another pair
+that has four edges between them.
+
+71
+00:04:50.360 --> 00:04:54.189
+Our final query addresses something that
+is not necessarily been fully covered
+
+72
+00:04:54.189 --> 00:04:57.329
+in previous lectures, but
+it is useful enough to address here and
+
+73
+00:04:57.329 --> 00:05:00.835
+you'll get an understanding of it by
+going through this query example.
+
+74
+00:05:02.285 --> 00:05:06.855
+We're going to essentially
+extract a subset of nodes and
+
+75
+00:05:06.855 --> 00:05:10.205
+edges from the graph that
+we've been working with.
+
+76
+00:05:10.205 --> 00:05:12.445
+And this is called an induced subgraph.
+
+77
+00:05:13.470 --> 00:05:18.330
+In which, if we provide a set of nodes,
+we want to return
+
+78
+00:05:18.330 --> 00:05:22.970
+the network that consists only of those
+nodes and their associated edges.
+
+79
+00:05:22.970 --> 00:05:28.000
+So, my first line of code is very
+familiar, we're matching nodes and
+
+80
+00:05:28.000 --> 00:05:30.910
+edges, it's a very basic node and
+edge match.
+
+81
+00:05:32.570 --> 00:05:36.660
+The second line of code is where
+the constraints are explicitly stated.
+
+82
+00:05:36.660 --> 00:05:41.540
+A resulting network must consist
+of edges in which the source node
+
+83
+00:05:41.540 --> 00:05:46.520
+must be constrained to this
+subset of node labels.
+
+84
+00:05:46.520 --> 00:05:51.180
+And the target node must also be
+constrained to be a part of the subset of
+
+85
+00:05:51.180 --> 00:05:53.290
+nodes with just these labels.
+
+86
+00:05:53.290 --> 00:05:55.410
+And then we return the nodes and
+the edges.
+
+87
+00:05:56.890 --> 00:05:59.010
+So, let's see the resulting graph.
+
+88
+00:05:59.010 --> 00:06:00.050
+And here it is.
+
+89
+00:06:00.050 --> 00:06:01.040
+So, as we would expect,
+
+90
+00:06:01.040 --> 00:06:05.650
+we're seeing the five nodes that were
+defined in our query constraints.
+
+91
+00:06:05.650 --> 00:06:09.850
+And the edges corresponding to them,
+retain the network structure.
+
+92
+00:06:09.850 --> 00:06:13.902
+So, this concludes our review of
+some of the basic queries you can do
+
+93
+00:06:13.902 --> 00:06:16.974
+with Neo4j using the cipher
+scripting language.
+
+1
+00:00:01.130 --> 00:00:04.808
+Next, we will talk about
+connectivity analytics with Cypher.
+
+2
+00:00:04.808 --> 00:00:06.713
+If you remember in module two,
+
+3
+00:00:06.713 --> 00:00:11.810
+we talked about connectivity analytics
+in terms of network robustness.
+
+4
+00:00:11.810 --> 00:00:15.590
+In other words, a measure of how resistant
+a graph network is to being disconnected.
+
+5
+00:00:16.820 --> 00:00:19.720
+Specifically, we used
+two kinds of methods.
+
+6
+00:00:19.720 --> 00:00:24.790
+One computed the eigenvalues, and the
+second computed the degree distribution.
+
+7
+00:00:24.790 --> 00:00:29.150
+For these examples, we're going to use
+the second one, degree distributions.
+
+8
+00:00:29.150 --> 00:00:32.710
+And we will use the same graph
+network we've used previously.
+
+9
+00:00:32.710 --> 00:00:35.280
+A simple graph representing
+a road network.
+
+10
+00:00:36.280 --> 00:00:40.534
+And here's a listing of the query examples
+we're going to be applying to our network.
+
+11
+00:00:57.639 --> 00:01:03.080
+My first query example finds all
+of the outdegrees of all nodes.
+
+12
+00:01:03.080 --> 00:01:07.050
+Now, if you'll notice, this query consists
+of two parts, because there's a specific
+
+13
+00:01:07.050 --> 00:01:12.940
+type of node, a leaf node, which does not
+conform to this particular constraint.
+
+14
+00:01:12.940 --> 00:01:16.620
+So our first match statement finds
+all nodes with outgoing edges,
+
+15
+00:01:16.620 --> 00:01:19.510
+as you can see here,
+this is a directed edge.
+
+16
+00:01:19.510 --> 00:01:21.930
+And then,
+we returns the names of the nodes and
+
+17
+00:01:21.930 --> 00:01:24.870
+the count as the variable outdegree.
+
+18
+00:01:24.870 --> 00:01:27.610
+And for convenience,
+we order by outdegree.
+
+19
+00:01:27.610 --> 00:01:32.820
+And we need to combine that with
+a specific query dealing with leaf nodes.
+
+20
+00:01:32.820 --> 00:01:36.820
+We're familiar with how to
+do that from past examples.
+
+21
+00:01:36.820 --> 00:01:41.220
+And so, we'll match all leaf nodes and
+return the name and
+
+22
+00:01:41.220 --> 00:01:43.950
+the value zero for its outdegree.
+
+23
+00:01:43.950 --> 00:01:48.460
+So when we submit this query we
+get this listing right here.
+
+24
+00:01:48.460 --> 00:01:52.792
+The node P has 0 for its outdegree and
+all of the other nodes are as we might
+
+25
+00:01:52.792 --> 00:01:56.286
+expect and they're ordered
+by their value of outdegree.
+
+26
+00:02:00.118 --> 00:02:02.695
+Our next query finds
+the indegree of all nodes,
+
+27
+00:02:02.695 --> 00:02:05.850
+which is very similar to
+our previous example.
+
+28
+00:02:05.850 --> 00:02:07.360
+But, in this case, as you might expect,
+
+29
+00:02:07.360 --> 00:02:12.240
+we're going to take into account
+root nodes instead of leaf nodes.
+
+30
+00:02:12.240 --> 00:02:15.910
+And so, our match involves incoming edges.
+
+31
+00:02:15.910 --> 00:02:19.540
+Indegree is a measure of all nodes
+connected to a specific node with
+
+32
+00:02:19.540 --> 00:02:21.130
+incoming edges.
+
+33
+00:02:21.130 --> 00:02:23.730
+And we return similar results and
+
+34
+00:02:23.730 --> 00:02:29.030
+we union that with the specific query
+commands to find all of the root nodes,
+
+35
+00:02:29.030 --> 00:02:33.090
+and then we return those names and
+0 as the value of indegree.
+
+36
+00:02:33.090 --> 00:02:37.820
+So when we submit this query,
+here's our results as we might expect.
+
+37
+00:02:37.820 --> 00:02:40.690
+In this case, H is our only root node.
+
+38
+00:02:40.690 --> 00:02:43.264
+So it has a value of 0 for indegree, and
+
+39
+00:02:43.264 --> 00:02:46.072
+all the other nodes
+are as we might expect.
+
+40
+00:02:49.438 --> 00:02:53.040
+And our third query example
+finds the degree of all nodes,
+
+41
+00:02:53.040 --> 00:02:56.220
+which is a combination of outdegree and
+indegree.
+
+42
+00:02:56.220 --> 00:03:02.010
+So in this case we're not including any
+specific direction in our match statement.
+
+43
+00:03:02.010 --> 00:03:06.820
+And we're returning the name and
+the count for all of our edges.
+
+44
+00:03:06.820 --> 00:03:09.540
+But we're using the distinct statement,
+
+45
+00:03:09.540 --> 00:03:13.090
+otherwise we would be
+counting some nodes twice.
+
+46
+00:03:13.090 --> 00:03:16.820
+And then, for convenience,
+we order this by the value of degree.
+
+47
+00:03:16.820 --> 00:03:21.628
+And when we submit this query,
+we get the results as shown here.
+
+48
+00:03:21.628 --> 00:03:26.071
+We have 1 column with the name and
+the other column with the degree and
+
+49
+00:03:26.071 --> 00:03:31.048
+the values are as we would expect, we have
+a leaf node P with the degree of 1 and
+
+50
+00:03:31.048 --> 00:03:33.128
+a root node H with a degree of 1.
+
+51
+00:03:37.296 --> 00:03:43.262
+Our next query example generates a degree
+histogram of the graph since we're able to
+
+52
+00:03:43.262 --> 00:03:49.670
+calculate the degree of each node, we can
+sort those into actual values of degree.
+
+53
+00:03:49.670 --> 00:03:53.606
+So if we look at the distribution
+of degree among our nodes,
+
+54
+00:03:53.606 --> 00:03:58.801
+we see there's 2 nodes with the degree 1,
+there's 3 nodes with degree 2,
+
+55
+00:03:58.801 --> 00:04:04.280
+there's 4 nodes with degree 3, and
+there's 2 nodes with degree 4.
+
+56
+00:04:04.280 --> 00:04:07.181
+So we're going to group those
+in the form of a histogram.
+
+57
+00:04:07.181 --> 00:04:11.310
+So when we submit this query,
+we get this table.
+
+58
+00:04:11.310 --> 00:04:16.002
+The first column list the degree
+value in ascending order and
+
+59
+00:04:16.002 --> 00:04:22.500
+the second column list the counts of
+the nodes that have that degree value.
+
+60
+00:04:22.500 --> 00:04:27.451
+So for those of you who are familiar with
+SQL you might recognize this as similar
+
+61
+00:04:27.451 --> 00:04:30.989
+to the group by command,
+it performs a similar function
+
+62
+00:04:34.471 --> 00:04:38.980
+Our next query example saves the degree
+of the node as a new node property.
+
+63
+00:04:38.980 --> 00:04:44.000
+This provides an added convenience so that
+we don't have to calculate the degree of
+
+64
+00:04:44.000 --> 00:04:47.330
+a node every time we're
+performing some sort of analysis.
+
+65
+00:04:47.330 --> 00:04:50.640
+So we match all nodes with edges, and
+
+66
+00:04:50.640 --> 00:04:54.950
+there's no direction in this
+particular edge definition.
+
+67
+00:04:54.950 --> 00:04:59.090
+And then, we return distinct
+counts of each node's degree, and
+
+68
+00:04:59.090 --> 00:05:05.460
+then we create a new property, called deg,
+and assign the value of degree to it.
+
+69
+00:05:05.460 --> 00:05:09.090
+Then, we return the names and
+the degree values, and so
+
+70
+00:05:09.090 --> 00:05:13.040
+when we submit this query,
+we see this distribution right here,
+
+71
+00:05:13.040 --> 00:05:17.690
+with the names in the left column, and
+the values of degree in the right column.
+
+72
+00:05:19.070 --> 00:05:23.740
+And we can verify that if we issue a
+command to return all of the properties of
+
+73
+00:05:23.740 --> 00:05:25.250
+the specific node.
+
+74
+00:05:25.250 --> 00:05:28.970
+So in this case I issued a command
+to match the node named D and
+
+75
+00:05:28.970 --> 00:05:30.640
+return all of its properties.
+
+76
+00:05:30.640 --> 00:05:34.272
+And sure enough we see that it has
+a property name and a property degree.
+
+77
+00:05:37.569 --> 00:05:39.476
+Before we go to the last two examples,
+
+78
+00:05:39.476 --> 00:05:43.800
+there's a philosophical issue that we
+need to remember with all databases.
+
+79
+00:05:43.800 --> 00:05:47.780
+Every database will allow you some
+analytical computation and the remainder
+
+80
+00:05:47.780 --> 00:05:51.610
+of the analytical computations must
+be done outside of the database.
+
+81
+00:05:51.610 --> 00:05:54.830
+However, it is always a judicious
+idea to get the database to
+
+82
+00:05:54.830 --> 00:05:58.683
+achieve an intermediate result formatted
+in a way that you would need for
+
+83
+00:05:58.683 --> 00:05:59.962
+the next computation.
+
+84
+00:05:59.962 --> 00:06:04.560
+And then, you use that intermediate result
+as the input to the next computation.
+
+85
+00:06:04.560 --> 00:06:07.290
+We've seen that a number of
+computations in graph analytics
+
+86
+00:06:07.290 --> 00:06:10.040
+start with the adjacency matrix.
+
+87
+00:06:10.040 --> 00:06:14.370
+So we should be able to force Cypher
+to produce an adjacency matrix.
+
+88
+00:06:14.370 --> 00:06:15.480
+And this is what we're doing here.
+
+89
+00:06:16.980 --> 00:06:22.010
+So think of a Matrix as a three column
+table, in which, here's one column,
+
+90
+00:06:22.010 --> 00:06:25.220
+here's another column, and the third
+column will be the values that we
+
+91
+00:06:25.220 --> 00:06:30.140
+are calculating when we determine whether
+two nodes have an edge between them.
+
+92
+00:06:30.140 --> 00:06:33.910
+And we're introducing a new
+construct in Cypher called case.
+
+93
+00:06:33.910 --> 00:06:38.320
+This allows us to evaluate conditions and
+return one result, or
+
+94
+00:06:38.320 --> 00:06:41.000
+a different result
+depending on the condition.
+
+95
+00:06:41.000 --> 00:06:46.200
+Here, we're specifying that when
+there is an edge between nodes n and
+
+96
+00:06:46.200 --> 00:06:50.890
+m, then we return a value of 1,
+otherwise return a value of 0.
+
+97
+00:06:50.890 --> 00:06:53.068
+And we'll output those results as a value.
+
+98
+00:06:53.068 --> 00:06:57.748
+And so, when we submit this query,
+we get our three column table in which
+
+99
+00:06:57.748 --> 00:07:01.340
+the first column is
+the name of our first node.
+
+100
+00:07:01.340 --> 00:07:05.077
+The second column is the name of our
+second node and the value is either a 1 or
+
+101
+00:07:05.077 --> 00:07:09.250
+a 1 depending on whether the nodes
+have an edge between them.
+
+102
+00:07:09.250 --> 00:07:12.839
+So in this case we see node A and
+C have an edge,
+
+103
+00:07:12.839 --> 00:07:16.530
+A and L have an edge and
+so on as we would expect.
+
+104
+00:07:20.050 --> 00:07:25.150
+So if we can calculate the adjacency
+matrix then we can calculate any matrix.
+
+105
+00:07:25.150 --> 00:07:29.280
+You might remember from our
+module two lecture where we
+
+106
+00:07:29.280 --> 00:07:32.760
+learned about this complex structure
+called the Normalized Laplacian Matrix.
+
+107
+00:07:33.970 --> 00:07:35.437
+So let's go ahead and calculate that.
+
+108
+00:07:35.437 --> 00:07:41.090
+We'll perform something very similar
+to what we did in the previous example.
+
+109
+00:07:41.090 --> 00:07:44.320
+We'll match all nodes for
+the first column, and all nodes for
+
+110
+00:07:44.320 --> 00:07:46.080
+the second column.
+
+111
+00:07:46.080 --> 00:07:51.390
+We'll return the names of those nodes and
+then we'll use the case structure again
+
+112
+00:07:51.390 --> 00:07:55.280
+to compare the names of each node and
+determine whether we have the same node.
+
+113
+00:07:56.590 --> 00:08:01.160
+If we do have the same node then
+that is a diagonal of the matrix and
+
+114
+00:08:01.160 --> 00:08:01.945
+should get a value of 1.
+
+115
+00:08:03.030 --> 00:08:06.264
+If they are different nodes and
+contain an edge between them,
+
+116
+00:08:06.264 --> 00:08:09.948
+then we calculate the normalized
+Laplacian with this equation here.
+
+117
+00:08:09.948 --> 00:08:14.638
+And you'll also want to notice that here
+we're using the actual degree property
+
+118
+00:08:14.638 --> 00:08:18.210
+that we assigned to the nodes
+in a previous example.
+
+119
+00:08:18.210 --> 00:08:22.080
+This is an example of how that
+can become a convenient option.
+
+120
+00:08:22.080 --> 00:08:25.790
+So when the calculation is performed,
+the value would be returned.
+
+121
+00:08:25.790 --> 00:08:30.030
+If there's no edge between the 2 nodes,
+then the value of 0 will be returned.
+
+122
+00:08:30.030 --> 00:08:32.194
+And these values will end
+up in the value column.
+
+123
+00:08:32.194 --> 00:08:36.780
+So when we submit this query,
+here's the table that get returned.
+
+124
+00:08:36.780 --> 00:08:39.662
+This is the first column
+with the source node.
+
+125
+00:08:39.662 --> 00:08:43.370
+The second column with the target node and
+the values.
+
+126
+00:08:43.370 --> 00:08:47.070
+So in the first row, the first node
+is P and the second node is P, so
+
+127
+00:08:47.070 --> 00:08:50.600
+it's identical, which means it's
+on the diagonal of the matrix.
+
+128
+00:08:50.600 --> 00:08:53.630
+Likewise, for A in this row down here.
+
+129
+00:08:53.630 --> 00:08:58.040
+And then the first value of the Laplacian
+is calculated between nodes A and
+
+130
+00:08:58.040 --> 00:08:59.180
+C, and so on.
+
+131
+00:09:01.310 --> 00:09:06.202
+So that concludes our examples of how
+to perform connectivity analytics
+
+132
+00:09:06.202 --> 00:09:07.815
+in Neo4j with Cypher.

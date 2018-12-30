@@ -1,0 +1,200 @@
+WEBVTT
+
+1
+00:00:01.110 --> 00:00:04.130
+So far we have seen two versions
+of the Dijkstra Algorithm.
+
+2
+00:00:05.200 --> 00:00:09.680
+Both these versions assume that the edge
+weights provided by the network
+
+3
+00:00:09.680 --> 00:00:10.850
+must be used as is.
+
+4
+00:00:11.890 --> 00:00:14.430
+Now that can lead to some
+interesting problems.
+
+5
+00:00:14.430 --> 00:00:16.570
+We saw one such problem before.
+
+6
+00:00:16.570 --> 00:00:19.810
+Remember we were trying to decide
+whether we should go from G to D or
+
+7
+00:00:19.810 --> 00:00:24.060
+from F to E because both options
+had the same total weight?
+
+8
+00:00:24.060 --> 00:00:26.670
+Now had we chosen to go from G to D,
+
+9
+00:00:26.670 --> 00:00:30.070
+it would take us a few extra steps
+to arrive at correct solution.
+
+10
+00:00:31.190 --> 00:00:35.110
+One way of handling this problem
+is to use additional knowledge.
+
+11
+00:00:35.110 --> 00:00:39.690
+So intuitively, we want to say that
+we know that we want to go to B.
+
+12
+00:00:39.690 --> 00:00:42.800
+So traversing through
+D is not a good idea.
+
+13
+00:00:42.800 --> 00:00:45.530
+Because it will take us away from B.
+
+14
+00:00:45.530 --> 00:00:50.700
+In other words we use the knowledge
+of the destination of B's location
+
+15
+00:00:50.700 --> 00:00:52.650
+to steer the direction of search.
+
+16
+00:00:53.930 --> 00:00:57.400
+This variant is called
+Goal-Directed Dijkstra Algorithm because
+
+17
+00:00:57.400 --> 00:01:02.440
+it is using the information about the
+target known at any point in the search.
+
+18
+00:01:02.440 --> 00:01:06.919
+The trick to use this information is to
+change the edge weights as we diverse.
+
+19
+00:01:08.000 --> 00:01:09.350
+How do we change the weight?
+
+20
+00:01:09.350 --> 00:01:12.040
+We use a formula, where the new weight
+
+21
+00:01:12.040 --> 00:01:16.560
+is the original weight together with
+a function called the potential function.
+
+22
+00:01:16.560 --> 00:01:18.340
+Now we'll show this in our example.
+
+23
+00:01:18.340 --> 00:01:19.950
+Since our graph is a proxy for
+
+24
+00:01:19.950 --> 00:01:24.190
+a road network, we can assume that we
+know the coordinates of every node.
+
+25
+00:01:24.190 --> 00:01:27.810
+Therefore, we can compute
+the distance between any two nodes.
+
+26
+00:01:27.810 --> 00:01:30.630
+In practice, we will choose a few nodes so
+
+27
+00:01:30.630 --> 00:01:35.210
+that we can compute the distance of every
+other node from these chosen nodes.
+
+28
+00:01:35.210 --> 00:01:37.450
+These chosen nodes are called landmarks.
+
+29
+00:01:37.450 --> 00:01:41.280
+Let's assume B, which is our target,
+is a landmark node, and
+
+30
+00:01:41.280 --> 00:01:44.430
+let's rewind to the state where
+we are trying to choose between
+
+31
+00:01:44.430 --> 00:01:47.780
+the GD expansion or the FE expansion.
+
+32
+00:01:47.780 --> 00:01:53.172
+So we calculate the distance of F,
+G and E from B.
+
+33
+00:01:53.172 --> 00:01:56.730
+BF is 20, BG is 80, and BE is 15.
+
+34
+00:01:56.730 --> 00:01:59.312
+Now we'll apply the formula like this.
+
+35
+00:01:59.312 --> 00:02:03.900
+For the FG case,
+we subtract the BF distance
+
+36
+00:02:03.900 --> 00:02:07.950
+from the weight and
+add the BD distance to the weight.
+
+37
+00:02:07.950 --> 00:02:12.180
+This gives us 70 because G is far from B.
+
+38
+00:02:12.180 --> 00:02:16.210
+Similarly for the FE case,
+we subtract the BF distance and
+
+39
+00:02:16.210 --> 00:02:20.000
+add the BE distance to the weight and
+it gives us 15.
+
+40
+00:02:20.000 --> 00:02:23.960
+Now, with these modified weights
+we choose the FE expansion.
+
+41
+00:02:23.960 --> 00:02:29.060
+In practice this significantly improves
+the actual performance of the algorithm.
+
+42
+00:02:29.060 --> 00:02:33.201
+So, this technique is used by many online
+mapping services when they give you
+
+43
+00:02:33.201 --> 00:02:33.973
+directions.

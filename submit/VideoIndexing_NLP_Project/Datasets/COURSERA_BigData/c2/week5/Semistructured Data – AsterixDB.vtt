@@ -1,0 +1,504 @@
+WEBVTT
+
+1
+00:00:02.390 --> 00:00:06.010
+Most of you have heard of
+MongoDB as a dominant store for
+
+2
+00:00:06.010 --> 00:00:07.770
+JSON style semi-structured data.
+
+3
+00:00:09.070 --> 00:00:11.200
+MongoDB is very popular and
+
+4
+00:00:11.200 --> 00:00:13.860
+there are a number of excellent
+tutorials on it on the web.
+
+5
+00:00:15.460 --> 00:00:20.290
+In this module we would like to discuss
+a relatively new big data management
+
+6
+00:00:20.290 --> 00:00:25.910
+system for semistructured data that's
+currently being incubated by Apache.
+
+7
+00:00:25.910 --> 00:00:27.040
+It's called AsterixDB.
+
+8
+00:00:28.260 --> 00:00:32.500
+Originally, AsterixDB was conceived by
+the University of California Irvine.
+
+9
+00:00:33.910 --> 00:00:36.800
+Since it is a full fledged DBMS,
+
+10
+00:00:36.800 --> 00:00:42.310
+it provides ACID guarantees to
+understand the basic design of AsterixDB,
+
+11
+00:00:43.330 --> 00:00:48.140
+let's consider this incomplete JSON
+snippet taken from an actual tweet.
+
+12
+00:00:50.120 --> 00:00:51.900
+We have seen the structure of JSON before.
+
+13
+00:00:53.000 --> 00:00:59.090
+Here we point out that entities and
+user, the two parts
+
+14
+00:00:59.090 --> 00:01:03.910
+in blue are nested, that means embedded,
+within the structure of the tweet.
+
+15
+00:01:05.640 --> 00:01:10.540
+If we represent a part of the schema of
+this abbreviated structure in AsterixDB,
+
+16
+00:01:12.010 --> 00:01:13.270
+it will look like this.
+
+17
+00:01:14.890 --> 00:01:17.950
+Here a dataverse is like a name space for
+data.
+
+18
+00:01:19.610 --> 00:01:22.860
+Data is declared in terms of data types.
+
+19
+00:01:22.860 --> 00:01:28.030
+The top type, which looks like
+a standard data with stable declaration,
+
+20
+00:01:28.030 --> 00:01:32.030
+represents the user portion of the JSON
+object that we highlighted before.
+
+21
+00:01:33.130 --> 00:01:35.520
+The type below represents the message.
+
+22
+00:01:36.750 --> 00:01:39.820
+Now, instead of nesting it like JSON.
+
+23
+00:01:39.820 --> 00:01:44.520
+The user attribute highlighted in
+blue is declared to have the type
+
+24
+00:01:44.520 --> 00:01:49.240
+TwitterUserType, thus it captures
+the hierarchical structure of JSON.
+
+25
+00:01:51.450 --> 00:01:55.560
+We should also notice that
+the first type is declared as open.
+
+26
+00:01:57.160 --> 00:02:02.100
+It means that the actual data can have
+more attributes than specified here.
+
+27
+00:02:03.640 --> 00:02:08.900
+In contrast, the TweetMessage
+type is declared as closed,
+
+28
+00:02:08.900 --> 00:02:13.130
+meaning that the data instance must have
+the same attributes as in the schema.
+
+29
+00:02:15.020 --> 00:02:19.890
+AsterixDB can handle spatial data as given
+by the point data types shown in green.
+
+30
+00:02:21.380 --> 00:02:27.120
+The question mark at the end of the point
+type says that this attribute is optional.
+
+31
+00:02:27.120 --> 00:02:29.960
+That means all instances need not have it.
+
+32
+00:02:31.780 --> 00:02:37.810
+Finally, the create dataset actually
+asks the system to create a dataset
+
+33
+00:02:37.810 --> 00:02:43.010
+called TweetMessages, whose type is
+the just declared quick message type.
+
+34
+00:02:44.730 --> 00:02:50.060
+AstrerixDB which runs on HDFS provides
+several options for credit support.
+
+35
+00:02:53.350 --> 00:02:58.440
+First it has its own query language
+called the Asterix query language
+
+36
+00:02:58.440 --> 00:03:01.450
+which resembles the XML
+credit language query.
+
+37
+00:03:03.000 --> 00:03:05.340
+The details of this query language
+are not important right now.
+
+38
+00:03:06.720 --> 00:03:11.150
+We are illustrating the structure of
+a query just to show what it looks like.
+
+39
+00:03:12.330 --> 00:03:15.040
+This particular query asks for
+
+40
+00:03:15.040 --> 00:03:20.020
+all user objects from the dataset
+TwitterUsers in descending order of their
+
+41
+00:03:20.020 --> 00:03:25.010
+follower count and in alphabetical
+order of the user's preferred language.
+
+42
+00:03:26.740 --> 00:03:30.650
+What is more interesting and distinctive
+is that AsterixDB has a creative
+
+43
+00:03:30.650 --> 00:03:36.409
+processing engine that can process
+queries in multiple languages.
+
+44
+00:03:37.750 --> 00:03:41.680
+For its supported language
+they've developed a way to
+
+45
+00:03:41.680 --> 00:03:46.550
+transfer the query into a set of low
+level operations like select and
+
+46
+00:03:46.550 --> 00:03:49.895
+join which their query
+exchange can support.
+
+47
+00:03:49.895 --> 00:03:54.520
+Further, they've determined how
+a record described in one of these
+
+48
+00:03:54.520 --> 00:03:58.280
+languages can be transformed
+into an Asterix.
+
+49
+00:03:58.280 --> 00:04:02.449
+In this manner, the support hive queries,
+
+50
+00:04:02.449 --> 00:04:06.410
+which is expressed in like this.
+
+51
+00:04:06.410 --> 00:04:11.630
+Xquery, Hadoop map reduce,
+as wall as a new language
+
+52
+00:04:11.630 --> 00:04:15.930
+called SQL++ which extends SQL for JSON.
+
+53
+00:04:19.107 --> 00:04:20.781
+Like a typical DB BDms,
+
+54
+00:04:20.781 --> 00:04:25.660
+AsterixDB is designed to operate
+on a cluster of machines.
+
+55
+00:04:25.660 --> 00:04:31.395
+The basic idea, not surprisingly,
+is to use partition data parallellism.
+
+56
+00:04:31.395 --> 00:04:35.415
+Each data set is divided into
+instances of various types
+
+57
+00:04:35.415 --> 00:04:39.685
+which can be decomposed to different
+machines by either range partitioning or
+
+58
+00:04:39.685 --> 00:04:41.565
+hash partitioning like
+we discussed earlier.
+
+59
+00:04:43.572 --> 00:04:47.292
+A runtime distributed execution
+engine called Hyracks is used for
+
+60
+00:04:47.292 --> 00:04:51.172
+partitioned parallel
+execution of query plans.
+
+61
+00:04:51.172 --> 00:04:54.762
+For example, let's assume we have
+two relations, customers and orders,
+
+62
+00:04:54.762 --> 00:04:55.522
+as you can see here.
+
+63
+00:04:57.402 --> 00:05:00.249
+Our query is find the number of orders for
+
+64
+00:05:00.249 --> 00:05:03.946
+every market segment that
+the customers belong to.
+
+65
+00:05:05.526 --> 00:05:10.936
+Now this query need a join operation
+between the two relations,
+
+66
+00:05:10.936 --> 00:05:16.260
+using the O_CUSTKEY as a foreign
+key of customer into orders.
+
+67
+00:05:17.450 --> 00:05:21.090
+It also needs a grouping operation,
+which for
+
+68
+00:05:21.090 --> 00:05:25.330
+each market segment will pull together all
+the orders which will then be counted.
+
+69
+00:05:26.530 --> 00:05:29.960
+You don't have to understand the details
+of this diagram at this point.
+
+70
+00:05:29.960 --> 00:05:33.580
+We just want to point out that
+the different parts of the query
+
+71
+00:05:33.580 --> 00:05:38.180
+that are being marked,
+the customer filed here has two partitions
+
+72
+00:05:38.180 --> 00:05:41.760
+that reside on two nodes,
+NC one and NC two respectively.
+
+73
+00:05:43.300 --> 00:05:47.200
+The orders file also has two partitions.
+
+74
+00:05:47.200 --> 00:05:49.787
+But each partition is dually replicated.
+
+75
+00:05:51.567 --> 00:05:58.660
+One can be accessed either of nodes NC3 or
+NC2 and the other on NC1 and NC5.
+
+76
+00:06:01.540 --> 00:06:06.970
+Hyracks will also break up
+the query into a number of jobs and
+
+77
+00:06:06.970 --> 00:06:10.740
+then fill it out which tasks can
+be performed in parallel and
+
+78
+00:06:10.740 --> 00:06:13.020
+which ones must be
+executed stage by stage.
+
+79
+00:06:14.220 --> 00:06:17.650
+This whole thing will be managed
+by the cluster controller.
+
+80
+00:06:19.080 --> 00:06:22.930
+The cluster controller is also
+responsible for replanning and
+
+81
+00:06:22.930 --> 00:06:27.050
+reexecuting of a job
+if there is a failure.
+
+82
+00:06:27.050 --> 00:06:32.300
+AsteriskDB also has the provision
+
+83
+00:06:32.300 --> 00:06:35.990
+to accept real time data from external
+data sources at multiple rates.
+
+84
+00:06:37.610 --> 00:06:40.160
+One way is from files in a directory path.
+
+85
+00:06:41.400 --> 00:06:43.040
+Consider the example of tweets.
+
+86
+00:06:44.040 --> 00:06:46.480
+As you have seen with the hands-on demo,
+
+87
+00:06:46.480 --> 00:06:52.350
+usually people acquire tweets by accessing
+data through an api that twitter provides.
+
+88
+00:06:52.350 --> 00:06:55.590
+Very typically a certain volume of tweets,
+lets say for
+
+89
+00:06:55.590 --> 00:07:00.010
+every 5 minutes, is accumulated into
+a .json file in a specific directory.
+
+90
+00:07:00.010 --> 00:07:02.861
+The next 5 minutes,
+in another .json file, and so forth.
+
+91
+00:07:04.891 --> 00:07:07.205
+The way to get this
+data into asterisks DB,
+
+92
+00:07:07.205 --> 00:07:10.240
+is to first create an empty
+data set called Tweets here.
+
+93
+00:07:11.490 --> 00:07:13.420
+The next task is to create a feed.
+
+94
+00:07:14.470 --> 00:07:16.830
+That is an externally resource.
+
+95
+00:07:16.830 --> 00:07:21.450
+One has to specify that it's coming from
+the local file system called local fs here
+
+96
+00:07:22.640 --> 00:07:25.390
+and the location of the directory,
+the format and
+
+97
+00:07:25.390 --> 00:07:27.850
+the data type it's going to copy it.
+
+98
+00:07:27.850 --> 00:07:31.100
+Next, the feed is connected
+to the data set and
+
+99
+00:07:31.100 --> 00:07:33.770
+the system starts reading unread
+files from the directory.
+
+100
+00:07:35.960 --> 00:07:41.170
+Another way for AsteriskDB to access
+external data is directly from an API,
+
+101
+00:07:41.170 --> 00:07:43.020
+such as the Twitter API.
+
+102
+00:07:43.020 --> 00:07:47.750
+To do this,
+one would create a dataset as before.
+
+103
+00:07:47.750 --> 00:07:51.460
+But this time the data feed is
+not on the local file system.
+
+104
+00:07:52.580 --> 00:07:57.960
+Instead it uses the push Twitter
+method which invokes the Twitter
+
+105
+00:07:57.960 --> 00:08:01.830
+client with the four authentication
+parameters required by the API.
+
+106
+00:08:03.360 --> 00:08:06.700
+Once the feed is defined it is
+connected to the data set as before.

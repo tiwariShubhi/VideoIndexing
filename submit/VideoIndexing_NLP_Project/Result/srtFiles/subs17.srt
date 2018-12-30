@@ -1,0 +1,3075 @@
+
+1
+00:00:01.870 --> 00:00:04.473
+What is a data stream?
+
+2
+00:00:04.473 --> 00:00:05.913
+After this video,
+
+3
+00:00:05.913 --> 00:00:11.323
+you will be able to summarize the key
+characteristics of a data stream.
+
+4
+00:00:11.323 --> 00:00:16.263
+Identify the requirements of
+streaming data systems, and
+
+5
+00:00:16.263 --> 00:00:20.323
+recognize the data streams
+you use in your life.
+
+6
+00:00:20.323 --> 00:00:23.262
+When we talked about how
+big data is generated and
+
+7
+00:00:23.262 --> 00:00:26.640
+the characteristics of the big
+data using sound waves.
+
+8
+00:00:26.640 --> 00:00:32.460
+One of the challenges we mentioned was the
+velocity of data coming in varying rates.
+
+9
+00:00:34.560 --> 00:00:39.360
+For some applications this
+presents the need to process data
+
+10
+00:00:39.360 --> 00:00:43.540
+as it is generated, or
+in other words, as it streams.
+
+11
+00:00:44.760 --> 00:00:48.770
+We call these types of applications
+Streaming Data Processing Applications.
+
+12
+00:00:49.840 --> 00:00:55.630
+This terminology refers to a constant
+stream of data flowing from a source,
+
+13
+00:00:55.630 --> 00:01:00.380
+for example data from a sensory machine or
+data from social media.
+
+14
+00:01:02.753 --> 00:01:07.149
+An example application would be making
+data-driven marketing decisions in
+
+15
+00:01:07.149 --> 00:01:08.390
+real time.
+
+16
+00:01:08.390 --> 00:01:12.790
+Through the use of data from
+real-time sales trends,
+
+17
+00:01:12.790 --> 00:01:15.670
+social media analysis,
+and sales distributions.
+
+18
+00:01:17.430 --> 00:01:23.070
+Another example for streaming data
+processing is monitoring of industrial or
+
+19
+00:01:23.070 --> 00:01:25.250
+farming machinery in real time.
+
+20
+00:01:25.250 --> 00:01:30.075
+For monitoring and
+detection of potential system failures.
+
+21
+00:01:30.075 --> 00:01:32.837
+In fact, any sensor network or
+
+22
+00:01:32.837 --> 00:01:38.576
+internet of things environment
+controlled by another entity,
+
+23
+00:01:38.576 --> 00:01:42.733
+or set of entities falls
+under this category.
+
+24
+00:01:42.733 --> 00:01:46.304
+For example,
+as you have seen in an earlier video,
+
+25
+00:01:46.304 --> 00:01:48.640
+FlightStats is an application.
+
+26
+00:01:48.640 --> 00:01:52.942
+That processes about 60
+million weekly flight events
+
+27
+00:01:52.942 --> 00:01:56.610
+that come into their
+data acquisition system.
+
+28
+00:01:56.610 --> 00:02:00.978
+And turns it into real-time
+intelligence for airlines and
+
+29
+00:02:00.978 --> 00:02:04.480
+millions of travelers
+around the world daily.
+
+30
+00:02:07.520 --> 00:02:10.180
+So, how then do we define a data stream?
+
+31
+00:02:12.300 --> 00:02:17.268
+A stream is defined as
+a possibly unbounded sequence of
+
+32
+00:02:17.268 --> 00:02:19.433
+data items or records.
+
+33
+00:02:19.433 --> 00:02:25.880
+That may or may not be related to,
+or correlated with each other.
+
+34
+00:02:25.880 --> 00:02:30.952
+Each data is generally timestamped and
+
+35
+00:02:30.952 --> 00:02:34.670
+in some cases geo-tagged.
+
+36
+00:02:34.670 --> 00:02:39.063
+As you have seen in our examples,
+the data can stream from many sources.
+
+37
+00:02:39.063 --> 00:02:44.403
+Including instruments, and
+many internet of things application areas,
+
+38
+00:02:44.403 --> 00:02:48.480
+computer programs, websites,
+or social media posts.
+
+39
+00:02:49.900 --> 00:02:54.360
+Streaming data sometimes get
+referred to as event data as
+
+40
+00:02:54.360 --> 00:02:58.940
+each data item is treated as an individual
+event in a synchronized sequence.
+
+41
+00:03:01.200 --> 00:03:04.070
+Streams pose very difficult challenges for
+
+42
+00:03:04.070 --> 00:03:06.940
+conventional data
+management architectures.
+
+43
+00:03:06.940 --> 00:03:13.860
+Which are built primarily on the concept
+of persistence, static data collections.
+
+44
+00:03:13.860 --> 00:03:18.219
+Due to the fact that most often we
+have only one chance to look at and
+
+45
+00:03:18.219 --> 00:03:21.643
+process streaming data
+before more gets piled on.
+
+46
+00:03:21.643 --> 00:03:26.597
+Streaming data management systems cannot
+be separated from real-time processing
+
+47
+00:03:26.597 --> 00:03:27.160
+of data.
+
+48
+00:03:29.130 --> 00:03:30.160
+Managing and
+
+49
+00:03:30.160 --> 00:03:35.030
+processing data in motion is a typical
+capability of streaming data systems.
+
+50
+00:03:36.060 --> 00:03:38.791
+However, the sheer size, variety and
+
+51
+00:03:38.791 --> 00:03:43.305
+velocity of big data adds further
+challenges to these systems.
+
+52
+00:03:43.305 --> 00:03:49.260
+Such systems are designed to manage
+relatively simple computations.
+
+53
+00:03:49.260 --> 00:03:52.640
+Such as one record at a time or
+
+54
+00:03:52.640 --> 00:03:57.070
+a set of objects in a short time
+window of the most recent data.
+
+55
+00:03:58.460 --> 00:04:02.090
+The computations are done
+in near-real-time,
+
+56
+00:04:02.090 --> 00:04:06.910
+sometimes in memory, and
+as independent computations.
+
+57
+00:04:08.950 --> 00:04:14.099
+The processing components
+often subscribe to a system,
+
+58
+00:04:14.099 --> 00:04:18.074
+or a stream source, non-interactively.
+
+59
+00:04:19.440 --> 00:04:24.580
+This means they sent nothing
+back to the source, nor
+
+60
+00:04:24.580 --> 00:04:26.710
+did they establish
+interaction with the source.
+
+61
+00:04:29.933 --> 00:04:35.133
+The concept of dynamic steering involves
+dynamically changing the next steps or
+
+62
+00:04:35.133 --> 00:04:38.345
+direction of an application
+through a continuous
+
+63
+00:04:38.345 --> 00:04:41.110
+computational process using streaming.
+
+64
+00:04:42.460 --> 00:04:48.817
+Dynamic steering is often a part of
+streaming data management and processing.
+
+65
+00:04:48.817 --> 00:04:55.280
+A self-driving car is a perfect example
+of a dynamic steering application.
+
+66
+00:04:56.350 --> 00:05:00.330
+But all streaming data applications
+fall into this category.
+
+67
+00:05:00.330 --> 00:05:04.585
+Such as the online gaming example we
+discussed earlier in this course.
+
+68
+00:05:04.585 --> 00:05:08.893
+Amazon Kinesis an other open-source Apache
+
+69
+00:05:08.893 --> 00:05:13.993
+projects like Storm, Flink,
+Spark Streaming, and
+
+70
+00:05:13.993 --> 00:05:18.880
+Samza are examples of big
+data streaming systems.
+
+71
+00:05:20.650 --> 00:05:23.770
+Many other companies also
+provide streaming systems for
+
+72
+00:05:23.770 --> 00:05:26.920
+big data that are frequently
+updated in response
+
+73
+00:05:26.920 --> 00:05:30.280
+to the rapidly changing
+nature of these technologies.
+
+74
+00:05:32.440 --> 00:05:38.300
+As a summary, dynamic near-real-time
+streaming data management,
+
+75
+00:05:38.300 --> 00:05:43.640
+processing, and steering is an important
+part of today's big data applications.
+
+76
+00:05:44.710 --> 00:05:47.590
+Next, we will look at some
+of the challenges for
+
+77
+00:05:47.590 --> 00:05:49.830
+streaming data management and processing.
+
+1
+00:00:01.280 --> 00:00:04.810
+Now that we have seen what
+streaming data means,
+
+2
+00:00:04.810 --> 00:00:08.690
+let’s look at what makes streaming data
+different and what some management and
+
+3
+00:00:08.690 --> 00:00:11.320
+processing challenges for
+streaming data are.
+
+4
+00:00:12.510 --> 00:00:16.130
+After this video you will
+be able to compare and
+
+5
+00:00:16.130 --> 00:00:18.980
+contrast data in motion and data at rest.
+
+6
+00:00:20.450 --> 00:00:23.990
+Differentiate between streaming and
+batch data processing.
+
+7
+00:00:25.250 --> 00:00:31.070
+And list management and
+processing challenges for streaming data.
+
+8
+00:00:31.070 --> 00:00:33.560
+We often hear the terms data addressed and
+
+9
+00:00:33.560 --> 00:00:36.665
+data in motion,
+when talking about big data management.
+
+10
+00:00:36.665 --> 00:00:43.260
+Data-at-rest refers to mostly
+static data collected from one or
+
+11
+00:00:43.260 --> 00:00:49.186
+more data sources, and the analysis
+happens after the data is collected.
+
+12
+00:00:49.186 --> 00:00:54.920
+The term data-in-motion refers to a mode
+
+13
+00:00:54.920 --> 00:00:58.210
+although similar data
+collection methods apply,
+
+14
+00:00:58.210 --> 00:01:02.490
+the data gets analyzed at the same
+time it is being generated.
+
+15
+00:01:03.670 --> 00:01:09.300
+Just like the sensor data processing
+in a plane or a self-driving car.
+
+16
+00:01:09.300 --> 00:01:14.610
+Analysis of data addressed is called
+batch or static processing and
+
+17
+00:01:14.610 --> 00:01:18.080
+the analysis of streaming data
+is called stream processing.
+
+18
+00:01:19.640 --> 00:01:24.633
+The run time and memory usage of most
+algorithms that process static data,
+
+19
+00:01:24.633 --> 00:01:28.890
+is usually dependent on the data size, and
+
+20
+00:01:28.890 --> 00:01:33.010
+this size can easily be calculated
+from files or databases.
+
+21
+00:01:34.670 --> 00:01:41.200
+A key property, of streaming data
+processing is the size of the data
+
+22
+00:01:41.200 --> 00:01:46.650
+is unbounded and this changes the types
+of algorithms that can be used.
+
+23
+00:01:48.050 --> 00:01:52.760
+Algorithms that require iterating or
+looping over the whole data set are not
+
+24
+00:01:52.760 --> 00:01:57.470
+possible since with stream data,
+you never get to the end.
+
+25
+00:01:58.730 --> 00:02:04.710
+The modeling and management of streaming
+data should enable computations on
+
+26
+00:02:04.710 --> 00:02:09.720
+one data element or a small window
+of group of recent data elements.
+
+27
+00:02:10.880 --> 00:02:14.820
+These computations can update metrics,
+monitor and
+
+28
+00:02:14.820 --> 00:02:18.050
+plot statistics on the streaming data.
+
+29
+00:02:18.050 --> 00:02:22.120
+Or apply analysis techniques
+to the streaming data
+
+30
+00:02:22.120 --> 00:02:26.010
+to learn about the dynamics of
+the system as a time series.
+
+31
+00:02:27.120 --> 00:02:30.820
+Since computations need to
+be completed in real time,
+
+32
+00:02:30.820 --> 00:02:35.460
+the analysis tasks processing
+streaming data should be quicker or
+
+33
+00:02:35.460 --> 00:02:39.370
+not much longer than
+the streaming rate of the data.
+
+34
+00:02:39.370 --> 00:02:41.200
+Which we define by it's velocity.
+
+35
+00:02:42.460 --> 00:02:45.970
+In most streaming systems,
+the management, and
+
+36
+00:02:45.970 --> 00:02:51.020
+processing system subscribe to
+the data source, but doesn't
+
+37
+00:02:51.020 --> 00:02:55.310
+send anything back to the stream source
+in terms of feedback or interactions.
+
+38
+00:02:57.070 --> 00:03:01.530
+These requirements for streaming data
+processing are quite different than batch
+
+39
+00:03:01.530 --> 00:03:06.330
+processing where the analytical steps
+have access to often, all data and
+
+40
+00:03:06.330 --> 00:03:11.890
+can take more time to complete a complex
+analytical task with less pressure
+
+41
+00:03:11.890 --> 00:03:16.360
+on the completion time of individual
+data management and processing tasks.
+
+42
+00:03:18.120 --> 00:03:21.756
+Most organizations today
+use a hybrid architecture.
+
+43
+00:03:21.756 --> 00:03:26.990
+Sometimes get referred to as
+the lambda architecture for
+
+44
+00:03:26.990 --> 00:03:31.490
+processing streaming and
+back jobs at the same time.
+
+45
+00:03:31.490 --> 00:03:38.130
+In these systems, streaming wheel over
+the real-time data is managed and
+
+46
+00:03:38.130 --> 00:03:43.230
+kept until those data elements are pushed
+
+47
+00:03:43.230 --> 00:03:48.510
+to a batch system and become available
+to access and process as batch data.
+
+48
+00:03:49.870 --> 00:03:54.770
+In such systems, a stream storage
+layer is used to enable fast
+
+49
+00:03:54.770 --> 00:03:59.591
+trees of streams and
+ensure data ordering and consistency.
+
+50
+00:03:59.591 --> 00:04:01.398
+And a processing layer for
+
+51
+00:04:01.398 --> 00:04:06.076
+data is used to retrieve data from
+the storage layer to analyze it and
+
+52
+00:04:06.076 --> 00:04:11.003
+most probably little bit to a batch
+data stream and notify the streaming
+
+53
+00:04:11.003 --> 00:04:16.810
+storage that the data set does no
+longer need to be in streaming storage.
+
+54
+00:04:16.810 --> 00:04:22.200
+The big data challenges we discussed
+were scalability, data replication,
+
+55
+00:04:22.200 --> 00:04:27.490
+and durability, and fault tolerance arise
+in this type of data very significantly.
+
+56
+00:04:28.690 --> 00:04:34.260
+Among many there are two main
+challenges that needs to be overcome
+
+57
+00:04:34.260 --> 00:04:39.820
+to avoid data loss, and
+enable real time analytical tasks.
+
+58
+00:04:39.820 --> 00:04:44.950
+One challenge in streaming data
+process is that the size and
+
+59
+00:04:44.950 --> 00:04:49.020
+frequency of the mean data can
+significantly change over time.
+
+60
+00:04:50.330 --> 00:04:55.910
+These changes can be unpredictable and
+may be driven by human behavior.
+
+61
+00:04:57.060 --> 00:05:02.340
+For example, streaming data found on
+social networks such as Facebook and
+
+62
+00:05:02.340 --> 00:05:05.025
+Twitter can increase in
+volume during holidays,
+
+63
+00:05:05.025 --> 00:05:08.160
+sports matches, or major news events.
+
+64
+00:05:09.980 --> 00:05:15.910
+These changes can be periodic and occur,
+for example, in the evenings or weekends.
+
+65
+00:05:17.280 --> 00:05:22.470
+For example, people may post messages
+on Facebook more in the evening
+
+66
+00:05:22.470 --> 00:05:25.940
+instead of during the day working hours.
+
+67
+00:05:25.940 --> 00:05:30.750
+Streaming data changes may also
+be unpredictable and sporadic.
+
+68
+00:05:30.750 --> 00:05:33.510
+There can be an increase in data size and
+
+69
+00:05:33.510 --> 00:05:38.930
+frequency during during major events,
+sporting matches and things like that.
+
+70
+00:05:38.930 --> 00:05:44.950
+Other changes include dropping or
+missing data or even no data
+
+71
+00:05:44.950 --> 00:05:50.320
+when there are network problems or device
+generating the data has hardware problems.
+
+72
+00:05:50.320 --> 00:05:52.880
+As an example of streaming
+data fluctuation,
+
+73
+00:05:52.880 --> 00:05:54.964
+consider the number of Tweets per second.
+
+74
+00:05:54.964 --> 00:06:01.050
+On average,
+there are 6,000 tweets sent every second.
+
+75
+00:06:01.050 --> 00:06:05.810
+However, in August 2013,
+the world record was
+
+76
+00:06:05.810 --> 00:06:10.980
+set when over 144,000 tweets
+were sent in a second.
+
+77
+00:06:10.980 --> 00:06:13.210
+That's a factor of 24 increase.
+
+78
+00:06:15.320 --> 00:06:20.250
+At the end of this lesson we will ask
+you to focus on Twitter streams for
+
+79
+00:06:20.250 --> 00:06:23.160
+trending topics and any other topic.
+
+80
+00:06:24.480 --> 00:06:27.810
+You will notice how the rates
+of Tweets streaming
+
+81
+00:06:27.810 --> 00:06:31.600
+changes between different times and
+different topics.
+
+82
+00:06:31.600 --> 00:06:38.010
+To summarize, streaming data must be
+handled differently than static data.
+
+83
+00:06:38.010 --> 00:06:43.150
+Unlike static data, where you can
+determine the size, streaming data is
+
+84
+00:06:43.150 --> 00:06:48.570
+continually generated, and
+you can not process it all at once.
+
+85
+00:06:50.250 --> 00:06:56.580
+Streaming data can unpredictably
+change in both size and frequency.
+
+86
+00:06:56.580 --> 00:06:58.330
+This can be due to human behavior.
+
+87
+00:06:59.420 --> 00:07:01.910
+Finally, algorithms for
+
+88
+00:07:01.910 --> 00:07:06.830
+processing streaming data must
+be relatively fast and simple.
+
+89
+00:07:06.830 --> 00:07:09.170
+Since you don't know when
+the next data arrives.
+
+1
+00:00:02.380 --> 00:00:03.730
+In a previous lecture,
+
+2
+00:00:03.730 --> 00:00:08.440
+we said that new interesting solutions are
+emerging in the big data product space.
+
+3
+00:00:09.780 --> 00:00:13.718
+While these solutions do not have
+the full fledged power of a DBMS,
+
+4
+00:00:13.718 --> 00:00:18.800
+they offer novel feature combinations that
+suit some application space just right.
+
+5
+00:00:19.970 --> 00:00:23.380
+One of these products is Aerospike,
+
+6
+00:00:23.380 --> 00:00:28.040
+which calls itself a distributed
+NoSQL database and
+
+7
+00:00:28.040 --> 00:00:32.340
+key value store, and
+goes on to say that it is architected for
+
+8
+00:00:32.340 --> 00:00:36.700
+the performance needs of
+today's web scale applications.
+
+9
+00:00:36.700 --> 00:00:40.630
+The diagram here is from
+an Aerospike whitepaper.
+
+10
+00:00:41.920 --> 00:00:45.990
+It shows how Aerospike relates to
+the ecosystem for which it is designed.
+
+11
+00:00:47.340 --> 00:00:52.585
+The top layer shows several applications
+for real time consumer facing systems,
+
+12
+00:00:52.585 --> 00:00:57.115
+such as travel recommendation systems,
+pricing engines used for
+
+13
+00:00:57.115 --> 00:01:00.455
+stock market applications,
+real time decision systems that
+
+14
+00:01:00.455 --> 00:01:04.145
+analyze data to figure out whether
+an investment should be done and so forth.
+
+15
+00:01:05.405 --> 00:01:08.215
+Now, all of these systems
+have the common need
+
+16
+00:01:08.215 --> 00:01:12.385
+that large amounts of data should be
+accessible to them at any point of time.
+
+17
+00:01:14.090 --> 00:01:18.939
+The Aerospike system can interoperate
+with Hadoop-based systems, so
+
+18
+00:01:18.939 --> 00:01:23.170
+Spark, or a Legacy database, or
+even a real time data source.
+
+19
+00:01:23.170 --> 00:01:27.761
+It can exchange large volumes
+of data with any such source and
+
+20
+00:01:27.761 --> 00:01:32.274
+serve fast lookups and
+queries to the applications above.
+
+21
+00:01:32.274 --> 00:01:36.420
+Now that translates to a very
+high availability robust and
+
+22
+00:01:36.420 --> 00:01:38.460
+strong consistency needs.
+
+23
+00:01:40.720 --> 00:01:46.600
+The figure here presents a high level
+architecture diagram of Aerospike.
+
+24
+00:01:46.600 --> 00:01:51.010
+The first item to notice here
+is what they call a fast bat,
+
+25
+00:01:52.410 --> 00:01:55.500
+which essentially refers to
+the left side of the architecture.
+
+26
+00:01:57.200 --> 00:02:00.700
+The client system processes transactions.
+
+27
+00:02:00.700 --> 00:02:05.730
+That is data that are primarily managed in
+a primary index that is a key value store.
+
+28
+00:02:07.180 --> 00:02:11.950
+This index stays in memory for
+operational purposes.
+
+29
+00:02:11.950 --> 00:02:16.430
+However, the server also interacts with
+the storage layer for persistence.
+
+30
+00:02:17.910 --> 00:02:21.290
+The storage layer uses three
+kinds of storage systems,
+
+31
+00:02:22.770 --> 00:02:27.940
+in memory with a dynamic RAM or
+DRAM, a regular spinning disk,
+
+32
+00:02:29.040 --> 00:02:34.190
+and flash/SSD, which is solid state device
+for fast loading of data when needed.
+
+33
+00:02:35.410 --> 00:02:38.160
+In fact the Aerospike system
+
+34
+00:02:38.160 --> 00:02:42.210
+has optimized its performance with
+characteristics of an SSD in mind.
+
+35
+00:02:44.320 --> 00:02:48.890
+For those of who are not sure
+what an SSD is, you can think of
+
+36
+00:02:48.890 --> 00:02:53.500
+an SSD as a kind of storage device
+whose random read performance is much
+
+37
+00:02:53.500 --> 00:02:57.610
+faster than speeding hard disk and the
+write performance is just a little slower.
+
+38
+00:02:59.150 --> 00:03:04.556
+One vendor recently advertised its SSD
+has sequence share read speeds of up to
+
+39
+00:03:04.556 --> 00:03:09.980
+2,500 MBPS and the sequential write
+speeds as fast as 1,500 MBPS.
+
+40
+00:03:12.435 --> 00:03:14.810
+Now why is this important
+in a big data discussion?
+
+41
+00:03:16.890 --> 00:03:21.300
+When we speak of scalability, grade
+efficiency, fast transactions, and so
+
+42
+00:03:21.300 --> 00:03:25.940
+forth, we often do not mention
+that part of the performance
+
+43
+00:03:25.940 --> 00:03:29.950
+guarantee is governed by the combination
+of hardware and software.
+
+44
+00:03:31.200 --> 00:03:36.200
+So the ability to offer more efficient
+persistent storage with fast IO
+
+45
+00:03:36.200 --> 00:03:41.540
+implies that while a significant amount
+of information can be stored on disk,
+
+46
+00:03:41.540 --> 00:03:45.714
+it can be done without compromising
+the overall system performance for
+
+47
+00:03:45.714 --> 00:03:48.819
+an environment that
+needs fast data loading.
+
+48
+00:03:51.490 --> 00:03:55.410
+The second point of uniqueness
+is a secondary index there.
+
+49
+00:03:56.760 --> 00:04:01.022
+Aerospike built secondary index
+fields that are non-primary keys.
+
+50
+00:04:01.022 --> 00:04:05.192
+A non-primary key is a key attribute
+that makes a tuple unique,
+
+51
+00:04:05.192 --> 00:04:07.560
+but it has not been
+chosen as a primary key.
+
+52
+00:04:08.940 --> 00:04:12.980
+In Aerospike, secondary indices
+are stored in main memory.
+
+53
+00:04:12.980 --> 00:04:17.770
+They are built on every node in a cluster
+and co-located with the primary index.
+
+54
+00:04:18.960 --> 00:04:23.224
+Each secondary index entry
+contains references to records,
+
+55
+00:04:23.224 --> 00:04:25.196
+which are local to the node.
+
+56
+00:04:27.240 --> 00:04:32.414
+As a key value store,
+Aerospike uses standard database like
+
+57
+00:04:32.414 --> 00:04:39.450
+scalar types like integer, string, and
+so forth, as well as lists like Reddis.
+
+58
+00:04:39.450 --> 00:04:46.340
+The map type is similar to the hashtag of
+Reddis and contains attribute value pairs.
+
+59
+00:04:46.340 --> 00:04:52.390
+Since it is focused on real time web
+application, it supports geospatial data,
+
+60
+00:04:52.390 --> 00:04:56.930
+like places with latitude and
+longitude values or regency polygons.
+
+61
+00:04:59.020 --> 00:05:04.300
+This allows them to perform KV store
+operations, for example, like is
+
+62
+00:05:04.300 --> 00:05:09.640
+the location of this in La Jolla,
+which is a point-in-polygon query.
+
+63
+00:05:09.640 --> 00:05:14.120
+Or a distance query, like find hotels
+within three miles of my location.
+
+64
+00:05:15.700 --> 00:05:18.230
+KV queries are constructed
+programmatically.
+
+65
+00:05:19.750 --> 00:05:26.506
+Now interestingly, Aerospike also provides
+a more declarative language called AQL.
+
+66
+00:05:26.506 --> 00:05:31.840
+AQL looks very similar to SQL,
+
+67
+00:05:31.840 --> 00:05:34.520
+the Standard Query Language for
+relational databases.
+
+68
+00:05:35.830 --> 00:05:37.360
+A query like select name and
+
+69
+00:05:37.360 --> 00:05:43.460
+age from user star profiles projects
+out the name and age values
+
+70
+00:05:43.460 --> 00:05:48.250
+from the profile's record set that
+belongs to the ding space called users.
+
+71
+00:05:49.750 --> 00:05:53.080
+The language also allows
+advocate functions, like sum and
+
+72
+00:05:53.080 --> 00:05:56.800
+average, and other user defined functions,
+
+73
+00:05:56.800 --> 00:06:00.379
+which the system may evaluate through
+a map produced time operation.
+
+74
+00:06:03.160 --> 00:06:06.880
+We mentioned earlier that while most
+medium assists today offer base
+
+75
+00:06:06.880 --> 00:06:11.850
+guarantees, Aerospike, despite being
+a distributor information system,
+
+76
+00:06:11.850 --> 00:06:13.740
+actually offers ACID guarantees.
+
+77
+00:06:14.750 --> 00:06:17.250
+This is accomplished using
+a number of techniques.
+
+78
+00:06:19.338 --> 00:06:23.100
+We'll consider a few of them to give you
+a flavor of the mechanisms that current
+
+79
+00:06:23.100 --> 00:06:28.380
+systems use to balance between
+large scale data management and
+
+80
+00:06:28.380 --> 00:06:32.010
+transaction management in a cluster
+where nodes can join or leave.
+
+81
+00:06:33.800 --> 00:06:37.499
+You may recall that consistency
+means two different things,
+
+82
+00:06:38.640 --> 00:06:42.460
+one is to ensure that all constraints,
+like domain constraints, are satisfied.
+
+83
+00:06:43.940 --> 00:06:46.905
+The second meaning is applied
+to distributor systems and
+
+84
+00:06:46.905 --> 00:06:51.320
+ensures all copies of a data
+item in a cluster are in sync.
+
+85
+00:06:52.950 --> 00:06:56.040
+For operations and
+single keys with replication and
+
+86
+00:06:56.040 --> 00:07:01.070
+secondary indices,
+Aerospike provides immediate consistency
+
+87
+00:07:01.070 --> 00:07:04.720
+using synchronous writes to
+replicas within the cluster.
+
+88
+00:07:05.860 --> 00:07:10.083
+Synchronous write means the write
+process will be considered
+
+89
+00:07:10.083 --> 00:07:13.420
+successful only if
+the replica is all subdated.
+
+90
+00:07:14.768 --> 00:07:18.829
+No other write is allowed on the record
+while the object of replica is pending.
+
+91
+00:07:20.520 --> 00:07:24.949
+So what happens if there is an increase
+in the number of write operations due to
+
+92
+00:07:24.949 --> 00:07:26.800
+an increase in ingestion rate?
+
+93
+00:07:27.890 --> 00:07:33.490
+In Aerospike, it is possible to relax
+this immediate consistency condition
+
+94
+00:07:33.490 --> 00:07:37.950
+by bypassing some of
+the consistency checks.
+
+95
+00:07:37.950 --> 00:07:42.670
+But if this is done, eventual
+consistency will still be enforced.
+
+96
+00:07:45.080 --> 00:07:50.890
+Durability is achieved by storing data
+in the flash SSD on every node and
+
+97
+00:07:50.890 --> 00:07:52.530
+performing direct reads from the flash.
+
+98
+00:07:54.000 --> 00:07:57.920
+Now durability is also maintained through
+the process of replication because we have
+
+99
+00:07:57.920 --> 00:07:59.790
+multiple copies of data.
+
+100
+00:07:59.790 --> 00:08:05.870
+So even if one node fails, the latest copy
+of the last data is available from one or
+
+101
+00:08:05.870 --> 00:08:08.190
+more replica nodes in the same cluster,
+
+102
+00:08:08.190 --> 00:08:11.350
+as well as in nodes residing
+in remote clusters.
+
+103
+00:08:13.550 --> 00:08:16.250
+But does that just
+contradict the CAP theorem?
+
+104
+00:08:17.525 --> 00:08:22.700
+The CAP theorem holds when
+the network is partitioned.
+
+105
+00:08:24.220 --> 00:08:27.700
+That means when nodes in
+different parts of the network
+
+106
+00:08:27.700 --> 00:08:29.360
+have different data content.
+
+107
+00:08:30.810 --> 00:08:35.750
+Aerospike reduces and tries to completely
+eliminate the situation by making
+
+108
+00:08:35.750 --> 00:08:41.250
+sure that the master knows exactly
+where all the other nodes are.
+
+109
+00:08:41.250 --> 00:08:44.260
+And the replication is
+happening properly even when
+
+110
+00:08:44.260 --> 00:08:46.300
+the new nodes are joining the network.
+
+1
+00:00:02.850 --> 00:00:07.270
+In the previous modules, we talked
+about data variety and streaming data.
+
+2
+00:00:08.410 --> 00:00:13.310
+In this module, we'll focus on a central
+issue in large scale data processing and
+
+3
+00:00:13.310 --> 00:00:19.540
+management and that is when should
+we use Hadoop or Yarn style system?
+
+4
+00:00:19.540 --> 00:00:24.230
+And when should we use a database system
+that can perform parallel operations?
+
+5
+00:00:24.230 --> 00:00:28.840
+And then we'll explore how the state
+of the art big data management systems
+
+6
+00:00:28.840 --> 00:00:31.370
+address these issues of volume and
+variety.
+
+7
+00:00:32.930 --> 00:00:36.510
+We start with the problem
+of high volume data and
+
+8
+00:00:36.510 --> 00:00:38.699
+two contrasting approaches for
+handling them.
+
+9
+00:00:40.150 --> 00:00:42.590
+So after this video, you'll be able to
+
+10
+00:00:43.650 --> 00:00:47.270
+explain the various advantages of
+using a DBMS over a file system.
+
+11
+00:00:48.560 --> 00:00:52.500
+Specify the differences between
+parallel and distributed DBMS.
+
+12
+00:00:52.500 --> 00:00:57.362
+And briefly describe
+a MapReduce-style DBMS and
+
+13
+00:00:57.362 --> 00:01:01.537
+its relationship with the current DBMSs.
+
+14
+00:01:01.537 --> 00:01:06.005
+In the early days,
+when database systems weren't around or
+
+15
+00:01:06.005 --> 00:01:11.450
+just came in, databases were designed
+as a set of application programs.
+
+16
+00:01:12.600 --> 00:01:17.390
+They were written to handle data that
+resided in files in a file system.
+
+17
+00:01:18.450 --> 00:01:21.310
+However, soon this
+approach led to problems.
+
+18
+00:01:22.520 --> 00:01:26.560
+First, there are multiple file formats.
+
+19
+00:01:26.560 --> 00:01:32.370
+And often, there was a duplication
+of information in different files.
+
+20
+00:01:32.370 --> 00:01:36.940
+Or the files simply had inconsistent
+information that was very hard to
+
+21
+00:01:36.940 --> 00:01:41.150
+determine, especially when the data was
+large and the file content was complex.
+
+22
+00:01:43.550 --> 00:01:47.050
+Secondly, there wasn't
+a uniform way to access data.
+
+23
+00:01:48.090 --> 00:01:52.120
+Each data access task, like finding
+employees in a department sorted by their
+
+24
+00:01:52.120 --> 00:01:55.990
+salary versus finding
+employees in all departments
+
+25
+00:01:55.990 --> 00:02:00.060
+sorted by their start date needed to
+be written as a separate program.
+
+26
+00:02:01.160 --> 00:02:04.040
+So people ended up writing
+different programs for
+
+27
+00:02:04.040 --> 00:02:06.200
+data access, as well as data update.
+
+28
+00:02:08.350 --> 00:02:11.890
+A third problem was rooted to
+the enforcement of constraints,
+
+29
+00:02:11.890 --> 00:02:14.050
+often called integrity constraints.
+
+30
+00:02:14.050 --> 00:02:20.000
+For example, to say something like every
+employee has exactly one job title.
+
+31
+00:02:20.000 --> 00:02:23.530
+One had arrived that condition,
+as part of an application program called.
+
+32
+00:02:24.700 --> 00:02:27.670
+So if you want to change the constraint,
+you need to look for
+
+33
+00:02:27.670 --> 00:02:29.620
+the programs where such
+a rule is hard coded.
+
+34
+00:02:31.590 --> 00:02:35.300
+The fourth problem has to
+do with system failures.
+
+35
+00:02:35.300 --> 00:02:39.420
+Supposed Joe, an employee becomes
+the leader of a group and moves in to
+
+36
+00:02:39.420 --> 00:02:44.840
+the office of the old leader, Ben who has
+now become the director of the division.
+
+37
+00:02:44.840 --> 00:02:49.788
+So we update Joe's details and
+move on to update, Ben's new office for
+
+38
+00:02:49.788 --> 00:02:51.280
+the system crashes.
+
+39
+00:02:51.280 --> 00:02:54.501
+So the files are incompletely updated and
+
+40
+00:02:54.501 --> 00:02:58.096
+there is no way to go back,
+and start all over.
+
+41
+00:02:58.096 --> 00:03:04.138
+The term atomicity means that all of
+the changes that we need to do for
+
+42
+00:03:04.138 --> 00:03:09.657
+these promotions must happen altogether,
+as a single unit.
+
+43
+00:03:09.657 --> 00:03:14.874
+They should either fully go through or
+not go through at all.
+
+44
+00:03:14.874 --> 00:03:21.038
+This atomicity is very difficult to handle
+when the data reside in one or more files.
+
+45
+00:03:23.936 --> 00:03:29.173
+So, a prime reason for the transition
+to a DBMS is to alleviate these and
+
+46
+00:03:29.173 --> 00:03:30.842
+other difficulties.
+
+47
+00:03:30.842 --> 00:03:34.507
+If we look at the current DBMS,
+especially relational DBMS,
+
+48
+00:03:34.507 --> 00:03:36.836
+we will notice a number of advantages.
+
+49
+00:03:39.165 --> 00:03:42.710
+DBMSs offer query languages,
+which are declarative.
+
+50
+00:03:44.060 --> 00:03:48.200
+Declarative means that we
+state what we want to retrieve
+
+51
+00:03:48.200 --> 00:03:51.060
+without telling the DBMS
+how exactly to retrieve it.
+
+52
+00:03:52.220 --> 00:03:56.682
+In a relational DBMS, we can say,
+find the average set of salary of
+
+53
+00:03:56.682 --> 00:04:01.800
+employees in the R&D division for
+every job title and sort from high to low.
+
+54
+00:04:01.800 --> 00:04:05.779
+We don't have to tell the system how
+to group these records by job title or
+
+55
+00:04:05.779 --> 00:04:07.879
+how to extract just the salary field.
+
+56
+00:04:10.073 --> 00:04:14.404
+A typical user of a DBMS who issues
+queries does not worry about how
+
+57
+00:04:14.404 --> 00:04:19.604
+the relations are structured or whether
+they are located in the same machine,
+
+58
+00:04:19.604 --> 00:04:21.835
+or spread across five machines.
+
+59
+00:04:21.835 --> 00:04:25.835
+The goal of data independence is to
+isolate the users from the record
+
+60
+00:04:25.835 --> 00:04:28.993
+layout so long as the logical
+definition of the data,
+
+61
+00:04:28.993 --> 00:04:33.083
+which means the tables and
+their attributes are clearly specified.
+
+62
+00:04:35.195 --> 00:04:39.754
+Now most importantly, relational DBMSs
+have developed a very mature and
+
+63
+00:04:39.754 --> 00:04:44.389
+continually improving methodology of
+how to answer a query efficiently,
+
+64
+00:04:44.389 --> 00:04:47.255
+even when there are a large
+number of cables and
+
+65
+00:04:47.255 --> 00:04:50.590
+the number of records
+exceeds hundreds of millions.
+
+66
+00:04:51.800 --> 00:04:56.880
+From a 2009 account,
+EB uses the tera data system with
+
+67
+00:04:56.880 --> 00:05:02.280
+72 machines to manage approximately
+2.4 terabytes of relational data.
+
+68
+00:05:03.840 --> 00:05:08.496
+These systems have built powerful
+data structures, algorithms and
+
+69
+00:05:08.496 --> 00:05:12.991
+sound principles to determine how
+a specific array should be onset
+
+70
+00:05:12.991 --> 00:05:18.070
+efficiently despite the size of the data
+and the complexity of the tables.
+
+71
+00:05:18.070 --> 00:05:22.790
+Now with any system,
+bad things can happen.
+
+72
+00:05:22.790 --> 00:05:25.266
+Systems fail in the middle
+of an operation.
+
+73
+00:05:25.266 --> 00:05:29.489
+Malicious processes try to get
+unauthorized access to data.
+
+74
+00:05:29.489 --> 00:05:33.405
+One large can often underappreciated
+aspect of a DBMS is
+
+75
+00:05:33.405 --> 00:05:39.060
+the implementation of transaction
+safety and failure recovery.
+
+76
+00:05:39.060 --> 00:05:40.950
+Now, recall our discussion of atomicity.
+
+77
+00:05:42.110 --> 00:05:47.082
+In databases, a single logical operation
+on the data is called a transaction.
+
+78
+00:05:47.082 --> 00:05:51.314
+For example, a transfer of funds
+from one bank account to another,
+
+79
+00:05:51.314 --> 00:05:55.253
+even involving multiple changes
+like debiting one account and
+
+80
+00:05:55.253 --> 00:05:58.091
+crediting another is a single transaction.
+
+81
+00:05:58.091 --> 00:06:02.894
+Now, atomicity is one of the four
+properties that a transaction should
+
+82
+00:06:02.894 --> 00:06:04.350
+provide.
+
+83
+00:06:04.350 --> 00:06:09.740
+The four properties,
+collectively called ACID are atomicity,
+
+84
+00:06:09.740 --> 00:06:13.370
+consistency, isolation and durability.
+
+85
+00:06:14.730 --> 00:06:19.370
+Consistency means any data
+written to the database must be
+
+86
+00:06:19.370 --> 00:06:24.301
+valid according to all defined
+rules including constrains.
+
+87
+00:06:24.301 --> 00:06:29.747
+The durability property ensures that
+once a transaction has been committed,
+
+88
+00:06:29.747 --> 00:06:34.709
+it will remain so, even in the event
+of power loss, crashes or errors.
+
+89
+00:06:36.816 --> 00:06:40.573
+The isolation property comes
+in the context of concurrency,
+
+90
+00:06:40.573 --> 00:06:44.920
+which refers to multiple people
+updating a database simultaneously.
+
+91
+00:06:45.970 --> 00:06:50.640
+To understand concurrency, think of
+an airline or a railway reservation system
+
+92
+00:06:50.640 --> 00:06:54.330
+where hundreds and thousands of
+people are buying, cancelling and
+
+93
+00:06:54.330 --> 00:06:57.110
+changing their reservations and
+tickets all at the same time.
+
+94
+00:06:58.360 --> 00:07:02.710
+The DBMS must be sure that
+a ticket should no be sold twice.
+
+95
+00:07:02.710 --> 00:07:06.920
+Or if one person is in the middle
+of buying the last ticket,
+
+96
+00:07:06.920 --> 00:07:09.840
+another person does not see
+that ticket as available.
+
+97
+00:07:11.380 --> 00:07:15.480
+These are guaranteed by
+the isolation property that says,
+
+98
+00:07:15.480 --> 00:07:19.340
+not withstanding the number of people
+accessing the system at the same time.
+
+99
+00:07:19.340 --> 00:07:26.310
+The transactions must happen as if they're
+done serially, that is one after another.
+
+100
+00:07:26.310 --> 00:07:33.949
+Providing these capabilities is
+an important part of the M in DBMS.
+
+101
+00:07:33.949 --> 00:07:38.390
+So next, we consider how traditional
+databases handle large data volumes.
+
+102
+00:07:39.920 --> 00:07:44.093
+The classical way in which DBMSs
+have handled the issue of large
+
+103
+00:07:44.093 --> 00:07:48.120
+volumes is by created parallel and
+distributed databases.
+
+104
+00:07:48.120 --> 00:07:52.244
+In a parallel database, for
+example, parallel Oracle,
+
+105
+00:07:52.244 --> 00:07:54.357
+parallel DB2 or post SQL XE.
+
+106
+00:07:54.357 --> 00:07:59.966
+The tables are spread across multiple
+machines and operations like selection,
+
+107
+00:07:59.966 --> 00:08:03.853
+and join use parallel algorithms
+to be more efficient.
+
+108
+00:08:03.853 --> 00:08:07.905
+These systems also allow a user
+to create a replication.
+
+109
+00:08:07.905 --> 00:08:10.400
+That is multiple copies of tables.
+
+110
+00:08:10.400 --> 00:08:13.420
+Thus, introducing data redundancy, so
+
+111
+00:08:13.420 --> 00:08:18.180
+that failure on replica can be
+compensated for by using another.
+
+112
+00:08:19.740 --> 00:08:23.678
+Further, it replicates in
+sync with each other and
+
+113
+00:08:23.678 --> 00:08:27.260
+a query can result into
+any of the replicates.
+
+114
+00:08:27.260 --> 00:08:32.021
+This increases the number of simultaneous
+that is conquer into queries
+
+115
+00:08:32.021 --> 00:08:34.332
+that can be handled by the system.
+
+116
+00:08:34.332 --> 00:08:39.942
+In contrast, a distributed DBMS, which
+we'll not discuss in detail in this course
+
+117
+00:08:39.942 --> 00:08:46.200
+is a network of independently running
+DBMSs that communicate with each other.
+
+118
+00:08:46.200 --> 00:08:51.275
+In this case, one component knows some
+part of the schema of it is neighboring
+
+119
+00:08:51.275 --> 00:08:55.670
+DBMS and can pass a query or part of
+a query to the neighbor when needed.
+
+120
+00:08:57.520 --> 00:09:01.360
+So the important takeaway issue here is,
+
+121
+00:09:01.360 --> 00:09:04.890
+are all of these facilities
+offered by a DBMS important for
+
+122
+00:09:04.890 --> 00:09:07.430
+the big data application that
+you are planning to build?
+
+123
+00:09:08.590 --> 00:09:11.131
+And the answer in many
+cases can be negative.
+
+124
+00:09:11.131 --> 00:09:16.304
+However, if these issues are important,
+then the database management
+
+125
+00:09:16.304 --> 00:09:20.726
+systems may offer a viable option for
+a big data application.
+
+126
+00:09:23.034 --> 00:09:27.726
+Now, let's take a little more time to
+address an issue that's often discussed in
+
+127
+00:09:27.726 --> 00:09:28.819
+the big data word.
+
+128
+00:09:28.819 --> 00:09:32.300
+The question is if DBMSs are so powerful,
+
+129
+00:09:32.300 --> 00:09:37.178
+why do we see the emergence
+of MapReduce-style Systems?
+
+130
+00:09:37.178 --> 00:09:41.800
+Unfortunately, the answer to this
+question is not straightforward.
+
+131
+00:09:43.660 --> 00:09:49.180
+For a long while now, DBMSs have
+effectively used parallelism, specifically
+
+132
+00:09:49.180 --> 00:09:54.030
+parallel databases in addition to
+replication would also create partitions.
+
+133
+00:09:55.220 --> 00:10:00.017
+So that different parts of a logical
+table can physically reside on different
+
+134
+00:10:00.017 --> 00:10:05.403
+machines,, then different parts of a query
+can access the partitions in parallel and
+
+135
+00:10:05.403 --> 00:10:07.501
+speed up creative performance.
+
+136
+00:10:07.501 --> 00:10:11.753
+Now these algorithms not only improve
+the operating efficiency, but
+
+137
+00:10:11.753 --> 00:10:16.882
+simultaneously optimize algorithms to
+take into account the communication cost.
+
+138
+00:10:16.882 --> 00:10:21.511
+That is the time needed to
+exchange data between machines.
+
+139
+00:10:21.511 --> 00:10:28.390
+However, classical parallel DBMSs did
+not take into account machine failure.
+
+140
+00:10:29.700 --> 00:10:35.070
+And in contrast, MapReduce was
+originally developed not for storage and
+
+141
+00:10:35.070 --> 00:10:38.850
+retrieval, but for distributive
+processing of large amounts of data.
+
+142
+00:10:39.890 --> 00:10:44.783
+Specifically, its goal was to support
+complex custom computations that could
+
+143
+00:10:44.783 --> 00:10:47.569
+be performed efficiently on many machines.
+
+144
+00:10:47.569 --> 00:10:50.259
+So in a MapReduce or MR setting,
+
+145
+00:10:50.259 --> 00:10:54.357
+the number of machines
+could go up to thousands.
+
+146
+00:10:54.357 --> 00:10:58.710
+Now since MR implementations were
+done over Hadoop file systems,
+
+147
+00:10:58.710 --> 00:11:02.760
+issues like node failure were
+automatically accounted for.
+
+148
+00:11:04.492 --> 00:11:09.017
+So MR effectively used in complex
+applications like data mining or
+
+149
+00:11:09.017 --> 00:11:13.703
+data clustering, and these algorithms
+are often very complex, and
+
+150
+00:11:13.703 --> 00:11:17.202
+typically require problem
+specific techniques.
+
+151
+00:11:17.202 --> 00:11:20.554
+Very often,
+these algorithms have multiple stages.
+
+152
+00:11:20.554 --> 00:11:25.891
+That is the output from one processing
+stage is the input to the next.
+
+153
+00:11:25.891 --> 00:11:29.519
+It is difficult to develop these
+multistage algorithms in a standard
+
+154
+00:11:29.519 --> 00:11:30.650
+relational system.
+
+155
+00:11:31.990 --> 00:11:36.080
+But since these were genetic operations,
+many of them were designed to work
+
+156
+00:11:36.080 --> 00:11:39.880
+with unstructured data like text and
+nonstandard custom data formats.
+
+157
+00:11:41.730 --> 00:11:46.139
+Now, it's now amply clear that this
+mixture of data management requirements
+
+158
+00:11:46.139 --> 00:11:50.818
+and data processing analysis requirements
+have created an interesting tension in
+
+159
+00:11:50.818 --> 00:11:52.439
+the data management world.
+
+160
+00:11:52.439 --> 00:11:56.030
+Just look at a few of
+these tension points.
+
+161
+00:11:56.030 --> 00:12:00.990
+Now, DBMSs perform storage and
+retrieval operations very efficiently.
+
+162
+00:12:02.210 --> 00:12:05.170
+But first,
+the data must be loaded into the DBMS.
+
+163
+00:12:06.230 --> 00:12:07.490
+So, how much time does loading take?
+
+164
+00:12:08.690 --> 00:12:12.900
+In one study,
+scientists use two CVS files.
+
+165
+00:12:12.900 --> 00:12:17.850
+One had 92 attributes with
+about 165 million tuples for
+
+166
+00:12:17.850 --> 00:12:19.890
+a total size of 85 gigabytes.
+
+167
+00:12:21.190 --> 00:12:25.710
+And the other had 227 attributes
+with 5 million tuples for
+
+168
+00:12:25.710 --> 00:12:27.390
+a total size of 5 gigabytes.
+
+169
+00:12:28.850 --> 00:12:35.610
+The time to load and index this data in
+MySQL and PostgreSQL, took 15 hours each.
+
+170
+00:12:36.690 --> 00:12:41.240
+In a commercial database running on
+three machines, it took two hours.
+
+171
+00:12:41.240 --> 00:12:44.980
+Now there are applications like
+the quantities in the case we discussed
+
+172
+00:12:44.980 --> 00:12:49.180
+earlier where this kind of loading
+time is simply not acceptable,
+
+173
+00:12:49.180 --> 00:12:51.880
+because the analysis on
+the data must be performed
+
+174
+00:12:51.880 --> 00:12:54.070
+within a given time limit
+after it's arrival.
+
+175
+00:12:56.600 --> 00:12:59.780
+A second problem faced by
+some application is that for
+
+176
+00:12:59.780 --> 00:13:03.140
+them, the DBMSs offer
+too much functionality.
+
+177
+00:13:04.160 --> 00:13:08.460
+For example, think of an application
+that only looks at the price of an item
+
+178
+00:13:08.460 --> 00:13:10.700
+if you provide it with a product name or
+product code.
+
+179
+00:13:12.210 --> 00:13:14.850
+The number of products it serves
+is let's say, 250 million.
+
+180
+00:13:16.170 --> 00:13:19.899
+This lookup operation happens
+only on a single table and
+
+181
+00:13:19.899 --> 00:13:23.164
+does not mean anything
+more complex like a join.
+
+182
+00:13:23.164 --> 00:13:27.963
+Further, consider that while there
+are several hundred thousand customers
+
+183
+00:13:27.963 --> 00:13:31.810
+who access this data,
+none of them really update the tables.
+
+184
+00:13:31.810 --> 00:13:36.685
+So, do we need a full function DBMS for
+this read-only application?
+
+185
+00:13:36.685 --> 00:13:41.175
+Or can we get a simpler solution which
+can use a cluster of machines, but
+
+186
+00:13:41.175 --> 00:13:44.275
+does not provide all the wonderful
+guarantees that a DBMS provides?
+
+187
+00:13:46.600 --> 00:13:51.940
+At the other end of the spectrum,
+there is an emerging class of optimization
+
+188
+00:13:51.940 --> 00:13:56.590
+that meets all the nice transactional
+guarantees that a DBMS provides.
+
+189
+00:13:56.590 --> 00:14:00.500
+And at the same time, meets the support
+for efficient analytical operations.
+
+190
+00:14:01.720 --> 00:14:05.741
+These are often required for
+systems like Real-Time Decision Support.
+
+191
+00:14:05.741 --> 00:14:10.141
+That will accept real-time data like
+customer purchases on a newly released
+
+192
+00:14:10.141 --> 00:14:13.188
+product will perform some
+statistical analysis, so
+
+193
+00:14:13.188 --> 00:14:15.365
+that it can determine buying trends.
+
+194
+00:14:15.365 --> 00:14:17.969
+And then decide whether in real-time,
+
+195
+00:14:17.969 --> 00:14:21.040
+a discount can be offered
+to this customer now.
+
+196
+00:14:23.860 --> 00:14:28.368
+It turns out that the combination
+of traditional requirements and
+
+197
+00:14:28.368 --> 00:14:32.072
+new requirements is leading
+to new capabilities, and
+
+198
+00:14:32.072 --> 00:14:35.465
+products in the big data
+management technology.
+
+199
+00:14:35.465 --> 00:14:40.283
+On the one hand, DBMS technologies
+are creating new techniques that make
+
+200
+00:14:40.283 --> 00:14:43.164
+use of MapReduce-style data processing.
+
+201
+00:14:43.164 --> 00:14:46.473
+Many of them are being
+developed to run on HDFS and
+
+202
+00:14:46.473 --> 00:14:50.279
+take advantage of his data
+replication capabilities.
+
+203
+00:14:50.279 --> 00:14:54.423
+More strikingly, DBMSs are beginning
+to have a side door for
+
+204
+00:14:54.423 --> 00:14:58.405
+a user to perform and
+MR-style operation on HDFS files and
+
+205
+00:14:58.405 --> 00:15:02.399
+exchange data between the Hadoop
+subsystem and the DBMS.
+
+206
+00:15:02.399 --> 00:15:06.862
+Thus, giving the user the flexibility
+to use both forms of data processing.
+
+207
+00:15:09.674 --> 00:15:12.562
+It has now been recognized
+that a simple map and
+
+208
+00:15:12.562 --> 00:15:17.155
+reduce operations are not sufficient for
+many data operations leading to
+
+209
+00:15:17.155 --> 00:15:22.740
+a significant expansion in the number
+of operations in the MR ecosystems.
+
+210
+00:15:22.740 --> 00:15:26.510
+For example,
+Spark has several kinds of join and
+
+211
+00:15:26.510 --> 00:15:29.350
+data grouping operations in
+addition to map and reduce.
+
+212
+00:15:31.650 --> 00:15:34.900
+Sound DBMSs are making use of large
+
+213
+00:15:34.900 --> 00:15:38.190
+distributed memory management
+operations to accept streaming data.
+
+214
+00:15:39.400 --> 00:15:43.510
+These systems are designed with the idea
+that the analysis they need to perform on
+
+215
+00:15:43.510 --> 00:15:45.400
+the data are known before.
+
+216
+00:15:45.400 --> 00:15:49.860
+And as new data records arrive,
+they keep a record of the data
+
+217
+00:15:49.860 --> 00:15:53.820
+in the memory long enough to finish
+the computation needed on that record.
+
+218
+00:15:55.310 --> 00:15:57.610
+And finally, computer scientists and
+
+219
+00:15:57.610 --> 00:16:00.770
+data scientists are working
+towards new solutions
+
+220
+00:16:00.770 --> 00:16:05.770
+where large scale distributed algorithms
+are beginning to emerge to solve different
+
+221
+00:16:05.770 --> 00:16:09.280
+kinds of analytics problems like
+finding dense regions of a graph.
+
+222
+00:16:10.610 --> 00:16:14.210
+These algorithms use
+a MR-style computing and
+
+223
+00:16:14.210 --> 00:16:17.880
+are becoming a part of a new
+generation of DBMS products
+
+224
+00:16:17.880 --> 00:16:20.860
+that invoke these algorithms
+from inside the database system.
+
+225
+00:16:21.890 --> 00:16:25.720
+In the next video, we'll take a look at
+some of the modern day data management
+
+226
+00:16:25.720 --> 00:16:28.030
+systems that have some
+of these capabilities.
+
+1
+00:00:02.600 --> 00:00:07.300
+As we mentioned in the last lesson, there
+is no single irricuteous solution for
+
+2
+00:00:07.300 --> 00:00:08.200
+big data problems.
+
+3
+00:00:08.200 --> 00:00:10.960
+So in this lesson,
+
+4
+00:00:10.960 --> 00:00:14.900
+our goal will be to explore some existing
+solutions in a little more depth.
+
+5
+00:00:16.780 --> 00:00:19.290
+So after this lesson, you'll be able to.
+
+6
+00:00:20.540 --> 00:00:23.250
+Explain the at least five
+desirable characteristics of
+
+7
+00:00:23.250 --> 00:00:29.150
+a Big Data Management System,
+explain the differences between acid and
+
+8
+00:00:29.150 --> 00:00:32.070
+base, and
+
+9
+00:00:32.070 --> 00:00:37.210
+list examples of BDMSs and describe some
+of their similarities and differences.
+
+10
+00:00:39.260 --> 00:00:44.890
+So we start from high level, suppose there
+were an ideal big data management system.
+
+11
+00:00:46.170 --> 00:00:48.610
+What capabilities or
+features should such a system have?
+
+12
+00:00:50.000 --> 00:00:53.700
+Professor Michael Carey of
+the University of California Irvine
+
+13
+00:00:53.700 --> 00:00:56.750
+has described a number of characteristics.
+
+14
+00:00:56.750 --> 00:01:00.590
+We'll go through them and
+use them as an idealistic yardstick
+
+15
+00:01:00.590 --> 00:01:03.190
+against which we compare
+existing solutions.
+
+16
+00:01:04.500 --> 00:01:10.820
+First, the ideal BDMS would allow for
+a semi-structured data model.
+
+17
+00:01:10.820 --> 00:01:15.060
+Now that does not mean it will only
+support a specific format like XML.
+
+18
+00:01:16.170 --> 00:01:18.550
+The operative word here is flexible.
+
+19
+00:01:19.660 --> 00:01:22.390
+The flexibility can take many forms,
+
+20
+00:01:23.600 --> 00:01:27.920
+one of which Is the degree to which
+schemas should be supported by the system.
+
+21
+00:01:29.190 --> 00:01:31.810
+In a perfect world, it should support
+
+22
+00:01:31.810 --> 00:01:35.550
+a completely traditional application which
+requires the development of a schema.
+
+23
+00:01:37.250 --> 00:01:41.840
+At the same time, it should also support
+applications which require no schema,
+
+24
+00:01:41.840 --> 00:01:45.420
+because the data can vary in terms
+of its attributes and relationships.
+
+25
+00:01:47.790 --> 00:01:53.290
+A different axis of flexibility
+is in the data types it supports.
+
+26
+00:01:53.290 --> 00:01:56.810
+For example, it should support
+operations on text and documents.
+
+27
+00:01:57.920 --> 00:02:03.010
+It should also permit social media and
+other data that have a time component and
+
+28
+00:02:03.010 --> 00:02:06.820
+need temporal operations, like before,
+after, during, and so on.
+
+29
+00:02:08.260 --> 00:02:11.340
+Similarly, it should
+allow spacial data and
+
+30
+00:02:11.340 --> 00:02:15.530
+allow operations like find all data
+within a five mile radius of a landmark.
+
+31
+00:02:17.960 --> 00:02:20.290
+As we saw in a previous lesson,
+
+32
+00:02:20.290 --> 00:02:24.260
+a big advantage of a DBMS is that
+is provides a query language.
+
+33
+00:02:25.800 --> 00:02:30.360
+There is a notion that query languages
+present a steep learning curve for
+
+34
+00:02:30.360 --> 00:02:33.690
+data science people with no
+background in computer science.
+
+35
+00:02:33.690 --> 00:02:37.900
+However, to effectively
+manage large volumes of data,
+
+36
+00:02:37.900 --> 00:02:41.190
+it's often more convenient
+to use a query language and
+
+37
+00:02:41.190 --> 00:02:45.720
+let the query processor automatically
+determine optimal ways to receive data.
+
+38
+00:02:47.270 --> 00:02:50.440
+Now this query language may or
+may not look like SQL,
+
+39
+00:02:50.440 --> 00:02:55.120
+which is the standard query language used
+by the modern relational systems, but
+
+40
+00:02:55.120 --> 00:02:57.870
+it should at least be equally powerful.
+
+41
+00:02:59.080 --> 00:03:04.770
+Now this is not an unreasonable feature
+given that most DBMS vendors offer their
+
+42
+00:03:04.770 --> 00:03:12.120
+own extension of SQL Of course it's not
+enough to just have a good query language.
+
+43
+00:03:13.430 --> 00:03:18.230
+Today's big data systems must
+have a parallel query engine
+
+44
+00:03:18.230 --> 00:03:20.080
+which will run on multiple machines.
+
+45
+00:03:21.480 --> 00:03:25.240
+The machines can be connected to
+a shared nothing architecture, or
+
+46
+00:03:25.240 --> 00:03:28.760
+shared memory architecture,
+or a shared cluster.
+
+47
+00:03:28.760 --> 00:03:34.260
+The shared nothing means two machines
+do not share a disk or memory.
+
+48
+00:03:34.260 --> 00:03:36.750
+But this is a critical requirement for
+
+49
+00:03:36.750 --> 00:03:41.850
+any BDMS regardless of how complete
+the supported query languages is for
+
+50
+00:03:41.850 --> 00:03:46.970
+efficiency sake Continuing with our list,
+the next
+
+51
+00:03:46.970 --> 00:03:51.620
+capability of a BDMS is often
+not emphasized as much as it should be.
+
+52
+00:03:52.890 --> 00:03:56.880
+Some applications working on top
+of a BDMS will issue queries
+
+53
+00:03:56.880 --> 00:04:01.200
+which will only have a few conditions and
+a few small objects to return.
+
+54
+00:04:01.200 --> 00:04:06.740
+But some applications, especially those
+generated by other software tools or
+
+55
+00:04:06.740 --> 00:04:10.380
+machine learning algorithms can
+have many many conditions and
+
+56
+00:04:10.380 --> 00:04:11.990
+can return many large objects.
+
+57
+00:04:13.090 --> 00:04:18.320
+In my own work, we have seen how internet
+bots can blast an information system
+
+58
+00:04:18.320 --> 00:04:22.230
+with really large queries that
+can potentially choke the system.
+
+59
+00:04:22.230 --> 00:04:23.580
+But that should not happen in a BDMS.
+
+60
+00:04:25.810 --> 00:04:28.080
+Now, we discussed streaming
+data in a previous lesson.
+
+61
+00:04:29.600 --> 00:04:33.830
+In many cases,
+a BDMS will have both streaming data,
+
+62
+00:04:33.830 --> 00:04:37.590
+which adds to the volume,
+as well as to the large data that
+
+63
+00:04:37.590 --> 00:04:40.380
+need to be combined with the streaming
+data to solve a problem.
+
+64
+00:04:41.430 --> 00:04:45.140
+An example would be to combine
+streaming data from weather stations
+
+65
+00:04:45.140 --> 00:04:48.870
+with historical data to make
+better predictions for wild fire.
+
+66
+00:04:51.610 --> 00:04:54.510
+We have discussed the definition,
+significance and
+
+67
+00:04:54.510 --> 00:04:57.140
+importance of scalability before.
+
+68
+00:04:57.140 --> 00:05:00.130
+However, what a BDMS needs to guarantee
+
+69
+00:05:00.130 --> 00:05:05.260
+that it is designed to operate over a
+cluster, possibly a cluster of hundred or
+
+70
+00:05:05.260 --> 00:05:09.450
+thousand of machines and
+that it knows how to handle a failure.
+
+71
+00:05:11.040 --> 00:05:15.200
+Further the system should be able
+to handling new machines joining or
+
+72
+00:05:15.200 --> 00:05:16.829
+existing machines leaving the cluster.
+
+73
+00:05:18.910 --> 00:05:23.530
+Finally, our BDMS must have
+data management capabilities.
+
+74
+00:05:23.530 --> 00:05:29.080
+It should be easy to install, restart and
+configure, provide high availability and
+
+75
+00:05:29.080 --> 00:05:33.340
+make operational management as
+simple as possible even when
+
+76
+00:05:33.340 --> 00:05:37.880
+a BDMS is declined across data centers
+that are possibly geographically apart
+
+77
+00:05:40.770 --> 00:05:45.580
+In a prior module, we discussed
+the ACID properties of transactions and
+
+78
+00:05:45.580 --> 00:05:47.880
+said that BDMSs guarantee them.
+
+79
+00:05:49.250 --> 00:05:53.270
+For big data systems,
+there is too much data and
+
+80
+00:05:53.270 --> 00:05:56.540
+too many updates from too many users.
+
+81
+00:05:56.540 --> 00:05:59.730
+So the effort to maintain ACID properties
+
+82
+00:05:59.730 --> 00:06:02.330
+May lead to a significant
+slowdown of the system.
+
+83
+00:06:03.550 --> 00:06:07.590
+Now, this lead to the idea, that while
+the ACID properties are still desirable,
+
+84
+00:06:08.840 --> 00:06:14.410
+it might be more practical to relax
+the ACID conditions and replace them
+
+85
+00:06:14.410 --> 00:06:19.770
+with what's called the BASE properties,
+beginning with Basic availability.
+
+86
+00:06:21.410 --> 00:06:24.060
+This states that the system
+
+87
+00:06:24.060 --> 00:06:26.600
+does guarantee the availability
+of data in the following sense.
+
+88
+00:06:28.140 --> 00:06:32.710
+If you make a request,
+there will be a response to that request.
+
+89
+00:06:32.710 --> 00:06:36.310
+But, the response could still
+be failure to obtain data or
+
+90
+00:06:36.310 --> 00:06:39.800
+the data isn't Inconsistent state or
+changing state.
+
+91
+00:06:41.370 --> 00:06:44.970
+Well this is not unusual because
+it's much like waiting for
+
+92
+00:06:44.970 --> 00:06:46.540
+a check to clear a bank account.
+
+93
+00:06:49.270 --> 00:06:51.580
+Second, there is a soft state.
+
+94
+00:06:52.620 --> 00:06:57.650
+Which means the state of the system
+is very likely to change over time.
+
+95
+00:06:57.650 --> 00:07:00.030
+So even during times without input,
+
+96
+00:07:00.030 --> 00:07:04.330
+there may be changes going on through
+the system due to eventual consistency.
+
+97
+00:07:05.680 --> 00:07:08.190
+Thus the state of
+the system is always soft.
+
+98
+00:07:09.640 --> 00:07:12.080
+And finally there's eventual consistency.
+
+99
+00:07:13.330 --> 00:07:18.010
+This means that the system will
+eventually become consistent
+
+100
+00:07:18.010 --> 00:07:19.770
+once it stops receiving input.
+
+101
+00:07:21.870 --> 00:07:23.730
+When it stops receiving input,
+
+102
+00:07:23.730 --> 00:07:28.800
+the data will propagate to everywhere
+that it should sooner or later go to but
+
+103
+00:07:28.800 --> 00:07:32.840
+in reality the system will
+continue to receive input.
+
+104
+00:07:32.840 --> 00:07:36.840
+And it's not checking the consistency
+of every transaction at every moment
+
+105
+00:07:36.840 --> 00:07:40.610
+because there's still lots
+of transactions to process.
+
+106
+00:07:40.610 --> 00:07:45.904
+So, if you make a new Facebook post,
+your friend in Zambia, who is supposed
+
+107
+00:07:45.904 --> 00:07:51.200
+to see your update but is served by a very
+different data center in a different
+
+108
+00:07:51.200 --> 00:07:56.116
+geographic region, will certainly
+see it but may not see right away.
+
+109
+00:07:58.272 --> 00:08:02.066
+Now for those of you who have a bit
+of computer science background,
+
+110
+00:08:02.066 --> 00:08:06.744
+we just want to mention in passing that
+there is actually some theoretical results
+
+111
+00:08:06.744 --> 00:08:08.260
+behind this relaxation.
+
+112
+00:08:09.490 --> 00:08:13.090
+The result comes from what's
+called the CAP Theorem.
+
+113
+00:08:13.090 --> 00:08:16.840
+Also named Bauer's theorem after
+the computer scientist Eric Bauer.
+
+114
+00:08:18.200 --> 00:08:23.410
+He states, that it is impossible for
+a distributed computer system
+
+115
+00:08:23.410 --> 00:08:27.420
+to simultaneously provide all
+three of the following guarantees.
+
+116
+00:08:28.680 --> 00:08:30.300
+Consistency.
+
+117
+00:08:30.300 --> 00:08:34.970
+It means all nodes see the
+same data at any time.
+
+118
+00:08:37.080 --> 00:08:42.000
+Availability, which is a guarantee
+that every request receives a response
+
+119
+00:08:42.000 --> 00:08:43.948
+about whether it succeeded or failed.
+
+120
+00:08:43.948 --> 00:08:48.150
+And Partition Tolerance.
+
+121
+00:08:48.150 --> 00:08:51.270
+Which means the system
+continues to operate
+
+122
+00:08:51.270 --> 00:08:55.610
+despite arbitrary partitioning
+due to network failures.
+
+123
+00:08:55.610 --> 00:08:59.740
+Now, most of the big data systems
+available today will adhere
+
+124
+00:08:59.740 --> 00:09:04.130
+to these BASE properties,
+although several modern systems
+
+125
+00:09:04.130 --> 00:09:08.010
+do offer the stricter ACID properties,
+or at least several of them.
+
+126
+00:09:10.180 --> 00:09:13.060
+Now given the idealistic background
+of what is desirable and
+
+127
+00:09:13.060 --> 00:09:17.060
+achievable in a big data system,
+today's marketplace for
+
+128
+00:09:17.060 --> 00:09:20.100
+big data related products
+looks somewhat like this.
+
+129
+00:09:21.680 --> 00:09:26.350
+Now this is Matt Turk's depiction of big
+data products from a couple of years back.
+
+130
+00:09:27.750 --> 00:09:31.730
+You would notice that the products
+are grouped into categories, like no SQL,
+
+131
+00:09:31.730 --> 00:09:36.340
+massively parallel databases, analytic
+systems, real time systems, and so forth.
+
+132
+00:09:37.430 --> 00:09:42.050
+In this lesson, we'll do a quick
+tour through a few of these products
+
+133
+00:09:43.690 --> 00:09:45.470
+from different areas of this landscape.
+
+134
+00:09:47.140 --> 00:09:53.070
+In each case our goal will to be assess
+what aspects of our ideal BDMS they cover,
+
+135
+00:09:53.070 --> 00:09:56.240
+and whether they have obvious limitations.
+
+136
+00:09:56.240 --> 00:10:01.650
+Now we will not cover all features
+of every system, but will highlight
+
+137
+00:10:01.650 --> 00:10:05.130
+those aspects of the system that
+are relevant to our discussion on BDMS.

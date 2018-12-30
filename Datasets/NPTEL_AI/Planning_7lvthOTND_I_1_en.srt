@@ -1,0 +1,2462 @@
+﻿1
+00:00:10,589 --> 00:00:30,940
+So, today we move on to this topic on planning.
+So, in the next 6 or 7 lectures, I will cover
+
+2
+00:00:30,940 --> 00:00:38,850
+little bit of planning and little bit constraint
+satisfaction, which is I think enough for
+
+3
+00:00:38,850 --> 00:00:43,700
+a
+introductory course on A I. But next semester,
+
+4
+00:00:43,700 --> 00:00:49,840
+Dr Narayan swami and I offering a course on
+planning and constraint satisfaction, which
+
+5
+00:00:49,840 --> 00:00:52,420
+will go into much more detail in the topics.
+So,
+
+6
+00:00:52,420 --> 00:00:56,700
+what we are doing here is just a basic, but
+the more recent advancements will probably
+
+7
+00:00:56,700 --> 00:00:59,800
+do in
+that course essentially.
+
+8
+00:00:59,799 --> 00:01:13,079
+So, there is a nice book on planning, which
+we are not following here by Malik Galab and
+
+9
+00:01:13,079 --> 00:01:22,890
+Dina Noven, call automatic planning. They
+start the book by this definition of planning
+
+10
+00:01:22,890 --> 00:01:32,759
+and
+they say it is the reasoning side of acting.
+
+11
+00:01:32,759 --> 00:01:40,680
+So, planning is concerned with actions. Essentially,
+we are not deal with them explicitly on and
+
+12
+00:01:40,680 --> 00:01:42,810
+off. For example, we looked at heuristic for
+the
+
+13
+00:01:42,810 --> 00:01:50,579
+blocks world. We talked about moving blocks
+around, but we did not really explicitly module
+
+14
+00:01:50,579 --> 00:01:57,620
+domains and we do not explicitly module actions.
+We will do that in the planning path that
+
+15
+00:01:57,620 --> 00:01:59,969
+we are doing now.
+
+16
+00:01:59,969 --> 00:02:14,699
+.Now, just imagine an agent. So, this is world
+and the agent inside the world, but will draw
+
+17
+00:02:14,699 --> 00:02:31,229
+it
+here. It perceives the world and deliberates
+
+18
+00:02:31,229 --> 00:02:40,018
+and then acts. So, this is a model of an agent
+in an
+
+19
+00:02:40,019 --> 00:02:45,789
+environment that we have. The agent perceives
+the environment or the world, does some
+
+20
+00:02:45,789 --> 00:02:53,628
+deliberation or some reasoning as Galab and
+all call it. Then, based on that reasoning
+
+21
+00:02:53,628 --> 00:02:56,139
+the
+agent does acting in the world. Of course,
+
+22
+00:02:56,139 --> 00:02:59,059
+we as human beings do it all the time. We
+are
+
+23
+00:02:59,060 --> 00:03:05,128
+planning consciously or unconsciously. Whatever,
+we do these are not random actions that
+
+24
+00:03:05,128 --> 00:03:12,739
+we do. Anyway almost everything we do has
+a certain goal in mind. We think about how
+
+25
+00:03:12,739 --> 00:03:15,280
+to
+achieve that goal and our actions are oriented
+
+26
+00:03:15,280 --> 00:03:19,359
+towards that achieving the goal essentially.
+So, goals of course, can be long term or short
+
+27
+00:03:19,359 --> 00:03:22,590
+term and things like that, but all the time
+in the
+
+28
+00:03:22,590 --> 00:03:30,129
+world we are planning. Now of course, in the
+world of computing, planning is becoming
+
+29
+00:03:30,129 --> 00:03:36,009
+more and more important as systems are becoming
+more and more autonomous. So, for
+
+30
+00:03:36,009 --> 00:03:40,780
+example, you must have heard about autonomous
+cars now a days. So, there is stand forth
+
+31
+00:03:40,780 --> 00:03:44,169
+car
+and if there is a car rally for autonomous
+
+32
+00:03:44,169 --> 00:03:48,679
+cars. So, you have to let loose the car in
+some sense
+
+33
+00:03:48,680 --> 00:03:53,670
+and it should be able to go to a destination.
+Now, if you think about what is involved here?
+
+34
+00:03:53,669 --> 00:03:56,598
+It is not just route finding, which is what
+we
+
+35
+00:03:56,598 --> 00:04:01,169
+have discussed to some extent, but to drive
+a car there are many many actions that you
+
+36
+00:04:01,169 --> 00:04:03,589
+have
+to do. You have to look out for other cars,
+
+37
+00:04:03,590 --> 00:04:05,989
+you may have to slow, you may have to break,
+you
+
+38
+00:04:05,989 --> 00:04:12,239
+may have to accelerate. All these are actions
+and somebody has to decide or some agent or
+
+39
+00:04:12,239 --> 00:04:18,459
+some program has to decide, which actions
+to be done at what time essentially. That
+
+40
+00:04:18,459 --> 00:04:21,280
+decision
+making or this reasoning side of acting is
+
+41
+00:04:21,279 --> 00:04:33,250
+what planning is all about essentially.
+So, we imagine that we have a planning system
+
+42
+00:04:33,250 --> 00:04:45,500
+and that interacts with some people call an
+executive, which interacts with the world
+
+43
+00:04:45,500 --> 00:04:49,990
+essentially. So, I using the term executive,
+it was
+
+44
+00:04:49,990 --> 00:05:02,170
+used by NASA in one of their early systems,
+the remote agent architecture. So, you should
+
+45
+00:05:02,170 --> 00:05:09,080
+look up on the web about this remote agent.
+It was experiment done by NASA experiment
+
+46
+00:05:09,079 --> 00:05:19,318
+called deep space.
+Sometime in the mid 19th, they had this aircraft
+
+47
+00:05:19,319 --> 00:05:24,840
+flowing spacecraft, flowing somewhere in
+space going to earth some asteroid or some
+
+48
+00:05:24,839 --> 00:05:30,228
+planet or something. In between for 2 or 3
+days,
+
+49
+00:05:30,228 --> 00:05:36,769
+they had removed ground station control from
+that space craft, which means they had let
+
+50
+00:05:36,769 --> 00:05:41,029
+it
+function autonomously, deciding for itself
+
+51
+00:05:41,029 --> 00:05:45,980
+what it would do in the next 2 or 3 days.
+During
+
+52
+00:05:45,980 --> 00:05:53,879
+that period they had also introduced deliberately
+a fault in the space craft and which was used
+
+53
+00:05:53,879 --> 00:05:58,180
+.to testing their automatic fault diagnosis
+system, which of course, we are not doing
+
+54
+00:05:58,180 --> 00:06:02,259
+here, but
+apart from fault diagnosis planning was a
+
+55
+00:06:02,259 --> 00:06:08,210
+experiment that they did.
+Then, you must have heard about mars lowers
+
+56
+00:06:08,209 --> 00:06:11,269
+and the more recent lowers that have been
+sent
+
+57
+00:06:11,269 --> 00:06:20,039
+to mars. Given, the fact that it takes of
+the order of 20 minutes, I do not know the
+
+58
+00:06:20,040 --> 00:06:24,009
+exact figure
+for a signal to travel from earth to mars.
+
+59
+00:06:24,009 --> 00:06:29,360
+You cannot control vehicle on mars as you
+would be
+
+60
+00:06:29,360 --> 00:06:33,340
+controlling a vehicle, let us say in your
+lab. If you had a remote or something like
+
+61
+00:06:33,339 --> 00:06:38,219
+that
+because the signal takes that much more time
+
+62
+00:06:38,220 --> 00:06:42,039
+in such situations, it is inevitable that
+you have
+
+63
+00:06:42,038 --> 00:06:46,969
+autonomous planning built into the system.
+So, both in the remote agent architecture
+
+64
+00:06:46,970 --> 00:06:50,110
+and in the mars lowers, what the scientist
+do? is that
+
+65
+00:06:50,110 --> 00:06:55,340
+they give high level commands go and explore
+that area or go and collect samples of this
+
+66
+00:06:55,339 --> 00:06:58,810
+in
+from this area. Then the rest of the activity
+
+67
+00:06:58,810 --> 00:07:03,978
+is planned by the system on board. So, planning
+of
+
+68
+00:07:03,978 --> 00:07:09,339
+course, these are some of extreme examples
+space example, but planning happens all the
+
+69
+00:07:09,339 --> 00:07:12,189
+time
+essentially. You know scheduling holiday planning,
+
+70
+00:07:12,189 --> 00:07:17,319
+you go to some flight reservation
+systems, they will tell you that if you want
+
+71
+00:07:17,319 --> 00:07:20,129
+to go from here to basils, what are the flights
+you
+
+72
+00:07:20,129 --> 00:07:24,860
+should take? So, all this comes under planning
+some way or the other essentially.
+
+73
+00:07:24,860 --> 00:07:35,310
+So, let us look at this model of what is happening
+in the world. Let us see to what degree of
+
+74
+00:07:35,310 --> 00:07:42,050
+complexity, we can capture this essentially.
+So, in planning systems we are going to do
+
+75
+00:07:42,050 --> 00:07:43,759
+the
+following. We are going to talk of domain
+
+76
+00:07:43,759 --> 00:08:02,019
+description, action let me use the word
+specification or action description, describing
+
+77
+00:08:02,019 --> 00:08:09,399
+what actions are available to you and of course
+goal states.
+
+78
+00:08:09,399 --> 00:08:10,399
+..
+
+79
+00:08:10,399 --> 00:08:17,120
+.
+We will look at this in little bit while,
+
+80
+00:08:17,120 --> 00:08:22,319
+the early planning systems were kind of domain
+specific. People would say I want to build
+
+81
+00:08:22,319 --> 00:08:24,379
+a system for planning in this domain or planning
+in
+
+82
+00:08:24,379 --> 00:08:29,819
+that domain and so on. But following the theme
+that we have been in this course, which says
+
+83
+00:08:29,819 --> 00:08:34,918
+that a problem solver must be removed from
+the domain. You want to find general purpose
+
+84
+00:08:34,918 --> 00:08:39,179
+planning systems or else this community calls
+it domain independent planning essentially,
+
+85
+00:08:39,179 --> 00:08:46,149
+which means that we will devise a language
+to express all this.
+
+86
+00:08:46,149 --> 00:08:51,889
+So, this is like domain functions that we
+talked about in search. The planner would
+
+87
+00:08:51,889 --> 00:08:55,149
+be
+independent of this. You would write the planner
+
+88
+00:08:55,149 --> 00:09:00,129
+assuming that, you would read a domain
+description and a problem description or goal
+
+89
+00:09:00,129 --> 00:09:08,220
+description and the planner would
+automatically compile and run essentially.
+
+90
+00:09:08,220 --> 00:09:14,440
+So, one of the earliest planners that was
+built was
+
+91
+00:09:14,440 --> 00:09:16,750
+called strips.
+
+92
+00:09:16,750 --> 00:09:17,750
+..
+
+93
+00:09:17,750 --> 00:09:24,710
+.
+We had possibly talked about it at least in
+
+94
+00:09:24,710 --> 00:09:31,870
+the context of this Robert called Shakey.
+So, if you
+
+95
+00:09:31,870 --> 00:09:37,289
+remember Shakey was one of the earliest Roberts,
+that was built in the computing
+
+96
+00:09:37,289 --> 00:09:43,879
+community, which could roam around a corridors
+of stand Ford University. May be looking
+
+97
+00:09:43,879 --> 00:09:48,730
+for forward points anything like that know
+where you could share itself. It had a on
+
+98
+00:09:48,730 --> 00:09:52,440
+board
+camera and it was on 2 wheels. So, if you
+
+99
+00:09:52,440 --> 00:09:55,500
+just look up Shakey, you will see some
+photographs and I had shown the photographs
+
+100
+00:09:55,500 --> 00:10:02,269
+during my introduction as well. It was fairly
+autonomous cam of course, it could not do
+
+101
+00:10:02,269 --> 00:10:04,639
+much, it could just roam around the place
+and the
+
+102
+00:10:04,639 --> 00:10:13,389
+planner that they used was called strips.
+Some people say, stand ford research institute
+
+103
+00:10:13,389 --> 00:10:21,569
+planning system essentially and that was the
+earliest kind of language description, the
+
+104
+00:10:21,570 --> 00:10:23,129
+simplest kind of language description that
+you can
+
+105
+00:10:23,129 --> 00:10:31,759
+use for planning. We will sought of look at
+this language to start with this essentially,
+
+106
+00:10:31,759 --> 00:10:35,139
+what
+would do all this people had started working
+
+107
+00:10:35,139 --> 00:10:52,159
+with devising languages. So, these are called
+planning domain, description language or in
+
+108
+00:10:52,159 --> 00:11:04,059
+short PDDL and there are versions of PDDL.
+You start with PDDL 1.0 and we will look at
+
+109
+00:11:04,059 --> 00:11:07,889
+only PDDL 1.0 here in this course and which
+is
+
+110
+00:11:07,889 --> 00:11:15,110
+basically, what strips does essentially?
+So, what happens when you go to higher levels
+
+111
+00:11:15,110 --> 00:11:21,159
+of language? Basically, the richness of the
+language increases, you are able to describe
+
+112
+00:11:21,159 --> 00:11:28,709
+the domain as well as actions of more complex
+nature. So, let us see what are those kind
+
+113
+00:11:28,710 --> 00:11:34,509
+simplifications that we are making in strips.
+So, we
+
+114
+00:11:34,509 --> 00:11:41,259
+had describing strips domains now. So, it
+is a term that has become common to use for
+
+115
+00:11:41,259 --> 00:11:42,259
+the
+
+116
+00:11:42,259 --> 00:11:45,409
+.simplest kind of planning domains. We call
+them strips domains because that is what this
+
+117
+00:11:45,409 --> 00:11:50,559
+strips planner use essentially and I will
+describe them in a short way.
+
+118
+00:11:50,559 --> 00:12:00,679
+So, these are the simplifications that we
+simplifying assumptions that we use, one is
+
+119
+00:12:00,679 --> 00:12:09,309
+that the
+space is finite. So, you can still work with
+
+120
+00:12:09,309 --> 00:12:12,079
+this idea of space search that we started
+this whole
+
+121
+00:12:12,080 --> 00:12:18,730
+course with where you are in some given state.
+You want to be in some desired state and the
+
+122
+00:12:18,730 --> 00:12:23,430
+actions that you have to chose only now we
+will. So, that time we said there is a move
+
+123
+00:12:23,429 --> 00:12:27,000
+generation function, which takes a state and
+gives you successors state. Now, we are saying
+
+124
+00:12:27,000 --> 00:12:31,570
+that we have access to actions and we will
+reason with those actions essentially.
+
+125
+00:12:31,570 --> 00:12:41,930
+So, the simplest assumption is that the space
+is finite essentially. The second assumption
+
+126
+00:12:41,929 --> 00:12:52,429
+that
+we make is that, it is fully observable which
+
+127
+00:12:52,429 --> 00:12:57,949
+means just as we discussed when we were
+talking about games. We said we have complete
+
+128
+00:12:57,950 --> 00:13:02,590
+information games and incomplete
+information games fully observable planning
+
+129
+00:13:02,590 --> 00:13:07,990
+system is one where, the agent can sense the
+entire world, which means this perception
+
+130
+00:13:07,990 --> 00:13:12,549
+part of the agent is perfect. The agent can
+see the
+
+131
+00:13:12,549 --> 00:13:15,829
+entire world and there is no missing information
+essentially.
+
+132
+00:13:15,830 --> 00:13:20,710
+Each of the assumptions that we are talking
+about we can relax and we can richer in some
+
+133
+00:13:20,710 --> 00:13:33,639
+sense planning problems of planning domain
+essentially. The third is, it is static. By
+
+134
+00:13:33,639 --> 00:13:37,259
+static we
+mean that agent is the only one making changes
+
+135
+00:13:37,259 --> 00:13:39,950
+in the world essentially. So, there is no
+other
+
+136
+00:13:39,950 --> 00:13:45,920
+influence in the world. All this is not allowed,
+there is no there no cloud, there is no sun
+
+137
+00:13:45,919 --> 00:13:51,819
+moving around, there is no rain falling, nothing.
+Agent is the only one, which is making
+
+138
+00:13:51,820 --> 00:13:55,860
+changes in the world and such a domain is
+called static.
+
+139
+00:13:55,860 --> 00:14:00,740
+Obviously, when we talk about multi agent
+systems advisable systems like game playing
+
+140
+00:14:00,740 --> 00:14:03,820
+that
+we saw, then this domain this assumption we
+
+141
+00:14:03,820 --> 00:14:13,871
+are violating and the other problem becomes
+more complex essentially. Then the actions
+
+142
+00:14:13,870 --> 00:14:21,451
+are deterministic. All these are simplifying
+assumptions that we are making and what do
+
+143
+00:14:21,451 --> 00:14:33,250
+we mean by this? That when an agent does an
+action, let us say pick up this watch essentially
+
+144
+00:14:33,250 --> 00:14:42,190
+or know pickup this remote. Whatever action
+the agent does, it happens in the real world
+
+145
+00:14:42,190 --> 00:14:48,880
+and as planned essentially.
+So, which means in a deterministic world,
+
+146
+00:14:48,879 --> 00:14:52,320
+if I want to say throw this ball into the
+basket on a
+
+147
+00:14:52,320 --> 00:14:57,930
+basket ball court, then you put ball into
+the basket essentially. Of course, the real
+
+148
+00:14:57,929 --> 00:15:01,139
+world is not
+deterministic when you play basketball, you
+
+149
+00:15:01,139 --> 00:15:06,970
+would realize that it needs a considerable
+amount of practice to get better at it, but
+
+150
+00:15:06,970 --> 00:15:10,580
+we will make a simplistic assumption. That
+the
+
+151
+00:15:10,580 --> 00:15:16,379
+.world is deterministic, which means that
+whatever actions agent does, they will happen
+
+152
+00:15:16,379 --> 00:15:18,480
+in the
+real world.
+
+153
+00:15:18,480 --> 00:15:23,200
+Just imagine that what would happen, if the
+world was not deterministic, then you create
+
+154
+00:15:23,200 --> 00:15:27,680
+a
+plan that you will get out of this building,
+
+155
+00:15:27,679 --> 00:15:31,429
+you will board your bicycle and go off to
+the hostel
+
+156
+00:15:31,429 --> 00:15:38,669
+and have some tea. Then when you go down,
+you find that somebody has stolen your bicycle
+
+157
+00:15:38,669 --> 00:15:44,659
+or may be bicycle is punctured or something
+like that, then you can no longer do the
+
+158
+00:15:44,659 --> 00:15:49,581
+planning. So, the effect of deterministic
+action is, once you planned your plan, plan
+
+159
+00:15:49,581 --> 00:15:54,370
+can be
+executed without any false essentially because
+
+160
+00:15:54,370 --> 00:16:00,039
+the world is fully observable and static and
+deterministic. If you make a plan, the plan
+
+161
+00:16:00,039 --> 00:16:02,559
+will execute in the world.
+So, you want to worry about monitoring the
+
+162
+00:16:02,559 --> 00:16:07,779
+plan and things like that essentially. So,
+now a
+
+163
+00:16:07,779 --> 00:16:15,250
+days of course, there is a big community looking
+at stochastic actions or probabilistic actions.
+
+164
+00:16:15,250 --> 00:16:20,799
+So, you must have heard about probabilistic
+planning. So, they follow a entirely different
+
+165
+00:16:20,799 --> 00:16:25,359
+approach to planning, what we are doing is
+something like search. They do something which
+
+166
+00:16:25,360 --> 00:16:29,830
+is quite different. So, we have this mark
+of decision processes and so on.
+
+167
+00:16:29,830 --> 00:16:33,990
+Doctor Ravidran talks more about such things
+in his course and I think he is also offering
+
+168
+00:16:33,990 --> 00:16:42,110
+a
+course on probabilistic reasoning next semester.
+
+169
+00:16:42,110 --> 00:16:56,110
+Then simple goals, I mean that we have the
+goal test function is on applied on the final
+
+170
+00:16:56,110 --> 00:17:02,340
+state. You say that this is what you want
+to
+
+171
+00:17:02,340 --> 00:17:06,538
+achieve, you want to be in the hostel and
+you want to be eating dosa and having some
+
+172
+00:17:06,538 --> 00:17:10,429
+coffee
+and if that is a situation, then the goal
+
+173
+00:17:10,429 --> 00:17:13,610
+is satisfied. So, that is what we will call
+it as simple
+
+174
+00:17:13,609 --> 00:17:26,958
+goals. Goals tested only on the final state
+as opposed to this, there is a community.
+
+175
+00:17:26,959 --> 00:17:32,190
+So, if you look at higher levels of prejudice
+for example, they would talk about what we
+
+176
+00:17:32,190 --> 00:17:41,139
+call
+as trajectory constraints, which means you
+
+177
+00:17:41,138 --> 00:17:43,349
+have conditions on the path that you have
+are
+
+178
+00:17:43,349 --> 00:17:47,849
+finding for the goal essentially as well.
+So, the trajectory is the solution and you
+
+179
+00:17:47,849 --> 00:17:51,240
+have
+conditions on the solutions essentially. So,
+
+180
+00:17:51,240 --> 00:17:54,230
+for example, if you are planning a long trip,
+you
+
+181
+00:17:54,230 --> 00:18:00,929
+might say that that at all points I must be
+within 5 kilometer, some reason let us say
+
+182
+00:18:00,929 --> 00:18:03,850
+your
+friend is not too well and or susceptible
+
+183
+00:18:03,849 --> 00:18:06,490
+something. You say that my route must be such
+that
+
+184
+00:18:06,490 --> 00:18:09,679
+all points I must be within 5 kilometers of
+a hostel.
+
+185
+00:18:09,679 --> 00:18:13,659
+So, that is a trajectory constraint you are
+may be saying that, I want to go from here
+
+186
+00:18:13,659 --> 00:18:17,419
+to
+Nagpur, that is a final goal, but I have constraints
+
+187
+00:18:17,419 --> 00:18:23,210
+on the path as well. We will not look at
+those, we will only simple goals or you might
+
+188
+00:18:23,210 --> 00:18:26,350
+have constraints like a every time you go
+into a
+
+189
+00:18:26,349 --> 00:18:30,000
+.room and out of the room, you must switch
+on, switch off the lights or something like
+
+190
+00:18:30,000 --> 00:18:35,819
+that.
+These are constraints on the path essentially
+
+191
+00:18:35,819 --> 00:18:48,849
+also soft constraints.
+Our goal description is rigid that only if
+
+192
+00:18:48,849 --> 00:18:51,009
+those conditions are met. we will say that
+a goal has
+
+193
+00:18:51,009 --> 00:18:58,230
+been achieved essentially. You might have
+soft constraints or soft goals, which might
+
+194
+00:18:58,230 --> 00:19:01,759
+say I
+would like to go to the market and if possible
+
+195
+00:19:01,759 --> 00:19:05,099
+I want to go and see a movie. You know by
+all
+
+196
+00:19:05,099 --> 00:19:13,378
+these stuffs and do some, you may have a plan,
+but you may accept the plan, which does not
+
+197
+00:19:13,378 --> 00:19:21,678
+achieve all the goals completely, but achieve
+as many as possible. Then you would have to
+
+198
+00:19:21,679 --> 00:19:26,970
+save a penalty associated with that.
+So, in that if I do not know take this goal
+
+199
+00:19:26,970 --> 00:19:30,269
+of buying a tooth paste, my plan is not as
+good as a
+
+200
+00:19:30,269 --> 00:19:34,609
+plan, if I had also both the toothpaste. Then
+it becomes a optimization problem because
+
+201
+00:19:34,609 --> 00:19:37,949
+you
+have to now find a plan, which satisfies certain
+
+202
+00:19:37,950 --> 00:19:43,639
+optimality criteria. As refers to this
+satisfaction criteria which says, if these
+
+203
+00:19:43,638 --> 00:19:48,148
+things are true, then I have achieved my goal
+whereas, here you are willing to relax it
+
+204
+00:19:48,148 --> 00:19:51,089
+and that is why it is called soft constraint
+that you are
+
+205
+00:19:51,089 --> 00:19:55,889
+willing to allow for some things not to be
+achieved. You would still accept the plan
+
+206
+00:19:55,890 --> 00:20:02,639
+essentially; obviously, with each such condition
+being relaxed the problem becomes harder
+
+207
+00:20:02,638 --> 00:20:18,048
+than harder.
+Then a plan is equal to sequence 
+
+208
+00:20:18,048 --> 00:20:22,970
+of actions. We will assume that our plan is
+a sequence of
+
+209
+00:20:22,970 --> 00:20:28,850
+actions. So, we do not want more complicated
+plans, which have networks of actions some
+
+210
+00:20:28,849 --> 00:20:35,778
+things like that. And one more constraint
+which is very important, it is being relaxed
+
+211
+00:20:35,778 --> 00:20:39,378
+quite
+often now a days which is the notion of time.
+
+212
+00:20:39,378 --> 00:20:42,658
+So, will assume that we do not have a notion
+of
+
+213
+00:20:42,659 --> 00:20:47,820
+time to start with. We will just say action
+a happens, then action b happens, then action
+
+214
+00:20:47,819 --> 00:20:50,839
+c
+happens. There is only a notion of sequence
+
+215
+00:20:50,839 --> 00:20:54,019
+that actions happen in a sequence whereas,
+in the
+
+216
+00:20:54,019 --> 00:20:58,548
+real world, some actions may take more, some
+actions may take less amount of time.
+
+217
+00:20:58,548 --> 00:21:04,480
+So, you may say I will take a bath and they
+have a cup of tea and then cycle to the gate.
+
+218
+00:21:04,480 --> 00:21:07,249
+Each
+of these actions may take a different amount
+
+219
+00:21:07,249 --> 00:21:15,259
+of time. If you want to take that into account,
+then you want to have what we call is. So,
+
+220
+00:21:15,259 --> 00:21:17,509
+what we have is instantaneous actions, but
+what
+
+221
+00:21:17,509 --> 00:21:35,599
+we can have is just write versus durative
+actions. So, by durative actions we mean actions,
+
+222
+00:21:35,599 --> 00:21:43,398
+which have durations and then of course, you
+can even start talking about doing things
+
+223
+00:21:43,398 --> 00:21:47,819
+in
+parallel. Once we were talking about time
+
+224
+00:21:47,819 --> 00:21:51,720
+and durations.
+So, you can say that while my sambhar is being
+
+225
+00:21:51,720 --> 00:21:56,649
+cooked on the left side gas, I will make
+something else in the right hand gas. So,
+
+226
+00:21:56,648 --> 00:22:00,469
+that things will happen in parallel, this
+will take so
+
+227
+00:22:00,470 --> 00:22:04,798
+.much time. Then you might worry about what
+is the total amount of time that my plan will
+
+228
+00:22:04,798 --> 00:22:09,898
+need to execute, which is call make span in
+planning terms, but durative actions brings
+
+229
+00:22:09,898 --> 00:22:12,048
+these
+kind of situation.
+
+230
+00:22:12,048 --> 00:22:20,658
+So, one interesting problem which was raised
+by a P. SE. student from one of these
+
+231
+00:22:20,659 --> 00:22:30,210
+universities, I think Washington university
+is the following. He says that and this was
+
+232
+00:22:30,210 --> 00:22:33,308
+a
+problem, which could not be solved by the
+
+233
+00:22:33,308 --> 00:22:37,230
+techniques that were there till 2007 and it
+is a task
+
+234
+00:22:37,230 --> 00:22:45,669
+of repairing a fuse essentially. So, it is
+a very simple problem. Let us say this is
+
+235
+00:22:45,669 --> 00:22:53,288
+a duration
+whatever time t you need to repair the fuse.
+
+236
+00:22:53,288 --> 00:22:58,220
+So, the situation is that lights have gone
+out in the
+
+237
+00:22:58,220 --> 00:23:01,759
+apartment and you are repairing the fuse and
+it takes you that much time.
+
+238
+00:23:01,759 --> 00:23:08,230
+So, the action is durative, it means it takes
+that much amount of time. You have one match
+
+239
+00:23:08,230 --> 00:23:16,049
+stick essentially and the match stick can
+give you light for so much amount of time.
+
+240
+00:23:16,049 --> 00:23:19,440
+So, this is
+along the x axis though y x is meaningless.
+
+241
+00:23:19,440 --> 00:23:27,360
+Basically, this is a interval over time so,
+this takes
+
+242
+00:23:27,359 --> 00:23:36,418
+so much time, this takes so much time and
+the task is to repair the fuse, but you need
+
+243
+00:23:36,419 --> 00:23:40,300
+light
+when you inserting the fuse in to the socket.
+
+244
+00:23:40,299 --> 00:23:43,240
+So, essentially this match stick must be leaked
+in
+
+245
+00:23:43,240 --> 00:23:51,788
+such a way that it overlaps with the end part
+of this fuse repair action.
+
+246
+00:23:51,788 --> 00:24:00,648
+Now, the trouble with this is from first yearly
+we are not into details here. The thing is
+
+247
+00:24:00,648 --> 00:24:04,449
+that
+when you are dealing with durative actions,
+
+248
+00:24:04,450 --> 00:24:07,808
+you cannot talk about time going in know
+seconds or something like that, that would
+
+249
+00:24:07,808 --> 00:24:11,628
+become simply unmanageable essentially. So,
+you
+
+250
+00:24:11,628 --> 00:24:17,118
+do not do that, what you do is I do anything
+at this time point, when I starting this action.
+
+251
+00:24:17,118 --> 00:24:21,069
+May be I can start another action or no something
+like that. Essentially can I do something
+
+252
+00:24:21,069 --> 00:24:28,460
+when this action is running. So, time jumps
+from beginning of action to end of action
+
+253
+00:24:28,460 --> 00:24:34,069
+essentially and then you plan to do something.
+Now, the whole problem with this is that you
+
+254
+00:24:34,069 --> 00:24:38,579
+cannot reason about it here, you cannot reason
+about it here. You have to set of reason about
+
+255
+00:24:38,579 --> 00:24:44,189
+it in such a way that, this comes into here.
+So,
+
+256
+00:24:44,190 --> 00:24:50,029
+this gave rise gives gave rose to some many
+interesting problems in how to build systems,
+
+257
+00:24:50,029 --> 00:24:55,220
+which will do. Now of course, we have planners
+which can do this and they would place an
+
+258
+00:24:55,220 --> 00:25:04,470
+action somewhere in between so that this saddles
+this essentially. So, durative actions of
+
+259
+00:25:04,470 --> 00:25:10,240
+course, increase the complexity manifold essentially.
+So, one way that some people have tried to
+
+260
+00:25:10,240 --> 00:25:12,679
+model durative actions by seeing to split
+it into
+
+261
+00:25:12,679 --> 00:25:18,399
+two actions saying, this is a start action
+and this is a end action, but durative actions
+
+262
+00:25:18,398 --> 00:25:20,558
+will have
+know conditions like that. Something must
+
+263
+00:25:20,558 --> 00:25:24,220
+be proved throughout or something must be.
+So,
+
+264
+00:25:24,220 --> 00:25:30,389
+.for example if you are taking a bath then
+you might have condition that the light must
+
+265
+00:25:30,388 --> 00:25:32,699
+be on
+throughout that, you are afraid of the dark
+
+266
+00:25:32,700 --> 00:25:37,150
+or something like that.
+Now, if you traveling from place a to place
+
+267
+00:25:37,150 --> 00:25:42,038
+b, then at the end of the action you should
+be at
+
+268
+00:25:42,038 --> 00:25:48,419
+place b. At the beginning of the action you
+must be at place a and in between you must
+
+269
+00:25:48,419 --> 00:25:51,000
+be at
+neither place. So, this kind of constrains
+
+270
+00:25:51,000 --> 00:25:54,720
+on actions make complexity of planning more
+and
+
+271
+00:25:54,720 --> 00:26:03,089
+more difficult essentially. So, I should say
+here some sense cross. So, we are not using
+
+272
+00:26:03,089 --> 00:26:06,490
+durative actions in strips domain. These are
+the simplifying assumptions that you make
+
+273
+00:26:06,490 --> 00:26:08,888
+in
+strips domain. Actions are instantaneous,
+
+274
+00:26:08,888 --> 00:26:14,668
+the goal is fully observable actions are
+deterministic, the world is static and we
+
+275
+00:26:14,669 --> 00:26:21,610
+have simple goals.
+Even in these simple domains it was shown
+
+276
+00:26:21,609 --> 00:26:31,350
+to be p space concrete. So, planning is those
+one
+
+277
+00:26:31,351 --> 00:26:38,249
+of the hard problems that you are trying to
+solve and it will always need some exponential
+
+278
+00:26:38,249 --> 00:26:45,649
+amount of time essentially. Every time you
+relax this constraints, the problem becomes
+
+279
+00:26:45,648 --> 00:26:55,839
+more
+complex in terms. So, let us look at how strips
+
+280
+00:26:55,839 --> 00:27:06,709
+describes actions. So, we will use this blocks
+world. You know we already talked about blocks
+
+281
+00:27:06,710 --> 00:27:12,840
+world, moving blocks around. So, we will
+we will see how blocks world is described
+
+282
+00:27:12,839 --> 00:27:16,439
+in strips essentially and PDDL is basically
+is kind
+
+283
+00:27:16,440 --> 00:27:25,288
+of a standardization of what we are seeing
+here essentially. So, first we have domain
+
+284
+00:27:25,288 --> 00:27:26,538
+predicates.
+.
+
+285
+00:27:26,538 --> 00:27:36,839
+.
+So for example, we might say on x, y where,
+
+286
+00:27:36,839 --> 00:27:42,058
+x and y are variables to signify that block
+x is on
+
+287
+00:27:42,058 --> 00:28:09,798
+block y, then we can have I use a once used
+in strips on table x, then holding x. We assume
+
+288
+00:28:09,798 --> 00:28:19,249
+.that there is a one arm Robert, which is
+moving the blocks around, so that one arm
+
+289
+00:28:19,249 --> 00:28:23,999
+Robert can
+hold one block and that is described by this
+
+290
+00:28:23,999 --> 00:28:28,048
+predicate saying holding block x. So, this
+x y
+
+291
+00:28:28,048 --> 00:28:38,450
+would be filled up with variable with constraints
+in real world, in a real problem essentially.
+
+292
+00:28:38,450 --> 00:28:45,069
+Clear x says that there is nothing on top
+of x essentially, which is a kind of a short
+
+293
+00:28:45,069 --> 00:28:57,158
+form or
+saying that another case there exists y.
+
+294
+00:28:57,159 --> 00:29:03,309
+So, we will look at first or logical little
+bit later in the course case, you are not
+
+295
+00:29:03,308 --> 00:29:13,480
+familiar with
+the language. So, whenever you define a domain,
+
+296
+00:29:13,480 --> 00:29:17,919
+you have first define what are the
+predicates which will define the situation
+
+297
+00:29:17,919 --> 00:29:19,990
+essentially. So, instead of saying that we
+have some
+
+298
+00:29:19,990 --> 00:29:24,409
+state representation, now we are saying that
+you must be define a predicates which describe
+
+299
+00:29:24,409 --> 00:29:28,179
+the state and the state will be a collection
+of such sentences.
+
+300
+00:29:28,179 --> 00:29:29,179
+.
+
+301
+00:29:29,179 --> 00:29:32,150
+.
+So, for example, if I have a situation like
+
+302
+00:29:32,150 --> 00:29:48,509
+this A is on b on c something like this. Then
+I will
+
+303
+00:29:48,509 --> 00:29:55,579
+describe it by saying that on a b, on b c,
+on a d, on table c, on table d, on table f,
+
+304
+00:29:55,579 --> 00:30:04,278
+clear a, clear
+e, clear f and this is my one arm Robot. I
+
+305
+00:30:04,278 --> 00:30:05,700
+need a predicate for that which we will call
+arm
+
+306
+00:30:05,700 --> 00:30:17,940
+empty. So, either you are holding something
+or arm is empty essentially. So, we can describe
+
+307
+00:30:17,940 --> 00:30:25,038
+this state using these predicates essentially
+plane values of the variables. We have the
+
+308
+00:30:25,038 --> 00:30:30,128
+operators or the actions. So, in this simple
+world we will assume that there are 4 actions,
+
+309
+00:30:30,128 --> 00:30:32,519
+one
+is pickup.
+
+310
+00:30:32,519 --> 00:30:33,519
+..
+
+311
+00:30:33,519 --> 00:30:45,470
+.
+So, in PDDL you first describe what are the
+
+312
+00:30:45,470 --> 00:30:50,120
+predicates that you will use to describe the
+world, then you describe actions. Now, actions
+
+313
+00:30:50,119 --> 00:30:56,569
+are described by 2 things, one is what is
+necessary to the action to be applicable?
+
+314
+00:30:56,569 --> 00:31:02,109
+What should be clue for the action to be applicable
+and secondly, what will become clue after
+
+315
+00:31:02,109 --> 00:31:05,668
+the action is applied essentially?
+So, in some sense we have the left hand side
+
+316
+00:31:05,669 --> 00:31:08,210
+and the right hand side like in the rule that
+we
+
+317
+00:31:08,210 --> 00:31:14,819
+talked about earlier, but in this strips kind
+of a thing, we would say that they are three
+
+318
+00:31:14,819 --> 00:31:25,898
+list, one
+is a precondition list, one is the add list
+
+319
+00:31:25,898 --> 00:31:34,599
+and one is the delete list. This is the original
+way in
+
+320
+00:31:34,599 --> 00:31:39,498
+which strips describe the actions. So, precondition
+list is those predicates which must be true
+
+321
+00:31:39,499 --> 00:31:45,600
+for the action to be applicable. So, if you
+want pickup list to be applicable, it should
+
+322
+00:31:45,599 --> 00:31:53,949
+be true
+that it should be on the table and it should
+
+323
+00:31:53,950 --> 00:31:58,528
+be clear, which means nothing must be on top
+of it.
+
+324
+00:31:58,528 --> 00:32:03,599
+I will just use for this AE and arm must be
+empty.
+
+325
+00:32:03,599 --> 00:32:10,428
+So, if these 3 predicates happen to be true
+in my domain, which means of course, I have
+
+326
+00:32:10,429 --> 00:32:13,288
+to
+just see the precondition list is a subset
+
+327
+00:32:13,288 --> 00:32:16,319
+of my state description. The state description
+is the set
+
+328
+00:32:16,319 --> 00:32:23,398
+of predicates which is describing this thing
+essentially. So for example, this will have
+
+329
+00:32:23,398 --> 00:32:31,199
+on table
+f and it will have clear f and arm empty.
+
+330
+00:32:31,200 --> 00:32:34,409
+So, because these things are in the state
+description,
+
+331
+00:32:34,409 --> 00:32:44,769
+this action becomes applicable. I can pickup
+f for example, that is the way that strips
+
+332
+00:32:44,769 --> 00:32:45,819
+original
+description is given.
+
+333
+00:32:45,819 --> 00:32:53,509
+So, if you look at any text book, we use that
+we will distinguish between the 2 actions
+
+334
+00:32:53,509 --> 00:32:56,399
+in
+which we pickup something from the table and
+
+335
+00:32:56,398 --> 00:32:59,178
+we pick up something from top of another
+
+336
+00:32:59,179 --> 00:33:05,470
+.block. So, that will have a different precondition
+just to illustrate what is happening? It has
+
+337
+00:33:05,470 --> 00:33:10,940
+to
+be owned something either on the table or
+
+338
+00:33:10,940 --> 00:33:13,249
+on another block. So, this pickup is only
+for
+
+339
+00:33:13,249 --> 00:33:49,179
+picking up things from the table.
+So, the add list as they used to call it is
+
+340
+00:33:49,179 --> 00:33:54,619
+a list of effects, which will become true
+if this action
+
+341
+00:33:54,618 --> 00:34:01,418
+were to be executed. In this case the only
+thing we are put is that the Robert will be
+
+342
+00:34:01,419 --> 00:34:06,230
+holding
+this block x and the delete list contains
+
+343
+00:34:06,230 --> 00:34:10,918
+those things, which will become true, but
+no longer
+
+344
+00:34:10,918 --> 00:34:15,679
+true. That includes things like on table x
+and arm empty x. So, it also include clear
+
+345
+00:34:15,679 --> 00:34:20,269
+x, but as I
+will discuss in the moment. You can either
+
+346
+00:34:20,269 --> 00:34:24,460
+like it or you can ignore it, it does not
+matter. So,
+
+347
+00:34:24,460 --> 00:34:35,900
+corresponding to this, I have an action called
+put down. So, precondition list says holding
+
+348
+00:34:35,900 --> 00:34:48,410
+x
+whose add list contains on table x arm empty.
+
+349
+00:34:48,409 --> 00:34:59,639
+Now, if I want to remove this clear x from
+here, then I should add it here. If I do not
+
+350
+00:34:59,639 --> 00:35:02,250
+remove
+it then I should not add it here. You just
+
+351
+00:35:02,250 --> 00:35:04,559
+think about this that either I must add it
+in both these
+
+352
+00:35:04,559 --> 00:35:10,619
+places or I can live it out of both these
+places. What is important is that if you are
+
+353
+00:35:10,619 --> 00:35:13,119
+picking up
+there must be nothing on top of it. So, I
+
+354
+00:35:13,119 --> 00:35:16,619
+need this clear x at that point. It is obvious
+that once
+
+355
+00:35:16,619 --> 00:35:20,609
+you pick it up and put it down on something
+else, there will be nothing top of that at
+
+356
+00:35:20,610 --> 00:35:25,740
+that
+instant. So, clear x will remain true after
+
+357
+00:35:25,739 --> 00:35:46,799
+that essentially.
+.
+
+358
+00:35:46,800 --> 00:35:47,800
+.
+Corresponding to these there are two more
+
+359
+00:35:47,800 --> 00:36:16,269
+actions which we call as unstuck because I
+will
+
+360
+00:36:16,269 --> 00:36:23,409
+just name the actions or operators. I will
+expect you to them to describe it in more
+
+361
+00:36:23,409 --> 00:36:28,549
+detail with
+this precondition list, add list and delete
+
+362
+00:36:28,550 --> 00:36:31,100
+list. So, the only difference between unstack
+and
+
+363
+00:36:31,099 --> 00:36:35,409
+.pickup is that, the pickup is from the table
+and unstack is from some other object. So,
+
+364
+00:36:35,409 --> 00:36:38,349
+you can
+unstack a from b or you can unstack e from
+
+365
+00:36:38,349 --> 00:36:42,579
+d. The conditions are similar a must be clear,
+a
+
+366
+00:36:42,579 --> 00:36:53,569
+must be on b and arm must be empty to unstack
+it and likewise you can stack it. In the more
+
+367
+00:36:53,570 --> 00:37:00,490
+modern PDDL language, I would call this as
+positive effects.
+
+368
+00:37:00,489 --> 00:37:01,489
+.
+
+369
+00:37:01,489 --> 00:37:13,209
+.
+So, if my action is a then this list is the
+
+370
+00:37:13,210 --> 00:37:21,619
+precondition list of a, this is the effects
+positive of a
+
+371
+00:37:21,619 --> 00:37:30,099
+and this is effects negative of a. So, in
+the modern PDDL language we do not use this
+
+372
+00:37:30,099 --> 00:37:33,509
+name
+precondition list, add list and delete list.
+
+373
+00:37:33,510 --> 00:37:36,660
+We will say preconditions and effects and
+effects can
+
+374
+00:37:36,659 --> 00:37:41,609
+be positive or negative. Positive means they
+become true after the action is applied, negative
+
+375
+00:37:41,610 --> 00:37:54,300
+means that they become false after the action
+is applied and the two of them together call
+
+376
+00:37:54,300 --> 00:38:00,980
+effects.
+So, we describe a set of action using the
+
+377
+00:38:00,980 --> 00:38:04,219
+precondition list and the effects list of
+the actions
+
+378
+00:38:04,219 --> 00:38:10,459
+and we can basically now have a language to
+define any domain in which you want to do
+
+379
+00:38:10,460 --> 00:38:15,280
+planning. What we will need to do is, define
+a set of predicates which describe the domain
+
+380
+00:38:15,280 --> 00:38:20,390
+which means describe the states of the domain
+and then define the actions which can be done
+
+381
+00:38:20,389 --> 00:38:34,789
+essentially. So, what is the planning problem?
+A planning problem 
+
+382
+00:38:34,789 --> 00:38:47,599
+is defined by a set of
+operators or actions a domain description,
+
+383
+00:38:47,599 --> 00:38:56,250
+starts state and a goal description essentially.
+So,
+
+384
+00:38:56,250 --> 00:39:10,530
+this is the start and this is the goal. So,
+for example, this could be my start state,
+
+385
+00:39:10,530 --> 00:39:14,250
+I have not
+written it in this language, but you can write
+
+386
+00:39:14,250 --> 00:39:16,969
+it quite easily. My goal description could
+simply
+
+387
+00:39:16,969 --> 00:39:43,039
+be something like a, I could say on, this
+could be my goal description.
+
+388
+00:39:43,039 --> 00:39:44,039
+..
+
+389
+00:39:44,039 --> 00:39:45,219
+.
+So, observe of course, that I do not need
+
+390
+00:39:45,219 --> 00:39:49,669
+to completely specify the goal as a state.
+The start
+
+391
+00:39:49,670 --> 00:39:55,230
+state I need to completely specify, you say
+that it is fully observable. Everything that
+
+392
+00:39:55,230 --> 00:39:57,590
+is true
+must be given, but a goal does not have to
+
+393
+00:39:57,590 --> 00:39:59,640
+be completely specified. Your goal may simply
+be
+
+394
+00:39:59,639 --> 00:40:05,619
+that as long as those 2 things are true, then
+I am happy with my plan essentially. I do
+
+395
+00:40:05,619 --> 00:40:09,299
+not care
+where the other blocks are as long as e is
+
+396
+00:40:09,300 --> 00:40:16,950
+on c and c is on f, then I am happy. So, e
+is on c, c
+
+397
+00:40:16,949 --> 00:40:24,919
+is on f, this f could be on something else
+or it be on the table and I do not care about.
+
+398
+00:40:24,920 --> 00:40:28,500
+Now of course, this is like what we do in
+the real world. We do not necessarily describe
+
+399
+00:40:28,500 --> 00:40:31,440
+the
+goal completely. Let us say this is what I
+
+400
+00:40:31,440 --> 00:40:38,030
+want to be true, I do not care about anything
+else
+
+401
+00:40:38,030 --> 00:40:44,519
+essentially. So, the goal description is a
+set of predicates, the start description is
+
+402
+00:40:44,519 --> 00:40:49,389
+also a set of
+such predicates incenses of predicates. When
+
+403
+00:40:49,389 --> 00:41:01,920
+do we say that action a is applicable?
+
+404
+00:41:01,920 --> 00:41:02,920
+..
+
+405
+00:41:02,920 --> 00:41:15,610
+.
+If precondition of a is a subset of start,
+
+406
+00:41:15,610 --> 00:41:25,510
+it is just like saying that if my preconditions
+are true,
+
+407
+00:41:25,510 --> 00:41:33,730
+then well s does not have to be start it can
+be any state. So, an action a is applicable
+
+408
+00:41:33,730 --> 00:41:38,190
+in a state
+s, if preconditions are part of the state
+
+409
+00:41:38,190 --> 00:41:44,500
+essentially, which means that they are true
+essentially.
+
+410
+00:41:44,500 --> 00:42:10,500
+We say that when the action is applied we
+get a new state. So, we progress 
+
+411
+00:42:10,500 --> 00:42:17,599
+new state s prime
+where, s prime is given by the given state
+
+412
+00:42:17,599 --> 00:42:25,719
+that we are in. I will use this as a minus
+sign or I
+
+413
+00:42:25,719 --> 00:42:44,969
+can use a standard minus sign whatever the
+effects minus of a union effects plus a.
+
+414
+00:42:44,969 --> 00:42:54,129
+So, once you define a state and once you define
+an action, we know that if an action a is
+
+415
+00:42:54,130 --> 00:43:01,590
+applicable in a state s, then I can apply
+action a to state s to go to a new state s
+
+416
+00:43:01,590 --> 00:43:05,370
+prime, which
+is given. I remove everything which other
+
+417
+00:43:05,369 --> 00:43:08,069
+negative effects of the action from the state
+and
+
+418
+00:43:08,070 --> 00:43:18,010
+add all the positive effects of the action,
+so I get a new state s prime.
+
+419
+00:43:18,010 --> 00:43:38,870
+A plan pie is a sequence of actions. So, we
+have assumed here that our plan is a simple
+
+420
+00:43:38,869 --> 00:43:41,619
+thing
+like sequence of action. So, plan we will
+
+421
+00:43:41,619 --> 00:43:46,089
+use a term pie is a sequence of actions a
+1, a 2 an
+
+422
+00:43:46,090 --> 00:43:50,480
+essentially. So, the first thing you want
+to do is to write small routine, which will
+
+423
+00:43:50,480 --> 00:43:56,559
+validate a
+plan that this plan is doing my task. What
+
+424
+00:43:56,559 --> 00:43:58,400
+is the task? The task is that I have been
+given a
+
+425
+00:43:58,400 --> 00:44:04,360
+start state, I have been given a goal state
+and somebody tells me that, this is a plan
+
+426
+00:44:04,360 --> 00:44:07,069
+somebody
+meaning some program that I have attend. The
+
+427
+00:44:07,070 --> 00:44:09,970
+program should be able to validate that, this
+is
+
+428
+00:44:09,969 --> 00:44:21,529
+a plan how do I do that before we do that,
+how do I do goal test? How do I say that a
+
+429
+00:44:21,530 --> 00:44:26,700
+given
+state is a goal state?
+
+430
+00:44:26,699 --> 00:44:46,089
+.So, goal test is simple g should be a subset
+of state s, g is a set of predicates describing
+
+431
+00:44:46,090 --> 00:44:51,920
+the
+goal. So, if g is a subset of s, then that
+
+432
+00:44:51,920 --> 00:44:55,510
+s is a goal state. s is a state which describes
+the whole
+
+433
+00:44:55,510 --> 00:44:59,950
+state. We just some conditions have set on
+those on the state. So, it is like saying
+
+434
+00:44:59,949 --> 00:45:02,649
+that I should
+be stick on the canteen and having a dosa,
+
+435
+00:45:02,650 --> 00:45:05,440
+I do not care what everybody else is doing,
+if that
+
+436
+00:45:05,440 --> 00:45:10,250
+is true then i am in a goal state essentially
+and that we can test by simply doing a subset
+
+437
+00:45:10,250 --> 00:45:15,309
+essentially.
+So, now having a goal test function how do
+
+438
+00:45:15,309 --> 00:45:19,840
+I and somebody gives me a plan pie. How do
+I
+
+439
+00:45:19,840 --> 00:45:24,559
+know that the plan is a plan for solving a
+problem. I must able to write a small program
+
+440
+00:45:24,559 --> 00:45:28,659
+to
+validate that what will that program do it
+
+441
+00:45:28,659 --> 00:45:33,399
+will progress over the state. So, it will
+apply first
+
+442
+00:45:33,400 --> 00:45:40,039
+action a 1 to given state, then in the resulting
+action it will apply a 2, which means it check
+
+443
+00:45:40,039 --> 00:45:45,639
+whether a 2 is applicable and apply a 2 and
+then keep doing that till we apply all the
+
+444
+00:45:45,639 --> 00:45:48,609
+actions.
+In the resulting state that we have progressed
+
+445
+00:45:48,610 --> 00:45:52,950
+to remember this, we have this progress
+operator. How can we move from state to state
+
+446
+00:45:52,949 --> 00:45:55,079
+that last state must satisfy that condition,
+that
+
+447
+00:45:55,079 --> 00:46:08,599
+the goal must be a subset of the state essentially.
+So, this all we have done today is to describe
+
+448
+00:46:08,599 --> 00:46:17,960
+the planning domains were to speak. The
+planning domain is described using a language
+
+449
+00:46:17,960 --> 00:46:23,610
+called a planning domain description
+language. I have urged to look at some website,
+
+450
+00:46:23,610 --> 00:46:30,160
+which will tell you a what which will give
+you a actual syntax of PDDL. Essentially it
+
+451
+00:46:30,159 --> 00:46:33,799
+constitutes of a set of predicates which are
+used
+
+452
+00:46:33,800 --> 00:46:38,910
+to describe the domain or define a domain
+and a set of operators or actions, which are
+
+453
+00:46:38,909 --> 00:46:43,859
+the
+actions that you can do in the domain.
+
+454
+00:46:43,860 --> 00:46:47,610
+The real actions are the instances of these
+operators, if you want to distinguish between
+
+455
+00:46:47,610 --> 00:46:51,789
+them.
+Then you can describe a planning problem by
+
+456
+00:46:51,789 --> 00:46:54,719
+saying this is my start state. So, I can say
+on ab
+
+457
+00:46:54,719 --> 00:47:00,189
+is true, on b c is true, on a d is true, on
+table f is true, on table d is true, on table
+
+458
+00:47:00,190 --> 00:47:05,000
+c is true, clear
+a, clear e, clear f and arm empty. If I state
+
+459
+00:47:05,000 --> 00:47:07,809
+all these things, I have said I have described
+my
+
+460
+00:47:07,809 --> 00:47:13,989
+state. I say my goal state is that c must
+be on f and e must be on c that is my goal
+
+461
+00:47:13,989 --> 00:47:16,889
+state. So, I
+can now have goal state.
+
+462
+00:47:16,889 --> 00:47:23,969
+Now, all I need is an algorithm to find a
+plan and then of course, I also need to be
+
+463
+00:47:23,969 --> 00:47:26,929
+able to
+validate a plan. We will see that some algorithms
+
+464
+00:47:26,929 --> 00:47:31,000
+will need this validation check because it
+can produce plans sequence of actions, which
+
+465
+00:47:31,000 --> 00:47:38,539
+are not necessarily plans. So, we need this
+check essentially. So, in a next couple of
+
+466
+00:47:38,539 --> 00:47:42,630
+classes we will look at a few algorithms to
+find this
+
+467
+00:47:42,630 --> 00:47:57,650
+plan. What is the simplest approach you can
+think? You are talking of a specific problem
+
+468
+00:47:57,650 --> 00:48:05,309
+.which is a blocks world domain. Now, this
+is just using as a example to illustrate our
+
+469
+00:48:05,309 --> 00:48:09,809
+planning algorithms. Our planning algorithms
+have to be domain independent, we do not
+
+470
+00:48:09,809 --> 00:48:13,710
+know what are the predicates or what are the
+actions, but we should be able to still write
+
+471
+00:48:13,710 --> 00:48:15,320
+an
+algorithm to use that.
+
+472
+00:48:15,320 --> 00:48:20,760
+So, this solution of course, is a very nice
+solution which sought of defines the fact
+
+473
+00:48:20,760 --> 00:48:24,120
+that I kept
+saying it is peace space complete, but in
+
+474
+00:48:24,119 --> 00:48:26,509
+fact, in the blocks world domain, there is
+a very
+
+475
+00:48:26,510 --> 00:48:31,190
+simple algorithm. It says first put everything
+on the table, which will take you if the n
+
+476
+00:48:31,190 --> 00:48:38,820
+blocks
+at most some order n by 2 or something like
+
+477
+00:48:38,820 --> 00:48:42,050
+that or order n. Let us see just put everything
+on
+
+478
+00:48:42,050 --> 00:48:45,650
+the table and then assemble the thing that
+you want to assemble.
+
+479
+00:48:45,650 --> 00:48:52,039
+So, you want c to be on f pickup c put it
+on f, you want e to be unseen, pickup e and
+
+480
+00:48:52,039 --> 00:48:55,300
+that can
+be done in linear time essentially, but that
+
+481
+00:48:55,300 --> 00:49:01,470
+is a very specific solution to a very specific
+problem. We are interested is in domain independent
+
+482
+00:49:01,469 --> 00:49:04,969
+planning, which means we do not know
+the domain, we do not know the predicates,
+
+483
+00:49:04,969 --> 00:49:10,059
+we do not know the actions. We have a language
+to describe the domain, the predicates and
+
+484
+00:49:10,059 --> 00:49:12,360
+the actions, and the start state, and the
+goal state
+
+485
+00:49:12,360 --> 00:49:16,340
+and then the algorithms should be able to
+operate.
+
+486
+00:49:16,340 --> 00:49:23,329
+So, the simplest approach as you can get is
+the power state space search that we have
+
+487
+00:49:23,329 --> 00:49:26,619
+been
+doing all this along. Go to the start state
+
+488
+00:49:26,619 --> 00:49:29,400
+apply the move gen function. How can you write
+a
+
+489
+00:49:29,400 --> 00:49:35,829
+move gen function? You have to simply test
+for all the actions, which are applicable
+
+490
+00:49:35,829 --> 00:49:38,230
+and they
+will basically constitute a move gen function.
+
+491
+00:49:38,230 --> 00:49:43,000
+They will give you what are the actions you
+can do, keep doing that and then we also have
+
+492
+00:49:43,000 --> 00:49:48,960
+goal test function. So, the simplest is forward
+state space search, but we will look at other
+
+493
+00:49:48,960 --> 00:49:51,039
+approaches and we will do that in the next
+class
+
+494
+00:49:51,039 --> 00:49:56,349
+onwards.
+We will stop here.
+
+495
+00:49:56,349 --> 00:50:06,349
+.
+

@@ -1,0 +1,2580 @@
+
+1
+00:00:02.160 --> 00:00:05.540
+Next we'll consider queries
+where two tables are used.
+
+2
+00:00:06.610 --> 00:00:08.540
+Let's consider the query,
+
+3
+00:00:08.540 --> 00:00:13.320
+find the beers liked by drinkers who
+frequent The Great American Bar.
+
+4
+00:00:15.070 --> 00:00:21.540
+For this query, we need
+the relation's Frequents and Likes.
+
+5
+00:00:21.540 --> 00:00:24.330
+Now look at the scheme of these
+relations in the light blue box.
+
+6
+00:00:25.840 --> 00:00:28.390
+They have a common
+attribute called drinker.
+
+7
+00:00:29.940 --> 00:00:32.740
+So if we use the attribute drinker,
+
+8
+00:00:32.740 --> 00:00:35.760
+we need to tell the system
+which one we are referring to.
+
+9
+00:00:37.980 --> 00:00:44.710
+Now look at the SQL query, the FROM clause
+in the query has these two relations.
+
+10
+00:00:44.710 --> 00:00:46.530
+To handle a common attribute name issue,
+
+11
+00:00:46.530 --> 00:00:51.380
+we need to give nicknames,
+aliases to these relations.
+
+12
+00:00:51.380 --> 00:00:56.305
+Therefore in the FROM clause we say,
+Likes has the alias L and
+
+13
+00:00:56.305 --> 00:00:58.060
+Frequents has the alias F.
+
+14
+00:00:59.950 --> 00:01:05.290
+Since we want to find beers like before,
+we use a SELECT DISTINCT clause for beer.
+
+15
+00:01:06.880 --> 00:01:11.740
+As we saw before, using SELECT DISTINCT
+avoids duplicates in the result.
+
+16
+00:01:13.300 --> 00:01:16.850
+The WHERE clause has two
+kinds of conditions,
+
+17
+00:01:17.870 --> 00:01:22.280
+the first kind is
+a single table condition.
+
+18
+00:01:22.280 --> 00:01:30.170
+In this case, bar = The Great American Bar
+on the Frequents relation.
+
+19
+00:01:31.820 --> 00:01:38.215
+The second kind is a joined condition
+which says that the drinker's attribute in
+
+20
+00:01:38.215 --> 00:01:45.090
+the frequency relation is the same as the
+drinker's attribute of the Likes relation.
+
+21
+00:01:46.248 --> 00:01:50.420
+We encode this in SQL in the last
+line of the query using aliases.
+
+22
+00:01:52.140 --> 00:01:57.780
+Why did we not say L.beer in the SELECT
+clause or F.bar in the first condition?
+
+23
+00:01:57.780 --> 00:02:00.410
+We could have,
+the query would have been equally right.
+
+24
+00:02:01.480 --> 00:02:06.520
+But we are using a shortcut because we
+know that these attributes are unique
+
+25
+00:02:06.520 --> 00:02:07.680
+already in the query.
+
+26
+00:02:09.570 --> 00:02:11.690
+Now let's look at the query again,
+
+27
+00:02:11.690 --> 00:02:14.980
+this time from the viewpoint
+of evaluating the query.
+
+28
+00:02:16.280 --> 00:02:19.080
+There are many ways to evaluate the query,
+but
+
+29
+00:02:19.080 --> 00:02:21.789
+the way it's most likely
+to be evaluated is this.
+
+30
+00:02:23.610 --> 00:02:28.110
+The query will first look at the tables
+that have single table conditions.
+
+31
+00:02:29.260 --> 00:02:32.640
+So it would perform a select operation
+
+32
+00:02:33.980 --> 00:02:38.360
+on the Frequents table to match
+the records of the condition
+
+33
+00:02:38.360 --> 00:02:41.700
+that The Great American Bar
+equal to The Great American Bar.
+
+34
+00:02:42.950 --> 00:02:43.990
+Why is this strategy good?
+
+35
+00:02:45.120 --> 00:02:48.590
+It's because the selection operative
+reduces the number of triples to consider.
+
+36
+00:02:49.720 --> 00:02:53.390
+Thus, if there are thousand
+triples in the relation frequents,
+
+37
+00:02:53.390 --> 00:02:55.760
+maybe 60 of them matches the desired bar.
+
+38
+00:02:57.240 --> 00:03:03.010
+So in the next step, we have to deal with
+a fewer number of records than thousand.
+
+39
+00:03:04.170 --> 00:03:09.216
+All right, the next step will
+be a Join with a Likes relation.
+
+40
+00:03:09.216 --> 00:03:12.970
+A Join requires two relations
+in a Join condition,
+
+41
+00:03:14.070 --> 00:03:15.620
+the Join condition comes from the query.
+
+42
+00:03:17.410 --> 00:03:21.102
+The first relation shown with
+an underscore symbol here
+
+43
+00:03:24.008 --> 00:03:27.665
+is a result of the previous operation.
+
+44
+00:03:27.665 --> 00:03:31.610
+Another way of saying this
+is that the result of
+
+45
+00:03:31.610 --> 00:03:36.470
+the selection is piped
+into the Join operation.
+
+46
+00:03:36.470 --> 00:03:39.930
+That means we do not create
+
+47
+00:03:39.930 --> 00:03:43.400
+an intermediate table from
+the result of the selection.
+
+48
+00:03:43.400 --> 00:03:49.060
+The results are directly supplied to the
+next operator, which in this case is Join.
+
+49
+00:03:51.340 --> 00:03:56.017
+Now the result of the Join operator is an
+intermediate structure with columns beer
+
+50
+00:03:56.017 --> 00:03:57.373
+from Likes relation and
+
+51
+00:03:57.373 --> 00:04:01.116
+the drinker from the Frequents
+relation that we've processed.
+
+52
+00:04:03.510 --> 00:04:08.492
+This intermediate set of triples is
+piped to the Project operation that
+
+53
+00:04:08.492 --> 00:04:10.326
+picks up the beer column.
+
+54
+00:04:12.846 --> 00:04:17.216
+Now we need to process
+the DISTINCT clause for
+
+55
+00:04:17.216 --> 00:04:22.970
+Deduplicate elimination,
+which then goes to the Output.
+
+56
+00:04:24.950 --> 00:04:28.614
+We have already seen how the select
+project queries on single tables
+
+57
+00:04:28.614 --> 00:04:32.610
+are evaluated when the tables
+are partitioned across several machines.
+
+58
+00:04:33.720 --> 00:04:37.070
+We'll now see how we process Join
+queries in the same setting.
+
+59
+00:04:38.780 --> 00:04:44.546
+For our case, consider that the Likes and
+
+60
+00:04:44.546 --> 00:04:48.470
+Frequents tables are on
+two different machines.
+
+61
+00:04:49.830 --> 00:04:51.740
+In the first part of the query,
+
+62
+00:04:51.740 --> 00:04:54.699
+the selection happens on the machine
+with the Frequents table.
+
+63
+00:04:55.870 --> 00:05:00.550
+The output of the query is a smaller
+table with the same scheme as Frequents,
+
+64
+00:05:00.550 --> 00:05:03.550
+that is with drinkers and bars.
+
+65
+00:05:03.550 --> 00:05:05.480
+Now we define an operation
+called Semijoin,
+
+66
+00:05:07.420 --> 00:05:11.070
+in which we need to move data
+from one machine to another.
+
+67
+00:05:13.050 --> 00:05:17.400
+The goal of the Semijoin operation is
+to reduce the cost of data movement.
+
+68
+00:05:18.480 --> 00:05:22.420
+That is to move data from
+the machine which has
+
+69
+00:05:22.420 --> 00:05:27.196
+the Frequents data to
+the machine with the Likes data.
+
+70
+00:05:27.196 --> 00:05:30.670
+The cost is reduced if we ship less data.
+
+71
+00:05:30.670 --> 00:05:38.090
+The way to it is to first find which
+data the join operation actually needs.
+
+72
+00:05:38.090 --> 00:05:43.570
+Clearly, it needs only the drinkers
+column and not the bars column.
+
+73
+00:05:43.570 --> 00:05:49.070
+So the drinkers column is projected out,
+then
+
+74
+00:05:49.070 --> 00:05:52.440
+just this column is transmitted
+to the second machine.
+
+75
+00:05:54.140 --> 00:05:59.130
+Finally, the join is performed by looking
+at the values in the Likes column
+
+76
+00:05:59.130 --> 00:06:02.080
+that only matches the values
+in the shipped data.
+
+77
+00:06:04.270 --> 00:06:09.720
+That means only the data from Likes that
+matches the drinkers that are chosen.
+
+78
+00:06:11.410 --> 00:06:15.090
+These are then the join results which
+would go to the output of the operation.
+
+79
+00:06:16.460 --> 00:06:19.680
+Now here you can see the Semijoin
+operation graphically.
+
+80
+00:06:20.990 --> 00:06:24.800
+The red table on the left is the output
+of the selection operations on the left.
+
+81
+00:06:27.520 --> 00:06:31.820
+The white table on the right
+is the table to be joined to.
+
+82
+00:06:33.260 --> 00:06:36.120
+Since we need only the Drinkers column,
+
+83
+00:06:36.120 --> 00:06:38.870
+it is projected to create
+a one-column relation.
+
+84
+00:06:40.380 --> 00:06:46.490
+Notice that the red table has two entries
+for Pete, who frequented two bars.
+
+85
+00:06:46.490 --> 00:06:49.770
+But the output of the project
+is condensed in the yellow table
+
+86
+00:06:49.770 --> 00:06:52.490
+to just show the Drinkers,
+where Pete appears only once.
+
+87
+00:06:54.170 --> 00:06:57.940
+For those of you with
+a background in computer science,
+
+88
+00:06:57.940 --> 00:07:00.450
+this can be done using a hash
+map like data structure.
+
+89
+00:07:02.400 --> 00:07:06.180
+This one-column table is now shipped
+to Site2, which has the Likes relation.
+
+90
+00:07:07.290 --> 00:07:11.834
+Now at Site2, the Shipped relation
+is used to find matches from
+
+91
+00:07:11.834 --> 00:07:16.222
+the Drinkers column and
+it finds only one match called Sally.
+
+92
+00:07:16.222 --> 00:07:19.960
+So the corresponding result triples,
+in this case,
+
+93
+00:07:19.960 --> 00:07:23.956
+only one triple is produced
+at the end of this operation.
+
+94
+00:07:23.956 --> 00:07:29.414
+Now, the original table and
+the matching table are shipped
+
+95
+00:07:29.414 --> 00:07:35.350
+to the last of the operation
+to finish the Join operation.
+
+96
+00:07:35.350 --> 00:07:39.120
+And more efficient version of
+this is shown in the next slide.
+
+97
+00:07:40.120 --> 00:07:47.250
+In this version, the first two
+steps this and that are the same.
+
+98
+00:07:48.620 --> 00:07:52.938
+Then the result of the reduce
+is also shipped to Site1 to find
+
+99
+00:07:52.938 --> 00:07:55.490
+the matches from the red relation.
+
+100
+00:07:56.510 --> 00:08:00.060
+Another reduce operation
+is performed on Site1 now
+
+101
+00:08:00.060 --> 00:08:03.020
+to get the matching records
+on the red relation.
+
+102
+00:08:03.020 --> 00:08:06.103
+Finally, these two reduced
+relations are shipped to
+
+103
+00:08:06.103 --> 00:08:09.200
+the site where the final join happens.
+
+104
+00:08:09.200 --> 00:08:11.920
+And all of this may seem
+like a lot of detail.
+
+105
+00:08:13.070 --> 00:08:15.960
+Let me repeat something I've said before.
+
+106
+00:08:17.600 --> 00:08:23.850
+If we have a system like DB2 or Spark SQL
+that implements multi-site joins, it
+
+107
+00:08:23.850 --> 00:08:27.200
+will perform this kind of operation under
+the hood, you don't have to know them.
+
+108
+00:08:28.460 --> 00:08:34.020
+However, if we were to implement
+a similar operation and all that you have
+
+109
+00:08:34.020 --> 00:08:38.240
+is Hadoop, you may end up implementing
+this kind of algorithm yourself.
+
+1
+00:00:01.642 --> 00:00:06.010
+The queries in real life are little more
+complex than what we have seen before.
+
+2
+00:00:07.080 --> 00:00:09.180
+So let's consider a more complex query.
+
+3
+00:00:11.010 --> 00:00:17.190
+Let’s find bars where the price
+of Miller is the same as or
+
+4
+00:00:17.190 --> 00:00:21.600
+less than what the great American bar
+called TGAB here charges for Bud.
+
+5
+00:00:23.090 --> 00:00:28.026
+You may say, but we do not really
+know what TGAB charges for Bud.
+
+6
+00:00:28.026 --> 00:00:34.600
+That's correct, so
+we can break up the query into two parts.
+
+7
+00:00:34.600 --> 00:00:42.060
+First, we will find this unknown price,
+and then we'll use that price
+
+8
+00:00:42.060 --> 00:00:47.160
+to find the bars that would sell Miller
+for the same price or better price.
+
+9
+00:00:47.160 --> 00:00:52.119
+Now this is a classic situation where
+the result from the first part of
+
+10
+00:00:52.119 --> 00:00:56.326
+the query should be fed as
+a parameter to the second query.
+
+11
+00:00:56.326 --> 00:00:59.670
+Now this situation is called a subquery.
+
+12
+00:01:01.510 --> 00:01:04.090
+We write this in SQL as
+shown in the slide here.
+
+13
+00:01:05.730 --> 00:01:10.730
+What makes this query different is that
+the part where price is less than equal
+
+14
+00:01:10.730 --> 00:01:15.440
+to, instead of specifying
+a constant like $8,
+
+15
+00:01:15.440 --> 00:01:21.610
+we actually place another query which
+computes the price of a Bud at TGAB.
+
+16
+00:01:24.300 --> 00:01:28.600
+The shaded part is called the inner query,
+or the subquery.
+
+17
+00:01:29.870 --> 00:01:32.750
+In this case, both the outer query and
+
+18
+00:01:32.750 --> 00:01:36.110
+the inner query use the same relation,
+which is Sells.
+
+19
+00:01:37.820 --> 00:01:43.100
+Now in terms of evaluation,
+the inner query is evaluated first,
+
+20
+00:01:43.100 --> 00:01:45.520
+and the outer query uses its output.
+
+21
+00:01:46.750 --> 00:01:50.110
+Now while it may not be
+obvious at this time,
+
+22
+00:01:50.110 --> 00:01:53.930
+notice that the inner query is
+independent of the outer query.
+
+23
+00:01:54.960 --> 00:01:56.270
+In other words,
+
+24
+00:01:56.270 --> 00:02:00.930
+even if we did not have the outer query,
+we can still evaluate the inner query.
+
+25
+00:02:02.270 --> 00:02:06.550
+We say in this case that
+the subquery is uncorrelated.
+
+26
+00:02:09.180 --> 00:02:11.260
+Let's look at another
+example of a subquery.
+
+27
+00:02:12.350 --> 00:02:15.504
+In this example,
+we want to find the name and
+
+28
+00:02:15.504 --> 00:02:19.185
+manufacturer of each beer
+that Fred didn't like.
+
+29
+00:02:19.185 --> 00:02:22.953
+So how do we know what Fred didn't like?
+
+30
+00:02:22.953 --> 00:02:27.545
+We do however know that the set of
+beers that Fred likes because they
+
+31
+00:02:27.545 --> 00:02:29.925
+are listed in the Likes relation.
+
+32
+00:02:29.925 --> 00:02:34.324
+So we need to subtract this set from the
+total set of beers that the company has
+
+33
+00:02:34.324 --> 00:02:35.030
+recorded.
+
+34
+00:02:36.260 --> 00:02:40.180
+This subtraction of sets can
+be performed in several ways.
+
+35
+00:02:40.180 --> 00:02:43.660
+One of them is to use
+the NOT IN construct.
+
+36
+00:02:45.130 --> 00:02:50.270
+So the query class's job is to take
+every name from the Beers table and
+
+37
+00:02:50.270 --> 00:02:55.730
+output it only if it does not appear
+in the set produced by the inner query.
+
+38
+00:02:57.180 --> 00:03:01.990
+Similar to the previous query,
+the subquery here is also uncorrelated.
+
+39
+00:03:04.920 --> 00:03:06.640
+Now this is a more sophisticated query.
+
+40
+00:03:07.745 --> 00:03:11.490
+The intention is to find
+beers that are more expensive
+
+41
+00:03:11.490 --> 00:03:13.820
+than the average price of beer.
+
+42
+00:03:13.820 --> 00:03:17.250
+But since beers have different
+prices in different bars,
+
+43
+00:03:17.250 --> 00:03:19.520
+we have to find the average for every bar.
+
+44
+00:03:20.720 --> 00:03:24.340
+Therefore the idea is to find
+the average price of beer for
+
+45
+00:03:24.340 --> 00:03:29.340
+every bar and then compare the price of
+each beer with respect to this average.
+
+46
+00:03:30.670 --> 00:03:32.580
+Now look at the query and the table.
+
+47
+00:03:34.265 --> 00:03:37.110
+Let's assume we are processing
+the first table.
+
+48
+00:03:39.250 --> 00:03:43.134
+The beer is Bud, and the price is $5.
+
+49
+00:03:43.134 --> 00:03:50.741
+Now we need to know if $5 is greater than
+the average price of beer sold at HGAT.
+
+50
+00:03:50.741 --> 00:03:55.120
+To do this,
+we need to compute the inner query, okay?
+
+51
+00:03:55.120 --> 00:03:57.410
+So now let's look at the fourth row.
+
+52
+00:03:57.410 --> 00:04:03.490
+The price of Guinness needs to be
+compared to that average again for HGAT.
+
+53
+00:04:04.550 --> 00:04:07.869
+In fact for
+every table processed by the outer query,
+
+54
+00:04:07.869 --> 00:04:10.980
+one needs to compute the inner query for
+that bar.
+
+55
+00:04:12.240 --> 00:04:16.620
+This makes the inner subquery
+correlated with the outer query.
+
+56
+00:04:17.910 --> 00:04:22.013
+Now a smart query processor will store
+the average once it's computed and
+
+57
+00:04:22.013 --> 00:04:25.929
+then reuse the stored value instead
+of computing over and over again.
+
+58
+00:04:29.376 --> 00:04:31.521
+What's an aggregate query?
+
+59
+00:04:31.521 --> 00:04:36.440
+Let's use a simple example of
+finding the average price of Bud.
+
+60
+00:04:37.980 --> 00:04:42.100
+This is like a simple select project
+query with the additional aspect
+
+61
+00:04:42.100 --> 00:04:46.010
+that it takes a list of price values
+of Bud from different bars and
+
+62
+00:04:46.010 --> 00:04:47.250
+then computes an average.
+
+63
+00:04:48.280 --> 00:04:52.749
+In the example shown,
+the average of the five prices is 4.2.
+
+64
+00:04:52.749 --> 00:04:55.230
+In other words the average function,
+
+65
+00:04:55.230 --> 00:05:00.750
+the AVG function, takes a list of
+values and produces a single value.
+
+66
+00:05:00.750 --> 00:05:03.700
+Now there are many functions
+that have this behavior.
+
+67
+00:05:03.700 --> 00:05:06.090
+The SUM function takes
+a list of values and
+
+68
+00:05:06.090 --> 00:05:08.280
+adds them up to produce a single value.
+
+69
+00:05:08.280 --> 00:05:11.000
+The COUNT function takes
+a list of list of values and
+
+70
+00:05:11.000 --> 00:05:13.490
+counts the number of items
+in that list and so on.
+
+71
+00:05:16.020 --> 00:05:19.170
+These are called aggregate functions.
+
+72
+00:05:21.160 --> 00:05:26.208
+Now if we wanted to count only the price
+values that are different, that is 3,
+
+73
+00:05:26.208 --> 00:05:31.690
+4, and 5 just once, we can write
+the SELECT clause a little differently.
+
+74
+00:05:33.350 --> 00:05:38.852
+We would say that the average
+is over distinct values
+
+75
+00:05:38.852 --> 00:05:43.612
+of price which in this
+case will result in 4.
+
+76
+00:05:43.612 --> 00:05:48.481
+You should recognize that most analytical
+operations need to use statistical
+
+77
+00:05:48.481 --> 00:05:50.630
+functions which are aggregates.
+
+78
+00:05:52.150 --> 00:05:54.850
+So another important
+analytical requirement
+
+79
+00:05:54.850 --> 00:05:58.140
+is computing the statistical
+aggregate by groups.
+
+80
+00:05:58.140 --> 00:06:02.660
+For example, we often compute the average
+salaries of employees per department.
+
+81
+00:06:03.670 --> 00:06:09.070
+Now back to our example here,
+we want to find the average price paid for
+
+82
+00:06:09.070 --> 00:06:15.670
+Bud per drinker, where we know
+that a drinker visits many bars.
+
+83
+00:06:15.670 --> 00:06:18.520
+So the grouping variable here is drinker.
+
+84
+00:06:19.740 --> 00:06:24.900
+So we have three attributes at play,
+price which we need to aggregate,
+
+85
+00:06:24.900 --> 00:06:29.230
+drinker which we need to group by,
+and bar which is a join attribute.
+
+86
+00:06:30.660 --> 00:06:34.380
+The fourth attribute, namely beer,
+is used for selection and
+
+87
+00:06:34.380 --> 00:06:37.100
+does not participate in grouping.
+
+88
+00:06:37.100 --> 00:06:42.340
+So after the selection we will
+get an intermediate relation
+
+89
+00:06:42.340 --> 00:06:45.220
+containing drinker, bar, and price.
+
+90
+00:06:46.420 --> 00:06:50.660
+With this, the GROUP BY operation
+will create one result row for
+
+91
+00:06:50.660 --> 00:06:55.040
+each drinker and place the average
+price over all such rows.
+
+92
+00:06:57.650 --> 00:06:59.090
+Now how does GROUP BY and
+
+93
+00:06:59.090 --> 00:07:01.630
+aggregate computation work
+when the data is partitioned?
+
+94
+00:07:02.670 --> 00:07:03.570
+Let's take the same query.
+
+95
+00:07:04.680 --> 00:07:09.071
+We are looking for the average
+price of Bud grouped by drinker.
+
+96
+00:07:11.859 --> 00:07:17.090
+But this time the result of the selection
+are in two different machines.
+
+97
+00:07:17.090 --> 00:07:20.270
+Imagine that this time they are range
+partitioned by row numbers,
+
+98
+00:07:20.270 --> 00:07:22.170
+which we have not shown
+to maintain clarity.
+
+99
+00:07:23.480 --> 00:07:27.374
+Now with the GROUP BY operation the data
+will get repartitioned by the grouping
+
+100
+00:07:27.374 --> 00:07:28.970
+attribute, that's drinker.
+
+101
+00:07:31.730 --> 00:07:37.340
+And then the aggregate
+function is computed locally.
+
+102
+00:07:38.890 --> 00:07:44.453
+To accomplish this repartitioning task,
+each machine groups its own data locally,
+
+103
+00:07:44.453 --> 00:07:49.783
+determines which portions of data should
+be transmitted to a different machine,
+
+104
+00:07:49.783 --> 00:07:52.580
+and accordingly ships it to that machine.
+
+105
+00:07:53.630 --> 00:07:56.390
+Now there are several variants
+of this general scheme
+
+106
+00:07:56.390 --> 00:07:58.680
+which are even more efficient.
+
+107
+00:07:58.680 --> 00:08:02.870
+Now if this reminds you of the map
+operation you saw in your previous course,
+
+108
+00:08:02.870 --> 00:08:03.790
+you are exactly right.
+
+109
+00:08:04.910 --> 00:08:10.164
+This fundamental process of grouping,
+partitioning, and redistribution of data
+
+110
+00:08:10.164 --> 00:08:15.500
+is inherent in data-parallel computing and
+implemented inside database systems.
+
+1
+00:00:02.070 --> 00:00:02.600
+Welcome back.
+
+2
+00:00:03.850 --> 00:00:08.705
+In this video, we will provide you
+a quick summary of the main points from
+
+3
+00:00:08.705 --> 00:00:12.303
+our last course on big data modeling and
+management.
+
+4
+00:00:12.303 --> 00:00:16.882
+If you had just completed our second
+course and do not need a refresher,
+
+5
+00:00:16.882 --> 00:00:19.261
+you may now skip to the next lecture.
+
+6
+00:00:19.261 --> 00:00:24.311
+After this video, you will be able
+to recall why big data modeling and
+
+7
+00:00:24.311 --> 00:00:29.536
+management is essential in preparing
+to gain insights from your data,
+
+8
+00:00:29.536 --> 00:00:32.693
+summarize different kids of data models.
+
+9
+00:00:32.693 --> 00:00:38.351
+Describe streaming data and the different challenges
+it presents, and explain the differences
+
+10
+00:00:38.351 --> 00:00:43.403
+between a database management system and
+a big data management system.
+
+11
+00:00:46.510 --> 00:00:51.140
+In the second course, we described
+a data model as a specification
+
+12
+00:00:51.140 --> 00:00:55.194
+that precisely characterizes
+the structure of the data,
+
+13
+00:00:55.194 --> 00:01:00.260
+the operations on the data, and
+the constraints that may apply on data.
+
+14
+00:01:01.360 --> 00:01:05.070
+For example, a data model may state that
+
+15
+00:01:05.070 --> 00:01:09.030
+a data is structured like
+a two-dimensional array or a matrix.
+
+16
+00:01:10.760 --> 00:01:16.050
+For this structure,
+one may have a data access operation,
+
+17
+00:01:16.050 --> 00:01:21.720
+which given an index of the array,
+we use the cell of the array to refer to.
+
+18
+00:01:24.210 --> 00:01:28.820
+A data model may also specify
+constraints on the data.
+
+19
+00:01:28.820 --> 00:01:33.720
+For example, while a total
+data set may have many arrays,
+
+20
+00:01:33.720 --> 00:01:36.640
+the name of each array must be unique and
+
+21
+00:01:36.640 --> 00:01:41.420
+the values of a specific array
+must always be greater than zero.
+
+22
+00:01:43.070 --> 00:01:48.335
+Database management systems handle
+low level data management operations,
+
+23
+00:01:48.335 --> 00:01:51.980
+help organization of the data
+using a data model, and
+
+24
+00:01:51.980 --> 00:01:55.147
+provide an open programmable
+access to data.
+
+25
+00:01:57.975 --> 00:02:01.346
+We covered a number of data models.
+
+26
+00:02:01.346 --> 00:02:04.911
+We showed four models that were
+discussed in more details.
+
+27
+00:02:07.330 --> 00:02:10.810
+The relational data to date
+is the most used data model.
+
+28
+00:02:11.990 --> 00:02:17.189
+Here, data is structured like tables
+which are formally called relations.
+
+29
+00:02:18.260 --> 00:02:21.840
+The relational data model has been
+implemented in traditional database
+
+30
+00:02:21.840 --> 00:02:23.120
+systems.
+
+31
+00:02:23.120 --> 00:02:28.240
+But they are being refreshly implemented
+in modern data systems over Hadoop and
+
+32
+00:02:28.240 --> 00:02:31.400
+Spark and
+are getting deployed on cloud platforms.
+
+33
+00:02:32.700 --> 00:02:37.930
+The second category of data gaining
+popularity is semi-structured data,
+
+34
+00:02:37.930 --> 00:02:42.840
+which includes documents like HTML pages,
+XML data and
+
+35
+00:02:42.840 --> 00:02:45.960
+JSON data that are used by
+many Internet applications.
+
+36
+00:02:47.470 --> 00:02:50.201
+This data can have one element nested or
+
+37
+00:02:50.201 --> 00:02:55.674
+embedded within another data element and
+hence can often be modeled as a tree.
+
+38
+00:02:58.779 --> 00:03:03.480
+The third category of data
+models is called graph data.
+
+39
+00:03:03.480 --> 00:03:08.700
+A graph is a network where
+nodes represent entities and
+
+40
+00:03:08.700 --> 00:03:12.540
+edges represent relationships
+between pairs of such entities.
+
+41
+00:03:13.800 --> 00:03:19.675
+For example, in a social network,
+nodes may represent users and
+
+42
+00:03:19.675 --> 00:03:23.160
+edges may represent their friendship.
+
+43
+00:03:23.160 --> 00:03:27.990
+The operations performed on graph data
+includes traversing the network so
+
+44
+00:03:27.990 --> 00:03:32.000
+that one can find friend of
+a friend of a friend if needed.
+
+45
+00:03:34.200 --> 00:03:39.890
+In contrast to the previous three models,
+that there is a structure to the data,
+
+46
+00:03:39.890 --> 00:03:45.280
+the text data is much more unstructured
+because an entire data item
+
+47
+00:03:45.280 --> 00:03:47.780
+like a new article can
+be just a text string.
+
+48
+00:03:49.180 --> 00:03:53.540
+However, text is the primary form of data
+
+49
+00:03:53.540 --> 00:03:57.120
+in information retrieval systems or
+search engines like Google.
+
+50
+00:04:00.250 --> 00:04:05.290
+We also discussed streaming data,
+or data with velocity, as a special
+
+51
+00:04:05.290 --> 00:04:10.580
+class of data that continually come
+to the system at some data rate.
+
+52
+00:04:12.350 --> 00:04:17.308
+Examples can be found in data coming
+from road sensors that measure traffic
+
+53
+00:04:17.308 --> 00:04:21.636
+patterns or stock price data from
+the stock exchange that may come
+
+54
+00:04:21.636 --> 00:04:25.111
+in volumes from stock
+exchanges all over the world.
+
+55
+00:04:27.563 --> 00:04:35.090
+Streaming data is special because a stream
+is technically an infinite data source.
+
+56
+00:04:35.090 --> 00:04:38.050
+And therefore,
+we keep filling up memory and
+
+57
+00:04:38.050 --> 00:04:42.390
+storage and will eventually go
+beyond the capacity of any system.
+
+58
+00:04:43.930 --> 00:04:47.720
+Streaming data, therefore, needs
+a different kind of management system.
+
+59
+00:04:48.960 --> 00:04:54.135
+For this reason,
+streaming data is processed in memory,
+
+60
+00:04:54.135 --> 00:04:57.841
+in chunks which are also called windows.
+
+61
+00:04:57.841 --> 00:05:01.226
+Often only the necessary
+part of the data stream or
+
+62
+00:05:01.226 --> 00:05:05.186
+the results of queries against
+the data stream is stored.
+
+63
+00:05:07.145 --> 00:05:13.180
+A typical type of query against streaming
+data are alerts or notifications.
+
+64
+00:05:13.180 --> 00:05:17.933
+The system notices an event like multiple
+stock price changing within a short time.
+
+65
+00:05:21.658 --> 00:05:24.160
+Streaming data is also used for
+prediction.
+
+66
+00:05:26.330 --> 00:05:31.287
+For instance, based on wind direction and
+temperature data streams,
+
+67
+00:05:31.287 --> 00:05:34.768
+one can predict how a wildfire
+is going to spread.
+
+68
+00:05:37.640 --> 00:05:42.522
+In the last course, we also covered
+a number of data systems that we called
+
+69
+00:05:42.522 --> 00:05:44.590
+big data management systems.
+
+70
+00:05:46.510 --> 00:05:49.890
+These systems use
+different data models and
+
+71
+00:05:49.890 --> 00:05:55.030
+have different capabilities, but
+are characterized by some common features.
+
+72
+00:05:56.210 --> 00:06:00.430
+They are also designed from the start for
+parallel and distributed processing.
+
+73
+00:06:01.610 --> 00:06:07.100
+Most of them implement data partition
+parallelism, which, if you can recall,
+
+74
+00:06:07.100 --> 00:06:11.890
+refers to the process of segmenting
+the data into multiple machines so
+
+75
+00:06:11.890 --> 00:06:16.839
+data retrieval and manipulations can be
+performed in parallel on these machines.
+
+76
+00:06:18.880 --> 00:06:24.360
+Many of these systems allow a large
+number of users who constantly update and
+
+77
+00:06:24.360 --> 00:06:25.510
+query the system.
+
+78
+00:06:27.590 --> 00:06:32.190
+Some of the systems do not maintain
+transaction consistency with every update.
+
+79
+00:06:33.300 --> 00:06:34.224
+That means,
+
+80
+00:06:34.224 --> 00:06:39.437
+not all the machines may have all
+the updates guaranteed at every moment.
+
+81
+00:06:41.091 --> 00:06:46.460
+However, most of them provide
+a guarantee of eventual consistency,
+
+82
+00:06:46.460 --> 00:06:51.780
+which means all the machines will
+get all updates sooner or later.
+
+83
+00:06:51.780 --> 00:06:54.920
+Therefore, providing better accuracy and
+time.
+
+84
+00:06:57.610 --> 00:07:02.740
+The third common characteristic
+of big data management systems is
+
+85
+00:07:02.740 --> 00:07:06.750
+that they are often built on top of
+a Hadoop-like platform that provides
+
+86
+00:07:06.750 --> 00:07:11.040
+automatic replication and
+a map-reduce style processing ability.
+
+87
+00:07:12.270 --> 00:07:16.440
+Some of the data operations performed
+within these systems make use of these
+
+88
+00:07:16.440 --> 00:07:17.829
+lower level capabilities.
+
+89
+00:07:20.200 --> 00:07:22.520
+After this refresher on data modeling and
+
+90
+00:07:22.520 --> 00:07:26.650
+management, let's start big data
+integration and processing.
+
+1
+00:00:02.188 --> 00:00:03.689
+So, hi.
+
+2
+00:00:03.689 --> 00:00:08.521
+In the previous course, we saw
+examples of different data models and
+
+3
+00:00:08.521 --> 00:00:12.290
+talked about a few current
+data management systems.
+
+4
+00:00:12.290 --> 00:00:15.617
+In this module,
+we'll focus on data retrieval.
+
+5
+00:00:35.163 --> 00:00:40.012
+Data retrieval refers to
+the way in which data desired
+
+6
+00:00:40.012 --> 00:00:44.980
+by a user is specified and
+retrieved from a data store.
+
+7
+00:00:46.280 --> 00:00:50.720
+Note that in this course, we are using
+the term data retrieval in two ways.
+
+8
+00:00:51.760 --> 00:00:56.430
+Assume that your data is stored in a data
+store that follows a specific data model,
+
+9
+00:00:56.430 --> 00:00:58.190
+like for
+example the relational data model.
+
+10
+00:00:59.340 --> 00:01:03.300
+By data retrieval, we will refer to, one,
+
+11
+00:01:03.300 --> 00:01:07.950
+the way you specify how to get
+the desired data out of the system,
+
+12
+00:01:07.950 --> 00:01:12.910
+this is called the query
+specification method, and two,
+
+13
+00:01:12.910 --> 00:01:18.300
+the internal processing that occurs within
+the data management system to compute or
+
+14
+00:01:18.300 --> 00:01:21.520
+evaluate that specified retrieval request.
+
+15
+00:01:23.170 --> 00:01:28.780
+While query specification can apply to
+small data stores or large data stores,
+
+16
+00:01:28.780 --> 00:01:32.600
+we'll keep an eye on the nature of
+query evaluation when the data is big.
+
+17
+00:01:34.230 --> 00:01:38.370
+Further, we'll consider how
+the query specification changes
+
+18
+00:01:38.370 --> 00:01:40.770
+when we deal with faster streaming data.
+
+19
+00:01:43.380 --> 00:01:48.590
+A query language is a language in which
+a retrieval request is specified.
+
+20
+00:01:50.730 --> 00:01:56.232
+A query language is often called
+declarative, which means it lets you
+
+21
+00:01:56.232 --> 00:02:01.600
+specify what you want to retrieve without
+having to tell the system how to retrieve.
+
+22
+00:02:02.670 --> 00:02:04.660
+For example, you can say,
+
+23
+00:02:04.660 --> 00:02:10.550
+find all data from relation employee
+where the salary is more than 50k.
+
+24
+00:02:10.550 --> 00:02:14.970
+Now, you don't have to write a program
+which will tell the system to open a file,
+
+25
+00:02:14.970 --> 00:02:20.006
+skip the first 250 bytes,
+then in a loop pick the next 1024 bytes,
+
+26
+00:02:20.006 --> 00:02:24.340
+probe into the 600th byte and
+read an integer, and so forth.
+
+27
+00:02:25.480 --> 00:02:28.160
+Instead of writing such
+a complicated procedure,
+
+28
+00:02:28.160 --> 00:02:32.450
+you just specify the data items that
+you need and the system does the rest.
+
+29
+00:02:33.840 --> 00:02:38.167
+For example, SQL,
+structured query language,
+
+30
+00:02:38.167 --> 00:02:42.810
+is the most used query language for
+relational data.
+
+31
+00:02:42.810 --> 00:02:47.156
+Now, in contrast to a query language,
+a database programming
+
+32
+00:02:47.156 --> 00:02:52.076
+language like Oracle's PL/SQL or
+Postgres's PgSQL are high-level
+
+33
+00:02:52.076 --> 00:02:56.680
+procedural programming languages
+that embed query operations.
+
+34
+00:02:57.870 --> 00:03:00.648
+We will look at some query
+languages in detail and
+
+35
+00:03:00.648 --> 00:03:03.649
+show examples of database
+programming languages.
+
+36
+00:03:06.040 --> 00:03:08.881
+The first query language
+we'll look at is SQL,
+
+37
+00:03:08.881 --> 00:03:13.002
+which is the ubiquitous query
+language when the data is structured,
+
+38
+00:03:13.002 --> 00:03:18.120
+but has been extended in many ways
+to accommodate other types of data.
+
+39
+00:03:18.120 --> 00:03:22.329
+For this course, we'll stick to
+the structured aspect of the language.
+
+40
+00:03:22.329 --> 00:03:26.939
+Now, you should know that SQL is used for
+classical database management systems
+
+41
+00:03:26.939 --> 00:03:31.440
+like Oracle as well as modern Hadoop
+style distributed systems such as Spark.
+
+42
+00:03:32.650 --> 00:03:35.220
+Now, we will work with
+an illustrative example.
+
+43
+00:03:37.140 --> 00:03:40.360
+First, we need to define
+the schema of the database.
+
+44
+00:03:40.360 --> 00:03:45.640
+Now, think of a business called the
+Beer Drinkers Club that owns many bars,
+
+45
+00:03:45.640 --> 00:03:46.990
+and each bar sells beer.
+
+46
+00:03:48.060 --> 00:03:52.646
+Our schema for
+this business has six relations of tables.
+
+47
+00:03:52.646 --> 00:03:57.448
+The first table lists these bars,
+the names, addresses, and
+
+48
+00:03:57.448 --> 00:03:59.814
+the license number of the bar.
+
+49
+00:03:59.814 --> 00:04:04.469
+Notice that the attribute name is
+underlined because it is the primary key
+
+50
+00:04:04.469 --> 00:04:05.930
+of the bars relation.
+
+51
+00:04:05.930 --> 00:04:09.800
+Recall that the primary key
+refers to a set of attributes,
+
+52
+00:04:09.800 --> 00:04:13.350
+in this case just the name,
+that makes a record unique.
+
+53
+00:04:15.060 --> 00:04:17.720
+Note that the relation bars
+with the attribute name
+
+54
+00:04:19.080 --> 00:04:22.241
+within parenthesis is the same
+as the table shown on the right.
+
+55
+00:04:23.280 --> 00:04:27.147
+We will use both representations
+as we go forward.
+
+56
+00:04:27.147 --> 00:04:32.030
+The second table called Beers, this is
+the names and manufacturers of beer.
+
+57
+00:04:32.030 --> 00:04:36.266
+Now, not every bar sells the same
+brands of beer, and even when they do,
+
+58
+00:04:36.266 --> 00:04:38.280
+they may have different prices for
+
+59
+00:04:38.280 --> 00:04:42.390
+the same product because of differences
+in the establishment costs.
+
+60
+00:04:43.550 --> 00:04:48.960
+So the Sells table records which
+bar sells which beer at what price.
+
+61
+00:04:50.970 --> 00:04:53.268
+Now, our business is special.
+
+62
+00:04:53.268 --> 00:04:57.358
+It also keeps information about
+the regular member customers.
+
+63
+00:04:57.358 --> 00:05:02.750
+So the Drinkers relation has the name,
+address, and phone of these customers.
+
+64
+00:05:02.750 --> 00:05:07.032
+Well, not only that,
+it knows which member visits
+
+65
+00:05:07.032 --> 00:05:11.720
+which bars and
+which beer each member likes.
+
+66
+00:05:11.720 --> 00:05:14.980
+Clearly, the Beer Drinkers Club
+knows its customers.
+
+67
+00:05:17.670 --> 00:05:24.490
+The most basic structure of an SQL
+query is a SELECT-FROM-WHERE clause.
+
+68
+00:05:25.500 --> 00:05:28.920
+In this example, we're looking for
+beer names that are made by Heineken.
+
+69
+00:05:30.060 --> 00:05:33.160
+So we need to specify
+our output attribute,
+
+70
+00:05:33.160 --> 00:05:35.520
+in this case the name of the beer.
+
+71
+00:05:35.520 --> 00:05:41.040
+The logical table which will be used to
+answer the query, in this case, Beers.
+
+72
+00:05:42.370 --> 00:05:46.972
+And the condition that all the desired
+data items should satisfy,
+
+73
+00:05:46.972 --> 00:05:51.260
+namely, the value of the attribute
+called manf is Heineken.
+
+74
+00:05:52.600 --> 00:05:55.570
+Now, there are few things to notice here.
+
+75
+00:05:55.570 --> 00:05:59.311
+First, the literal Heineken
+is put within quotes,
+
+76
+00:05:59.311 --> 00:06:02.210
+because it's a single string literal.
+
+77
+00:06:03.470 --> 00:06:04.550
+Remember that in this case,
+
+78
+00:06:04.550 --> 00:06:08.830
+the string is supposed to match exactly,
+including the case.
+
+79
+00:06:10.910 --> 00:06:16.590
+Secondly, if you go back to the data
+operations discussed in course two,
+
+80
+00:06:16.590 --> 00:06:21.610
+you will recognize that this form
+of query can also be represented
+
+81
+00:06:21.610 --> 00:06:27.070
+as a selection operation on the relation
+Beers with a condition on the manf
+
+82
+00:06:27.070 --> 00:06:30.800
+attribute, followed by
+a projection operation
+
+83
+00:06:30.800 --> 00:06:34.349
+that outputs the name attribute from
+the result of the selection operation.
+
+84
+00:06:35.680 --> 00:06:40.340
+So the selection operation finds all
+tuples of beer for which the manufacturer
+
+85
+00:06:40.340 --> 00:06:45.710
+is Heineken, and from those tuples
+it projects only the name column.
+
+86
+00:06:47.300 --> 00:06:51.580
+The result of the query is a table
+with one single attribute called name.
+
+87
+00:06:54.250 --> 00:06:58.883
+We illustrate some more features of SQL,
+using two example queries.
+
+88
+00:06:58.883 --> 00:07:02.330
+The first looks for
+expensive beer and its price.
+
+89
+00:07:03.370 --> 00:07:06.856
+Let's say we consider a beer to be
+expensive if it costs more than $15
+
+90
+00:07:06.856 --> 00:07:07.569
+per bottle.
+
+91
+00:07:08.810 --> 00:07:10.200
+From the schema,
+
+92
+00:07:10.200 --> 00:07:13.830
+we know that the price information is
+available in the table called Sells.
+
+93
+00:07:14.900 --> 00:07:17.470
+So the FROM clause should use Sells.
+
+94
+00:07:18.620 --> 00:07:20.490
+The WHERE clause is intuitive and
+
+95
+00:07:20.490 --> 00:07:24.200
+specifies the price of the beer
+to be greater than 15.
+
+96
+00:07:24.200 --> 00:07:28.873
+Now notice that the Sells relation
+also has a column called bar.
+
+97
+00:07:28.873 --> 00:07:35.170
+Now, if two different bars sell
+the same beer at the same price,
+
+98
+00:07:35.170 --> 00:07:37.570
+we'll get both entries in the result.
+
+99
+00:07:37.570 --> 00:07:39.620
+But that's not what we want.
+
+100
+00:07:39.620 --> 00:07:43.850
+Now regardless of the multiplicity
+of bars that have the same price for
+
+101
+00:07:43.850 --> 00:07:46.340
+the same beer,
+we want the result just once.
+
+102
+00:07:48.320 --> 00:07:53.688
+So this is achieved through
+the SELECT DISTINCT statement,
+
+103
+00:07:53.688 --> 00:07:59.384
+which ensures that the result
+relation will have no duplicate.
+
+104
+00:07:59.384 --> 00:08:03.736
+The second example shows the case
+where more than one condition
+
+105
+00:08:03.736 --> 00:08:06.045
+must be specified by the result.
+
+106
+00:08:06.045 --> 00:08:09.774
+In this query,
+the business must be in San Diego and
+
+107
+00:08:09.774 --> 00:08:13.764
+at the same time it must be
+a temporary license holder,
+
+108
+00:08:13.764 --> 00:08:17.870
+which means the license
+number should start with 32.
+
+109
+00:08:17.870 --> 00:08:23.280
+As we see here, these conditions
+are put together by the AND operator.
+
+110
+00:08:25.230 --> 00:08:29.330
+Thus, the query will pick
+the third record in the table
+
+111
+00:08:29.330 --> 00:08:33.560
+because the first record satisfy the first
+condition and not the second condition.
+
+112
+00:08:34.950 --> 00:08:38.780
+In a few slides, we'll come back to
+the evaluation of this type of queries
+
+113
+00:08:38.780 --> 00:08:40.625
+in the context of big data.
+
+114
+00:08:40.625 --> 00:08:47.340
+Now, remember, one can also place a limit
+on the number of results to return.
+
+115
+00:08:47.340 --> 00:08:52.163
+If our database is large, and
+we need only five results, for
+
+116
+00:08:52.163 --> 00:08:56.620
+example, for a sample to display,
+we can say LIMIT 5.
+
+117
+00:08:56.620 --> 00:09:03.706
+Now, the exact syntax of this LIMIT
+clause may vary between DBMS vendors.
+
+1
+00:00:02.450 --> 00:00:06.680
+Now if the table of beers was large and
+had millions of entries,
+
+2
+00:00:07.820 --> 00:00:11.480
+the table would possibly need
+to be split over many machines.
+
+3
+00:00:12.600 --> 00:00:16.720
+Another way of saying that is that
+the table will be partitioned
+
+4
+00:00:16.720 --> 00:00:18.960
+across a number of machines.
+
+5
+00:00:18.960 --> 00:00:21.210
+Since a query simply
+performs a selection and
+
+6
+00:00:21.210 --> 00:00:24.330
+projection here,
+it can be evaluated in parallel.
+
+7
+00:00:25.860 --> 00:00:28.860
+Remember that name is
+the primary key of the table.
+
+8
+00:00:30.070 --> 00:00:32.790
+One standard way of partitioning the data
+
+9
+00:00:32.790 --> 00:00:35.260
+is called a range partitioning
+by the primary key.
+
+10
+00:00:37.210 --> 00:00:41.760
+This simply means that the rows
+of the table are put in groups
+
+11
+00:00:41.760 --> 00:00:45.440
+depending on the alphabetical
+order of the name value.
+
+12
+00:00:46.570 --> 00:00:50.950
+So beers with names starting with E and
+B here are placed in Machine 1.
+
+13
+00:00:50.950 --> 00:00:53.910
+Those starting with C and
+D are in Machine 2.
+
+14
+00:00:53.910 --> 00:00:58.337
+And if there are too many rows for
+entries where the name starts with H,
+
+15
+00:00:58.337 --> 00:01:00.902
+maybe H is split into Machines 5 and 6.
+
+16
+00:01:00.902 --> 00:01:02.260
+This is shown in the sketch here.
+
+17
+00:01:03.640 --> 00:01:08.620
+Next, we will show how queries
+are performed over partition tables.
+
+18
+00:01:08.620 --> 00:01:13.230
+But before we do that, you should know
+that all database management companies,
+
+19
+00:01:13.230 --> 00:01:18.090
+like IBM, Chair Data, Microsoft, and
+others, have a solution like this for
+
+20
+00:01:18.090 --> 00:01:21.670
+large volumes of data,
+where data partitioning is used.
+
+21
+00:01:21.670 --> 00:01:26.030
+Newer systems, like Spark and SQL,
+are naturally distributed, and
+
+22
+00:01:26.030 --> 00:01:27.419
+therefore, offer data partitioning.
+
+23
+00:01:30.470 --> 00:01:33.620
+So, we show the same partition
+tables as we saw before.
+
+24
+00:01:33.620 --> 00:01:35.180
+Now we'll ask two queries.
+
+25
+00:01:36.550 --> 00:01:41.340
+The first query asks for
+all tuples as records from the beers table
+
+26
+00:01:42.500 --> 00:01:45.290
+where the name of the beer starts with Am.
+
+27
+00:01:46.970 --> 00:01:49.400
+And the second query is
+exactly what we asked before.
+
+28
+00:01:52.544 --> 00:01:55.560
+The first query in
+the SQL looks like this.
+
+29
+00:01:56.730 --> 00:02:01.434
+We said SELECT* FROM Beers to mean
+all attributes from table beers.
+
+30
+00:02:01.434 --> 00:02:05.790
+The WHERE clause shows the syntax for
+a partial match query.
+
+31
+00:02:06.940 --> 00:02:10.850
+In this query,
+there are two new syntax elements.
+
+32
+00:02:10.850 --> 00:02:12.630
+The first is a predicate called like.
+
+33
+00:02:14.480 --> 00:02:18.080
+When we use like,
+we're telling the query engine
+
+34
+00:02:18.080 --> 00:02:21.870
+that we only have partial information
+about the string we want to match.
+
+35
+00:02:22.870 --> 00:02:25.870
+This partly specified string
+is called a string pattern.
+
+36
+00:02:27.290 --> 00:02:30.320
+That means, there is this part
+of the string we know and
+
+37
+00:02:30.320 --> 00:02:31.460
+a part that we do not know.
+
+38
+00:02:33.050 --> 00:02:39.300
+In this case, we know that our design
+string starts with Am, so we'd write Am,
+
+39
+00:02:39.300 --> 00:02:44.250
+and then we put % to refer to the part
+of the string that we do not know.
+
+40
+00:02:44.250 --> 00:02:48.410
+Putting them together, we get Am%.
+
+41
+00:02:48.410 --> 00:02:52.671
+If we wanted to find, say,
+Am somewhere in the middle of the string,
+
+42
+00:02:52.671 --> 00:02:55.027
+we would write the pattern as %Am%.
+
+43
+00:02:55.027 --> 00:03:01.680
+The second query is not new.
+
+44
+00:03:01.680 --> 00:03:03.580
+We saw it in the last slide.
+
+45
+00:03:03.580 --> 00:03:08.490
+However, as we'll see next, evaluating
+the second query will be a little more
+
+46
+00:03:08.490 --> 00:03:12.930
+tricky in a partition database than
+that we usually see for big data.
+
+47
+00:03:17.390 --> 00:03:20.780
+Let's talk about the first query
+in this data partition setting.
+
+48
+00:03:20.780 --> 00:03:27.160
+The question to ask is, do we need to
+touch all partitions to answer the query?
+
+49
+00:03:27.160 --> 00:03:33.720
+Of course not, we know that the name is
+a primary key for the table of beers.
+
+50
+00:03:33.720 --> 00:03:37.710
+We also know that the system did arrange
+partitioning on the name attribute.
+
+51
+00:03:38.710 --> 00:03:43.260
+This means that the evaluation
+process should only access Machine 1
+
+52
+00:03:43.260 --> 00:03:47.370
+because no other machine will have
+records for names starting with A.
+
+53
+00:03:48.670 --> 00:03:50.600
+Now this is exactly what we, as humans,
+
+54
+00:03:50.600 --> 00:03:55.780
+do when we look up an entry in
+a multivolume encyclopedia.
+
+55
+00:03:55.780 --> 00:03:59.300
+We look for the starting words, then
+figure out which specific volume would
+
+56
+00:03:59.300 --> 00:04:01.410
+have that entry,
+then pick up just that volume.
+
+57
+00:04:02.830 --> 00:04:06.330
+Thus, so long as the system
+knows the partitioning strategy,
+
+58
+00:04:07.380 --> 00:04:09.310
+it can make its job much more efficient.
+
+59
+00:04:10.760 --> 00:04:14.920
+When a system processes
+thousands of queries per second,
+
+60
+00:04:14.920 --> 00:04:17.430
+this kind of efficiency actually matters.
+
+61
+00:04:18.970 --> 00:04:22.785
+Now raised partitioning is
+only one of many partitioning
+
+62
+00:04:22.785 --> 00:04:25.650
+schemes used in a database system, okay.
+
+63
+00:04:26.790 --> 00:04:29.760
+Let's try to answer the second query
+in the same partition setting.
+
+64
+00:04:30.820 --> 00:04:34.650
+Now the query condition is on
+the second attribute, manf.
+
+65
+00:04:35.690 --> 00:04:37.900
+Now in one sense, it's a simpler query.
+
+66
+00:04:37.900 --> 00:04:39.392
+There is no light pattern here, and
+
+67
+00:04:39.392 --> 00:04:42.789
+we know exactly the string that we are
+looking for, namely the string Heineken.
+
+68
+00:04:43.930 --> 00:04:47.310
+However, this time,
+we really cannot get away
+
+69
+00:04:47.310 --> 00:04:51.520
+by using the partitioning information
+because the partitioning activity is
+
+70
+00:04:51.520 --> 00:04:55.130
+different from the attribute on which
+the query condition is applied.
+
+71
+00:04:56.300 --> 00:05:00.023
+So this query will need
+to go to all partitions.
+
+72
+00:05:00.023 --> 00:05:05.200
+Technically speaking,
+the query needs to be broadcast
+
+73
+00:05:05.200 --> 00:05:08.870
+from the primary machine to all machines,
+as shown here.
+
+74
+00:05:11.500 --> 00:05:15.320
+Next, this broadcast query
+will be independently, and
+
+75
+00:05:15.320 --> 00:05:19.470
+in parallel,
+execute the query on the local machine.
+
+76
+00:05:20.840 --> 00:05:24.420
+Then, these results need to be
+brought back into the primary machine.
+
+77
+00:05:25.690 --> 00:05:28.760
+And then,
+they need to be unioned together.
+
+78
+00:05:28.760 --> 00:05:31.880
+And only then, the results can be
+formed and returned to the client.
+
+79
+00:05:33.130 --> 00:05:35.490
+Now, this might seem
+like a lot of extra work.
+
+80
+00:05:36.510 --> 00:05:41.440
+However, remember, the shaded part of
+the query is executed in parallel,
+
+81
+00:05:41.440 --> 00:05:43.830
+which is the essence of
+dealing with large data.
+
+82
+00:05:46.350 --> 00:05:51.770
+Now, at this point, you might be thinking,
+wait a minute, what if I had 100 machines,
+
+83
+00:05:52.940 --> 00:05:55.800
+and the desired data
+is only in 20 of them?
+
+84
+00:05:57.340 --> 00:06:01.870
+Should we needlessly go through all 100
+machines, find nothing in 80 of them, and
+
+85
+00:06:01.870 --> 00:06:04.080
+return 0 results from those machines?
+
+86
+00:06:04.080 --> 00:06:05.760
+Then why do the extra work?
+
+87
+00:06:05.760 --> 00:06:06.790
+Can it not be avoided?
+
+88
+00:06:08.560 --> 00:06:12.280
+Well, to do this, it would need
+one more piece in the solution,
+
+89
+00:06:12.280 --> 00:06:13.700
+it's called an index structure.
+
+90
+00:06:14.990 --> 00:06:16.290
+Very simply,
+
+91
+00:06:16.290 --> 00:06:20.930
+an index can be thought of as a reverse
+table, where given the value in a column,
+
+92
+00:06:20.930 --> 00:06:25.220
+you would get back the records where the
+value appears as shown in the figure here.
+
+93
+00:06:26.810 --> 00:06:31.147
+Using an index speeds up query
+processing significantly.
+
+94
+00:06:31.147 --> 00:06:34.940
+With indexes, we can solve this
+problem in many different ways.
+
+95
+00:06:37.110 --> 00:06:41.930
+The top table shows the case where
+each machine has its own index for
+
+96
+00:06:41.930 --> 00:06:43.400
+the manf column.
+
+97
+00:06:43.400 --> 00:06:47.980
+This is called a local index because
+the index is in every machine
+
+98
+00:06:47.980 --> 00:06:51.050
+that holds the data for
+that table on that machine.
+
+99
+00:06:53.070 --> 00:06:55.670
+In this case,
+looking up Heineken in the index,
+
+100
+00:06:55.670 --> 00:06:57.950
+we would know which records
+would have the data.
+
+101
+00:06:59.500 --> 00:07:04.750
+Since the index is local, the main query
+will indeed go to all machines, but
+
+102
+00:07:04.750 --> 00:07:08.660
+the lookup will be really instant, and the
+empty results would return very quickly.
+
+103
+00:07:11.010 --> 00:07:13.410
+In the second case,
+we adopted a different solution.
+
+104
+00:07:14.610 --> 00:07:20.500
+Here, there is an index on the main
+machine, all on a separate index server.
+
+105
+00:07:20.500 --> 00:07:23.720
+Now when we place a data
+record in a machine,
+
+106
+00:07:23.720 --> 00:07:27.959
+this index keeps an account of the machine
+that contains the record with that value.
+
+107
+00:07:29.240 --> 00:07:30.720
+Look at the second table to the right.
+
+108
+00:07:32.510 --> 00:07:37.398
+Given the value of Heineken,
+we know that it is only in three machines,
+
+109
+00:07:37.398 --> 00:07:41.960
+and therefore,
+we can avoid going to the other machines.
+
+110
+00:07:41.960 --> 00:07:45.840
+Clearly, we can always use
+both indexing schemes.
+
+111
+00:07:45.840 --> 00:07:49.736
+This will use more space,
+but queries will be faster.
+
+112
+00:07:49.736 --> 00:07:54.717
+Now this gives you some of the choices
+you may need to make with big data,
+
+113
+00:07:54.717 --> 00:07:59.220
+whether you use a parallel DBMS or
+a distributed data solution.

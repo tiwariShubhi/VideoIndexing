@@ -1,0 +1,430 @@
+WEBVTT
+
+1
+00:00:02.723 --> 00:00:05.960
+Big Data Processing Pipelines:
+A Dataflow Approach.
+
+2
+00:00:07.160 --> 00:00:11.420
+Most big data applications
+are composed of a set of operations
+
+3
+00:00:11.420 --> 00:00:13.980
+executed one after another as a pipeline.
+
+4
+00:00:14.980 --> 00:00:17.520
+Data flows through these operations,
+
+5
+00:00:17.520 --> 00:00:20.177
+going through various
+transformations along the way.
+
+6
+00:00:20.177 --> 00:00:24.080
+We also call this dataflow graphs.
+
+7
+00:00:24.080 --> 00:00:27.625
+So to understand big data
+processing we should start by
+
+8
+00:00:27.625 --> 00:00:30.100
+understanding what dataflow means.
+
+9
+00:00:31.820 --> 00:00:36.781
+After this video you will be able to
+summarize what dataflow means and
+
+10
+00:00:36.781 --> 00:00:38.844
+it's role in data science.
+
+11
+00:00:38.844 --> 00:00:44.096
+Explain split->do->merge as a big
+data pipeline with examples,
+
+12
+00:00:44.096 --> 00:00:46.770
+and define the term data parallel.
+
+13
+00:00:48.910 --> 00:00:53.484
+Let's consider the hello
+world MapReduce example for
+
+14
+00:00:53.484 --> 00:00:57.461
+WordCount which reads one or
+more text files and
+
+15
+00:00:57.461 --> 00:01:03.043
+counts the number of occurrences
+of each word in these text files.
+
+16
+00:01:03.043 --> 00:01:07.483
+You are by now very familiar with
+this example, but as a reminder,
+
+17
+00:01:07.483 --> 00:01:10.891
+the output will be a text
+file with a list of words and
+
+18
+00:01:10.891 --> 00:01:14.250
+their occurrence frequencies
+in the input data.
+
+19
+00:01:16.451 --> 00:01:20.985
+In this application,
+the files were first split into HDFS
+
+20
+00:01:20.985 --> 00:01:25.990
+cluster nodes as partitions of
+the same file or multiple files.
+
+21
+00:01:27.560 --> 00:01:30.680
+Then a map operation, in this case,
+
+22
+00:01:30.680 --> 00:01:36.340
+a user defined function to count words
+was executed on each of these nodes.
+
+23
+00:01:36.340 --> 00:01:42.460
+And all the key values that were output
+from map were sorted based on the key.
+
+24
+00:01:42.460 --> 00:01:47.380
+And the key values with the same word
+were moved or shuffled to the same node.
+
+25
+00:01:48.920 --> 00:01:54.130
+Finally, the reduce operation
+was executed on these nodes
+
+26
+00:01:54.130 --> 00:01:57.900
+to add the values for
+key-value pairs with the same keys.
+
+27
+00:01:59.920 --> 00:02:05.880
+If you look back at this example, we see
+that there were four distinct steps,
+
+28
+00:02:05.880 --> 00:02:11.070
+namely the data split step,
+the map step, the shuffle and
+
+29
+00:02:11.070 --> 00:02:13.030
+sort step, and the reduce step.
+
+30
+00:02:14.310 --> 00:02:18.417
+Although, the word count
+example is pretty simple it
+
+31
+00:02:18.417 --> 00:02:22.980
+represents a large number of
+applications that these three
+
+32
+00:02:22.980 --> 00:02:27.652
+steps can be applied to achieve
+data parallel scalability.
+
+33
+00:02:27.652 --> 00:02:33.290
+We refer in general to this
+pattern as "split-do-merge".
+
+34
+00:02:35.040 --> 00:02:41.490
+In these applications, data flows
+through a number of steps, going through
+
+35
+00:02:41.490 --> 00:02:46.990
+transformations with various scalability
+needs, leading to a final product.
+
+36
+00:02:48.180 --> 00:02:50.310
+The data first gets partitioned.
+
+37
+00:02:51.430 --> 00:02:56.450
+The split data goes through a set of
+user-defined functions to do something,
+
+38
+00:02:57.840 --> 00:03:02.420
+ranging from statistical operations to
+data joins to machine learning functions.
+
+39
+00:03:03.870 --> 00:03:08.510
+Depending on the application's
+data processing needs,
+
+40
+00:03:08.510 --> 00:03:13.350
+these "do something" operations can
+differ and can be chained together.
+
+41
+00:03:14.620 --> 00:03:20.130
+In the end results can be combined
+using a merging algorithm or
+
+42
+00:03:20.130 --> 00:03:22.300
+a higher-order function like reduce.
+
+43
+00:03:23.580 --> 00:03:27.520
+We call the stitched-together
+version of these sets of steps for
+
+44
+00:03:27.520 --> 00:03:30.970
+big data processing "big data pipelines".
+
+45
+00:03:33.700 --> 00:03:38.180
+The term pipe comes from
+a UNIX separation that
+
+46
+00:03:38.180 --> 00:03:43.490
+the output of one running program gets
+piped into the next program as an input.
+
+47
+00:03:43.490 --> 00:03:47.870
+As you might imagine,
+one can string multiple programs together
+
+48
+00:03:47.870 --> 00:03:52.560
+to make longer pipelines with various
+scalability needs at each step.
+
+49
+00:03:53.740 --> 00:03:56.750
+However, for big data processing,
+
+50
+00:03:56.750 --> 00:04:02.110
+the parallelism of each step in
+the pipeline is mainly data parallelism.
+
+51
+00:04:02.110 --> 00:04:07.284
+We can simply define data parallelism
+as running the same functions
+
+52
+00:04:07.284 --> 00:04:13.380
+simultaneously for the elements or
+partitions of a dataset on multiple cores.
+
+53
+00:04:13.380 --> 00:04:17.447
+For example,
+in our word count example, data
+
+54
+00:04:17.447 --> 00:04:21.720
+parallelism occurs in every
+step of the pipeline.
+
+55
+00:04:22.770 --> 00:04:26.530
+There's definitely parallelization
+during map over the input
+
+56
+00:04:26.530 --> 00:04:30.460
+as each partition gets
+processed as a line at a time.
+
+57
+00:04:30.460 --> 00:04:32.920
+To achieve this type of data parallelism,
+
+58
+00:04:32.920 --> 00:04:37.560
+we must decide on the data granularity
+of each parallel computation.
+
+59
+00:04:37.560 --> 00:04:38.930
+In this case, it is a line.
+
+60
+00:04:41.022 --> 00:04:46.560
+We also see a parallel grouping of
+data in the shuffle and sort phase.
+
+61
+00:04:46.560 --> 00:04:50.630
+This time, the parallelization is
+over the intermediate products,
+
+62
+00:04:50.630 --> 00:04:53.050
+that is, the individual key-value pairs.
+
+63
+00:04:55.140 --> 00:04:58.810
+And after the grouping of
+the intermediate products
+
+64
+00:04:58.810 --> 00:05:03.270
+the reduce step gets parallelized
+to construct one output file.
+
+65
+00:05:04.360 --> 00:05:08.470
+You have probably noticed that
+the data gets reduced to a smaller set
+
+66
+00:05:08.470 --> 00:05:09.060
+at each step.
+
+67
+00:05:11.370 --> 00:05:13.890
+Although, the example we have given is for
+
+68
+00:05:13.890 --> 00:05:18.020
+batch processing, similar techniques
+apply to stream processing.
+
+69
+00:05:19.060 --> 00:05:20.740
+Let's discuss this for
+
+70
+00:05:20.740 --> 00:05:24.690
+our simplified advanced stream
+data from an online game example.
+
+71
+00:05:25.910 --> 00:05:30.070
+In this case, your event gets ingested
+
+72
+00:05:30.070 --> 00:05:34.960
+through a real time big data ingestion
+engine, like Kafka or Flume.
+
+73
+00:05:36.380 --> 00:05:40.400
+Then they get passed into
+a Streaming Data Platform for
+
+74
+00:05:40.400 --> 00:05:44.670
+processing like Samza,
+Storm or Spark streaming.
+
+75
+00:05:45.750 --> 00:05:51.910
+This is a valid choice for processing
+data one event at a time or chunking
+
+76
+00:05:51.910 --> 00:05:57.390
+the data into Windows or Microbatches
+of time or other features.
+
+77
+00:05:58.940 --> 00:06:04.470
+Any pipeline processing of data can
+be applied to the streaming data here
+
+78
+00:06:04.470 --> 00:06:07.410
+as we wrote in a batch-
+processing Big Data engine.
+
+79
+00:06:09.350 --> 00:06:15.034
+The process stream data can then be
+served through a real-time view or
+
+80
+00:06:15.034 --> 00:06:17.279
+a batch-processing view.
+
+81
+00:06:17.279 --> 00:06:22.380
+Real-time view is often subject to change
+as potentially delayed new data comes in.
+
+82
+00:06:23.590 --> 00:06:28.490
+The storage of the data can be
+accomplished using H-Base, Cassandra,
+
+83
+00:06:28.490 --> 00:06:32.660
+HDFS, or
+many other persistent storage systems.
+
+84
+00:06:34.120 --> 00:06:39.110
+To summarize, big data pipelines
+get created to process data
+
+85
+00:06:39.110 --> 00:06:43.990
+through an aggregated set of steps that
+can be represented with the split-
+
+86
+00:06:43.990 --> 00:06:48.370
+do-merge pattern with
+data parallel scalability.
+
+87
+00:06:48.370 --> 00:06:51.040
+This pattern can be
+applied to many batch and
+
+88
+00:06:51.040 --> 00:06:54.100
+streaming data processing applications.
+
+89
+00:06:54.100 --> 00:06:58.958
+Next we will go through some processing
+steps in a big data pipeline in
+
+90
+00:06:58.958 --> 00:07:03.589
+more detail, first conceptually,
+then practically in Spark.

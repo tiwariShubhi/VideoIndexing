@@ -1,0 +1,521 @@
+WEBVTT
+
+1
+00:00:00.800 --> 00:00:05.529
+So the next category of data we discuss
+has the form of graphs or networks,
+
+2
+00:00:05.529 --> 00:00:08.749
+the most obvious example
+being social networks.
+
+3
+00:00:08.749 --> 00:00:10.782
+Now speaking of social networks,
+
+4
+00:00:10.782 --> 00:00:15.760
+Tim Libzek created a social network
+from the Lord of the Rings Trilogy.
+
+5
+00:00:15.760 --> 00:00:18.545
+This graph represents
+the characters' allegiances,
+
+6
+00:00:18.545 --> 00:00:20.744
+that is who is faithful
+to whom in the books.
+
+7
+00:00:20.744 --> 00:00:24.670
+So the nodes are characters and
+other entities, like cities, and
+
+8
+00:00:24.670 --> 00:00:29.070
+the edges connecting pairs of
+nodes represent allegiances.
+
+9
+00:00:29.070 --> 00:00:35.480
+So after this video, you'll be able to
+identify graph data in practical problems
+
+10
+00:00:35.480 --> 00:00:41.150
+and describe path, neighborhood, and
+connectivity operations in graphs.
+
+11
+00:00:41.150 --> 00:00:44.860
+But this specialization includes
+a separate course in graph analytics
+
+12
+00:00:44.860 --> 00:00:48.470
+that provides a much more detailed
+treatment on the subject.
+
+13
+00:00:48.470 --> 00:00:51.810
+Now what distinguishes a graph
+from other data models
+
+14
+00:00:51.810 --> 00:00:55.400
+is that it bears two kinds of information.
+
+15
+00:00:55.400 --> 00:01:00.080
+One, properties and attributes of
+entities and relationships, and
+
+16
+00:01:00.080 --> 00:01:04.130
+two, the connectivity structure that
+constitutes the network itself.
+
+17
+00:01:05.480 --> 00:01:08.260
+One way to look at this data
+is shown in the figure,
+
+18
+00:01:08.260 --> 00:01:10.070
+borrowed from the Apache Spark system.
+
+19
+00:01:11.130 --> 00:01:12.360
+In this representation,
+
+20
+00:01:12.360 --> 00:01:16.390
+the graph on the left is represented
+by two tables on the right.
+
+21
+00:01:16.390 --> 00:01:22.095
+The vertex, or node table, gives IDs
+to nodes and lists their properties.
+
+22
+00:01:23.170 --> 00:01:25.720
+The edge table has two parts.
+
+23
+00:01:25.720 --> 00:01:29.210
+The colored part represents
+the properties of the edge,
+
+24
+00:01:29.210 --> 00:01:33.600
+whereas the white part contains just the
+direction of the arrows in the network.
+
+25
+00:01:33.600 --> 00:01:39.280
+Thus, since there is a directed
+edge going from node 3 to node 7,
+
+26
+00:01:39.280 --> 00:01:43.830
+there is a tupple 3,
+7 in that part of the edge table.
+
+27
+00:01:43.830 --> 00:01:48.540
+Now this form of the graph model is
+called the property graph model,
+
+28
+00:01:48.540 --> 00:01:52.760
+which we'll see many times in this
+course and in the specialization.
+
+29
+00:01:52.760 --> 00:01:57.740
+Now representing connectivity information
+gives graph data a new kind of
+
+30
+00:01:57.740 --> 00:02:01.910
+computing ability that's different from
+other data models we have seen so far.
+
+31
+00:02:03.090 --> 00:02:07.450
+Even without looking at the properties
+of the nodes and edges, one can get very
+
+32
+00:02:07.450 --> 00:02:12.640
+interesting information just by analyzing
+or querying this connectivity structure.
+
+33
+00:02:13.800 --> 00:02:18.990
+Consider a social network with three
+types of nodes, user, city, and
+
+34
+00:02:18.990 --> 00:02:24.250
+restaurant, and three types of edges,
+friend, likes, and lives in.
+
+35
+00:02:25.300 --> 00:02:28.110
+The leftmost node, AG, represents me.
+
+36
+00:02:28.110 --> 00:02:31.930
+And I'm interested in finding a good
+Italian restaurant in New York
+
+37
+00:02:31.930 --> 00:02:36.360
+that my friends, or their friends,
+who also live in New York, like.
+
+38
+00:02:36.360 --> 00:02:41.765
+I shall possibly choose IT3 because
+it has the highest number of
+
+39
+00:02:41.765 --> 00:02:47.700
+like edges coming into it from people
+who have a lives in edge to New York.
+
+40
+00:02:47.700 --> 00:02:49.008
+And at the same time,
+
+41
+00:02:49.008 --> 00:02:52.869
+can be reached by following
+the friend edges going out from me.
+
+42
+00:02:52.869 --> 00:02:57.306
+Now this shows a very important class
+of operations and ground data, namely
+
+43
+00:02:57.306 --> 00:03:01.830
+traversal, that involves edge following
+based on some sort of conditions.
+
+44
+00:03:03.090 --> 00:03:07.660
+A number of path operations
+required some sort of optimization.
+
+45
+00:03:07.660 --> 00:03:12.885
+The simplest among these is the well known
+shortest path query, which is applied to
+
+46
+00:03:12.885 --> 00:03:17.750
+node networks to find the best route from
+a source location to a target location.
+
+47
+00:03:17.750 --> 00:03:21.215
+The second class of optimization
+operations is required to find
+
+48
+00:03:21.215 --> 00:03:26.050
+an optimal path that must include
+some user specified nodes, for
+
+49
+00:03:26.050 --> 00:03:30.420
+the operation has to determine the order
+in which the nodes once we visited.
+
+50
+00:03:30.420 --> 00:03:32.795
+The classical application
+is a trip planner,
+
+51
+00:03:32.795 --> 00:03:36.610
+where the user specifies the cities
+she wishes to visit, and
+
+52
+00:03:36.610 --> 00:03:40.740
+the operation will optimize the criterion,
+like the total distance covered.
+
+53
+00:03:40.740 --> 00:03:45.260
+The third category is a case where
+the system must find the best possible
+
+54
+00:03:45.260 --> 00:03:47.690
+path in the network, given two or
+
+55
+00:03:47.690 --> 00:03:52.070
+more optimization criteria,
+which cannot be satisfied simultaneously.
+
+56
+00:03:52.070 --> 00:03:56.350
+For example, if I want to travel
+from my house to the airport
+
+57
+00:03:56.350 --> 00:04:01.150
+using the shortest distance, but also
+minimizing the amount of highway travel,
+
+58
+00:04:01.150 --> 00:04:03.710
+the algorithm must find a best compromise.
+
+59
+00:04:03.710 --> 00:04:07.510
+This is called a pareto-optimality
+problem on graphs.
+
+60
+00:04:07.510 --> 00:04:13.120
+The neighborhood of a node N in a graph is
+a set of edges directly connected to it.
+
+61
+00:04:13.120 --> 00:04:18.360
+A K neighborhood of N is a collection
+of edges between nodes that are,
+
+62
+00:04:18.360 --> 00:04:21.160
+at most, K steps away from N.
+
+63
+00:04:21.160 --> 00:04:24.710
+So going back to our mini social
+network graph, Bob, Jill,
+
+64
+00:04:24.710 --> 00:04:29.630
+and Sarah are the first neighbors of AG,
+while Max, Tim and
+
+65
+00:04:29.630 --> 00:04:34.570
+Pam belong to the second neighborhood and
+not the first neighborhood of AG.
+
+66
+00:04:34.570 --> 00:04:37.910
+Finally, Jen is a third level neighbor.
+
+67
+00:04:38.910 --> 00:04:43.790
+An important class of analysis to perform
+with neighborhoods is community finding.
+
+68
+00:04:43.790 --> 00:04:47.740
+A community and a social network can
+be a very close group of friends.
+
+69
+00:04:47.740 --> 00:04:51.340
+So the graph shown in this
+figure has four communities.
+
+70
+00:04:51.340 --> 00:04:56.327
+One can see in the figure that each
+community has a higher density of edges
+
+71
+00:04:56.327 --> 00:05:02.480
+within the community and a lower density
+across two different communities.
+
+72
+00:05:02.480 --> 00:05:05.440
+Finding densely connected parts of a graph
+
+73
+00:05:05.440 --> 00:05:09.860
+helps identify neighborhoods that
+can be recognized as communities.
+
+74
+00:05:09.860 --> 00:05:15.032
+A more complex class of operations include
+finding the best possible clusters,
+
+75
+00:05:15.032 --> 00:05:17.620
+which is another name for
+communities in a graph, so
+
+76
+00:05:17.620 --> 00:05:22.030
+that any other grouping of nodes into
+communities will be less effective.
+
+77
+00:05:22.030 --> 00:05:27.430
+Now, as graphs become bigger and denser,
+these methods become harder to compute.
+
+78
+00:05:27.430 --> 00:05:32.240
+Thus, neighborhood-based
+optimization operation present
+
+79
+00:05:32.240 --> 00:05:34.520
+significant scalability challenges.
+
+80
+00:05:34.520 --> 00:05:38.650
+If we inspect the neighborhood of
+every node in a graph, sometimes,
+
+81
+00:05:38.650 --> 00:05:42.650
+we'll find neighborhoods that
+are different from all others.
+
+82
+00:05:42.650 --> 00:05:45.390
+These neighborhoods are called anomalous.
+
+83
+00:05:45.390 --> 00:05:49.720
+Consider the following four graphs and
+on the central red node.
+
+84
+00:05:49.720 --> 00:05:54.177
+The first graph is odd because
+it's almost perfectly star shaped.
+
+85
+00:05:54.177 --> 00:05:58.751
+That is, the nodes that the red node
+is connected to are almost unconnected
+
+86
+00:05:58.751 --> 00:06:00.137
+amongst themselves.
+
+87
+00:06:00.137 --> 00:06:04.000
+That's really odd because it
+doesn't happen in reality much.
+
+88
+00:06:04.000 --> 00:06:05.620
+So it's an anomalous node.
+
+89
+00:06:05.620 --> 00:06:09.630
+The second figure shows
+a neighborhood to which
+
+90
+00:06:09.630 --> 00:06:13.770
+a significantly large number of neighbors
+has connected amongst themselves.
+
+91
+00:06:13.770 --> 00:06:18.860
+This makes the graph very cliquish,
+where a clique refers to a neighborhood
+
+92
+00:06:18.860 --> 00:06:23.280
+where each node is connected to all other
+neighborhood nodes in the neighborhood.
+
+93
+00:06:23.280 --> 00:06:25.770
+The third figure shows a neighborhood,
+
+94
+00:06:25.770 --> 00:06:31.040
+where some edges have an unusually
+heavy weight compared to the others.
+
+95
+00:06:31.040 --> 00:06:34.578
+The fourth figure shows
+a special case of the third,
+
+96
+00:06:34.578 --> 00:06:38.930
+where one edge is predominantly high
+rate compared to all the other edges.
+
+97
+00:06:40.120 --> 00:06:42.890
+Connectedness is a fundamental
+property of a graph.
+
+98
+00:06:43.960 --> 00:06:45.390
+In a connected graph,
+
+99
+00:06:45.390 --> 00:06:49.570
+each node is reachable from every
+other node through some path.
+
+100
+00:06:49.570 --> 00:06:54.750
+If a graph is not connected, but there
+are subgraphs of it, which are connected,
+
+101
+00:06:54.750 --> 00:06:58.745
+then these subgraphs are called connected
+components of the original graph.
+
+102
+00:06:58.745 --> 00:07:01.799
+In the figure on the right,
+there are four connected components.
+
+103
+00:07:01.799 --> 00:07:05.805
+A search gradient like
+finding optimal paths
+
+104
+00:07:05.805 --> 00:07:09.075
+should be performed only within
+each component and not across them.
+
+105
+00:07:10.215 --> 00:07:14.325
+For large graphs, there are several
+new parallelized techniques for
+
+106
+00:07:14.325 --> 00:07:15.835
+the detection of connected components.
+
+107
+00:07:17.070 --> 00:07:19.680
+We will discuss a map
+reduce based technique for
+
+108
+00:07:19.680 --> 00:07:21.830
+connected components in a later course.

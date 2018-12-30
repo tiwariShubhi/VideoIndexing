@@ -1,0 +1,633 @@
+WEBVTT
+
+1
+00:00:01.210 --> 00:00:05.330
+In the last video,
+we talked about the programming model for
+
+2
+00:00:05.330 --> 00:00:10.930
+Spark where RDD's get generated from
+external datasets and gets partitioned.
+
+3
+00:00:12.450 --> 00:00:18.710
+We said, RDDs are immutable meaning they
+can't be changed in place even partially.
+
+4
+00:00:19.740 --> 00:00:23.690
+They need a transformation
+operation applied to them and
+
+5
+00:00:23.690 --> 00:00:25.650
+get converted into a new RDD.
+
+6
+00:00:27.650 --> 00:00:32.652
+This is essential for keeping track
+of all the processing that has been
+
+7
+00:00:32.652 --> 00:00:38.094
+applied to our dataset providing the
+ability to keep a linear chain of RDDs.
+
+8
+00:00:38.094 --> 00:00:44.360
+In addition, as a part of a big data
+pipeline, we start with an RDD.
+
+9
+00:00:44.360 --> 00:00:48.842
+And through several transformation steps,
+many other RDDs as
+
+10
+00:00:48.842 --> 00:00:53.840
+intermediate products get executed
+until we get to our final result.
+
+11
+00:00:55.070 --> 00:00:58.910
+We also mention that
+an important feature of Spark
+
+12
+00:00:58.910 --> 00:01:02.060
+is that all these transformation are lazy.
+
+13
+00:01:03.820 --> 00:01:07.820
+This means they don't execute
+immediately when applied to an RDD.
+
+14
+00:01:09.040 --> 00:01:13.670
+So when we apply a transformation,
+nothing happens right away.
+
+15
+00:01:13.670 --> 00:01:17.850
+We are basically preparing our big
+data pipeline to be executed later.
+
+16
+00:01:18.990 --> 00:01:23.936
+When we are done defining all
+the transformations and perform an action,
+
+17
+00:01:23.936 --> 00:01:28.961
+Spark will take care of finding the best
+way to execute this computation and
+
+18
+00:01:28.961 --> 00:01:32.729
+then start all the necessary
+tasks in our worker nodes.
+
+19
+00:01:32.729 --> 00:01:37.108
+In this video, we will explain some
+common transformation in Spark.
+
+20
+00:01:38.985 --> 00:01:43.537
+After this video, you will be able
+to explain the difference between
+
+21
+00:01:43.537 --> 00:01:47.001
+a narrow transformation and
+wide transformation.
+
+22
+00:01:47.001 --> 00:01:51.748
+Describe map, flatmap,
+filter and coalesce as narrow
+
+23
+00:01:51.748 --> 00:01:56.404
+transformations and
+list two wide transformations.
+
+24
+00:01:59.240 --> 00:02:04.330
+Let's take at look at, probably the
+simplest transformation, which is a map.
+
+25
+00:02:06.280 --> 00:02:10.160
+By now,
+you're well versed in home networks.
+
+26
+00:02:10.160 --> 00:02:16.240
+It applies the function to each
+partition or element of an RDD.
+
+27
+00:02:16.240 --> 00:02:19.690
+This is a one to one transformation.
+
+28
+00:02:19.690 --> 00:02:24.599
+It is also in the category of element-wise
+transformations since it transforms
+
+29
+00:02:24.599 --> 00:02:26.847
+every element of an RDD separately.
+
+30
+00:02:30.805 --> 00:02:34.945
+The code example in the blue
+box here applies a function
+
+31
+00:02:34.945 --> 00:02:38.645
+called lower to all
+the elements in a text_RDD.
+
+32
+00:02:39.900 --> 00:02:40.960
+The lower function
+
+33
+00:02:42.180 --> 00:02:45.810
+turns all the characters in
+a line to lower case letters.
+
+34
+00:02:46.880 --> 00:02:51.650
+So the input is one line
+of text with any kind of
+
+35
+00:02:51.650 --> 00:02:56.360
+capitalization and the outfit is going
+to be the same line, all lower case.
+
+36
+00:02:58.130 --> 00:03:03.160
+In this example, we have two worker
+nodes drawn as orange boxes.
+
+37
+00:03:04.710 --> 00:03:08.328
+The black boxes are partitions
+of our dataset.
+
+38
+00:03:08.328 --> 00:03:11.842
+We work by partition and not by element.
+
+39
+00:03:11.842 --> 00:03:17.036
+As you would remember this, it is the
+difference between Spark and MapReduce.
+
+40
+00:03:19.488 --> 00:03:24.418
+The partition is just a chunk of our data
+with some number of elements in it and
+
+41
+00:03:24.418 --> 00:03:28.964
+the map function gets applied to all
+elements in that partition in each
+
+42
+00:03:28.964 --> 00:03:30.440
+worker node locally.
+
+43
+00:03:31.850 --> 00:03:35.748
+Each node applies the map
+function to the data or
+
+44
+00:03:35.748 --> 00:03:39.555
+RDD partition they received independently.
+
+45
+00:03:39.555 --> 00:03:43.560
+Let's look at a few more in
+element-wise transformation category.
+
+46
+00:03:46.251 --> 00:03:49.190
+FlatMap is very similar to map.
+
+47
+00:03:50.290 --> 00:03:55.573
+However, instead of returning
+an individual element for each map,
+
+48
+00:03:55.573 --> 00:04:01.323
+it returns an RDD with an aggregate of
+all the results for all the elements.
+
+49
+00:04:01.323 --> 00:04:03.888
+In the example in the blue box,
+
+50
+00:04:03.888 --> 00:04:08.132
+the split_words fuction
+takes a line as an input,
+
+51
+00:04:08.132 --> 00:04:13.970
+which is one element and it's output
+is each word as a single element.
+
+52
+00:04:13.970 --> 00:04:18.120
+So, it splits a line to words.
+
+53
+00:04:19.760 --> 00:04:21.570
+The same thing gets done for each line.
+
+54
+00:04:23.180 --> 00:04:26.130
+When the output for
+all the lines is flattened,
+
+55
+00:04:26.130 --> 00:04:29.520
+we get a simple
+one-dimensional list of words.
+
+56
+00:04:31.220 --> 00:04:36.480
+So, we'll get all the words in
+all the lines in just one list.
+
+57
+00:04:38.070 --> 00:04:43.703
+Depending on the line length the output
+partitions might be of different sizes.
+
+58
+00:04:43.703 --> 00:04:47.463
+Detected here by the height of
+each black box being different.
+
+59
+00:04:49.977 --> 00:04:54.750
+In Spark terms, map and
+flatMap are narrow transformations.
+
+60
+00:04:56.040 --> 00:05:01.390
+Narrow transformation refers to
+the processing where the processing
+
+61
+00:05:01.390 --> 00:05:06.827
+logic depends only on data that is
+already residing in the partition and
+
+62
+00:05:06.827 --> 00:05:09.466
+data shuffling is not necessary.
+
+63
+00:05:12.080 --> 00:05:16.030
+Another very important
+transformation is filter.
+
+64
+00:05:16.030 --> 00:05:21.957
+Often, we're interested just
+in a subset of our data or
+
+65
+00:05:21.957 --> 00:05:25.118
+we want to get rid of bad data.
+
+66
+00:05:25.118 --> 00:05:30.105
+Filter transformation takes the function
+take executes on each element
+
+67
+00:05:30.105 --> 00:05:31.575
+of a RDD partition and
+
+68
+00:05:31.575 --> 00:05:36.740
+returns only the elements that
+the transformation element returns true.
+
+69
+00:05:39.219 --> 00:05:44.281
+The example code in the blue box here,
+applies a filter
+
+70
+00:05:44.281 --> 00:05:50.014
+function that filters out words
+that start with the letter a.
+
+71
+00:05:50.014 --> 00:05:54.130
+The function starts with a,
+takes the input word,
+
+72
+00:05:54.130 --> 00:06:00.080
+then transforms it to lowercase and
+then checks if the word starts with a.
+
+73
+00:06:02.920 --> 00:06:08.640
+So, the output of this operation will be
+a list with only words that start with a.
+
+74
+00:06:10.870 --> 00:06:12.670
+This is another narrow transformation.
+
+75
+00:06:14.270 --> 00:06:17.930
+So, it only gets executed locally
+
+76
+00:06:17.930 --> 00:06:22.070
+without the need to shuffle any RDD
+partitions across the word kernels.
+
+77
+00:06:24.320 --> 00:06:30.486
+The output of filter depends on
+the input and the filter functions.
+
+78
+00:06:30.486 --> 00:06:31.663
+In some cases,
+
+79
+00:06:31.663 --> 00:06:37.003
+even if you started with even RDD
+partitions within the worker nodes,
+
+80
+00:06:37.003 --> 00:06:43.247
+the RDD size can significantly vary across
+the workers after a filter operation,
+
+81
+00:06:43.247 --> 00:06:48.588
+then this happens is a pretty good
+idea to join some of those partitions
+
+82
+00:06:48.588 --> 00:06:53.772
+to increase performance and
+even out processing across clusters.
+
+83
+00:06:53.772 --> 00:07:00.399
+This transformation is called coalesce.
+
+84
+00:07:00.399 --> 00:07:06.060
+Coalesce simply helps with balancing
+the data partition numbers and sizes.
+
+85
+00:07:07.220 --> 00:07:12.148
+When you have significantly reduced
+your initial data after some filters and
+
+86
+00:07:12.148 --> 00:07:13.817
+other transformations,
+
+87
+00:07:13.817 --> 00:07:18.311
+having a large number of partitions
+might not be very useful anymore.
+
+88
+00:07:18.311 --> 00:07:19.063
+In this case,
+
+89
+00:07:19.063 --> 00:07:23.521
+you can use coalesce to reduce the number
+of partitions to a more manageable number.
+
+90
+00:07:26.421 --> 00:07:31.941
+Until now, we talked about narrow
+transformations that happen in a worker
+
+91
+00:07:31.941 --> 00:07:36.947
+node locally without having to
+transfer data through the network.
+
+92
+00:07:36.947 --> 00:07:40.572
+Now, let's start talking
+about wide transformations.
+
+93
+00:07:43.048 --> 00:07:45.693
+Let's remember our Word Count example.
+
+94
+00:07:45.693 --> 00:07:52.420
+As a part of the Word Count example, we
+map the words RDD could generate tuples.
+
+95
+00:07:52.420 --> 00:07:58.110
+The output of map is a key value pair
+list where the key is the word and
+
+96
+00:07:58.110 --> 00:07:59.540
+the value is always one.
+
+97
+00:08:01.420 --> 00:08:07.390
+We then apply it reduceByKey
+to tuples to generate counts,
+
+98
+00:08:07.390 --> 00:08:10.360
+which simply sums the values for
+each key or word.
+
+99
+00:08:11.670 --> 00:08:18.555
+Let's imagine for a second that we use
+groupByKey instead of reduceByKey.
+
+100
+00:08:18.555 --> 00:08:23.453
+We will come back to reduceByKey
+in just a little bit.
+
+101
+00:08:23.453 --> 00:08:26.774
+Remember, mapped outputs tuples,
+
+102
+00:08:26.774 --> 00:08:31.920
+which is a list of key value
+pairs in the forms of word one.
+
+103
+00:08:33.670 --> 00:08:39.146
+At each worker node, we will have
+tuples that have the same word as key.
+
+104
+00:08:39.146 --> 00:08:45.213
+In this example, apple as the key and
+1 as the count and 2 worker nodes.
+
+105
+00:08:47.720 --> 00:08:52.367
+Trying to group together, all the counts
+of a word across worker nodes
+
+106
+00:08:52.367 --> 00:08:55.690
+requires shuffling of
+data between these nodes.
+
+107
+00:08:56.800 --> 00:09:00.466
+Just like we do for the word apple here.
+
+108
+00:09:00.466 --> 00:09:05.616
+GroupByKey is the transformation
+that helps us combine values with
+
+109
+00:09:05.616 --> 00:09:11.596
+the same key into a list without applying
+a special user define function to it.
+
+110
+00:09:11.596 --> 00:09:17.435
+As you see on the right, the result
+of a groupByKey transformation on all
+
+111
+00:09:17.435 --> 00:09:23.292
+the map outputs by the word apple is
+the key ends up in a list with all ones.
+
+112
+00:09:26.741 --> 00:09:32.109
+If you instead apply the function to
+list like summing up all the values,
+
+113
+00:09:32.109 --> 00:09:35.542
+then we could have had
+the word count results.
+
+114
+00:09:35.542 --> 00:09:36.715
+In this case, 2.
+
+115
+00:09:36.715 --> 00:09:43.346
+If we instead applied a function to
+the list like summing up all the values,
+
+116
+00:09:43.346 --> 00:09:47.468
+then we would have had
+the word count results.
+
+117
+00:09:47.468 --> 00:09:51.655
+If we need to apply such functions to
+a group of values related to a key like
+
+118
+00:09:51.655 --> 00:09:54.140
+this, we use the reduceByKey operation.
+
+119
+00:09:56.220 --> 00:10:01.670
+ReduceByKey helps us to combine
+the value using a reduce function,
+
+120
+00:10:01.670 --> 00:10:04.580
+which in the word count
+case is a simple summation.
+
+121
+00:10:06.420 --> 00:10:10.420
+In groupByKey and
+reduceByKey transformations,
+
+122
+00:10:11.650 --> 00:10:15.860
+we observe the behavior that require
+shuffling of the data across work nodes,
+
+123
+00:10:17.350 --> 00:10:20.830
+we call such transformations
+wide transformations.
+
+124
+00:10:22.340 --> 00:10:27.440
+In wide transformation operations,
+processing depends on data
+
+125
+00:10:27.440 --> 00:10:32.940
+residing in multiple partitions
+distributed across worker nodes and this
+
+126
+00:10:32.940 --> 00:10:37.430
+requires data shuffling over the network
+to bring related datasets together.
+
+127
+00:10:39.220 --> 00:10:44.630
+As a summary, we have listed a small
+number of transformations in Spark with
+
+128
+00:10:44.630 --> 00:10:49.240
+some examples and distinguished between
+them as narrow and wide transformations.
+
+129
+00:10:50.520 --> 00:10:55.743
+Although this is a good start,
+I advise you to go through the list
+
+130
+00:10:55.743 --> 00:11:01.760
+provided at the link shown here after
+you complete this beginner course.
+
+131
+00:11:01.760 --> 00:11:06.662
+Read about the rest of the transformations
+in Spark before you start programming in
+
+132
+00:11:06.662 --> 00:11:09.192
+Spark and have fun with transformations.

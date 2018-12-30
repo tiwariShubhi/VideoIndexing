@@ -1,0 +1,564 @@
+WEBVTT
+
+1
+00:00:02.188 --> 00:00:03.689
+So, hi.
+
+2
+00:00:03.689 --> 00:00:08.521
+In the previous course, we saw
+examples of different data models and
+
+3
+00:00:08.521 --> 00:00:12.290
+talked about a few current
+data management systems.
+
+4
+00:00:12.290 --> 00:00:15.617
+In this module,
+we'll focus on data retrieval.
+
+5
+00:00:35.163 --> 00:00:40.012
+Data retrieval refers to
+the way in which data desired
+
+6
+00:00:40.012 --> 00:00:44.980
+by a user is specified and
+retrieved from a data store.
+
+7
+00:00:46.280 --> 00:00:50.720
+Note that in this course, we are using
+the term data retrieval in two ways.
+
+8
+00:00:51.760 --> 00:00:56.430
+Assume that your data is stored in a data
+store that follows a specific data model,
+
+9
+00:00:56.430 --> 00:00:58.190
+like for
+example the relational data model.
+
+10
+00:00:59.340 --> 00:01:03.300
+By data retrieval, we will refer to, one,
+
+11
+00:01:03.300 --> 00:01:07.950
+the way you specify how to get
+the desired data out of the system,
+
+12
+00:01:07.950 --> 00:01:12.910
+this is called the query
+specification method, and two,
+
+13
+00:01:12.910 --> 00:01:18.300
+the internal processing that occurs within
+the data management system to compute or
+
+14
+00:01:18.300 --> 00:01:21.520
+evaluate that specified retrieval request.
+
+15
+00:01:23.170 --> 00:01:28.780
+While query specification can apply to
+small data stores or large data stores,
+
+16
+00:01:28.780 --> 00:01:32.600
+we'll keep an eye on the nature of
+query evaluation when the data is big.
+
+17
+00:01:34.230 --> 00:01:38.370
+Further, we'll consider how
+the query specification changes
+
+18
+00:01:38.370 --> 00:01:40.770
+when we deal with faster streaming data.
+
+19
+00:01:43.380 --> 00:01:48.590
+A query language is a language in which
+a retrieval request is specified.
+
+20
+00:01:50.730 --> 00:01:56.232
+A query language is often called
+declarative, which means it lets you
+
+21
+00:01:56.232 --> 00:02:01.600
+specify what you want to retrieve without
+having to tell the system how to retrieve.
+
+22
+00:02:02.670 --> 00:02:04.660
+For example, you can say,
+
+23
+00:02:04.660 --> 00:02:10.550
+find all data from relation employee
+where the salary is more than 50k.
+
+24
+00:02:10.550 --> 00:02:14.970
+Now, you don't have to write a program
+which will tell the system to open a file,
+
+25
+00:02:14.970 --> 00:02:20.006
+skip the first 250 bytes,
+then in a loop pick the next 1024 bytes,
+
+26
+00:02:20.006 --> 00:02:24.340
+probe into the 600th byte and
+read an integer, and so forth.
+
+27
+00:02:25.480 --> 00:02:28.160
+Instead of writing such
+a complicated procedure,
+
+28
+00:02:28.160 --> 00:02:32.450
+you just specify the data items that
+you need and the system does the rest.
+
+29
+00:02:33.840 --> 00:02:38.167
+For example, SQL,
+structured query language,
+
+30
+00:02:38.167 --> 00:02:42.810
+is the most used query language for
+relational data.
+
+31
+00:02:42.810 --> 00:02:47.156
+Now, in contrast to a query language,
+a database programming
+
+32
+00:02:47.156 --> 00:02:52.076
+language like Oracle's PL/SQL or
+Postgres's PgSQL are high-level
+
+33
+00:02:52.076 --> 00:02:56.680
+procedural programming languages
+that embed query operations.
+
+34
+00:02:57.870 --> 00:03:00.648
+We will look at some query
+languages in detail and
+
+35
+00:03:00.648 --> 00:03:03.649
+show examples of database
+programming languages.
+
+36
+00:03:06.040 --> 00:03:08.881
+The first query language
+we'll look at is SQL,
+
+37
+00:03:08.881 --> 00:03:13.002
+which is the ubiquitous query
+language when the data is structured,
+
+38
+00:03:13.002 --> 00:03:18.120
+but has been extended in many ways
+to accommodate other types of data.
+
+39
+00:03:18.120 --> 00:03:22.329
+For this course, we'll stick to
+the structured aspect of the language.
+
+40
+00:03:22.329 --> 00:03:26.939
+Now, you should know that SQL is used for
+classical database management systems
+
+41
+00:03:26.939 --> 00:03:31.440
+like Oracle as well as modern Hadoop
+style distributed systems such as Spark.
+
+42
+00:03:32.650 --> 00:03:35.220
+Now, we will work with
+an illustrative example.
+
+43
+00:03:37.140 --> 00:03:40.360
+First, we need to define
+the schema of the database.
+
+44
+00:03:40.360 --> 00:03:45.640
+Now, think of a business called the
+Beer Drinkers Club that owns many bars,
+
+45
+00:03:45.640 --> 00:03:46.990
+and each bar sells beer.
+
+46
+00:03:48.060 --> 00:03:52.646
+Our schema for
+this business has six relations of tables.
+
+47
+00:03:52.646 --> 00:03:57.448
+The first table lists these bars,
+the names, addresses, and
+
+48
+00:03:57.448 --> 00:03:59.814
+the license number of the bar.
+
+49
+00:03:59.814 --> 00:04:04.469
+Notice that the attribute name is
+underlined because it is the primary key
+
+50
+00:04:04.469 --> 00:04:05.930
+of the bars relation.
+
+51
+00:04:05.930 --> 00:04:09.800
+Recall that the primary key
+refers to a set of attributes,
+
+52
+00:04:09.800 --> 00:04:13.350
+in this case just the name,
+that makes a record unique.
+
+53
+00:04:15.060 --> 00:04:17.720
+Note that the relation bars
+with the attribute name
+
+54
+00:04:19.080 --> 00:04:22.241
+within parenthesis is the same
+as the table shown on the right.
+
+55
+00:04:23.280 --> 00:04:27.147
+We will use both representations
+as we go forward.
+
+56
+00:04:27.147 --> 00:04:32.030
+The second table called Beers, this is
+the names and manufacturers of beer.
+
+57
+00:04:32.030 --> 00:04:36.266
+Now, not every bar sells the same
+brands of beer, and even when they do,
+
+58
+00:04:36.266 --> 00:04:38.280
+they may have different prices for
+
+59
+00:04:38.280 --> 00:04:42.390
+the same product because of differences
+in the establishment costs.
+
+60
+00:04:43.550 --> 00:04:48.960
+So the Sells table records which
+bar sells which beer at what price.
+
+61
+00:04:50.970 --> 00:04:53.268
+Now, our business is special.
+
+62
+00:04:53.268 --> 00:04:57.358
+It also keeps information about
+the regular member customers.
+
+63
+00:04:57.358 --> 00:05:02.750
+So the Drinkers relation has the name,
+address, and phone of these customers.
+
+64
+00:05:02.750 --> 00:05:07.032
+Well, not only that,
+it knows which member visits
+
+65
+00:05:07.032 --> 00:05:11.720
+which bars and
+which beer each member likes.
+
+66
+00:05:11.720 --> 00:05:14.980
+Clearly, the Beer Drinkers Club
+knows its customers.
+
+67
+00:05:17.670 --> 00:05:24.490
+The most basic structure of an SQL
+query is a SELECT-FROM-WHERE clause.
+
+68
+00:05:25.500 --> 00:05:28.920
+In this example, we're looking for
+beer names that are made by Heineken.
+
+69
+00:05:30.060 --> 00:05:33.160
+So we need to specify
+our output attribute,
+
+70
+00:05:33.160 --> 00:05:35.520
+in this case the name of the beer.
+
+71
+00:05:35.520 --> 00:05:41.040
+The logical table which will be used to
+answer the query, in this case, Beers.
+
+72
+00:05:42.370 --> 00:05:46.972
+And the condition that all the desired
+data items should satisfy,
+
+73
+00:05:46.972 --> 00:05:51.260
+namely, the value of the attribute
+called manf is Heineken.
+
+74
+00:05:52.600 --> 00:05:55.570
+Now, there are few things to notice here.
+
+75
+00:05:55.570 --> 00:05:59.311
+First, the literal Heineken
+is put within quotes,
+
+76
+00:05:59.311 --> 00:06:02.210
+because it's a single string literal.
+
+77
+00:06:03.470 --> 00:06:04.550
+Remember that in this case,
+
+78
+00:06:04.550 --> 00:06:08.830
+the string is supposed to match exactly,
+including the case.
+
+79
+00:06:10.910 --> 00:06:16.590
+Secondly, if you go back to the data
+operations discussed in course two,
+
+80
+00:06:16.590 --> 00:06:21.610
+you will recognize that this form
+of query can also be represented
+
+81
+00:06:21.610 --> 00:06:27.070
+as a selection operation on the relation
+Beers with a condition on the manf
+
+82
+00:06:27.070 --> 00:06:30.800
+attribute, followed by
+a projection operation
+
+83
+00:06:30.800 --> 00:06:34.349
+that outputs the name attribute from
+the result of the selection operation.
+
+84
+00:06:35.680 --> 00:06:40.340
+So the selection operation finds all
+tuples of beer for which the manufacturer
+
+85
+00:06:40.340 --> 00:06:45.710
+is Heineken, and from those tuples
+it projects only the name column.
+
+86
+00:06:47.300 --> 00:06:51.580
+The result of the query is a table
+with one single attribute called name.
+
+87
+00:06:54.250 --> 00:06:58.883
+We illustrate some more features of SQL,
+using two example queries.
+
+88
+00:06:58.883 --> 00:07:02.330
+The first looks for
+expensive beer and its price.
+
+89
+00:07:03.370 --> 00:07:06.856
+Let's say we consider a beer to be
+expensive if it costs more than $15
+
+90
+00:07:06.856 --> 00:07:07.569
+per bottle.
+
+91
+00:07:08.810 --> 00:07:10.200
+From the schema,
+
+92
+00:07:10.200 --> 00:07:13.830
+we know that the price information is
+available in the table called Sells.
+
+93
+00:07:14.900 --> 00:07:17.470
+So the FROM clause should use Sells.
+
+94
+00:07:18.620 --> 00:07:20.490
+The WHERE clause is intuitive and
+
+95
+00:07:20.490 --> 00:07:24.200
+specifies the price of the beer
+to be greater than 15.
+
+96
+00:07:24.200 --> 00:07:28.873
+Now notice that the Sells relation
+also has a column called bar.
+
+97
+00:07:28.873 --> 00:07:35.170
+Now, if two different bars sell
+the same beer at the same price,
+
+98
+00:07:35.170 --> 00:07:37.570
+we'll get both entries in the result.
+
+99
+00:07:37.570 --> 00:07:39.620
+But that's not what we want.
+
+100
+00:07:39.620 --> 00:07:43.850
+Now regardless of the multiplicity
+of bars that have the same price for
+
+101
+00:07:43.850 --> 00:07:46.340
+the same beer,
+we want the result just once.
+
+102
+00:07:48.320 --> 00:07:53.688
+So this is achieved through
+the SELECT DISTINCT statement,
+
+103
+00:07:53.688 --> 00:07:59.384
+which ensures that the result
+relation will have no duplicate.
+
+104
+00:07:59.384 --> 00:08:03.736
+The second example shows the case
+where more than one condition
+
+105
+00:08:03.736 --> 00:08:06.045
+must be specified by the result.
+
+106
+00:08:06.045 --> 00:08:09.774
+In this query,
+the business must be in San Diego and
+
+107
+00:08:09.774 --> 00:08:13.764
+at the same time it must be
+a temporary license holder,
+
+108
+00:08:13.764 --> 00:08:17.870
+which means the license
+number should start with 32.
+
+109
+00:08:17.870 --> 00:08:23.280
+As we see here, these conditions
+are put together by the AND operator.
+
+110
+00:08:25.230 --> 00:08:29.330
+Thus, the query will pick
+the third record in the table
+
+111
+00:08:29.330 --> 00:08:33.560
+because the first record satisfy the first
+condition and not the second condition.
+
+112
+00:08:34.950 --> 00:08:38.780
+In a few slides, we'll come back to
+the evaluation of this type of queries
+
+113
+00:08:38.780 --> 00:08:40.625
+in the context of big data.
+
+114
+00:08:40.625 --> 00:08:47.340
+Now, remember, one can also place a limit
+on the number of results to return.
+
+115
+00:08:47.340 --> 00:08:52.163
+If our database is large, and
+we need only five results, for
+
+116
+00:08:52.163 --> 00:08:56.620
+example, for a sample to display,
+we can say LIMIT 5.
+
+117
+00:08:56.620 --> 00:09:03.706
+Now, the exact syntax of this LIMIT
+clause may vary between DBMS vendors.

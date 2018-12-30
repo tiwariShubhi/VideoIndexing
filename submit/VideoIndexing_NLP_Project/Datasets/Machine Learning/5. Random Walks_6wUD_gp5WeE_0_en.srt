@@ -1,0 +1,4220 @@
+﻿1
+00:00:00,000 --> 00:00:00,790
+
+
+2
+00:00:00,790 --> 00:00:03,129
+The following content is
+provided under a Creative
+
+3
+00:00:03,129 --> 00:00:04,549
+Commons license.
+
+4
+00:00:04,549 --> 00:00:06,759
+Your support will help
+MIT OpenCourseWare
+
+5
+00:00:06,759 --> 00:00:10,849
+continue to offer high quality
+educational resources for free.
+
+6
+00:00:10,849 --> 00:00:13,390
+To make a donation or to
+view additional materials
+
+7
+00:00:13,390 --> 00:00:17,320
+from hundreds of MIT courses,
+visit MIT OpenCourseWare
+
+8
+00:00:17,320 --> 00:00:18,570
+at ocw.mit.edu.
+
+9
+00:00:18,570 --> 00:00:30,589
+
+
+10
+00:00:30,589 --> 00:00:32,840
+JOHN GUTTAG: Today
+we're starting
+
+11
+00:00:32,840 --> 00:00:35,270
+a new topic, which
+is, of course, related
+
+12
+00:00:35,270 --> 00:00:36,260
+to previous topics.
+
+13
+00:00:36,259 --> 00:00:39,229
+
+
+14
+00:00:39,229 --> 00:00:44,149
+As usual, if you go to either
+the 60002 or the 600 web site,
+
+15
+00:00:44,149 --> 00:00:49,699
+you'll find both today's
+PowerPoint and today's Python.
+
+16
+00:00:49,700 --> 00:00:52,050
+You'll discover if you
+look at the Python file
+
+17
+00:00:52,049 --> 00:00:54,529
+that there is quite a
+lot of code in there.
+
+18
+00:00:54,530 --> 00:00:57,050
+And I'll be talking
+only about some of it.
+
+19
+00:00:57,049 --> 00:01:00,349
+But it's probably
+all worth looking at.
+
+20
+00:01:00,350 --> 00:01:06,530
+And a fair amount of reading
+associated with this week.
+
+21
+00:01:06,530 --> 00:01:09,140
+Why are we looking
+at random walks?
+
+22
+00:01:09,140 --> 00:01:13,700
+See a picture here of, think of
+them as molecules just bouncing
+
+23
+00:01:13,700 --> 00:01:15,350
+around.
+
+24
+00:01:15,350 --> 00:01:16,849
+This is actually a
+picture of what's
+
+25
+00:01:16,849 --> 00:01:20,750
+called Brownian motion,
+though Robert Brown probably
+
+26
+00:01:20,750 --> 00:01:23,959
+did not discover it.
+
+27
+00:01:23,959 --> 00:01:27,109
+We're looking at random walks
+because, well, first of all,
+
+28
+00:01:27,109 --> 00:01:29,900
+they're important
+in many domains.
+
+29
+00:01:29,900 --> 00:01:32,270
+There are people who
+will argue, for example,
+
+30
+00:01:32,269 --> 00:01:35,000
+that the movement of
+prices in the stock market
+
+31
+00:01:35,000 --> 00:01:37,969
+is best modeled
+as a random walk.
+
+32
+00:01:37,969 --> 00:01:40,849
+There was a very popular book
+called A Random Walk Down Wall
+
+33
+00:01:40,849 --> 00:01:43,329
+Street that made this argument.
+
+34
+00:01:43,329 --> 00:01:49,603
+And a lot of modern portfolio
+analysis is based upon that.
+
+35
+00:01:49,603 --> 00:01:51,769
+Those of you who are not
+interested in making money,
+
+36
+00:01:51,769 --> 00:01:55,989
+and I presume
+that's most of you,
+
+37
+00:01:55,989 --> 00:01:58,859
+it's also very important
+in many physical processes.
+
+38
+00:01:58,859 --> 00:02:02,489
+We use random walks,
+say, to model diffusion,
+
+39
+00:02:02,489 --> 00:02:06,449
+heat diffusion, or the
+diffusion of molecules
+
+40
+00:02:06,450 --> 00:02:08,319
+in suspension, et cetera.
+
+41
+00:02:08,319 --> 00:02:12,150
+So they're very important in a
+lot of scientific, and indeed,
+
+42
+00:02:12,150 --> 00:02:14,879
+social disciplines.
+
+43
+00:02:14,879 --> 00:02:17,009
+They're not the only
+important thing,
+
+44
+00:02:17,009 --> 00:02:19,229
+so why are we looking at those?
+
+45
+00:02:19,229 --> 00:02:22,530
+Because I think it provides
+a really good illustration
+
+46
+00:02:22,530 --> 00:02:29,409
+of how we can use simulation to
+understand the world around us.
+
+47
+00:02:29,409 --> 00:02:32,650
+And it does give me an excuse
+to cover some important topics
+
+48
+00:02:32,650 --> 00:02:34,599
+related to programming.
+
+49
+00:02:34,599 --> 00:02:37,389
+You'll remember that one of
+the subtexts of the course
+
+50
+00:02:37,389 --> 00:02:40,689
+is while I'm covering a
+lot of what you might think
+
+51
+00:02:40,689 --> 00:02:44,079
+of as abstract
+material, we're using it
+
+52
+00:02:44,080 --> 00:02:46,990
+as an excuse to teach more
+about programming and software
+
+53
+00:02:46,990 --> 00:02:48,189
+engineering.
+
+54
+00:02:48,189 --> 00:02:51,370
+A little practice with
+classes and subclassing,
+
+55
+00:02:51,370 --> 00:02:56,110
+and we're going to also
+look at producing plots.
+
+56
+00:02:56,110 --> 00:02:58,930
+So the first random
+walk I want to look at
+
+57
+00:02:58,930 --> 00:03:02,469
+is actually not a diffusion
+process or the stock market,
+
+58
+00:03:02,469 --> 00:03:05,229
+but an actual walk.
+
+59
+00:03:05,229 --> 00:03:07,929
+So imagine that you've got
+a field which has somehow
+
+60
+00:03:07,930 --> 00:03:11,920
+inexplicably been mown to look
+like a piece of graph paper,
+
+61
+00:03:11,919 --> 00:03:15,159
+and you've got a drunk
+wandering around the field,
+
+62
+00:03:15,159 --> 00:03:20,090
+taking a step every once in a
+while in some random direction.
+
+63
+00:03:20,090 --> 00:03:23,390
+We can then ask the
+question is there
+
+64
+00:03:23,389 --> 00:03:27,259
+an interesting relationship
+between the number of steps
+
+65
+00:03:27,259 --> 00:03:30,769
+the drunk takes and
+how far the drunk is
+
+66
+00:03:30,770 --> 00:03:34,680
+from the origin at the
+end of those steps?
+
+67
+00:03:34,680 --> 00:03:37,560
+You could imagine that if
+the drunk takes more steps,
+
+68
+00:03:37,560 --> 00:03:40,000
+he's ever further
+from the origin.
+
+69
+00:03:40,000 --> 00:03:42,810
+Or maybe you could
+imagine, since it's random,
+
+70
+00:03:42,810 --> 00:03:47,069
+that he just wanders away and he
+wanders back in all directions
+
+71
+00:03:47,069 --> 00:03:50,340
+and more or less
+never gets very far.
+
+72
+00:03:50,340 --> 00:03:53,250
+So just out of curiosity,
+I'll take a poll.
+
+73
+00:03:53,250 --> 00:03:56,370
+Who thinks that the
+drunk doesn't much
+
+74
+00:03:56,370 --> 00:03:58,170
+matter how many
+steps he takes, he'll
+
+75
+00:03:58,169 --> 00:04:02,109
+be more or less the
+same distance away?
+
+76
+00:04:02,110 --> 00:04:04,810
+And who thinks the more steps
+he takes, the further away he's
+
+77
+00:04:04,810 --> 00:04:05,539
+likely to be?
+
+78
+00:04:05,539 --> 00:04:08,209
+
+
+79
+00:04:08,210 --> 00:04:10,700
+It seems to be a season
+where when you take polls,
+
+80
+00:04:10,699 --> 00:04:12,019
+they come out almost tied.
+
+81
+00:04:12,020 --> 00:04:18,139
+
+
+82
+00:04:18,139 --> 00:04:20,689
+Let's look at a small example.
+
+83
+00:04:20,689 --> 00:04:23,439
+Suppose he takes one step only.
+
+84
+00:04:23,439 --> 00:04:25,670
+Well, if he takes
+one step, and we'll
+
+85
+00:04:25,670 --> 00:04:28,615
+assume for simplicity
+that he's not so drunk
+
+86
+00:04:28,615 --> 00:04:29,615
+that he moves at random.
+
+87
+00:04:29,615 --> 00:04:34,310
+He either moves north
+or south, east or west.
+
+88
+00:04:34,310 --> 00:04:37,649
+These are all the places
+he can get to in one step.
+
+89
+00:04:37,649 --> 00:04:40,939
+What they have in common
+is that after one step,
+
+90
+00:04:40,939 --> 00:04:46,589
+the drunk is always exactly
+one unit away from the origin.
+
+91
+00:04:46,589 --> 00:04:49,089
+Well, how about after two steps?
+
+92
+00:04:49,089 --> 00:04:52,429
+So without loss of
+generality, let's assume that
+
+93
+00:04:52,430 --> 00:04:54,160
+the first step--
+
+94
+00:04:54,160 --> 00:04:56,900
+let me use the pen
+that you're supposed
+
+95
+00:04:56,899 --> 00:05:02,069
+to use to write on this, rather
+than this pen, which would
+
+96
+00:05:02,069 --> 00:05:03,959
+make a real mess on my screen.
+
+97
+00:05:03,959 --> 00:05:07,989
+
+
+98
+00:05:07,990 --> 00:05:10,720
+What did I do with it?
+
+99
+00:05:10,720 --> 00:05:12,630
+Well, I won't write on it.
+
+100
+00:05:12,629 --> 00:05:15,159
+So without loss of
+generality, we'll
+
+101
+00:05:15,160 --> 00:05:20,330
+assume that the drunk
+is there after one step.
+
+102
+00:05:20,329 --> 00:05:22,370
+Took one step to the east.
+
+103
+00:05:22,370 --> 00:05:25,040
+Well, after two steps, those
+are all the possible places
+
+104
+00:05:25,040 --> 00:05:26,660
+he could be.
+
+105
+00:05:26,660 --> 00:05:30,900
+So on average, how far is
+the drunk from the origin?
+
+106
+00:05:30,899 --> 00:05:35,269
+Well, if we look, he could
+either be two steps away,
+
+107
+00:05:35,269 --> 00:05:39,620
+if he took another step
+east, zero steps away,
+
+108
+00:05:39,620 --> 00:05:47,180
+if he took a step west, or
+what do we see for the top two?
+
+109
+00:05:47,180 --> 00:05:49,490
+Well, the top and
+the bottom one,
+
+110
+00:05:49,490 --> 00:05:51,939
+we can go back and use
+the Pythagorean theorem.
+
+111
+00:05:51,939 --> 00:05:57,579
+
+
+112
+00:05:57,579 --> 00:06:01,060
+c squared equals a
+squared plus b squared.
+
+113
+00:06:01,060 --> 00:06:04,050
+
+
+114
+00:06:04,050 --> 00:06:06,689
+And that will tell us that
+it'll be the square root
+
+115
+00:06:06,689 --> 00:06:10,129
+of a squared plus b squared.
+
+116
+00:06:10,129 --> 00:06:15,680
+And that will tell us how
+far away the upper two are,
+
+117
+00:06:15,680 --> 00:06:19,329
+and then we can just average
+them and get a distance.
+
+118
+00:06:19,329 --> 00:06:22,870
+And as we can see,
+on average, the drunk
+
+119
+00:06:22,870 --> 00:06:25,300
+will be a little bit further
+away after two steps than
+
+120
+00:06:25,300 --> 00:06:28,110
+after one step.
+
+121
+00:06:28,110 --> 00:06:32,490
+Well how about
+after 100,000 steps?
+
+122
+00:06:32,490 --> 00:06:35,790
+It would be a little bit
+tedious to go through the case
+
+123
+00:06:35,790 --> 00:06:38,189
+analysis I just did.
+
+124
+00:06:38,189 --> 00:06:41,500
+There are a lot of cases
+after 100,000 steps.
+
+125
+00:06:41,500 --> 00:06:43,819
+So we end up resorting
+to a simulation.
+
+126
+00:06:43,819 --> 00:06:46,399
+
+
+127
+00:06:46,399 --> 00:06:49,699
+So we'll structure it
+exactly the same way
+
+128
+00:06:49,699 --> 00:06:52,789
+we've been structuring
+our other simulations.
+
+129
+00:06:52,790 --> 00:06:58,220
+We're going to simulate one
+walk of k steps, n such walks,
+
+130
+00:06:58,220 --> 00:07:00,470
+and then report the
+average distance
+
+131
+00:07:00,470 --> 00:07:01,905
+from the origin of the n walks.
+
+132
+00:07:01,904 --> 00:07:05,159
+
+
+133
+00:07:05,160 --> 00:07:08,610
+Before we do that, in line
+with the software engineering
+
+134
+00:07:08,610 --> 00:07:11,639
+theme of the course,
+we'll start by defining
+
+135
+00:07:11,639 --> 00:07:13,579
+some useful abstractions.
+
+136
+00:07:13,579 --> 00:07:15,459
+There are three of
+them I want to look at.
+
+137
+00:07:15,459 --> 00:07:19,439
+Location, the field
+that the drunk is in,
+
+138
+00:07:19,439 --> 00:07:21,884
+and the drunk him or herself.
+
+139
+00:07:21,884 --> 00:07:24,709
+
+
+140
+00:07:24,709 --> 00:07:27,389
+So let's first look at location.
+
+141
+00:07:27,389 --> 00:07:31,589
+This is going to be
+an immutable type.
+
+142
+00:07:31,589 --> 00:07:33,219
+So what we see here--
+
+143
+00:07:33,220 --> 00:07:34,845
+as long as I can't
+point in the screen,
+
+144
+00:07:34,845 --> 00:07:37,970
+I'll point with a pointer--
+
+145
+00:07:37,970 --> 00:07:40,270
+is that we'll initiate it.
+
+146
+00:07:40,269 --> 00:07:43,859
+We'll initialize it
+with an x and y value.
+
+147
+00:07:43,860 --> 00:07:45,990
+That makes sense.
+
+148
+00:07:45,990 --> 00:07:50,199
+We'll be able to have two
+getters, getX and getY.
+
+149
+00:07:50,199 --> 00:07:53,199
+And here's how we
+see it's immutable.
+
+150
+00:07:53,199 --> 00:07:56,529
+What move is doing is it's
+not changing the location,
+
+151
+00:07:56,529 --> 00:07:59,059
+it's returning a new location.
+
+152
+00:07:59,060 --> 00:08:02,879
+Perhaps move is poor
+choice of name for that.
+
+153
+00:08:02,879 --> 00:08:04,089
+But that is what it's doing.
+
+154
+00:08:04,089 --> 00:08:06,310
+It's just returning
+a new location
+
+155
+00:08:06,310 --> 00:08:09,579
+where it adds the change
+in x and the change in y
+
+156
+00:08:09,579 --> 00:08:11,979
+to get two new xy values.
+
+157
+00:08:11,980 --> 00:08:14,569
+
+
+158
+00:08:14,569 --> 00:08:16,469
+Notice, by the way,
+that I'm not restricting
+
+159
+00:08:16,470 --> 00:08:19,880
+these to be integers, or
+one, or anything like that.
+
+160
+00:08:19,879 --> 00:08:22,569
+So this would work
+even if I did not
+
+161
+00:08:22,569 --> 00:08:25,930
+want to take those nice little
+east-west, north-south steps.
+
+162
+00:08:25,930 --> 00:08:29,600
+
+
+163
+00:08:29,600 --> 00:08:33,019
+I've got a underbar
+underbar string, _str_,
+
+164
+00:08:33,019 --> 00:08:35,269
+and then here's my
+implementation--
+
+165
+00:08:35,269 --> 00:08:37,259
+you can see it's
+very sophisticated--
+
+166
+00:08:37,259 --> 00:08:38,720
+of the Pythagorean theorem.
+
+167
+00:08:38,720 --> 00:08:41,450
+
+
+168
+00:08:41,450 --> 00:08:45,440
+So I just do it
+that way, and that
+
+169
+00:08:45,440 --> 00:08:49,050
+will get me the distance
+between two things.
+
+170
+00:08:49,049 --> 00:08:52,879
+It's one of the annoying things
+about classes in, actually,
+
+171
+00:08:52,879 --> 00:08:55,519
+all languages I know
+with classes, is
+
+172
+00:08:55,519 --> 00:08:57,529
+you would like to
+think that self
+
+173
+00:08:57,529 --> 00:09:00,074
+and other-- there's
+a symmetry here.
+
+174
+00:09:00,075 --> 00:09:02,450
+The distance from self to
+other is the same as from other
+
+175
+00:09:02,450 --> 00:09:03,560
+to self.
+
+176
+00:09:03,559 --> 00:09:05,869
+But syntactically,
+because of the way
+
+177
+00:09:05,870 --> 00:09:08,419
+the language is structured,
+we treat them a little bit
+
+178
+00:09:08,419 --> 00:09:09,332
+differently.
+
+179
+00:09:09,332 --> 00:09:12,189
+
+
+180
+00:09:12,190 --> 00:09:15,080
+How about class Drunk?
+
+181
+00:09:15,080 --> 00:09:17,690
+Well, this is kind of boring.
+
+182
+00:09:17,690 --> 00:09:22,240
+Drunk has a name and a string.
+
+183
+00:09:22,240 --> 00:09:22,970
+And that's all.
+
+184
+00:09:22,970 --> 00:09:26,129
+
+
+185
+00:09:26,129 --> 00:09:27,659
+The point of this,
+and I don't think
+
+186
+00:09:27,659 --> 00:09:30,719
+we've looked at
+this before, is this
+
+187
+00:09:30,720 --> 00:09:34,800
+is not intended to be a
+useful class on its own.
+
+188
+00:09:34,799 --> 00:09:37,969
+It's what we call a base class.
+
+189
+00:09:37,970 --> 00:09:44,590
+The notion here is its only
+purpose is to be inherited.
+
+190
+00:09:44,590 --> 00:09:47,379
+It's not supposed to
+be useful on itself,
+
+191
+00:09:47,379 --> 00:09:49,659
+but it does give me
+something that will
+
+192
+00:09:49,659 --> 00:09:54,709
+be used for the two subclasses.
+
+193
+00:09:54,710 --> 00:09:56,490
+And we'll look at
+two subclasses.
+
+194
+00:09:56,490 --> 00:09:59,299
+The so-called usual
+drunk, the one
+
+195
+00:09:59,299 --> 00:10:02,809
+I tried to simulate when
+I was wandering around,
+
+196
+00:10:02,809 --> 00:10:04,759
+wanders around at random.
+
+197
+00:10:04,759 --> 00:10:06,169
+And a drunk I like
+to think of it
+
+198
+00:10:06,169 --> 00:10:09,199
+as a New Englander, or
+a masochistic drunk,
+
+199
+00:10:09,200 --> 00:10:12,740
+who tries forever to move
+ever northward, because he
+
+200
+00:10:12,740 --> 00:10:15,710
+or she wants to be frozen.
+
+201
+00:10:15,710 --> 00:10:18,637
+I do like this picture of
+entering the state of Maine
+
+202
+00:10:18,636 --> 00:10:19,219
+in the winter.
+
+203
+00:10:19,220 --> 00:10:22,870
+
+
+204
+00:10:22,870 --> 00:10:25,509
+So here is the usual drunk.
+
+205
+00:10:25,509 --> 00:10:29,139
+Subclass of drunk,
+and it can take steps
+
+206
+00:10:29,139 --> 00:10:35,230
+at random, one step, either
+increasing y, a step north,
+
+207
+00:10:35,230 --> 00:10:40,570
+decreasing y, a step south,
+increasing x, a step east,
+
+208
+00:10:40,570 --> 00:10:45,770
+or decreasing x a step west.
+
+209
+00:10:45,769 --> 00:10:46,939
+So those are the choices.
+
+210
+00:10:46,940 --> 00:10:49,410
+And it's going to return
+one of those at random.
+
+211
+00:10:49,409 --> 00:10:53,350
+I think we saw random.choice
+in the last lecture.
+
+212
+00:10:53,350 --> 00:10:56,420
+And then our
+masochistic drunk, it's
+
+213
+00:10:56,419 --> 00:11:01,099
+almost the same, except the
+choices are slightly different.
+
+214
+00:11:01,100 --> 00:11:03,889
+If he chooses to head north,
+he doesn't go one step.
+
+215
+00:11:03,889 --> 00:11:08,379
+He goes 1.1 steps north.
+
+216
+00:11:08,379 --> 00:11:12,902
+And if he chooses to go south,
+he only goes 9/10 of a step.
+
+217
+00:11:12,902 --> 00:11:14,360
+So what we're seeing
+here is what's
+
+218
+00:11:14,360 --> 00:11:17,250
+called a biased random walk.
+
+219
+00:11:17,250 --> 00:11:21,110
+And the bias here is the
+direction of the walk
+
+220
+00:11:21,110 --> 00:11:23,330
+that he's moving
+either up or down.
+
+221
+00:11:23,330 --> 00:11:27,612
+
+
+222
+00:11:27,611 --> 00:11:28,194
+Pretty simple.
+
+223
+00:11:28,195 --> 00:11:30,754
+
+
+224
+00:11:30,754 --> 00:11:33,309
+How about just for
+to test things out,
+
+225
+00:11:33,309 --> 00:11:37,039
+we'll ask the question is this
+an immutable or a mutable type?
+
+226
+00:11:37,039 --> 00:11:41,659
+
+
+227
+00:11:41,659 --> 00:11:44,709
+Are drunks mutable or immutable?
+
+228
+00:11:44,710 --> 00:11:48,160
+This is a deep
+philosophical question.
+
+229
+00:11:48,159 --> 00:11:50,819
+But if we ignore the
+philosophical underpinnings
+
+230
+00:11:50,820 --> 00:11:53,379
+of that question, what
+about the two types here?
+
+231
+00:11:53,379 --> 00:11:56,250
+
+
+232
+00:11:56,250 --> 00:12:00,009
+Who thinks it's immutable?
+
+233
+00:12:00,009 --> 00:12:01,009
+Who thinks it's mutable?
+
+234
+00:12:01,009 --> 00:12:03,970
+
+
+235
+00:12:03,970 --> 00:12:05,220
+Why do you think it's mutable?
+
+236
+00:12:05,220 --> 00:12:06,177
+What's getting changed?
+
+237
+00:12:06,177 --> 00:12:09,860
+
+
+238
+00:12:09,860 --> 00:12:11,990
+The answer is nothing.
+
+239
+00:12:11,990 --> 00:12:15,000
+
+
+240
+00:12:15,000 --> 00:12:23,210
+It gets created, and then
+it's returning the step,
+
+241
+00:12:23,210 --> 00:12:26,259
+but it's not actually
+changing the drunk.
+
+242
+00:12:26,259 --> 00:12:29,620
+So so far we have two things
+that are immutable, drunks
+
+243
+00:12:29,620 --> 00:12:32,379
+and locations.
+
+244
+00:12:32,379 --> 00:12:33,480
+Let's look at fields.
+
+245
+00:12:33,480 --> 00:12:37,690
+Fields are a little
+bit more complicated.
+
+246
+00:12:37,690 --> 00:12:41,730
+So field will be a
+dictionary, and the dictionary
+
+247
+00:12:41,730 --> 00:12:47,590
+is going to map a drunk to his
+or her location in the field.
+
+248
+00:12:47,590 --> 00:12:52,430
+So we can add a drunk
+at some location,
+
+249
+00:12:52,429 --> 00:12:54,620
+and we're going to check.
+
+250
+00:12:54,620 --> 00:12:57,679
+And if the drunk
+is already there,
+
+251
+00:12:57,679 --> 00:13:00,289
+we're not going to
+put the drunk in.
+
+252
+00:13:00,289 --> 00:13:04,039
+We're going to raise a value
+error, "Duplicate drunk."
+
+253
+00:13:04,039 --> 00:13:09,230
+Otherwise we're going to set
+the value of drunkenness mapping
+
+254
+00:13:09,230 --> 00:13:10,610
+to loc.
+
+255
+00:13:10,610 --> 00:13:14,539
+Now you see, by the way, why I
+wanted drunks to be immutable.
+
+256
+00:13:14,539 --> 00:13:17,000
+Because they have
+to be hashable so
+
+257
+00:13:17,000 --> 00:13:20,990
+I can use them as a
+key in a dictionary.
+
+258
+00:13:20,990 --> 00:13:23,710
+So it was not an idle question
+whether they were immutable.
+
+259
+00:13:23,710 --> 00:13:27,250
+It was an important question.
+
+260
+00:13:27,250 --> 00:13:29,230
+I can get the
+location of a drunk.
+
+261
+00:13:29,230 --> 00:13:31,720
+If the drunk is not
+in there, then I'll
+
+262
+00:13:31,720 --> 00:13:35,490
+raise a different value
+error, "Drunk not in field."
+
+263
+00:13:35,490 --> 00:13:37,029
+Otherwise I'll
+return the location
+
+264
+00:13:37,029 --> 00:13:38,439
+associated with that drunk.
+
+265
+00:13:38,440 --> 00:13:42,750
+
+
+266
+00:13:42,750 --> 00:13:47,809
+And finally, we're
+going to have moveDrunk.
+
+267
+00:13:47,809 --> 00:13:51,669
+Again I'll check whether
+the drunk is there.
+
+268
+00:13:51,669 --> 00:13:55,759
+If the drunk is there, I'm
+going to get the distance
+
+269
+00:13:55,759 --> 00:14:00,069
+on x and the distance in y
+by calling drunk.takeStep.
+
+270
+00:14:00,070 --> 00:14:02,629
+
+
+271
+00:14:02,629 --> 00:14:06,409
+So we saw takeStep for a drunk
+didn't move the drunk anywhere,
+
+272
+00:14:06,409 --> 00:14:08,079
+because the drunks
+were immutable,
+
+273
+00:14:08,080 --> 00:14:10,790
+but returned new locations.
+
+274
+00:14:10,789 --> 00:14:13,860
+A new x and new values.
+
+275
+00:14:13,860 --> 00:14:20,350
+And then I'm going to use that
+to move the drunk in the field.
+
+276
+00:14:20,350 --> 00:14:23,230
+
+
+277
+00:14:23,230 --> 00:14:26,955
+So I'll set self.drunk, so
+drunk to move x distance and y
+
+278
+00:14:26,955 --> 00:14:27,455
+distance.
+
+279
+00:14:27,455 --> 00:14:32,800
+
+
+280
+00:14:32,799 --> 00:14:38,949
+So it's very simple, but having
+built this set of classes,
+
+281
+00:14:38,950 --> 00:14:42,180
+we can now actually
+write the simulation.
+
+282
+00:14:42,179 --> 00:14:42,759
+Oh.
+
+283
+00:14:42,759 --> 00:14:43,717
+What about our classes?
+
+284
+00:14:43,717 --> 00:14:45,219
+Are they mutable or immutable?
+
+285
+00:14:45,220 --> 00:14:46,245
+Not classes.
+
+286
+00:14:46,245 --> 00:14:46,995
+What about fields?
+
+287
+00:14:46,995 --> 00:14:51,279
+
+
+288
+00:14:51,279 --> 00:14:54,279
+Any votes for mutable?
+
+289
+00:14:54,279 --> 00:14:56,649
+Yeah, exactly.
+
+290
+00:14:56,649 --> 00:15:00,279
+Because you can see I'm
+mutating it right here.
+
+291
+00:15:00,279 --> 00:15:02,769
+I'm changing the value
+of the dictionary.
+
+292
+00:15:02,769 --> 00:15:06,100
+And in fact, every time I
+add a drunk to the field,
+
+293
+00:15:06,100 --> 00:15:08,860
+I'm changing the value
+of the dictionary, which
+
+294
+00:15:08,860 --> 00:15:12,360
+is to say mutating the field.
+
+295
+00:15:12,360 --> 00:15:14,159
+So I'll have a
+bunch of locations,
+
+296
+00:15:14,159 --> 00:15:16,500
+which are immutable objects.
+
+297
+00:15:16,500 --> 00:15:19,019
+Makes sense that a
+location is immutable.
+
+298
+00:15:19,019 --> 00:15:21,569
+A bunch of drunks, and the
+thing I'm going to change
+
+299
+00:15:21,570 --> 00:15:23,520
+is where the drunks
+are in the field.
+
+300
+00:15:23,519 --> 00:15:29,460
+
+
+301
+00:15:29,460 --> 00:15:34,370
+I said we'd start by
+simulating a single walk.
+
+302
+00:15:34,370 --> 00:15:40,909
+So here it is, a walk in a field
+with a drunk, and that drunk
+
+303
+00:15:40,909 --> 00:15:42,889
+will take some number
+of steps in the field.
+
+304
+00:15:42,889 --> 00:15:46,850
+
+
+305
+00:15:46,850 --> 00:15:47,899
+And you can see this.
+
+306
+00:15:47,899 --> 00:15:48,899
+It's very simple.
+
+307
+00:15:48,899 --> 00:15:50,959
+I just have a loop.
+
+308
+00:15:50,960 --> 00:15:53,639
+Drunk takes some
+number of random steps,
+
+309
+00:15:53,639 --> 00:15:57,710
+and I'm going to return
+the distance from the start
+
+310
+00:15:57,710 --> 00:16:02,700
+to the final location
+of the drunk.
+
+311
+00:16:02,700 --> 00:16:04,420
+So how far is the
+drunk from the origin?
+
+312
+00:16:04,419 --> 00:16:06,969
+
+
+313
+00:16:06,970 --> 00:16:09,779
+I then need to simulate
+multiple walks.
+
+314
+00:16:09,779 --> 00:16:12,789
+
+
+315
+00:16:12,789 --> 00:16:15,839
+Notice here that I've
+got the number of steps,
+
+316
+00:16:15,840 --> 00:16:23,300
+the number of trials, and dClass
+stands for class of the drunk.
+
+317
+00:16:23,299 --> 00:16:26,509
+And that's because I want
+to use the same function
+
+318
+00:16:26,509 --> 00:16:29,000
+to simulate as many
+different kinds of drunks
+
+319
+00:16:29,000 --> 00:16:30,529
+as I care about.
+
+320
+00:16:30,529 --> 00:16:33,199
+We've only seen two here,
+the masochistic drunk
+
+321
+00:16:33,200 --> 00:16:37,009
+and the usual drunk, but you
+can imagine many other kinds
+
+322
+00:16:37,009 --> 00:16:37,539
+as well.
+
+323
+00:16:37,539 --> 00:16:40,769
+
+
+324
+00:16:40,769 --> 00:16:41,850
+So let's do it.
+
+325
+00:16:41,850 --> 00:16:45,769
+So here I'm going to simulate
+a walk for one drunk, Homer.
+
+326
+00:16:45,769 --> 00:16:49,309
+So we'll create a drunk named
+Homer, or the variable Homer,
+
+327
+00:16:49,309 --> 00:16:53,549
+which is the drunk class.
+
+328
+00:16:53,549 --> 00:16:59,000
+Then the origin,
+distances, and for t
+
+329
+00:16:59,000 --> 00:17:02,980
+in range number of
+trials, we'll just do it,
+
+330
+00:17:02,980 --> 00:17:05,318
+and then we'll
+return the distances.
+
+331
+00:17:05,318 --> 00:17:07,789
+So it's initialized
+to the empty list.
+
+332
+00:17:07,789 --> 00:17:11,710
+So we're going to return a list
+for however many trials we do,
+
+333
+00:17:11,710 --> 00:17:15,650
+how far the drunk ended
+up from the origin.
+
+334
+00:17:15,650 --> 00:17:17,960
+Then we can average that,
+and we look at the mean.
+
+335
+00:17:17,960 --> 00:17:20,420
+Maybe we'll look at
+the min or the max.
+
+336
+00:17:20,420 --> 00:17:23,629
+Lots of different questions we
+could ask about the behavior.
+
+337
+00:17:23,628 --> 00:17:26,159
+
+
+338
+00:17:26,160 --> 00:17:29,860
+And now we can put
+it all together here.
+
+339
+00:17:29,859 --> 00:17:35,849
+So drunkTest will take a set
+of different walk lengths,
+
+340
+00:17:35,849 --> 00:17:39,240
+a list of different walk
+lengths, the number of trials,
+
+341
+00:17:39,240 --> 00:17:41,579
+and the class.
+
+342
+00:17:41,579 --> 00:17:43,529
+And for a number of
+steps and walk lengths,
+
+343
+00:17:43,529 --> 00:17:45,629
+distances will be
+simWalks of number
+
+344
+00:17:45,630 --> 00:17:46,820
+of steps, numTrials, dClass.
+
+345
+00:17:46,819 --> 00:17:49,609
+
+
+346
+00:17:49,609 --> 00:17:52,449
+And then I'm going to just
+print some statistics.
+
+347
+00:17:52,450 --> 00:17:56,180
+
+
+348
+00:17:56,180 --> 00:17:58,360
+You may or may not
+have seen this.
+
+349
+00:17:58,359 --> 00:18:02,639
+This is something that's
+built in to Python.
+
+350
+00:18:02,640 --> 00:18:09,130
+I can ask for the
+name of a class.
+
+351
+00:18:09,130 --> 00:18:12,760
+So dClass, remember, is a
+class, and _name_ will give me
+
+352
+00:18:12,759 --> 00:18:14,619
+the name of the class.
+
+353
+00:18:14,619 --> 00:18:17,709
+Might be usual, it might
+be drunk, in this case.
+
+354
+00:18:17,710 --> 00:18:21,750
+
+
+355
+00:18:21,750 --> 00:18:22,740
+So let's try it.
+
+356
+00:18:22,740 --> 00:18:27,779
+
+
+357
+00:18:27,779 --> 00:18:29,309
+So the code we've looked at.
+
+358
+00:18:29,309 --> 00:18:34,460
+
+
+359
+00:18:34,460 --> 00:18:37,970
+So let's go down here,
+and we'll run it,
+
+360
+00:18:37,970 --> 00:18:40,795
+and we'll try it for
+walks of 10, 100, 1,000,
+
+361
+00:18:40,795 --> 00:18:42,740
+and 10,000 steps.
+
+362
+00:18:42,740 --> 00:18:43,910
+And we'll do 100 trials.
+
+363
+00:18:43,910 --> 00:18:54,840
+
+
+364
+00:18:54,839 --> 00:18:57,149
+Here's what we got.
+
+365
+00:18:57,150 --> 00:19:01,800
+So my question to you is
+does this look plausible?
+
+366
+00:19:01,799 --> 00:19:09,806
+
+
+367
+00:19:09,806 --> 00:19:10,930
+What is it telling us here?
+
+368
+00:19:10,930 --> 00:19:14,080
+Well, it's telling us here
+that the length of the walk
+
+369
+00:19:14,079 --> 00:19:16,929
+actually doesn't really affect--
+
+370
+00:19:16,930 --> 00:19:21,110
+the number of steps doesn't
+affect how far the drunk gets.
+
+371
+00:19:21,109 --> 00:19:22,309
+There's some randomness.
+
+372
+00:19:22,309 --> 00:19:27,079
+8.6, 8.57, 9.2, 8.7.
+
+373
+00:19:27,079 --> 00:19:29,990
+Not much variance.
+
+374
+00:19:29,990 --> 00:19:33,980
+So we've done this simulation
+and we've learned something,
+
+375
+00:19:33,980 --> 00:19:36,620
+maybe.
+
+376
+00:19:36,619 --> 00:19:39,059
+So does this look plausible?
+
+377
+00:19:39,059 --> 00:19:42,210
+
+
+378
+00:19:42,210 --> 00:19:45,660
+We can look at it here.
+
+379
+00:19:45,660 --> 00:19:46,850
+I've just transcribed it.
+
+380
+00:19:46,849 --> 00:19:49,959
+
+
+381
+00:19:49,960 --> 00:19:52,069
+What do you think?
+
+382
+00:19:52,069 --> 00:19:54,591
+Well, go ahead.
+
+383
+00:19:54,592 --> 00:19:56,740
+AUDIENCE: I was going to
+say, it seems plausible
+
+384
+00:19:56,740 --> 00:19:58,307
+because after the
+first two steps,
+
+385
+00:19:58,307 --> 00:20:02,202
+there's a 50% chance he's
+going closer to the origin.
+
+386
+00:20:02,202 --> 00:20:04,649
+And a 50% chance he's
+going away from it.
+
+387
+00:20:04,650 --> 00:20:07,800
+JOHN GUTTAG: So we have at
+least one vote for plausible,
+
+388
+00:20:07,799 --> 00:20:13,119
+and it's certainly a
+plausible argument.
+
+389
+00:20:13,119 --> 00:20:15,909
+Well, one of the things
+we need to learn to do
+
+390
+00:20:15,910 --> 00:20:21,050
+is whenever we
+build a simulation,
+
+391
+00:20:21,049 --> 00:20:24,680
+we need to do what I
+call a sanity check
+
+392
+00:20:24,680 --> 00:20:28,009
+to see whether or not
+the simulation actually
+
+393
+00:20:28,009 --> 00:20:30,509
+makes sense.
+
+394
+00:20:30,509 --> 00:20:33,440
+So if we're going to
+do a sanity check,
+
+395
+00:20:33,440 --> 00:20:36,860
+what might we do in this case?
+
+396
+00:20:36,859 --> 00:20:42,699
+We should try it on cases where
+we think we know the answer.
+
+397
+00:20:42,700 --> 00:20:44,980
+So we say, let's take
+a really simple case
+
+398
+00:20:44,980 --> 00:20:48,009
+where we're pretty sure we
+know what the answer is.
+
+399
+00:20:48,009 --> 00:20:49,690
+Let's run our
+simulation and make
+
+400
+00:20:49,690 --> 00:20:52,690
+sure it gives us the right
+answer for this simple case.
+
+401
+00:20:52,690 --> 00:20:55,309
+
+
+402
+00:20:55,309 --> 00:20:59,609
+So if we think of a
+sanity check here,
+
+403
+00:20:59,609 --> 00:21:02,599
+maybe we should look
+at these numbers.
+
+404
+00:21:02,599 --> 00:21:03,929
+We just did it.
+
+405
+00:21:03,930 --> 00:21:08,700
+We know how far the drunk
+should get in zero steps.
+
+406
+00:21:08,700 --> 00:21:10,799
+How far should the drunk
+move in zero steps?
+
+407
+00:21:10,799 --> 00:21:12,299
+Zero.
+
+408
+00:21:12,299 --> 00:21:14,849
+How far should the
+drunk move in one steps?
+
+409
+00:21:14,849 --> 00:21:16,779
+We know that should be one.
+
+410
+00:21:16,779 --> 00:21:19,889
+Two steps, well, we knew
+what that should be.
+
+411
+00:21:19,890 --> 00:21:23,460
+Well, if I run
+this sanity check,
+
+412
+00:21:23,460 --> 00:21:24,870
+these are the numbers I get.
+
+413
+00:21:24,869 --> 00:21:28,779
+
+
+414
+00:21:28,779 --> 00:21:32,410
+I should be pretty suspicious.
+
+415
+00:21:32,410 --> 00:21:33,940
+I should also be
+suspicious they're
+
+416
+00:21:33,940 --> 00:21:39,470
+kind of the same numbers
+I got for 10,000 steps.
+
+417
+00:21:39,470 --> 00:21:41,269
+What should I think about?
+
+418
+00:21:41,269 --> 00:21:43,639
+I should think that maybe
+there's a bug in my code.
+
+419
+00:21:43,640 --> 00:21:46,810
+
+
+420
+00:21:46,809 --> 00:21:49,710
+So if we now go back
+and look at the code,
+
+421
+00:21:49,710 --> 00:21:53,400
+yes, this fails the
+pants on fire test
+
+422
+00:21:53,400 --> 00:21:55,930
+that there's clearly something
+wrong with these numbers.
+
+423
+00:21:55,930 --> 00:21:59,670
+
+
+424
+00:21:59,670 --> 00:22:04,650
+What we were appending is
+walk of Homer, numTrials, 1.
+
+425
+00:22:04,650 --> 00:22:08,340
+Well, numTrials is a constant.
+
+426
+00:22:08,339 --> 00:22:10,879
+It's always 100.
+
+427
+00:22:10,880 --> 00:22:15,410
+What I intended to write here
+was not numTrials but numSteps.
+
+428
+00:22:15,410 --> 00:22:19,430
+
+
+429
+00:22:19,430 --> 00:22:21,259
+I actually did
+this the first time
+
+430
+00:22:21,259 --> 00:22:23,940
+I wrote this simulation
+many years ago.
+
+431
+00:22:23,940 --> 00:22:27,080
+I made this typo,
+if you will, and I
+
+432
+00:22:27,079 --> 00:22:29,509
+got these bizarre answers.
+
+433
+00:22:29,509 --> 00:22:31,900
+So I looked at the
+code and I said, well,
+
+434
+00:22:31,900 --> 00:22:34,100
+that's actually wrong.
+
+435
+00:22:34,099 --> 00:22:36,079
+No wonder it's always
+the same number.
+
+436
+00:22:36,079 --> 00:22:37,774
+I'm calling it with a constant.
+
+437
+00:22:37,775 --> 00:22:40,670
+The constant happens to be 100.
+
+438
+00:22:40,670 --> 00:22:42,950
+So let's go fix the simulation.
+
+439
+00:22:42,950 --> 00:22:57,670
+
+
+440
+00:22:57,670 --> 00:22:59,150
+So this should
+have been numSteps.
+
+441
+00:22:59,150 --> 00:23:16,080
+
+
+442
+00:23:16,079 --> 00:23:17,250
+Now let's run it again.
+
+443
+00:23:17,250 --> 00:23:22,559
+
+
+444
+00:23:22,559 --> 00:23:26,919
+Well, these results
+are pretty different.
+
+445
+00:23:26,920 --> 00:23:31,622
+Now we see that in fact,
+they're increasing.
+
+446
+00:23:31,622 --> 00:23:34,720
+
+
+447
+00:23:34,720 --> 00:23:37,860
+Should I just look
+at this and be happy?
+
+448
+00:23:37,859 --> 00:23:39,029
+Probably not.
+
+449
+00:23:39,029 --> 00:23:41,519
+I should run my
+sanity check again
+
+450
+00:23:41,519 --> 00:23:47,529
+and make sure I get the right
+results for zero, one, and two.
+
+451
+00:23:47,529 --> 00:23:50,474
+So let's go back and do that,
+just to be a little bit safe.
+
+452
+00:23:50,474 --> 00:23:58,429
+
+
+453
+00:23:58,430 --> 00:24:01,120
+So I'll just change this
+tuple of values to be--
+
+454
+00:24:01,119 --> 00:24:15,649
+
+
+455
+00:24:15,650 --> 00:24:19,450
+and I should feel a
+lot better about this.
+
+456
+00:24:19,450 --> 00:24:21,950
+The mean, the max, and
+the min are all zero
+
+457
+00:24:21,950 --> 00:24:24,819
+when he doesn't take any steps.
+
+458
+00:24:24,819 --> 00:24:27,960
+One is exactly what
+we should expect,
+
+459
+00:24:27,960 --> 00:24:31,890
+and two is also-- the mean is
+where we would guess it to be,
+
+460
+00:24:31,890 --> 00:24:34,500
+and the max is two,
+happened to take
+
+461
+00:24:34,500 --> 00:24:38,130
+two steps in the same direction,
+and the min is zero, happened
+
+462
+00:24:38,130 --> 00:24:40,230
+to end up where he started.
+
+463
+00:24:40,230 --> 00:24:44,039
+So I've passed my sanity check.
+
+464
+00:24:44,039 --> 00:24:45,809
+Doesn't mean my
+simulation is right,
+
+465
+00:24:45,809 --> 00:24:48,179
+but at least I have
+reason to be hopeful.
+
+466
+00:24:48,180 --> 00:24:51,380
+
+
+467
+00:24:51,380 --> 00:24:53,660
+So getting back.
+
+468
+00:24:53,660 --> 00:25:01,380
+
+
+469
+00:25:01,380 --> 00:25:05,730
+So we saw these results, and
+now we're getting the indication
+
+470
+00:25:05,730 --> 00:25:09,089
+that in fact, contrary to
+what we might have thought,
+
+471
+00:25:09,089 --> 00:25:13,109
+it does appear to be that the
+more steps the drunk takes,
+
+472
+00:25:13,109 --> 00:25:15,019
+the further away
+the drunk ends up.
+
+473
+00:25:15,019 --> 00:25:17,599
+
+
+474
+00:25:17,599 --> 00:25:20,559
+And that was the usual drunk.
+
+475
+00:25:20,559 --> 00:25:22,429
+We can try the
+masochistic drunk,
+
+476
+00:25:22,430 --> 00:25:26,350
+and then we see something
+pretty interesting.
+
+477
+00:25:26,349 --> 00:25:30,129
+I won't make you sit through
+it, but when we run it,
+
+478
+00:25:30,130 --> 00:25:32,530
+here are the usual
+drunks, the numbers,
+
+479
+00:25:32,529 --> 00:25:35,109
+and I just looked at
+it for 1,000 and 10,000
+
+480
+00:25:35,109 --> 00:25:37,299
+so it would fit on the screen.
+
+481
+00:25:37,299 --> 00:25:43,690
+You see for the usual drunk,
+it's 26.8, roughly 90.
+
+482
+00:25:43,690 --> 00:25:46,870
+Fair dispersion in
+the min and the max.
+
+483
+00:25:46,869 --> 00:25:50,919
+And the masochistic drunk seems
+to be making considerably more
+
+484
+00:25:50,920 --> 00:25:56,080
+progress than the usual drunk.
+
+485
+00:25:56,079 --> 00:25:58,779
+So we see is this
+bias actually appears
+
+486
+00:25:58,779 --> 00:26:00,024
+to be changing the distance.
+
+487
+00:26:00,025 --> 00:26:03,769
+
+
+488
+00:26:03,769 --> 00:26:06,089
+Well, that's interesting.
+
+489
+00:26:06,089 --> 00:26:08,849
+Now we could ask
+the question why?
+
+490
+00:26:08,849 --> 00:26:11,839
+What's going on?
+
+491
+00:26:11,839 --> 00:26:16,129
+And to do that, I want to
+go and start visualizing
+
+492
+00:26:16,130 --> 00:26:18,170
+what's the trend?
+
+493
+00:26:18,170 --> 00:26:21,769
+So rather than just looking at
+two numbers or three numbers,
+
+494
+00:26:21,769 --> 00:26:24,670
+as we've been doing, I'm going
+to draw a pretty picture.
+
+495
+00:26:24,670 --> 00:26:26,070
+Actually, I'm not going to draw.
+
+496
+00:26:26,069 --> 00:26:27,710
+I'm a terrible artist.
+
+497
+00:26:27,710 --> 00:26:30,799
+But Python will draw us
+some pretty pictures.
+
+498
+00:26:30,799 --> 00:26:33,319
+We're going to simulate
+walks of multiple lengths
+
+499
+00:26:33,319 --> 00:26:36,169
+for each kind of
+drunk, and then plot
+
+500
+00:26:36,170 --> 00:26:38,180
+the distance at the
+end of each length
+
+501
+00:26:38,180 --> 00:26:39,980
+walk for each kind of drunk.
+
+502
+00:26:39,980 --> 00:26:42,789
+
+
+503
+00:26:42,789 --> 00:26:46,099
+I now digress for a moment to
+talk about how we do plotting.
+
+504
+00:26:46,099 --> 00:26:48,649
+
+
+505
+00:26:48,650 --> 00:26:51,380
+So we're going to use
+something called Pylab.
+
+506
+00:26:51,380 --> 00:26:56,730
+I've listed here four
+really important libraries
+
+507
+00:26:56,730 --> 00:27:01,769
+that you will surely
+end up using extensively
+
+508
+00:27:01,769 --> 00:27:06,059
+if you continue to use
+Python for research purposes.
+
+509
+00:27:06,059 --> 00:27:10,279
+NumPy adds vectors,
+matrices, and many high-level
+
+510
+00:27:10,279 --> 00:27:12,200
+mathematical functions.
+
+511
+00:27:12,200 --> 00:27:13,500
+Actually, it might be NumPy.
+
+512
+00:27:13,500 --> 00:27:14,415
+It might be "Num-Pee."
+
+513
+00:27:14,415 --> 00:27:16,700
+I'm not sure how
+to pronounce it.
+
+514
+00:27:16,700 --> 00:27:18,470
+But we'll call it NumPy.
+
+515
+00:27:18,470 --> 00:27:21,420
+So these are really
+useful things.
+
+516
+00:27:21,420 --> 00:27:24,860
+SciPy adds on top
+of that a bunch
+
+517
+00:27:24,859 --> 00:27:30,589
+of mathematical classes and
+functions useful to scientists.
+
+518
+00:27:30,589 --> 00:27:32,990
+Things like-- well, we'll
+look at some of them
+
+519
+00:27:32,990 --> 00:27:35,220
+as we go on through the term.
+
+520
+00:27:35,220 --> 00:27:40,450
+MatPlotLib adds an
+object-oriented programming
+
+521
+00:27:40,450 --> 00:27:42,460
+interface for plotting.
+
+522
+00:27:42,460 --> 00:27:45,920
+Anybody here used MATLAB?
+
+523
+00:27:45,920 --> 00:27:46,880
+Great.
+
+524
+00:27:46,880 --> 00:27:53,120
+Well you'll find that MatPlotLib
+is the Mat, think MATLAB.
+
+525
+00:27:53,119 --> 00:27:55,909
+Lets you, in Python, use
+all the plotting stuff
+
+526
+00:27:55,910 --> 00:28:00,440
+that you've come to either
+like or hate in MATLAB.
+
+527
+00:28:00,440 --> 00:28:02,000
+So it's really convenient.
+
+528
+00:28:02,000 --> 00:28:03,740
+If you know how to
+do plots in MATLAB,
+
+529
+00:28:03,740 --> 00:28:05,839
+you'll know how to
+do it in Python.
+
+530
+00:28:05,839 --> 00:28:09,259
+PyLab combines all
+of these to give you
+
+531
+00:28:09,259 --> 00:28:12,900
+a MATLAB-like
+interface to Python.
+
+532
+00:28:12,900 --> 00:28:15,780
+So once you have PyLab,
+you can do a lot of things
+
+533
+00:28:15,779 --> 00:28:18,389
+that you would normally
+want to do in MATLAB,
+
+534
+00:28:18,390 --> 00:28:20,580
+for example, produce
+weird-looking plots
+
+535
+00:28:20,579 --> 00:28:23,529
+like this one.
+
+536
+00:28:23,529 --> 00:28:29,440
+I'm going to show you one of the
+many, many plotting commands.
+
+537
+00:28:29,440 --> 00:28:31,940
+It is called plot.
+
+538
+00:28:31,940 --> 00:28:34,370
+It takes two arguments,
+which must be
+
+539
+00:28:34,369 --> 00:28:36,339
+sequences of the same length.
+
+540
+00:28:36,339 --> 00:28:38,949
+
+
+541
+00:28:38,950 --> 00:28:40,920
+The first argument
+is the x-coordinates,
+
+542
+00:28:40,920 --> 00:28:43,450
+the second argument is the
+y-coordinates corresponding
+
+543
+00:28:43,450 --> 00:28:44,920
+to the x ones.
+
+544
+00:28:44,920 --> 00:28:48,910
+There are roughly three
+zillion optional arguments,
+
+545
+00:28:48,910 --> 00:28:52,529
+and you'll see me use only
+a small subset of them.
+
+546
+00:28:52,529 --> 00:28:55,329
+It plots the points in order.
+
+547
+00:28:55,329 --> 00:29:00,669
+First the first xy, then the
+second xy, then the third xy.
+
+548
+00:29:00,670 --> 00:29:03,850
+Why is it important that I
+say it plots them in order?
+
+549
+00:29:03,849 --> 00:29:08,349
+Because by default, as
+each point is plotted,
+
+550
+00:29:08,349 --> 00:29:11,319
+it draws a line connecting
+one point to the next point
+
+551
+00:29:11,319 --> 00:29:13,059
+to the next point.
+
+552
+00:29:13,059 --> 00:29:15,460
+And so the order in
+which they're plotted
+
+553
+00:29:15,460 --> 00:29:18,259
+will determine
+where the lines go.
+
+554
+00:29:18,259 --> 00:29:21,289
+Now we'll see, as we go on, that
+we often don't draw the lines,
+
+555
+00:29:21,289 --> 00:29:25,329
+but by default they are drawn.
+
+556
+00:29:25,329 --> 00:29:27,339
+Here's an example.
+
+557
+00:29:27,339 --> 00:29:31,319
+You start by importing PyLab.
+
+558
+00:29:31,319 --> 00:29:36,519
+Then I've given xVals
+and yVals1, and if I call
+
+559
+00:29:36,519 --> 00:29:40,230
+pylab.plot of xVals, yVals1.
+
+560
+00:29:40,230 --> 00:29:42,410
+Here is one of the
+arguments I can give it.
+
+561
+00:29:42,410 --> 00:29:46,950
+I'm saying I'd like this to be
+plotted in blue, b for blue,
+
+562
+00:29:46,950 --> 00:29:51,539
+and I'd like it to be plotted
+as a solid line, a single dash.
+
+563
+00:29:51,539 --> 00:29:54,629
+And I want to give that
+line a label, which
+
+564
+00:29:54,630 --> 00:29:55,440
+I've said is first.
+
+565
+00:29:55,440 --> 00:29:58,360
+
+
+566
+00:29:58,359 --> 00:30:00,959
+YVals2 is a different list.
+
+567
+00:30:00,960 --> 00:30:01,930
+I'll plot it again.
+
+568
+00:30:01,930 --> 00:30:06,810
+Here I'm going to say I
+want a red dotted line,
+
+569
+00:30:06,809 --> 00:30:09,099
+and the label will be second.
+
+570
+00:30:09,099 --> 00:30:10,919
+And then after
+plotting it, I'm going
+
+571
+00:30:10,920 --> 00:30:15,029
+to invoke pylab.legend, which
+puts this nice little box up
+
+572
+00:30:15,029 --> 00:30:17,460
+here in the corner,
+in this case,
+
+573
+00:30:17,460 --> 00:30:20,265
+saying that first is a
+solid blue line and second
+
+574
+00:30:20,265 --> 00:30:27,970
+a dashed red line, I should say.
+
+575
+00:30:27,970 --> 00:30:29,680
+Now again, there are
+lots of arguments,
+
+576
+00:30:29,680 --> 00:30:32,799
+lots of other arguments
+I could give in plot.
+
+577
+00:30:32,799 --> 00:30:35,500
+Also legend, I can tell it
+where to put the legend,
+
+578
+00:30:35,500 --> 00:30:37,029
+if I so choose.
+
+579
+00:30:37,029 --> 00:30:38,619
+Here I've just said,
+put it wherever
+
+580
+00:30:38,619 --> 00:30:43,179
+you happen to want to put
+it, or PyLab wants to put it.
+
+581
+00:30:43,180 --> 00:30:46,045
+So a very simple way
+to produce a plot.
+
+582
+00:30:46,045 --> 00:30:51,620
+
+
+583
+00:30:51,619 --> 00:30:54,859
+There are lots of
+details and many more
+
+584
+00:30:54,859 --> 00:30:58,250
+examples about plotting
+in the assigned reading.
+
+585
+00:30:58,250 --> 00:31:01,460
+We've posted a video that
+Professor Grimson produced
+
+586
+00:31:01,460 --> 00:31:06,319
+for an online course, 600.1x.
+
+587
+00:31:06,319 --> 00:31:10,429
+It's about a 50 minute video
+broken into multiple segments
+
+588
+00:31:10,430 --> 00:31:13,390
+about how to use plotting in
+PyLab with a lot more detail
+
+589
+00:31:13,390 --> 00:31:15,110
+than I've given you.
+
+590
+00:31:15,109 --> 00:31:17,858
+You'll see if you read
+the code for this lecture.
+
+591
+00:31:17,858 --> 00:31:19,399
+And as you see this
+lecture, there'll
+
+592
+00:31:19,400 --> 00:31:23,210
+be lots of other plots
+showing up of different kinds.
+
+593
+00:31:23,210 --> 00:31:26,150
+These are my two
+favorite online sites
+
+594
+00:31:26,150 --> 00:31:29,090
+for finding out what to do.
+
+595
+00:31:29,089 --> 00:31:33,569
+And of course, you can
+google all sorts of things.
+
+596
+00:31:33,569 --> 00:31:36,419
+That's all I'm going to tell
+you about how to produce plots
+
+597
+00:31:36,420 --> 00:31:39,330
+in class, but we're
+going to expect
+
+598
+00:31:39,329 --> 00:31:41,579
+you to learn a lot about
+it, because I think
+
+599
+00:31:41,579 --> 00:31:43,649
+it's a really useful skill.
+
+600
+00:31:43,650 --> 00:31:45,630
+And at the very
+least, you should
+
+601
+00:31:45,630 --> 00:31:50,070
+feel comfortable that any
+plot I show you, you now--
+
+602
+00:31:50,069 --> 00:31:51,779
+obviously not right now--
+
+603
+00:31:51,779 --> 00:31:54,759
+but you will eventually
+know how to produce.
+
+604
+00:31:54,759 --> 00:31:57,660
+So if you do these
+things, you'll
+
+605
+00:31:57,660 --> 00:31:58,980
+be more than up to speed.
+
+606
+00:31:58,980 --> 00:32:02,799
+
+
+607
+00:32:02,799 --> 00:32:08,450
+So I started by saying I wanted
+to plot the trends in distance,
+
+608
+00:32:08,450 --> 00:32:09,840
+and they're interesting.
+
+609
+00:32:09,839 --> 00:32:14,599
+So here's the usual drunk
+and the masochistic drunk.
+
+610
+00:32:14,599 --> 00:32:16,730
+So you can see, sure
+enough, the usual drunk,
+
+611
+00:32:16,730 --> 00:32:20,360
+this fuschia line is
+progressing very slowly
+
+612
+00:32:20,359 --> 00:32:24,879
+and the masochistic drunk,
+considerably faster.
+
+613
+00:32:24,880 --> 00:32:28,150
+I looked at these, and
+after looking at those two,
+
+614
+00:32:28,150 --> 00:32:30,660
+I tried to figure
+out whether there
+
+615
+00:32:30,660 --> 00:32:33,700
+was some mathematical
+explanation of what
+
+616
+00:32:33,700 --> 00:32:36,670
+was going on, and
+decided, well, it
+
+617
+00:32:36,670 --> 00:32:38,830
+looked to me like
+the usual drunk
+
+618
+00:32:38,829 --> 00:32:41,439
+was moving at about the square
+root of the number of steps.
+
+619
+00:32:41,440 --> 00:32:44,559
+
+
+620
+00:32:44,559 --> 00:32:48,009
+Not so odd to think about it,
+if you go back to old Pythagoras
+
+621
+00:32:48,009 --> 00:32:49,879
+here.
+
+622
+00:32:49,880 --> 00:32:52,870
+And sure enough, when I plot,
+and I ran this simulation up
+
+623
+00:32:52,869 --> 00:32:55,119
+to 100,000 steps.
+
+624
+00:32:55,119 --> 00:32:57,949
+When I plot the square root
+of the number of steps,
+
+625
+00:32:57,950 --> 00:33:03,279
+it's not identical, but
+it's pretty darn close.
+
+626
+00:33:03,279 --> 00:33:06,629
+Seems to be moving just a tad
+faster than the square root,
+
+627
+00:33:06,630 --> 00:33:08,440
+but not much.
+
+628
+00:33:08,440 --> 00:33:09,690
+But who knows exactly?
+
+629
+00:33:09,690 --> 00:33:11,759
+But pretty good.
+
+630
+00:33:11,759 --> 00:33:16,089
+And then the
+masochistic drunk seems
+
+631
+00:33:16,089 --> 00:33:23,959
+to be moving at a rate
+of numSteps times 0.05.
+
+632
+00:33:23,960 --> 00:33:27,574
+A less intuitive answer
+than the square root.
+
+633
+00:33:27,574 --> 00:33:29,240
+Why do you think it
+might be doing that?
+
+634
+00:33:29,240 --> 00:33:33,890
+
+
+635
+00:33:33,890 --> 00:33:38,300
+Well, what we notice is that--
+
+636
+00:33:38,299 --> 00:33:39,799
+and we'll look at this--
+
+637
+00:33:39,799 --> 00:33:42,379
+maybe there's not
+much difference
+
+638
+00:33:42,380 --> 00:33:46,010
+between what the masochistic
+drunk and the usual drunk
+
+639
+00:33:46,009 --> 00:33:50,640
+do on the x-axis, east and west.
+
+640
+00:33:50,640 --> 00:33:52,759
+In fact, they shouldn't be.
+
+641
+00:33:52,759 --> 00:33:56,210
+But there should be a
+difference on the y-axis,
+
+642
+00:33:56,210 --> 00:33:59,900
+because every time,
+1/4 of the time,
+
+643
+00:33:59,900 --> 00:34:05,840
+the drunk is taking a
+step north of 1.1 units,
+
+644
+00:34:05,839 --> 00:34:11,034
+and 1/4 of the time, he's taking
+a step south of 0.9 units.
+
+645
+00:34:11,034 --> 00:34:13,559
+
+
+646
+00:34:13,559 --> 00:34:16,559
+And so 1/2 the
+time, the steps are
+
+647
+00:34:16,559 --> 00:34:22,239
+diverging by a small fraction.
+
+648
+00:34:22,239 --> 00:34:25,320
+And if we think about
+it, 0.1 1/2 the time.
+
+649
+00:34:25,320 --> 00:34:28,880
+
+
+650
+00:34:28,880 --> 00:34:29,480
+We divide it.
+
+651
+00:34:29,480 --> 00:34:32,989
+We get 0.05.
+
+652
+00:34:32,989 --> 00:34:36,619
+So at least we need to
+do some more analysis,
+
+653
+00:34:36,619 --> 00:34:39,380
+but the data is
+pretty compelling here
+
+654
+00:34:39,380 --> 00:34:40,940
+that it's a very good fit.
+
+655
+00:34:40,940 --> 00:34:43,920
+
+
+656
+00:34:43,920 --> 00:34:46,139
+Well, let's look at
+the ending location.
+
+657
+00:34:46,139 --> 00:34:49,829
+So here you see a rather
+different kind of plot.
+
+658
+00:34:49,829 --> 00:34:52,259
+Here I'm showing
+that you can plot
+
+659
+00:34:52,260 --> 00:34:56,719
+these things without
+connecting them by lines.
+
+660
+00:34:56,719 --> 00:35:01,889
+
+
+661
+00:35:01,889 --> 00:35:05,190
+And giving them
+different shapes.
+
+662
+00:35:05,190 --> 00:35:08,630
+So what here I've said is
+that the masochistic drunk
+
+663
+00:35:08,630 --> 00:35:14,500
+we're going to plot
+using red triangles,
+
+664
+00:35:14,500 --> 00:35:21,914
+and the usual drunk I'm going
+to plot using black plus signs.
+
+665
+00:35:21,914 --> 00:35:25,179
+
+
+666
+00:35:25,179 --> 00:35:27,869
+And since I'm going
+to plot the location
+
+667
+00:35:27,869 --> 00:35:32,690
+at the end of many walks,
+it doesn't make sense
+
+668
+00:35:32,690 --> 00:35:35,179
+to draw lines
+connecting everything,
+
+669
+00:35:35,179 --> 00:35:39,779
+because all we're caring
+about here is the endpoints.
+
+670
+00:35:39,780 --> 00:35:42,720
+So since I only
+want the endpoints,
+
+671
+00:35:42,719 --> 00:35:45,599
+I'm plotting them
+a different way.
+
+672
+00:35:45,599 --> 00:35:55,880
+So for example, I can write
+something like plot( xVals,
+
+673
+00:35:55,880 --> 00:36:06,340
+yVals, and then if I do
+something like let's see.
+
+674
+00:36:06,340 --> 00:36:12,019
+
+
+675
+00:36:12,019 --> 00:36:14,610
+Just 'b0' in fact.
+
+676
+00:36:14,610 --> 00:36:17,150
+What that says is
+plot blue circles.
+
+677
+00:36:17,150 --> 00:36:21,094
+
+
+678
+00:36:21,094 --> 00:36:22,010
+I could have written--
+
+679
+00:36:22,010 --> 00:36:24,830
+
+
+680
+00:36:24,829 --> 00:36:33,369
+in fact I did write 'k+' and
+that says black plus signs.
+
+681
+00:36:33,369 --> 00:36:34,839
+And I don't actually
+remember what
+
+682
+00:36:34,840 --> 00:36:37,110
+I did to get the triangles,
+but it's in the code.
+
+683
+00:36:37,110 --> 00:36:41,250
+
+
+684
+00:36:41,250 --> 00:36:44,969
+And so that's very
+flexible what you do.
+
+685
+00:36:44,969 --> 00:36:47,039
+And as you can see
+here, we get the insight
+
+686
+00:36:47,039 --> 00:36:51,750
+I'd communicated earlier that
+if you look at east and west,
+
+687
+00:36:51,750 --> 00:36:56,869
+not much difference between
+this ball and that ball.
+
+688
+00:36:56,869 --> 00:37:02,059
+They seem to be moving about the
+same spread, the same outliers.
+
+689
+00:37:02,059 --> 00:37:04,469
+But this ball is
+displaced north.
+
+690
+00:37:04,469 --> 00:37:07,369
+
+
+691
+00:37:07,369 --> 00:37:10,400
+And not surprisingly,
+after 10,000 steps,
+
+692
+00:37:10,400 --> 00:37:12,200
+you would not expect
+any of these points
+
+693
+00:37:12,199 --> 00:37:16,199
+to be below zero, where
+you'd expect roughly half
+
+694
+00:37:16,199 --> 00:37:17,625
+of these points
+to be below zero.
+
+695
+00:37:17,625 --> 00:37:21,460
+
+
+696
+00:37:21,460 --> 00:37:24,630
+And indeed that's about true.
+
+697
+00:37:24,630 --> 00:37:28,950
+And we see here what's
+going on that if we
+
+698
+00:37:28,949 --> 00:37:33,839
+look at the mean absolute
+difference in x and y,
+
+699
+00:37:33,840 --> 00:37:36,800
+we see that not
+a huge difference
+
+700
+00:37:36,800 --> 00:37:39,480
+between the usual drunk
+and the masochistic drunk.
+
+701
+00:37:39,480 --> 00:37:41,550
+There happens to be a distance.
+
+702
+00:37:41,550 --> 00:37:44,050
+But a huge difference--
+
+703
+00:37:44,050 --> 00:37:46,200
+sorry, x and x.
+
+704
+00:37:46,199 --> 00:37:50,149
+Comparing the two y values,
+there's a big difference,
+
+705
+00:37:50,150 --> 00:37:51,487
+as you see here.
+
+706
+00:37:51,487 --> 00:37:52,820
+So what's the point of all this?
+
+707
+00:37:52,820 --> 00:37:56,090
+It's not to learn about
+different kinds of drunks.
+
+708
+00:37:56,090 --> 00:37:59,120
+It's to show how,
+by visualization, we
+
+709
+00:37:59,119 --> 00:38:02,989
+can get insight into
+our data that if I just
+
+710
+00:38:02,989 --> 00:38:07,039
+printed spreadsheets showing
+you all of these endpoints,
+
+711
+00:38:07,039 --> 00:38:10,159
+it would be hard to make
+sense of what was there.
+
+712
+00:38:10,159 --> 00:38:13,129
+So get accustomed
+to using plotting
+
+713
+00:38:13,130 --> 00:38:14,630
+to help you understand data.
+
+714
+00:38:14,630 --> 00:38:17,510
+
+
+715
+00:38:17,510 --> 00:38:21,710
+Now let's play a little bit
+more with the simulation.
+
+716
+00:38:21,710 --> 00:38:23,900
+We looked at different
+kinds of drunks.
+
+717
+00:38:23,900 --> 00:38:27,030
+Let's look at different
+kinds of fields.
+
+718
+00:38:27,030 --> 00:38:29,000
+So I want to look
+at a field with what
+
+719
+00:38:29,000 --> 00:38:30,440
+we'll call a wormhole in it.
+
+720
+00:38:30,440 --> 00:38:34,032
+
+
+721
+00:38:34,032 --> 00:38:35,740
+For those of you of
+a certain generation,
+
+722
+00:38:35,739 --> 00:38:38,979
+you will recognize the Tardis.
+
+723
+00:38:38,980 --> 00:38:42,849
+So the idea here is
+that the field is such
+
+724
+00:38:42,849 --> 00:38:45,699
+that as you wander around
+it, everything is normal.
+
+725
+00:38:45,699 --> 00:38:48,189
+But every once in a
+while you hit a place
+
+726
+00:38:48,190 --> 00:38:49,750
+where you're
+magically transported
+
+727
+00:38:49,750 --> 00:38:52,329
+to a different place.
+
+728
+00:38:52,329 --> 00:38:55,480
+So it behaves very peculiarly.
+
+729
+00:38:55,480 --> 00:38:58,909
+So let's call this an OddField.
+
+730
+00:38:58,909 --> 00:39:03,480
+Not odd numbers, but
+odd as in strange.
+
+731
+00:39:03,480 --> 00:39:07,619
+So it's going to be
+a subclass of field.
+
+732
+00:39:07,619 --> 00:39:09,779
+We're going to have a
+parameter that tells us
+
+733
+00:39:09,780 --> 00:39:12,390
+how many worm holes it has.
+
+734
+00:39:12,389 --> 00:39:16,879
+A default value of 1,000.
+
+735
+00:39:16,880 --> 00:39:23,000
+And we'll see how we use
+xRange and yRange shortly.
+
+736
+00:39:23,000 --> 00:39:24,510
+So what are the
+first thing we do?
+
+737
+00:39:24,510 --> 00:39:28,400
+Well, we'll call Field _init
+to initialize the field
+
+738
+00:39:28,400 --> 00:39:30,200
+in the usual way.
+
+739
+00:39:30,199 --> 00:39:33,719
+And then we're going to create
+a dictionary of wormholes.
+
+740
+00:39:33,719 --> 00:39:37,559
+So for w in the range
+number of worm holes,
+
+741
+00:39:37,559 --> 00:39:41,449
+I'm going to choose a
+random x and a random y
+
+742
+00:39:41,449 --> 00:39:45,980
+in xRange minus xRange to plus
+xRange, minus yRange to yRange.
+
+743
+00:39:45,980 --> 00:39:49,059
+
+
+744
+00:39:49,059 --> 00:39:52,049
+So this is going to be where
+the worm holes are located.
+
+745
+00:39:52,050 --> 00:39:53,789
+And then for each
+of those, I'm going
+
+746
+00:39:53,789 --> 00:39:57,690
+to get a random location
+where you're, in some sense,
+
+747
+00:39:57,690 --> 00:40:01,829
+teleported to if you
+enter the wormhole.
+
+748
+00:40:01,829 --> 00:40:04,769
+So here we're using random
+to get random integers.
+
+749
+00:40:04,769 --> 00:40:07,389
+We've seen that before.
+
+750
+00:40:07,389 --> 00:40:09,599
+And so the new location
+will be the location
+
+751
+00:40:09,599 --> 00:40:14,039
+of the new x and
+the new y, and we're
+
+752
+00:40:14,039 --> 00:40:18,570
+going to update this
+dictionary of wormholes
+
+753
+00:40:18,570 --> 00:40:23,280
+to say that paired with the
+location x, y is newLoc.
+
+754
+00:40:23,280 --> 00:40:29,471
+
+
+755
+00:40:29,471 --> 00:40:34,309
+Now when we move the drunk, and
+again this is just changing--
+
+756
+00:40:34,309 --> 00:40:37,460
+we're overriding moveDrunk,
+so we're overriding one
+
+757
+00:40:37,460 --> 00:40:41,409
+of the methods in Field.
+
+758
+00:40:41,409 --> 00:40:46,230
+So Field.moveDrunk will
+take a self and a drunk.
+
+759
+00:40:46,230 --> 00:40:49,139
+
+
+760
+00:40:49,139 --> 00:40:51,460
+It's going to get the
+x value, the y value,
+
+761
+00:40:51,460 --> 00:40:55,349
+and if that is in
+the wormholes, it's
+
+762
+00:40:55,349 --> 00:40:57,809
+going to move the drunk
+to the location associated
+
+763
+00:40:57,809 --> 00:40:59,650
+with that wormhole.
+
+764
+00:40:59,650 --> 00:41:02,320
+So we move a drunk, and
+if the drunk ends up
+
+765
+00:41:02,320 --> 00:41:07,059
+being in the wormhole,
+he gets transported.
+
+766
+00:41:07,059 --> 00:41:10,750
+So we're using Field.moveDrunk.
+
+767
+00:41:10,750 --> 00:41:16,150
+So notice that we're using the
+moveDrunk of the superclass,
+
+768
+00:41:16,150 --> 00:41:18,099
+even though we're
+overriding it here.
+
+769
+00:41:18,099 --> 00:41:21,400
+Because we've overridden it
+here, I have to say Field.
+
+770
+00:41:21,400 --> 00:41:24,010
+to indicate I want the one
+from the superclass, not
+
+771
+00:41:24,010 --> 00:41:25,510
+the subclass.
+
+772
+00:41:25,510 --> 00:41:28,900
+And then we're doing something
+peculiar after the move.
+
+773
+00:41:28,900 --> 00:41:32,730
+
+
+774
+00:41:32,730 --> 00:41:36,119
+So interestingly
+here, I've taken,
+
+775
+00:41:36,119 --> 00:41:39,989
+I think, a usual drunk and
+plotted the usual drunk
+
+776
+00:41:39,989 --> 00:41:44,449
+on a walk of 500 steps.
+
+777
+00:41:44,449 --> 00:41:50,250
+One walk, and shown all the
+places the drunk visited.
+
+778
+00:41:50,250 --> 00:41:52,820
+So we've seen three
+kinds of plots,
+
+779
+00:41:52,820 --> 00:41:56,100
+one showing how far the drunk
+would get at different length
+
+780
+00:41:56,099 --> 00:42:01,799
+walks, one showing
+all the places
+
+781
+00:42:01,800 --> 00:42:05,850
+the drunk would end up with
+many walks of the same length,
+
+782
+00:42:05,849 --> 00:42:10,889
+and here a single walk, all
+the places the drunk visits.
+
+783
+00:42:10,889 --> 00:42:12,480
+And as you can
+see, the wormholes
+
+784
+00:42:12,480 --> 00:42:16,449
+produce a profound
+effect, in this case,
+
+785
+00:42:16,449 --> 00:42:19,719
+on where the drunks end up.
+
+786
+00:42:19,719 --> 00:42:21,029
+And again, you have the code.
+
+787
+00:42:21,030 --> 00:42:24,420
+You can run this
+yourself and simulate it
+
+788
+00:42:24,420 --> 00:42:25,950
+and see what you go.
+
+789
+00:42:25,949 --> 00:42:29,969
+And I think I've set
+random.Seed to zero
+
+790
+00:42:29,969 --> 00:42:32,629
+in each of the
+simulations in the code,
+
+791
+00:42:32,630 --> 00:42:35,070
+but you should play
+with it, change it,
+
+792
+00:42:35,070 --> 00:42:38,021
+to just see that you'll
+actually get different results
+
+793
+00:42:38,021 --> 00:42:38,894
+with different seeds.
+
+794
+00:42:38,894 --> 00:42:43,809
+
+
+795
+00:42:43,809 --> 00:42:50,380
+Let me summarize here,
+and say the point of going
+
+796
+00:42:50,380 --> 00:42:55,430
+through these random walks is
+not the simulations themselves,
+
+797
+00:42:55,429 --> 00:42:58,089
+but how we built them.
+
+798
+00:42:58,090 --> 00:43:02,070
+That we started by
+defining the classes.
+
+799
+00:43:02,070 --> 00:43:04,250
+We then built
+functions corresponding
+
+800
+00:43:04,250 --> 00:43:10,519
+to one trial, multiple trials,
+and reported the results.
+
+801
+00:43:10,519 --> 00:43:14,090
+And then made a set
+of incremental changes
+
+802
+00:43:14,090 --> 00:43:17,600
+to the simulation so
+that we could investigate
+
+803
+00:43:17,599 --> 00:43:18,779
+different questions.
+
+804
+00:43:18,780 --> 00:43:21,300
+
+
+805
+00:43:21,300 --> 00:43:23,670
+So we started with
+a simple simulation
+
+806
+00:43:23,670 --> 00:43:28,090
+with just the usual drunk
+and the simple field,
+
+807
+00:43:28,090 --> 00:43:31,930
+and we noticed it didn't work.
+
+808
+00:43:31,929 --> 00:43:32,829
+How did we know it?
+
+809
+00:43:32,829 --> 00:43:35,469
+Well, not because when we
+did the full simulation
+
+810
+00:43:35,469 --> 00:43:38,409
+we had great insight.
+
+811
+00:43:38,409 --> 00:43:40,299
+I probably could have
+fooled 1/2 of you
+
+812
+00:43:40,300 --> 00:43:43,370
+and convinced you that that
+was a reasonable answer.
+
+813
+00:43:43,369 --> 00:43:46,869
+But as soon as we went and
+did the sanity check, where
+
+814
+00:43:46,869 --> 00:43:52,779
+we knew the answer, we could
+know something was wrong.
+
+815
+00:43:52,780 --> 00:43:54,730
+And then we went
+and we fixed it.
+
+816
+00:43:54,730 --> 00:43:56,590
+And then we went
+and we elaborated it
+
+817
+00:43:56,590 --> 00:43:57,730
+at a step of a time.
+
+818
+00:43:57,730 --> 00:43:59,559
+I first got a more sophistic--
+
+819
+00:43:59,559 --> 00:44:01,090
+I shouldn't say sophisticated.
+
+820
+00:44:01,090 --> 00:44:03,510
+A different kind of drunk.
+
+821
+00:44:03,510 --> 00:44:07,350
+And then we went to a
+different kind of field.
+
+822
+00:44:07,349 --> 00:44:10,809
+Finally, we spent
+time showing how
+
+823
+00:44:10,809 --> 00:44:13,630
+to use plots to get an insight.
+
+824
+00:44:13,630 --> 00:44:16,340
+And in the remaining few
+minutes of the class,
+
+825
+00:44:16,340 --> 00:44:19,579
+I want to go back and show you
+some of the plotting commands.
+
+826
+00:44:19,579 --> 00:44:23,969
+
+
+827
+00:44:23,969 --> 00:44:25,779
+To show you how these
+plots were produced.
+
+828
+00:44:25,780 --> 00:44:42,480
+
+
+829
+00:44:42,480 --> 00:44:45,019
+So one of the things
+I did, since I
+
+830
+00:44:45,019 --> 00:44:48,829
+knew I was going to be producing
+a lot of different plots,
+
+831
+00:44:48,829 --> 00:44:53,059
+I decided I would actually
+not spend time worrying
+
+832
+00:44:53,059 --> 00:44:56,925
+about what kind of markers--
+
+833
+00:44:56,925 --> 00:44:58,549
+those are the things
+like the triangles
+
+834
+00:44:58,550 --> 00:45:00,650
+and the plus sign-- or
+what colors for each one
+
+835
+00:45:00,650 --> 00:45:03,079
+individually, but
+instead I'd set up
+
+836
+00:45:03,079 --> 00:45:06,559
+a styleIterator that
+would just return
+
+837
+00:45:06,559 --> 00:45:07,860
+a bunch of different styles.
+
+838
+00:45:07,860 --> 00:45:13,160
+So once and for all, I
+could define n styles,
+
+839
+00:45:13,159 --> 00:45:16,489
+and then when I want to
+plot a new kind of drunk,
+
+840
+00:45:16,489 --> 00:45:18,500
+I would just call
+the styleIterator
+
+841
+00:45:18,500 --> 00:45:21,679
+to get the next style.
+
+842
+00:45:21,679 --> 00:45:24,789
+So this is a fairly
+common kind of paradigm
+
+843
+00:45:24,789 --> 00:45:28,420
+to say that I just want to
+do this once and for all.
+
+844
+00:45:28,420 --> 00:45:30,880
+I don't want to have to go
+through each time I do this.
+
+845
+00:45:30,880 --> 00:45:35,380
+
+
+846
+00:45:35,380 --> 00:45:37,030
+So what do the styles look like?
+
+847
+00:45:37,030 --> 00:45:43,940
+
+
+848
+00:45:43,940 --> 00:45:47,441
+Let me just get this window.
+
+849
+00:45:47,440 --> 00:45:47,939
+Oh.
+
+850
+00:45:47,940 --> 00:45:55,460
+
+
+851
+00:45:55,460 --> 00:45:57,990
+So here it is.
+
+852
+00:45:57,989 --> 00:46:03,529
+
+
+853
+00:46:03,530 --> 00:46:05,910
+I said there were going to
+be three styles that I'm
+
+854
+00:46:05,909 --> 00:46:07,829
+going to iterate through.
+
+855
+00:46:07,829 --> 00:46:12,400
+Style one is going
+to be an m, I guess
+
+856
+00:46:12,400 --> 00:46:20,050
+that's maroon with a line,
+a blue with a dashed line,
+
+857
+00:46:20,050 --> 00:46:29,810
+and green with a line with
+a comma and a minus sign.
+
+858
+00:46:29,809 --> 00:46:33,440
+So these are called the styles.
+
+859
+00:46:33,440 --> 00:46:37,369
+And you can control the
+marker, if you have a marker.
+
+860
+00:46:37,369 --> 00:46:38,929
+You can control the line.
+
+861
+00:46:38,929 --> 00:46:41,219
+You can control the color.
+
+862
+00:46:41,219 --> 00:46:43,949
+Also you can control the size.
+
+863
+00:46:43,949 --> 00:46:47,069
+You can give the sizes
+of all these things.
+
+864
+00:46:47,070 --> 00:46:50,640
+What you'll see when
+you look at the code
+
+865
+00:46:50,639 --> 00:46:55,109
+is I don't like
+the default styles
+
+866
+00:46:55,110 --> 00:46:57,250
+things, because when they
+show up on the screen,
+
+867
+00:46:57,250 --> 00:46:59,019
+they're too small.
+
+868
+00:46:59,019 --> 00:47:02,309
+So there's something
+called rcParams.
+
+869
+00:47:02,309 --> 00:47:03,809
+Those of you who
+are Unix hackers
+
+870
+00:47:03,809 --> 00:47:06,889
+can maybe guess where
+that name came from.
+
+871
+00:47:06,889 --> 00:47:08,430
+And I've just said
+a bunch of things,
+
+872
+00:47:08,429 --> 00:47:11,669
+like that my default line
+width will be four points.
+
+873
+00:47:11,670 --> 00:47:14,610
+The size for the
+titles will be 20.
+
+874
+00:47:14,610 --> 00:47:16,120
+You can put titles
+on the graphs.
+
+875
+00:47:16,119 --> 00:47:18,989
+
+
+876
+00:47:18,989 --> 00:47:20,699
+Various kinds of things.
+
+877
+00:47:20,699 --> 00:47:26,119
+Again, once and for all trying
+to set some of these parameters
+
+878
+00:47:26,119 --> 00:47:27,730
+so they get used
+over and over again.
+
+879
+00:47:27,730 --> 00:47:38,909
+
+
+880
+00:47:38,909 --> 00:47:43,259
+And then finally
+down here, you'll
+
+881
+00:47:43,260 --> 00:47:45,870
+see that I did
+things like you want
+
+882
+00:47:45,869 --> 00:47:48,900
+to put titles on the slides.
+
+883
+00:47:48,900 --> 00:47:50,490
+So on the graph.
+
+884
+00:47:50,489 --> 00:47:52,969
+So here's the location
+at end of walk.
+
+885
+00:47:52,969 --> 00:47:55,250
+Title is just a string.
+
+886
+00:47:55,250 --> 00:47:58,840
+You want to label
+your x and y-axis,
+
+887
+00:47:58,840 --> 00:48:01,990
+so I've labeled them here.
+
+888
+00:48:01,989 --> 00:48:06,139
+And here I've said where I
+want the legend to appear
+
+889
+00:48:06,139 --> 00:48:07,174
+in the lower center.
+
+890
+00:48:07,175 --> 00:48:10,380
+
+
+891
+00:48:10,380 --> 00:48:15,210
+I've also set the y-limits
+and the x-limits on the axis,
+
+892
+00:48:15,210 --> 00:48:17,429
+because I wanted a
+little extra room.
+
+893
+00:48:17,429 --> 00:48:20,759
+Otherwise, by default
+it will put points
+
+894
+00:48:20,760 --> 00:48:24,620
+right on the axes, which
+I find hard to read.
+
+895
+00:48:24,619 --> 00:48:27,619
+Anyway, the point here is
+not that you understand
+
+896
+00:48:27,619 --> 00:48:29,929
+all of this instantaneously.
+
+897
+00:48:29,929 --> 00:48:34,849
+The point I want to communicate
+is that it's very flexible.
+
+898
+00:48:34,849 --> 00:48:37,190
+And so if you decide
+you don't like
+
+899
+00:48:37,190 --> 00:48:39,809
+the way a plot looks and
+you want to change it,
+
+900
+00:48:39,809 --> 00:48:41,829
+and you know what you
+want it to look like,
+
+901
+00:48:41,829 --> 00:48:45,380
+there's almost surely a
+way to make it do that.
+
+902
+00:48:45,380 --> 00:48:47,360
+So don't despair.
+
+903
+00:48:47,360 --> 00:48:50,150
+You can look at the
+references I gave earlier
+
+904
+00:48:50,150 --> 00:48:50,990
+and figure that out.
+
+905
+00:48:50,989 --> 00:48:53,649
+
+
+906
+00:48:53,650 --> 00:48:56,139
+Next lecture we're
+going to move on.
+
+907
+00:48:56,139 --> 00:48:58,029
+No more random walks.
+
+908
+00:48:58,030 --> 00:49:00,550
+We'll look at
+simulating other things,
+
+909
+00:49:00,550 --> 00:49:05,230
+and in particular, we'll look at
+the question of how believable
+
+910
+00:49:05,230 --> 00:49:07,360
+is a simulation?
+
+911
+00:49:07,360 --> 00:49:11,610
+See you Wednesday if the
+world has not come to an end.
+
+912
+00:49:11,610 --> 00:49:20,102
+
+

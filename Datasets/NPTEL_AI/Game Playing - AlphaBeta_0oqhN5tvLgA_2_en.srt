@@ -1,0 +1,2190 @@
+﻿1
+00:00:10,589 --> 00:00:23,910
+We are looking at game playing 
+and in the last class, we saw the minimax
+
+2
+00:00:23,910 --> 00:00:37,780
+algorithm. If
+you remember, what the algorithm basically,
+
+3
+00:00:37,780 --> 00:00:43,230
+does or what the game playing algorithm
+does is that there are two kinds of players;
+
+4
+00:00:43,229 --> 00:00:53,419
+one is max, and the other is min. Max is trying
+to maximize the board value and min is trying
+
+5
+00:00:53,420 --> 00:01:00,079
+to minimize the board value. The game
+tree consist of alternate layers of max and
+
+6
+00:01:00,079 --> 00:01:10,290
+min. To starting with max node, there are
+some min children, and then, there are max
+
+7
+00:01:10,290 --> 00:01:19,810
+children, and so on. This is the tree which
+minimax algorithm explores, and we saw that
+
+8
+00:01:19,810 --> 00:01:28,490
+this explore, minimax algorithm does, is
+depth first search, left to right.
+
+9
+00:01:28,489 --> 00:01:44,489
+Now, today we want to look at improvement
+upon minimax, which does not inspect this
+
+10
+00:01:44,489 --> 00:01:51,949
+entire tree, up to this cape lie. So, this
+is cape lie search that we are doing. Can
+
+11
+00:01:51,950 --> 00:01:57,868
+we do
+without looking at the entire tree? What minimax
+
+12
+00:01:57,868 --> 00:02:02,140
+is doing is going down all the way, to
+this level and at this level, the evaluation
+
+13
+00:02:02,140 --> 00:02:08,868
+function e of j is applied, and then, the
+values
+
+14
+00:02:08,868 --> 00:02:14,699
+of these leaf nodes are backed up using the
+minimax rule. The minimax rule says that if
+
+15
+00:02:14,699 --> 00:02:21,179
+.you are backing up to a min level, you back
+up the smallest of the values of all the
+
+16
+00:02:21,180 --> 00:02:25,430
+children. If you are backing up to a max level,
+you back up the largest of the values of all
+
+17
+00:02:25,430 --> 00:02:28,849
+the children. So, at alternate level, we choose
+the minimum, the maximum, the
+
+18
+00:02:28,849 --> 00:02:32,250
+minimum, the maximum, and so on. That is why,
+the algorithm is called minimax
+
+19
+00:02:32,250 --> 00:02:38,590
+algorithm, but the question is that do we
+have to really inspect the entire tree, essentially.
+
+20
+00:02:38,590 --> 00:02:45,259
+To consider that, Let us first look at a small
+example. Let us say you are playing this
+
+21
+00:02:45,259 --> 00:02:54,810
+game of Tick Tack Toe, and for some reason,
+this is how the game proceeds. Let us say
+
+22
+00:02:54,810 --> 00:02:59,830
+you play this and we are not drawing the game
+tree; we will just draw the board. The
+
+23
+00:02:59,830 --> 00:03:05,450
+opponent plays this; Let us say. So, the opponent
+is mirroring your moves. You play this
+
+24
+00:03:05,449 --> 00:03:10,688
+and then, the opponent plays this. Now, Let
+us say you are doing some search from his
+
+25
+00:03:10,688 --> 00:03:22,680
+point; one ply search. If you want to, now,
+consider this move. So, you play this move
+
+26
+00:03:22,680 --> 00:03:31,709
+here, or you are looking at this move. Then,
+you can see at this moment that if you are
+
+27
+00:03:31,709 --> 00:03:37,560
+considering this move, then there is no need
+to look at all these other children. Why
+
+28
+00:03:37,560 --> 00:03:42,489
+because this is a winning move position, and
+you have won the game. So, why consider
+
+29
+00:03:42,489 --> 00:03:52,170
+the other moves at all, essentially. So, this
+is the idea that we will explore, up to a
+
+30
+00:03:52,169 --> 00:03:54,268
+greater
+depth, essentially, and the algorithm that
+
+31
+00:03:54,269 --> 00:03:58,609
+we want to look at today, is called Alpha
+Beta .
+
+32
+00:03:58,609 --> 00:04:15,209
+A little bit of nomenclature, before we continue;
+max nodes are also called alpha nodes,
+
+33
+00:04:15,209 --> 00:04:35,360
+and min nodes are also called beta nodes.
+Max nodes store alpha values, and min nodes
+
+34
+00:04:35,360 --> 00:04:42,360
+store beta values. What are these alpha and
+beta values? These are the values of partially
+
+35
+00:04:42,360 --> 00:04:49,180
+computed node, essentially. Let us see how
+these happen.
+
+36
+00:04:49,180 --> 00:04:50,180
+..
+
+37
+00:04:50,180 --> 00:04:51,180
+.
+
+38
+00:04:51,180 --> 00:04:53,090
+Let us say this is the route node, which is
+the max node. We always play the game for
+
+39
+00:04:53,089 --> 00:05:03,198
+max, and at some point of the game, Let us
+say max is trying to evaluate this particular
+
+40
+00:05:03,199 --> 00:05:08,848
+min child, which is not the first min child,
+because it has already seen; remember, that
+
+41
+00:05:08,848 --> 00:05:14,029
+we are going from left to right; it has already
+seen some min children, and the sub trees
+
+42
+00:05:14,029 --> 00:05:19,379
+below that. So, it has the already explored
+the sub trees this side. It is trying to,
+
+43
+00:05:19,379 --> 00:05:24,259
+now,
+evaluate this min child. What will it do?
+
+44
+00:05:24,259 --> 00:05:29,460
+If the value supplied by this min child is
+higher
+
+45
+00:05:29,459 --> 00:05:34,310
+than the values supplied by all these children,
+then this would be adopted; otherwise,
+
+46
+00:05:34,310 --> 00:05:48,589
+those values would be adopted. Let us say
+this value is 10, to begin with. So, we say
+
+47
+00:05:48,589 --> 00:05:51,739
+that
+alpha becomes 10, after this node is completely
+
+48
+00:05:51,740 --> 00:05:55,879
+evaluated; it means that sub tree below
+that is completely searched; alpha becomes
+
+49
+00:05:55,879 --> 00:05:58,860
+10, because that is a value, this beta node
+is
+
+50
+00:05:58,860 --> 00:05:59,860
+giving to this.
+
+51
+00:05:59,860 --> 00:06:04,860
+Let us say then, we evaluate the second sub
+tree below that, and this happens to be 15.
+
+52
+00:06:04,860 --> 00:06:12,509
+Now, we change this alpha to 15. So, this
+alpha value for this max node is the value
+
+53
+00:06:12,509 --> 00:06:15,080
+it
+has seen so far, and the value comes from
+
+54
+00:06:15,079 --> 00:06:19,839
+the left hand side of the tree, essentially.
+Let us
+
+55
+00:06:19,839 --> 00:06:29,918
+look at an example of slightly, deeper example
+of this Tick Tack Toe game.
+
+56
+00:06:29,918 --> 00:06:30,918
+..
+
+57
+00:06:30,918 --> 00:06:35,959
+Let us assume that we are using this following
+evaluation function, that e of j is equal
+
+58
+00:06:35,959 --> 00:06:55,779
+to
+count of the number of rows, or columns, or
+
+59
+00:06:55,779 --> 00:07:15,739
+diagonals; available to max, minus the
+number of the same thing, available to min.
+
+60
+00:07:15,740 --> 00:07:21,199
+So, essentially we will evaluate a board
+position by saying that how many are available
+
+61
+00:07:21,199 --> 00:07:30,401
+to each side. For example, if this is the
+board position that we are looking at; let
+
+62
+00:07:30,401 --> 00:07:36,538
+us say this is the board position we are looking
+at. Then, we can see that max has this row,
+
+63
+00:07:36,538 --> 00:07:47,029
+one, two, three and four; two rows and two
+columns are accessible to max. For min, it
+
+64
+00:07:47,029 --> 00:07:53,049
+is this column, this diagonal, and this row;
+so,
+
+65
+00:07:53,050 --> 00:07:58,158
+3 to min, essentially. So, the value of this
+board position would be 4 minus 3 is min,
+
+66
+00:07:58,158 --> 00:08:04,598
+essentially. So, we will use this evaluation
+function to illustrate this idea of cut offs,
+
+67
+00:08:04,598 --> 00:08:05,899
+essentially.
+
+68
+00:08:05,899 --> 00:08:06,899
+..
+
+69
+00:08:06,899 --> 00:08:13,668
+Let us say we are starting the game from the
+beginning, and then, first we explore max,
+
+70
+00:08:13,668 --> 00:08:25,098
+playing at this corner, here. Now, remember,
+the game playing algorithm are used as
+
+71
+00:08:25,098 --> 00:08:30,639
+combination of search or look ahead and evaluation
+function. So, they do not evaluate
+
+72
+00:08:30,639 --> 00:08:34,879
+this board position at all. They would look
+ahead a little bit for evaluating the board
+
+73
+00:08:34,879 --> 00:08:40,429
+position at this, and then, back up the value
+essentially. So, let us say about, we are
+
+74
+00:08:40,429 --> 00:08:44,039
+doing
+two searches that is easy to defect here.
+
+75
+00:08:44,039 --> 00:08:52,230
+So, we look at one more level. So, at this
+level,
+
+76
+00:08:52,230 --> 00:08:55,940
+let us assume that we are looking at this
+move for, when we are going look at all the
+
+77
+00:08:55,940 --> 00:09:00,710
+moves for min. Let us say we look at this
+move for min.
+
+78
+00:09:00,710 --> 00:09:06,629
+We evaluate this board position. Now, if you
+look at this board position and count them
+
+79
+00:09:06,629 --> 00:09:14,960
+carefully, you will see that there are six
+rows or columns or diagonals available for
+
+80
+00:09:14,960 --> 00:09:33,210
+max.
+So, 1,2,3,4,5 and 6. So, 1,2,3 sorry, 1,2,3,4,5,6,
+
+81
+00:09:33,210 --> 00:09:39,160
+and if we look at min then, they are 5;
+they happen to be 6 minus 5. So, the board
+
+82
+00:09:39,159 --> 00:09:42,750
+position of this is 1, essentially. Now, this
+is a
+
+83
+00:09:42,750 --> 00:09:48,830
+max node. So, we are going to compute alpha
+values for this. So, let me draw this as the
+
+84
+00:09:48,830 --> 00:09:53,960
+max node, and this is the min node, because
+it is min play here, and these on max nodes,
+
+85
+00:09:53,960 --> 00:10:01,400
+but it does not matter. At this point, you
+can see that beta will become 1.
+
+86
+00:10:01,399 --> 00:10:07,870
+The moment we evaluate this position and this
+node knows that this beta is 1. Now, what
+
+87
+00:10:07,870 --> 00:10:15,080
+are beta values? Beta values are values of
+min nodes, and they are upper bounds on the
+
+88
+00:10:15,080 --> 00:10:23,230
+.values that they can take. So, beta values
+are upper bounds, and likewise, alpha values
+
+89
+00:10:23,230 --> 00:10:33,690
+are lower bounds. What do we mean by this?
+We mean that once, this node has seen one
+
+90
+00:10:33,690 --> 00:10:38,570
+value from a left child, which is 1, it is
+not going to accept any value, which higher
+
+91
+00:10:38,570 --> 00:10:42,100
+than
+this value. From the remaining children, it
+
+92
+00:10:42,100 --> 00:10:44,540
+is only looking for lower value. So, this
+beta
+
+93
+00:10:44,539 --> 00:10:48,660
+value, which is the partial value, it has
+got from here, is an upper bound on the value
+
+94
+00:10:48,660 --> 00:10:53,389
+of
+this node. It can only be 1 or less, essentially,
+
+95
+00:10:53,389 --> 00:11:00,629
+less, if one of the children evaluate to less,
+essentially. So far, we do not have an alpha
+
+96
+00:11:00,629 --> 00:11:04,320
+value, because none of its children is
+completely evaluated. So, we look at the second
+
+97
+00:11:04,320 --> 00:11:13,629
+child. Let us say this is the second
+option, we are looking at. This, we can see,
+
+98
+00:11:13,629 --> 00:11:20,960
+is symmetric in nature, that both are at two
+corners. So, the number must be equal to 0.
+
+99
+00:11:20,960 --> 00:11:29,259
+So, I will leave that for you to verify, and
+let
+
+100
+00:11:29,259 --> 00:11:44,439
+us see this one and this one. Now, if we count
+this, you will see that max has 1, 2, 3, 4,
+
+101
+00:11:44,440 --> 00:11:54,420
+5,
+and min has 1, 2, 3, 4, 5. So, let me know
+
+102
+00:11:54,419 --> 00:11:58,309
+if it is wrong; 5 minus 5 is equal to 0.
+
+103
+00:11:58,309 --> 00:12:06,750
+One thing, we should have done. The moment
+we saw this 0, we should have changed
+
+104
+00:12:06,750 --> 00:12:14,190
+this value to 0, because beta has gone down
+to 0. Now, 0 is the upper bound on this
+
+105
+00:12:14,190 --> 00:12:33,800
+value. Then, we look at this or may be this
+one is 1. 6 minus 5 is equal to 1. This one
+
+106
+00:12:33,799 --> 00:12:35,322
+is
+again, symmetric. So, it must be 0, whatever,
+
+107
+00:12:35,322 --> 00:12:46,860
+the count is. Finally, we look at one more
+move for win, which is this. Now, this turns
+
+108
+00:12:46,860 --> 00:13:03,519
+out is max as 1, 2, 3 and 4; only 4 available,
+and min has 1, 2, 3, 4 and 5, minus 5 is equal
+
+109
+00:13:03,519 --> 00:13:14,740
+to minus 1. Now, we have a new value for
+beta. So, beta becomes minus 1 and now, this
+
+110
+00:13:14,740 --> 00:13:19,740
+node is, of course, completely evaluated,
+which means, it can say we can think of these
+
+111
+00:13:19,740 --> 00:13:20,919
+as suppliers.
+
+112
+00:13:20,919 --> 00:13:25,379
+So, beta nodes are suppliers to alpha nodes
+and below them, alpha nodes are suppliers
+
+113
+00:13:25,379 --> 00:13:27,689
+to
+beta nodes and so on and so forth. So, beta
+
+114
+00:13:27,690 --> 00:13:32,300
+nodes always choose the smallest value, and
+alpha node will always choose the highest
+
+115
+00:13:32,299 --> 00:13:34,750
+value from what its suppliers have given.
+So,
+
+116
+00:13:34,750 --> 00:13:41,799
+here we can see that alpha is equal to minus
+1; that is the value this first beta node
+
+117
+00:13:41,799 --> 00:13:44,109
+is
+supplying to it, which we can read as saying
+
+118
+00:13:44,110 --> 00:13:52,340
+that alpha is going to be greater than equal
+to minus 1, which is the characteristics of
+
+119
+00:13:52,340 --> 00:13:58,580
+an alpha node, essentially. So, from the other
+children that we going to look at for max,
+
+120
+00:13:58,580 --> 00:14:01,060
+it is only going to be interested in a node,
+if its
+
+121
+00:14:01,059 --> 00:14:03,479
+value is going to be greater than minus 1.
+
+122
+00:14:03,480 --> 00:14:15,800
+Let us try the second option. Let us say max
+try this option, and we try the first option
+
+123
+00:14:15,799 --> 00:14:21,649
+for
+min, and see this is the first option, which
+
+124
+00:14:21,649 --> 00:14:24,149
+I have for min. We always begin from the top
+
+125
+00:14:24,149 --> 00:14:28,919
+.left hand corner, let us say. Now, we can
+see that, we have already seen this position.
+
+126
+00:14:28,919 --> 00:14:34,069
+This is the opposite of this position, and
+the value of this is 5 minus 6 equal to minus
+
+127
+00:14:34,070 --> 00:14:38,260
+1.
+The moment we see this, we know that this
+
+128
+00:14:38,259 --> 00:14:48,870
+is minus 1, and by this, you remember that
+beta is less than equal to minus 1. Now, here
+
+129
+00:14:48,870 --> 00:14:58,700
+we have alpha is already equal to minus 1
+and this beta says, that I am going to be
+
+130
+00:14:58,700 --> 00:15:05,250
+minus 1 or less. Though this alpha, in some
+sense, will tell this beta that we do not,
+
+131
+00:15:05,250 --> 00:15:07,519
+I would not be interested in you any more;
+that
+
+132
+00:15:07,519 --> 00:15:12,069
+you do not need to value it yourself any further;
+which means all these other children that
+
+133
+00:15:12,070 --> 00:15:17,110
+beta was considering, like this five children
+we had here; there also, we would have five
+
+134
+00:15:17,110 --> 00:15:20,940
+children. It would not be evaluated.
+
+135
+00:15:20,940 --> 00:15:31,940
+So, this is the cut off which takes place,
+and this is called an alpha cut off. So, an
+
+136
+00:15:31,940 --> 00:15:38,110
+alpha
+cut off appears at a beta node, which is a
+
+137
+00:15:38,110 --> 00:15:45,500
+descendant or in this case, a child of alpha
+node. It happens when the beta node promises
+
+138
+00:15:45,500 --> 00:15:51,690
+to be worst than or lower than or not
+higher than, rather, than what alpha already
+
+139
+00:15:51,690 --> 00:15:54,500
+seen, essentially. So, after alpha has seen
+one
+
+140
+00:15:54,500 --> 00:16:00,419
+side, it will now do this in a very control
+fashion, which is only, as long as we have
+
+141
+00:16:00,419 --> 00:16:04,360
+better than minus 1, I am going to be interested
+in you; otherwise, do not explore the sub
+
+142
+00:16:04,360 --> 00:16:11,259
+tree below that, essentially. So, this will
+get cut off and then, alpha will try; this
+
+143
+00:16:11,259 --> 00:16:15,830
+is a third
+option. So, if we ignore symmetries, I mean,
+
+144
+00:16:15,830 --> 00:16:19,460
+if we take into account symmetries, then
+you can see that max has only three moves
+
+145
+00:16:19,460 --> 00:16:21,850
+to start with, either corner, or on a side,
+or on
+
+146
+00:16:21,850 --> 00:16:28,070
+this. This small move, I will leave as an
+exercise for you to explore. The idea is basically,
+
+147
+00:16:28,070 --> 00:16:35,000
+that a cut off takes place, when there is
+enough information, essentially. If we were
+
+148
+00:16:35,000 --> 00:16:37,110
+doing
+10 ply search, for example, then the entire
+
+149
+00:16:37,110 --> 00:16:40,019
+trees; 8 ply trees below this, would be cut
+off.
+
+150
+00:16:40,019 --> 00:16:50,179
+So, the saving would be considerable in amount,
+essentially.
+
+151
+00:16:50,179 --> 00:16:56,839
+The algorithm that we are looking at today;
+this alpha beta algorithm, essentially, is
+
+152
+00:16:56,840 --> 00:16:58,870
+like
+minimax, in the sense that its searches from
+
+153
+00:16:58,870 --> 00:17:03,080
+left to right, but it does cut offs along
+the
+
+154
+00:17:03,080 --> 00:17:09,419
+way. We have illustrated one cut off, which
+is alpha cut off, which you can also think
+
+155
+00:17:09,419 --> 00:17:12,170
+of
+as alpha induced cut off, and it happens at
+
+156
+00:17:12,170 --> 00:17:20,621
+the beta node. So, beta node stops evaluating
+itself, if the parent alpha node tells it
+
+157
+00:17:20,621 --> 00:17:24,189
+to stop evaluating itself. Then, it is an
+alpha cut off.
+
+158
+00:17:24,189 --> 00:17:28,069
+In a similar fashion, beta cut off will take
+place at an alpha node, or it could be thought
+
+159
+00:17:28,068 --> 00:17:37,869
+of a beta induced cut off, essentially. Now,
+these cut offs do not necessarily, have to
+
+160
+00:17:37,869 --> 00:17:41,019
+be at
+the immediate level, essentially. They can
+
+161
+00:17:41,019 --> 00:17:57,548
+happen at a much deeper level. So, let me
+illustrate that with a diagram. Let us say
+
+162
+00:17:57,548 --> 00:18:03,618
+that you are evaluating this deep game tree.
+
+163
+00:18:03,618 --> 00:18:04,618
+..
+
+164
+00:18:04,618 --> 00:18:09,109
+This is the route node, alpha node and we
+are, this diagram, I am basically, repeating
+
+165
+00:18:09,109 --> 00:18:16,229
+it
+here. We are evaluating this beta node and
+
+166
+00:18:16,230 --> 00:18:19,230
+you have evaluated some part of the tree;
+so,
+
+167
+00:18:19,230 --> 00:18:23,179
+always the left side of the tree, you have
+finished evaluating. So, we have got some
+
+168
+00:18:23,179 --> 00:18:28,639
+value
+from here; alpha 1; from this side of the
+
+169
+00:18:28,638 --> 00:18:30,668
+tree and essentially, what this node is trying
+to
+
+170
+00:18:30,669 --> 00:18:35,440
+do is to see, if it can get a better value,
+better than this alpha 1 value. What is this
+
+171
+00:18:35,440 --> 00:18:37,750
+alpha
+1? Alpha 1 is the best amongst these here,
+
+172
+00:18:37,750 --> 00:18:39,898
+and it is time to see, if this node will supply
+it
+
+173
+00:18:39,898 --> 00:18:46,359
+a better value, essentially. Likewise, this
+node may be looking at a alpha child, and
+
+174
+00:18:46,359 --> 00:18:49,399
+it
+may have got some value, which we will call
+
+175
+00:18:49,400 --> 00:18:55,048
+beta 1, from the left tree, that it has
+explored on the left side, essentially. So,
+
+176
+00:18:55,048 --> 00:18:58,668
+this process continues. This has got some
+value
+
+177
+00:18:58,669 --> 00:19:01,330
+alpha 2 from here.
+
+178
+00:19:01,329 --> 00:19:14,230
+Then, this has got some value beta 2 from
+here. Then, let us say this is a node. Let
+
+179
+00:19:14,230 --> 00:19:18,720
+us say
+that this is a beta node that we are about,
+
+180
+00:19:18,720 --> 00:19:22,480
+we are trying to evaluate, essentially. Now,
+if
+
+181
+00:19:22,480 --> 00:19:27,960
+this node we will call j, which means, we
+are evaluating this slowly, by looking at
+
+182
+00:19:27,960 --> 00:19:31,629
+its
+children. The question we want; so, this has
+
+183
+00:19:31,628 --> 00:19:39,569
+alpha 2 here. So, I hope this diagram is
+clear. Just imagine, this that depth first
+
+184
+00:19:39,569 --> 00:19:43,189
+search, sweeping from left to right, and all
+these
+
+185
+00:19:43,190 --> 00:19:46,929
+values are coming from the left side of the
+tree; alpha 1 coming from the left children
+
+186
+00:19:46,929 --> 00:19:49,159
+of
+this, when it is trying to evaluate this.
+
+187
+00:19:49,159 --> 00:19:51,610
+This, in turn, is trying to evaluate this.
+It has got
+
+188
+00:19:51,609 --> 00:19:55,808
+some partial values beta 1. This one is trying
+to evaluate this. This has got some partial
+
+189
+00:19:55,808 --> 00:20:03,369
+.value alpha 2 and this has got some partial
+values beta 2. This has got some alpha 3 and
+
+190
+00:20:03,369 --> 00:20:08,959
+this j is what we are trying to evaluate.
+The question we want to ask is; when will
+
+191
+00:20:08,960 --> 00:20:13,970
+this j
+value reach the route, or in other words,
+
+192
+00:20:13,970 --> 00:20:20,329
+when will this j value influence the game,
+essentially? Is it the node worth exploring?
+
+193
+00:20:20,329 --> 00:20:30,148
+You can see that this j value will influence
+this node, only if it is better than alpha
+
+194
+00:20:30,148 --> 00:20:36,360
+3. So, that means, let us call it v j, that
+is the value
+
+195
+00:20:36,361 --> 00:20:43,690
+of this node j, because we may be searching
+deeper, must be greater than alpha 3;
+
+196
+00:20:43,690 --> 00:20:51,009
+otherwise, this node will take alpha 3 from
+here. Likewise, it must be better than alpha
+
+197
+00:20:51,009 --> 00:20:52,730
+2
+as well, because otherwise, this will take
+
+198
+00:20:52,730 --> 00:20:59,849
+alpha 2 and also, alpha 1.
+
+199
+00:20:59,849 --> 00:21:03,029
+Only if it is better than this alpha 3 value,
+because these are max nodes, remember, and
+
+200
+00:21:03,029 --> 00:21:07,819
+they are looking higher values. Only if this
+node supplies the value, which is higher than
+
+201
+00:21:07,819 --> 00:21:12,599
+alpha 3 and higher than alpha 2 and higher
+than alpha 1; will it influence the route
+
+202
+00:21:12,599 --> 00:21:15,788
+node,
+essentially. Likewise, it must be less than
+
+203
+00:21:15,788 --> 00:21:19,648
+this beta 2, because this is the beta node,
+and it
+
+204
+00:21:19,648 --> 00:21:37,048
+is going to only take lower values and also,
+beta 1. So, we can generalize this and say
+
+205
+00:21:37,048 --> 00:21:53,569
+that we need to evaluate this node j, only
+if v j is less than beta and is greater than
+
+206
+00:21:53,569 --> 00:22:02,548
+alpha
+where, alpha is equal to max of alpha 1, alpha
+
+207
+00:22:02,548 --> 00:22:10,378
+2, alpha 3 or in general, all the ancestors
+of this node; all the alpha ancestors of this
+
+208
+00:22:10,378 --> 00:22:17,609
+node. So, alpha must be higher than all these
+ones, and this value must be higher than that
+
+209
+00:22:17,609 --> 00:22:32,229
+max of that. Beta is min of beta 1, beta 2
+and all the beta ancestors of the node, essentially.
+
+210
+00:22:32,230 --> 00:22:37,349
+I just repeat, this node is worth
+evaluating only, if it is higher than this
+
+211
+00:22:37,349 --> 00:22:40,959
+alpha 3, and this alpha 2, and this alpha
+1, and at
+
+212
+00:22:40,960 --> 00:22:46,129
+the same time, lower than this beta 2, and
+this beta 1, and all the beta ancestors,
+
+213
+00:22:46,128 --> 00:22:56,058
+essentially. So, this alpha and beta can be
+seen as the bounce, within which, we want
+
+214
+00:22:56,058 --> 00:22:57,379
+the
+algorithm to search; otherwise, it should
+
+215
+00:22:57,380 --> 00:23:04,549
+abort the search or prune that below that,
+essentially.
+
+216
+00:23:04,548 --> 00:23:11,109
+Let me write the algorithm first, and then,
+we will look at a slightly, more detailed
+
+217
+00:23:11,109 --> 00:23:20,199
+example, essentially. So, I hope this is clear.
+So, we can think of this alpha beta as the
+
+218
+00:23:20,200 --> 00:23:27,308
+window. If these are the values of the game
+three, then this alpha beta is a window. Beta
+
+219
+00:23:27,308 --> 00:23:39,918
+is an upper limit and alpha is a lower limit.
+The absolute possible is plus large and
+
+220
+00:23:39,919 --> 00:23:46,850
+absolute minimum is minus large. So, remember,
+we had said that the evaluation
+
+221
+00:23:46,849 --> 00:23:53,089
+function can be something, like in a range
+of minus 1000 to plus 1000 or something like
+
+222
+00:23:53,089 --> 00:23:56,829
+that; instead of 1000, I am writing plus large,
+some suitably large number.
+
+223
+00:23:56,829 --> 00:24:05,788
+.What the alpha beta algorithm does is that
+for evaluating any node, it passes a window
+
+224
+00:24:05,788 --> 00:24:12,819
+and says, only if you can get me a value inside
+this window, I am going to be interested
+
+225
+00:24:12,819 --> 00:24:16,868
+in that. So, again, look at this node. The
+window is defined by this alpha and this beta
+
+226
+00:24:16,868 --> 00:24:21,158
+where, alpha is a maximum of all the ancestors,
+and beta is the minimum of all the
+
+227
+00:24:21,159 --> 00:24:30,019
+ancestors. What will the node try to do, because
+this example here, it is a beta node; it is
+
+228
+00:24:30,019 --> 00:24:34,480
+going to try to pull down this beta and say,
+I want a value slightly, lower than this beta.
+
+229
+00:24:34,480 --> 00:24:39,919
+If
+it, alpha node try to raise the value. So,
+
+230
+00:24:39,919 --> 00:24:44,749
+as we sweep this from left to right, this
+window
+
+231
+00:24:44,749 --> 00:24:52,740
+gets smaller and smaller, and search progresses
+only inside this window; otherwise, the
+
+232
+00:24:52,740 --> 00:24:59,419
+tree is pruned off. Let us write this algorithm,
+or at least, I will write a part of it, and
+
+233
+00:24:59,419 --> 00:25:04,830
+you
+can write the rest.
+
+234
+00:25:04,829 --> 00:25:05,829
+.
+
+235
+00:25:05,829 --> 00:25:18,028
+Alpha, beta; it takes an argument j, which
+is the node, and a value; alpha, and a value;
+
+236
+00:25:18,028 --> 00:25:25,409
+beta, which are parameters, essentially. These
+parameters are basically, the window sizes
+
+237
+00:25:25,409 --> 00:25:31,590
+that are passed on to the node, essentially.
+Let me first ask you what should be the value
+
+238
+00:25:31,589 --> 00:25:37,618
+alpha and beta, when we call the game playing
+algorithm at the root, essentially? So,
+
+239
+00:25:37,618 --> 00:25:42,898
+alpha should be minus large and beta should
+be plus large, when the first time we call
+
+240
+00:25:42,898 --> 00:25:45,829
+it;
+that means, windows completely opened. Then,
+
+241
+00:25:45,829 --> 00:25:48,898
+the algorithm is simpler. It is basically,
+a
+
+242
+00:25:48,898 --> 00:26:02,349
+small variation of the minimax algorithm that
+we have seen. So, if we assumed that we
+
+243
+00:26:02,349 --> 00:26:09,759
+have a function, which tells us, weather j
+is on the horizon or not. You can do this
+
+244
+00:26:09,759 --> 00:26:10,759
+by
+
+245
+00:26:10,759 --> 00:26:17,769
+.keeping some kind of a counter as you search
+deeper, so that, every time you make a
+
+246
+00:26:17,769 --> 00:26:21,278
+recursive call, you also decrement the counter
+by 1. Let us say you are doing eight ply
+
+247
+00:26:21,278 --> 00:26:25,308
+search. When you make this call, they count
+as 8; when you make this call, they count
+
+248
+00:26:25,308 --> 00:26:27,740
+as
+7 and so on. When the counter becomes 0 that
+
+249
+00:26:27,740 --> 00:26:33,349
+means, it is a terminal node on the
+horizon. The implication of being a terminal
+
+250
+00:26:33,349 --> 00:26:37,668
+is that you have to apply the evaluation
+function stop searching further, essentially.
+
+251
+00:26:37,669 --> 00:26:42,389
+So, if it is terminal, then we can say that
+v j is
+
+252
+00:26:42,388 --> 00:26:55,469
+e j where, e j is the evaluation function
+that we are using in the game. Else, we have
+
+253
+00:26:55,470 --> 00:26:59,089
+to
+evaluate still then, which means you looking
+
+254
+00:26:59,089 --> 00:27:01,509
+at a node; it is not a terminal node.
+
+255
+00:27:01,509 --> 00:27:07,490
+So, you have to evaluate all the children,
+essentially, one by one. So, for j, let us
+
+256
+00:27:07,490 --> 00:27:14,659
+say i
+going from one to b. So, Let us assume that
+
+257
+00:27:14,659 --> 00:27:18,919
+b is a bouncing factor, or every node has
+b
+
+258
+00:27:18,919 --> 00:27:31,380
+children. We are going to evaluate them from
+left to right, essentially. If j is a max
+
+259
+00:27:31,380 --> 00:27:37,080
+node,
+what do we want to do here? If it is a max
+
+260
+00:27:37,079 --> 00:27:39,689
+node, like this one, for example, or this
+max
+
+261
+00:27:39,690 --> 00:27:46,090
+node; it has got some alpha and beta bounce,
+given to it, and we want to evaluate this
+
+262
+00:27:46,089 --> 00:27:55,039
+from left to right. So, this is j 1; this
+is j 2 and so on, up to j t; we want to evaluate
+
+263
+00:27:55,039 --> 00:27:57,220
+from
+left to right, and we want to see, if we can
+
+264
+00:27:57,220 --> 00:28:01,470
+get a higher value than what alpha has.
+Remember, it has to operate within this window,
+
+265
+00:28:01,470 --> 00:28:07,519
+and seek a higher value, essentially. I
+will write the part for the max, and you write
+
+266
+00:28:07,519 --> 00:28:11,259
+the part for min. So, if j is a max node,
+then
+
+267
+00:28:11,259 --> 00:28:33,899
+what you do is; alpha gets maximum of alpha,
+and a recursive call for j i, the highest
+
+268
+00:28:33,898 --> 00:28:40,709
+child, with the bounce alpha and beta; the
+bounce keep getting propagated. So, what does
+
+269
+00:28:40,710 --> 00:28:48,419
+this step say? We are doing from; i going
+from 1 to b. So, for every i, we will evaluate
+
+270
+00:28:48,419 --> 00:28:52,570
+the highest child, and if its providing the
+better value, which means a higher value,
+
+271
+00:28:52,569 --> 00:28:57,730
+because we are using the max function here,
+then alpha. Then, we will update alpha to
+
+272
+00:28:57,730 --> 00:29:00,240
+that, essentially.
+
+273
+00:29:00,240 --> 00:29:27,849
+If alpha becomes greater than beta, then we
+say, return beta. What does this mean? Look
+
+274
+00:29:27,849 --> 00:29:33,878
+at this alpha value here. It has got this
+beta bound coming from the top, which is beta
+
+275
+00:29:33,878 --> 00:29:37,480
+1
+and beta 2. If the value that we are trying
+
+276
+00:29:37,480 --> 00:29:42,940
+to compute for this alpha becomes higher than
+this beta or this beta, it does not matter.
+
+277
+00:29:42,940 --> 00:29:46,528
+Then, they are going to say that no need to
+value
+
+278
+00:29:46,528 --> 00:29:51,609
+it anything here. So, we are making a return
+statement there, and say, return whatever
+
+279
+00:29:51,609 --> 00:30:01,128
+beta bound is and that is the best you can
+do with this. So, this amounts to a beta cut
+
+280
+00:30:01,128 --> 00:30:08,199
+off,
+because it is happening in an alpha node;
+
+281
+00:30:08,200 --> 00:30:11,720
+it is dictated by the beta value; it is a
+beta cut
+
+282
+00:30:11,720 --> 00:30:23,269
+off; otherwise, if j equal to b, sorry, i
+equal to b, which means you who have looked
+
+283
+00:30:23,269 --> 00:30:24,269
+at
+
+284
+00:30:24,269 --> 00:30:30,179
+.the last child and evaluated it, and you
+already done this, choosing the best of this
+
+285
+00:30:30,179 --> 00:30:46,380
+values.
+You can return alpha. So, this takes care
+
+286
+00:30:46,380 --> 00:30:51,100
+of the alpha side of thing. The other option
+is l
+
+287
+00:30:51,099 --> 00:31:00,409
+s, which means j is min; I will not write
+this completely, but you can fill it up yourself;
+
+288
+00:31:00,410 --> 00:31:07,269
+this would be similar if i equal to b, return
+beta. This would be analogous, which says
+
+289
+00:31:07,269 --> 00:31:15,368
+beta is min of beta and the recursive call.
+This test will remain the same; alpha greater
+
+290
+00:31:15,368 --> 00:31:21,628
+than beta, because this test signifies that
+this window has closed in some sense. This
+
+291
+00:31:21,628 --> 00:31:25,259
+alpha value has gone above the beta value.
+So, there is nothing left to explore, but
+
+292
+00:31:25,259 --> 00:31:27,509
+the
+return value would be alpha, essentially.
+
+293
+00:31:27,509 --> 00:31:32,509
+So, you can fill up those details, essentially.
+Let
+
+294
+00:31:32,509 --> 00:31:40,019
+us now look at a slightly more detailed example
+of this algorithm.
+
+295
+00:31:40,019 --> 00:31:41,019
+.
+
+296
+00:31:41,019 --> 00:32:03,519
+Let us assume that we have binary search tree,
+and it is 4 ply deep. Let us draw the tree
+
+297
+00:32:03,519 --> 00:32:33,970
+first. We will have 16 leaf nodes 
+
+298
+00:32:33,970 --> 00:32:38,139
+and since, a binary tree; there would be beta
+nodes
+
+299
+00:32:38,138 --> 00:32:58,608
+sitting here, and then, alpha nodes sitting
+here, and beta nodes here. This is the root.
+
+300
+00:32:58,608 --> 00:33:02,949
+This
+is the alpha node. So, I have just drawn the
+
+301
+00:33:02,950 --> 00:33:07,549
+space that is going to be searched; the space
+of nodes; we have not drawn the tree. What
+
+302
+00:33:07,549 --> 00:33:13,069
+we want to see is how will alpha beta
+algorithm explore this tree, essentially.
+
+303
+00:33:13,069 --> 00:33:19,730
+Now, observe that the minimax algorithm will
+explore this entire tree from left to right,
+
+304
+00:33:19,730 --> 00:33:22,730
+and back up the value. So, these beta nodes
+will
+
+305
+00:33:22,730 --> 00:33:27,308
+take the minimum of what they get from here.
+Then, alpha nodes will take the maximum
+
+306
+00:33:27,308 --> 00:33:32,489
+of beta children. This beta will take the
+minimum of these alpha children, and so on.
+
+307
+00:33:32,489 --> 00:33:33,489
+So,
+
+308
+00:33:33,489 --> 00:33:41,798
+.you want to see what alpha beta does; we
+will fill in some random values, just to explore
+
+309
+00:33:41,798 --> 00:33:49,019
+the algorithm here. So, it is during depth
+first search; left to right. So, it first
+
+310
+00:33:49,019 --> 00:33:51,829
+goes and
+evaluates the first left most node in the
+
+311
+00:33:51,829 --> 00:33:56,869
+tree. Let us, for argument sake, say that
+this value
+
+312
+00:33:56,869 --> 00:34:05,898
+is 50, some random value, essentially. Then,
+it evaluates its next child. Let us say that
+
+313
+00:34:05,898 --> 00:34:11,579
+is
+40. So, at this point, this beta is completely
+
+314
+00:34:11,579 --> 00:34:19,599
+evaluated. Its value is 40 and since, this
+is
+
+315
+00:34:19,599 --> 00:34:24,510
+completely evaluated, this alpha is equal
+to 40, which, remember, you must read as
+
+316
+00:34:24,510 --> 00:34:30,820
+saying that alpha is greater than equal to
+40, essentially. Then, it starts the next
+
+317
+00:34:30,820 --> 00:34:34,280
+round. It
+looks at this, and looks at this. Let us say
+
+318
+00:34:34,280 --> 00:34:41,300
+this happens to be 30, which means this beta
+is
+
+319
+00:34:41,300 --> 00:34:48,730
+equal to 30. Now, you can see this relation
+between this beta and this alpha node. This
+
+320
+00:34:48,730 --> 00:34:55,340
+alpha is saying, I am at least, 40. This beta
+is saying, I am at most, 30. So, this alpha
+
+321
+00:34:55,340 --> 00:34:59,079
+node is not going to be in this beta node.
+So, we have an alpha cut off. I will just
+
+322
+00:34:59,079 --> 00:35:00,569
+write
+alpha here, to signify, it is an alpha cut
+
+323
+00:35:00,570 --> 00:35:01,570
+off.
+
+324
+00:35:01,570 --> 00:35:08,059
+So, we are not going to look at this node,
+essentially. Then, we continue the depth first
+
+325
+00:35:08,059 --> 00:35:33,449
+fashion; go here, go here, go here, and let
+us say that this is 70. So, this beta becomes
+
+326
+00:35:33,449 --> 00:35:38,029
+70
+at this moment. Then, explore this, and this
+
+327
+00:35:38,030 --> 00:35:48,050
+is 60. So, this beta is 60, now, and this
+alpha
+
+328
+00:35:48,050 --> 00:35:56,880
+is also 60. This beta is 40, because it is
+getting this 40 value from here, and it is
+
+329
+00:35:56,880 --> 00:36:04,590
+essentially, asserting that I am 40 or less.
+This one is getting 60 from here, and we say,
+
+330
+00:36:04,590 --> 00:36:07,700
+it
+is 60 or more, essentially. So, which means,
+
+331
+00:36:07,699 --> 00:36:13,429
+this beta will induce a cutoff here. So, this
+will be cutoff, and this is the beta cut off,
+
+332
+00:36:13,429 --> 00:36:18,889
+or beta induced cut off, essentially. So,
+we are
+
+333
+00:36:18,889 --> 00:36:22,391
+not looked at those two nodes, those two leaf
+nodes. In fact, we have not looked at the
+
+334
+00:36:22,391 --> 00:36:30,639
+entrie sub tree there, essentially. At this
+point, this alpha is equal to 40 and again,
+
+335
+00:36:30,639 --> 00:36:43,759
+we do
+depth first search, and let us say then, this
+
+336
+00:36:43,760 --> 00:36:49,700
+value is 30.
+
+337
+00:36:49,699 --> 00:37:10,460
+Now, you remember this; a node is influenced
+or the bound that node gets, is influenced
+
+338
+00:37:10,460 --> 00:37:14,650
+by all the ancestors. In this case, then,
+only one ancestor, which has a value, which
+
+339
+00:37:14,650 --> 00:37:18,910
+is this
+root for this value is 40. Look at this beta
+
+340
+00:37:18,909 --> 00:37:24,730
+node. This beta node is saying it is 30. Of
+course, it could go lower than 30, but at
+
+341
+00:37:24,730 --> 00:37:28,820
+the moment it is 30. So, this now induced
+the cut
+
+342
+00:37:28,820 --> 00:37:37,789
+off, what we call as a deep cut off. That,
+because this is upper bounded by 30, this
+
+343
+00:37:37,789 --> 00:37:39,300
+node
+is never going to be interested in what is
+
+344
+00:37:39,300 --> 00:37:43,180
+going to happen here; so, might as well, cut
+it
+
+345
+00:37:43,179 --> 00:37:46,989
+off, and this is an alpha cut off. So, the
+alpha cut off does not have to be induced
+
+346
+00:37:46,989 --> 00:37:50,309
+by a
+parent node. It can be induced by some ancestor,
+
+347
+00:37:50,309 --> 00:37:55,059
+of course, which is what, we have said
+here, explicitly. When you have said that
+
+348
+00:37:55,059 --> 00:37:57,360
+this alpha bound is actually, the maximum
+of
+
+349
+00:37:57,360 --> 00:38:03,140
+.all the alpha bounds, essentially.
+
+350
+00:38:03,139 --> 00:38:15,650
+So, this alpha is 30. It is saying, I am going
+to be 30 or more. Let us say we come here;
+
+351
+00:38:15,650 --> 00:38:28,340
+we come here. Let us say this happens to be
+70, and this happens to be 80. Now, this
+
+352
+00:38:28,340 --> 00:38:43,750
+becomes 70, and this value of also becomes
+70, and this beta is 70. So, what is
+
+353
+00:38:43,750 --> 00:38:55,619
+happening? Now, when we explore this child,
+it is getting the bound of, beta is 70 and
+
+354
+00:38:55,619 --> 00:39:02,699
+alpha is 40. It still has the window opened,
+so, we must explore this tree below here.
+
+355
+00:39:02,699 --> 00:39:07,250
+So,
+we do that in the depth first fashion. Let
+
+356
+00:39:07,251 --> 00:39:13,960
+us say that this is also 30, then again, we
+introduce a cutoff here, very similar to these
+
+357
+00:39:13,960 --> 00:39:25,789
+same values. So, this is now, 30 or Let us
+say now, this is 80. So, we do not get this
+
+358
+00:39:25,789 --> 00:39:30,250
+cut off. We do investigate this node. Let
+us say
+
+359
+00:39:30,250 --> 00:39:40,889
+this happens to be 90, and this happens to
+be now, 80. This says alpha is equal to 80.
+
+360
+00:39:40,889 --> 00:39:46,059
+Now, look at this beta and this alpha. This
+beta says, I am at most, 70. This beta is
+
+361
+00:39:46,059 --> 00:39:53,079
+saying, I am at least, 80. So, we have a cut
+off here.
+
+362
+00:39:53,079 --> 00:40:05,670
+We can see that we did not look at this node;
+we do not look at this node, and we did a
+
+363
+00:40:05,670 --> 00:40:14,500
+fair amount of cut off. So, out of the 16
+nodes, this alpha bit algorithm has not seen
+
+364
+00:40:14,500 --> 00:40:20,179
+6
+nodes; it has seen only 10 nodes, essentially.
+
+365
+00:40:20,179 --> 00:40:27,859
+As an exercise, I will ask you to fill in
+values, so that, the number of cut offs are
+
+366
+00:40:27,860 --> 00:40:32,880
+maximum. At the same time, as a different
+exercise, fill in the values, so that, there
+
+367
+00:40:32,880 --> 00:40:35,940
+are no cut offs at all. Now, it is possible
+that the
+
+368
+00:40:35,940 --> 00:40:41,570
+values are such, that there are no cut offs,
+essentially. That happens, because the
+
+369
+00:40:41,570 --> 00:40:47,620
+algorithm is searching from left to right.
+What does left and right mean? It basically,
+
+370
+00:40:47,619 --> 00:40:51,489
+means in what order you are generating the
+moves, essentially. This is some game in
+
+371
+00:40:51,489 --> 00:40:55,619
+which, you have two moves; let us call them,
+a and b. You are generating a first, and
+
+372
+00:40:55,619 --> 00:41:00,799
+then, b, essentially.
+
+373
+00:41:00,800 --> 00:41:07,769
+Now, what this exercise will reveal to you
+is now, what is a mini max value of this game
+
+374
+00:41:07,769 --> 00:41:17,550
+tree? This is 70, this is 40, and this is
+an alpha node. So, this value is actually,
+
+375
+00:41:17,550 --> 00:41:26,620
+70 where
+is it coming from? It is coming from this
+
+376
+00:41:26,619 --> 00:41:30,239
+node here. This 70 is coming here. This 70
+is
+
+377
+00:41:30,239 --> 00:41:39,209
+going here. This 70 is coming here; which
+means that the game that will be played, if
+
+378
+00:41:39,210 --> 00:41:45,079
+only on this analysis; would be that max would
+make this move; min would make this
+
+379
+00:41:45,079 --> 00:41:51,960
+move, because that is what min can do best;
+it is getting 70 here, and 80 there; max
+
+380
+00:41:51,960 --> 00:42:00,489
+would make this move, and min would make this
+move.
+
+381
+00:42:00,489 --> 00:42:09,569
+.If you go and flip this tree left to right,
+which means, this game value would come on
+
+382
+00:42:09,570 --> 00:42:11,510
+the
+left part of the tree. Then, you would notice
+
+383
+00:42:11,510 --> 00:42:18,230
+that the number of cut offs are moved,
+essentially. In other words, if somehow, the
+
+384
+00:42:18,230 --> 00:42:24,740
+best moves are made earlier, if they are
+made in the left part of the three, then the
+
+385
+00:42:24,739 --> 00:42:28,099
+number of cut offs will be more. This, you
+can,
+
+386
+00:42:28,099 --> 00:42:35,619
+sort of, understand by constructing an example
+in which, the best moves are on the left
+
+387
+00:42:35,619 --> 00:42:39,859
+hand side. In fact, if you try to construct
+a tree in which, you fill in values, so that,
+
+388
+00:42:39,860 --> 00:42:42,260
+the
+number of cut offs are maximum, you will see
+
+389
+00:42:42,260 --> 00:42:47,920
+that the game value will come from this
+left side of the tree, essentially. Now, that
+
+390
+00:42:47,920 --> 00:42:53,280
+has an implication for game playing programs.
+If you are writing a game playing program,
+
+391
+00:42:53,280 --> 00:42:57,570
+you would like to generate your moves. For
+example, you are doing the Othello program,
+
+392
+00:42:57,570 --> 00:43:01,240
+and you have some set of moves to
+generate. You would like to generate the moves
+
+393
+00:43:01,239 --> 00:43:06,699
+as far as possible, in such a manner that
+the best moves are considered first, and then,
+
+394
+00:43:06,699 --> 00:43:15,429
+the worst moves, essentially. So, the
+question is; how can you order moves, essentially?
+
+395
+00:43:15,429 --> 00:43:22,000
+Remember, we are discussing this in
+domain independent fashion. Of course, you
+
+396
+00:43:22,000 --> 00:43:26,670
+can apply some domain knowledge to saym
+these moves are to be considered, and so on,
+
+397
+00:43:26,670 --> 00:43:30,110
+but in a domain independent passion. Any
+suggestions?
+
+398
+00:43:30,110 --> 00:43:31,610
+Student: Heuristically
+
+399
+00:43:31,610 --> 00:43:37,620
+Heuristically, but how do you choose that
+heuristically?
+
+400
+00:43:37,619 --> 00:43:39,119
+Student: Evaluation.
+
+401
+00:43:39,119 --> 00:43:52,380
+So, here is what many people do. Remember,
+that when we are playing a game playing
+
+402
+00:43:52,380 --> 00:43:57,320
+program, you are doing some search up to some
+Cape lie, deep search, here.
+
+403
+00:43:57,320 --> 00:43:58,320
+..
+
+404
+00:43:58,320 --> 00:44:03,900
+Let us say up to this level or whatever, and
+you decide to make. Let us say this happens
+
+405
+00:44:03,900 --> 00:44:08,450
+to be the move that you are making, essentially.
+This is a move that you made, after you
+
+406
+00:44:08,449 --> 00:44:13,409
+have done this whole game play search, essentially.
+Then, what happens? Then, its
+
+407
+00:44:13,409 --> 00:44:17,659
+opponent turns to make the move, because opponent
+is going to play the next move. You
+
+408
+00:44:17,659 --> 00:44:25,799
+have made a move, and opponent will play a
+move, but what you have access to, is your
+
+409
+00:44:25,800 --> 00:44:32,130
+search tree, and has to below this max node.
+Now, you will have to your next move at
+
+410
+00:44:32,130 --> 00:44:37,300
+this, assuming that this happens to be the
+best move for min, which will be the case,
+
+411
+00:44:37,300 --> 00:44:42,220
+because your analysis search that you are
+considering the best moves for min. Min is
+
+412
+00:44:42,219 --> 00:44:46,199
+taking the minimum value from all these. Let
+us assume that this is the minimum value
+
+413
+00:44:46,199 --> 00:44:52,469
+that min can get. Next time, when your turn
+comes, you will have to play from here,
+
+414
+00:44:52,469 --> 00:44:57,000
+which means, you will be searching the tree,
+starting from here, and going down,
+
+415
+00:44:57,000 --> 00:44:58,000
+essentially.
+
+416
+00:44:58,000 --> 00:45:05,420
+Now, you can exploit the search that you did
+in the previous round, below this node,
+
+417
+00:45:05,420 --> 00:45:10,150
+because you are getting values from the all
+the children. You order the children, so that,
+
+418
+00:45:10,150 --> 00:45:18,039
+the higher order min children come first,
+and below that, the lower order max children
+
+419
+00:45:18,039 --> 00:45:22,650
+come first. You can order the sub tree, so
+that, the best nodes are coming to the left
+
+420
+00:45:22,650 --> 00:45:26,200
+side.
+If we do that you are likely to get more cut
+
+421
+00:45:26,199 --> 00:45:29,909
+off, which in the real tournament
+environment, will mean that your move would
+
+422
+00:45:29,909 --> 00:45:32,179
+be faster, and you would have more time
+
+423
+00:45:32,179 --> 00:45:41,509
+.for the subsequent moves, essentially. You
+can also do some amount of analysis in
+
+424
+00:45:41,510 --> 00:45:52,060
+opponent’s time. This is opponent’s time,
+here. What do the mean by opponent’s time?
+
+425
+00:45:52,059 --> 00:45:54,090
+It
+is when opponent is thinking. So, you have
+
+426
+00:45:54,090 --> 00:45:58,990
+made a move, and opponent is thinking; what
+to move? That time, in the real world is available
+
+427
+00:45:58,989 --> 00:46:03,159
+to you. You can also think of what
+opponent might move, and what you would respond;
+
+428
+00:46:03,159 --> 00:46:04,909
+you could do this analysis in
+opponent’s time.
+
+429
+00:46:04,909 --> 00:46:10,179
+The only thing is, of course, in the game
+playing assignment that we are going to give
+
+430
+00:46:10,179 --> 00:46:13,199
+you; you will not get this opponent’s time,
+because you will have a separate thread
+
+431
+00:46:13,199 --> 00:46:17,529
+running. We should be invoked, only after
+opponent has made their moves, but in the
+
+432
+00:46:17,530 --> 00:46:22,310
+real world game playing situation where, you
+take your own computer to play. Again,
+
+433
+00:46:22,309 --> 00:46:27,409
+you do have this time to do some further analysis.
+One analysis that we can do is to try to
+
+434
+00:46:27,409 --> 00:46:32,139
+order the moves in such a way, that the best
+moves comes first, essentially
+
+435
+00:46:32,139 --> 00:46:33,139
+.
+
+436
+00:46:33,139 --> 00:46:41,409
+Now, this algorithm suffers from this common
+trade that we have been observing
+
+437
+00:46:41,409 --> 00:46:45,559
+throughout this course, which is that it is
+a blind or uninformed algorithm. It searches
+
+438
+00:46:45,559 --> 00:46:52,380
+from left to right. Of course, this desire
+to order the moves is, in some sense, the
+
+439
+00:46:52,380 --> 00:46:55,599
+desire
+the give it a direction, but given a fixed
+
+440
+00:46:55,599 --> 00:47:00,889
+order of moves; can we have an algorithm,
+which
+
+441
+00:47:00,889 --> 00:47:08,809
+will have a sense of direction, which is,
+which will be like a best first search algorithm?
+
+442
+00:47:08,809 --> 00:47:15,139
+.Indeed, there is such an algorithm called
+sss star algorithm, but we will take that
+
+443
+00:47:15,139 --> 00:47:16,539
+up in
+the next class.
+
+444
+00:47:16,539 --> 00:47:23,279
+We will stop here now, with alpha beta.
+
+445
+00:47:23,280 --> 00:47:33,280
+.
+

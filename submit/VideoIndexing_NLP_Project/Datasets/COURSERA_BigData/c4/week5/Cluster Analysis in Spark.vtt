@@ -1,0 +1,668 @@
+WEBVTT
+
+1
+00:00:00.990 --> 00:00:05.240
+In this activity, we will use
+Spark to perform cluster analysis.
+
+2
+00:00:05.240 --> 00:00:07.320
+First, we will load
+the minute weather data.
+
+3
+00:00:08.600 --> 00:00:12.479
+Next, we will remove the unused and
+missing data and
+
+4
+00:00:12.479 --> 00:00:15.752
+then scale the data so
+that the mean is zero.
+
+5
+00:00:15.752 --> 00:00:18.931
+We will then create an elbow plot,
+a subset of the data,
+
+6
+00:00:18.931 --> 00:00:22.430
+to determine the optimal
+number of clusters.
+
+7
+00:00:22.430 --> 00:00:26.280
+And then cluster the full
+data set using k-means.
+
+8
+00:00:26.280 --> 00:00:30.390
+Finally, we will generate parallel plots
+to analyze the individual clusters.
+
+9
+00:00:32.000 --> 00:00:32.530
+Let's begin.
+
+10
+00:00:33.600 --> 00:00:35.560
+First, let's open the clustering notebook.
+
+11
+00:00:38.650 --> 00:00:41.259
+Execute the first cell
+to load the libraries.
+
+12
+00:00:43.090 --> 00:00:45.220
+Execute the second cell
+to load the data set.
+
+13
+00:00:47.630 --> 00:00:51.870
+This data set contains weather station
+measurements that were taken every minute.
+
+14
+00:00:51.870 --> 00:00:53.980
+So there's a lot of measurements.
+
+15
+00:00:53.980 --> 00:01:00.705
+We can count how many rows there are in
+the data frame by running df.count.
+
+16
+00:01:01.757 --> 00:01:05.860
+This says that there are over 1.5
+million rows in the data frame.
+
+17
+00:01:05.860 --> 00:01:10.090
+Clustering this much data on a single
+Cloudera VM can take a lot of time.
+
+18
+00:01:10.090 --> 00:01:12.680
+So let's only work with
+one-tenth of the data.
+
+19
+00:01:12.680 --> 00:01:15.340
+Let's subset the data
+into the new data frame.
+
+20
+00:01:15.340 --> 00:01:20.124
+We'll enter filteredDF
+
+21
+00:01:20.124 --> 00:01:25.820
+= df.filter((df.rowID
+
+22
+00:01:25.820 --> 00:01:29.924
+% 10)) == 0.
+
+23
+00:01:29.924 --> 00:01:38.182
+We then count the rows of the new data
+frame by calling filteredDF.count.
+
+24
+00:01:40.997 --> 00:01:45.130
+The new data frame has one-tenth as
+many rows as the original data set.
+
+25
+00:01:46.520 --> 00:01:48.888
+Let's compute the summary
+statistics using describe.
+
+26
+00:01:48.888 --> 00:01:54.613
+filteredDF.describe, and
+to display it nicely,
+
+27
+00:01:54.613 --> 00:01:59.303
+we'll enter toPandas().transpose.
+
+28
+00:01:59.303 --> 00:01:59.803
+Run this.
+
+29
+00:02:07.604 --> 00:02:10.895
+These weather measurements were taken
+during the period of a long drought.
+
+30
+00:02:12.090 --> 00:02:15.680
+As we can see from the mean values
+of the two rain measurements,
+
+31
+00:02:15.680 --> 00:02:19.820
+rain accumulation, the rain duration,
+the measurements are close to zero.
+
+32
+00:02:21.600 --> 00:02:24.504
+Let's count how many rain
+values are equal to 0.
+
+33
+00:02:24.504 --> 00:02:32.198
+FilterDF.filter(filterDF.rain_accumulation
+==
+
+34
+00:02:32.198 --> 00:02:35.431
+0.0).count().
+
+35
+00:02:38.436 --> 00:02:40.890
+Now let's do rain duration.
+
+36
+00:02:40.890 --> 00:02:47.994
+filteredDF.filter(filteredDF.rain_duration
+==
+
+37
+00:02:47.994 --> 00:02:51.563
+0.0).count().
+
+38
+00:02:51.563 --> 00:02:57.053
+We can see from these counts that most
+in these two measurements are zero.
+
+39
+00:02:57.053 --> 00:03:00.527
+So let's remove them from our data frame.
+
+40
+00:03:00.527 --> 00:03:06.719
+workingDF =
+filterDF.drop('rain_accumulation').drop('-
+
+41
+00:03:06.719 --> 00:03:08.710
+rain_duration').
+
+42
+00:03:08.710 --> 00:03:11.710
+And we'll also drop the column
+called hpwren_timestamp,
+
+43
+00:03:11.710 --> 00:03:13.502
+since we will not use it.
+
+44
+00:03:13.502 --> 00:03:16.099
+So .drop('hpwren_timestamp').
+
+45
+00:03:20.422 --> 00:03:25.608
+Next, let's drop rows with missing values,
+and count how many rows were dropped.
+
+46
+00:03:25.608 --> 00:03:30.085
+before = workingDF.count() workingDF =
+
+47
+00:03:30.085 --> 00:03:36.055
+workingDF.na.drop() after
+= workingDF.count(),
+
+48
+00:03:36.055 --> 00:03:42.147
+and finally, we'll print the difference,
+before- after.
+
+49
+00:03:46.410 --> 00:03:49.000
+So only 46 rows had missing values and
+were dropped.
+
+50
+00:03:50.320 --> 00:03:54.190
+Next, let's scale the data so that each
+feature will have a value of 0 for
+
+51
+00:03:54.190 --> 00:03:58.010
+the mean and a value of 1 for
+the standard deviation.
+
+52
+00:03:58.010 --> 00:04:01.500
+First, we need to combine the columns
+into a single vector column.
+
+53
+00:04:01.500 --> 00:04:06.366
+We can look at the existing columns
+by entering workingDF.columns.
+
+54
+00:04:06.366 --> 00:04:10.510
+We do not want to include rowID
+since it is a row number.
+
+55
+00:04:10.510 --> 00:04:13.430
+Additionally, the minimum wind
+measurements have a high correlation
+
+56
+00:04:13.430 --> 00:04:16.510
+to the average wind measurements,
+so we will not include this either.
+
+57
+00:04:17.560 --> 00:04:20.230
+Let's create an array of
+the columns we want to combine and
+
+58
+00:04:20.230 --> 00:04:23.798
+then use vector assembler to
+create the vector column.
+
+59
+00:04:23.798 --> 00:04:28.760
+featuresUsed = [.
+
+60
+00:04:28.760 --> 00:04:31.439
+Now, let's copy and
+paste the columns we want to use.
+
+61
+00:04:50.974 --> 00:04:57.085
+Assembler = VectorAssembler(inputCols
+= featuresUsed,
+
+62
+00:04:57.085 --> 00:05:01.358
+outputCol = "features_unscaled").
+
+63
+00:05:01.358 --> 00:05:07.534
+And finally, assembled =
+assembler.transform(workingDF).
+
+64
+00:05:07.534 --> 00:05:09.111
+Run this.
+
+65
+00:05:09.111 --> 00:05:15.021
+Now we'll use standard
+scaler to scale the data.
+
+66
+00:05:15.021 --> 00:05:21.255
+Scaler = standard scaler
+inputCol=”features _unscaler”,
+
+67
+00:05:21.255 --> 00:05:25.706
+outputCol=“features”, withStd = true,
+
+68
+00:05:25.706 --> 00:05:31.828
+withMean = True,
+scalerModel = scaler.fit(assembled),
+
+69
+00:05:31.828 --> 00:05:37.297
+scaledData =
+scalerModel.transform[assembled].
+
+70
+00:05:43.150 --> 00:05:46.642
+Next we will create an elbow plot
+to determine the value k, for
+
+71
+00:05:46.642 --> 00:05:48.400
+the number of clusters.
+
+72
+00:05:48.400 --> 00:05:52.440
+To create the elbow plot,
+we will calculate the within cluster,
+
+73
+00:05:52.440 --> 00:05:56.120
+sum of squared error, or WSSE,
+for different values of k.
+
+74
+00:05:56.120 --> 00:06:00.800
+So since some valves running
+K-means many times, let's do it for
+
+75
+00:06:00.800 --> 00:06:03.330
+a smaller subset of the data
+since it'll be faster.
+
+76
+00:06:05.350 --> 00:06:08.280
+First, let's choose the data to work with.
+
+77
+00:06:08.280 --> 00:06:10.286
+Let's subset the data.
+
+78
+00:06:10.286 --> 00:06:15.347
+So scaledData =
+scaledData.select("features"), ("rowID").
+
+79
+00:06:15.347 --> 00:06:22.407
+elbowset =
+scaledData.filter((scaledData.rowID
+
+80
+00:06:22.407 --> 00:06:28.173
+%3) == 0).select("features").
+
+81
+00:06:28.173 --> 00:06:32.907
+And finally,
+we'll call the persist method on elbowset.
+
+82
+00:06:32.907 --> 00:06:36.736
+Persist will keep it in memory,
+and make the calculations faster.
+
+83
+00:06:36.736 --> 00:06:40.925
+Run this.
+
+84
+00:06:40.925 --> 00:06:46.072
+Now, let's compute the WSSE values for
+different values of k.
+
+85
+00:06:46.072 --> 00:06:49.080
+We'll do for k, 2 to 30.
+
+86
+00:06:49.080 --> 00:06:53.693
+Clusters equals range(2,31).
+
+87
+00:06:53.693 --> 00:07:02.271
+wsseList = utils.elbow(elbowset,
+clusters).
+
+88
+00:07:02.271 --> 00:07:09.800
+Run this, This will print out
+the value of wsse for each value of k.
+
+89
+00:07:09.800 --> 00:07:13.410
+As you can tell, this'll take some
+time to run, let's skip to the end.
+
+90
+00:07:16.570 --> 00:07:19.158
+Now let's display the plot of our data.
+
+91
+00:07:19.158 --> 00:07:29.159
+utils.elbow_plot(wsseList, clusters).
+
+92
+00:07:29.159 --> 00:07:36.614
+The x axis is k, the number of clusters,
+and the y axis is the WSSE value.
+
+93
+00:07:36.614 --> 00:07:40.190
+You can see that the graph flattens
+out between 10 and 15 for k.
+
+94
+00:07:41.320 --> 00:07:45.620
+So let's choose k equals 12 as
+the midpoint for our number of clusters.
+
+95
+00:07:47.788 --> 00:07:52.040
+We'll now cluster the data into
+12 clusters using k-means.
+
+96
+00:07:52.040 --> 00:07:54.285
+First, let's select the data
+we want to cluster.
+
+97
+00:07:54.285 --> 00:08:01.726
+scaledDataFeat =
+scaledData.select("features"),
+
+98
+00:08:01.726 --> 00:08:05.142
+scaledDataFeat.persist.
+
+99
+00:08:07.496 --> 00:08:10.394
+Now I'll perform
+the clustering using kmeans.
+
+100
+00:08:10.394 --> 00:08:15.688
+kmeans = KMeans(k=12, seed=1).
+
+101
+00:08:15.688 --> 00:08:21.752
+model = KMeans.fit(scaledDataFeat),
+and finally,
+
+102
+00:08:21.752 --> 00:08:27.582
+transformed =
+model.transform(scaleDataFeat).
+
+103
+00:08:27.582 --> 00:08:29.198
+Run this.
+
+104
+00:08:29.198 --> 00:08:33.702
+We can now see the centre
+measurement of each
+
+105
+00:08:33.702 --> 00:08:38.459
+cluster by calling model.clusterCenters.
+
+106
+00:08:42.924 --> 00:08:47.080
+It is difficult to compare the cluster
+centers just by looking at these numbers.
+
+107
+00:08:47.080 --> 00:08:52.319
+So let's use parallel
+plots to visualize them.
+
+108
+00:08:52.319 --> 00:08:58.095
+P = utils.pd_centers(featuresUsed,
+
+109
+00:08:58.095 --> 00:09:02.000
+model.clusterCenters).
+
+110
+00:09:03.810 --> 00:09:04.850
+Let's show the clusters for
+
+111
+00:09:04.850 --> 00:09:08.390
+dry days where the weather samples
+have low relative humidity.
+
+112
+00:09:09.670 --> 00:09:19.670
+utils.parallel_plot(P[P['relative_humidi-
+ty']
+
+113
+00:09:20.714 --> 00:09:24.674
+< -0.5], P).
+
+114
+00:09:28.719 --> 00:09:31.920
+The x axis of this chart shows
+the different measurement types.
+
+115
+00:09:32.990 --> 00:09:36.730
+The y values show the standard deviations,
+with zero being the mean.
+
+116
+00:09:38.330 --> 00:09:42.330
+Each line is a different cluster, and
+there are five clusters in this graph.
+
+117
+00:09:44.010 --> 00:09:47.130
+We can see that they all have
+a low relative humidity.
+
+118
+00:09:47.130 --> 00:09:52.060
+Notice that cluster four, the red one,
+has a high average wind speed and
+
+119
+00:09:52.060 --> 00:09:53.430
+a high maximum wind speed.
+
+120
+00:09:55.400 --> 00:09:58.850
+Additionally, it has a low
+average wind direction.
+
+121
+00:09:58.850 --> 00:10:02.380
+Which means it was coming from
+the north and northeast directions.
+
+122
+00:10:02.380 --> 00:10:05.480
+So this cluster probably
+represents Santa Ana conditions.
+
+123
+00:10:07.770 --> 00:10:10.615
+Next, let's show the plot for warm days,
+
+124
+00:10:10.615 --> 00:10:13.867
+the weather samples with
+high air temperature.
+
+125
+00:10:13.867 --> 00:10:21.877
+utils.parallel_plot(P[P['air_temp'] >
+
+126
+00:10:21.877 --> 00:10:24.490
+0.5], P).
+
+127
+00:10:30.292 --> 00:10:34.283
+Other clusters in this plot have air
+temperature greater than 0.5 standard
+
+128
+00:10:34.283 --> 00:10:35.920
+deviations away from the mean.
+
+129
+00:10:36.930 --> 00:10:40.000
+However, they have different values for
+the other features.
+
+130
+00:10:40.000 --> 00:10:42.530
+Now let's show the clusters for cool days.
+
+131
+00:10:42.530 --> 00:10:46.430
+Weather samples with high relative
+humidity and low air temperatures.
+
+132
+00:10:47.650 --> 00:10:57.650
+utils.parallel_plot(P[(P['relative_humidi-
+ty']
+
+133
+00:10:59.966 --> 00:11:07.129
+> 0.5) & (P['air_temp']
+
+134
+00:11:07.129 --> 00:11:11.387
+< 0.5)], P).
+
+135
+00:11:11.387 --> 00:11:16.222
+All the clusters in this plot have
+relative humidity greater than 0.5
+
+136
+00:11:16.222 --> 00:11:21.608
+standard deviations and air temp
+less than 0.5 standard deviations.
+
+137
+00:11:21.608 --> 00:11:24.680
+These clusters represent cool
+temperature with high humidity and
+
+138
+00:11:24.680 --> 00:11:27.220
+possibly rainy weather patterns.
+
+139
+00:11:27.220 --> 00:11:29.980
+So far we have seen all
+the clusters except two.
+
+140
+00:11:29.980 --> 00:11:34.012
+Since it is not falling to any other
+categories let's plot this cluster,
+
+141
+00:11:34.012 --> 00:11:43.795
+utils.parallel_plot(P.iloc[[2]],
+
+142
+00:11:43.795 --> 00:11:44.527
+P).
+
+143
+00:11:47.556 --> 00:11:49.892
+Cluster two captures
+days with mild weather.

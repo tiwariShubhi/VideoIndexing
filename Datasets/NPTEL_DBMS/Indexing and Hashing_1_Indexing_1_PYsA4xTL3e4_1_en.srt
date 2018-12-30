@@ -1,0 +1,1254 @@
+﻿1
+00:00:17,660 --> 00:00:22,280
+Welcome to module 26 of Database Management
+Systems.
+
+2
+00:00:22,280 --> 00:00:29,259
+In this module and the next 4; that is for
+the whole of this week we will talk about
+
+3
+00:00:29,259 --> 00:00:32,640
+indexing and hashing.
+
+4
+00:00:32,640 --> 00:00:43,109
+So, this is a quick recap of ah what we did
+in the last week primarily talking about application
+
+5
+00:00:43,109 --> 00:00:49,689
+development and then specifically; we focused
+on storage and file structure that is how
+
+6
+00:00:49,689 --> 00:00:57,259
+a database file can be stored how it can be
+organized and in a manner so that, we have
+
+7
+00:00:57,259 --> 00:00:58,829
+efficient ah representation for that now.
+
+8
+00:00:58,829 --> 00:01:08,789
+We will move on ah from there to and focus
+on the basic feature of a database system,
+
+9
+00:01:08,789 --> 00:01:16,049
+which is the ability to find information in
+a very fast manner the ability to update in
+
+10
+00:01:16,049 --> 00:01:17,459
+a very fast manner.
+
+11
+00:01:17,459 --> 00:01:24,379
+And we will see the reasons for which we do
+something on the database tables called indexing
+
+12
+00:01:24,379 --> 00:01:31,269
+and we will talk about ordered index in this
+module and about the index sequential access
+
+13
+00:01:31,269 --> 00:01:32,989
+mechanism.
+
+14
+00:01:32,989 --> 00:01:39,609
+So, introduction of the basic indexing concepts
+and the order indices and we start with the
+
+15
+00:01:39,609 --> 00:01:40,659
+basic concepts.
+
+16
+00:01:40,659 --> 00:01:46,289
+So, consider a very simple example, let us
+consider an example where there is a relation
+
+17
+00:01:46,290 --> 00:01:50,680
+faculty which has name and phone number and
+additionally.
+
+18
+00:01:50,680 --> 00:01:58,080
+So, just focus on the middle part the pinkish
+part of the table which is table faculty besides
+
+19
+00:01:58,079 --> 00:02:04,209
+the two attributes I have put a serial number
+for the records which kind of can be considered
+
+20
+00:02:04,209 --> 00:02:07,759
+as internal numbers of the database to identify
+each record.
+
+21
+00:02:07,759 --> 00:02:14,580
+Now, let us say let us assume that we have
+to search on names suppose we have a query
+
+22
+00:02:14,580 --> 00:02:17,410
+that get me the phone number of ah Pabitra
+Mitra.
+
+23
+00:02:17,409 --> 00:02:22,859
+So, you can see that Pabitra Mitra the record
+name occurs at position 6.
+
+24
+00:02:22,860 --> 00:02:28,480
+So, if we have to get the phone number, then
+naturally we have to look at all these entries
+
+25
+00:02:28,479 --> 00:02:35,069
+from one end to the ah other till we come
+across Pabitra Mitra match the name Pabitra
+
+26
+00:02:35,069 --> 00:02:41,509
+Mitra and we can access the phone number .
+Now, similarly if we have to search for a
+
+27
+00:02:41,509 --> 00:02:44,139
+phone number we will have similar situation.
+
+28
+00:02:44,139 --> 00:02:51,609
+So, if we want to ah get the phone number
+of ah the faculty having phone number 84772.
+
+29
+00:02:51,610 --> 00:02:55,500
+Again we will have to search on the phone
+number from one end to the other and find
+
+30
+00:02:55,500 --> 00:02:57,150
+the name of the faculty.
+
+31
+00:02:57,150 --> 00:03:05,469
+Now, certainly this will mean that if there
+are n records in the database then we will
+
+32
+00:03:05,469 --> 00:03:12,939
+need or the order of about n by 2 ah comparisons
+to be done or accesses record accesses to
+
+33
+00:03:12,939 --> 00:03:13,939
+be done before.
+
+34
+00:03:13,939 --> 00:03:20,169
+We can find the desired record which is certainly
+ah not a very efficient way of doing things
+
+35
+00:03:20,169 --> 00:03:25,689
+and you know from your knowledge of ah basic
+algorithms that; if we have a set of data
+
+36
+00:03:25,689 --> 00:03:31,770
+and we want to find a particular one then
+we can make it efficient by actually keeping
+
+37
+00:03:31,770 --> 00:03:36,930
+the data in a sorted manner and doing some
+kind of a binary search that is one one possible
+
+38
+00:03:36,930 --> 00:03:38,900
+mechanism through which you can do that.
+
+39
+00:03:38,900 --> 00:03:45,090
+So, we can use that same context same concept
+now and ah just look at the left side the
+
+40
+00:03:45,090 --> 00:03:50,610
+blue part of the blue part tableware, what
+I have done have collected all the names of
+
+41
+00:03:50,610 --> 00:03:57,970
+the faculty and I have sorted them in lexicographically
+increasing order and with that I have kept
+
+42
+00:03:57,969 --> 00:03:59,680
+the record number as a pointer.
+
+43
+00:03:59,680 --> 00:04:02,010
+Now, since this is a sorted array.
+
+44
+00:04:02,009 --> 00:04:08,449
+So, here I can search for Pabitra Mitra for
+the first query in a binary search.
+
+45
+00:04:08,449 --> 00:04:16,529
+So, at least in the log n order of ah comparisons
+I should be able to find ah professor Pabitra
+
+46
+00:04:16,529 --> 00:04:23,409
+Mitra and get the fact; that it is record
+number is 6 navigate to the record number
+
+47
+00:04:23,410 --> 00:04:27,250
+6 in the table in the middle and take out
+the phone number.
+
+48
+00:04:27,250 --> 00:04:34,600
+Similarly, without disturbing the actual faculty
+table I can build a similar kind of ah ah
+
+49
+00:04:34,600 --> 00:04:39,590
+supportive table on the right the yellow one
+where I collect all the phone numbers and
+
+50
+00:04:39,589 --> 00:04:45,789
+I have sorted on the phone numbers I can again
+do binary search on the phone number 84772
+
+51
+00:04:45,790 --> 00:04:50,510
+and find the phone number ah find the record
+number where this phone number occurs and
+
+52
+00:04:50,509 --> 00:04:52,099
+go and find the name of the faculty.
+
+53
+00:04:52,100 --> 00:05:01,890
+So, you can see that naturally this gives
+us a alternate way of finding out and certainly
+
+54
+00:05:01,889 --> 00:05:07,949
+you would say that we could have kept the
+record sorted on ah name or on phone number,
+
+55
+00:05:07,949 --> 00:05:12,029
+but certainly if we keep it sorted on name
+the first query we will get benefited the
+
+56
+00:05:12,029 --> 00:05:16,989
+second query will still take a linear time
+if we get keep it sorted by phone number the
+
+57
+00:05:16,990 --> 00:05:19,050
+first query will take a linear time.
+
+58
+00:05:19,050 --> 00:05:25,199
+So, if we cannot actually keep the data sorted
+on both and therefore, this is just an alternate
+
+59
+00:05:25,199 --> 00:05:29,899
+mechanism called the indexing mechanism through
+which even though the original data is not
+
+60
+00:05:29,899 --> 00:05:36,239
+sorted by maintaining some auxiliary data
+we can actually make our search mechanism
+
+61
+00:05:36,240 --> 00:05:40,110
+more efficient and that is the core idea of
+indexing.
+
+62
+00:05:40,110 --> 00:05:44,949
+So, indexing mechanism is used to speed up
+accesses to desired data.
+
+63
+00:05:44,949 --> 00:05:46,769
+So, as as you have just seen.
+
+64
+00:05:46,769 --> 00:05:52,750
+So, what we search on is called the search
+key and an index file consists of the index
+
+65
+00:05:52,750 --> 00:05:57,779
+entries as you have just seen it has a search
+key and the pointer pointer is the record
+
+66
+00:05:57,779 --> 00:06:04,519
+number or the internal you know address of
+the record where it occurs and certainly I
+
+67
+00:06:04,519 --> 00:06:08,500
+have shown an example where there just two
+attributes in general there will be a large
+
+68
+00:06:08,500 --> 00:06:09,730
+number of attributes.
+
+69
+00:06:09,730 --> 00:06:15,230
+So, the entry of every index would be much
+smaller than the corresponding record.
+
+70
+00:06:15,230 --> 00:06:20,790
+So, the overall index file will be a much
+smaller one than the original and we can index
+
+71
+00:06:20,790 --> 00:06:25,379
+it and there are two basic ways to index and;
+that is what we will discuss through these
+
+72
+00:06:25,379 --> 00:06:31,469
+modules one is called ordered index where
+this search keys are stored in sorted order
+
+73
+00:06:31,470 --> 00:06:36,530
+as you have just seen and the other is hash
+indices where the search keys are distributed
+
+74
+00:06:36,529 --> 00:06:39,069
+randomly across different buckets.
+
+75
+00:06:39,069 --> 00:06:44,000
+Using, concepts of hash function which you
+must have studied as a part of your data structure
+
+76
+00:06:44,000 --> 00:06:49,310
+course .
+Now, if we I mean why what should we index
+
+77
+00:06:49,310 --> 00:06:54,478
+on the basic question is ah should we index
+on all attributes should we index on one attribute
+
+78
+00:06:54,478 --> 00:06:56,949
+should we index on combination of attributes.
+
+79
+00:06:56,949 --> 00:06:58,779
+So, access.
+
+80
+00:06:58,779 --> 00:07:06,129
+So, there are certain measures to decide as
+to what is a good way to ah index.
+
+81
+00:07:06,129 --> 00:07:12,329
+So, that will be that will be measured against
+the basic requirements of the database that
+
+82
+00:07:12,329 --> 00:07:15,189
+is I should be able to index in a way.
+
+83
+00:07:15,189 --> 00:07:20,850
+So, that the access time the insertion time
+the deletion time all these should get as
+
+84
+00:07:20,850 --> 00:07:25,900
+minimized as possible and as you have just
+seen indexing might mean maintaining additional
+
+85
+00:07:25,899 --> 00:07:26,899
+structures.
+
+86
+00:07:26,899 --> 00:07:30,008
+So, that overhead of space should also be
+minimal.
+
+87
+00:07:30,009 --> 00:07:37,370
+So, with that with indexing we should be able
+to do at least certain kind of accesses where
+
+88
+00:07:37,370 --> 00:07:43,470
+a particular value matches the attribute of
+a record or falls within a range of ah values
+
+89
+00:07:43,470 --> 00:07:49,590
+ah in a record those kind of ah searches those
+kind of queries should become very efficient
+
+90
+00:07:49,589 --> 00:07:52,209
+and these metrics will have to always keep
+in mind.
+
+91
+00:07:52,209 --> 00:07:58,299
+So, let us look at the first concept of ordered
+index which is pretty much like what we have
+
+92
+00:07:58,300 --> 00:07:59,620
+just sent.
+
+93
+00:07:59,620 --> 00:08:06,100
+So, in a sequentially ordered file the index
+whose search key specifies the sequential
+
+94
+00:08:06,100 --> 00:08:09,580
+order is ah known as the primary index.
+
+95
+00:08:09,579 --> 00:08:14,669
+So, the sequential ordering is done based
+on that primary index it is called also called
+
+96
+00:08:14,670 --> 00:08:19,810
+the clustering index and please keep in mind
+that the search key of a primary index is
+
+97
+00:08:19,810 --> 00:08:25,060
+ah usually the primary key, but not necessarily
+the primary key it could be different from
+
+98
+00:08:25,060 --> 00:08:32,009
+the primary key also and if I create an index
+who search key is ah different from the sequential
+
+99
+00:08:32,009 --> 00:08:37,519
+order of the file then we say it is a secondary
+index and it is also called the non clustering
+
+100
+00:08:37,519 --> 00:08:38,570
+index.
+
+101
+00:08:38,570 --> 00:08:45,509
+So, index sequential file is ah ordered sequential
+file which is ordered on the primary index.
+
+102
+00:08:45,509 --> 00:08:52,230
+So, here ah I show an example and this is
+ah example of dense ah index file.
+
+103
+00:08:52,230 --> 00:08:59,210
+So, you can see the blue part is actual table
+which has ah different fields the id the name
+
+104
+00:08:59,210 --> 00:09:05,499
+of the faculty, the department, and the salary
+and ah this is ah as you can see that it is
+
+105
+00:09:05,499 --> 00:09:12,500
+ah completely sorted on the id in the increasing
+value of id and on the left the white is basically
+
+106
+00:09:12,500 --> 00:09:19,360
+just the ids and with every idea we have a
+pointer they record the number possibly of
+
+107
+00:09:19,360 --> 00:09:24,149
+ah the record that it corresponds to here
+all the indices that feature in the table
+
+108
+00:09:24,149 --> 00:09:30,119
+are also put on the index file and therefore,
+it is called a dense index you should also
+
+109
+00:09:30,119 --> 00:09:36,439
+note on the right that the records are interlinked
+through a chain I mean kind of they are being
+
+110
+00:09:36,438 --> 00:09:41,490
+formed in terms of a linked list whose purpose
+would be seen later on .
+
+111
+00:09:41,490 --> 00:09:48,089
+Now, instead of doing id if I want to do a
+dense index on department name, then naturally
+
+112
+00:09:48,089 --> 00:09:55,040
+the sequential file has to be indexed primarily
+on the department name and as you can note
+
+113
+00:09:55,039 --> 00:10:02,909
+that unlike the id which is also the primary
+key and therefore, every id value was unique
+
+114
+00:10:02,909 --> 00:10:08,919
+the department name is not a primary key it
+is a different attribute which allows for
+
+115
+00:10:08,919 --> 00:10:14,279
+multiple ah value ah multiple records having
+the same attribute value and therefore, when
+
+116
+00:10:14,279 --> 00:10:19,860
+we sort we have ah one instance of biology,
+but three of computer science ah two of finance
+
+117
+00:10:19,860 --> 00:10:21,539
+and so, on.
+
+118
+00:10:21,539 --> 00:10:28,009
+So, when we make the index we made the index
+collect all the distinct values of the department
+
+119
+00:10:28,009 --> 00:10:36,419
+names and for every department name we put
+a pointer we put the index marking the first
+
+120
+00:10:36,419 --> 00:10:39,889
+record in the sequential file with that department
+name.
+
+121
+00:10:39,889 --> 00:10:44,198
+So, you can see that your computer science
+points to the record starting with one zero
+
+122
+00:10:44,198 --> 00:10:48,359
+one zero one and then the; it goes on to the
+next two records.
+
+123
+00:10:48,360 --> 00:10:55,100
+So, now you can understand why we need the
+link list; because if we are looking for the
+
+124
+00:10:55,100 --> 00:11:01,079
+all those teachers all those faculty who are
+associated with department computer science,
+
+125
+00:11:01,078 --> 00:11:07,318
+then I can find it on the index file with
+the department name, computer science traveled
+
+126
+00:11:07,318 --> 00:11:13,938
+to the record first record in that which is
+of Srinivasan and then keep going on this
+
+127
+00:11:13,938 --> 00:11:19,028
+list through the linked list that we have
+on write and find the record for Katz and
+
+128
+00:11:19,028 --> 00:11:24,139
+record for Brandt and till we moved to the
+next record for Kim which does not match the
+
+129
+00:11:24,139 --> 00:11:26,678
+department name anymore.
+
+130
+00:11:26,678 --> 00:11:29,799
+Now instead of ah dense index we could also
+do sparse index.
+
+131
+00:11:29,799 --> 00:11:36,729
+Tweak parse index it means that instead of
+ah maintaining all the search key values ah
+
+132
+00:11:36,730 --> 00:11:44,249
+that exist in the file we just take a subset
+of that and ah we ah maintain those in the
+
+133
+00:11:44,249 --> 00:11:45,320
+index ah file.
+
+134
+00:11:45,320 --> 00:11:51,170
+So, here again we are showing a index sequential
+structure with id being the primary index
+
+135
+00:11:51,169 --> 00:11:56,039
+and ah we have chosen three of the ids and
+kept them in the index file.
+
+136
+00:11:56,039 --> 00:11:57,969
+So, in the sorted order.
+
+137
+00:11:57,970 --> 00:12:04,230
+So, this ah if you want to say look at a record
+with search K value K we can find the index
+
+138
+00:12:04,230 --> 00:12:10,438
+record with the largest key value ah largest
+search key value id value which is less than
+
+139
+00:12:10,438 --> 00:12:16,818
+K and then search sequentially or onwards
+because these are all ah linked together in
+
+140
+00:12:16,818 --> 00:12:18,188
+the sequential manner.
+
+141
+00:12:18,188 --> 00:12:24,278
+So, naturally compared to the dense index
+of sparse index takes ah less space and therefore,
+
+142
+00:12:24,278 --> 00:12:29,740
+less overhead for maintenance ah when we do
+insertion deletion you must have already noted
+
+143
+00:12:29,740 --> 00:12:36,198
+that ah if I were dense index then every time
+I i insert a value it will have to be the
+
+144
+00:12:36,198 --> 00:12:41,488
+dense index file will also have to change
+changes will be required there for insertion
+
+145
+00:12:41,489 --> 00:12:45,709
+as well as for deletion for sparse index it
+will not be required, because it will just
+
+146
+00:12:45,708 --> 00:12:51,778
+be required when I am actually changing the
+record or creating a record which is existing
+
+147
+00:12:51,778 --> 00:12:53,178
+on the sparse index.
+
+148
+00:12:53,178 --> 00:12:59,360
+So that way it is it is better than the dense
+index, but certainly in ah the dense index
+
+149
+00:12:59,360 --> 00:13:04,579
+I can go to any record directly from indexing
+in the sparse index I need to first index
+
+150
+00:13:04,578 --> 00:13:05,578
+and then go sequentially.
+
+151
+00:13:05,578 --> 00:13:09,979
+So, it will be in general slower in terms
+of performance and will need to look at this
+
+152
+00:13:09,980 --> 00:13:12,820
+tradeoff now it is also.
+
+153
+00:13:12,820 --> 00:13:18,829
+So, these were ah the ways to do the primary
+indexing where ah we decide the order in which
+
+154
+00:13:18,828 --> 00:13:23,998
+we actually keep the record sorted or the
+fields on which we do that and the index associated
+
+155
+00:13:23,999 --> 00:13:31,339
+with it, but ah once since the data can be
+ah primarily indexed on one or ah couple of
+
+156
+00:13:31,339 --> 00:13:34,209
+ah attributes and that gets fixed.
+
+157
+00:13:34,208 --> 00:13:40,099
+But we may want to search for other values
+also to make that efficient we create a secondary
+
+158
+00:13:40,100 --> 00:13:41,100
+index.
+
+159
+00:13:41,100 --> 00:13:43,360
+So, here we show an example where the primary
+index is id.
+
+160
+00:13:43,360 --> 00:13:47,749
+So, the whole recall records are sorted in
+terms of that and we are creating an index
+
+161
+00:13:47,749 --> 00:13:48,749
+on the salary.
+
+162
+00:13:48,749 --> 00:13:54,470
+So, that we can quickly find ah the salary
+of ah and given the salary of an employee
+
+163
+00:13:54,470 --> 00:13:59,139
+we can quickly find the employee or the employees
+who get that salary.
+
+164
+00:13:59,139 --> 00:14:04,489
+So, you can see that for secondary index now
+it is quite possible that there are multiple
+
+165
+00:14:04,489 --> 00:14:10,350
+entries for the same value of salary for example,
+if you look at the salary eighty thousand
+
+166
+00:14:10,350 --> 00:14:14,249
+that is received by Professor Singh as well
+as Professor Kim.
+
+167
+00:14:14,249 --> 00:14:21,749
+So, if you look at the index file of the index
+sequence of the ah salary values you will
+
+168
+00:14:21,749 --> 00:14:27,920
+find that against 80,000 we have two entries
+which marked to two different records corresponding
+
+169
+00:14:27,919 --> 00:14:31,428
+to the faculty who are drawing that salary.
+
+170
+00:14:31,428 --> 00:14:39,318
+So, secondary index naturally has to be ah
+dense and is created when we want we feel
+
+171
+00:14:39,318 --> 00:14:45,099
+that there is a need to quickly search on
+that field or that set of fields and we will
+
+172
+00:14:45,100 --> 00:14:47,528
+discuss more about those issues later on.
+
+173
+00:14:47,528 --> 00:14:53,428
+So, indices ah offer substantial benefits
+when searching for records, but updating index
+
+174
+00:14:53,428 --> 00:14:57,838
+impose over it; because if you create an index
+whenever you insert a record or a delete a
+
+175
+00:14:57,839 --> 00:15:04,689
+record or you change the value of a field
+which is indexed in a record then certainly
+
+176
+00:15:04,688 --> 00:15:11,379
+all these indices will have to be also updated
+and therefore, while your access time significantly
+
+177
+00:15:11,379 --> 00:15:17,970
+reduces, because of indexing your ah actual
+update insert delete update time will increase
+
+178
+00:15:17,970 --> 00:15:23,199
+and therefore, ah the indexing will have to
+be done carefully.
+
+179
+00:15:23,198 --> 00:15:28,748
+So, sequential scan using primary index is
+efficient, but sequential scan using secondary
+
+180
+00:15:28,749 --> 00:15:30,558
+index is ah expensive.
+
+181
+00:15:30,558 --> 00:15:36,708
+So, you will have to bring them in in blocks
+and that will require couple of ah millisecond
+
+182
+00:15:36,708 --> 00:15:40,429
+versus the amount of ah time that you need
+in the memory access.
+
+183
+00:15:40,429 --> 00:15:43,878
+So, these are the factors that we will have
+to take into consideration and we will talk
+
+184
+00:15:43,879 --> 00:15:45,449
+more about those.
+
+185
+00:15:45,448 --> 00:15:51,588
+Now, if I have a primary index ah then naturally
+ah to be able to access the records I will
+
+186
+00:15:51,589 --> 00:15:57,989
+have to first access the primary index and
+then do a search in that and then ah travers
+
+187
+00:15:57,989 --> 00:16:01,689
+the point at to go to the actual record in
+the file.
+
+188
+00:16:01,688 --> 00:16:08,349
+So, to access the primary record we would
+prefer that if the the primary index can actually
+
+189
+00:16:08,350 --> 00:16:09,350
+fit into the memory.
+
+190
+00:16:09,350 --> 00:16:16,220
+So, that I can do a in memory search like
+we do the binary search in a in an array.
+
+191
+00:16:16,220 --> 00:16:21,428
+So, because if the primary index is large
+then ah that also has to exist in the disk
+
+192
+00:16:21,428 --> 00:16:25,938
+and therefore, bringing that primary index
+into the memory and then searching will add
+
+193
+00:16:25,938 --> 00:16:31,240
+two additional access cost of the disk and
+you have already seen in the earlier modules
+
+194
+00:16:31,240 --> 00:16:32,240
+as.
+
+195
+00:16:32,240 --> 00:16:35,359
+So, how these costs are expensive these accesses
+are expensive.
+
+196
+00:16:35,359 --> 00:16:41,049
+So, primary index if it is not in the memory
+then we usually have a lot of ah disadvantage.
+
+197
+00:16:41,048 --> 00:16:46,178
+So, to ah take care of that if you have primary
+index actually is large enough.
+
+198
+00:16:46,178 --> 00:16:51,519
+So, that it does not fit in memory then we
+simply apply the notion of indexing once again
+
+199
+00:16:51,519 --> 00:16:53,619
+on the primary index file itself.
+
+200
+00:16:53,619 --> 00:17:01,928
+So, we construct a say on the primary index
+we construct a past sparse index.
+
+201
+00:17:01,928 --> 00:17:07,039
+So, which is called the outer index which
+is a sparse index of the primary index and
+
+202
+00:17:07,039 --> 00:17:10,418
+in that index is the actual primary index
+file.
+
+203
+00:17:10,419 --> 00:17:17,220
+So, if now in turn the outer index the sparse
+index of the primary index also is too large
+
+204
+00:17:17,220 --> 00:17:22,559
+to fit in memory then you need to do yet another
+level of ah indexing on it and.
+
+205
+00:17:22,559 --> 00:17:30,649
+So, on till you come to a index of ah list
+which fits into a memory can can be directly
+
+206
+00:17:30,650 --> 00:17:31,650
+accessed.
+
+207
+00:17:31,650 --> 00:17:33,500
+So, the cost for that.
+
+208
+00:17:33,500 --> 00:17:35,859
+So, this is what is called a multi level indexing.
+
+209
+00:17:35,859 --> 00:17:41,369
+Because, you are following multiple levels
+for indexing and ah the cost naturally of
+
+210
+00:17:41,369 --> 00:17:47,219
+update insert delete increases; because now
+all of these multiple levels of indices will
+
+211
+00:17:47,220 --> 00:17:48,500
+have to be updated.
+
+212
+00:17:48,500 --> 00:17:49,509
+When you do an update.
+
+213
+00:17:49,509 --> 00:17:55,059
+So, this is ah what is a view of the multi
+level index you can see the outer index which
+
+214
+00:17:55,059 --> 00:18:04,039
+ah is sparsely index and index those lead
+to ah different blocks of primary index of
+
+215
+00:18:04,039 --> 00:18:10,430
+the of the inner index which is the primary
+index and then ah you traverse to the specific
+
+216
+00:18:10,430 --> 00:18:15,019
+block where your record is expected.
+
+217
+00:18:15,019 --> 00:18:19,559
+So, with this you since your outer index are
+in memory.
+
+218
+00:18:19,559 --> 00:18:25,549
+So, you need to do one disk fetch for finding
+out the inner index block which should be
+
+219
+00:18:25,549 --> 00:18:32,339
+one disk page or disk block one axis and then
+based on that to find another access to ah
+
+220
+00:18:32,339 --> 00:18:34,500
+for the block in which the record exists.
+
+221
+00:18:34,500 --> 00:18:40,750
+So, with this you would be able to manage
+with to block accesses in this case and that
+
+222
+00:18:40,750 --> 00:18:45,670
+is how the multiple this would not have been
+possible if ah in this case you would not
+
+223
+00:18:45,670 --> 00:18:50,820
+have done the sparse outer index, because
+you would have required the different parts
+
+224
+00:18:50,819 --> 00:18:55,289
+of the inner index of the primary index to
+be fetched repeatedly from the disk till you
+
+225
+00:18:55,289 --> 00:19:00,539
+act could actually find the final result in
+that.
+
+226
+00:19:00,539 --> 00:19:08,289
+So, updating the index particularly if you
+ah do deletion then ah the if it is a dense
+
+227
+00:19:08,289 --> 00:19:14,680
+index then the deletion of the search key
+is similar to ah deletion of ah the actual
+
+228
+00:19:14,680 --> 00:19:18,660
+record in the file because it is dense if
+these parts, then naturally you will have
+
+229
+00:19:18,660 --> 00:19:23,740
+to take care of some of the cases, because
+if it falls within a range then ah just deleting
+
+230
+00:19:23,740 --> 00:19:30,440
+it would not matter, but if it falls on the
+boundary where it is actually sparsely indexed
+
+231
+00:19:30,440 --> 00:19:34,160
+then that will have to be appropriately updated.
+
+232
+00:19:34,160 --> 00:19:37,910
+Similar thing will have to be taken care of
+in terms of ah insertion.
+
+233
+00:19:37,910 --> 00:19:42,570
+So, first you will have to look up to find
+out to where the record needs to be inserted
+
+234
+00:19:42,569 --> 00:19:48,799
+and then if it is a dense index if the search
+key does not appear in the index then you
+
+235
+00:19:48,799 --> 00:19:54,000
+will have to insert it in case of sparse index
+you will have to do the additional care that
+
+236
+00:19:54,000 --> 00:19:59,410
+ah whether it already belongs to the range
+and or whether if it will have to be a new
+
+237
+00:19:59,410 --> 00:20:05,040
+block has to be created then it has to be
+also entered in terms of the sparse index
+
+238
+00:20:05,039 --> 00:20:11,909
+and ah if you have multi level ah indexing
+then insertion deletion will be extensions
+
+239
+00:20:11,910 --> 00:20:15,350
+of these basic algorithms.
+
+240
+00:20:15,349 --> 00:20:21,439
+For secondary indices frequently we want to
+find ah all records where certain value ah
+
+241
+00:20:21,440 --> 00:20:26,990
+value in a certain field which is not the
+search key or the; of the primary index satisfy
+
+242
+00:20:26,990 --> 00:20:28,099
+some condition.
+
+243
+00:20:28,099 --> 00:20:33,719
+And, we can have a secondary index with an
+index record for each of this search key values
+
+244
+00:20:33,720 --> 00:20:43,019
+depending on what we expect what we ah would
+think or likely fields on which more search
+
+245
+00:20:43,019 --> 00:20:44,019
+will be done.
+
+246
+00:20:44,019 --> 00:20:51,809
+Or more range queries will be done . So, to
+ah summarize we have ah taken a brief look
+
+247
+00:20:51,809 --> 00:20:59,149
+at the ah basic reasons for indexing database
+tables which is to speed up the process of
+
+248
+00:20:59,150 --> 00:21:07,370
+ah access insert and delete and we have seen
+that primarily indexing primarily focuses
+
+249
+00:21:07,369 --> 00:21:11,339
+on ah speeding up the access ah process.
+
+250
+00:21:11,339 --> 00:21:19,539
+So, in that maintenance of ah indexing whereas,
+insertion and deletion might have some additional
+
+251
+00:21:19,539 --> 00:21:26,170
+overhead, but since insertion and deletion
+both inherently needs ah access to be done
+
+252
+00:21:26,170 --> 00:21:32,180
+because you can insert only when ah you have
+ah tried to access and havent found exactly
+
+253
+00:21:32,180 --> 00:21:36,700
+where the record should occur or for deletion;
+obviously, you need to first find the record
+
+254
+00:21:36,700 --> 00:21:37,920
+to be able to delete it.
+
+255
+00:21:37,920 --> 00:21:43,150
+So, even though it is focused indexing is
+focused on improving the access time it actually
+
+256
+00:21:43,150 --> 00:21:50,850
+improves the time for access insert delete
+all of that, but we will have to keep in mind
+
+257
+00:21:50,849 --> 00:21:56,269
+that in the process there are certain overheads
+of index update for insert and delete that
+
+258
+00:21:56,269 --> 00:22:02,299
+will have to be kept as a minimal and the
+additional storage requirement will also have
+
+259
+00:22:02,299 --> 00:22:04,490
+to be kept as a least overhead.
+
+260
+00:22:04,490 --> 00:22:09,819
+So, with this ah we will close this module
+we have taken the basic look at the index
+
+261
+00:22:09,819 --> 00:22:14,579
+sequential access mechanism this is called
+index sequential access mechanism associated
+
+262
+00:22:14,579 --> 00:22:16,859
+with different database index files.
+

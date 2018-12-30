@@ -1,0 +1,2484 @@
+
+1
+00:00:01.630 --> 00:00:05.040
+Next we will talk about Spark streaming.
+
+2
+00:00:06.650 --> 00:00:12.474
+After this video you will be able to
+summarize how Spark reads streaming data,
+
+3
+00:00:12.474 --> 00:00:17.240
+list several sources of streaming
+data supported by Spark, and
+
+4
+00:00:17.240 --> 00:00:20.077
+describe Spark's sliding windows.
+
+5
+00:00:20.077 --> 00:00:25.778
+Spark streaming provides
+scalable processing for
+
+6
+00:00:25.778 --> 00:00:30.954
+real-time data and
+runs on top of Spark Core.
+
+7
+00:00:32.816 --> 00:00:36.319
+Continuous data streams are converted or
+
+8
+00:00:36.319 --> 00:00:42.130
+grouped into discrete RDDs which
+can then be processed in parallel.
+
+9
+00:00:43.620 --> 00:00:47.357
+Spark Streaming provides APIs for Scala,
+
+10
+00:00:47.357 --> 00:00:51.620
+Java, and Python,
+like other Spark products.
+
+11
+00:00:55.370 --> 00:01:00.820
+Spark Streaming can read
+data from many different
+
+12
+00:01:00.820 --> 00:01:06.278
+types of resources,
+including Kafka and Flume.
+
+13
+00:01:06.278 --> 00:01:12.778
+Kafka is a high throughput published
+subscribed messaging system,
+
+14
+00:01:12.778 --> 00:01:17.044
+and Flume collects and
+aggregates log data.
+
+15
+00:01:17.044 --> 00:01:22.125
+Spark Streaming can also read from batch
+
+16
+00:01:22.125 --> 00:01:26.609
+input data sources, such as HDFS,
+
+17
+00:01:26.609 --> 00:01:31.720
+S3, and many other non SQL databases.
+
+18
+00:01:31.720 --> 00:01:39.368
+Additionally, Spark Streaming can read
+directly from Twitter, raw TCP sockets,
+
+19
+00:01:39.368 --> 00:01:45.306
+and many other data sources that
+are real-time data providers.
+
+20
+00:01:48.358 --> 00:01:49.280
+So how does it all work?
+
+21
+00:01:50.320 --> 00:01:55.910
+Here we show you a flow of
+transformations and actions
+
+22
+00:01:55.910 --> 00:02:01.131
+which you will try in the upcoming reading
+and hands-on exercises on Spark Streaming.
+
+23
+00:02:01.131 --> 00:02:05.102
+Spark streaming reads
+
+24
+00:02:05.102 --> 00:02:10.760
+streaming data and
+converts it into micro batches
+
+25
+00:02:10.760 --> 00:02:16.350
+which we call DStreams which is short for
+discretized stream.
+
+26
+00:02:19.378 --> 00:02:24.736
+In this example a 10 second
+stream gets converted
+
+27
+00:02:24.736 --> 00:02:29.980
+into five RDDs using a batch
+length of 2 seconds.
+
+28
+00:02:31.800 --> 00:02:36.920
+Similar to other RDDs,
+transformations such as map, reduce,
+
+29
+00:02:36.920 --> 00:02:39.515
+and filter can be applied to DStreams.
+
+30
+00:02:39.515 --> 00:02:45.720
+DStreams can be aggregated
+
+31
+00:02:45.720 --> 00:02:52.310
+into Windows allowing you to apply
+computations on sliding window of data.
+
+32
+00:02:53.860 --> 00:02:58.165
+In this example the Window
+size is 4 seconds and
+
+33
+00:02:58.165 --> 00:03:01.510
+the sliding interval is 2 seconds.
+
+34
+00:03:04.826 --> 00:03:09.594
+In summary, Spark Streaming is
+Spark's library to work with
+
+35
+00:03:09.594 --> 00:03:12.260
+streaming data in near real time.
+
+36
+00:03:14.375 --> 00:03:19.210
+DStreams can be used just
+like any other RDD and
+
+37
+00:03:19.210 --> 00:03:22.940
+can go through the same
+transformation as batch datasets.
+
+38
+00:03:24.560 --> 00:03:31.907
+DStreams can create a sliding window to
+perform calculations on a window of time.
+
+1
+00:00:02.012 --> 00:00:05.776
+Now that we know what machine learning
+is and have seen some examples of it,
+
+2
+00:00:05.776 --> 00:00:09.010
+let's talk about how we
+do machine learning.
+
+3
+00:00:09.010 --> 00:00:13.015
+In this lecture we will get an overview of
+the main categories of machine learning
+
+4
+00:00:13.015 --> 00:00:13.625
+techniques.
+
+5
+00:00:15.265 --> 00:00:18.315
+After this video you will be able to
+
+6
+00:00:18.315 --> 00:00:21.805
+describe the main categories of
+machine learning techniques and
+
+7
+00:00:21.805 --> 00:00:25.469
+summarize how supervised learning
+differs from unsupervised learning.
+
+8
+00:00:27.710 --> 00:00:30.260
+There are different categories of
+machine learning techniques for
+
+9
+00:00:30.260 --> 00:00:32.150
+different types of problems.
+
+10
+00:00:32.150 --> 00:00:34.240
+The main categories are listed here.
+
+11
+00:00:34.240 --> 00:00:38.630
+They are classification,
+regression, cluster analysis, and
+
+12
+00:00:38.630 --> 00:00:40.450
+association analysis.
+
+13
+00:00:40.450 --> 00:00:43.000
+We will cover each one in
+detail in the following slides.
+
+14
+00:00:44.730 --> 00:00:49.830
+In classification, the goal is to
+predict the category of the input data.
+
+15
+00:00:49.830 --> 00:00:54.840
+An example of this is predicting the
+weather as being sunny, rainy, windy, or
+
+16
+00:00:54.840 --> 00:00:56.080
+cloudy.
+
+17
+00:00:56.080 --> 00:01:00.260
+The input data in this case would be
+sensor data specifying the temperature,
+
+18
+00:01:00.260 --> 00:01:05.840
+relative humidity, atmospheric pressure,
+wind speed, wind direction, etc.
+
+19
+00:01:05.840 --> 00:01:10.502
+The target or what you're trying to
+predict would be the different weather
+
+20
+00:01:10.502 --> 00:01:14.670
+categories, sunny, windy,
+rainy, and cloudy.
+
+21
+00:01:14.670 --> 00:01:19.580
+Another example is to classify
+a tumor as either benign or malignant.
+
+22
+00:01:19.580 --> 00:01:22.460
+In this case,
+the classification is referred to as
+
+23
+00:01:22.460 --> 00:01:26.040
+binary classification since
+there are only two categories.
+
+24
+00:01:26.040 --> 00:01:28.400
+But you can have many categories as well.
+
+25
+00:01:28.400 --> 00:01:30.170
+As the weather prediction
+problem shown here.
+
+26
+00:01:31.390 --> 00:01:35.080
+Another example is to identify hand
+written digits as being in one of ten
+
+27
+00:01:35.080 --> 00:01:36.950
+categories, zero to nine.
+
+28
+00:01:38.970 --> 00:01:43.280
+Some more examples of classification
+are classifying a tumor from a medical
+
+29
+00:01:43.280 --> 00:01:45.710
+image as being benign or malignant.
+
+30
+00:01:45.710 --> 00:01:48.430
+Predicting whether it
+will rain the next day.
+
+31
+00:01:48.430 --> 00:01:53.410
+Determining if a loan application is
+high-risk, medium-risk or low-risk.
+
+32
+00:01:53.410 --> 00:01:55.860
+Identifying the sentiment of a tweet or
+
+33
+00:01:55.860 --> 00:01:58.990
+review as being positive,
+negative, or neutral.
+
+34
+00:02:00.930 --> 00:02:04.870
+When your model has to predict
+a numeric value instead of a category,
+
+35
+00:02:04.870 --> 00:02:07.380
+then the task becomes
+a regression problem.
+
+36
+00:02:09.040 --> 00:02:12.920
+An example of regression is to
+predict the price of a stock.
+
+37
+00:02:12.920 --> 00:02:16.320
+The stock price is a numeric value,
+not a category.
+
+38
+00:02:16.320 --> 00:02:19.700
+So this is a regression task
+instead of a classification task.
+
+39
+00:02:20.710 --> 00:02:23.480
+If you were to predict whether
+the stock price will rise or
+
+40
+00:02:23.480 --> 00:02:26.620
+fall, then that would be
+a classification problem.
+
+41
+00:02:26.620 --> 00:02:29.340
+But if you're predicting
+the actual price of the stock,
+
+42
+00:02:29.340 --> 00:02:30.620
+then that is a regression problem.
+
+43
+00:02:31.740 --> 00:02:35.340
+That is the main difference between
+classification and regression.
+
+44
+00:02:35.340 --> 00:02:38.250
+In classification,
+you're predicting a category and
+
+45
+00:02:38.250 --> 00:02:40.520
+in regression,
+you're predicting a numeric value.
+
+46
+00:02:42.630 --> 00:02:47.000
+Some other examples of regression
+are estimating the demand of a product
+
+47
+00:02:47.000 --> 00:02:49.570
+based on time or season of the year.
+
+48
+00:02:49.570 --> 00:02:52.130
+Predicting a score on a test,
+
+49
+00:02:52.130 --> 00:02:55.210
+determining the likelihood of
+how effective a drug will be for
+
+50
+00:02:55.210 --> 00:03:00.270
+a particular patient, predicting
+the amount of rain for a region.
+
+51
+00:03:00.270 --> 00:03:01.550
+In cluster analysis,
+
+52
+00:03:01.550 --> 00:03:06.275
+the goal is to organize similar
+items in your data set into groups.
+
+53
+00:03:06.275 --> 00:03:10.120
+A very common application of
+cluster analysis is referred to as
+
+54
+00:03:10.120 --> 00:03:12.160
+customer segmentation.
+
+55
+00:03:12.160 --> 00:03:16.227
+This means that you're separating your
+customer base into different groups or
+
+56
+00:03:16.227 --> 00:03:18.054
+segments based on customer types.
+
+57
+00:03:18.054 --> 00:03:22.833
+For example it would be very beneficial
+to segment your customers into seniors,
+
+58
+00:03:22.833 --> 00:03:25.230
+adults and teenagers.
+
+59
+00:03:25.230 --> 00:03:27.544
+These groups have different likes and
+dislikes and
+
+60
+00:03:27.544 --> 00:03:29.383
+have different purchasing behaviors.
+
+61
+00:03:29.383 --> 00:03:33.569
+By segmenting your customers to different
+groups you can more effectively provide
+
+62
+00:03:33.569 --> 00:03:37.652
+marketing adds targeted for
+each groups particular interests.
+
+63
+00:03:37.652 --> 00:03:40.750
+Note that cluster analysis is
+also referred to as clustering.
+
+64
+00:03:42.860 --> 00:03:46.810
+Some other examples of cluster
+analysis are, identifying areas of
+
+65
+00:03:46.810 --> 00:03:51.840
+similar topography, such as desert region,
+grassy areas, mountains etc.
+
+66
+00:03:51.840 --> 00:03:55.610
+Categorizing different types of
+tissues from medical images.
+
+67
+00:03:55.610 --> 00:04:00.080
+Determining different groups of weather
+patterns, such as snowy, dry, monsoon.
+
+68
+00:04:01.160 --> 00:04:04.810
+And discovering hot spots for different
+types of crime from police reports.
+
+69
+00:04:06.960 --> 00:04:10.770
+The goal in association analysis is
+to come up with a set of rules to
+
+70
+00:04:10.770 --> 00:04:14.230
+capture associations between items or
+events.
+
+71
+00:04:14.230 --> 00:04:18.520
+The rules are used to determine when
+items or events occur together.
+
+72
+00:04:18.520 --> 00:04:22.500
+A common application of association
+analysis is known as market
+
+73
+00:04:22.500 --> 00:04:24.300
+basket analysis.
+
+74
+00:04:24.300 --> 00:04:28.020
+Which is used to understand
+customer purchasing behavior.
+
+75
+00:04:28.020 --> 00:04:32.000
+For example, association analysis can
+reveal that banking customers who have
+
+76
+00:04:32.000 --> 00:04:36.330
+CDs, or Certificates of Deposits,
+also tend to be interested in
+
+77
+00:04:36.330 --> 00:04:39.970
+other investment vehicles such
+as money market accounts.
+
+78
+00:04:39.970 --> 00:04:42.840
+This information can be used for
+cross selling.
+
+79
+00:04:42.840 --> 00:04:47.020
+If you advertise money market accounts to
+your customers with CDs they are likely to
+
+80
+00:04:47.020 --> 00:04:48.390
+open such an account.
+
+81
+00:04:50.750 --> 00:04:54.700
+According to data mining folklore
+a supermarket chain used association
+
+82
+00:04:54.700 --> 00:04:59.410
+analysis to discover a connection between
+two seemingly unrelated products.
+
+83
+00:04:59.410 --> 00:05:02.130
+They discovered that many
+customers who go to the store
+
+84
+00:05:02.130 --> 00:05:06.150
+late on Sunday night to buy
+diapers also tend to buy beer.
+
+85
+00:05:06.150 --> 00:05:08.470
+This information was then
+used to place beer and
+
+86
+00:05:08.470 --> 00:05:12.620
+diapers close together and
+they saw a jump in sales of both items.
+
+87
+00:05:12.620 --> 00:05:14.630
+This is the famous diaper,
+beer connection.
+
+88
+00:05:16.920 --> 00:05:21.600
+Some other applications of association
+analysis are recommending similar
+
+89
+00:05:21.600 --> 00:05:26.180
+items based on the purchasing behavior or
+browsing histories of customers.
+
+90
+00:05:27.180 --> 00:05:30.720
+Finding items that are often purchased
+together, such as garden hose and
+
+91
+00:05:30.720 --> 00:05:32.080
+potting soil, and
+
+92
+00:05:32.080 --> 00:05:35.910
+offer sales on these related items at the
+same time to drive sales of both items.
+
+93
+00:05:36.980 --> 00:05:39.970
+Identifying web pages that
+are often accessed together so
+
+94
+00:05:39.970 --> 00:05:44.070
+that you can more efficiently offer up
+these related web pages at the same time.
+
+95
+00:05:45.944 --> 00:05:49.890
+We have now looked at the different
+categories of machine learning techniques.
+
+96
+00:05:49.890 --> 00:05:54.240
+They are classification,
+regression, cluster analysis, and
+
+97
+00:05:54.240 --> 00:05:55.280
+association analysis.
+
+98
+00:05:55.280 --> 00:05:58.753
+We have also seen some
+examples of each category
+
+99
+00:06:00.941 --> 00:06:04.764
+There is also another categorization
+of machine learning techniques, and
+
+100
+00:06:04.764 --> 00:06:07.520
+that is supervised versus
+unsupervised approaches.
+
+101
+00:06:08.840 --> 00:06:10.900
+In supervised approaches the target,
+
+102
+00:06:10.900 --> 00:06:13.830
+which is what the model is predicting,
+is provided.
+
+103
+00:06:13.830 --> 00:06:18.750
+This is referred to as having labeled
+data because the target is labeled for
+
+104
+00:06:18.750 --> 00:06:20.457
+every sample that you
+have in your data set.
+
+105
+00:06:21.550 --> 00:06:25.520
+Referring back to our example of
+predicting a weather category of sunny,
+
+106
+00:06:25.520 --> 00:06:27.940
+windy, rainy or cloudy,
+
+107
+00:06:27.940 --> 00:06:32.550
+every sample in the data set is labeled
+as being one of these four categories.
+
+108
+00:06:32.550 --> 00:06:37.910
+So the data is labeled and predicting the
+weather categories is a supervised task.
+
+109
+00:06:37.910 --> 00:06:41.740
+In general, classification and
+regression are supervised approaches.
+
+110
+00:06:43.680 --> 00:06:46.200
+In unsupervised approaches
+on the other hand,
+
+111
+00:06:46.200 --> 00:06:50.440
+the target that the model is
+predicting is unknown or unavailable.
+
+112
+00:06:50.440 --> 00:06:53.320
+This means that you have unlabeled data.
+
+113
+00:06:53.320 --> 00:06:57.130
+Going back to our cluster analysis
+example of segmenting customers into
+
+114
+00:06:57.130 --> 00:06:58.400
+different groups.
+
+115
+00:06:58.400 --> 00:07:02.180
+The samples in your data are not
+labeled with the correct group.
+
+116
+00:07:02.180 --> 00:07:06.250
+Instead, the segmentation is performed
+using a clustering technique to group
+
+117
+00:07:06.250 --> 00:07:09.660
+items based on characteristics
+that they have in common.
+
+118
+00:07:09.660 --> 00:07:11.560
+Thus, the data is unlabeled and
+
+119
+00:07:11.560 --> 00:07:16.630
+the task of grouping customers into
+different segments is an unsupervised one.
+
+120
+00:07:16.630 --> 00:07:18.606
+In general, cluster analysis and
+
+121
+00:07:18.606 --> 00:07:21.751
+association analysis
+are unsupervised approaches.
+
+122
+00:07:23.962 --> 00:07:24.534
+In summary,
+
+123
+00:07:24.534 --> 00:07:29.000
+in this lecture we looked at the different
+categories of machine learning techniques.
+
+124
+00:07:29.000 --> 00:07:35.210
+We discussed classification, regression,
+cluster analysis and association analysis.
+
+125
+00:07:35.210 --> 00:07:37.370
+We also defined what supervised and
+
+126
+00:07:37.370 --> 00:07:39.590
+unsupervised approaches are,
+in machine learning.
+
+1
+00:00:01.490 --> 00:00:04.360
+In this lecture,
+we will review each of the steps in
+
+2
+00:00:04.360 --> 00:00:06.440
+the machine learning
+process in greater detail.
+
+3
+00:00:07.930 --> 00:00:12.360
+After this video, you will be able
+to explain the goals of each step in
+
+4
+00:00:12.360 --> 00:00:17.989
+the machine learning process, and list key
+activities in each step in the process.
+
+5
+00:00:19.910 --> 00:00:23.840
+This is the machine learning process
+that we saw in the last lecture.
+
+6
+00:00:23.840 --> 00:00:27.560
+In this lecture,
+we will cover each step in more detail.
+
+7
+00:00:27.560 --> 00:00:29.640
+We will describe the goals
+of each step and
+
+8
+00:00:29.640 --> 00:00:31.600
+the key activities performed in each step.
+
+9
+00:00:33.730 --> 00:00:37.870
+The first step in the data science
+process is to acquire the data.
+
+10
+00:00:37.870 --> 00:00:39.910
+The goal of the step is to identify and
+
+11
+00:00:39.910 --> 00:00:42.270
+obtain all data related
+to the problem at hand.
+
+12
+00:00:43.980 --> 00:00:47.800
+First, we need to identify all
+related data and the sources.
+
+13
+00:00:47.800 --> 00:00:52.330
+Keep in mind, that data can come from
+different sources such as files,
+
+14
+00:00:52.330 --> 00:00:55.940
+databases, the internet, mobile devices.
+
+15
+00:00:55.940 --> 00:00:59.290
+So remember to include all data related
+to the problem you're addressing.
+
+16
+00:01:00.520 --> 00:01:03.520
+After you've identified your data and
+data sources,
+
+17
+00:01:03.520 --> 00:01:08.360
+the next step is to collect the data and
+integrate data from the different sources.
+
+18
+00:01:08.360 --> 00:01:12.570
+This may require conversion,
+as data can come in different formats.
+
+19
+00:01:12.570 --> 00:01:15.246
+And it may also require aligning the data,
+
+20
+00:01:15.246 --> 00:01:19.520
+as data from different sources may have
+different time or spacial resolutions.
+
+21
+00:01:21.660 --> 00:01:26.410
+Once you’ve collected and integrated your
+data, you now have a coherent data set for
+
+22
+00:01:26.410 --> 00:01:27.050
+your analysis.
+
+23
+00:01:28.920 --> 00:01:33.400
+The next step after acquiring data is
+to prepare it to make it suitable for
+
+24
+00:01:33.400 --> 00:01:34.690
+analysis.
+
+25
+00:01:34.690 --> 00:01:39.290
+There are two parts to this step,
+explore data and preprocess data.
+
+26
+00:01:39.290 --> 00:01:41.410
+We will discuss data exploration first.
+
+27
+00:01:43.040 --> 00:01:47.670
+In data exploration, you want to
+do some preliminary investigation
+
+28
+00:01:47.670 --> 00:01:52.680
+in order to gain a better understanding of
+the specific characteristics of your data.
+
+29
+00:01:52.680 --> 00:01:55.779
+This in turn will guide
+the rest of the process.
+
+30
+00:01:55.779 --> 00:01:58.640
+With data exploration,
+you'll want to look for
+
+31
+00:01:58.640 --> 00:02:03.250
+things like correlations,
+general trends, outliers, etc.
+
+32
+00:02:05.080 --> 00:02:07.930
+Correlations provide information
+about the relationship
+
+33
+00:02:07.930 --> 00:02:09.280
+between variables in your data.
+
+34
+00:02:10.990 --> 00:02:15.710
+Trends in your data will reveal if the
+variable is moving in a certain direction,
+
+35
+00:02:15.710 --> 00:02:18.480
+such as transaction volume
+increasing throughout the year.
+
+36
+00:02:20.120 --> 00:02:23.660
+Outliers indicate potential
+problems with the data, or
+
+37
+00:02:23.660 --> 00:02:27.850
+may indicate an interesting data
+point that needs further examination.
+
+38
+00:02:27.850 --> 00:02:29.680
+Without this data exploration activity,
+
+39
+00:02:29.680 --> 00:02:32.370
+you will not be able to
+use your data effectively.
+
+40
+00:02:34.350 --> 00:02:38.680
+One way to explore your data is
+to calculate summary statistics
+
+41
+00:02:38.680 --> 00:02:40.290
+to numerically describe the data.
+
+42
+00:02:42.180 --> 00:02:46.570
+Summary statistics are quantities
+that capture various characteristics
+
+43
+00:02:46.570 --> 00:02:50.390
+of a set of values with a single number,
+or a small set of numbers.
+
+44
+00:02:50.390 --> 00:02:55.400
+Some basic summary statistics that you
+should compute for your data set are mean,
+
+45
+00:02:55.400 --> 00:03:00.360
+median, mode, range and
+standard deviation.
+
+46
+00:03:00.360 --> 00:03:03.660
+Mean and median are measures of
+the location of a set of values.
+
+47
+00:03:03.660 --> 00:03:07.440
+Mode is the value that occurs most
+frequently in your data set, and
+
+48
+00:03:07.440 --> 00:03:11.630
+range and standard deviation
+are measures of spread in your data.
+
+49
+00:03:11.630 --> 00:03:16.060
+Looking at these measures will give you
+an idea of the nature of your data.
+
+50
+00:03:16.060 --> 00:03:19.130
+They can tell you if there's
+something wrong with your data.
+
+51
+00:03:19.130 --> 00:03:23.100
+For example, if the range of
+the values for age in your data
+
+52
+00:03:23.100 --> 00:03:27.020
+includes negative numbers, or
+a number much greater than a hundred,
+
+53
+00:03:27.020 --> 00:03:29.830
+there's something suspicious in
+the data that needs to be examined.
+
+54
+00:03:31.760 --> 00:03:34.230
+Visualization techniques
+also provide quick and
+
+55
+00:03:34.230 --> 00:03:36.570
+effective ways to explore your data.
+
+56
+00:03:36.570 --> 00:03:39.760
+Some examples are, a histogram,
+
+57
+00:03:39.760 --> 00:03:43.570
+such as the plot shown here,
+shows the distribution of the data and
+
+58
+00:03:43.570 --> 00:03:47.269
+can show skewness or
+unusual dispersion in outliers.
+
+59
+00:03:48.960 --> 00:03:53.380
+A line plot, like the one in the lower
+left, can be used to look at trends in
+
+60
+00:03:53.380 --> 00:03:56.080
+the data, such as,
+the change in the price of a stock.
+
+61
+00:03:57.750 --> 00:04:00.816
+A heat map can give you an idea
+of where the hot spots are.
+
+62
+00:04:02.485 --> 00:04:07.315
+A scatter plot effectively shows
+correlation between two variables.
+
+63
+00:04:07.315 --> 00:04:10.585
+Overall, there are many types
+of plots to visualize data.
+
+64
+00:04:10.585 --> 00:04:13.525
+They are very useful in helping
+you understand the data you have.
+
+65
+00:04:15.745 --> 00:04:19.155
+The second part of the prepare
+step is preprocess.
+
+66
+00:04:19.155 --> 00:04:23.755
+So, after we've explored the data, we need
+to preprocess the data to prepare it for
+
+67
+00:04:23.755 --> 00:04:24.405
+analysis.
+
+68
+00:04:26.150 --> 00:04:29.950
+The goal here is to create the data
+that will be used for analysis.
+
+69
+00:04:29.950 --> 00:04:33.280
+The main activities on this
+part are to clean the data,
+
+70
+00:04:33.280 --> 00:04:37.070
+select the appropriate variables to
+use and transform the data as needed.
+
+71
+00:04:38.855 --> 00:04:41.375
+A very important part of
+data preparation is to
+
+72
+00:04:41.375 --> 00:04:43.975
+clean the data to address quality issues.
+
+73
+00:04:43.975 --> 00:04:45.875
+Real world data is nothing.
+
+74
+00:04:45.875 --> 00:04:51.275
+There are many examples of quality issues
+with data from real applications including
+
+75
+00:04:51.275 --> 00:04:56.065
+missing values, such as income
+in a survey, duplicate data,
+
+76
+00:04:56.065 --> 00:04:59.615
+such as two different records for the same
+customer with different addresses.
+
+77
+00:05:01.020 --> 00:05:04.670
+Inconsistent or invalid data,
+such as a six digit zip code.
+
+78
+00:05:06.130 --> 00:05:09.110
+Noise in the collection of data
+that distorts the true values.
+
+79
+00:05:10.915 --> 00:05:15.180
+Outliers, such as a number much
+larger than 100 for someone's age.
+
+80
+00:05:15.180 --> 00:05:16.700
+It is essential to detect and
+
+81
+00:05:16.700 --> 00:05:20.230
+address these issues that can negatively
+affect the quality of the data.
+
+82
+00:05:22.740 --> 00:05:26.620
+Other activities in data preprocessing
+can be broadly categorized as
+
+83
+00:05:26.620 --> 00:05:30.140
+feature selection and
+feature transformation.
+
+84
+00:05:30.140 --> 00:05:33.410
+Feature selection refers to
+choosing the set of features to
+
+85
+00:05:33.410 --> 00:05:36.500
+use that is appropriate for
+the application.
+
+86
+00:05:36.500 --> 00:05:39.820
+Feature selection can
+involve removing redundant or
+
+87
+00:05:39.820 --> 00:05:44.420
+irrelevant features, combining features,
+or creating new features.
+
+88
+00:05:45.610 --> 00:05:47.520
+During the exploring data step,
+
+89
+00:05:47.520 --> 00:05:50.820
+you may have discovered that two
+features are very correlated.
+
+90
+00:05:50.820 --> 00:05:53.460
+In that case,
+one of these features can be removed
+
+91
+00:05:53.460 --> 00:05:56.630
+without negatively effecting
+the analysis results.
+
+92
+00:05:56.630 --> 00:05:59.110
+For example,
+the purchase price of a product and
+
+93
+00:05:59.110 --> 00:06:02.830
+the amount of sales tax pain
+are very likely to be correlated.
+
+94
+00:06:02.830 --> 00:06:06.860
+Eliminating the sales tax
+amount then will be beneficial.
+
+95
+00:06:06.860 --> 00:06:11.330
+Removing redundant or irrelevant features
+will make the subsequent analysis simpler.
+
+96
+00:06:12.490 --> 00:06:15.870
+You may also want to combine features or
+create new ones.
+
+97
+00:06:15.870 --> 00:06:18.580
+For example,
+adding the applicants education level
+
+98
+00:06:18.580 --> 00:06:21.449
+as a feature to a loan approval
+application would make sense.
+
+99
+00:06:22.450 --> 00:06:25.700
+There are also algorithms to
+automatically determine the most relevant
+
+100
+00:06:25.700 --> 00:06:27.940
+features based on various
+mathematical properties.
+
+101
+00:06:30.280 --> 00:06:34.510
+Feature transformation maps the data
+from one format to another.
+
+102
+00:06:34.510 --> 00:06:36.805
+Various transformation operations exist.
+
+103
+00:06:36.805 --> 00:06:41.470
+For example, scaling maps
+the data values to a specified
+
+104
+00:06:41.470 --> 00:06:45.630
+range to prevent any one feature from
+dominating the analysis results.
+
+105
+00:06:47.280 --> 00:06:51.900
+Filtering or aggregation can be used to
+reduce noise and variability in the data.
+
+106
+00:06:53.700 --> 00:06:58.160
+Dimensionality reduction maps the data
+to a smaller subset of dimensions
+
+107
+00:06:58.160 --> 00:07:01.020
+to simplify the subsequent analysis.
+
+108
+00:07:01.020 --> 00:07:05.497
+We will discuss techniques to prepare
+data in more detail later in this course.
+
+109
+00:07:07.000 --> 00:07:10.237
+After preparing the data to
+address data quality issues and
+
+110
+00:07:10.237 --> 00:07:13.020
+preprocess it to get it in
+the appropriate format,
+
+111
+00:07:13.020 --> 00:07:17.680
+the next step in the machine learning
+process is to analyze the data.
+
+112
+00:07:17.680 --> 00:07:20.840
+The goals of the staff are to
+build a machine learning model,
+
+113
+00:07:20.840 --> 00:07:24.960
+to analyze the data and to evaluate
+the results that you get from the model.
+
+114
+00:07:27.140 --> 00:07:32.110
+The analyze steps starts with this
+determining the type of problem you have.
+
+115
+00:07:32.110 --> 00:07:35.990
+You begin by selecting appropriate machine
+learning techniques to analyze the data.
+
+116
+00:07:37.760 --> 00:07:40.350
+Then you construct the model using
+the data that you've prepared.
+
+117
+00:07:41.940 --> 00:07:46.220
+Once the model is built, you will
+want to apply it to new data samples
+
+118
+00:07:46.220 --> 00:07:48.450
+to evaluate how well the model performs.
+
+119
+00:07:49.800 --> 00:07:53.125
+Thus data analysis involves selecting
+the appropriate technique for
+
+120
+00:07:53.125 --> 00:07:57.375
+your problem, building the model,
+then evaluating the results.
+
+121
+00:07:57.375 --> 00:07:58.855
+As there are a different
+types of problems,
+
+122
+00:07:58.855 --> 00:08:01.855
+there are also different
+types of analysis techniques.
+
+123
+00:08:01.855 --> 00:08:03.097
+We will cover algorithms for
+
+124
+00:08:03.097 --> 00:08:06.785
+building machine learning models in a much
+more detail in week three of this course.
+
+125
+00:08:08.890 --> 00:08:12.260
+The next step in the machine learning
+process is reporting results from your
+
+126
+00:08:12.260 --> 00:08:12.865
+analysis.
+
+127
+00:08:12.865 --> 00:08:17.020
+In reporting your results, it is important
+to communicate your insights and
+
+128
+00:08:17.020 --> 00:08:19.170
+make a case for
+what actions should follow.
+
+129
+00:08:21.215 --> 00:08:22.545
+In reporting your results,
+
+130
+00:08:22.545 --> 00:08:26.945
+you will want to think about what to
+present, as well as how to present.
+
+131
+00:08:26.945 --> 00:08:30.912
+In deciding what to present, you should
+consider what the main results are,
+
+132
+00:08:30.912 --> 00:08:33.537
+what insights were gained
+from your analysis, and
+
+133
+00:08:33.537 --> 00:08:36.725
+what added value do these insights
+bring to the application.
+
+134
+00:08:37.725 --> 00:08:41.517
+Keep in mind that even negative results
+are valuable lessons learned, and
+
+135
+00:08:41.517 --> 00:08:44.730
+suggest further avenues for
+additional analysis.
+
+136
+00:08:44.730 --> 00:08:47.150
+Remember that all findings
+must be presented so
+
+137
+00:08:47.150 --> 00:08:49.840
+that informs decisions can be made for
+next steps.
+
+138
+00:08:50.910 --> 00:08:52.780
+In deciding how to present,
+
+139
+00:08:52.780 --> 00:08:56.460
+remember that visualization is an
+important tool in presenting your results.
+
+140
+00:08:58.055 --> 00:09:01.285
+Plots and summary statistics
+discussing the explore step
+
+141
+00:09:01.285 --> 00:09:03.625
+can be used effectively here as well.
+
+142
+00:09:03.625 --> 00:09:07.095
+You should also have tables with
+details from your analysis as backup,
+
+143
+00:09:07.095 --> 00:09:09.695
+if someone wants to take
+a deeper dive into the results.
+
+144
+00:09:10.915 --> 00:09:14.785
+In summary, you want to report your
+findings by presenting your results and
+
+145
+00:09:14.785 --> 00:09:17.815
+the value added with graphs
+using visualization tools.
+
+146
+00:09:20.160 --> 00:09:22.710
+The final step in
+the machine loading process
+
+147
+00:09:22.710 --> 00:09:26.600
+is to determine what action should be
+taken based on the insights gained.
+
+148
+00:09:28.370 --> 00:09:31.930
+What action should be taken based
+on the results of your analysis?
+
+149
+00:09:31.930 --> 00:09:35.110
+Should you market certain products
+to a specific customer segment to
+
+150
+00:09:35.110 --> 00:09:36.630
+increase sales?
+
+151
+00:09:36.630 --> 00:09:39.730
+What inefficiency is can be
+removed from your process?
+
+152
+00:09:39.730 --> 00:09:42.580
+What incentives would be effective
+in attracting new customers?
+
+153
+00:09:44.450 --> 00:09:47.180
+Once a specific action
+has been determined,
+
+154
+00:09:47.180 --> 00:09:49.090
+the next step is to implement the action.
+
+155
+00:09:50.100 --> 00:09:55.320
+Things to consider here include, how can
+the action be added to your application?
+
+156
+00:09:55.320 --> 00:09:57.020
+How will end users be affected?
+
+157
+00:09:58.950 --> 00:10:03.030
+Assessing the impact of the implemented
+action is then necessary to evaluate
+
+158
+00:10:03.030 --> 00:10:04.810
+the benefits gained.
+
+159
+00:10:04.810 --> 00:10:07.820
+The results of this assessment
+determine next steps,
+
+160
+00:10:07.820 --> 00:10:11.960
+which could suggest additional analysis or
+further opportunities,
+
+161
+00:10:11.960 --> 00:10:15.049
+which would begin another cycle
+of the machine learning process.
+
+162
+00:10:17.100 --> 00:10:20.960
+In summary, we've looked at the steps in
+the machine learning process in detail.
+
+163
+00:10:22.130 --> 00:10:26.470
+The goals or main activities of each
+step were discussed in this lecture.
+
+164
+00:10:26.470 --> 00:10:29.570
+Remember that this is
+an iterative process,
+
+165
+00:10:29.570 --> 00:10:33.450
+in which each step can be repeated
+more than once, and findings from
+
+166
+00:10:33.450 --> 00:10:37.750
+each step may require a previous step
+to be repeated with new information
+
+1
+00:00:01.010 --> 00:00:03.490
+Hello, everyone.
+You have probably heard of machine
+
+2
+00:00:03.490 --> 00:00:07.250
+learning before, enough to grab your
+attention and bring you to this class.
+
+3
+00:00:07.250 --> 00:00:10.250
+However, you might be wondering
+what machine learning is.
+
+4
+00:00:10.250 --> 00:00:11.920
+We will talk about that
+in this lecture and
+
+5
+00:00:11.920 --> 00:00:15.119
+discuss how we can see machine learning
+in action in our day-to-day life.
+
+6
+00:00:17.280 --> 00:00:21.890
+After this video you will be able to
+explain what machine learning is.
+
+7
+00:00:21.890 --> 00:00:25.440
+And list three applications of machine
+learning encountered in everyday life.
+
+8
+00:00:27.690 --> 00:00:32.170
+Since this course is about machine
+learning, lets define what that means.
+
+9
+00:00:32.170 --> 00:00:35.470
+We hear this term a lot these
+days used in many contexts.
+
+10
+00:00:35.470 --> 00:00:39.240
+So it's good to start out with a solid
+definition of what machine learning means.
+
+11
+00:00:40.800 --> 00:00:45.200
+Machine learning is the field of study
+that focuses on computer systems that can
+
+12
+00:00:45.200 --> 00:00:46.850
+learn from data.
+
+13
+00:00:46.850 --> 00:00:51.360
+That is the system's often called
+models can learn to perform a specific
+
+14
+00:00:51.360 --> 00:00:55.600
+task by analyzing lots of examples for
+a particular problem.
+
+15
+00:00:55.600 --> 00:00:59.550
+For example, a machine learning
+model can learn to recognize
+
+16
+00:00:59.550 --> 00:01:03.600
+an image of a cat by being shown lots and
+lots of images of cats.
+
+17
+00:01:05.010 --> 00:01:07.710
+This notion of learning from data
+means that a machine learning
+
+18
+00:01:07.710 --> 00:01:12.960
+model can learn a specific task
+without being explicitly programmed.
+
+19
+00:01:12.960 --> 00:01:16.400
+In other words, the machine learning
+model is not given the step
+
+20
+00:01:16.400 --> 00:01:19.610
+by step instructions on how to
+recognize the image of a cat.
+
+21
+00:01:20.970 --> 00:01:23.910
+Instead, the model learns
+what features are important
+
+22
+00:01:23.910 --> 00:01:29.030
+in determining whether it picture contains
+a cat from the data that has analyzed.
+
+23
+00:01:29.030 --> 00:01:32.120
+Because the model learns to
+perform this task from data
+
+24
+00:01:32.120 --> 00:01:36.250
+it's good to know that the amount and
+quality of data available for
+
+25
+00:01:36.250 --> 00:01:40.110
+building the model are important factors
+in how well the model learns the task.
+
+26
+00:01:41.520 --> 00:01:44.110
+Because machine learning
+models can learn from data
+
+27
+00:01:44.110 --> 00:01:47.420
+that can be used to discover hidden
+patterns and trends in the data.
+
+28
+00:01:49.160 --> 00:01:53.235
+These patterns and trends lead to
+valuable insights into the data.
+
+29
+00:01:53.235 --> 00:01:57.265
+Thus the use of machine learning allows
+for data driven decisions to be made for
+
+30
+00:01:57.265 --> 00:01:59.095
+a particular problem.
+
+31
+00:01:59.095 --> 00:02:02.745
+So to summarize, the field of machine
+learning focuses on the study and
+
+32
+00:02:02.745 --> 00:02:06.185
+construction of computer systems
+that can learn from data
+
+33
+00:02:06.185 --> 00:02:08.775
+without being explicitly programmed.
+
+34
+00:02:08.775 --> 00:02:10.025
+Machine learning algorithms and
+
+35
+00:02:10.025 --> 00:02:13.355
+techniques are used to build models,
+to discover hidden patterns and
+
+36
+00:02:13.355 --> 00:02:16.980
+trends in the data allowing for
+data-driven decisions to be made.
+
+37
+00:02:19.180 --> 00:02:22.840
+You may have heard that machine learning
+is an inter-disciplinary field.
+
+38
+00:02:22.840 --> 00:02:24.410
+This is very true.
+
+39
+00:02:24.410 --> 00:02:28.740
+Machine learning combines concepts and
+methods from many disciplines, including
+
+40
+00:02:28.740 --> 00:02:33.830
+math, statistics, computer science,
+artificial intelligence, and optimization.
+
+41
+00:02:34.930 --> 00:02:36.940
+In applying machine learning to a problem,
+
+42
+00:02:36.940 --> 00:02:41.060
+domain knowledge is essential
+to the success of end results.
+
+43
+00:02:41.060 --> 00:02:44.520
+By domain knowledge we mean
+an understanding of the application or
+
+44
+00:02:44.520 --> 00:02:45.150
+business domain.
+
+45
+00:02:46.160 --> 00:02:50.070
+Knowledge about the application,
+the data related to the application, and
+
+46
+00:02:50.070 --> 00:02:53.860
+how the outcomes will be used are crucial
+to driving the process of building
+
+47
+00:02:53.860 --> 00:02:55.540
+the machine learning model.
+
+48
+00:02:55.540 --> 00:02:59.593
+So domain knowledge is also an integral
+part of a machine learning solution.
+
+49
+00:03:01.278 --> 00:03:04.713
+Machine learning has been used in many
+different learning application, many of
+
+50
+00:03:04.713 --> 00:03:08.410
+which you'll probably encounter in your
+daily life, perhaps without realizing it.
+
+51
+00:03:10.430 --> 00:03:14.030
+One application of machine learning that
+you likely used this past weekend, or
+
+52
+00:03:14.030 --> 00:03:17.650
+even just today,
+is credit card fraud detection.
+
+53
+00:03:17.650 --> 00:03:21.340
+Every time you use your credit card,
+the current purchase is analyzed
+
+54
+00:03:21.340 --> 00:03:25.230
+against your history of credit card
+transactions to determine if the current
+
+55
+00:03:25.230 --> 00:03:30.070
+purchase is a legitimate transaction or
+a potentially fraudulent one.
+
+56
+00:03:30.070 --> 00:03:33.840
+If the purchase is very different
+from your past purchases, such as for
+
+57
+00:03:33.840 --> 00:03:37.480
+a big ticket item in a category that
+you had never shown an interest in or
+
+58
+00:03:37.480 --> 00:03:40.630
+when the point of sales location
+is from another country,
+
+59
+00:03:40.630 --> 00:03:42.860
+then it will be flagged
+as a suspicious activity.
+
+60
+00:03:43.920 --> 00:03:46.100
+In that case,
+the transaction may be denied.
+
+61
+00:03:46.100 --> 00:03:48.990
+Or you may get a call from your
+credit card company to confirm that
+
+62
+00:03:48.990 --> 00:03:51.760
+the purchase was indeed made by you.
+
+63
+00:03:51.760 --> 00:03:54.560
+This is a very common use of machine
+learning that is encountered in
+
+64
+00:03:54.560 --> 00:03:55.160
+everyday life.
+
+65
+00:03:57.120 --> 00:04:00.690
+Another example application of machine
+learning encountered in daily life is
+
+66
+00:04:00.690 --> 00:04:03.140
+handwritten digit recognition.
+
+67
+00:04:03.140 --> 00:04:07.890
+When you deposit a hand-written check into
+an ATM, a machine learning process is used
+
+68
+00:04:07.890 --> 00:04:12.660
+to read the numbers written on the check
+to determine the amount of the deposit.
+
+69
+00:04:12.660 --> 00:04:16.420
+Handwritten digits are trickier
+to decipher than typed digits
+
+70
+00:04:16.420 --> 00:04:19.150
+due to the many variations
+in people's handwriting.
+
+71
+00:04:20.490 --> 00:04:24.130
+A machine learning system can sift through
+the different variations to find similar
+
+72
+00:04:24.130 --> 00:04:27.770
+patterns to distinguish a one from a nine,
+for example.
+
+73
+00:04:29.820 --> 00:04:32.930
+Recommendations in what sites is
+another example application of
+
+74
+00:04:32.930 --> 00:04:36.460
+machine learning that most people
+have experienced first hand.
+
+75
+00:04:36.460 --> 00:04:41.160
+After you buy an item on a website you
+will often get a list of related items.
+
+76
+00:04:41.160 --> 00:04:44.100
+Often this will be displayed
+as customers who bought this
+
+77
+00:04:44.100 --> 00:04:47.380
+item also bought these items,
+or you may also like.
+
+78
+00:04:48.630 --> 00:04:52.130
+These related items have been associated
+with the item you purchased by
+
+79
+00:04:52.130 --> 00:04:53.650
+a machine learning model, and
+
+80
+00:04:53.650 --> 00:04:57.380
+are now being shown to you since
+you may also be interested in them.
+
+81
+00:04:57.380 --> 00:05:00.160
+This is a common application of
+machine learning used often in
+
+82
+00:05:00.160 --> 00:05:01.040
+sales and marketing.
+
+83
+00:05:01.040 --> 00:05:06.600
+Here are some other examples of where
+machine learning has been used.
+
+84
+00:05:06.600 --> 00:05:09.360
+Like targeted ads on mobile devices.
+
+85
+00:05:09.360 --> 00:05:12.490
+Sentiment analysis of social media data,
+
+86
+00:05:12.490 --> 00:05:17.570
+climate monitoring to detect seasonal
+patterns, crime pattern detection, and
+
+87
+00:05:17.570 --> 00:05:20.910
+a healthiness analysis of drugs
+among many other applications.
+
+88
+00:05:22.000 --> 00:05:23.580
+As you can see from this short list,
+
+89
+00:05:23.580 --> 00:05:27.420
+machine learning has been used in
+various applications including science,
+
+90
+00:05:27.420 --> 00:05:31.910
+medicine, retail, law enforcement,
+education and many others.
+
+91
+00:05:33.850 --> 00:05:38.190
+Let's take a few minutes to discuss the
+different terms which refer to this field.
+
+92
+00:05:38.190 --> 00:05:42.290
+The term we are using for this course is
+machine learning, but you may have heard
+
+93
+00:05:42.290 --> 00:05:47.080
+other terms such as data mining,
+predictive analytics and data slangs.
+
+94
+00:05:47.080 --> 00:05:49.480
+So what is the difference
+between these different terms?
+
+95
+00:05:51.120 --> 00:05:54.740
+As we have discussed, machine learning
+has its roots since statistics,
+
+96
+00:05:54.740 --> 00:05:58.590
+artificial intelligence, and
+computer science among other fields.
+
+97
+00:05:58.590 --> 00:06:01.100
+Machine learning encompasses
+the algorithms and
+
+98
+00:06:01.100 --> 00:06:02.990
+techniques used to learn from data.
+
+99
+00:06:04.700 --> 00:06:08.560
+The term data mining became popular
+around the time that the use
+
+100
+00:06:08.560 --> 00:06:10.820
+databases became common place.
+
+101
+00:06:10.820 --> 00:06:14.980
+So data mining was used to refer to
+activities related to finding patterns in
+
+102
+00:06:14.980 --> 00:06:17.780
+databases and data warehouses.
+
+103
+00:06:17.780 --> 00:06:21.290
+There are some practical data management
+aspects to data mining related to
+
+104
+00:06:21.290 --> 00:06:23.380
+accessing data from databases.
+
+105
+00:06:23.380 --> 00:06:26.460
+But the process of finding
+patterns in data is similar, and
+
+106
+00:06:26.460 --> 00:06:29.320
+can use the same algorithms and
+techniques as machine learning.
+
+107
+00:06:31.640 --> 00:06:37.020
+Predictive analytics refers to analyzing
+data in order to predict future outcomes.
+
+108
+00:06:37.020 --> 00:06:41.090
+This term is usually used in the business
+context to describe activities such as
+
+109
+00:06:41.090 --> 00:06:45.540
+sales forecasting or predicting
+the purchasing behavior of a customer.
+
+110
+00:06:45.540 --> 00:06:49.060
+But again the techniques used to make
+these predictions are the same techniques
+
+111
+00:06:49.060 --> 00:06:49.790
+from machine learning.
+
+112
+00:06:52.050 --> 00:06:55.205
+Data science is a new term that is
+used to describe processing and
+
+113
+00:06:55.205 --> 00:06:57.860
+analyzing data to extract meaning.
+
+114
+00:06:57.860 --> 00:07:00.890
+Again machine learning techniques
+can also be used here.
+
+115
+00:07:00.890 --> 00:07:04.260
+Because the term data science became
+popular at the same time that big
+
+116
+00:07:04.260 --> 00:07:09.670
+data began appearing, data science usually
+refers to extracting meaning from big data
+
+117
+00:07:09.670 --> 00:07:13.380
+and so includes approaches for collecting,
+storing and managing big data.
+
+118
+00:07:14.420 --> 00:07:16.370
+These terms evolved at different times and
+
+119
+00:07:16.370 --> 00:07:19.050
+may have encompassed
+different sets of activities.
+
+120
+00:07:19.050 --> 00:07:22.115
+But there have always been more
+similarities than differences between
+
+121
+00:07:22.115 --> 00:07:23.610
+them.
+
+122
+00:07:23.610 --> 00:07:25.720
+Now they are often used
+interchangeably and
+
+123
+00:07:25.720 --> 00:07:28.370
+have come to mean
+essentially the same thing.
+
+124
+00:07:28.370 --> 00:07:33.127
+The process of extracting valuable insight
+from data, the core algorithms and
+
+125
+00:07:33.127 --> 00:07:36.891
+techniques for doing this do not
+change with different terms.
+
+126
+00:07:38.577 --> 00:07:42.544
+To summarize, in this lecture we've
+discussed what machine learning is and
+
+127
+00:07:42.544 --> 00:07:44.210
+how it is being used.
+
+128
+00:07:44.210 --> 00:07:48.590
+Machine learning models learn from data to
+perform a task without being explicitly
+
+129
+00:07:48.590 --> 00:07:49.730
+programmed.
+
+130
+00:07:49.730 --> 00:07:52.650
+They are used to discover patterns and
+trends in the data.
+
+131
+00:07:52.650 --> 00:07:57.060
+And a lab for data driven decisions to
+be made for the problems being studied.
+
+132
+00:07:57.060 --> 00:08:01.550
+We also discuss in this lecture examples
+of how machine learning is being used.
+
+133
+00:08:01.550 --> 00:08:04.840
+We see how the example applications
+that machine learning can be applied
+
+134
+00:08:04.840 --> 00:08:06.320
+to many different areas.
+
+1
+00:00:01.130 --> 00:00:03.610
+What are the steps in
+the Machine Learning Process?
+
+2
+00:00:03.610 --> 00:00:05.180
+We will discuss those in this lecture.
+
+3
+00:00:06.980 --> 00:00:11.500
+After this video, you will be able
+to identify the steps in the machine
+
+4
+00:00:11.500 --> 00:00:15.390
+learning process and discuss why
+the machine learning process is iterative.
+
+5
+00:00:17.510 --> 00:00:21.400
+This diagram illustrates the steps
+in the machine learning process.
+
+6
+00:00:21.400 --> 00:00:24.800
+In this lecture,
+we will cover an overview of these steps.
+
+7
+00:00:24.800 --> 00:00:27.640
+In the next lecture,
+we will cover each step in more detail.
+
+8
+00:00:29.890 --> 00:00:33.040
+It should be kept in mind that all of
+these steps need to be carried out with
+
+9
+00:00:33.040 --> 00:00:35.130
+a clear purpose in mind.
+
+10
+00:00:35.130 --> 00:00:39.440
+That is, the problem or opportunity that
+is being addressed must be defined with
+
+11
+00:00:39.440 --> 00:00:42.220
+clearly stated goals and objectives.
+
+12
+00:00:42.220 --> 00:00:43.150
+For example,
+
+13
+00:00:43.150 --> 00:00:47.590
+the purpose of a project may be to study
+customer purchasing behavior to come up
+
+14
+00:00:47.590 --> 00:00:52.850
+with a more effective marketing strategy
+in order to increase sales revenue.
+
+15
+00:00:52.850 --> 00:00:56.420
+The purpose behind the project will
+drive the machine learning process.
+
+16
+00:00:58.190 --> 00:01:00.690
+The first step in the machine
+learning process is to get
+
+17
+00:01:00.690 --> 00:01:04.020
+all available data related
+to the problem at hand.
+
+18
+00:01:04.020 --> 00:01:08.450
+Here, we need to identify all data
+sources, collect the data, and
+
+19
+00:01:08.450 --> 00:01:10.800
+finally integrate data from
+these multiple sources.
+
+20
+00:01:12.590 --> 00:01:16.070
+The next step in the machine learning
+process is to prepare the data.
+
+21
+00:01:17.230 --> 00:01:21.920
+This step is further divided into two
+parts, explore data and pre-process data.
+
+22
+00:01:23.740 --> 00:01:27.550
+The first part of data preparation
+involves preliminary exploration
+
+23
+00:01:27.550 --> 00:01:31.300
+of the data to understand the nature
+of the data that we have to work with.
+
+24
+00:01:32.320 --> 00:01:36.780
+Things we want to understand about
+the data are its characteristics, format,
+
+25
+00:01:36.780 --> 00:01:37.300
+and quality.
+
+26
+00:01:38.600 --> 00:01:42.310
+A good understanding of the data
+leads to a more informed analysis and
+
+27
+00:01:42.310 --> 00:01:43.650
+a more successful outcome.
+
+28
+00:01:45.580 --> 00:01:49.140
+Once we know more about the data
+through exploratory analysis,
+
+29
+00:01:49.140 --> 00:01:53.240
+the next part is pre-processing
+of the data for analysis.
+
+30
+00:01:53.240 --> 00:01:57.500
+This includes cleaning data,
+selecting the variables to use, and
+
+31
+00:01:57.500 --> 00:02:01.140
+transforming data to make the data more
+suitable for analysis in the next step.
+
+32
+00:02:02.990 --> 00:02:06.705
+The prepared data then would be
+passed on to the analysis step.
+
+33
+00:02:06.705 --> 00:02:10.280
+This step involves selecting
+the analytical techniques to use,
+
+34
+00:02:10.280 --> 00:02:13.350
+building a model using the data,
+and assessing the results.
+
+35
+00:02:14.980 --> 00:02:18.930
+Step four in the machine learning
+process it to communicate results.
+
+36
+00:02:18.930 --> 00:02:23.490
+This includes evaluating the results with
+respect to the goal set for the project.
+
+37
+00:02:23.490 --> 00:02:26.360
+presenting the results in
+a easy to understand way and
+
+38
+00:02:26.360 --> 00:02:28.058
+communicating the results to others.
+
+39
+00:02:28.058 --> 00:02:32.320
+The last step is to apply the results.
+
+40
+00:02:32.320 --> 00:02:35.550
+This brings us back to
+the purpose of the project.
+
+41
+00:02:35.550 --> 00:02:40.185
+How can the insights from our analysis
+be used to provide effective marketing
+
+42
+00:02:40.185 --> 00:02:41.907
+to increase sales revenue?
+
+43
+00:02:41.907 --> 00:02:45.039
+Determining actions from insights gained
+
+44
+00:02:45.039 --> 00:02:48.524
+from analysis is the main
+focus of the act step.
+
+45
+00:02:48.524 --> 00:02:52.480
+Note that the machine learning
+process is a very iterative one.
+
+46
+00:02:52.480 --> 00:02:55.960
+Findings from one step may require
+a previous step to be repeated
+
+47
+00:02:55.960 --> 00:02:57.650
+with new information.
+
+48
+00:02:57.650 --> 00:03:02.170
+For example, during the prepare step, we
+may find some data quality issues that may
+
+49
+00:03:02.170 --> 00:03:06.760
+require us to go back to the acquire
+step to address some issues with data
+
+50
+00:03:06.760 --> 00:03:10.550
+collection or to get additional data that
+we didn't include in the first go around.
+
+51
+00:03:11.680 --> 00:03:14.810
+Each step may also require
+several iterations.
+
+52
+00:03:14.810 --> 00:03:19.260
+For example, it is common to try different
+analysis techniques in the analyze step
+
+53
+00:03:19.260 --> 00:03:21.470
+in order to get reasonable
+results from the model.
+
+54
+00:03:22.490 --> 00:03:26.540
+So, it is important to recognize that
+this is a highly iterative process, and
+
+55
+00:03:26.540 --> 00:03:27.320
+not a linear one.

@@ -1,0 +1,2584 @@
+﻿1
+00:00:13,808 --> 00:00:37,670
+We are looking at problem decomposition with
+goal trees, and we want to look at an
+
+2
+00:00:37,670 --> 00:00:41,070
+algorithm, which will solve it.
+
+3
+00:00:41,070 --> 00:00:44,049
+So, what should algorithm do?
+
+4
+00:00:44,049 --> 00:00:54,089
+Break it down 
+into simpler
+
+5
+00:00:54,090 --> 00:01:02,270
+problems 
+and we keep doing this, till the problems
+
+6
+00:01:02,270 --> 00:01:09,840
+are severely small or primitives, that
+you have access to in some systems, especially.
+
+7
+00:01:09,840 --> 00:01:16,960
+So, we will use, of course, one thing is to
+search the entire tree, but we do not want
+
+8
+00:01:16,959 --> 00:01:18,368
+to do that.
+
+9
+00:01:18,368 --> 00:01:31,450
+We will use the heuristic function,
+which is estimated cost 
+
+10
+00:01:31,450 --> 00:01:33,750
+solving node n.
+
+11
+00:01:33,750 --> 00:01:39,209
+We will use the heuristic function to guide
+our
+
+12
+00:01:39,209 --> 00:01:41,079
+search.
+
+13
+00:01:41,079 --> 00:01:42,079
+..
+
+14
+00:01:42,079 --> 00:01:47,539
+Let us say that we have some problem, which
+we are trying to solve.
+
+15
+00:01:47,539 --> 00:01:52,769
+We compute the
+heuristic value, and let us say, it is 50,
+
+16
+00:01:52,769 --> 00:01:58,170
+essentially, just to start with.
+
+17
+00:01:58,170 --> 00:02:02,569
+When we start
+solving the problem, our estimate is that
+
+18
+00:02:02,569 --> 00:02:06,249
+it is going to cost us 50 units of whatever.
+
+19
+00:02:06,248 --> 00:02:10,788
+Let us
+assume for the sake of illustration here,
+
+20
+00:02:10,788 --> 00:02:13,379
+that every edge has a cost associated with
+it,
+
+21
+00:02:13,379 --> 00:02:16,259
+which is 10, essentially.
+
+22
+00:02:16,259 --> 00:02:23,009
+Let us say that I get something like this;
+out of this.
+
+23
+00:02:23,009 --> 00:02:24,389
+I get 2 edges
+out of it.
+
+24
+00:02:24,389 --> 00:02:30,348
+One of them is, you might say, hyper edge
+or an edge; and the other one is
+
+25
+00:02:30,348 --> 00:02:33,959
+simple edge.
+
+26
+00:02:33,959 --> 00:02:38,890
+So, this is a tree like this.
+
+27
+00:02:38,889 --> 00:02:42,039
+Let us say the cost associated with this is
+15, and
+
+28
+00:02:42,039 --> 00:02:49,340
+this is 20, and let us say this is 40, essentially.
+
+29
+00:02:49,340 --> 00:02:56,010
+Now, in this example, I have mixed up the
+kind of edges, emulating from a node and if
+
+30
+00:02:56,010 --> 00:03:00,930
+you think about this, it does not really cause
+a problem to see it like this.
+
+31
+00:03:00,930 --> 00:03:06,439
+We can think of it as two choices from the
+top level, and these choices already being
+
+32
+00:03:06,438 --> 00:03:08,049
+broken down into two parts, essentially.
+
+33
+00:03:08,049 --> 00:03:11,750
+You could have easily transformed this into
+a
+
+34
+00:03:11,750 --> 00:03:26,459
+node, which says that 50 and then, some node
+x, and this is 40 and this x has got 2 nodes
+
+35
+00:03:26,459 --> 00:03:29,180
+of cost 15 and 20.
+
+36
+00:03:29,180 --> 00:03:35,250
+These two are equal in nature, and if necessary,
+we can always
+
+37
+00:03:35,250 --> 00:03:38,068
+transform such a problem into that.
+
+38
+00:03:38,068 --> 00:03:40,500
+Of course, you have to keep in mind, the cost
+of the
+
+39
+00:03:40,500 --> 00:03:41,500
+edges.
+
+40
+00:03:41,500 --> 00:03:43,699
+So, we have to take care of that somehow.
+
+41
+00:03:43,699 --> 00:03:48,848
+But for the illustration purposes here,
+we will assume the cost of every edge is 10.
+
+42
+00:03:48,848 --> 00:03:55,568
+So, if you have generated, if we have
+expanded, we will use the same term expanded
+
+43
+00:03:55,568 --> 00:03:56,568
+a node.
+
+44
+00:03:56,568 --> 00:03:58,780
+Here, expanded the node of this
+
+45
+00:03:58,780 --> 00:04:15,229
+.thing and we have got these three nodes which
+is the next node that one should pick.
+
+46
+00:04:15,229 --> 00:04:23,649
+So,
+let me call them A, B and C.
+
+47
+00:04:23,649 --> 00:04:27,089
+This is the start node S. We will use similar
+term only.
+
+48
+00:04:27,089 --> 00:04:32,549
+Between A, B and C, which is the next one
+I should expand?
+
+49
+00:04:32,550 --> 00:04:43,030
+.A; why is it?
+
+50
+00:04:43,029 --> 00:04:45,649
+Yes.
+
+51
+00:04:45,649 --> 00:04:54,380
+So, the cost of solving the original problem,
+if I take this option, would be the cost
+
+52
+00:04:54,380 --> 00:05:01,519
+or solving this plus the edge cost which is,
+I can write this here; 50.
+
+53
+00:05:01,519 --> 00:05:04,930
+And the cost of
+solving it from the other side is 15 plus
+
+54
+00:05:04,930 --> 00:05:08,240
+20, 35 plus 20, which is 55.
+
+55
+00:05:08,240 --> 00:05:10,810
+So, obviously, this is
+better.
+
+56
+00:05:10,810 --> 00:05:16,089
+So, I must choose this side, essentially.
+
+57
+00:05:16,089 --> 00:05:28,399
+Then, let us say I get this, some values,
+and this is 
+
+58
+00:05:28,399 --> 00:05:32,769
+n node; this is an n node.
+
+59
+00:05:32,769 --> 00:05:37,348
+Then, I can compute the cost of solving; revise
+the
+
+60
+00:05:37,348 --> 00:05:42,750
+cost of solving A or estimated cost of solving
+A. So, instead of 40, this has become 30
+
+61
+00:05:42,750 --> 00:05:56,788
+plus 250 here, and this has become 40 plus
+260, plus 20; 60.
+
+62
+00:05:56,788 --> 00:06:02,279
+So, 20 plus 20 plus 10
+plus10; that 60, and likewise, this is 15
+
+63
+00:06:02,279 --> 00:06:10,079
+plus 15 plus 10 for each hour; 60.
+
+64
+00:06:10,079 --> 00:06:15,859
+So, I have to
+revise this cost now.
+
+65
+00:06:15,860 --> 00:06:23,139
+This becomes 60, because this is 50, and this
+is 60; 50 plus 10; 60.
+
+66
+00:06:23,139 --> 00:06:28,819
+So, at this moment, my algorithm was shifted
+tension to the other side.
+
+67
+00:06:28,819 --> 00:06:30,780
+You can see, it
+has a best first nature about it.
+
+68
+00:06:30,779 --> 00:06:32,609
+We are using a heuristic function to guide
+search.
+
+69
+00:06:32,610 --> 00:06:35,470
+The
+heuristic function is estimating cost of solving
+
+70
+00:06:35,470 --> 00:06:36,889
+a node.
+
+71
+00:06:36,889 --> 00:06:44,060
+It is just that, because this is an
+end of graph or end of tree; we cannot make
+
+72
+00:06:44,060 --> 00:06:51,740
+a decision, based simply on value of a node;
+we have to look at the cost of the full solution
+
+73
+00:06:51,740 --> 00:06:53,610
+of which, this node is a part, essentially.
+
+74
+00:06:53,610 --> 00:06:56,879
+Now, you can see this is consistent with what
+you were doing earlier.
+
+75
+00:06:56,879 --> 00:07:02,500
+We said that, for example, when you are looking
+at the travelling salesmen problem, and
+
+76
+00:07:02,500 --> 00:07:06,519
+the branch and bound algorithm, we are saying
+the estimate is a estimate of full tour,
+
+77
+00:07:06,519 --> 00:07:17,079
+essentially, and not just one, that edges
+we have found and so on, essentially.
+
+78
+00:07:17,079 --> 00:07:20,519
+So, now,
+my attention must shift here, and maybe, I
+
+79
+00:07:20,519 --> 00:07:22,399
+will expand one of these two nodes.
+
+80
+00:07:22,399 --> 00:07:25,448
+Let us
+say, I expand this.
+
+81
+00:07:25,449 --> 00:07:31,699
+Let us say for argument sake, this can be
+solved like this, or it can be
+
+82
+00:07:31,699 --> 00:07:45,449
+solved by another node, which is of cost,
+let us say 25.
+
+83
+00:07:45,449 --> 00:07:47,389
+This is 20, this is 25; this is an
+odd node.
+
+84
+00:07:47,389 --> 00:07:51,569
+So, this cost is, I have to revise this cost
+to 25 now, which means I have to
+
+85
+00:07:51,569 --> 00:08:03,480
+revise this cost to 65 and then again, my
+attention must shift this side, essentially.
+
+86
+00:08:03,480 --> 00:08:09,830
+So,
+basically, what we need to do is to formulize
+
+87
+00:08:09,829 --> 00:08:11,469
+this process, and sort of make this little
+bit
+
+88
+00:08:11,470 --> 00:08:13,319
+clearer and put it down as n algorithm.
+
+89
+00:08:13,319 --> 00:08:14,681
+So, let us now write this algorithm.
+
+90
+00:08:14,680 --> 00:08:22,688
+This
+algorithm is called AO star and it essentially,
+
+91
+00:08:22,689 --> 00:08:29,960
+finds an optimal solution for a problem like
+
+92
+00:08:29,959 --> 00:08:30,959
+.this.
+
+93
+00:08:30,959 --> 00:08:32,538
+When do we terminate this process?
+
+94
+00:08:32,538 --> 00:08:33,538
+.
+
+95
+00:08:33,538 --> 00:08:37,840
+Let us say, see, what has happened?
+
+96
+00:08:37,840 --> 00:08:40,129
+This has now, gone up to 65.
+
+97
+00:08:40,129 --> 00:08:45,019
+So, we will shift our
+attention to this 60, and we will come down
+
+98
+00:08:45,019 --> 00:08:46,019
+here.
+
+99
+00:08:46,019 --> 00:08:56,110
+If I note, if I pick up, if I just name
+them, let us say D, E, F, G and H; what is
+
+100
+00:08:56,110 --> 00:09:02,250
+the next node I should expand?
+
+101
+00:09:02,250 --> 00:09:08,879
+So, I have to
+pick a leaf.
+
+102
+00:09:08,879 --> 00:09:15,490
+C is a leaf; H is a leaf; G, F, D, E; these
+I have already expanded.
+
+103
+00:09:15,490 --> 00:09:20,209
+So, D, E, F,
+G, H and C; which one should be the next node
+
+104
+00:09:20,208 --> 00:09:26,849
+I should expand?
+
+105
+00:09:26,850 --> 00:09:35,329
+Looking at the
+heuristic values; just think about this, I
+
+106
+00:09:35,328 --> 00:09:38,379
+will come back to this question in a moment.
+
+107
+00:09:38,379 --> 00:09:39,379
+Let
+us write this.
+
+108
+00:09:39,379 --> 00:09:55,299
+So, A star wolves with a graph, graph G, which
+is initialized to S, which is
+
+109
+00:09:55,299 --> 00:09:59,719
+a single node S, essentially.
+
+110
+00:09:59,720 --> 00:10:15,450
+Then, it says compute h of s and initialize.
+
+111
+00:10:15,450 --> 00:10:39,860
+Now, at any stage of the algorithm, I will
+have a graph which looks like that, essentially.
+
+112
+00:10:39,860 --> 00:10:50,180
+I will go into some sort of a loop while;
+we have this lotion of the solved node and
+
+113
+00:10:50,179 --> 00:10:53,838
+node, which is not completely solved.
+
+114
+00:10:53,839 --> 00:10:56,340
+For
+example, in the integration example, something
+
+115
+00:10:56,340 --> 00:11:03,000
+like, integral DW is the solved node, or
+in the chemistry example, we saw that once
+
+116
+00:11:03,000 --> 00:11:07,690
+you know that complete structure of all the
+atoms, we are talking about, it is a solved
+
+117
+00:11:07,690 --> 00:11:09,250
+node.
+
+118
+00:11:09,250 --> 00:11:13,440
+We will use a label called solved, while.
+
+119
+00:11:13,440 --> 00:11:17,209
+As long as, and eventually, we want to say
+that we have solved the original problem,
+
+120
+00:11:17,208 --> 00:11:21,719
+which is a root S, essentially.
+
+121
+00:11:21,720 --> 00:11:24,750
+As and when, we find the solution; we want
+to percolate
+
+122
+00:11:24,750 --> 00:11:27,409
+.this label of solved, up, essentially.
+
+123
+00:11:27,409 --> 00:11:32,100
+So, this is a problem decomposition process,
+and there is going to be a secondary process
+
+124
+00:11:32,100 --> 00:11:38,080
+in which, some labels will travel upwards,
+and one of the labels will be the solved label.
+
+125
+00:11:38,080 --> 00:11:42,269
+Once a solved label reaches a root node, we
+can say, we have solved the root node.
+
+126
+00:11:42,269 --> 00:11:53,259
+So,
+while, S is not solved, means it does not
+
+127
+00:11:53,259 --> 00:12:09,019
+have a label solved.
+
+128
+00:12:09,019 --> 00:12:12,940
+If you look at for example,
+rich and night, the book which describes this
+
+129
+00:12:12,940 --> 00:12:20,230
+algorithm, that I am describing here; we use
+that some value call futility, which says
+
+130
+00:12:20,230 --> 00:12:21,940
+that basically, we do not want solution which
+is
+
+131
+00:12:21,940 --> 00:12:23,340
+more expensive than this value.
+
+132
+00:12:23,340 --> 00:12:26,070
+So, we are going to explore for a solution
+or look for a
+
+133
+00:12:26,070 --> 00:12:33,420
+solution, whose value is less than this number
+called futility.
+
+134
+00:12:33,419 --> 00:12:34,740
+That is just an additional
+thing that we are using.
+
+135
+00:12:34,740 --> 00:12:42,360
+Do the following.
+
+136
+00:12:42,360 --> 00:12:44,480
+We have to pick a node to expand.
+
+137
+00:12:44,480 --> 00:12:47,240
+Of course,
+in an initial stage, the graph is only one
+
+138
+00:12:47,240 --> 00:12:49,940
+node, but at something like this stage, the
+graph
+
+139
+00:12:49,940 --> 00:12:51,290
+has evolved.
+
+140
+00:12:51,289 --> 00:12:55,778
+So, let me get back to this question.
+
+141
+00:12:55,778 --> 00:13:00,939
+I started by expanding this root node s; I
+got these three nodes then, because this was
+
+142
+00:13:00,940 --> 00:13:02,149
+cheaper than these two combined.
+
+143
+00:13:02,149 --> 00:13:06,399
+I expanded this next; I got this option and
+this option.
+
+144
+00:13:06,399 --> 00:13:10,399
+So, let us call them DE option and FG option.
+
+145
+00:13:10,399 --> 00:13:15,559
+The DE option costs 50; the FG option
+costs 60; and add another 10 for this option.
+
+146
+00:13:15,559 --> 00:13:21,828
+So, this becomes 50 plus 10; 60, which was
+worse than 55.
+
+147
+00:13:21,828 --> 00:13:23,319
+So, I came down to this option.
+
+148
+00:13:23,320 --> 00:13:27,170
+Now, here, I choose between B and C;
+one 50.
+
+149
+00:13:27,169 --> 00:13:30,919
+This B expanded so that, I got this 20 and
+25.
+
+150
+00:13:30,919 --> 00:13:34,708
+When I back up these values, I got
+25 here, and that became 65.
+
+151
+00:13:34,708 --> 00:13:37,458
+So, I have to now shift my attention to this
+one, again.
+
+152
+00:13:37,458 --> 00:13:43,958
+Because going down, that pass is estimated
+to cost 65, along this, I can cost 60.
+
+153
+00:13:43,958 --> 00:13:46,088
+So, I
+must come down here.
+
+154
+00:13:46,089 --> 00:13:52,829
+At this point, I must choose this option,
+because this estimated
+
+155
+00:13:52,828 --> 00:13:55,328
+cost is 50 and this, here, the estimated cost
+is 60.
+
+156
+00:13:55,328 --> 00:14:02,719
+So, I must choose one of these two
+nodes for expansion next, essentially.
+
+157
+00:14:02,720 --> 00:14:04,820
+How do I do that?
+
+158
+00:14:04,820 --> 00:14:09,509
+In the graph, I maintained at every choice
+point, a marker, which
+
+159
+00:14:09,509 --> 00:14:14,169
+marks the best choice at that point, essentially,
+or at that stage of the graph.
+
+160
+00:14:14,169 --> 00:14:17,689
+So, for this
+graph, at this stage, I would have a marker
+
+161
+00:14:17,690 --> 00:14:18,690
+here.
+
+162
+00:14:18,690 --> 00:14:21,180
+Here, I would have marker here.
+
+163
+00:14:21,179 --> 00:14:25,979
+Because, here this is a better choice, here,
+this is a better choice and here, I would
+
+164
+00:14:25,980 --> 00:14:28,800
+have a
+marker here.
+
+165
+00:14:28,799 --> 00:14:35,409
+So, this algorithm is going to be a two stage
+process.
+
+166
+00:14:35,409 --> 00:14:41,149
+In the first stage, I will
+identify the nodes to be expanded, and that
+
+167
+00:14:41,149 --> 00:14:44,389
+I will do by starting from the root every
+time.
+
+168
+00:14:44,389 --> 00:14:49,320
+In every cycle, in this while loop, we will
+start from the root, follow the markers, and
+
+169
+00:14:49,320 --> 00:14:50,320
+a
+
+170
+00:14:50,320 --> 00:14:51,320
+.marker will take us to a set of nodes.
+
+171
+00:14:51,320 --> 00:14:54,139
+We have to pick a set of nodes.
+
+172
+00:14:54,139 --> 00:15:01,779
+So, the forward face
+is as follows.
+
+173
+00:15:01,779 --> 00:15:11,990
+Then, follow the markers to a set of nodes.
+
+174
+00:15:11,990 --> 00:15:32,519
+Let us call them N and then,
+pick some n belonging to N.
+
+175
+00:15:32,519 --> 00:15:34,198
+So, we have picked a node.
+
+176
+00:15:34,198 --> 00:15:40,250
+In this example, I have to pick
+either D or E. Does it matter which one I
+
+177
+00:15:40,250 --> 00:15:46,870
+pick next; whether, I should D or whether,
+I
+
+178
+00:15:46,870 --> 00:15:51,000
+should pick E?
+
+179
+00:15:51,000 --> 00:15:55,568
+In this example, of course, both the costs
+are 15 so, obviously, there is no
+
+180
+00:15:55,568 --> 00:15:59,129
+way of telling, which one I should pick.
+
+181
+00:15:59,129 --> 00:16:09,220
+But let us say, for some other example, this
+cost was 90 and this cost was 20.
+
+182
+00:16:09,220 --> 00:16:13,230
+Let us say
+that D had a cost of 20, and E had a cost
+
+183
+00:16:13,230 --> 00:16:14,230
+of 90.
+
+184
+00:16:14,230 --> 00:16:16,528
+Then, of course, they look different.
+
+185
+00:16:16,528 --> 00:16:26,039
+Will
+it matter if I pick D or if I pick E?
+
+186
+00:16:26,039 --> 00:16:30,659
+You have to think of it from the perspective
+of
+
+187
+00:16:30,659 --> 00:16:37,789
+reaching a solution, and the perspective of
+saving on some amount, of course.
+
+188
+00:16:37,789 --> 00:16:44,219
+If in an
+OR graph, you are searching something, like
+
+189
+00:16:44,220 --> 00:16:49,980
+A star, if you have to choose between two
+nodes and you chose one and then, you are
+
+190
+00:16:49,980 --> 00:16:55,769
+committed to having a solution to that nodes;
+I mean, that if that happened to be the cheapest,
+
+191
+00:16:55,769 --> 00:16:56,769
+essentially.
+
+192
+00:16:56,769 --> 00:17:05,209
+In a AO graph; AND OR
+graph, if you are at an AND choice like this,
+
+193
+00:17:05,209 --> 00:17:08,539
+if you have to, if the solution is along this
+selection, you will have to eventually solve
+
+194
+00:17:08,539 --> 00:17:10,509
+D, and you will have to solve E also.
+
+195
+00:17:10,509 --> 00:17:14,129
+So, you
+will have to solve both of them, essentially.
+
+196
+00:17:14,130 --> 00:17:17,830
+From that point of view, it does not matter
+whether, you pick D or whether, you pick E.
+
+197
+00:17:17,829 --> 00:17:22,629
+Because, you have to solve both if you have
+to solve, if the solution lies, if the sub
+
+198
+00:17:22,630 --> 00:17:34,020
+tree lies somewhere here, that is one perspective,
+but supposing, this are the values 20 and
+
+199
+00:17:34,019 --> 00:17:41,329
+90; is there some other reason for trying
+to
+
+200
+00:17:41,329 --> 00:17:42,329
+solve one of them?
+
+201
+00:17:42,329 --> 00:17:45,359
+Now, you can think of this as if you are solving
+C and F kind of a
+
+202
+00:17:45,359 --> 00:18:00,529
+formula, then you are exploring whether, a
+sub formula.
+
+203
+00:18:00,529 --> 00:18:05,389
+Let us say f1 and f2; you have to try to solve
+both.
+
+204
+00:18:05,390 --> 00:18:09,570
+If you have to solve for this formula,
+which has f1 and f2; you have to solve f1
+
+205
+00:18:09,569 --> 00:18:11,069
+and you have to solve f2.
+
+206
+00:18:11,069 --> 00:18:14,299
+It is not necessarily C
+and F; it is some formula and, of course,
+
+207
+00:18:14,299 --> 00:18:17,509
+f 1 and f 2 are themselves compound formulaes.
+
+208
+00:18:17,509 --> 00:18:24,349
+If by looking at the size of those formulaes,
+does it make sense to choose something,
+
+209
+00:18:24,349 --> 00:18:28,179
+which looks harder or something, which looks
+cheaper, essentially?
+
+210
+00:18:28,180 --> 00:18:30,070
+So, this is the same
+problem here.
+
+211
+00:18:30,069 --> 00:18:31,819
+Here, D looks cheap.
+
+212
+00:18:31,819 --> 00:18:35,149
+E looks expensive.
+
+213
+00:18:35,150 --> 00:18:40,009
+Does the estimated cost; should it
+influence my choice having said that, I have
+
+214
+00:18:40,009 --> 00:18:44,160
+to solve both anyways, essentially.
+
+215
+00:18:44,160 --> 00:18:45,580
+How will
+it help?
+
+216
+00:18:45,579 --> 00:18:48,970
+No, No, No.
+
+217
+00:18:48,970 --> 00:18:53,650
+You are not listening to what I am saying.
+
+218
+00:18:53,650 --> 00:18:56,780
+If you solve D, you have
+to also solve E; why because this is an AND
+
+219
+00:18:56,779 --> 00:19:00,769
+node here.
+
+220
+00:19:00,769 --> 00:19:11,509
+.Then, you do not have to solve E. Then, which
+one is not likely to give a solution?
+
+221
+00:19:11,509 --> 00:19:15,490
+E; the
+more expensive one, I think, or if you keep
+
+222
+00:19:15,490 --> 00:19:19,320
+in mind, the fact, that we have some bound
+on the cost of the solution, that we are looking
+
+223
+00:19:19,320 --> 00:19:21,059
+for.
+
+224
+00:19:21,059 --> 00:19:26,220
+So, if you have to do two things any
+way, and your success depends on doing both
+
+225
+00:19:26,220 --> 00:19:27,220
+the things.
+
+226
+00:19:27,220 --> 00:19:31,059
+If one of them is harder, then
+you should see whether, you can do that harder
+
+227
+00:19:31,059 --> 00:19:35,429
+thing first, because then, you hope of
+help solving easier thing later, essentially.
+
+228
+00:19:35,430 --> 00:19:41,890
+The idea being that if you solve for D and
+then, if you solve for E, then the solution
+
+229
+00:19:41,890 --> 00:19:44,360
+cost shoots up then, we will anyway, have
+to
+
+230
+00:19:44,359 --> 00:19:46,240
+shift attention to another side, essentially.
+
+231
+00:19:46,240 --> 00:19:48,630
+So, that extra work could be waste, whereas,
+if
+
+232
+00:19:48,630 --> 00:19:54,960
+you try to solve the more expensive thing
+first, then you will get to know early whether,
+
+233
+00:19:54,960 --> 00:19:56,519
+it is too expensive or not.
+
+234
+00:19:56,519 --> 00:19:59,629
+So, that is the only idea, but if you have
+to solve for both you
+
+235
+00:19:59,630 --> 00:20:02,030
+have to solve for both.
+
+236
+00:20:02,029 --> 00:20:18,710
+We will just assume; pick some nodes n from
+N; generate children C of n.
+
+237
+00:20:18,710 --> 00:20:20,360
+We have
+something like the move gen function, which
+
+238
+00:20:20,359 --> 00:20:24,189
+is not like the old move gen function, but
+something, which defines the problems into
+
+239
+00:20:24,190 --> 00:20:29,150
+different sub problems; gives you the set,
+essentially.
+
+240
+00:20:29,150 --> 00:20:38,470
+If none, if I do not have; if this node n
+does not have any children, my system
+
+241
+00:20:38,470 --> 00:20:42,990
+is not giving a child, which means, it means
+my system is not telling me, that I can
+
+242
+00:20:42,990 --> 00:20:45,200
+decompose it in some way.
+
+243
+00:20:45,200 --> 00:20:47,910
+What should I do?
+
+244
+00:20:47,910 --> 00:20:52,870
+Let us have picked this node n.
+
+245
+00:20:52,869 --> 00:21:00,629
+Let us say
+this is my node n that I have picked for illustration
+
+246
+00:21:00,630 --> 00:21:01,630
+purposes.
+
+247
+00:21:01,630 --> 00:21:06,380
+Now, I am saying; generate
+the children of n, which means, it has further
+
+248
+00:21:06,380 --> 00:21:10,800
+solutions expanded, essentially.
+
+249
+00:21:10,799 --> 00:21:12,779
+What if
+there are no children?
+
+250
+00:21:12,779 --> 00:21:14,430
+What if it cannot be expanded?
+
+251
+00:21:14,430 --> 00:21:20,840
+What if it is a dead end of some
+sort?
+
+252
+00:21:20,839 --> 00:21:23,189
+What should my search do?
+
+253
+00:21:23,190 --> 00:21:25,890
+If I cannot expand this, I do not find any
+solution.
+
+254
+00:21:25,890 --> 00:21:26,890
+What should my search do?
+
+255
+00:21:26,890 --> 00:21:31,060
+You have to speak up a bit.
+
+256
+00:21:31,059 --> 00:21:34,389
+I cannot hear.
+
+257
+00:21:34,390 --> 00:21:36,060
+What does back
+tracking mean here?
+
+258
+00:21:36,059 --> 00:21:43,730
+Should I go and look at E then; no.
+
+259
+00:21:43,730 --> 00:21:50,250
+Then, I should somehow
+abandon this whole solution of which, this
+
+260
+00:21:50,250 --> 00:21:54,430
+is a part, because if I cannot solve D, then
+I
+
+261
+00:21:54,430 --> 00:21:57,570
+cannot compose the solution, which has D and
+E as their parts.
+
+262
+00:21:57,569 --> 00:22:03,189
+So, I should abandon the
+whole thing; how do I do that?
+
+263
+00:22:03,190 --> 00:22:07,299
+I simply say that cost of solving n is futility,
+because my algorithm is looking for
+
+264
+00:22:07,299 --> 00:22:11,089
+something which is less than futility, which
+means, this will never be considered
+
+265
+00:22:11,089 --> 00:22:13,099
+henceforth, essentially.
+
+266
+00:22:13,099 --> 00:22:20,719
+So, generate children C of n, if none; then
+you do this.
+
+267
+00:22:20,720 --> 00:22:27,529
+Then, you
+remove loops.
+
+268
+00:22:27,529 --> 00:22:32,000
+What do I mean by this; remove loops?
+
+269
+00:22:32,000 --> 00:22:35,650
+I am talking in the perspective of
+AND OR graph.
+
+270
+00:22:35,650 --> 00:22:39,050
+In the OR graph, of course, we have the social
+of loop, looping that.
+
+271
+00:22:39,049 --> 00:22:41,200
+.You could just go round the same path.
+
+272
+00:22:41,200 --> 00:22:43,500
+Here, what does looping mean?
+
+273
+00:22:43,500 --> 00:22:47,099
+Remember that
+AND OR problem is, decomposing the problem
+
+274
+00:22:47,099 --> 00:22:48,750
+into simpler problems.
+
+275
+00:22:48,750 --> 00:22:53,359
+If you think of,
+for example, symbolic integration that we
+
+276
+00:22:53,359 --> 00:22:55,769
+looked at; can we have looping?
+
+277
+00:22:55,769 --> 00:22:56,769
+How can we
+have?
+
+278
+00:22:56,769 --> 00:22:57,769
+What do you mean by looping?
+
+279
+00:22:57,769 --> 00:22:59,609
+Can we have looping when we are decomposing
+the problem?
+
+280
+00:22:59,609 --> 00:23:04,589
+You said; you nodded your head.
+
+281
+00:23:04,589 --> 00:23:08,369
+.Integration, it could happen like, when we
+apply that formula, we will get the
+
+282
+00:23:08,369 --> 00:23:10,479
+same integral part again.
+
+283
+00:23:10,480 --> 00:23:20,049
+So, it is possible that you to do one transformation;
+you take sin by 4, by cost by 4; sin
+
+284
+00:23:20,049 --> 00:23:26,909
+rise to 4, divide by cost rise to 4, and you
+get tan rise to 4 and then, you apply another
+
+285
+00:23:26,910 --> 00:23:30,290
+transformation, which will, let us say, take
+you back to the same thing.
+
+286
+00:23:30,289 --> 00:23:31,509
+So, it is possible.
+
+287
+00:23:31,509 --> 00:23:35,319
+Looping is possible, because transformations
+are not one way; transformations can be
+
+288
+00:23:35,319 --> 00:23:36,609
+two way in many situations.
+
+289
+00:23:36,609 --> 00:23:39,209
+So, you want to avoid that extra transformation.
+
+290
+00:23:39,210 --> 00:23:50,269
+Therefore,
+we move by mean by loops, essentially.
+
+291
+00:23:50,269 --> 00:24:16,420
+Then, otherwise add for each child c belonging
+to this C; compute h of c.
+
+292
+00:24:16,420 --> 00:24:21,471
+This is a forward phase of the algorithm,
+that in this situation, I
+
+293
+00:24:21,471 --> 00:24:24,400
+follow the markers.
+
+294
+00:24:24,400 --> 00:24:28,430
+I will come to a set of nodes; n.
+
+295
+00:24:28,430 --> 00:24:36,259
+So, in this example, n is these two
+nodes; D and E. Then, I say, pick some node
+
+296
+00:24:36,259 --> 00:24:37,829
+n from this set.
+
+297
+00:24:37,829 --> 00:24:39,789
+I have picked D from there.
+
+298
+00:24:39,789 --> 00:24:50,339
+Then, I say, generate the children of this
+c; this is my set c, and this is the values.
+
+299
+00:24:50,339 --> 00:24:56,000
+So, let
+us say, I have two choices for solving D.
+
+300
+00:24:56,000 --> 00:24:58,279
+Let us, for argument sake, that each of them
+is
+
+301
+00:24:58,279 --> 00:25:02,889
+10 and this is 5 and 5; let us say for argument
+sake.
+
+302
+00:25:02,890 --> 00:25:09,120
+So, what I am saying is that for each child,
+c belonging to this set of children c; this
+
+303
+00:25:09,119 --> 00:25:10,119
+set is
+c.
+
+304
+00:25:10,119 --> 00:25:18,269
+For each child in this, compute the h values.
+
+305
+00:25:18,269 --> 00:25:21,879
+So, this completes the forward face,
+essentially.
+
+306
+00:25:21,880 --> 00:25:30,510
+Now, in the backward face, I have to propagate
+the new cost up, essentially,
+
+307
+00:25:30,509 --> 00:25:35,509
+and I have to readjust the pointers, the markers
+as I go along.
+
+308
+00:25:35,509 --> 00:25:42,960
+So, that is the second face.
+
+309
+00:25:42,960 --> 00:25:50,930
+Forward face goes from the root to the leaves;
+the backward face goes from this set c,
+
+310
+00:25:50,930 --> 00:25:53,299
+subset of the leaves, to the root.
+
+311
+00:25:53,299 --> 00:25:56,639
+So, what do I want to do?
+
+312
+00:25:56,640 --> 00:26:02,630
+I want to; I found this heuristic
+values 10, 10 and 5, 5.
+
+313
+00:26:02,630 --> 00:26:10,680
+Now, I want to first change the heuristic
+value of n, essentially.
+
+314
+00:26:10,680 --> 00:26:16,450
+So, this is 10 and 10, 20
+plus another 20; this becomes 40, and this
+
+315
+00:26:16,450 --> 00:26:20,509
+is 5 and 5, 10 and plus 20; this becomes 30.
+
+316
+00:26:20,509 --> 00:26:29,019
+I
+have to now, say that the revised value of
+
+317
+00:26:29,019 --> 00:26:34,289
+this node D is 30, and this is the best part
+to
+
+318
+00:26:34,289 --> 00:26:40,819
+.follow, if you are solving this node D. So,
+I have to put this marker here, and I have
+
+319
+00:26:40,819 --> 00:26:43,480
+to
+revise it to 30.
+
+320
+00:26:43,480 --> 00:26:46,680
+So, this is the new value.
+
+321
+00:26:46,680 --> 00:26:51,560
+These two things I have to do, correct.
+
+322
+00:26:51,559 --> 00:26:55,509
+This was
+my node n; I expanded this; I got these children;
+
+323
+00:26:55,509 --> 00:27:00,240
+I evaluated the heuristic values, and
+now, I have to propagate this value up.
+
+324
+00:27:00,240 --> 00:27:01,480
+Till what?
+
+325
+00:27:01,480 --> 00:27:04,480
+Till what stage, this propagation goes?
+
+326
+00:27:04,480 --> 00:27:10,200
+It should go till, as long as this node changes?
+
+327
+00:27:10,200 --> 00:27:17,380
+If this node changes then, I must
+propagate its value to its parents as well.
+
+328
+00:27:17,380 --> 00:27:31,890
+So, let me take another situation, or this
+one.
+
+329
+00:27:31,890 --> 00:27:44,890
+Let us say, this is a node that I have.
+
+330
+00:27:44,890 --> 00:27:56,630
+Let us say, this is 10, 5 or let us say, this
+is 30, 5, 5,
+
+331
+00:27:56,630 --> 00:28:02,030
+and this is 5, and this is 10.
+
+332
+00:28:02,029 --> 00:28:05,000
+Let us say this was my node n.
+
+333
+00:28:05,000 --> 00:28:06,980
+I just want to illustrate this idea.
+
+334
+00:28:06,980 --> 00:28:13,529
+If this was my node n,
+and these are the two children; I will evaluate
+
+335
+00:28:13,529 --> 00:28:18,410
+this children, and what is the best way of
+solving this n?
+
+336
+00:28:18,410 --> 00:28:24,220
+I will mark with the pointer and compute the
+cost, as 5 plus 10; 15, and
+
+337
+00:28:24,220 --> 00:28:26,009
+this is 10 plus 10; 20.
+
+338
+00:28:26,009 --> 00:28:28,890
+So, that is not the best one; this is the
+best one.
+
+339
+00:28:28,890 --> 00:28:34,470
+Because, this has
+changed from 5 to 15; I will add its parent
+
+340
+00:28:34,470 --> 00:28:35,470
+here.
+
+341
+00:28:35,470 --> 00:28:47,029
+So, this will become 5 plus 5, sorry, 15
+plus 5, 20 plus 20, which is 40.
+
+342
+00:28:47,029 --> 00:29:00,750
+This was originally, also 40, because this
+30 plus 10; 40.
+
+343
+00:29:00,750 --> 00:29:05,640
+Let us say, this was 80, to start with; otherwise,
+I would not have gone there at all.
+
+344
+00:29:05,640 --> 00:29:11,180
+So, if
+this was 80; this was, this is on 90.
+
+345
+00:29:11,180 --> 00:29:16,320
+Now, after I revise this, I must revise its
+parent,
+
+346
+00:29:16,319 --> 00:29:22,149
+because its parent is getting affected; it
+has got from 20 to 40.
+
+347
+00:29:22,150 --> 00:29:27,800
+Because, I am revising
+this, I must revise both the parents.
+
+348
+00:29:27,799 --> 00:29:30,970
+I must, because I know that the cost of this
+has
+
+349
+00:29:30,970 --> 00:29:33,720
+changed; this cost must be propagated to this,
+as well.
+
+350
+00:29:33,720 --> 00:29:37,370
+Whether, I came from this path or
+whether, I came from this path; it does not
+
+351
+00:29:37,369 --> 00:29:38,369
+matter.
+
+352
+00:29:38,369 --> 00:29:40,250
+I must revise both the parents.
+
+353
+00:29:40,250 --> 00:29:44,069
+So, the
+process of propagation is basically, to go
+
+354
+00:29:44,069 --> 00:29:48,500
+up to all the parents.
+
+355
+00:29:48,500 --> 00:29:56,819
+If you have got a feel of
+that, just write it down.
+
+356
+00:29:56,819 --> 00:30:11,899
+Let M be the set of nodes, that has changed.
+
+357
+00:30:11,900 --> 00:30:18,970
+This is just a comment.
+
+358
+00:30:18,970 --> 00:30:38,660
+So, initialize M. The
+node that I expanded, I put this into the
+
+359
+00:30:38,660 --> 00:30:39,840
+set M, essentially.
+
+360
+00:30:39,839 --> 00:30:47,799
+Essentially, M is going to be
+the nodes, whose value has changed, essentially.
+
+361
+00:30:47,799 --> 00:30:52,099
+So, I could have done the next step
+before this, but it does not matter.
+
+362
+00:30:52,099 --> 00:30:55,069
+Let me write it here.
+
+363
+00:30:55,069 --> 00:31:08,559
+It says that compute 
+the best cost of n.
+
+364
+00:31:08,559 --> 00:31:27,809
+Pick some; let us say this node p or something
+like that, or just a way consistent, let me
+
+365
+00:31:27,809 --> 00:31:30,819
+use n; I do not know which is better.
+
+366
+00:31:30,819 --> 00:31:33,720
+Let me use
+n, because I will just only put n into this
+
+367
+00:31:33,720 --> 00:31:35,089
+m, initially.
+
+368
+00:31:35,089 --> 00:31:44,349
+So, I just use the same name, but of
+course, as m grows, it may have more elements.
+
+369
+00:31:44,349 --> 00:31:46,459
+How will it grow; because parents will
+
+370
+00:31:46,460 --> 00:31:49,079
+.get added to this set m, essentially.
+
+371
+00:31:49,079 --> 00:31:51,730
+But initially, of course, there is only m
+inside n, and I
+
+372
+00:31:51,730 --> 00:31:56,589
+am just simply, saying, using the same name,
+saying, and pick some node m from n.
+
+373
+00:31:56,589 --> 00:32:05,869
+Compute best cost for n.
+
+374
+00:32:05,869 --> 00:32:09,509
+How do I compute best cost for n?
+
+375
+00:32:09,509 --> 00:32:15,500
+For example, if this was n,
+then I can see that from this side, the cost
+
+376
+00:32:15,500 --> 00:32:17,480
+is 40, and from this side, the cost is 30.
+
+377
+00:32:17,480 --> 00:32:25,460
+So, the
+best cost for n is 30, essentially.
+
+378
+00:32:25,460 --> 00:32:30,140
+I should have checked that, you know, anyway,
+you are
+
+379
+00:32:30,140 --> 00:32:34,640
+going to revise the cost, irrespective of
+whether, it improves or not.
+
+380
+00:32:34,640 --> 00:32:52,220
+So, compute the best
+cost for n.
+
+381
+00:32:52,220 --> 00:32:54,350
+I must do another thing here, before that.
+
+382
+00:32:54,349 --> 00:33:04,879
+For each child c, compute h of c; I
+must have another step, which says that if
+
+383
+00:33:04,880 --> 00:33:21,290
+c is primitive, label c solved.
+
+384
+00:33:21,289 --> 00:33:24,299
+If the child, that I
+have just generated, is the terminal node
+
+385
+00:33:24,299 --> 00:33:26,579
+of the primitive or trivial or whatever, you
+want
+
+386
+00:33:26,579 --> 00:33:32,009
+to call it, are solved; then put a label solved
+for this node c.
+
+387
+00:33:32,009 --> 00:33:38,210
+For example, if this was
+solved, then I could just put a label, saying
+
+388
+00:33:38,210 --> 00:33:39,210
+solved.
+
+389
+00:33:39,210 --> 00:33:45,319
+If I knew this was solved, the others
+may still have to be expanded and all.
+
+390
+00:33:45,319 --> 00:33:49,829
+So, for every child, you compute the h value,
+and
+
+391
+00:33:49,829 --> 00:33:58,460
+if it is a solved node or primitive node;
+you label it as solved.
+
+392
+00:33:58,460 --> 00:34:02,650
+Then, n is the node that we
+just expanded, and we have added this to the
+
+393
+00:34:02,650 --> 00:34:03,650
+set m.
+
+394
+00:34:03,650 --> 00:34:06,009
+We are picking some node from m.
+
+395
+00:34:06,009 --> 00:34:08,869
+In this case, it is only n to start with.
+
+396
+00:34:08,869 --> 00:34:14,289
+Compute the
+best cost for n, which has changed.
+
+397
+00:34:14,289 --> 00:34:37,210
+If a solution below is labeled, solved; label
+n solved
+
+398
+00:34:37,210 --> 00:34:50,440
+where, I should not say, a solution; is the
+best solution, say, if the best solution below
+
+399
+00:34:50,440 --> 00:34:52,990
+it
+is labeled solved, you label it solved.
+
+400
+00:34:52,989 --> 00:34:59,250
+If I take this example again, the other side,
+supposing, this was n; this is a better node.
+
+401
+00:34:59,250 --> 00:35:03,250
+If this is solved; I will use double circle
+to
+
+402
+00:35:03,250 --> 00:35:04,730
+denote a solved node.
+
+403
+00:35:04,730 --> 00:35:06,139
+If this is solved, what do I need to do?
+
+404
+00:35:06,139 --> 00:35:12,420
+I need to update n from 5 to
+15, that is the new cost; that is the best
+
+405
+00:35:12,420 --> 00:35:13,599
+cost for solving n.
+
+406
+00:35:13,599 --> 00:35:16,920
+Initially, I thought of it is going
+to cost 5, but after I expanded it, I know
+
+407
+00:35:16,920 --> 00:35:20,210
+that either, I have a choice of 15 or choice
+of 20.
+
+408
+00:35:20,210 --> 00:35:22,599
+The best cost is 15, but this is labeled solved.
+
+409
+00:35:22,599 --> 00:35:25,549
+So, I must label this also, solved.
+
+410
+00:35:25,550 --> 00:35:27,039
+That is
+the step here.
+
+411
+00:35:27,039 --> 00:35:31,519
+If the best solution below is label solved,
+then label that node; solved.
+
+412
+00:35:31,519 --> 00:35:37,380
+If I have to label
+this node solved, then the better solution,
+
+413
+00:35:37,380 --> 00:35:39,829
+which is this side; both of them must be labeled
+solved.
+
+414
+00:35:39,829 --> 00:35:43,920
+If both of them are labeled solved, then I
+can push the solved label here.
+
+415
+00:35:43,920 --> 00:35:47,639
+In this
+fashion, the solved label will percolate up,
+
+416
+00:35:47,639 --> 00:35:52,299
+and I want to keep doing this, till solved
+does
+
+417
+00:35:52,300 --> 00:35:55,420
+not reach the root node, essentially.
+
+418
+00:35:55,420 --> 00:35:57,010
+This is the mechanism for the backward phase.
+
+419
+00:35:57,010 --> 00:36:01,160
+So,
+this is the best solution below n is solved.
+
+420
+00:36:01,159 --> 00:36:05,539
+.Then, you put label as solved.
+
+421
+00:36:05,539 --> 00:36:13,570
+So, we have done two things; compute best,
+and possibly
+
+422
+00:36:13,570 --> 00:36:16,380
+labeled it solved.
+
+423
+00:36:16,380 --> 00:36:20,780
+If any of these things happened, we will say
+that node n has changed,
+
+424
+00:36:20,780 --> 00:36:25,920
+which means, it was 15 originally.
+
+425
+00:36:25,920 --> 00:36:30,409
+It has either changed to 30, in this case.
+
+426
+00:36:30,409 --> 00:36:34,409
+In this
+example, it has changed from 5 to 15, and
+
+427
+00:36:34,409 --> 00:36:36,429
+also, it has got a label solved, essentially.
+
+428
+00:36:36,429 --> 00:36:39,710
+So,
+either a change of heuristic value, or the
+
+429
+00:36:39,710 --> 00:36:41,500
+application of solved label means that the
+node
+
+430
+00:36:41,500 --> 00:36:44,329
+has changed.
+
+431
+00:36:44,329 --> 00:36:55,559
+If a node has changed; I am using this as
+a kind of technical term, which
+
+432
+00:36:55,559 --> 00:36:59,840
+you have to have a test for doing it.
+
+433
+00:36:59,840 --> 00:37:12,380
+If n has changed, then add all parents of
+n to m.
+
+434
+00:37:12,380 --> 00:37:19,220
+So, all parents; that is what I was trying
+to illustrate here, is that if this has changed,
+
+435
+00:37:19,219 --> 00:37:20,219
+then
+this will change.
+
+436
+00:37:20,219 --> 00:37:25,619
+If this is changed, not only must you propagate
+the change of cost, from
+
+437
+00:37:25,619 --> 00:37:30,869
+the direction you came; but also, to any other
+parents that this may help because in the
+
+438
+00:37:30,869 --> 00:37:36,349
+future date, that parent might become, essentially...
+
+439
+00:37:36,349 --> 00:37:51,339
+So, I must put this, of course, in the
+loop, while m is not equal to empty; I have
+
+440
+00:37:51,340 --> 00:37:53,110
+this full loop.
+
+441
+00:37:53,110 --> 00:37:57,000
+Pick some node form m.
+
+442
+00:37:57,000 --> 00:38:07,250
+Compute its revised value, which is the best
+value from all the sub solutions, it has.
+
+443
+00:38:07,250 --> 00:38:12,210
+If the best solution below it, is labeled
+solved; label that node solved.
+
+444
+00:38:12,210 --> 00:38:15,519
+If the node is
+changed, add its parent to m.
+
+445
+00:38:15,519 --> 00:38:16,519
+What will happen?
+
+446
+00:38:16,519 --> 00:38:22,050
+Initially, I will add only this node n to
+m, because it has changed; I will add to this
+
+447
+00:38:22,050 --> 00:38:25,340
+parent, and because this has changed; I will
+add this parent.
+
+448
+00:38:25,340 --> 00:38:28,340
+In this way, the revised value will propagate
+up.
+
+449
+00:38:28,340 --> 00:38:33,500
+In this example, if this
+has changed, I will get a new label solved.
+
+450
+00:38:33,500 --> 00:38:37,929
+So, I will add this to m, but this cannot
+be
+
+451
+00:38:37,929 --> 00:38:41,599
+labeled solved, because you know, that branch
+still is unsolved.
+
+452
+00:38:41,599 --> 00:38:44,860
+So, I will not label this
+solved, but I will change its value.
+
+453
+00:38:44,860 --> 00:38:49,579
+Because now, it was originally, 20 and this
+has
+
+454
+00:38:49,579 --> 00:38:50,940
+become 15 plus 5; 20 plus 20; 40.
+
+455
+00:38:50,940 --> 00:38:53,300
+So, from 20, it has got to 40.
+
+456
+00:38:53,300 --> 00:38:54,480
+So, it is changed.
+
+457
+00:38:54,480 --> 00:38:57,090
+So, I
+must add both its parents to solve; they will
+
+458
+00:38:57,090 --> 00:39:02,510
+change to m, sorry, they will change and I
+will add root to m.
+
+459
+00:39:02,510 --> 00:39:08,340
+After I change m, I will add nothing to m
+and eventually, all these ms will get revised.
+
+460
+00:39:08,340 --> 00:39:12,150
+All these loops will terminate, which means
+the backward phase will terminate.
+
+461
+00:39:12,150 --> 00:39:15,470
+So, the
+algorithm works in two phases; in the forward
+
+462
+00:39:15,469 --> 00:39:23,849
+phase, you move forward following the
+markers.
+
+463
+00:39:23,849 --> 00:39:33,960
+I have missed out one step here, somewhere
+here; I must have this thing marked
+
+464
+00:39:33,960 --> 00:39:56,230
+as best sub solution, or I should say, hyper
+edge, because each of these are the two hyper
+
+465
+00:39:56,230 --> 00:39:58,090
+edges; just mark the best ones.
+
+466
+00:39:58,090 --> 00:40:01,519
+So, whenever you are looking at the node m,
+node in this
+
+467
+00:40:01,519 --> 00:40:09,250
+m, you must recompute its value, which will
+get from its children.
+
+468
+00:40:09,250 --> 00:40:10,250
+You must mark the
+
+469
+00:40:10,250 --> 00:40:14,219
+.best path, because next time, you are going
+in the forward phase; you must know which
+
+470
+00:40:14,219 --> 00:40:18,519
+direction to go, and you must also percolate
+this solved label back, if possible,
+
+471
+00:40:18,519 --> 00:40:19,519
+essentially.
+
+472
+00:40:19,519 --> 00:40:23,369
+It is possible, if all the sub solution; if
+this entire hyper edge has nodes,
+
+473
+00:40:23,369 --> 00:40:27,460
+which has label solved, essentially.
+
+474
+00:40:27,460 --> 00:40:31,269
+Just to repeat, if this was to be labeled
+solved, and
+
+475
+00:40:31,269 --> 00:40:34,460
+this was to be labeled solved, then this will
+get labeled solved.
+
+476
+00:40:34,460 --> 00:40:37,800
+If this was to be labeled
+solved, and this was to be labeled solved,
+
+477
+00:40:37,800 --> 00:40:39,660
+then this will get labeled solved.
+
+478
+00:40:39,659 --> 00:40:41,509
+The moment
+it gets labeled solved, and if this is the
+
+479
+00:40:41,510 --> 00:40:44,610
+best one, if the arrow still pointing to this;
+that
+
+480
+00:40:44,610 --> 00:40:47,970
+will get labeled solved and then, you will
+stop.
+
+481
+00:40:47,969 --> 00:40:52,790
+In this example, this has got labeled
+solved; this will get labeled solved, but
+
+482
+00:40:52,791 --> 00:40:54,900
+this will not get labeled solved, unless that
+gets
+
+483
+00:40:54,900 --> 00:40:56,710
+labeled solved, and this is the better choice.
+
+484
+00:40:56,710 --> 00:41:02,230
+So, I must have a marker here, and a marker
+here.
+
+485
+00:41:02,230 --> 00:41:06,630
+Once this gets slipped, if this has to get
+labeled solved, and the marker was still here,
+
+486
+00:41:06,630 --> 00:41:10,599
+then I can label this solved and so on, essentially.
+
+487
+00:41:10,599 --> 00:41:18,579
+So, in the forward phase, you follow
+the markers, end up with some unsolved set
+
+488
+00:41:18,579 --> 00:41:22,279
+of nodes, which we have called as this n.
+
+489
+00:41:22,280 --> 00:41:27,530
+You pick some node from n, may be, the most
+expensive as we discussed, a little bit
+
+490
+00:41:27,530 --> 00:41:28,530
+earlier.
+
+491
+00:41:28,530 --> 00:41:29,630
+So, that is not really so important.
+
+492
+00:41:29,630 --> 00:41:34,380
+We pick some node from n, generate its
+children.
+
+493
+00:41:34,380 --> 00:41:36,349
+If none, we call it futility.
+
+494
+00:41:36,349 --> 00:41:39,860
+We assign the cost futility of that.
+
+495
+00:41:39,860 --> 00:41:43,710
+Then, we remove
+loops and for each child, we compute the h
+
+496
+00:41:43,710 --> 00:41:46,699
+values, that are this set of nodes here, or
+it
+
+497
+00:41:46,699 --> 00:41:49,500
+could be this set of nodes here, depending
+on what is n.
+
+498
+00:41:49,500 --> 00:41:55,440
+There, the forward phase ends.
+
+499
+00:41:55,440 --> 00:42:02,630
+Then, you add this node n, that you just expanded
+to this set m; initialize m to this set n.
+
+500
+00:42:02,630 --> 00:42:06,010
+Then, one by one, you pick.
+
+501
+00:42:06,010 --> 00:42:12,420
+So, this is not correct; this sum is not correct.
+
+502
+00:42:12,420 --> 00:42:17,000
+I should pick
+the lowest.
+
+503
+00:42:17,000 --> 00:42:24,320
+So, you can construct examples to show that
+you have to make this right.
+
+504
+00:42:24,320 --> 00:42:26,370
+If m
+is the collection of nodes, pick the one which
+
+505
+00:42:26,369 --> 00:42:29,109
+is lowest in terms of the graph.
+
+506
+00:42:29,110 --> 00:42:37,860
+Pick the
+lowest node; compute its best cost below that.
+
+507
+00:42:37,860 --> 00:42:46,640
+If the best cost leads to label to solved
+nodes, then label these nodes solved, and
+
+508
+00:42:46,639 --> 00:42:50,389
+if either, it is not labeled solved or if
+its cost
+
+509
+00:42:50,389 --> 00:42:59,039
+has changed, you must add its parents to m.
+
+510
+00:42:59,039 --> 00:43:05,590
+This loop here, this whole loop here, works
+under the condition as long as, m is not equal
+
+511
+00:43:05,590 --> 00:43:06,590
+to empty.
+
+512
+00:43:06,590 --> 00:43:09,230
+You pick some node and do this process, essentially.
+
+513
+00:43:09,230 --> 00:43:13,780
+This process is
+essentially, backing up the values from the
+
+514
+00:43:13,780 --> 00:43:18,350
+leads, towards the root node, essentially.
+
+515
+00:43:18,349 --> 00:43:23,159
+Once this ends, the algorithm will go back
+to the forward node; again, follow the mark
+
+516
+00:43:23,159 --> 00:43:26,369
+.path; again, expand some node.
+
+517
+00:43:26,369 --> 00:43:29,329
+Then it will go into the backward phase, backing
+up the
+
+518
+00:43:29,329 --> 00:43:30,329
+values from there.
+
+519
+00:43:30,329 --> 00:43:35,819
+These forward and backward phases will keep
+happening, till either,
+
+520
+00:43:35,820 --> 00:43:41,230
+one of the two things happens; that either,
+the value solved is percolated to the root,
+
+521
+00:43:41,230 --> 00:43:44,820
+or
+the value futility is percolated to the root.
+
+522
+00:43:44,820 --> 00:43:51,100
+So, in which case, either, it will give you
+a
+
+523
+00:43:51,099 --> 00:43:57,190
+solution; solution would be a sub graph or
+a sub tree, or it will say that we cannot
+
+524
+00:43:57,190 --> 00:44:01,159
+find
+the solution of this cost.
+
+525
+00:44:01,159 --> 00:44:10,730
+So, there is only one more point left.
+
+526
+00:44:10,730 --> 00:44:19,820
+For this algorithm to be called AO star, for
+it to
+
+527
+00:44:19,820 --> 00:44:26,550
+deserve the suffix of star, we need a condition
+on the heuristic function.
+
+528
+00:44:26,550 --> 00:44:32,019
+Can you guess
+what the condition is?
+
+529
+00:44:32,019 --> 00:44:43,710
+So, let me, Sorry?
+
+530
+00:44:43,710 --> 00:44:44,710
+.(( ))
+
+531
+00:44:44,710 --> 00:44:48,150
+What does it mean?
+
+532
+00:44:48,150 --> 00:44:54,360
+This is the optimal cost solution and algorithm
+is designed to find
+
+533
+00:44:54,360 --> 00:45:01,180
+the optimal cost solution and what here; saying
+here is that as long as the heuristic
+
+534
+00:45:01,179 --> 00:45:09,769
+function under estimate the optimal cost,
+then it is going to be, give you an optimal
+
+535
+00:45:09,769 --> 00:45:11,250
+solution.
+
+536
+00:45:11,250 --> 00:45:17,639
+So, as an exercise, I will ask you to construct
+a small problem like this, with
+
+537
+00:45:17,639 --> 00:45:20,710
+some leaf nodes, solved nodes and so on.
+
+538
+00:45:20,710 --> 00:45:24,500
+You can basically, manipulate the edge cost
+to
+
+539
+00:45:24,500 --> 00:45:29,789
+make it of under estimating or over estimating,
+and first work with a over estimating
+
+540
+00:45:29,789 --> 00:45:37,289
+function, and you will see, that it gives
+you some solution, which may not necessarily
+
+541
+00:45:37,289 --> 00:45:38,500
+be
+the optimal solution.
+
+542
+00:45:38,500 --> 00:45:45,289
+Then, try out with an under estimating function,
+and all you could
+
+543
+00:45:45,289 --> 00:45:50,690
+go up and look up the past test papers, you
+will see one such, one of such problems there,
+
+544
+00:45:50,690 --> 00:45:55,250
+where an AND OR graph is given, and you have
+been asked to find it solution.
+
+545
+00:45:55,250 --> 00:46:00,670
+So, do try
+it out at home.
+
+546
+00:46:00,670 --> 00:46:03,430
+In the next class, we will take a diversion
+from here.
+
+547
+00:46:03,429 --> 00:46:10,339
+We will move to games primarily,
+because I want to give the games assignment
+
+548
+00:46:10,340 --> 00:46:12,100
+in early October, so that, you can finish
+it
+
+549
+00:46:12,099 --> 00:46:13,460
+by the end of October, essentially.
+
+550
+00:46:13,460 --> 00:46:20,300
+Then, we will come back to this idea of expert
+systems, tool based systems.
+
+551
+00:46:20,300 --> 00:46:24,769
+I mentioned things like, R1 is called an expert
+system or
+
+552
+00:46:24,769 --> 00:46:25,769
+prospective.
+
+553
+00:46:25,769 --> 00:46:31,000
+How are they implemented, and what is a rule
+based system, and how does
+
+554
+00:46:31,000 --> 00:46:32,000
+it work?
+
+555
+00:46:32,000 --> 00:46:34,030
+So, we will come back to that after, we finish
+with games.
+
+556
+00:46:34,030 --> 00:46:36,230
+So, we will stop here.
+
+557
+00:46:36,230 --> 00:46:46,230
+.
+

@@ -1,0 +1,1164 @@
+﻿1
+00:00:15,880 --> 00:00:21,990
+Welcome to module 35 of Database Management
+Systems. ah We have been discussing about
+
+2
+00:00:21,989 --> 00:00:29,759
+concurrency control, this is a second and
+concluding module on that . So, in the last
+
+3
+00:00:29,760 --> 00:00:35,590
+module we have talked about the basic issues
+in concurrency control; and particularly talked
+
+4
+00:00:35,590 --> 00:00:41,359
+about log based protocol, and how to implement
+locking in very simple terms.
+
+5
+00:00:41,359 --> 00:00:48,679
+As we have seen that deadlocks of the perils
+of locking I mean we cannot do without locking
+
+6
+00:00:48,679 --> 00:00:55,689
+and and certainly if we lock then deadlocks
+are inevitable almost to happen. So, here
+
+7
+00:00:55,689 --> 00:01:02,039
+first we try to understand how since dead
+locks are inevitable. So, there has to be
+
+8
+00:01:02,039 --> 00:01:07,849
+mechanisms to detect deadlocks and recover
+from them. And also we would like to look
+
+9
+00:01:07,849 --> 00:01:12,259
+at if it is possible to create strategies
+which can prevent deadlock from happening
+
+10
+00:01:12,259 --> 00:01:18,909
+at all. And so after having studied that we
+would like to understand take a look into
+
+11
+00:01:18,909 --> 00:01:24,590
+a simple time-based protocol that can avoid
+deadlock.
+
+12
+00:01:24,590 --> 00:01:31,118
+So, deadlock handling. So, system is deadlock
+if there is the again just to recap the simple
+
+13
+00:01:31,118 --> 00:01:36,409
+idea is if there is a set of instructions
+such that every transaction in the set is
+
+14
+00:01:36,409 --> 00:01:41,780
+waiting for another transaction in the set
+and therefore none of them can actually proceed.
+
+15
+00:01:41,780 --> 00:01:48,570
+So, deadlock prevention protocol ensures that
+the system will never enter into the deadlock
+
+16
+00:01:48,569 --> 00:01:53,218
+state. So, the question is can we make some
+strategy. So, why are we getting into the
+
+17
+00:01:53,218 --> 00:01:57,489
+deadlock, because ah transactions are making
+requests for different locks and those are
+
+18
+00:01:57,489 --> 00:02:03,519
+granted. And then some more requests come
+and we come to a state where a is waiting
+
+19
+00:02:03,519 --> 00:02:08,949
+for b, b is waiting for c, c is waiting for
+a kind of a situation and we get into a deadlock.
+
+20
+00:02:08,949 --> 00:02:13,909
+So, can we have strategies so that the the
+requests and releases are done in a way, so
+
+21
+00:02:13,909 --> 00:02:21,340
+that the deadlock will not happen at all.
+So, I mean fortunately such number of such
+
+22
+00:02:21,340 --> 00:02:27,110
+strategies exist. For example, one strategy
+which is called a predeclaration which required
+
+23
+00:02:27,110 --> 00:02:33,220
+that each transaction locks all debt items
+before it begins its execution that can be
+
+24
+00:02:33,219 --> 00:02:38,139
+shown that that ensures that you will never
+have deadlock because where in very simple
+
+25
+00:02:38,139 --> 00:02:43,769
+terms you will not be able to start before
+you have got all the locks. And once you have
+
+26
+00:02:43,770 --> 00:02:48,750
+got all the locks naturally you have every
+access to all possible data items and therefore,
+
+27
+00:02:48,750 --> 00:02:54,330
+you will be able to proceed. Naturally, the
+flip side of this is this will delay the beginning
+
+28
+00:02:54,330 --> 00:03:00,300
+of the transactions to a great extent in many
+cases, and particularly will bring down the
+
+29
+00:03:00,300 --> 00:03:05,900
+level of concurrency that you can have.
+The other which is smarter is what it does
+
+30
+00:03:05,900 --> 00:03:12,460
+is imposes a kind of partial ordering of all
+the data items that a transaction and all
+
+31
+00:03:12,460 --> 00:03:19,439
+the data items that exist. And it requires
+that the transaction can lock the items in
+
+32
+00:03:19,439 --> 00:03:25,849
+only in that specific order. So, the important
+thing here is a is a partial order among the
+
+33
+00:03:25,849 --> 00:03:32,840
+data items. And the fact that you locked data
+items in that order that is specified by the
+
+34
+00:03:32,840 --> 00:03:37,810
+partial order, you cannot lock out of order.
+And if you can do that then it can be shown
+
+35
+00:03:37,810 --> 00:03:42,670
+that the deadlock will get prevented. We cannot
+we do not have time to go into the details
+
+36
+00:03:42,669 --> 00:03:48,569
+of how that works, but I just want you to
+know that such strategies of prevention exist.
+
+37
+00:03:48,569 --> 00:03:56,400
+So, the other possible prevention schemes
+that we will we would like to look at little
+
+38
+00:03:56,400 --> 00:04:04,790
+bit more depth is the fact that I can use
+timestamps for the transaction. And use those
+
+39
+00:04:04,789 --> 00:04:08,900
+timestamps that is which will tell me which
+is an earlier transaction in which a later
+
+40
+00:04:08,900 --> 00:04:15,330
+transaction for preventing deadlock and several
+strategies for that exist. We will discuss
+
+41
+00:04:15,330 --> 00:04:23,040
+two of them. First is what is known as wait
+and die with scheme, which is non-preemptive.
+
+42
+00:04:23,040 --> 00:04:29,080
+Non-preemptive means that well in this no
+one preempts anyone else.
+
+43
+00:04:29,079 --> 00:04:33,849
+So, what do you do in wait and die, the older
+transactions because you assume that every
+
+44
+00:04:33,850 --> 00:04:39,410
+transaction has a timestamp. So, smaller the
+timestamp, older is a transaction. So, older
+
+45
+00:04:39,410 --> 00:04:44,980
+transaction may wait for the younger one to
+release the item. So, if two transactions
+
+46
+00:04:44,980 --> 00:04:51,420
+are are conflicting then the older one will
+wait; and the younger transaction will never
+
+47
+00:04:51,420 --> 00:04:55,150
+wait for the older one, they are rolled back
+instead.
+
+48
+00:04:55,149 --> 00:05:01,849
+So, if there is a conflict, then the younger
+one in that will always roll back, and the
+
+49
+00:05:01,850 --> 00:05:07,000
+older one will wait. So, a transaction may
+die several times before acquiring the needed
+
+50
+00:05:07,000 --> 00:05:12,589
+data item kind of starvation may happen, but
+certainly there will not be a deadlock. Because
+
+51
+00:05:12,589 --> 00:05:18,709
+my a waiting on b, and b waiting on a, cannot
+happen because out of a and b one must be
+
+52
+00:05:18,709 --> 00:05:24,870
+older has to be older, and that only will
+wait, the other one will abort, abort and
+
+53
+00:05:24,870 --> 00:05:28,780
+roll back on.
+The other is a preemptive scheme where which
+
+54
+00:05:28,779 --> 00:05:36,839
+is called wound and wait scheme, where the
+older transaction wounds up or forces a rollback
+
+55
+00:05:36,839 --> 00:05:42,039
+of the younger transaction instead of waiting
+for it that is why this is preemptive. So,
+
+56
+00:05:42,040 --> 00:05:48,510
+the older transaction is preempting the young
+that transaction to continue to wait and forces
+
+57
+00:05:48,509 --> 00:05:53,519
+it to roll back to abort and that, but the
+younger transaction may wait for the older
+
+58
+00:05:53,519 --> 00:06:03,289
+one. So, by doing this preemptive one also
+it is possible to have a fewer roll backs
+
+59
+00:06:03,290 --> 00:06:08,030
+than the other scheme. So, it is a preemptive
+scheme, but it the advantages it might allow
+
+60
+00:06:08,029 --> 00:06:13,909
+you fewer roll backs to happen. And with these
+two kind of timestamp based schemes it is
+
+61
+00:06:13,910 --> 00:06:19,860
+possible to actually prevent deadlocks and
+for that reason these kind of schemes are
+
+62
+00:06:19,860 --> 00:06:25,370
+often preferred in many context.
+So, both in wait and die, and wound and wait
+
+63
+00:06:25,370 --> 00:06:30,930
+scheme, the rollback transaction is restarted
+with its original timestamp. This is a very
+
+64
+00:06:30,930 --> 00:06:35,269
+very important point to note. When you restart,
+so your rollback so you have to restart that
+
+65
+00:06:35,269 --> 00:06:39,870
+transaction you restart the transaction you
+do not put the timestamp of when it is being
+
+66
+00:06:39,870 --> 00:06:48,180
+restarted, you put the timestamp of its original
+time. The time when it was started and had
+
+67
+00:06:48,180 --> 00:06:54,100
+to be aborted and rollback. So, the older
+transactions have precedence over the newer
+
+68
+00:06:54,100 --> 00:06:59,460
+ones and that starvation will get avoided.
+So, now what becomes you are you are actually
+
+69
+00:06:59,459 --> 00:07:03,849
+a new candidate because you have been rolled
+back in and started again, but you carry your
+
+70
+00:07:03,850 --> 00:07:10,600
+older timestamp. So, your your precedence
+has gone higher because in wait and die, and
+
+71
+00:07:10,600 --> 00:07:16,139
+wound and wait in both actually the older
+one has a precedence. So, by carrying your
+
+72
+00:07:16,139 --> 00:07:21,110
+older timestamp, you inherently bring in a
+higher precedence in the system. And in this
+
+73
+00:07:21,110 --> 00:07:25,790
+way there is a precedence based ordering that
+will naturally always happen. So, this will
+
+74
+00:07:25,790 --> 00:07:31,919
+not only avoid deadlock, but this will also
+ensure that starvation is avoided. So, very
+
+75
+00:07:31,918 --> 00:07:38,359
+simple and nice scheme. ah .
+So, in this you usually have time out basically
+
+76
+00:07:38,360 --> 00:07:43,280
+my transaction waits for a lock only for a
+specified amount of time. If the lock has
+
+77
+00:07:43,279 --> 00:07:47,989
+not been granted within that time the transaction
+is rolled back and restarted, and therefore,
+
+78
+00:07:47,990 --> 00:07:52,250
+the deadlock is not possible. It is simple
+to implement, but starvation can happen in
+
+79
+00:07:52,250 --> 00:07:56,930
+the timeout based scheme .
+And it is also difficult to determine what
+
+80
+00:07:56,930 --> 00:08:01,750
+is a good time interval to wait. If you wait
+too short, then ah you will spend a lot of
+
+81
+00:08:01,750 --> 00:08:08,120
+time in the in the rollback and restart. If
+you wait for too long, then your throughput
+
+82
+00:08:08,120 --> 00:08:13,740
+will go down because several transactions
+are basically waiting on logs. So, theoretically
+
+83
+00:08:13,740 --> 00:08:21,939
+it does avoid deadlock, but ah in terms of
+starvation and in terms of the practicality,
+
+84
+00:08:21,939 --> 00:08:26,670
+this there are critical things to decide on
+this .
+
+85
+00:08:26,670 --> 00:08:32,060
+The second issue in terms of deadlock that
+we must be able to answer is well hundreds
+
+86
+00:08:32,059 --> 00:08:37,668
+of transactions are going on in the system.
+Now, how do you know that a deadlock has happened?
+
+87
+00:08:37,668 --> 00:08:42,269
+Because if a deadlock has happened and if
+you are not using a preventive scheme to ensure
+
+88
+00:08:42,269 --> 00:08:48,049
+that the deadlock will not will never happen
+theoretical proof. If you are allowing say
+
+89
+00:08:48,049 --> 00:08:53,049
+two phases are locking kind of protocol where
+deadlocks can happen then you must know what
+
+90
+00:08:53,049 --> 00:08:59,169
+the must be able to detect that a deadlock
+has happened and then take care of it to rollback
+
+91
+00:08:59,169 --> 00:09:03,939
+the transaction.
+So, for doing this, we again create a graph,
+
+92
+00:09:03,940 --> 00:09:10,070
+which is wait for graph which is very similar
+to the precedence graph we saw earlier which
+
+93
+00:09:10,070 --> 00:09:16,310
+the nodes are the transactions and the edges
+are ordered pair of transactions. So, what
+
+94
+00:09:16,309 --> 00:09:26,729
+do you you put an edge from T i to T j, you
+put this edge in what it means is T i is waiting
+
+95
+00:09:26,730 --> 00:09:32,909
+for T j.
+So, if we have a a conflict, then certainly
+
+96
+00:09:32,909 --> 00:09:39,689
+one transaction is holding the lock and other
+is other has requested for that lock. So,
+
+97
+00:09:39,690 --> 00:09:46,820
+what you do you put an edge for from the one
+that is waiting for the lock to the one that
+
+98
+00:09:46,820 --> 00:09:53,230
+is already holding the lock for for the release
+of the lock, and in this way the graph gets
+
+99
+00:09:53,230 --> 00:09:59,899
+built up. So, ah naturally when T i requested
+it item currently being held by T j, then
+
+100
+00:09:59,899 --> 00:10:07,730
+the edge T i T j is inserted in the in this
+graph. And when the release happens then this
+
+101
+00:10:07,730 --> 00:10:15,190
+edge is removed because T j is no more holding
+the item that T i had actually required.
+
+102
+00:10:15,190 --> 00:10:20,070
+So, this is how this is kind of a dynamic
+graph the wait for graph is a kind of dynamic
+
+103
+00:10:20,070 --> 00:10:26,879
+graph which will regularly keep getting updated.
+Now, naturally from the description of this
+
+104
+00:10:26,879 --> 00:10:32,009
+graph, you can understand that a deadlock
+if a deadlock has to happen then this graph
+
+105
+00:10:32,009 --> 00:10:38,000
+must have a cycle. So, if at any instant the
+graph has a cycle then there is a deadlock;
+
+106
+00:10:38,000 --> 00:10:41,559
+otherwise the graph will grow and shrink grow
+and shrink it will keep on happening that
+
+107
+00:10:41,559 --> 00:10:46,769
+way.
+So, it is important to ensure that this graph
+
+108
+00:10:46,769 --> 00:10:52,240
+remains a cyclic which now this is dynamically
+happening hundreds of transactions, transactions
+
+109
+00:10:52,240 --> 00:10:57,980
+are getting created, they are getting committed,
+aborted, they are requesting logs they are
+
+110
+00:10:57,980 --> 00:11:03,320
+releasing logs and so on. So, how do you ensure
+that the graph at every stages is remaining
+
+111
+00:11:03,320 --> 00:11:08,590
+a cyclic or a cycle has happened and therefore,
+a deadlock is actually happening.
+
+112
+00:11:08,590 --> 00:11:15,589
+So, what you will need to do is periodically
+run another process which invokes the deadlock-detection
+
+113
+00:11:15,589 --> 00:11:19,570
+in the graph that is it looks for the cycles,
+and the cycle is there, then you have to do
+
+114
+00:11:19,570 --> 00:11:26,810
+some strategy to roll back about one of the
+transactions, and break the cycle and then
+
+115
+00:11:26,809 --> 00:11:36,629
+so that the other transaction can proceed.
+So, these are examples of the wait for graph.
+
+116
+00:11:36,629 --> 00:11:42,740
+For example, here on the left as you see if
+you if I if I may point out in the left, if
+
+117
+00:11:42,740 --> 00:11:55,389
+we see that T 17 is waiting for T 18 and T
+19, T 18 is waiting for T 20. So, eventually
+
+118
+00:11:55,389 --> 00:12:00,009
+and T 20 is waiting for none. So, at some
+point of time T 20 will be done and when that
+
+119
+00:12:00,009 --> 00:12:08,490
+is done then T 18 would be able to proceed.
+And if T 18 is able to proceed then T 19 would
+
+120
+00:12:08,490 --> 00:12:11,639
+be able to proceed, and then T 17 would be
+able to proceed.
+
+121
+00:12:11,639 --> 00:12:17,269
+So, there is no possibility of a deadlock,
+whereas in here if you look in the graph on
+
+122
+00:12:17,269 --> 00:12:23,519
+right, then you can see that between these
+three ah they are waiting on each other. So,
+
+123
+00:12:23,519 --> 00:12:31,560
+no matter how long you wait this will this
+deadlock will never be broken, and the deadlock-detection
+
+124
+00:12:31,559 --> 00:12:39,119
+system has to detect this cycling and decide
+to ah abort one of these transactions and
+
+125
+00:12:39,120 --> 00:12:44,370
+so that the rest of the transactions can can
+progress. So, this is a sample deadlock-detection
+
+126
+00:12:44,370 --> 00:12:49,019
+ah mechanism.
+So, when the deadlock is detected there has
+
+127
+00:12:49,019 --> 00:12:55,429
+to be a recovery. So, trump transactions will
+have to be rolled back to break the deadlock.
+
+128
+00:12:55,429 --> 00:13:00,769
+And so there is a there is a strategy required
+to select which transaction must rollback;
+
+129
+00:13:00,769 --> 00:13:06,139
+naturally that should be done based on the
+minimum cost that is you do not want because
+
+130
+00:13:06,139 --> 00:13:10,549
+if you roll back then the recomputation naturally
+because you have to restart and do that transaction
+
+131
+00:13:10,549 --> 00:13:18,289
+again. So, you have to in terms of rollback,
+you have to determine how far to rollback
+
+132
+00:13:18,289 --> 00:13:21,049
+that transaction. There can be a total one,
+so that you roll back the whole transaction
+
+133
+00:13:21,049 --> 00:13:26,969
+abort and then restart it or you can roll
+back to a previous point, we discussed notions
+
+134
+00:13:26,970 --> 00:13:34,490
+of safe point in the transaction program.
+And so it is be more effective to roll back
+
+135
+00:13:34,490 --> 00:13:38,970
+transaction only as far as necessary to break
+the deadlock, you may not need to roll back
+
+136
+00:13:38,970 --> 00:13:47,200
+everything. Maybe this is this transaction
+is participating in the deadlock, because
+
+137
+00:13:47,200 --> 00:13:52,509
+it is holding some exclusive lock which it
+took three instructions before. But before
+
+138
+00:13:52,509 --> 00:13:56,528
+that it has done 300 instructions it is not
+necessary to rollback the whole of the 300
+
+139
+00:13:56,528 --> 00:14:00,870
+instructions, you can just roll back up to
+the point where it took that exclusive lock
+
+140
+00:14:00,870 --> 00:14:08,870
+which is creating the problem. So, that those
+are some of the strategies which can improve
+
+141
+00:14:08,870 --> 00:14:14,080
+the throughput and minimize the possibility
+of starvation. Ah
+
+142
+00:14:14,080 --> 00:14:18,839
+Starvation will again happen if the same transaction
+is chosen as a victim to be rolled back every
+
+143
+00:14:18,839 --> 00:14:25,410
+time, which the possibility exists. And so
+the number of roll backs is also usually kept
+
+144
+00:14:25,409 --> 00:14:30,708
+as a cost factor. So, when you roll back a
+transaction, you also keep a number saying
+
+145
+00:14:30,708 --> 00:14:36,969
+that how many times this transaction has been
+rolled back. So, higher that cost becomes
+
+146
+00:14:36,970 --> 00:14:42,180
+then you would like to avoid doing the rollback
+for that transaction because so that it does
+
+147
+00:14:42,179 --> 00:14:46,539
+not wait infinitely in terms of (Refer Time:
+14:45) starvation. So, these are some of the
+
+148
+00:14:46,539 --> 00:14:53,019
+simple strategies that roll back the deadlock
+recovery can be done.
+
+149
+00:14:53,019 --> 00:14:58,528
+So, having talked about the the prevention
+detection and recovery from deadlocks let
+
+150
+00:14:58,528 --> 00:15:04,470
+us quickly look at a simple time-based protocol
+in contrast to the two phase locking protocol
+
+151
+00:15:04,470 --> 00:15:11,820
+we had earlier. This protocol does not lead
+to deadlock. So, what you do in here is each
+
+152
+00:15:11,820 --> 00:15:19,790
+transaction is issued a timestamp when it
+enters the system. So, hold at the transaction,
+
+153
+00:15:19,789 --> 00:15:25,819
+less is the value of the timestamp so that
+is a simple. So, time goes in the increasing
+
+154
+00:15:25,820 --> 00:15:30,589
+order.
+Now, the protocol manages a concurrent execution
+
+155
+00:15:30,589 --> 00:15:36,350
+such that timestamps determine they themselves
+will determine the serializability order,
+
+156
+00:15:36,350 --> 00:15:43,850
+they will determine in which order the transaction
+should occur. And for that for each data item
+
+157
+00:15:43,850 --> 00:15:52,299
+two timestamp values are maintained; one is
+a right time-stamp on the data item queue,
+
+158
+00:15:52,299 --> 00:15:58,599
+another is a read timestamp. So, this is the
+latest read write and read times for the data
+
+159
+00:15:58,600 --> 00:16:05,129
+item. So, w timestamp Q is the largest time
+stem of any transaction that executed a write
+
+160
+00:16:05,129 --> 00:16:11,070
+Q successfully. So, naturally what it means
+the largest timestamp means the latest write
+
+161
+00:16:11,070 --> 00:16:14,160
+that has happened. Similarly, it keeps it
+latest read.
+
+162
+00:16:14,159 --> 00:16:22,679
+Now, using that you build up this protocol,
+so it is again looks only at conflicting read
+
+163
+00:16:22,679 --> 00:16:30,088
+and write operations, and they are executed
+in timestamp order. So, let us suppose that
+
+164
+00:16:30,089 --> 00:16:42,471
+let us consider the case of read. So, a transaction
+T i has issued a read. Now, if that the timestamp
+
+165
+00:16:42,471 --> 00:16:50,049
+of T i is less than equal to W-timestamp Q
+which means that W times stamp Q is the latest
+
+166
+00:16:50,049 --> 00:16:59,039
+write. And T s T i is a timestamp of the transaction.
+So, the transaction is older than the latest
+
+167
+00:16:59,039 --> 00:17:05,879
+write. So, the transaction T i needs to read
+a value that was already overwritten because
+
+168
+00:17:05,880 --> 00:17:12,370
+the latest write has happened after the transaction.
+So, this read operation can be rejected and
+
+169
+00:17:12,369 --> 00:17:17,698
+T i will be rolled back.
+If it is in contrast, if the timestamp of
+
+170
+00:17:17,699 --> 00:17:23,910
+the transaction is greater than the latest
+right time W-timestamp Q then the read operation
+
+171
+00:17:23,910 --> 00:17:28,169
+is executed and since we are doing a read
+operation. So, this becomes the latest read
+
+172
+00:17:28,169 --> 00:17:35,809
+operation and therefore, the read timestamp
+R timestamp Q is set to the maximum of the
+
+173
+00:17:35,808 --> 00:17:43,460
+current read timestamp and the timestamp of
+the transaction. Mind you here we the timestamp
+
+174
+00:17:43,460 --> 00:17:49,700
+one confusion that may come to your mind is
+are we looking at the exact time when the
+
+175
+00:17:49,700 --> 00:17:55,029
+read has happened or when the write has happened,
+no, we are all of this reasoning is happening
+
+176
+00:17:55,029 --> 00:17:59,678
+with the timestamp of the transaction.
+So, whenever it started. So, it is a older
+
+177
+00:17:59,679 --> 00:18:05,350
+transaction and newer transition that we are
+reasoning with. So, when you update R-timestamp
+
+178
+00:18:05,349 --> 00:18:13,599
+then you are the R-timestamp already has a
+value which is the timestamp of the latest
+
+179
+00:18:13,599 --> 00:18:22,230
+transaction that has read that value and TS
+T i is the timestamp of the transaction that
+
+180
+00:18:22,230 --> 00:18:28,929
+is read it now. So, it is not always that
+since this read is the last read you will
+
+181
+00:18:28,929 --> 00:18:34,810
+update this. So, by by the sense of latest
+what I mean is the latest in the sense of
+
+182
+00:18:34,809 --> 00:18:40,019
+the timestamp of the transaction that is reading
+it. So, you will compute that in terms of
+
+183
+00:18:40,019 --> 00:18:45,970
+finding the maximum of the current read timestamp
+and the timestamp of this transaction .
+
+184
+00:18:45,970 --> 00:18:53,440
+Write is a little bit more complex, but we
+can reason in the same way. So, if T i issues
+
+185
+00:18:53,440 --> 00:19:03,700
+a write Q. And if the timestamp of T i is
+less than R-timestamp that is if this transaction
+
+186
+00:19:03,700 --> 00:19:12,910
+is it is less so it is older than the read
+timestamp that is it is older than the transaction
+
+187
+00:19:12,910 --> 00:19:23,690
+that read Q last, the youngest transaction
+that read the value of Q. So, then the value
+
+188
+00:19:23,690 --> 00:19:30,960
+Q that T i is producing was needed earlier,
+it is trying to write, but already a newer
+
+189
+00:19:30,960 --> 00:19:38,120
+transaction has used the value. And the system
+assumed that what the T i was supposed to
+
+190
+00:19:38,119 --> 00:19:43,668
+write was not available was not produced,
+hence the write operation is rejected T i
+
+191
+00:19:43,669 --> 00:19:50,490
+does not should not write this and T i will
+be rolled back.
+
+192
+00:19:50,490 --> 00:20:00,819
+Second case if the transaction T i has a timestamp
+which is less than the write timestamp. So,
+
+193
+00:20:00,819 --> 00:20:07,089
+which means that this transaction is older
+than the transaction that has done the last
+
+194
+00:20:07,089 --> 00:20:14,389
+write. So, T i is attempting to write an absolute
+value of Q, and hence this write operation
+
+195
+00:20:14,390 --> 00:20:24,470
+is again rejected and T i is rollback. Otherwise,
+in other cases, the write operation is executed
+
+196
+00:20:24,470 --> 00:20:31,089
+and the write timestamp will be set to the
+timestamp of this transaction which has written
+
+197
+00:20:31,089 --> 00:20:36,669
+it. So, this is a very simple protocol for
+read and write.
+
+198
+00:20:36,670 --> 00:20:44,550
+And here is an example shown in terms of ah
+this protocol. For example, this wanted to
+
+199
+00:20:44,549 --> 00:20:55,809
+do a read and this so this is this is the
+that this is a time where where the the transaction
+
+200
+00:20:55,809 --> 00:21:07,389
+had started so and this was the write that.
+So, when this read is happening this is the
+
+201
+00:21:07,390 --> 00:21:17,250
+so this is naturally this is at hold at transaction
+than T 3. So, this at this point, the right
+
+202
+00:21:17,250 --> 00:21:23,839
+timestamp is that of T 3 and this is an older
+one, so it was trying to read that, so this
+
+203
+00:21:23,839 --> 00:21:29,230
+was aborted.
+Similarly as you see here if I clean and start
+
+204
+00:21:29,230 --> 00:21:40,808
+again if we look at write W this is trying
+to do read and T 4, so read will this read
+
+205
+00:21:40,808 --> 00:21:48,160
+has a timestamp which is of T 4 which is later
+than the timestamp of T 3. So, this gets aborted.
+
+206
+00:21:48,160 --> 00:21:55,519
+So, you will need to spend a little bit of
+time to convince yourself that this will never
+
+207
+00:21:55,519 --> 00:22:02,950
+actually ensure never actually lead to any
+deadlock, and it is a very effective serializable
+
+208
+00:22:02,950 --> 00:22:10,259
+and simple strategy to ensure serializability
+while it avoids the deadlock.
+
+209
+00:22:10,259 --> 00:22:17,289
+At all the timestamp ordering protocol itself
+guarantees the serializability, so the transaction
+
+210
+00:22:17,289 --> 00:22:25,490
+with the smaller timestamp will lead to transaction
+with larger timestamp, because those are the
+
+211
+00:22:25,490 --> 00:22:30,808
+more recent transaction. So, since the ordering
+is always in this manner, there cannot be
+
+212
+00:22:30,808 --> 00:22:36,460
+any cycle in this precedence graph, because
+if they are recycle then naturally, somewhere
+
+213
+00:22:36,460 --> 00:22:43,150
+you are you will be coming from newer to an
+older transaction which is not allowed in
+
+214
+00:22:43,150 --> 00:22:48,190
+this protocol.
+So, there cannot be a cycle and so this ensures
+
+215
+00:22:48,190 --> 00:22:56,298
+that there cannot be deadlock in this time-based
+protocol, but the schedules that they produce
+
+216
+00:22:56,298 --> 00:23:01,900
+they may not be cascade free. And actually
+examples can be shown that they may not even
+
+217
+00:23:01,900 --> 00:23:09,150
+be recoverable there may be some irrecoverable
+schedules that get produced through this time-based
+
+218
+00:23:09,150 --> 00:23:16,070
+protocol.
+So, to summarize we have tried to take a look
+
+219
+00:23:16,069 --> 00:23:22,369
+into explaining what are the different ways
+to prevent ah deadlock. Some of the strategies
+
+220
+00:23:22,369 --> 00:23:28,019
+and specifically we focused on the time-based
+strategy. So, there are some strategies which
+
+221
+00:23:28,019 --> 00:23:34,029
+are based on the order of accesses the data
+items ordering of data items and so on. And
+
+222
+00:23:34,029 --> 00:23:40,609
+we have specifically focused on time-based
+strategies. And from that there are multiple
+
+223
+00:23:40,609 --> 00:23:48,039
+time-based strategies which can prevent deadlock.
+And in case the deadlock has happened then
+
+224
+00:23:48,039 --> 00:23:54,379
+we have discussed a simple wait for graph
+data structure and algorithm to be able to
+
+225
+00:23:54,380 --> 00:24:00,380
+detect that the deadlock has happened. And
+if once this has been detected, we have talked
+
+226
+00:24:00,380 --> 00:24:06,429
+about basic strategy to recover from that
+that is how do you decide what are the what
+
+227
+00:24:06,429 --> 00:24:12,610
+is a good candidate victim transaction which
+should be rolled back, which should be aborted.
+
+228
+00:24:12,609 --> 00:24:21,579
+And on that study we have presented a simple
+time-based protocol which maintains the timestamp
+
+229
+00:24:21,579 --> 00:24:28,819
+of transactions to decide the ordering in
+terms of read and write and deciding as to
+
+230
+00:24:28,819 --> 00:24:35,308
+whether you should continue doing a read or
+write or you should abort the read and write
+
+231
+00:24:35,308 --> 00:24:41,288
+attempt. And thereby ensuring that deadlocks
+do not happen in the system though there may
+
+232
+00:24:41,288 --> 00:24:50,629
+be other problems in in this in terms of having
+ah cascading rollback or having some irrecoverable
+
+233
+00:24:50,630 --> 00:24:53,000
+schedules at times.
+

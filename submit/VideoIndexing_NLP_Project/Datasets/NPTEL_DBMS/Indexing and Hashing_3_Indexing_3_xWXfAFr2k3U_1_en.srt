@@ -1,0 +1,1377 @@
+﻿1
+00:00:16,298 --> 00:00:19,829
+Welcome to module 28 of Database Management
+Systems.
+
+2
+00:00:19,829 --> 00:00:23,500
+We have ah been discussing about indexing
+and hashing.
+
+3
+00:00:23,500 --> 00:00:27,089
+This is the the third module; in that continuation.
+
+4
+00:00:27,089 --> 00:00:29,570
+ah
+In the last module we have taken a quick look
+
+5
+00:00:29,570 --> 00:00:37,079
+at the balanced BST and specifically a and
+different kind of inline data structure called
+
+6
+00:00:37,079 --> 00:00:44,189
+2-3-4 tree, which can be of ah very good use
+in terms of understanding B plus tree, which
+
+7
+00:00:44,189 --> 00:00:50,409
+we want to ah study in this module and we
+will also take a quick look at the B tree.
+
+8
+00:00:50,409 --> 00:00:58,328
+So, now, B plus tree is the main data structure
+ah is or one of the main data structures to
+
+9
+00:00:58,329 --> 00:01:01,259
+be used for index files.
+
+10
+00:01:01,259 --> 00:01:07,659
+So, B plus tree has ah now; what we have seen
+we have seen the ordered indexes.
+
+11
+00:01:07,659 --> 00:01:14,859
+We have seen the index sequential files, where
+you could ah keep the index file in a sorted
+
+12
+00:01:14,859 --> 00:01:20,000
+manner in the primary index you could build
+secondary index on that and so, on, but ah
+
+13
+00:01:20,000 --> 00:01:25,189
+that is not an efficient way of doing things,
+because the performance keeps on degrading
+
+14
+00:01:25,189 --> 00:01:27,189
+as ah the file grows.
+
+15
+00:01:27,189 --> 00:01:32,659
+Since many overflow blocks will get created,
+because ah certainly if you if you are growing,
+
+16
+00:01:32,659 --> 00:01:38,239
+then naturally you have created say sparse
+index on uncertain values and if ah there
+
+17
+00:01:38,239 --> 00:01:41,390
+are more ah records in that bucket.
+
+18
+00:01:41,390 --> 00:01:43,719
+Then naturally you need to have linked buckets.
+
+19
+00:01:43,719 --> 00:01:49,459
+So, periodic reorganization of the entire
+file becomes required which is a very costly
+
+20
+00:01:49,459 --> 00:01:51,000
+affair.
+
+21
+00:01:51,000 --> 00:01:56,099
+In contrast advantage of B plus tree is ah
+it automatically reorganizes itself in in
+
+22
+00:01:56,099 --> 00:02:01,250
+small bits and pieces with local changes and
+so, on; whenever insertions and deletions
+
+23
+00:02:01,250 --> 00:02:07,920
+happen and the reorganization of the entire
+file is not required for the purpose of maintenance.
+
+24
+00:02:07,920 --> 00:02:13,400
+Of course, there are a little bit of ah disadvantage
+the extra insertion and deletion overhead
+
+25
+00:02:13,400 --> 00:02:19,140
+exist for the small ah you know micro reorganization
+there is little bit of space over it, but
+
+26
+00:02:19,139 --> 00:02:25,889
+in the face of the advantage that we get ah
+it outweighs the advantage is outweighs the
+
+27
+00:02:25,889 --> 00:02:29,509
+ah disadvantages and B plus trees are used
+quite extensively.
+
+28
+00:02:29,509 --> 00:02:36,920
+So, just recall ah the notion of ah 2-3-4
+tree that we had ah discussed and ah look
+
+29
+00:02:36,920 --> 00:02:37,920
+at this diagram.
+
+30
+00:02:37,920 --> 00:02:44,060
+So, 2-3-4 tree ah have ah different types
+of node 2, node 3 node and 4 node.
+
+31
+00:02:44,060 --> 00:02:51,210
+So, we said that there could be a node which
+can be only partially filled and ah it has
+
+32
+00:02:51,210 --> 00:02:58,620
+a different number of children pointing to
+the; ah conditions of how different keys are
+
+33
+00:02:58,620 --> 00:03:00,080
+ordered in that particular node.
+
+34
+00:03:00,080 --> 00:03:07,360
+So, here we I show an instance of a ah B plus
+tree, which is basically trying to represent
+
+35
+00:03:07,360 --> 00:03:12,490
+ah this ah file in terms of the creating indexes.
+
+36
+00:03:12,490 --> 00:03:16,570
+So, if the index is actually based on the
+name.
+
+37
+00:03:16,569 --> 00:03:22,859
+So, this is the root node that you have and
+for an instance; we are taking a structure
+
+38
+00:03:22,860 --> 00:03:31,760
+where every node can have ah 3 data items
+and 4 links and ah it could be it could be
+
+39
+00:03:31,759 --> 00:03:35,969
+ah more it could be less, but this is just
+for an example.
+
+40
+00:03:35,969 --> 00:03:44,310
+So, as you can see; so if we have this link,
+then on the left of ah Mozart, then it means
+
+41
+00:03:44,310 --> 00:03:51,180
+all keys which are less than Mozart will be
+available on this link below; the link that
+
+42
+00:03:51,180 --> 00:03:59,040
+ah exists here is for all keys which are greater
+than Mozart and less than right.
+
+43
+00:03:59,039 --> 00:04:00,810
+Now there is nothing.
+
+44
+00:04:00,810 --> 00:04:03,270
+So, those will occur here.
+
+45
+00:04:03,270 --> 00:04:11,469
+So, as you can see that Einstein gold brand
+all these will come on this length Srinivasan
+
+46
+00:04:11,469 --> 00:04:17,180
+Singh wu all this come on this side the Mozart
+itself comes on this side.
+
+47
+00:04:17,180 --> 00:04:21,870
+Now, if I look at ah this node the next level
+loads.
+
+48
+00:04:21,870 --> 00:04:27,290
+Now this link has values which are less than
+Einstein as you can see this has values which
+
+49
+00:04:27,290 --> 00:04:29,590
+are between Einstein and gold.
+
+50
+00:04:29,589 --> 00:04:34,028
+So, Einstein and l set these are values which
+are more than gold.
+
+51
+00:04:34,028 --> 00:04:41,269
+So, this is this is a and as you can as you
+can see that ah though all all nodes are shown
+
+52
+00:04:41,269 --> 00:04:46,889
+to be of the same type as we had mentioned
+at the end of the 2-3-4 tree discussion, but
+
+53
+00:04:46,889 --> 00:04:49,509
+it has variable number of ah entries.
+
+54
+00:04:49,509 --> 00:04:55,418
+So, the number of ah links are between n by
+1 and n.
+
+55
+00:04:55,418 --> 00:04:58,198
+So, n here is ah 4.
+
+56
+00:04:58,199 --> 00:05:04,840
+So, you have at least either at least two
+entries or maximum up to 4 entries that can
+
+57
+00:05:04,839 --> 00:05:12,948
+go on here .
+So, this is the basic observe definition of
+
+58
+00:05:12,949 --> 00:05:14,240
+a B plus tree.
+
+59
+00:05:14,240 --> 00:05:18,139
+All paths from root two leaf are of the same
+length.
+
+60
+00:05:18,139 --> 00:05:23,110
+This is again something you you should observe
+here, because if you if you see all of these
+
+61
+00:05:23,110 --> 00:05:27,639
+paths all of them have the same length here
+then the length is 2.
+
+62
+00:05:27,639 --> 00:05:32,829
+So, that is a basic property of 2-3-4 tree
+generalized into B plus tree.
+
+63
+00:05:32,829 --> 00:05:38,740
+So, each node ah that is not a root is a leaf
+level has between n by 2 to n children.
+
+64
+00:05:38,740 --> 00:05:42,218
+Leaf node has n minus 1 by 2 to n minus 1
+value.
+
+65
+00:05:42,218 --> 00:05:48,370
+And the if the root is not a leaf, then it
+has at least 2 children and if the root is
+
+66
+00:05:48,370 --> 00:05:53,309
+a leaf ah there is no no other nodes in the
+tree then it can have between 0 to n minus
+
+67
+00:05:53,309 --> 00:05:54,879
+1 values which are quite obvious.
+
+68
+00:05:54,879 --> 00:06:01,539
+So, naturally a typical node will look like
+this, where ah the pointers and key values
+
+69
+00:06:01,538 --> 00:06:07,899
+alternate starting with a pointer P 1, then
+keep K 1 and so, on and ending with a point
+
+70
+00:06:07,899 --> 00:06:08,899
+at P n.
+
+71
+00:06:08,899 --> 00:06:13,689
+And the search keys are strictly ordered K
+1 less than K 2 less than K n minus 1 these
+
+72
+00:06:13,689 --> 00:06:16,430
+are facts that we have seen for 2-3-4 tree.
+
+73
+00:06:16,430 --> 00:06:22,360
+So, for a leaf node ah the the pointed Pi
+points to the file record with the search
+
+74
+00:06:22,360 --> 00:06:30,810
+key Ki and ah if there are two ah leaf nodes
+Li and Lj and i is less than j, then Li search
+
+75
+00:06:30,810 --> 00:06:34,478
+key values are less than or equal to the Lj
+search key values.
+
+76
+00:06:34,478 --> 00:06:40,038
+So, this is the basic ordering that we had
+ah seen in 2-3-4 tree, that is what is getting
+
+77
+00:06:40,038 --> 00:06:43,468
+generalized for a non leaf ah node.
+
+78
+00:06:43,468 --> 00:06:49,279
+Similarly ah all search-keys in the subtree
+which P 1 points to a less than K 1, then
+
+79
+00:06:49,279 --> 00:06:55,309
+for all that P n points to are greater than
+ah K ah n minus 1.
+
+80
+00:06:55,310 --> 00:07:00,740
+And in the other cases they are between the
+two consecutive ah key values that exist between
+
+81
+00:07:00,740 --> 00:07:02,000
+the pointers.
+
+82
+00:07:02,000 --> 00:07:11,069
+So, this is a this is an example of a simple
+ah case which is n where n is equal to 6.
+
+83
+00:07:11,069 --> 00:07:17,218
+So, since the inter-node connections are done
+by pointers, "logically" closed blocks are
+
+84
+00:07:17,218 --> 00:07:18,418
+not "physically" close.
+
+85
+00:07:18,418 --> 00:07:23,689
+So, that is a that is a key idea there is
+a key observation about the B plus tree.
+
+86
+00:07:23,689 --> 00:07:31,569
+So, 2 ah nodes the records which are logically
+closed are may not actually be physically
+
+87
+00:07:31,569 --> 00:07:36,210
+close, because the pointers actually define
+the closeness in terms of the ordering of
+
+88
+00:07:36,209 --> 00:07:37,709
+the values.
+
+89
+00:07:37,709 --> 00:07:43,598
+So, B plus tree contains relatively small
+number of levels, we will see what what that
+
+90
+00:07:43,598 --> 00:07:44,598
+level would be?
+
+91
+00:07:44,598 --> 00:07:54,680
+So, what will happen; if the level below root
+root has two two values at the most at least
+
+92
+00:07:54,680 --> 00:08:02,348
+and ah the below that will have n by 2 values,
+because every ah node has to be at least half
+
+93
+00:08:02,348 --> 00:08:03,348
+field.
+
+94
+00:08:03,348 --> 00:08:08,248
+We have said every node we will have to have
+n by 2 lengths to n links it cannot be less
+
+95
+00:08:08,249 --> 00:08:10,449
+than that less than n by 2 link.
+
+96
+00:08:10,449 --> 00:08:16,499
+So, the next level as n by 2, then the next
+level has 2 into n by 2 into n by 2 and so,
+
+97
+00:08:16,499 --> 00:08:17,499
+on.
+
+98
+00:08:17,499 --> 00:08:23,939
+So, every time ah you you every level you
+go down you can basically ah increasing by
+
+99
+00:08:23,939 --> 00:08:29,338
+a factor of n by 2, which as as you all know
+simply means that the number of levels or
+
+100
+00:08:29,338 --> 00:08:37,408
+the height is ah log K to the base n by 2,
+where K is a number of ah search key values
+
+101
+00:08:37,408 --> 00:08:39,000
+that exist on the tree.
+
+102
+00:08:39,000 --> 00:08:42,620
+So, larger the end smaller is this ah value.
+
+103
+00:08:42,620 --> 00:08:48,850
+So, larger the node size is smaller is a is
+a height and therefore, the number of ah insertion
+
+104
+00:08:48,850 --> 00:08:52,540
+ah number of ah you know access operations
+that need to be performed.
+
+105
+00:08:52,539 --> 00:08:57,559
+So, insertion, deletions to the main file
+can be handled efficiently as the index can
+
+106
+00:08:57,559 --> 00:09:02,199
+be restructured in logarithmic time as you
+have just seen.
+
+107
+00:09:02,200 --> 00:09:08,430
+So, search should be very simple, because
+ah its just an extension of what you did in
+
+108
+00:09:08,429 --> 00:09:09,429
+2-3-4 trees.
+
+109
+00:09:09,429 --> 00:09:13,958
+So, algorithm is given here I will skip it,
+because we have already done this in detail.
+
+110
+00:09:13,958 --> 00:09:19,448
+Now, ah what we introduced I started saying
+that there are no duplicates.
+
+111
+00:09:19,448 --> 00:09:26,078
+So, the keys follow strict ordering, but the
+whole assumption will also hold good, if you
+
+112
+00:09:26,078 --> 00:09:31,039
+allow the equality between ah the consecutive
+keys, but only difference is there could be
+
+113
+00:09:31,039 --> 00:09:37,610
+multiple keys which are all equal; and if
+that happens then ah you have to use the same
+
+114
+00:09:37,610 --> 00:09:44,259
+key value present at the two leaf nodes and
+the parent will also have the same leaf node
+
+115
+00:09:44,259 --> 00:09:45,329
+same value.
+
+116
+00:09:45,328 --> 00:09:53,338
+So, for ah doing in the case of such duplicates
+will have to a little bit modify the procedure
+
+117
+00:09:53,339 --> 00:09:57,240
+for doing the search and say printing all
+values and so, on.
+
+118
+00:09:57,240 --> 00:09:58,740
+So, you could go through that.
+
+119
+00:09:58,740 --> 00:10:04,000
+. So, if there is a key search-key values
+in the file, then let us see what the cost
+
+120
+00:10:04,000 --> 00:10:10,179
+is coming to actually, then the height of
+the tree is not more than log key to the best
+
+121
+00:10:10,179 --> 00:10:11,620
+n by 2.
+
+122
+00:10:11,620 --> 00:10:15,299
+So, if ah we say that the every node.
+
+123
+00:10:15,299 --> 00:10:17,429
+So, how large would be the node.
+
+124
+00:10:17,429 --> 00:10:23,289
+Now again I would remind you that we are moving
+from 2-3-4 tree, which was a in memory data
+
+125
+00:10:23,289 --> 00:10:26,870
+structure to a external data structure.
+
+126
+00:10:26,870 --> 00:10:30,459
+So, our main cost is a disk axis.
+
+127
+00:10:30,458 --> 00:10:35,198
+So, what would you like to make this node
+size, if we make the node size ah too small,
+
+128
+00:10:35,198 --> 00:10:39,269
+then there will be too many nodes and every
+node ah will have to be accessed?
+
+129
+00:10:39,269 --> 00:10:42,419
+So, as you can see this is log to the base
+n by 2.
+
+130
+00:10:42,419 --> 00:10:47,939
+So, we ah benefit by making n larger larger
+the n this log value or the height will be
+
+131
+00:10:47,940 --> 00:10:54,980
+less, but can I make n arbitrary large then
+n will not fit into one disk block.
+
+132
+00:10:54,980 --> 00:11:00,190
+So, it would it cannot be accessed in one
+fetch from the disk to the memory.
+
+133
+00:11:00,190 --> 00:11:06,060
+So, we would typically like to make it is
+customary to make the node as the same size
+
+134
+00:11:06,059 --> 00:11:12,588
+as the disk block, which is typically say
+4 kilobyte or 8 kilobyte like that and ah
+
+135
+00:11:12,589 --> 00:11:19,250
+ah therefore, ah the if that is a size then
+ah it the n will be typically around 100,
+
+136
+00:11:19,250 --> 00:11:25,169
+because if 4 kilobytes is a is a total space
+and if I assume that 40 bytes per index entry,
+
+137
+00:11:25,169 --> 00:11:28,069
+which is very typical, then n would be about
+100.
+
+138
+00:11:28,070 --> 00:11:36,660
+So, if I assume that my index file has actually
+1 million ah search key values to look for,
+
+139
+00:11:36,659 --> 00:11:40,589
+then I will need 1 million to the base 100
+by 250.
+
+140
+00:11:40,590 --> 00:11:46,759
+So, 1 million log 1 million to the base 50
+which is approximately 4 node accesses in
+
+141
+00:11:46,759 --> 00:11:47,818
+a lookup table.
+
+142
+00:11:47,818 --> 00:11:54,459
+So, that is amazingly fast if you contrast
+this with binary balanced binary tree which
+
+143
+00:11:54,460 --> 00:11:59,100
+will be log ah 1 million to the base 2.
+
+144
+00:11:59,100 --> 00:12:06,000
+So, which would be about 20 nodes ah accesses
+20 ah disk accesses for this lookup.
+
+145
+00:12:06,000 --> 00:12:13,200
+So, this is ah the co reason that ah B plus
+trees are preferred and and with this if even,
+
+146
+00:12:13,200 --> 00:12:19,089
+when you have couple of ah million records
+in a in a table you can actually manage with
+
+147
+00:12:19,089 --> 00:12:26,329
+a very small number of node accesses for the
+lookup, which makes the realization of algorithms
+
+148
+00:12:26,328 --> 00:12:29,179
+possible in the next couple of slides.
+
+149
+00:12:29,179 --> 00:12:36,489
+ah I have discussed about how to update B
+plus trees talked about the insertion and
+
+150
+00:12:36,490 --> 00:12:37,560
+the deletion process.
+
+151
+00:12:37,559 --> 00:12:44,819
+I will skip them in the in the presentation,
+now because as we have discussed the ah process
+
+152
+00:12:44,820 --> 00:12:50,209
+of insertion in depth in terms of the 2-3-4
+tree the only difference here is that this
+
+153
+00:12:50,208 --> 00:12:57,698
+is ah in a generalized framework, but follows
+exactly the same idea of node splitting and
+
+154
+00:12:57,698 --> 00:13:03,789
+keeping in mind that in case of 2-3-4 tree
+you move from 2 to 3 and 3 to 4 node here.
+
+155
+00:13:03,789 --> 00:13:09,969
+All that you will have to remember is you
+always make sure that ah you have every node
+
+156
+00:13:09,970 --> 00:13:13,019
+half filled, because n by 2 is a minimum requirement.
+
+157
+00:13:13,019 --> 00:13:18,309
+So, you keep on inserting in a node till it
+becomes full, when it becomes full you cannot
+
+158
+00:13:18,309 --> 00:13:21,289
+insert any more you divide it and split it
+into two nodes.
+
+159
+00:13:21,289 --> 00:13:26,639
+So, that each one of the them become at least
+half filled and that is the simple ah logic
+
+160
+00:13:26,639 --> 00:13:32,539
+and rest of it you can ah figured out by following
+on the 2-3-4 tree insertion.
+
+161
+00:13:32,539 --> 00:13:34,639
+So, this is the first algorithm.
+
+162
+00:13:34,639 --> 00:13:41,240
+Then we have shown here the strategy to splitting
+the node, which I have just ah you know discussed
+
+163
+00:13:41,240 --> 00:13:47,740
+and the same ah notion of propagating ah the
+the middle element of the split continues
+
+164
+00:13:47,740 --> 00:13:54,259
+here go to next and here the examples shown
+in terms of the B plus tree.
+
+165
+00:13:54,259 --> 00:13:58,720
+Before and after insertion of a certain key
+you can go through that and convince yourself.
+
+166
+00:13:58,720 --> 00:14:03,769
+There is some more steps in the algorithm
+ah please go through them carefully and try
+
+167
+00:14:03,769 --> 00:14:04,929
+to understand.
+
+168
+00:14:04,929 --> 00:14:11,919
+The whole process and then this is the basic
+algorithm written in in a very cryptic pseudocode,
+
+169
+00:14:11,919 --> 00:14:17,419
+I should say you should refer to the book
+actually 2, 4 ah and study the whole pseudocode
+
+170
+00:14:17,419 --> 00:14:23,209
+to understand the algorithm better and ah
+work through ah examples as well.
+
+171
+00:14:23,210 --> 00:14:32,959
+Similarly, examples of deletion ah in B plus
+tree; so the ah trees are shown before and
+
+172
+00:14:32,958 --> 00:14:38,018
+after deletion of ah Srinivasan, then ah if
+we delete like that.
+
+173
+00:14:38,019 --> 00:14:41,100
+Now in case of ah in contrast to splitting.
+
+174
+00:14:41,100 --> 00:14:46,199
+Now I will have merging of nodes ah which
+will start happening there are some more steps
+
+175
+00:14:46,198 --> 00:14:53,019
+in the deletion shown here, please go through
+them and work this out they should not be
+
+176
+00:14:53,019 --> 00:14:58,328
+you should not have any difficulty in understanding
+them given your background in the 2-3-4 tree.
+
+177
+00:14:58,328 --> 00:15:02,149
+So, more steps in the deletion.
+
+178
+00:15:02,149 --> 00:15:15,698
+So, this is the deletion process in terms
+of ah algorithmic steps and what you need
+
+179
+00:15:15,698 --> 00:15:17,219
+to do for deletion.
+
+180
+00:15:17,220 --> 00:15:26,490
+So, this is all detailed here just . So, B
+plus tree file organization is ah takes care
+
+181
+00:15:26,490 --> 00:15:28,940
+of the degradation problem.
+
+182
+00:15:28,940 --> 00:15:35,399
+In terms of the index files which ah would
+have happened, if we were used pure ordered
+
+183
+00:15:35,399 --> 00:15:41,360
+indices like, the index sequential access
+method for storing the index files.
+
+184
+00:15:41,360 --> 00:15:48,620
+So, that is now taken care of and even the
+data File ah degradation problem can also
+
+185
+00:15:48,620 --> 00:15:51,028
+be solved by using B plus T organization..
+
+186
+00:15:51,028 --> 00:15:58,708
+So, it can be used for both maintaining the
+B the index as well as the actual data file
+
+187
+00:15:58,708 --> 00:16:03,989
+and the leaf nodes in the B plus tree file
+organization stored the records ah instead
+
+188
+00:16:03,990 --> 00:16:05,139
+of ah pointers.
+
+189
+00:16:05,139 --> 00:16:11,289
+So, you finally, have the records there and
+the leaf nodes are still required to be half
+
+190
+00:16:11,289 --> 00:16:16,828
+full since they are records, but since records
+are larger than the maximum number of records
+
+191
+00:16:16,828 --> 00:16:22,828
+that can be stored would be less than the
+number of pointers in a non leaf ah node insertion
+
+192
+00:16:22,828 --> 00:16:30,309
+and deletions are ah handled in the same way
+ah as in the B plus tree index file.
+
+193
+00:16:30,309 --> 00:16:33,208
+So, here all all that we are explaining that.
+
+194
+00:16:33,208 --> 00:16:38,319
+So, far we have not explained the whole B
+plus tree in terms of index file ah organization
+
+195
+00:16:38,320 --> 00:16:42,569
+and we are saying that you can do the same
+thing with the data file and only at the leaf
+
+196
+00:16:42,568 --> 00:16:47,799
+level you will have to actually keep the data
+records ah for ah maintenance.
+
+197
+00:16:47,799 --> 00:16:55,899
+So, this is ah showing some instances of the
+ah B plus tree organization.
+
+198
+00:16:55,899 --> 00:17:01,339
+So, there is a couple of other issues the
+record relocation and ah secondary index,
+
+199
+00:17:01,339 --> 00:17:08,549
+if a record moves all secondary indices that
+store record pointers will also have to be
+
+200
+00:17:08,549 --> 00:17:14,828
+ah updated node splits in B plus tree file
+organization is very expensive.
+
+201
+00:17:14,828 --> 00:17:16,769
+So, what we do is?
+
+202
+00:17:16,769 --> 00:17:21,789
+We use primary index search key instead of
+record pointer in the secondary index.
+
+203
+00:17:21,789 --> 00:17:29,349
+So, in the secondary index we do not actually
+keep the direct record pointer instead, we
+
+204
+00:17:29,349 --> 00:17:36,699
+keep the search-key of the primary index and
+we know that the primary index can be very
+
+205
+00:17:36,700 --> 00:17:38,230
+efficiently searched.
+
+206
+00:17:38,230 --> 00:17:44,390
+So, what happens is when in the secondary
+index when you have been able to actually
+
+207
+00:17:44,390 --> 00:17:49,870
+find that you do not get a pointer directly
+to the record, but you get the search key
+
+208
+00:17:49,869 --> 00:17:53,119
+through which you can use the primary index
+and actually go to that.
+
+209
+00:17:53,119 --> 00:18:01,049
+But with that you get yourself get rid of
+the requirement of maintaining different secondary
+
+210
+00:18:01,049 --> 00:18:07,259
+index ah structures and ah getting into several
+record relocationess problems.
+
+211
+00:18:07,259 --> 00:18:15,420
+There are ah your indexing also may need to
+take care of other issues of string ah your
+
+212
+00:18:15,420 --> 00:18:22,600
+variable length string could be keys which
+are variable fan out ah and so, the general
+
+213
+00:18:22,599 --> 00:18:28,399
+strategy in handling indexing with string
+is to do a kind of what is known as prefix
+
+214
+00:18:28,400 --> 00:18:29,400
+compression.
+
+215
+00:18:29,400 --> 00:18:35,630
+So, you kind of find out what is the shortest
+prefix which can distinguish between the strings.
+
+216
+00:18:35,630 --> 00:18:42,740
+So, if you have Silas and Silberschatz then
+you can easily make out that Silb would be
+
+217
+00:18:42,740 --> 00:18:46,180
+a separating ah string between these two.
+
+218
+00:18:46,180 --> 00:18:50,620
+So, Silb will match with Silberschatz, but
+or not will match with the first one.
+
+219
+00:18:50,619 --> 00:18:56,149
+So, you do not need to look beyond that so,
+we can just keep enough ah characters to distinguish
+
+220
+00:18:56,150 --> 00:19:00,820
+entries in the subtree separated I by the
+key values and keys in the leaf node can be
+
+221
+00:19:00,819 --> 00:19:02,960
+compressed by sharing common prefixes.
+
+222
+00:19:02,960 --> 00:19:10,920
+So, that is a very common strategy ah next
+let us just take a quick look into the B tree
+
+223
+00:19:10,920 --> 00:19:17,430
+index file which is ah another alternate possibility
+the basic difference between a B plus tree.
+
+224
+00:19:17,430 --> 00:19:24,539
+And B tree allows search key values to appear
+only once, if you if you remember in the B
+
+225
+00:19:24,539 --> 00:19:29,079
+plus tree your search key values where which
+occurs in an internal load keeps on occurring
+
+226
+00:19:29,079 --> 00:19:36,029
+at multiple ah node levels also B plus B tree
+does not allow that the search key non leaf
+
+227
+00:19:36,029 --> 00:19:38,750
+nodes appear nowhere else in the B tree.
+
+228
+00:19:38,750 --> 00:19:44,140
+So, if it does not then naturally the question
+is when where will the actual record value
+
+229
+00:19:44,140 --> 00:19:47,530
+ah we found out for this key.
+
+230
+00:19:47,529 --> 00:19:53,309
+So, what you do is in the node itself you
+introduce another ah field after along with
+
+231
+00:19:53,309 --> 00:19:57,839
+the key which is the; ah pointer to the actual
+record.
+
+232
+00:19:57,839 --> 00:20:01,449
+So, as as you can as you can see here let
+us ah get back.
+
+233
+00:20:01,450 --> 00:20:07,740
+So, as you can see this is this was a general
+ah structure of the B plus tree node.
+
+234
+00:20:07,740 --> 00:20:14,750
+And, now what we are doing is we are putting
+in separate pointers ah along with the key
+
+235
+00:20:14,750 --> 00:20:21,289
+which will actually maintain the data for
+that key which will be pointers to the actual
+
+236
+00:20:21,289 --> 00:20:26,609
+record, because this earlier in B plus tree
+all ah records.
+
+237
+00:20:26,609 --> 00:20:32,319
+Finally, appear in terms of the leaf level
+nodes only they are their pointers come in
+
+238
+00:20:32,319 --> 00:20:37,220
+the leaf level whereas, here the there is
+no repetition of the search key along the
+
+239
+00:20:37,220 --> 00:20:38,220
+structure.
+
+240
+00:20:38,220 --> 00:20:39,500
+So, they come wherever there.
+
+241
+00:20:39,500 --> 00:20:43,640
+So, let me just ah show you an example.
+
+242
+00:20:43,640 --> 00:20:47,390
+So, if you look into this ah carefully.
+
+243
+00:20:47,390 --> 00:20:51,440
+So, this is ah what you have seen is a B plus
+tree.
+
+244
+00:20:51,440 --> 00:20:58,850
+So, you can see that Mozart happened here,
+it also happened here and this is the leaf
+
+245
+00:20:58,849 --> 00:20:59,849
+level.
+
+246
+00:20:59,849 --> 00:21:05,519
+So, from here actually you get pointers to
+the; to the record for Mozart.
+
+247
+00:21:05,519 --> 00:21:11,730
+Similarly, Einstein happens here and it happens
+here ah Srinivasan happens here in.
+
+248
+00:21:11,730 --> 00:21:19,000
+So, there are multiple times there happening
+this in contrast is a B tree representation
+
+249
+00:21:19,000 --> 00:21:25,900
+where Einstein, if it happens then alongside
+with it the pointer to the Einstein's record
+
+250
+00:21:25,900 --> 00:21:31,740
+exists, if brands happen here along with it
+the brands record exists and Einstein would
+
+251
+00:21:31,740 --> 00:21:34,769
+not happen anywhere else in the tree.
+
+252
+00:21:34,769 --> 00:21:41,160
+So, you do not have the second instance of
+the Einstein or this instance of the Mozart
+
+253
+00:21:41,160 --> 00:21:42,500
+in the B tree.
+
+254
+00:21:42,500 --> 00:21:48,519
+So, naturally that is the basic optimization
+that ah B tree does?
+
+255
+00:21:48,519 --> 00:21:54,079
+. So, it is advantages it may use ah less
+notes than the corresponding B plus tree sometimes
+
+256
+00:21:54,079 --> 00:21:59,409
+it is possible to find the search key value
+even before reaching the leaf node.
+
+257
+00:21:59,410 --> 00:22:05,519
+So, search could be efficient, but it does
+have a lot of ah disadvantages, ah because
+
+258
+00:22:05,519 --> 00:22:10,900
+ah what happens is only small fraction of
+all search key values ah are actually found
+
+259
+00:22:10,900 --> 00:22:13,150
+early non leaf nodes are larger.
+
+260
+00:22:13,150 --> 00:22:17,910
+Now, because you you have ah pointers to the
+data as well.
+
+261
+00:22:17,910 --> 00:22:22,860
+So, the fan out gets reduced which means that
+the number of children you can have is gets
+
+262
+00:22:22,859 --> 00:22:23,859
+reduced.
+
+263
+00:22:23,859 --> 00:22:30,479
+So, ah though you are expecting to get a benefit,
+because you are not having to go to the leaf
+
+264
+00:22:30,480 --> 00:22:34,559
+every time, but you pay off because your fan
+out gets less.
+
+265
+00:22:34,559 --> 00:22:38,200
+So, if your fan out get less naturally the
+tree has a greater depth.
+
+266
+00:22:38,200 --> 00:22:41,799
+Now, because you can you are fanning out less
+number of children at every node.
+
+267
+00:22:41,799 --> 00:22:43,589
+So, it has a greater depth.
+
+268
+00:22:43,589 --> 00:22:49,909
+So, eventually your cost increases the naturally
+the deletions insertions are more complicated
+
+269
+00:22:49,910 --> 00:22:54,090
+than in B plus tree and implementation is
+more difficult.
+
+270
+00:22:54,089 --> 00:22:59,869
+So, typically the advantages of B tree do
+not outweigh the disadvantages.
+
+271
+00:22:59,869 --> 00:23:06,439
+So, it is not very frequent that you will
+use b trees ah, but they they are use at times,
+
+272
+00:23:06,440 --> 00:23:12,420
+but thats not a very common thing and we stick
+to B plus tree for both of the data file as
+
+273
+00:23:12,420 --> 00:23:19,190
+well as index file ah storage . So, in this
+module you have understood the design of ah
+
+274
+00:23:19,190 --> 00:23:26,519
+B plus ah index B plus tree index files in
+depth for the purpose of data base persistent
+
+275
+00:23:26,519 --> 00:23:33,720
+store and ah I would again remind you that
+ah whole discussion of how B plus tree is
+
+276
+00:23:33,720 --> 00:23:39,450
+organized and how operations of access insert
+delete are done in B plus tree.
+
+277
+00:23:39,450 --> 00:23:45,170
+I have introduced them in ah keeping in parallel
+with the simpler in memory data structure
+
+278
+00:23:45,170 --> 00:23:48,410
+for this which is a 2-3-4 tree discussed in
+the last module.
+
+279
+00:23:48,410 --> 00:23:55,019
+So, while ah ah going through the insertion
+deletion ah processes of B plus tree, if you
+
+280
+00:23:55,019 --> 00:24:00,629
+have difficulty following I would ah request
+that you go back to the 2-3-4 tree that is
+
+281
+00:24:00,630 --> 00:24:06,520
+kind the the simplest situation that can have
+that can occur and ah understand that and
+
+282
+00:24:06,519 --> 00:24:13,230
+then you come back to the specific ah points
+in the B plus tree algorithm and also always
+
+283
+00:24:13,230 --> 00:24:14,230
+keep in mind.
+
+284
+00:24:14,230 --> 00:24:19,339
+When you refer to 2-3-4 tree for understanding
+also always keep in mind that in case of B
+
+285
+00:24:19,339 --> 00:24:25,769
+plus tree all load types are same and the
+basic requirement is every node must be at
+
+286
+00:24:25,769 --> 00:24:30,579
+least half full all the time except of course,
+for the root.
+
+287
+00:24:30,579 --> 00:24:37,319
+And ah in addition we have also familiarized
+with B tree and reason that ah B tree possibly
+
+288
+00:24:37,319 --> 00:24:43,950
+is not a very powerful is not powerful enough
+it does not give enough advantages so, that
+
+289
+00:24:43,950 --> 00:24:46,799
+to we would like to use it in place of B plus
+tree.
+

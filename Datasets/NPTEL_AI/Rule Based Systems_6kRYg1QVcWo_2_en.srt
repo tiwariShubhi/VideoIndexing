@@ -1,0 +1,2157 @@
+﻿1
+00:00:10,800 --> 00:00:20,289
+So, shall we begin? So, the last few, the
+last few lectures that we had on games was
+
+2
+00:00:20,289 --> 00:00:23,099
+a bit
+of a diversion intended to get you ready for
+
+3
+00:00:23,100 --> 00:00:27,890
+the assignment, which you will soon give
+you, possibly next week. We come back to this
+
+4
+00:00:27,890 --> 00:00:31,939
+idea of problem decomposition.
+.
+
+5
+00:00:31,939 --> 00:00:45,869
+And today we look at this thing called rule
+based systems, also known as production
+
+6
+00:00:45,869 --> 00:01:08,859
+systems, also somewhat ambitiously known as
+expert systems. So, far in our discussions
+
+7
+00:01:08,859 --> 00:01:17,829
+we have already mentioned 2 systems, one is
+Dendral and the other one is R 1 also
+
+8
+00:01:17,829 --> 00:01:28,221
+known as X CON which were supposed to be 2
+of the first so called expert systems. And
+
+9
+00:01:28,221 --> 00:01:34,710
+by this we mean that programs which harnessed
+the knowledge of human experts and use
+
+10
+00:01:34,709 --> 00:01:40,719
+that for solving problems essentially. So,
+this knowledge of that we get from human
+
+11
+00:01:40,719 --> 00:01:45,560
+experts in this form that we are talking about
+was generally in the form of rules or
+
+12
+00:01:45,560 --> 00:01:49,269
+productions essentially.
+
+13
+00:01:49,269 --> 00:01:50,269
+..
+
+14
+00:01:50,269 --> 00:02:08,699
+And the idea is that if you have a state description,
+then instead of devising a moves and
+
+15
+00:02:08,699 --> 00:02:13,750
+function which gives takes one state and gives
+you another state. What we do is we look
+
+16
+00:02:13,750 --> 00:02:22,060
+at some part of the state and based on this
+part of the state we device, let us say action
+
+17
+00:02:22,060 --> 00:02:29,849
+one or another part of the state we look at
+we device another action.
+
+18
+00:02:29,849 --> 00:02:34,549
+So, in some sense we are not looking at the
+complete state, but we are looking at what
+
+19
+00:02:34,550 --> 00:02:51,640
+we call as a pattern in the state. So, these
+things are patterns. Now, this pattern is
+
+20
+00:02:51,639 --> 00:03:02,739
+typically described in the form of a production
+or the rule and I will use the syntax of a
+
+21
+00:03:02,740 --> 00:03:07,540
+language called Opius 5, which I will shortly
+tell you. But the basic idea is that the
+
+22
+00:03:07,539 --> 00:03:18,949
+structure is as follows.
+So, you have a rule name and you have pattern
+
+23
+00:03:18,949 --> 00:03:30,679
+1 and pattern 2 and so on, some number
+of patterns and I will shortly describe what
+
+24
+00:03:30,680 --> 00:03:48,709
+these are followed by action 1, action 2 some
+number of action essentially. So, this is
+
+25
+00:03:48,709 --> 00:03:56,490
+the structure of a rule also known as a
+production. And the basic idea is that this
+
+26
+00:03:56,490 --> 00:04:00,569
+is called the left hand side this is called
+the
+
+27
+00:04:00,568 --> 00:04:11,119
+right hand side because of the arrow here.
+This is also called the antecedents and we
+
+28
+00:04:11,120 --> 00:04:15,120
+can
+think of this as a consequent.
+
+29
+00:04:15,120 --> 00:04:25,840
+So, a rule is basically a set of antecedents
+followed by a set of actions or consequents
+
+30
+00:04:25,839 --> 00:04:30,369
+and
+it is a very modular form of knowledge representation.
+
+31
+00:04:30,370 --> 00:04:34,149
+We have so far not used the word
+knowledge representation at all in this course,
+
+32
+00:04:34,149 --> 00:04:40,339
+we have assumed that somehow you will
+have a state representation and somehow you
+
+33
+00:04:40,339 --> 00:04:42,859
+will have a moves and function which will
+
+34
+00:04:42,860 --> 00:04:47,129
+.move from one state to another. Now, with
+this we for the first time we are talking
+
+35
+00:04:47,129 --> 00:04:50,939
+about
+how do we actually represent things.
+
+36
+00:04:50,939 --> 00:04:58,050
+And the idea here is that knowledge is represented
+in the form of rules. So, here on the
+
+37
+00:04:58,050 --> 00:05:09,569
+left hand side followed by the right hand
+side here. So, the left hand side that we
+
+38
+00:05:09,569 --> 00:05:11,759
+are
+talking about here is essentially the pattern
+
+39
+00:05:11,759 --> 00:05:18,590
+that we are looking at and if the pattern
+matches then the action can be done. So, for
+
+40
+00:05:18,589 --> 00:05:26,158
+example, the system R 1 had rules like. So,
+you should look up the actual rule in X CON
+
+41
+00:05:26,158 --> 00:05:34,658
+or maybe I can just read out a rule from
+here. This says, this is the rule from R 1
+
+42
+00:05:34,658 --> 00:05:38,519
+its rule name is distribute (Refer Time..
+So, remember R 1 was the system which was
+
+43
+00:05:38,519 --> 00:05:43,538
+used to configure bags machines, deck
+vack machines which was some of the most advanced
+
+44
+00:05:43,538 --> 00:05:49,218
+computing systems at that time
+which was in the late 70s. And this rule reads
+
+45
+00:05:49,218 --> 00:05:55,969
+the following, if that is the left hand side,
+the most current active context is distributing
+
+46
+00:05:55,970 --> 00:06:01,479
+mass first devices and there is a single port
+disk drive that has not been assigned to a
+
+47
+00:06:01,478 --> 00:06:05,649
+mass bus and there are no unassigned dual
+port
+
+48
+00:06:05,649 --> 00:06:10,399
+disk drive and so on and so forth.
+And then the action is, then assigned the
+
+49
+00:06:10,399 --> 00:06:14,288
+disk drive to the mass bus. So, it has a set
+of
+
+50
+00:06:14,288 --> 00:06:18,550
+conditions on the left hand side and in this
+example only one action on the right hand
+
+51
+00:06:18,550 --> 00:06:31,860
+side essentially. So, the idea is to capture
+knowledge of a human in this form and use
+
+52
+00:06:31,860 --> 00:06:35,419
+this
+knowledge to solve problems. Now, how does
+
+53
+00:06:35,418 --> 00:06:38,329
+that happen?
+.
+
+54
+00:06:38,329 --> 00:06:58,740
+.So, there is this idea of an inference engine.
+And this inference engine takes on the one
+
+55
+00:06:58,740 --> 00:07:13,838
+hand data and on the other hand rules and
+it generates the, I will just use the loose
+
+56
+00:07:13,838 --> 00:07:23,959
+term
+to say the solution or a sequence of actions.
+
+57
+00:07:23,959 --> 00:07:33,938
+So, the idea behind rule based systems which
+also were for some reason called expert systems
+
+58
+00:07:33,939 --> 00:07:38,759
+and production systems was that the
+problem solver or the human expert or the
+
+59
+00:07:38,759 --> 00:07:42,949
+domain expert will only provide the rules
+for
+
+60
+00:07:42,949 --> 00:07:46,639
+solving problems.
+So, rules like this if some conditions are
+
+61
+00:07:46,639 --> 00:07:50,158
+true then some action happens, if some
+conditions are true then some action happens
+
+62
+00:07:50,158 --> 00:07:56,569
+and so on. So, you might say for example,
+you might have a rule which says is a particular
+
+63
+00:07:56,569 --> 00:08:02,319
+customer worthy of being given a loan?
+Then a bank manager may have a rule of certain
+
+64
+00:08:02,319 --> 00:08:08,229
+kind that if this persons income is so
+much and if he is been a customer for so many
+
+65
+00:08:08,228 --> 00:08:13,628
+days and if he has no outstanding loans
+then you can give him a loan of whatever 10
+
+66
+00:08:13,629 --> 00:08:17,849
+lacs or something like that.
+So, you can have a rule like this. Now, the
+
+67
+00:08:17,848 --> 00:08:22,778
+thing is that if we allow the domain expert
+to
+
+68
+00:08:22,778 --> 00:08:27,519
+express rules like this then they do not have
+to worry about program which works on this
+
+69
+00:08:27,519 --> 00:08:34,069
+rules. They only write the rules and somebody
+else in this case inference engine does the
+
+70
+00:08:34,070 --> 00:08:37,469
+work for them essentially.
+So, this inference engine is the one which
+
+71
+00:08:37,469 --> 00:08:39,339
+will actually pick rules from the collection
+of
+
+72
+00:08:39,339 --> 00:08:45,160
+rules when a new problem comes beside which
+rules to apply and then generate the
+
+73
+00:08:45,159 --> 00:08:50,350
+solution essentially. Alternatively you might
+have a rule, the railways might have a rule
+
+74
+00:08:50,350 --> 00:08:55,778
+based which says who gets what kind of concession
+and so on so. And if you are a war
+
+75
+00:08:55,778 --> 00:08:58,879
+veteran you get a certain kind of concession
+and if you are a sports man you get a certain
+
+76
+00:08:58,879 --> 00:09:03,439
+kind of concession. If you are a student going
+home you get a certain kind of concession
+
+77
+00:09:03,440 --> 00:09:08,069
+and that kind of stuff.
+So, all these so called what which people
+
+78
+00:09:08,068 --> 00:09:11,068
+now days call as business rules are described
+as
+
+79
+00:09:11,068 --> 00:09:14,409
+a domain people. They are not worried about
+computer, computing and programs and
+
+80
+00:09:14,409 --> 00:09:19,629
+things like that. There task is to only provide
+the rules essentially. We could have a rule
+
+81
+00:09:19,629 --> 00:09:26,629
+for example to say, good student award which
+might say that if the student has done all
+
+82
+00:09:26,629 --> 00:09:31,740
+the assignments and the student has done well
+in courses. And if there are no proxies in
+
+83
+00:09:31,740 --> 00:09:36,060
+the attendance then he is a good student we
+can give him an award or her an award.
+
+84
+00:09:36,059 --> 00:09:39,979
+Focus we do not do that. So, you do not have
+to worry about it.
+
+85
+00:09:39,980 --> 00:09:40,980
+..
+
+86
+00:09:40,980 --> 00:09:48,089
+So, the basic idea behind rule based systems
+is this that a rule is a pattern, action,
+
+87
+00:09:48,089 --> 00:09:53,180
+combination, there is a collection of rules.
+So, this is a whole set which the domain
+
+88
+00:09:53,179 --> 00:09:57,599
+expert provides. This data pertains to the
+current problem that you are trying to solve
+
+89
+00:09:57,600 --> 00:10:01,240
+and
+inference engine. And we will look at this
+
+90
+00:10:01,240 --> 00:10:05,389
+in some detail today. Is the one which does
+the
+
+91
+00:10:05,389 --> 00:10:12,019
+job of picking rules and applying them to
+data and arriving at the solutions essentially.
+
+92
+00:10:12,019 --> 00:10:21,870
+Which is one reason why some people have called
+this as pattern directed inference
+
+93
+00:10:21,870 --> 00:10:35,470
+systems. In fact, there is a book by this
+name, it is a little old.
+
+94
+00:10:35,470 --> 00:10:44,519
+Now, the thing for you to observe and we will
+do this over the next, this lecture and the
+
+95
+00:10:44,519 --> 00:10:52,049
+next is that rule based programming can be
+seen as a different paradigm of programming
+
+96
+00:10:52,049 --> 00:11:00,439
+in itself essentially. Now, in imperative
+programming which is what most people are
+
+97
+00:11:00,440 --> 00:11:10,911
+used to languages like c and Pascal and so
+on. The task of the programmer is to give
+
+98
+00:11:10,910 --> 00:11:14,299
+a
+control flow, say do this action, then do
+
+99
+00:11:14,299 --> 00:11:18,079
+this action, then do this action.
+And of course, you may have more complicated
+
+100
+00:11:18,080 --> 00:11:22,430
+things like conditional statements and
+branches and loops and all this kind of stuff,
+
+101
+00:11:22,429 --> 00:11:27,049
+but it is the programmer which specifies
+what actions have to be done essentially.
+
+102
+00:11:27,049 --> 00:11:30,969
+Now, you can think of a rule based system,
+you
+
+103
+00:11:30,970 --> 00:11:36,278
+can in some sense port it to an imperative
+language and you can. So, remember that the
+
+104
+00:11:36,278 --> 00:11:40,110
+rule based systems basically consists of a
+large number rules set, the domain expert
+
+105
+00:11:40,110 --> 00:11:43,409
+rights.
+You could convert it into an imperative program
+
+106
+00:11:43,409 --> 00:11:45,389
+and you could have a sequence of if
+
+107
+00:11:45,389 --> 00:11:51,629
+.then statements, if this then this else this
+then this and so on and so forth. The control
+
+108
+00:11:51,629 --> 00:11:56,370
+flow is fixed and rigid in imperative program,
+in rule based systems. On the other hand
+
+109
+00:11:56,370 --> 00:12:02,769
+you can think of this as follows that you
+have this data...
+
+110
+00:12:02,769 --> 00:12:03,769
+.
+
+111
+00:12:03,769 --> 00:12:15,750
+in some pool and there are a set of rules
+hanging above this. And when I say hanging
+
+112
+00:12:15,750 --> 00:12:19,970
+above this, this has to sort of make you think
+about it slightly differently.
+
+113
+00:12:19,970 --> 00:12:26,649
+In the sense that there is no control relation
+between the different rules. You are not
+
+114
+00:12:26,649 --> 00:12:31,750
+saying apply this rule first then apply this
+rule first and then apply this rule first
+
+115
+00:12:31,750 --> 00:12:35,698
+and so
+on. You are simply saying in each rule you
+
+116
+00:12:35,698 --> 00:12:39,389
+are giving a little bit of modular piece of
+knowledge we say if you see this pattern then
+
+117
+00:12:39,389 --> 00:12:41,730
+this is the action that you have to do with
+it
+
+118
+00:12:41,730 --> 00:12:44,579
+essentially. And all the rules are kind of
+floating around.
+
+119
+00:12:44,578 --> 00:12:55,250
+So, this is a what we would call is as a rule
+base and what the inference engine does is
+
+120
+00:12:55,250 --> 00:13:02,230
+that it will pick some rule and apply it to
+the relevant data and do the relevant action.
+
+121
+00:13:02,230 --> 00:13:07,519
+Then they may pick another rule and apply
+it and so on and so forth. And it will keep
+
+122
+00:13:07,519 --> 00:13:12,039
+doing that. It is a inference engine, and
+we will look at this in a little more bit
+
+123
+00:13:12,039 --> 00:13:15,568
+detail,
+which decides what are the actions which are
+
+124
+00:13:15,568 --> 00:13:20,028
+actually done. As opposed to an imperative
+programming who programmer says do this action
+
+125
+00:13:20,028 --> 00:13:25,088
+then you do this action and so on and
+so forth essentially.
+
+126
+00:13:25,089 --> 00:13:33,290
+So, before we get into the details, I also
+want to highlight the difference between 2
+
+127
+00:13:33,289 --> 00:13:34,289
+kinds
+
+128
+00:13:34,289 --> 00:13:38,319
+.of reasoning and we have, we have slowly
+talking about this thing we have not really
+
+129
+00:13:38,320 --> 00:13:39,320
+done so.
+.
+
+130
+00:13:39,320 --> 00:13:55,319
+One is goal directed or backward reasoning
+and by this we mean that you reason from
+
+131
+00:13:55,318 --> 00:14:02,539
+goals to sub goals in some sense. We have
+already seen an example of this when we
+
+132
+00:14:02,539 --> 00:14:08,850
+were talking about planning an evening out
+when you say that evening out is planned if
+
+133
+00:14:08,850 --> 00:14:12,720
+you have an outing plan and if you have a
+movie plan and if you have a dinner plan.
+
+134
+00:14:12,720 --> 00:14:13,870
+So,
+those are the sub goals essentially.
+
+135
+00:14:13,870 --> 00:14:19,661
+So, you start with a major goal and then you
+come to the sub goals essentially. And there
+
+136
+00:14:19,660 --> 00:14:26,869
+are people, a lot of people who feel that
+human beings by and large are goal directed
+
+137
+00:14:26,870 --> 00:14:31,919
+reasons. They are backward reasons, they do
+not reason from. So, this is goal directed
+
+138
+00:14:31,919 --> 00:14:51,219
+versus forward or you might say data driven
+reasoning. So, data driven reasoning is some
+
+139
+00:14:51,220 --> 00:14:56,769
+kind of an algorithm which looks at data and
+says that if I say this pattern, I will do
+
+140
+00:14:56,769 --> 00:14:58,709
+this
+action and so on and so forth.
+
+141
+00:14:58,708 --> 00:15:04,938
+So, the decision of what to do next is driven
+by, is decided by the data that is available
+
+142
+00:15:04,938 --> 00:15:07,610
+to
+you, which is the form that we will be looking
+
+143
+00:15:07,610 --> 00:15:13,570
+at today. Goal directed reasoning says that
+if you have to achieve a certain goal, what
+
+144
+00:15:13,570 --> 00:15:15,620
+sub goals should I achieve essentially? So,
+for
+
+145
+00:15:15,620 --> 00:15:26,350
+example, you might say that if you want to
+get a scholarship into a good US university
+
+146
+00:15:26,350 --> 00:15:29,550
+for doing post graduate studies then what
+do you need to do?
+
+147
+00:15:29,549 --> 00:15:33,198
+.You need to write g r e, you need to do well,
+you need to get recommendation letters,
+
+148
+00:15:33,198 --> 00:15:38,649
+you have to write a excellent statement of
+purpose all this kind of stuffs. These are
+
+149
+00:15:38,649 --> 00:15:41,818
+sub
+goals and to do that to get good grades what
+
+150
+00:15:41,818 --> 00:15:45,208
+you have to do? You have to attend classes
+and study hard and write exams well and so
+
+151
+00:15:45,208 --> 00:15:50,369
+on. So, if you go from goals towards sub
+goals and essentially, eventually towards
+
+152
+00:15:50,370 --> 00:15:55,490
+actions then you can decide what are the
+actions that you need to do essentially.
+
+153
+00:15:55,490 --> 00:16:01,289
+Again let us say that if I have to plan a
+trip from here to mandi then in goal directed
+
+154
+00:16:01,289 --> 00:16:07,278
+reasoning I would say that first maybe I need
+to go to Delhi and then from Delhi I need
+
+155
+00:16:07,278 --> 00:16:12,399
+to fly to Chandigarh or take a train to Chandigarh
+and then take a bus or car or something
+
+156
+00:16:12,399 --> 00:16:16,068
+and then work out the details later essentially.
+How do I go from here to the airport?
+
+157
+00:16:16,068 --> 00:16:23,058
+Now, how do I book my ticket and how do I
+go from? The lower details come later. In
+
+158
+00:16:23,058 --> 00:16:27,958
+goal directed reasoning, you reason from the
+high level goals to the low level goals and
+
+159
+00:16:27,958 --> 00:16:37,599
+at the lowest level you have action essentially.
+Now, there is a corresponding
+
+160
+00:16:37,600 --> 00:16:44,240
+implementational comparison that you can make.
+.
+
+161
+00:16:44,240 --> 00:17:06,269
+It is called backward chaining versus forward
+chaining. So, by backward chaining and
+
+162
+00:17:06,269 --> 00:17:09,349
+forward chaining we essentially are talking
+about how the programs are implemented
+
+163
+00:17:09,349 --> 00:17:12,899
+whereas with backward reasoning and forward
+reasoning we are talking about what is the
+
+164
+00:17:12,900 --> 00:17:16,670
+kind of reasoning you are doing. So, by and
+large of course, backward chaining goes
+
+165
+00:17:16,670 --> 00:17:21,220
+well with backward reasoning and forward chaining
+goes well with forward reasoning.
+
+166
+00:17:21,220 --> 00:17:26,980
+.But it is possible to do forward chaining
+and implement backward reasoning or it is
+
+167
+00:17:26,980 --> 00:17:28,769
+also
+possible to implement backward chaining and
+
+168
+00:17:28,769 --> 00:17:33,379
+implement forward reasoning essentially.
+So, this combination of backward reasoning
+
+169
+00:17:33,380 --> 00:17:40,800
+and backward chaining sorry backward
+reasoning and forward chaining is something
+
+170
+00:17:40,799 --> 00:17:44,129
+or actually you should call it backward
+chaining.
+
+171
+00:17:44,130 --> 00:17:49,790
+So, this combination for those of you have
+written programs and prologs you would
+
+172
+00:17:49,789 --> 00:17:55,549
+recognize that in prolog you are doing essentially
+backward reasoning and if you view
+
+173
+00:17:55,549 --> 00:18:03,190
+the sign, this sign in prolog as in backward
+pointing arrow which we will do when we
+
+174
+00:18:03,190 --> 00:18:07,700
+look at logic a little bit later in this course.
+We will look at this then you can see that
+
+175
+00:18:07,700 --> 00:18:10,769
+you
+are essentially chaining from this to this.
+
+176
+00:18:10,769 --> 00:18:13,660
+So, in backward chaining you are chaining
+from
+
+177
+00:18:13,660 --> 00:18:18,290
+the right hand side to the left hand side
+which means you match.
+
+178
+00:18:18,289 --> 00:18:24,460
+So, this is actually the right hand side,
+why because the arrow is pointing this way
+
+179
+00:18:24,460 --> 00:18:27,039
+I
+could have drawn it like that, but in prolog
+
+180
+00:18:27,039 --> 00:18:29,170
+you write the goal first and then you write
+the
+
+181
+00:18:29,170 --> 00:18:34,950
+sub goals, if you remember prolog that if
+you want to sort an array then you have to
+
+182
+00:18:34,950 --> 00:18:37,069
+have
+a combination of array which should be sorted
+
+183
+00:18:37,069 --> 00:18:42,359
+and so on and so forth. So, it really
+depends on the match which side. So, if you
+
+184
+00:18:42,359 --> 00:18:54,929
+look at this rule format LHS and RHS then
+in backward chaining you are matching here
+
+185
+00:18:54,930 --> 00:19:03,090
+with the RHS and moving to the LHS. So,
+you are asking that if this has to be true
+
+186
+00:19:03,089 --> 00:19:05,220
+then can I show that this is true.
+.
+
+187
+00:19:05,220 --> 00:19:11,430
+In forward chaining, I match the LHS and go
+to the right hand side. If I see this pattern
+
+188
+00:19:11,430 --> 00:19:16,250
+.then I do the sections. So, we will be focusing
+today on forward chaining mechanism
+
+189
+00:19:16,250 --> 00:19:23,650
+because it is a very widely used technique
+in the industry. So, I gave you a couple of
+
+190
+00:19:23,650 --> 00:19:28,009
+examples about banking and giving loans and
+so on and so forth.
+
+191
+00:19:28,009 --> 00:19:29,009
+.
+
+192
+00:19:29,009 --> 00:19:43,579
+But there is this whole field called business
+rule management systems. So, if you just
+
+193
+00:19:43,579 --> 00:19:50,470
+look at, look up this thing B R M S, there
+is a whole community out there which is
+
+194
+00:19:50,470 --> 00:19:57,420
+developing software for people in business
+meaning it could be industry, manufacturing
+
+195
+00:19:57,420 --> 00:20:05,440
+industry, banking business or anything.
+People who are domain experts, to exploit
+
+196
+00:20:05,440 --> 00:20:14,340
+computing power the basic mechanism is this
+that all you ask them to do is write the rules
+
+197
+00:20:14,339 --> 00:20:17,159
+and you implement the inference engine
+which is the general purpose inference engine.
+
+198
+00:20:17,160 --> 00:20:19,080
+It is like you can say a search engine is
+a
+
+199
+00:20:19,079 --> 00:20:22,789
+general purpose program and in similar manner
+inference engine is a general purpose
+
+200
+00:20:22,789 --> 00:20:27,430
+program which looks at their rules and their
+corresponding data and makes all the actions
+
+201
+00:20:27,430 --> 00:20:38,789
+which are necessary to be done essentially.
+Now, let us get down to some examples. So,
+
+202
+00:20:38,789 --> 00:20:43,389
+the language that I am using, we do not
+really have to use it and in, I mean you may
+
+203
+00:20:43,390 --> 00:20:52,840
+not have to implement it is called O P S 5.
+This is the language is devised, which was
+
+204
+00:20:52,839 --> 00:20:58,169
+devised I think in the 70s,0 also at (Refer
+Time. university which is one of the centers
+
+205
+00:20:58,170 --> 00:21:03,610
+where a lot of a i related work was
+done in the middle of the last century.
+
+206
+00:21:03,609 --> 00:21:04,609
+..
+
+207
+00:21:04,609 --> 00:21:10,630
+And some people say that O stands for official.
+So, it is a official production system
+
+208
+00:21:10,631 --> 00:21:18,320
+language and its version was 5 became popular.
+It was developed by a guy called Charles
+
+209
+00:21:18,319 --> 00:21:30,929
+Forgy who implemented this algorithm that
+we are going to look at for his p h d thesis
+
+210
+00:21:30,930 --> 00:21:42,060
+and then eventually of course, it became something
+which was commercial in nature. So,
+
+211
+00:21:42,059 --> 00:21:47,929
+of course, what we need to do is to describe
+what is this language, what is the syntax
+
+212
+00:21:47,930 --> 00:21:51,950
+of
+this language. And so I will focus we will
+
+213
+00:21:51,950 --> 00:22:01,650
+first focus on the pattern. So, how do patterns
+describe in OPS5.
+
+214
+00:22:01,650 --> 00:22:13,940
+So, they follow the, something like a, like
+a object oriented way of representing things
+
+215
+00:22:13,940 --> 00:22:29,150
+which are like classes. The syntax that this
+language uses is that it uses p to stand for
+
+216
+00:22:29,150 --> 00:22:40,019
+production then name oh so sorry that is the
+language of a rule. So, we will come to rule
+
+217
+00:22:40,019 --> 00:22:52,289
+a bit later. First we want to talk about patterns.
+So, there is a class name followed by
+
+218
+00:22:52,289 --> 00:23:03,599
+attribute names eventually. So, very much
+like the class name in a. Remember that
+
+219
+00:23:03,599 --> 00:23:09,420
+patterns are these things which are will which
+constitutes the left hand side of a rule and
+
+220
+00:23:09,421 --> 00:23:14,950
+each pattern is made up of a class name followed
+by a set of attribute name.
+
+221
+00:23:14,950 --> 00:23:22,308
+So, this is the data structure that we are
+using in this language OPS5. So, for example,
+
+222
+00:23:22,308 --> 00:23:24,899
+if
+I am implementing a program to play cards,
+
+223
+00:23:24,900 --> 00:23:29,630
+I might have a class name called card then
+I
+
+224
+00:23:29,630 --> 00:23:39,730
+might have a name of a card for example, ace
+or queen or 10 the suit of a card. So, for
+
+225
+00:23:39,730 --> 00:23:45,799
+those of you who are familiar with cards spades
+and diamonds and clubs and so on. I
+
+226
+00:23:45,799 --> 00:23:58,329
+might have the name of a player who is holding
+that card and 
+
+227
+00:23:58,329 --> 00:24:02,559
+I might have rank of the
+
+228
+00:24:02,559 --> 00:24:08,099
+.card. So, by rank I mean the current rank.
+So, in most games for example, ace is rank
+
+229
+00:24:08,099 --> 00:24:12,500
+1 and king is rank 2 and so on. But as the
+game progresses these ranks might change.
+
+230
+00:24:12,500 --> 00:24:19,109
+So, I might want to store that essentially.
+So,
+
+231
+00:24:19,109 --> 00:24:24,059
+this is a, this is a class description and
+correspondent to this class description I
+
+232
+00:24:24,059 --> 00:24:25,980
+may have
+several patterns.
+
+233
+00:24:25,980 --> 00:24:26,980
+.
+
+234
+00:24:26,980 --> 00:24:32,650
+So, the patterns are the left hand side of
+the rule and a rule is signified by this opening
+
+235
+00:24:32,650 --> 00:24:39,400
+bracket followed by p which stands for production,
+and then the production name for
+
+236
+00:24:39,400 --> 00:24:49,890
+example play any card. Let us say I just want
+to write a rule which says play any card
+
+237
+00:24:49,890 --> 00:25:00,590
+that you have essentially. And in this rule
+I might have a pattern which says that you
+
+238
+00:25:00,589 --> 00:25:09,289
+have a card and I might just specify this
+essentially. So, let us, I will come to this
+
+239
+00:25:09,289 --> 00:25:12,139
+later.
+So, next let us just talk about the different
+
+240
+00:25:12,140 --> 00:25:14,390
+kind of patterns that we can have.
+
+241
+00:25:14,390 --> 00:25:15,390
+..
+
+242
+00:25:15,390 --> 00:25:24,990
+So, we can have just a name of the class as
+a pattern which means that if the inference
+
+243
+00:25:24,990 --> 00:25:34,079
+engine can see one data element in your data.
+So, remember we have this data which has
+
+244
+00:25:34,079 --> 00:25:38,789
+a class name card then that will match that
+would. Our task is to eventually going to
+
+245
+00:25:38,789 --> 00:25:42,619
+be
+the match the pattern and see which patterns
+
+246
+00:25:42,619 --> 00:25:46,849
+match. Of course, there may be more than
+one rule which may be matching, we will come
+
+247
+00:25:46,849 --> 00:25:50,429
+to that later and then what action can be
+done.
+
+248
+00:25:50,430 --> 00:25:56,920
+So, for matching the rule we have to match
+patterns and each pattern should match some
+
+249
+00:25:56,920 --> 00:26:04,519
+class description. So, if my this class name
+is card and its attributes are name, suit,
+
+250
+00:26:04,519 --> 00:26:08,029
+player
+and rank. Then the pattern must be an instance
+
+251
+00:26:08,029 --> 00:26:09,539
+of that essentially.
+
+252
+00:26:09,539 --> 00:26:10,539
+..
+
+253
+00:26:10,539 --> 00:26:32,509
+So, I can have for example, card, name, ace,
+suit, spades. So, here I am saying that so
+
+254
+00:26:32,509 --> 00:26:37,619
+this is the way data is represented. This
+is the way the matter rate as given as to
+
+255
+00:26:37,619 --> 00:26:40,239
+which
+describes the data. So, data itself is written
+
+256
+00:26:40,240 --> 00:26:41,240
+like this.
+.
+
+257
+00:26:41,240 --> 00:26:59,849
+So, I have a element which OPS5 data is in
+the working memory 
+
+258
+00:26:59,849 --> 00:27:03,778
+which is called WM.
+
+259
+00:27:03,778 --> 00:27:04,778
+..
+
+260
+00:27:04,778 --> 00:27:10,380
+And each of this is called a working memory
+element, these is just the terminology that
+
+261
+00:27:10,380 --> 00:27:20,040
+they use. So, this is a working memory and
+inside these of course, there are this working
+
+262
+00:27:20,039 --> 00:27:25,779
+memory elements where each element is an instance
+of some class name which maybe
+
+263
+00:27:25,779 --> 00:27:28,509
+not completely specified, which maybe incompletely
+specified.
+
+264
+00:27:28,509 --> 00:27:29,509
+.
+
+265
+00:27:29,509 --> 00:27:33,259
+So, for example, here I have only said that
+there is an element which belongs to the class
+
+266
+00:27:33,259 --> 00:27:38,599
+name card. Here I am saying there is an element
+which belongs to the class name card
+
+267
+00:27:38,599 --> 00:27:44,609
+and the attribute name has value ace and the
+attribute suit has value spade essentially.
+
+268
+00:27:44,609 --> 00:27:51,639
+.Of course, I can specify other things also,
+but any partial description can be there in
+
+269
+00:27:51,640 --> 00:27:54,810
+the
+pattern. We are talking about patterns in
+
+270
+00:27:54,809 --> 00:28:12,460
+rules essentially. I can say things like card,
+name. So, this angular brackets are used to
+
+271
+00:28:12,460 --> 00:28:14,960
+distinguish variables from constants. So,
+ace
+
+272
+00:28:14,960 --> 00:28:19,420
+is a constant, but anything within angular
+bracket is a variable and the variable is
+
+273
+00:28:19,420 --> 00:28:22,740
+which
+will match anything essentially. And I can
+
+274
+00:28:22,740 --> 00:28:37,029
+have other kinds of relation. So, for example,
+I can say rank greater than 1 and so on. So,
+
+275
+00:28:37,029 --> 00:28:56,589
+these are the patterns. So, the left hand
+side
+
+276
+00:28:56,589 --> 00:29:00,730
+of the rule is made up of collection of such
+patterns.
+
+277
+00:29:00,730 --> 00:29:01,730
+.
+
+278
+00:29:01,730 --> 00:29:31,750
+You can also have a pattern which says, it
+is a negative sign here.. So, this pattern
+
+279
+00:29:31,750 --> 00:29:35,180
+should
+be interpreted differently. It should be interpreted
+
+280
+00:29:35,180 --> 00:29:40,660
+as saying that there is no such pattern
+in your, in your working memory or there is
+
+281
+00:29:40,660 --> 00:29:47,380
+no such data element in the working
+memory which says that player x, this is a
+
+282
+00:29:47,380 --> 00:29:55,230
+variable x has a card of spades.
+So, such a pattern would be used to describe
+
+283
+00:29:55,230 --> 00:30:01,170
+the fact that a given player does not have
+any spade cards in his or hand, her hand.
+
+284
+00:30:01,170 --> 00:30:08,000
+So, this negation sign basically is the opposite
+of this. This says that this must be present
+
+285
+00:30:08,000 --> 00:30:12,130
+in the database or in the working memory.
+This says that it must be absent in the database
+
+286
+00:30:12,130 --> 00:30:14,750
+and only then this rule will match
+essentially.
+
+287
+00:30:14,750 --> 00:30:27,029
+We will look at some examples. Now, actions
+so remember we have patterns and we
+
+288
+00:30:27,029 --> 00:30:36,519
+have actions. So, the 2 most important actions
+in ops 5 is one is called make and after
+
+289
+00:30:36,519 --> 00:30:43,160
+this you describe the working memory element.
+So, you can say for example, card,
+
+290
+00:30:43,160 --> 00:30:59,840
+.spades sorry suit, name, age and so on and
+so forth. So, what this action does?
+
+291
+00:30:59,839 --> 00:31:04,980
+This makes action. It creates a working memory
+element and puts it into the working
+
+292
+00:31:04,980 --> 00:31:10,720
+memory, how it otherwise it creates a data
+element and puts it in the database if you
+
+293
+00:31:10,720 --> 00:31:14,350
+want
+to call it a database. Corresponding to this
+
+294
+00:31:14,349 --> 00:31:30,139
+there is also a remove action. Now, a remove
+action takes an argument like 2 and this 2
+
+295
+00:31:30,140 --> 00:31:32,390
+as you will see in the example the first 2,
+the
+
+296
+00:31:32,390 --> 00:31:36,080
+second pattern in that particular rule. Remember
+these actions are on the right hand side
+
+297
+00:31:36,079 --> 00:31:41,559
+of a rule and this action is saying that remove
+the pattern, remove the data element which
+
+298
+00:31:41,559 --> 00:31:46,659
+match the second pattern. So, this pattern
+number 2 matches some data.
+
+299
+00:31:46,660 --> 00:31:54,220
+So, that will match something, some working
+number x let us call it. And this action is
+
+300
+00:31:54,220 --> 00:32:00,650
+saying that, remove that from the working
+memory or remove that from data essentially.
+
+301
+00:32:00,650 --> 00:32:09,860
+If you can combine this you can have a action
+called modify. So, for example, as the
+
+302
+00:32:09,859 --> 00:32:14,929
+game progresses you want to change the rank
+of a card essentially. So, let us say
+
+303
+00:32:14,930 --> 00:32:18,820
+somebody has played the ace of spades and
+now you want to say king of spades has rank
+
+304
+00:32:18,819 --> 00:32:24,339
+1 then you could say modify that particular
+working memory element and change the
+
+305
+00:32:24,339 --> 00:32:29,559
+rand to value 1 that is all.
+So, we have the so basically we have this
+
+306
+00:32:29,559 --> 00:32:35,940
+2 actions make and remove, but these can lead
+to a third action called, any modify action
+
+307
+00:32:35,940 --> 00:32:40,640
+can be seen as a combination of make and
+remove, remove the old one and put in a new
+
+308
+00:32:40,640 --> 00:32:45,009
+one, it is like modify. Apart from that you
+have standard actions that you may need for
+
+309
+00:32:45,009 --> 00:32:48,460
+example, reading from a file and so on
+which we will not go into here because we
+
+310
+00:32:48,460 --> 00:32:50,769
+want to focus more on how reasoning is done.
+
+311
+00:32:50,769 --> 00:32:51,769
+..
+
+312
+00:32:51,769 --> 00:33:01,650
+So, there are actions like read, write, print.
+There is even a action called halt which says
+
+313
+00:33:01,650 --> 00:33:08,550
+that stop the system essentially and exit
+essentially. So, we will not look into those
+
+314
+00:33:08,549 --> 00:33:15,960
+details here. So, let me now give you a examples
+of a few rules and then we will see how
+
+315
+00:33:15,960 --> 00:33:27,269
+the system operates with these rules essentially.
+So, I will write these rules for a card
+
+316
+00:33:27,269 --> 00:33:35,980
+game and I assume that everybody has some
+in cling of what card games are like
+
+317
+00:33:35,980 --> 00:33:37,200
+essentially.
+.
+
+318
+00:33:37,200 --> 00:33:53,269
+So, let us say we have a rule called play
+any card and the pattern is let us say there
+
+319
+00:33:53,269 --> 00:33:54,269
+is a
+
+320
+00:33:54,269 --> 00:33:57,000
+.class name called turn which I have not described.
+I have only described one class name
+
+321
+00:33:57,000 --> 00:34:02,660
+here which is this. But obviously, you will
+have many different class names in your
+
+322
+00:34:02,660 --> 00:34:17,630
+system.
+So, let us say that you are carefully keeping
+
+323
+00:34:17,630 --> 00:34:20,550
+track of whose turn it is to play next into
+one
+
+324
+00:34:20,550 --> 00:34:28,580
+data element which is belongs to this class
+kind type turn and it says turn to play of
+
+325
+00:34:28,579 --> 00:34:31,489
+some
+variable. So, we have not specified who, some
+
+326
+00:34:31,489 --> 00:34:58,539
+player p essentially. And let us say that
+already somebody has started playing a particular
+
+327
+00:34:58,539 --> 00:35:02,460
+suit. So, in many games in which you
+have to play the card of the same suit at
+
+328
+00:35:02,460 --> 00:35:07,119
+somebody else has done. So, this is saying
+that
+
+329
+00:35:07,119 --> 00:35:12,000
+the suit that is in place s, some variable
+name and this is some player p and this player
+
+330
+00:35:12,000 --> 00:35:29,460
+has a card of suit s.
+So, notice that there is no order sanctity
+
+331
+00:35:29,460 --> 00:35:31,789
+here essentially. I may say that this name,
+suit,
+
+332
+00:35:31,789 --> 00:35:38,460
+player, rank, but that does not matter because
+we are segregating the attribute names with
+
+333
+00:35:38,460 --> 00:35:41,970
+the attribute values. You can specify the
+attribute names in any order. You do not have
+
+334
+00:35:41,969 --> 00:35:44,159
+to
+specify them in this particular order. So,
+
+335
+00:35:44,159 --> 00:35:48,529
+here I said card with suit s, player p. So,
+all I am
+
+336
+00:35:48,530 --> 00:35:55,510
+saying.
+So, whatever I say here that if it is a players
+
+337
+00:35:55,510 --> 00:36:03,270
+turn to play and the player could match
+anything. And if the suit in play is s and
+
+338
+00:36:03,269 --> 00:36:07,559
+if there is a card which is of suit s and
+being
+
+339
+00:36:07,559 --> 00:36:12,239
+held by player p then that player p should
+play that card essentially. So, let us say
+
+340
+00:36:12,239 --> 00:36:50,119
+I use
+this make. So, this is one rule and it has
+
+341
+00:36:50,119 --> 00:36:53,199
+3 patterns on the left hand side which says
+that
+
+342
+00:36:53,199 --> 00:36:57,029
+there are 3 different class names.
+Of course, we are interpreting it as a card
+
+343
+00:36:57,030 --> 00:37:01,990
+game that, if it is p’s turn to play and
+if the suit
+
+344
+00:37:01,990 --> 00:37:09,710
+in plays s, and if p has a card of this suit
+s whose name is n then make working memory
+
+345
+00:37:09,710 --> 00:37:15,570
+element called play player p that card essentially.
+And then of course, maybe we will
+
+346
+00:37:15,570 --> 00:37:19,070
+have another rule which will take it and print
+it onto the screen or something like that
+
+347
+00:37:19,070 --> 00:37:23,620
+let
+us not bother about that.
+
+348
+00:37:23,619 --> 00:37:24,619
+..
+
+349
+00:37:24,619 --> 00:37:38,400
+So, let me give you another rule just to so
+if you want to not play any card, but you
+
+350
+00:37:38,400 --> 00:37:40,590
+want
+to play the highest card essentially then
+
+351
+00:37:40,590 --> 00:37:42,950
+what should the rule look like. The first
+2 will be
+
+352
+00:37:42,949 --> 00:38:05,189
+the same, turn. So, let me write this here.
+So, the first 2 patterns are still the same
+
+353
+00:38:05,190 --> 00:38:07,929
+as this
+rule, but the other patterns will change.
+
+354
+00:38:07,929 --> 00:38:13,639
+Now, you want to specify that the card that
+you play must be the highest card with your
+
+355
+00:38:13,639 --> 00:38:28,739
+suit and we can do that by saying the following
+next card, player p, suite s. So, first of
+
+356
+00:38:28,739 --> 00:38:36,349
+course, we are looking for a card being held
+by this player and in this suit. Let us say
+
+357
+00:38:36,349 --> 00:38:46,699
+name n and rank r because we are interested
+in picking the highest card we should talk
+
+358
+00:38:46,699 --> 00:38:56,210
+about the rank and we should say that there
+is no higher card essentially, which means
+
+359
+00:38:56,210 --> 00:39:23,289
+we can say that there is no card the same
+player p, name we do not care about. So, this
+
+360
+00:39:23,289 --> 00:39:32,869
+the that negative thing that I was telling
+about. So, between these 2 patterns we are
+
+361
+00:39:32,869 --> 00:39:37,710
+looking at a set of data elements and picking
+the one with the highest rank which means
+
+362
+00:39:37,710 --> 00:39:42,750
+the lowest number. So, rank 1 we want to look
+at or rank 2 whichever is the lowest
+
+363
+00:39:42,750 --> 00:39:47,369
+available.
+So, we are saying that card, player p, suite
+
+364
+00:39:47,369 --> 00:39:52,299
+s, name n, rank r and there is no card with
+this
+
+365
+00:39:52,300 --> 00:39:57,870
+player p of this suit, same suit s whose rank
+is smaller than this r. So obviously, this
+
+366
+00:39:57,869 --> 00:40:02,609
+r and
+this r must match the same value then the
+
+367
+00:40:02,610 --> 00:40:14,789
+same thing. And you can write more rules
+depending on you know what kind of game you
+
+368
+00:40:14,789 --> 00:40:19,179
+are playing and what is the strategy you
+want to adopt and that kind of stuff, but
+
+369
+00:40:19,179 --> 00:40:20,679
+we would not get into those details here
+
+370
+00:40:20,679 --> 00:40:29,319
+.essentially.
+But you should observe that this one. This
+
+371
+00:40:29,320 --> 00:40:34,289
+combination of this positive pattern and the
+negative pattern can be used to pick the highest
+
+372
+00:40:34,289 --> 00:40:40,420
+rank. So, for example, I could use such a
+rule, variation of this rule to start grading
+
+373
+00:40:40,420 --> 00:40:47,070
+or something and say let me pick the student
+with the highest marks and do something and
+
+374
+00:40:47,070 --> 00:40:51,030
+then you know that kind of stuff. So, this
+can be done. So, the illustrate the power
+
+375
+00:40:51,030 --> 00:41:05,900
+of this let me show you another rule. Supposing
+that I have a array of numbers which is signified
+
+376
+00:41:05,900 --> 00:41:08,680
+by index and value.
+.
+
+377
+00:41:08,679 --> 00:41:27,250
+And if I have a rule of this kind or this
+pattern which says that array index i, value
+
+378
+00:41:27,250 --> 00:41:41,929
+n and
+array index j greater than i. So, I can do
+
+379
+00:41:41,929 --> 00:41:46,940
+like this, I can put this in brackets and
+say that
+
+380
+00:41:46,940 --> 00:41:52,170
+the index value is j and this value j is greater
+than this value i that we are talking about
+
+381
+00:41:52,170 --> 00:41:55,430
+here, which means if I am talking about the
+5th element here I could be talking about
+
+382
+00:41:55,429 --> 00:42:01,750
+the
+7th element or something like that. Let us
+
+383
+00:42:01,750 --> 00:42:09,599
+say value m which is greater than value n.
+So,
+
+384
+00:42:09,599 --> 00:42:27,909
+I am not. So, some rule it is there.
+Then I do the following, modify one value
+
+385
+00:42:27,909 --> 00:42:50,069
+n. So, I have 2 actions and 2 patterns. The
+first pattern let me read it out it says that
+
+386
+00:42:50,070 --> 00:42:54,840
+index value is i and the value is n. The second
+pattern says index value is j which is greater
+
+387
+00:42:54,840 --> 00:43:01,530
+than i and the value is m which is greater
+than n then I am saying modify this first
+
+388
+00:43:01,530 --> 00:43:04,970
+pattern. Now, the data matching that first
+pattern
+
+389
+00:43:04,969 --> 00:43:10,769
+and change its value attribute to m, which
+is what I have taken from here and modify
+
+390
+00:43:10,769 --> 00:43:13,259
+the
+second pattern and change its value attribute
+
+391
+00:43:13,260 --> 00:43:14,260
+to n essentially.
+
+392
+00:43:14,260 --> 00:43:27,760
+.So, what am I doing here? I am swapping 2
+elements if they satisfy this condition right.
+
+393
+00:43:27,760 --> 00:43:40,110
+Now, this single rule if I let it loose on
+the data then it will end up sorting as the
+
+394
+00:43:40,110 --> 00:43:44,210
+same the
+entire array essentially. So, just think of
+
+395
+00:43:44,210 --> 00:43:48,380
+you have written a algorithm for sorting
+elements. You have looked at all kinds of
+
+396
+00:43:48,380 --> 00:43:51,420
+sorting algorithms and you wrote them.
+.
+
+397
+00:43:51,420 --> 00:43:59,690
+But here is one single rule, this much. And
+this will do the job of sorting for you
+
+398
+00:43:59,690 --> 00:44:05,289
+essentially. It will repeatedly apply the
+rule and we will, we will come to this repetition
+
+399
+00:44:05,289 --> 00:44:11,119
+part in the next class, but it will repeatedly
+apply to, if it is, it is if any 2 elements
+
+400
+00:44:11,119 --> 00:44:14,179
+out of
+place it will swap them essentially and it
+
+401
+00:44:14,179 --> 00:44:17,399
+will keep doing that till this rule matches
+and
+
+402
+00:44:17,400 --> 00:44:22,059
+eventually of course, everything will be in
+place or sorted and then this rule will no
+
+403
+00:44:22,059 --> 00:44:25,869
+longer apply and your array would be sorted
+essentially.
+
+404
+00:44:25,869 --> 00:44:32,100
+So, this also gives you something to think
+about you can write a program. In fact, ops
+
+405
+00:44:32,099 --> 00:44:35,179
+5
+is a complete programming language like any
+
+406
+00:44:35,179 --> 00:44:41,509
+other programming language like prolog
+or c plus, plus or java or python or whatever.
+
+407
+00:44:41,510 --> 00:44:46,330
+And you can write any program in any
+language, but in some languages some programs
+
+408
+00:44:46,329 --> 00:44:50,690
+are simpler to write. So, this program of
+course, is very easy to write, but what can
+
+409
+00:44:50,690 --> 00:44:55,599
+you say about this performance? It will
+depend on so many other things which we will
+
+410
+00:44:55,599 --> 00:44:59,549
+address in the next class.
+So, supposing you have many elements which
+
+411
+00:44:59,550 --> 00:45:06,110
+are out of place. This inference engine
+here has to decide which instance of the rule
+
+412
+00:45:06,110 --> 00:45:14,240
+to execute next and therein of course, lies
+the key to efficiency. If you exchange the
+
+413
+00:45:14,239 --> 00:45:16,739
+correct elements first then you will do things
+
+414
+00:45:16,739 --> 00:45:21,219
+.faster and so on and so forth. But of course,
+there is no way of knowing that here, but
+
+415
+00:45:21,219 --> 00:45:26,069
+it
+is a very simple program to sort in this essentially.
+
+416
+00:45:26,070 --> 00:45:35,430
+So, the idea of rule based systems is that
+somebody sits and write down, writes down
+
+417
+00:45:35,429 --> 00:45:40,099
+this
+rule in this thing and then we give it to
+
+418
+00:45:40,099 --> 00:45:44,710
+an inference engine which basically does the
+inferencing for us. Which means basically
+
+419
+00:45:44,710 --> 00:45:47,220
+it picks a rule, applies it then picks the
+next
+
+420
+00:45:47,219 --> 00:45:51,709
+rule then applies it and keeps doing that
+till it either runs out of rules to apply
+
+421
+00:45:51,710 --> 00:45:54,590
+or it runs
+into something like a halt statement here
+
+422
+00:45:54,590 --> 00:45:59,250
+which we have explicitly given.
+So, maybe if you have a certain goal in mind
+
+423
+00:45:59,250 --> 00:46:02,659
+and if that goal is achieve you will say if
+this goal I can see the goal being achieved
+
+424
+00:46:02,659 --> 00:46:06,379
+then halt essentially. You do not have to
+keep
+
+425
+00:46:06,380 --> 00:46:11,300
+running the program essentially. So, in the
+next class you will look inside this inference
+
+426
+00:46:11,300 --> 00:46:19,910
+engine and it is a very well known algorithm
+which is very popular and has extensive use
+
+427
+00:46:19,909 --> 00:46:26,759
+in the industry for developing these systems.
+So, basically the idea in the industry is
+
+428
+00:46:26,760 --> 00:46:29,590
+that we will write business rules, we will
+say
+
+429
+00:46:29,590 --> 00:46:34,809
+when to give a loan, when to do this, when
+to do that, but your program must do the
+
+430
+00:46:34,809 --> 00:46:39,559
+computations for us. They must, your program
+must accept the rules and find the
+
+431
+00:46:39,559 --> 00:46:46,920
+solutions that we expect the program to produce.
+So, in the next class we will look at
+
+432
+00:46:46,920 --> 00:46:50,530
+inside this inference engine and how it works
+essentially.
+
+433
+00:46:50,530 --> 00:46:54,470
+And we are going to focus on the forward chaining
+inference engine, a backward
+
+434
+00:46:54,469 --> 00:46:57,618
+chaining engine is already you are familiar
+with something called prolog. And we might
+
+435
+00:46:57,619 --> 00:47:02,440
+just look at it a little bit later on in the
+course, but today we will focus on forward
+
+436
+00:47:02,440 --> 00:47:05,289
+chaining essentially. So, I will stop here.
+
+437
+00:47:05,289 --> 00:47:15,289
+.
+

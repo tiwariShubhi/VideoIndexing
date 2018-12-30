@@ -1,0 +1,1342 @@
+﻿1
+00:00:15,570 --> 00:00:26,349
+welcome to module two of database management
+systems in this module we will ah talk primarily
+
+2
+00:00:26,349 --> 00:00:34,640
+about the introduction to the data d b m s
+ah this discussion will span two modules that
+
+3
+00:00:34,640 --> 00:00:44,379
+is the current one module two and the next
+one that is module three ah just to quickly
+
+4
+00:00:44,378 --> 00:00:51,960
+recap in the last module we have discussed
+about why we need databases and we have introduced
+
+5
+00:00:51,960 --> 00:00:58,520
+you to different aspects of the course in
+view of this in this module we would familiarize
+
+6
+00:00:58,520 --> 00:01:05,659
+you with basic notions and terminology of
+a database management system just at an introductory
+
+7
+00:01:05,659 --> 00:01:14,789
+level we will try to understand the role of
+data models and specific languages for database
+
+8
+00:01:14,790 --> 00:01:24,000
+systems and we would also outline the approach
+to database design so the module outline would
+
+9
+00:01:24,000 --> 00:01:33,340
+be like this and ah as we go along you will
+be able to follow which particular aspect
+
+10
+00:01:33,340 --> 00:01:36,670
+of this outline we are discussing about
+
+11
+00:01:36,670 --> 00:01:46,060
+so to start with we talk about levels of abstraction
+a database system like any other system is
+
+12
+00:01:46,060 --> 00:01:55,570
+conceptualized in terms of three levels of
+abstraction and the lower most level is the
+
+13
+00:01:55,569 --> 00:02:01,478
+what we say is a physical data level or the
+physical level which describes how a record
+
+14
+00:02:01,478 --> 00:02:12,699
+is actually stored so thats about the physical
+storage in the system at the next level we
+
+15
+00:02:12,699 --> 00:02:19,659
+talk about it we say it is a logical level
+which describes the data stored in databases
+
+16
+00:02:19,659 --> 00:02:25,769
+and its relationship amongst the data so you
+can any data that is stored you can think
+
+17
+00:02:25,769 --> 00:02:31,579
+about it as a record so if we here we are
+illustrating the record of an instructor who
+
+18
+00:02:31,579 --> 00:02:40,010
+teaches a course so as you know the record
+is a collection of multiple fields ah of different
+
+19
+00:02:40,009 --> 00:02:51,698
+types so here we have field to describe the
+i d identifying number or shrink of an instructor
+
+20
+00:02:51,699 --> 00:02:57,639
+we have the name of the instructor the name
+of the department the salary and so on so
+
+21
+00:02:57,639 --> 00:03:05,040
+this logically says this is the entity this
+is a record or this is the structure of a
+
+22
+00:03:05,039 --> 00:03:08,469
+record that i want at a at a logical way
+
+23
+00:03:08,469 --> 00:03:14,949
+so this call in contrast to the physical level
+logical level is not concerned particularly
+
+24
+00:03:14,949 --> 00:03:21,629
+with how that these data how this string the
+number and all that will be actually stored
+
+25
+00:03:21,629 --> 00:03:26,629
+and how these multiples of hundreds and thousands
+of records will actually be stored so that
+
+26
+00:03:26,629 --> 00:03:31,419
+they can be efficiently used but we are just
+concerned with the logical view that i should
+
+27
+00:03:31,419 --> 00:03:39,349
+be able to deal with records as they are ah
+as a third level which is it can say the topmost
+
+28
+00:03:39,349 --> 00:03:47,069
+level is called the view level where the application
+program tries to view the data and when the
+
+29
+00:03:47,069 --> 00:03:54,900
+application program tries to view the data
+it deals with the the details that it needs
+
+30
+00:03:54,900 --> 00:04:02,001
+to and rest of the details are usually hidden
+from this view for example if here we talked
+
+31
+00:04:02,001 --> 00:04:08,879
+about the university database in the last
+module so if you are talking about the university
+
+32
+00:04:08,879 --> 00:04:14,719
+database and then you are a student and you
+are when you access the database you should
+
+33
+00:04:14,719 --> 00:04:20,620
+be able to see what all courses you are enrolled
+in or where is that course being held who
+
+34
+00:04:20,620 --> 00:04:27,530
+is the instructor of that course and so on
+but you should not be able to access or see
+
+35
+00:04:27,529 --> 00:04:36,119
+the view of what is the instructors salary
+or for that matter what is a ah what are the
+
+36
+00:04:36,120 --> 00:04:43,199
+grades that are obtained to by different students
+in different courses and so on whereas an
+
+37
+00:04:43,199 --> 00:04:51,099
+instructor may be able to view the performance
+of the students in multiple different courses
+
+38
+00:04:51,100 --> 00:04:59,470
+particularly the ones that he or she is involved
+in evaluation and but she again may not be
+
+39
+00:04:59,470 --> 00:05:02,900
+allowed to check the salary of other instructors
+
+40
+00:05:02,899 --> 00:05:11,179
+so view level is is a is a high level where
+of abstraction where you try to ah provide
+
+41
+00:05:11,180 --> 00:05:17,610
+the information about the data in terms of
+what the application needs what the users
+
+42
+00:05:17,610 --> 00:05:25,060
+of that application need but you do not actually
+deal with the details of all the records that
+
+43
+00:05:25,060 --> 00:05:33,100
+the logical level has so these are three levels
+form the basic structure of a database system
+
+44
+00:05:33,100 --> 00:05:38,140
+architecture of a database system as you can
+see the physical level using that a logical
+
+45
+00:05:38,139 --> 00:05:44,019
+level of records are formed physical level
+typically is in terms of database files is
+
+46
+00:05:44,019 --> 00:05:50,079
+binary in nature the organization of those
+files the logical level deals with the records
+
+47
+00:05:50,079 --> 00:05:55,500
+and the different fields of the records the
+schema of the database and so on and the view
+
+48
+00:05:55,500 --> 00:06:02,279
+level is something which is constructed from
+the logical level in terms of different views
+
+49
+00:06:02,279 --> 00:06:08,479
+that the different applications need i am
+i am sure at this stage you may not understand
+
+50
+00:06:08,480 --> 00:06:14,810
+the whole of these levels and their implications
+but this is just to give you an idea of the
+
+51
+00:06:14,810 --> 00:06:19,660
+existence of three levels and the need to
+deal with the three levels and as we go along
+
+52
+00:06:19,660 --> 00:06:25,770
+we will see that we will refer to these levels
+more and more and discuss about the specific
+
+53
+00:06:25,769 --> 00:06:28,899
+aspects of those next
+
+54
+00:06:28,899 --> 00:06:35,060
+let us talk about schema and instance we will
+very regularly keep on referring about schemas
+
+55
+00:06:35,060 --> 00:06:42,579
+an instance the schema is in s in very simple
+terms say if we talk about first a logical
+
+56
+00:06:42,579 --> 00:06:53,349
+schema it is a is a way a certain data ah
+needs to be organized it is a plan for organizing
+
+57
+00:06:53,350 --> 00:07:00,340
+data so if we if you can draw a parallel then
+say when a building is constructed a plan
+
+58
+00:07:00,339 --> 00:07:06,769
+is prepared and according to that plan several
+buildings in a in a say residential complex
+
+59
+00:07:06,769 --> 00:07:12,319
+may be constructed so there is a difference
+between the plan which gives you the layout
+
+60
+00:07:12,319 --> 00:07:16,779
+of where different rooms should be where there
+is a staircase where is the courtier and so
+
+61
+00:07:16,779 --> 00:07:24,609
+on and the actual building when or the group
+of buildings which are constructed so the
+
+62
+00:07:24,610 --> 00:07:31,501
+schema primarily talks about what is the plan
+to organize the data so if we talk about a
+
+63
+00:07:31,500 --> 00:07:36,009
+customer schema it has multiple different
+fields it should talk about the name of the
+
+64
+00:07:36,009 --> 00:07:42,449
+customer i d of the customer its account possibly
+the other i d the mobile number and so on
+
+65
+00:07:42,449 --> 00:07:51,240
+so the fact that these the fields need to
+be ah need to be present for describing a
+
+66
+00:07:51,240 --> 00:07:58,290
+customer forms a customer schema whereas when
+we talk about a specific schema of account
+
+67
+00:07:58,290 --> 00:08:03,560
+ah that the customer holds with a bank ah
+then we need the account number account type
+
+68
+00:08:03,560 --> 00:08:08,040
+interest rate minimum balance the current
+balance and so on these are the fields of
+
+69
+00:08:08,040 --> 00:08:13,060
+information that we need and we need to know
+what is the type of every such field and all
+
+70
+00:08:13,060 --> 00:08:20,209
+those and those kind of information from the
+schema information and again ah in line with
+
+71
+00:08:20,209 --> 00:08:29,579
+the abstractions of physical logical and view
+as we did schema also can be at a logical
+
+72
+00:08:29,579 --> 00:08:37,059
+schema which is corresponding to the logical
+level of abstraction and we may also have
+
+73
+00:08:37,059 --> 00:08:44,179
+a physical schema which tells actually how
+the data is ah physically organized in the
+
+74
+00:08:44,179 --> 00:08:48,500
+database what are the different database files
+how they are indexed and so on
+
+75
+00:08:48,500 --> 00:08:53,480
+so all these information which we can say
+is kind of a metadata information these are
+
+76
+00:08:53,480 --> 00:08:59,070
+this is not actually that it is not the customer
+schema is not saying who the customers are
+
+77
+00:08:59,070 --> 00:09:02,950
+the account schema is not saying what are
+the accounts what is their balance but it
+
+78
+00:09:02,950 --> 00:09:08,360
+is saying that if a customer needs to be defined
+then what is the information that you need
+
+79
+00:09:08,360 --> 00:09:13,889
+to know what is the information that you need
+to manage if an account need to be described
+
+80
+00:09:13,889 --> 00:09:21,259
+then what is the different fields that are
+important so this schematic or this metadata
+
+81
+00:09:21,259 --> 00:09:28,990
+is called the schema of a database now based
+on this schema specific instances of databases
+
+82
+00:09:28,990 --> 00:09:38,120
+happen instances when you actually have populated
+different records according to the schema
+
+83
+00:09:38,120 --> 00:09:45,080
+now naturally once the schema is fixed your
+records will need to have values in all of
+
+84
+00:09:45,080 --> 00:09:52,450
+those fields that the schema has and every
+value must be of the type that the particular
+
+85
+00:09:52,450 --> 00:10:01,100
+field is specified with so i have just shown
+here certain sample instance of customer schema
+
+86
+00:10:01,100 --> 00:10:05,610
+where you can see three customers with their
+name customer i d account number other i d
+
+87
+00:10:05,610 --> 00:10:10,610
+and mobile number these are all fictitious
+data of course but this is just to give you
+
+88
+00:10:10,610 --> 00:10:16,129
+an idea of how this customer instance would
+look like similarly we have shown what is
+
+89
+00:10:16,129 --> 00:10:23,210
+a accounts instance so you can see that there
+is a ah some kind of a relationship that you
+
+90
+00:10:23,210 --> 00:10:29,200
+can see between these instances for example
+the first customer i d ah on the customer
+
+91
+00:10:29,200 --> 00:10:37,300
+instance can be seen as a first i am sorry
+the first account i d in the customer instance
+
+92
+00:10:37,299 --> 00:10:44,409
+can be seen as a first entry first record
+in the account instance and so on
+
+93
+00:10:44,409 --> 00:10:52,789
+so the when we actually populate the schema
+with different records and this is what keeps
+
+94
+00:10:52,789 --> 00:10:59,849
+on changing so certainly when we do operations
+on the database then certainly very regularly
+
+95
+00:10:59,850 --> 00:11:06,190
+new records will get added some records might
+get deleted from this instance and fields
+
+96
+00:11:06,190 --> 00:11:11,640
+of certain records may keep on changing for
+example in an accounts instance very regularly
+
+97
+00:11:11,639 --> 00:11:17,929
+whenever a transaction is done the account
+balance will get changed maybe at a certain
+
+98
+00:11:17,929 --> 00:11:22,989
+time the bank might decide to change the interest
+rate for a certain type of account then the
+
+99
+00:11:22,990 --> 00:11:28,840
+interest rate field will get changed new customers
+may come into the customer instance and so
+
+100
+00:11:28,840 --> 00:11:38,649
+on so instances keep on regularly being updated
+manipulated added deleted updated but the
+
+101
+00:11:38,649 --> 00:11:45,059
+schema remains unchanged so change of the
+schema is very rare in a database and needs
+
+102
+00:11:45,059 --> 00:11:52,059
+to be done only when the database is designed
+or when it is being upgraded because once
+
+103
+00:11:52,059 --> 00:11:57,028
+you change the schema it changes the way you
+look at the whole world you look at the whole
+
+104
+00:11:57,028 --> 00:12:02,870
+database scenario so if you are changing the
+schema at a at a logical level then naturally
+
+105
+00:12:02,870 --> 00:12:10,549
+the ah your view will also get affected because
+you are using this these a schemas to decide
+
+106
+00:12:10,549 --> 00:12:17,569
+how you would like to ah present a transaction
+application to the user or for a balance check
+
+107
+00:12:17,570 --> 00:12:26,490
+application to the user and so on but of course
+what do you would want is between the ah physical
+
+108
+00:12:26,490 --> 00:12:34,778
+schema and the logical schema we normally
+would want certain independence what it means
+
+109
+00:12:34,778 --> 00:12:42,208
+is the logical schema is what you need to
+deal with because it is linked with the ah
+
+110
+00:12:42,208 --> 00:12:48,088
+view that you have at a higher level of abstraction
+on the other end the logical schema is based
+
+111
+00:12:48,089 --> 00:12:53,990
+on the physical schema physical schema is
+how you are actually organizing the information
+
+112
+00:12:53,990 --> 00:12:57,980
+in the in terms of the binary files the database
+files
+
+113
+00:12:57,980 --> 00:13:07,959
+now certainly you want that that logical ah
+um ah schema not to change because if it changes
+
+114
+00:13:07,958 --> 00:13:13,809
+then at a view level all your applications
+will have to change but it is quite possible
+
+115
+00:13:13,809 --> 00:13:19,329
+that your physical schema the way you have
+organizing files and so on might need a change
+
+116
+00:13:19,330 --> 00:13:24,900
+because maybe it is just that you had designed
+the database for ten thousand records and
+
+117
+00:13:24,899 --> 00:13:31,539
+you already have nine thousand records and
+you would like to expand it to maybe hundred
+
+118
+00:13:31,539 --> 00:13:39,649
+thousand records and the physical this system
+needs to be ah different you you may need
+
+119
+00:13:39,649 --> 00:13:44,809
+to reorganize the files and so on you may
+need to index it in a different way and all
+
+120
+00:13:44,809 --> 00:13:51,409
+this but you would like to do that change
+in the physical level without requiring any
+
+121
+00:13:51,409 --> 00:14:00,588
+change at a logical schema so this property
+of a database schema is very required which
+
+122
+00:14:00,589 --> 00:14:06,649
+we say is a physical data independence or
+the ability to change the physical schema
+
+123
+00:14:06,649 --> 00:14:11,659
+without actually affecting the logical schema
+or the view level so that will be a critical
+
+124
+00:14:11,659 --> 00:14:24,019
+factor that will have to keep in mind so next
+is ah data models so um ah data models are
+
+125
+00:14:24,019 --> 00:14:28,789
+a collection of tools that describe the data
+because we are talking about a database system
+
+126
+00:14:28,789 --> 00:14:34,919
+so certainly the main focus here is to be
+able to model that it to be able to represent
+
+127
+00:14:34,919 --> 00:14:40,349
+the data so that talks about relationships
+between data it talks about the meaning of
+
+128
+00:14:40,350 --> 00:14:45,970
+the data the data semantics it talks about
+data constraints for example it is a account
+
+129
+00:14:45,970 --> 00:14:51,509
+balance ah we just refer to account balance
+in the account schema in the instance
+
+130
+00:14:51,509 --> 00:14:59,778
+now the question is will can the account balance
+be negative the answer is yes or no if the
+
+131
+00:14:59,778 --> 00:15:10,399
+bank mandate that i can only withdraw as much
+money up to which i have deposited then account
+
+132
+00:15:10,399 --> 00:15:19,539
+balance cannot be negative but if the bank
+is giving me the facility to overdraft then
+
+133
+00:15:19,539 --> 00:15:24,240
+i may be able to draw more money than i have
+actually deposited so my account balance might
+
+134
+00:15:24,240 --> 00:15:29,860
+note negative in some banks it could be that
+the bank says that well there is a minimum
+
+135
+00:15:29,860 --> 00:15:35,360
+balance so minimum balance is five thousand
+so which means that my account balance cannot
+
+136
+00:15:35,360 --> 00:15:40,028
+go below five thousand rupees the bank will
+not allow those transactions so these are
+
+137
+00:15:40,028 --> 00:15:47,078
+examples of different constraints that might
+exist in the real world and therefore will
+
+138
+00:15:47,078 --> 00:15:54,588
+be required in terms of the data model representation
+so there are several data models that exist
+
+139
+00:15:54,589 --> 00:16:03,890
+today ah the most widely used the most popular
+and most powerful in terms of a certain section
+
+140
+00:16:03,889 --> 00:16:09,838
+of database applications which we are we are
+commonly interested in is a relational model
+
+141
+00:16:09,839 --> 00:16:14,399
+and that is what we focus in this course we
+will have a major discourse in terms of the
+
+142
+00:16:14,399 --> 00:16:20,278
+relational model and a lot of things will
+be developed based on that but it is not easy
+
+143
+00:16:20,278 --> 00:16:27,740
+to directly design a database in terms of
+the relational model because you first need
+
+144
+00:16:27,740 --> 00:16:33,129
+to understand the real world ah in which the
+design is happening
+
+145
+00:16:33,129 --> 00:16:41,278
+so we normally start with a less formal model
+known as the entity relationship data model
+
+146
+00:16:41,278 --> 00:16:49,789
+or an e r model e r diagram these are commonly
+called so ah if you recall your knowledge
+
+147
+00:16:49,789 --> 00:16:56,349
+about object oriented systems and if you happen
+to know u m l you already know about e r models
+
+148
+00:16:56,350 --> 00:17:02,490
+and corresponding class diagrams that that
+result so we will talk briefly about your
+
+149
+00:17:02,490 --> 00:17:08,509
+model and show you how to do modelling on
+the real world in terms of the ah yeah diagrams
+
+150
+00:17:08,509 --> 00:17:14,308
+but then they are not actually models which
+the database systems directly used they are
+
+151
+00:17:14,308 --> 00:17:19,398
+subsequently converted to some relational
+or other model and which the database systems
+
+152
+00:17:19,398 --> 00:17:26,708
+will use next is a object based data models
+you all would be knowing familiar with the
+
+153
+00:17:26,709 --> 00:17:34,259
+fact that ah objects give a better power to
+represent the system which objects are not
+
+154
+00:17:34,259 --> 00:17:44,819
+like simple strings or numbers or characters
+like that they are encapsulated concept of
+
+155
+00:17:44,819 --> 00:17:52,138
+an entity which can be manipulated in a certain
+way so like in the real world you have several
+
+156
+00:17:52,138 --> 00:17:57,709
+objects it would have been nice to have similar
+objects in the databases so ah quite a few
+
+157
+00:17:57,710 --> 00:18:04,190
+database system have been designed used which
+are object based database systems so there
+
+158
+00:18:04,190 --> 00:18:10,139
+are models for those however we will do little
+of that in this course because it is little
+
+159
+00:18:10,138 --> 00:18:16,829
+bit advanced in notion the other model which
+has become very popular is called the semi
+
+160
+00:18:16,829 --> 00:18:23,678
+structured data model it is primarily in terms
+of x m l um i am sure all of you would be
+
+161
+00:18:23,679 --> 00:18:30,401
+familiar with the basics of x m l which is
+extensible mark up language in which you can
+
+162
+00:18:30,401 --> 00:18:37,058
+create use tags and use different mark ups
+to describe the data you can say this is the
+
+163
+00:18:37,058 --> 00:18:43,639
+field and this is the value kind of and this
+is become a very nice way to represent the
+
+164
+00:18:43,640 --> 00:18:49,070
+data and x m l or the semi structured models
+are particularly useful today to exchange
+
+165
+00:18:49,069 --> 00:18:56,960
+data between different systems i may be ah
+using a my s q l kind of database system my
+
+166
+00:18:56,960 --> 00:19:03,308
+friend may be using an oracle system and we
+need to exchange data tables between these
+
+167
+00:19:03,308 --> 00:19:11,428
+two ah these two systems will represent the
+data in the in physical schema which are not
+
+168
+00:19:11,429 --> 00:19:12,929
+may not be compatible
+
+169
+00:19:12,929 --> 00:19:18,350
+so we can represent both of them in terms
+of x m l models convert the data so i convert
+
+170
+00:19:18,349 --> 00:19:24,469
+the data into x m l give it to my friend and
+my friend can import from that x m l into
+
+171
+00:19:24,470 --> 00:19:30,028
+the database so it is a x m l is a data model
+which is frequently used in terms of data
+
+172
+00:19:30,028 --> 00:19:35,940
+exchanges then there are several other models
+like the network model hierarchical model
+
+173
+00:19:35,940 --> 00:19:40,879
+which used to be very popular in the early
+days of database systems before relational
+
+174
+00:19:40,878 --> 00:19:47,738
+model came into force ah they are they still
+exist in terms of the some of the databases
+
+175
+00:19:47,739 --> 00:19:54,850
+and some of the newer emerging big data databases
+actually we have started using this old concept
+
+176
+00:19:54,849 --> 00:20:00,778
+in a new way again so this is a overall set
+of data model so here i am just showing an
+
+177
+00:20:00,778 --> 00:20:07,179
+example of a relational model data which is
+simply looks like a table so you can see that
+
+178
+00:20:07,179 --> 00:20:14,169
+on top row in the blue e are the names of
+the different fields which describe the schema
+
+179
+00:20:14,169 --> 00:20:19,249
+it says that it has an i d it has a name it
+has a departments name it has salary they
+
+180
+00:20:19,249 --> 00:20:26,379
+are trying to describe a a particular instructor
+and then a whole lot of records rows in that
+
+181
+00:20:26,378 --> 00:20:33,369
+table which are every row individually is
+a particular ah data entry or a record so
+
+182
+00:20:33,369 --> 00:20:40,840
+columns are attributes and rows are records
+that the relational model described ah some
+
+183
+00:20:40,840 --> 00:20:47,689
+more of that the instructor table along with
+the department table so the table below describes
+
+184
+00:20:47,690 --> 00:20:49,239
+details of a department
+
+185
+00:20:49,239 --> 00:20:55,490
+so that has its own schema and the individual
+records we have of course in similar instances
+
+186
+00:20:55,490 --> 00:21:02,499
+already in terms of the customer and accounts
+instance that we have just discussed a couple
+
+187
+00:21:02,499 --> 00:21:12,108
+of while ago ah let me introduce these two
+terms d d l and d m l d d l talks about data
+
+188
+00:21:12,108 --> 00:21:16,888
+definition language so what the concept were
+is what we are trying to say is certainly
+
+189
+00:21:16,888 --> 00:21:25,158
+we have a schema and we have instance so we
+need certain language constructs to be able
+
+190
+00:21:25,159 --> 00:21:30,940
+to define a schema and certain other language
+constructs to be able to manipulate the data
+
+191
+00:21:30,940 --> 00:21:37,080
+in that schema or they are basically manipulate
+the instances so d d l is the language or
+
+192
+00:21:37,079 --> 00:21:46,009
+part of the language which is used to define
+and manipulate the schema of a database that
+
+193
+00:21:46,009 --> 00:21:51,579
+is why schema is is a way to define a database
+so it is called a data definition language
+
+194
+00:21:51,579 --> 00:21:57,859
+so you can define that i have i will am going
+to have a table ah called instructor which
+
+195
+00:21:57,859 --> 00:22:03,589
+will have four different fields each having
+certain types of data so it says that the
+
+196
+00:22:03,589 --> 00:22:09,379
+i t will be a i d will be a five character
+data the name would we would have a variable
+
+197
+00:22:09,380 --> 00:22:14,350
+length because you cannot say that the name
+will be of a fixed length but it will be a
+
+198
+00:22:14,349 --> 00:22:21,199
+variable length that is what varchar is but
+the length will not exceed twenty and similarly
+
+199
+00:22:21,200 --> 00:22:29,048
+salary will be a numeric data with up going
+up to eight figures and having a ah decimal
+
+200
+00:22:29,048 --> 00:22:30,479
+part having two parts
+
+201
+00:22:30,479 --> 00:22:37,379
+so this way of defining the schema in terms
+of the different attributes and their types
+
+202
+00:22:37,378 --> 00:22:43,319
+or columns in the table or trying to define
+the structure of that table is a main issue
+
+203
+00:22:43,319 --> 00:22:50,638
+of the data definition language so the data
+definition language compiler who generates
+
+204
+00:22:50,638 --> 00:22:57,589
+a set of tables in the data dictionary where
+the data dictionary ah basically contains
+
+205
+00:22:57,589 --> 00:23:04,069
+metadata as i said the schema is is nothing
+but a metadata about the database tables so
+
+206
+00:23:04,069 --> 00:23:09,109
+which will have the database schema it will
+have different integrity constraints it could
+
+207
+00:23:09,109 --> 00:23:13,888
+say that well ah the account balance cannot
+be negative or account balance cannot be less
+
+208
+00:23:13,888 --> 00:23:18,579
+than the minimum balance so these are different
+integrity constraints it could say that this
+
+209
+00:23:18,579 --> 00:23:24,788
+is the primary key we will talk more in more
+depth in terms of what is key and it could
+
+210
+00:23:24,788 --> 00:23:29,989
+also specify the authorization as to who is
+allowed to access which part of the data and
+
+211
+00:23:29,989 --> 00:23:38,220
+so on that is these all are part of the schema
+definition and forms the d d l of the language
+
+212
+00:23:38,220 --> 00:23:42,739
+in contrast the data manipulation language
+is a language for accessing and manipulating
+
+213
+00:23:42,739 --> 00:23:50,100
+the data organized so it is for access update
+addition of new records deletion of existing
+
+214
+00:23:50,099 --> 00:23:55,788
+records and so on and very commonly we will
+refer to the data manipulation language as
+
+215
+00:23:55,788 --> 00:24:02,158
+a query language because this is what you
+want to know what exists in the database so
+
+216
+00:24:02,159 --> 00:24:07,269
+the query language will be designed they are
+designed primarily in in one of the two ways
+
+217
+00:24:07,269 --> 00:24:11,919
+one group of languages is known as a pure
+language they are more mathematical in nature
+
+218
+00:24:11,919 --> 00:24:17,970
+they have a formal basis that can you can
+prove that whatever do you do in these languages
+
+219
+00:24:17,970 --> 00:24:20,440
+are correct and will give you the correct
+result
+
+220
+00:24:20,440 --> 00:24:27,330
+so they are different ah languages based on
+the relational model they are called relational
+
+221
+00:24:27,329 --> 00:24:33,939
+algebra tuple relational calculus domain relational
+calculus and so on of these three we will
+
+222
+00:24:33,940 --> 00:24:39,320
+in this course deal only with relational algebra
+there are mathematical proof which show that
+
+223
+00:24:39,319 --> 00:24:43,358
+whatever you can do in relational algebra
+you can do it in tuple relational calculus
+
+224
+00:24:43,358 --> 00:24:47,949
+and vice versa similarly whatever you can
+do in relational algebra you can do in domain
+
+225
+00:24:47,950 --> 00:24:53,090
+relational calculations one in one sense that
+these languages are equally powerful the same
+
+226
+00:24:53,089 --> 00:24:58,499
+thing can be done in any one of them but we
+will just take the simplest of them and study
+
+227
+00:24:58,499 --> 00:25:04,419
+here in terms of the relational algebra but
+these are more mathematical representations
+
+228
+00:25:04,419 --> 00:25:11,220
+are not easy to write as a program so normally
+we will use certain commercial query language
+
+229
+00:25:11,220 --> 00:25:19,979
+which is called s q l for most of our applications
+and we will do the coding in that so s q l
+
+230
+00:25:19,979 --> 00:25:28,159
+which is a most widely used commercial language
+and mind you this is not a turing equivalent
+
+231
+00:25:28,159 --> 00:25:33,440
+language which means that everything that
+can be that need to be computed cannot be
+
+232
+00:25:33,440 --> 00:25:39,129
+computed in s q l there are certain computations
+which s q l cannot do ah it is a limitation
+
+233
+00:25:39,128 --> 00:25:45,219
+is a restricted language so of an s q l is
+used in conjunction with some common high
+
+234
+00:25:45,220 --> 00:25:49,368
+level programming language like c or c plus
+plus and so on
+
+235
+00:25:49,368 --> 00:25:54,618
+so whatever is there can be done in s q l
+in terms of data manipulation will be done
+
+236
+00:25:54,618 --> 00:25:59,569
+in terms of the relational model but there
+could be additional logic that needs to be
+
+237
+00:25:59,569 --> 00:26:05,970
+built in in terms of the ah high level language
+so application programs are typically written
+
+238
+00:26:05,970 --> 00:26:11,829
+through them so we can do this through a process
+of embedding that is put in s q l as a part
+
+239
+00:26:11,829 --> 00:26:21,888
+of a c program or use certain ah libraries
+which can actually take a query from c and
+
+240
+00:26:21,888 --> 00:26:29,548
+fire it on the s q l database so we will see
+how to do this in in the course of time ah
+
+241
+00:26:29,548 --> 00:26:35,710
+coming to the database design aspect ah the
+this is a process through which the databases
+
+242
+00:26:35,710 --> 00:26:42,120
+need to be designed and certainly the first
+part of the design is the logical design where
+
+243
+00:26:42,119 --> 00:26:47,069
+you want you need to identify what are the
+schemas and you know what are the constraints
+
+244
+00:26:47,069 --> 00:26:53,569
+that apply what is authorization required
+and first set of decisions those are related
+
+245
+00:26:53,569 --> 00:26:58,339
+to the business as we say business means it
+is basically comes from the domain so it is
+
+246
+00:26:58,339 --> 00:27:02,769
+if i am doing a university database the business
+decisions will come in terms of you know i
+
+247
+00:27:02,769 --> 00:27:08,048
+have courses students instructors and the
+instructor teach courses can an instructor
+
+248
+00:27:08,048 --> 00:27:13,249
+teach multiple courses can a course be taught
+by multiple instructors these kind of business
+
+249
+00:27:13,249 --> 00:27:18,558
+decisions are are critical for the database
+design and then there is a whole set of computer
+
+250
+00:27:18,558 --> 00:27:24,148
+science decision or the data based decisions
+ah to decide as to if this is the kind of
+
+251
+00:27:24,148 --> 00:27:29,598
+business information that you want to keep
+in the database then what is the kind of relation
+
+252
+00:27:29,598 --> 00:27:33,769
+what is the kind of schemas that we should
+use what are should be the attributes which
+
+253
+00:27:33,769 --> 00:27:38,999
+attribute should be of what type what should
+be strain what should be numbers and so on
+
+254
+00:27:38,999 --> 00:27:45,538
+so these are formed the basis of the physical
+logical design and of course we then need
+
+255
+00:27:45,538 --> 00:27:50,908
+a physical design which decides on the physical
+layout of the data what are the different
+
+256
+00:27:50,909 --> 00:27:58,519
+database files how they should be indexed
+and so on so here we are showing an example
+
+257
+00:27:58,519 --> 00:28:04,710
+table so it has multiple fields it shows the
+instructors expanded form of the instructor
+
+258
+00:28:04,710 --> 00:28:09,348
+table you saw earlier it is expanded with
+the departments name and the building in which
+
+259
+00:28:09,348 --> 00:28:18,798
+it is housed so if you look carefully that
+this is this certainly comes from the business
+
+260
+00:28:18,798 --> 00:28:23,298
+decision that you need to know the department
+to which an instructor belongs and certainly
+
+261
+00:28:23,298 --> 00:28:29,950
+you need to know the building in which that
+that department exists so knowing the department
+
+262
+00:28:29,950 --> 00:28:34,629
+of the instructor and the building of where
+that department is are critical but the question
+
+263
+00:28:34,628 --> 00:28:39,839
+is is this a good design is this so we will
+discuss as to when why this is a good this
+
+264
+00:28:39,839 --> 00:28:47,428
+may not be a good design to represent the
+data so in this module we have taken you through
+
+265
+00:28:47,429 --> 00:28:54,809
+the basic notions and terminology of database
+management systems highlighting primarily
+
+266
+00:28:54,808 --> 00:29:02,579
+the levels of abstraction the schema an instance
+the basic data models the languages that you
+
+267
+00:29:02,579 --> 00:29:09,699
+need d d l d m l and the commercial s q l
+language and we have also tried to give you
+
+268
+00:29:09,700 --> 00:29:15,269
+a glimpse of the approach that is required
+in terms of the database design will elaborate
+
+269
+00:29:15,269 --> 00:29:22,808
+on this more in the second part of our introduction
+to d b m s which will be taken up in module
+
+270
+00:29:22,808 --> 00:29:23,019
+three
+

@@ -1,0 +1,1184 @@
+﻿1
+00:00:13,519 --> 00:00:16,969
+.
+Welcome to module 25 of Database Management
+
+2
+00:00:16,969 --> 00:00:21,500
+Systems. ah We have been discussing about
+storage and file structure.
+
+3
+00:00:21,500 --> 00:00:26,868
+Ah In the last module we have ah talked about
+different storage options.
+
+4
+00:00:26,868 --> 00:00:32,700
+And in this one we will talk about the; ah
+organization of database files, what should
+
+5
+00:00:32,700 --> 00:00:38,030
+be the typical structure to store the records
+in the files. And how the overall database
+
+6
+00:00:38,030 --> 00:00:41,789
+which manage itself we will talk about those
+issues.
+
+7
+00:00:41,789 --> 00:00:48,329
+So, the file organization; so if you look
+at a database; what is the database? It is
+
+8
+00:00:48,329 --> 00:00:53,530
+a collection of relations.
+So, it is a collection of files every relation
+
+9
+00:00:53,530 --> 00:01:00,539
+is a file. Now, what is a file? A file is
+a sequence of records, and what is a record?
+
+10
+00:01:00,539 --> 00:01:05,780
+It is a sequence of fields. So, this is the
+hierarchy that exists and this will have to
+
+11
+00:01:05,780 --> 00:01:11,049
+be kept in mind, when we ah design the organization
+of how we keep this data.
+
+12
+00:01:11,049 --> 00:01:15,509
+Now, one starting approach could be we can
+assume that all records are of fixed size
+
+13
+00:01:15,509 --> 00:01:22,219
+which makes a life easier and ah each file
+has records of only one type again a simplifying
+
+14
+00:01:22,219 --> 00:01:27,618
+assumption and different files are used for
+different relations. So, this is a easiest
+
+15
+00:01:27,618 --> 00:01:31,978
+case to implement.
+So, we will start with that; so this is what
+
+16
+00:01:31,978 --> 00:01:38,099
+we have we store these are fixed size records.
+So, we store them one after the other and
+
+17
+00:01:38,099 --> 00:01:43,458
+based on the ah fixed size, we can easily
+know what is the starting address of any record
+
+18
+00:01:43,459 --> 00:01:49,069
+and we can access it accordingly. Now, if
+a if a record is deleted, then there are several
+
+19
+00:01:49,069 --> 00:01:54,789
+things that I can do see that this is a different
+alternatives, that is if I record delete ah
+
+20
+00:01:54,789 --> 00:02:02,998
+record I then. So, if we delete any record
+then ah we can actually move the records.
+
+21
+00:02:02,998 --> 00:02:09,221
+So, that ah we consume that space or we can
+take the last record and move it there or
+
+22
+00:02:09,221 --> 00:02:17,270
+we can simply do not do any move, but use
+an some additional pointers to ah denote that
+
+23
+00:02:17,270 --> 00:02:21,090
+these records have become free rather give
+it to a free list.
+
+24
+00:02:21,090 --> 00:02:27,750
+So, these are the three main strategies. So,
+here we showing the the first one the record
+
+25
+00:02:27,750 --> 00:02:34,830
+three has been removed. So, all records have
+moved up in this it is we have move the last
+
+26
+00:02:34,830 --> 00:02:39,500
+record record 11 in the place of record 3.
+So, record 3 is gone, but still the whole
+
+27
+00:02:39,500 --> 00:02:46,360
+thing reminds ah compact ah only ah the point
+that must be noted that in the earlier one,
+
+28
+00:02:46,360 --> 00:02:53,760
+where well we moved everything then the ordering
+that ah existed here of this key of this key
+
+29
+00:02:53,759 --> 00:02:59,689
+field ah is maintained, but if we move the
+last record the naturally that ordering has
+
+30
+00:02:59,689 --> 00:03:05,400
+got ah destroyed. So, it will have implications
+in terms of ah indexed organization that will
+
+31
+00:03:05,400 --> 00:03:11,250
+cover in the next ah modules.
+ah The third option could be use a free list,
+
+32
+00:03:11,250 --> 00:03:17,090
+which is a nice one because ah you would you
+do not neither ah here neither you destroy
+
+33
+00:03:17,090 --> 00:03:22,659
+the the order that existed and no one have
+to really move records which is expensive,
+
+34
+00:03:22,659 --> 00:03:28,819
+but you just start ah with a pointer and keep
+on pointing to the empty records.
+
+35
+00:03:28,819 --> 00:03:35,840
+And ah once you delete it you use that space
+itself to point to the next ah deleted record.
+
+36
+00:03:35,840 --> 00:03:41,830
+So, whenever you have to ah you know delete
+a record all that you need to do is adjust
+
+37
+00:03:41,830 --> 00:03:47,850
+this point. So, which is pretty fast and quite
+efficient way of ah getting this ah linked
+
+38
+00:03:47,849 --> 00:03:54,180
+together in terms of ah; so there is ah as
+such no space over it and it is a fastest
+
+39
+00:03:54,180 --> 00:03:59,319
+possible that you can do now in contest to
+fix length record.
+
+40
+00:03:59,318 --> 00:04:04,489
+If the record becomes variable length, ah
+then ah ah certainly every record may of very
+
+41
+00:04:04,490 --> 00:04:09,010
+different size and and it is very common for
+example, ah we have types like varchar a lot
+
+42
+00:04:09,009 --> 00:04:14,729
+of strings are are varchar. So, we just we
+do not know ah how much ah it will take. So,
+
+43
+00:04:14,729 --> 00:04:22,339
+the typical way you represent that ah is a
+you represent ah as to; what is a starting
+
+44
+00:04:22,339 --> 00:04:29,029
+pointer of a particular ah of the actual value
+and the size of the value the number of bytes
+
+45
+00:04:29,029 --> 00:04:35,489
+it will take. So, when we say twenty one five
+which we mean that ah this field will actually
+
+46
+00:04:35,490 --> 00:04:43,590
+start from location 21 and we will have 5
+locations 5 bytes, then the next 1 is ah 26,
+
+47
+00:04:43,589 --> 00:04:47,128
+10.
+So, this will start to 26 and go for 10 such;
+
+48
+00:04:47,129 --> 00:04:53,210
+so what happens is; if you look into this
+part ah of the data, then ah that part is
+
+49
+00:04:53,209 --> 00:04:58,718
+actually for all practical purposes the fix
+length 1, because here you are just keeping
+
+50
+00:04:58,718 --> 00:05:05,139
+ah double x for the variable length data or
+you have some field which is a ah which is
+
+51
+00:05:05,139 --> 00:05:10,370
+a fixed ah length data anyway or you have
+a null which is ah stored in one byte, and
+
+52
+00:05:10,370 --> 00:05:15,319
+then you have all the variable stuff at at
+one end. So, you can actually make part of
+
+53
+00:05:15,319 --> 00:05:23,330
+this fixed length by using this kind of encoding.
+So, this is ah what is explained here.
+
+54
+00:05:23,329 --> 00:05:29,620
+So, for variable length records a ah one ah
+main issue is if you if you keep it like this,
+
+55
+00:05:29,620 --> 00:05:34,550
+then since you are using actually you are
+using pointers here we saying that this data
+
+56
+00:05:34,550 --> 00:05:40,150
+actually is on 21. So, what will happen is
+if you change ah the position of the record
+
+57
+00:05:40,149 --> 00:05:45,188
+ah if you relocate the record, then all these
+references will have to be updated. So, that
+
+58
+00:05:45,189 --> 00:05:53,129
+becomes a slotted thing. So, what the slotted
+page ah ah structure does is it does a a [li/little]
+
+59
+00:05:53,129 --> 00:06:01,158
+little bit of adjustment it ah ports ah a
+a puts a records here at the at the end.
+
+60
+00:06:01,158 --> 00:06:07,418
+And it has a header it has a. So, it has a
+block header as in here and the block header
+
+61
+00:06:07,418 --> 00:06:15,810
+has actually pointers to the records and ah
+then you have a an entry which ah points to
+
+62
+00:06:15,810 --> 00:06:22,370
+the end of the free space where more records
+can still be stored. So, when ah ah you refer
+
+63
+00:06:22,370 --> 00:06:28,069
+to a particular record you do not actually
+refer here. So, you do not refer here, but
+
+64
+00:06:28,069 --> 00:06:35,990
+you refer here. So, what you maintain is the
+header is actually not changed, but if there
+
+65
+00:06:35,990 --> 00:06:40,949
+are relocations required adjustments required,
+then that will be done ah with respect to
+
+66
+00:06:40,949 --> 00:06:46,978
+this and ah so, this value will change, but
+any references made to this location will
+
+67
+00:06:46,978 --> 00:06:53,589
+remain invariant . So, that is the ah that
+is the basic idea of the ah slotted page ah
+
+68
+00:06:53,589 --> 00:07:00,008
+structure, which can allow you to have ah
+the variable length record with easy re locatability
+
+69
+00:07:00,009 --> 00:07:04,360
+in the design.
+Now, let us see the ah given this ah what
+
+70
+00:07:04,360 --> 00:07:07,819
+is the organization of the records in the
+file.
+
+71
+00:07:07,819 --> 00:07:14,289
+So, there are ah different ah ah organizations
+that have been tried out ah the simplest is
+
+72
+00:07:14,288 --> 00:07:18,128
+the heap is a record can be placed anywhere
+in the file where there is space. And you
+
+73
+00:07:18,129 --> 00:07:23,139
+can link to that ah that is that is one way
+certainly there is nothing ah very smart in
+
+74
+00:07:23,139 --> 00:07:28,800
+terms of doing that ah, but you can you would
+possibly like to do better than that. So,
+
+75
+00:07:28,800 --> 00:07:35,848
+one is you can store the; ah records in a
+sequential manner let us store records in
+
+76
+00:07:35,848 --> 00:07:39,360
+in a sequential order in terms of certain
+ah search key.
+
+77
+00:07:39,360 --> 00:07:43,129
+So, based on the value of the search key you
+put them in the sequential orders. So, what
+
+78
+00:07:43,129 --> 00:07:48,569
+ah it will mean that it will become easier
+to search ah the records in that way, but
+
+79
+00:07:48,569 --> 00:07:54,689
+it has consequences or you can hash you can
+use a hash function on a some of the attributes
+
+80
+00:07:54,689 --> 00:08:00,399
+of the record and the results specified on
+which block ah which disk block the record
+
+81
+00:08:00,399 --> 00:08:05,658
+will be placed. So, these are the different
+option and a records of which relation may
+
+82
+00:08:05,658 --> 00:08:11,009
+be stored in a separate file that is a basic
+convention, but in some cases there could
+
+83
+00:08:11,009 --> 00:08:16,139
+be multi table clustering as well.
+So, let us quickly take a look at ah these
+
+84
+00:08:16,139 --> 00:08:20,418
+options.
+So, these a sequential ah file organizations.
+
+85
+00:08:20,418 --> 00:08:27,049
+So, these things are kept ah sequentially
+here as you can see there all consequentially
+
+86
+00:08:27,050 --> 00:08:30,210
+here and ah this is the link key of those
+.
+
+87
+00:08:30,209 --> 00:08:41,449
+So, this is ah the issues of ah deletion and
+if you delete you use ah pointer chains. As
+
+88
+00:08:41,450 --> 00:08:46,460
+you have ah we have discussed earlier, and
+if you have to insert then you look for a
+
+89
+00:08:46,460 --> 00:08:52,560
+free space, if you find a free space you can
+put it ah ah there you insert it there if
+
+90
+00:08:52,559 --> 00:08:57,239
+there is no free space then you have to use
+a overflow block, where you can go and place
+
+91
+00:08:57,240 --> 00:09:05,500
+that separately as the dilemma shows here;
+in a multi table ah clustering what you would
+
+92
+00:09:05,500 --> 00:09:10,490
+ah do is ah more than one relation could be
+kept in the same file.
+
+93
+00:09:10,490 --> 00:09:16,240
+For example, here we are showing two relations
+ah department name building and budget these
+
+94
+00:09:16,240 --> 00:09:21,399
+attributes doing department and instructor,
+id name, department name, and salary is a
+
+95
+00:09:21,399 --> 00:09:26,139
+other instructor in a way keeping them together
+here naturally, where we keep them together.
+
+96
+00:09:26,139 --> 00:09:36,639
+For example here ah in we have ah one ah which
+is ah here in we have ah one, which is ah
+
+97
+00:09:36,639 --> 00:09:41,590
+ok and entry of record from the department
+relation. Similarly here is another which
+
+98
+00:09:41,590 --> 00:09:46,870
+is from the department relation whereas, these
+are entries from the instructor relation;
+
+99
+00:09:46,870 --> 00:09:52,909
+please note that ah since we are ah doing
+it multi table with a department we do not
+
+100
+00:09:52,909 --> 00:09:59,189
+need to ah keep these information in as a
+part of the record, but what you mean is ah
+
+101
+00:09:59,190 --> 00:10:06,750
+if there is a computer science entry here,
+then all those records which follow this computer
+
+102
+00:10:06,750 --> 00:10:14,200
+science entry are actually instructors in
+the computer science till I actually come
+
+103
+00:10:14,200 --> 00:10:20,400
+across another departments entry where which
+will be followed by instructors for that department.
+
+104
+00:10:20,399 --> 00:10:27,539
+So, that is a basic ah multi table ah convention
+that is ah to be followed here.
+
+105
+00:10:27,539 --> 00:10:35,179
+Now, it it is actually good ah for queries
+that involved joining department with instructor,
+
+106
+00:10:35,179 --> 00:10:40,769
+because ah based on the value of the department
+you have the instructors club together and
+
+107
+00:10:40,769 --> 00:10:48,379
+they could be very easily quickly ah taken
+together and ah it is also good for ah single
+
+108
+00:10:48,379 --> 00:10:54,090
+ah ah queries with ah departments and it is
+instructors, because as you can see you can
+
+109
+00:10:54,090 --> 00:10:59,580
+ah if you want to know for example, ah who
+are the faculty for at computer science department;
+
+110
+00:10:59,580 --> 00:11:04,379
+then it be very easy to answer that, because
+ah you need to search for computer science
+
+111
+00:11:04,379 --> 00:11:07,730
+and then you know all the list of the faculty
+will be in consecutive block.
+
+112
+00:11:07,730 --> 00:11:14,649
+So, you can easily lift that, but certainly
+this is not true, ah if you want to ah involve
+
+113
+00:11:14,649 --> 00:11:20,720
+queries which have department only; because
+that department information are all now partially
+
+114
+00:11:20,720 --> 00:11:28,920
+ah distributed. So, if your query has the
+department ah based ah information to be to
+
+115
+00:11:28,919 --> 00:11:35,530
+be accumulated, then this may not be a good
+ah option. So, that will result in ah then
+
+116
+00:11:35,530 --> 00:11:41,089
+you can have ah supporting pointer chains
+to actually link the department information.
+
+117
+00:11:41,090 --> 00:11:47,570
+So, this is a one kind of a design that you
+have ok.
+
+118
+00:11:47,570 --> 00:11:54,140
+Now ah think about ah; so the whole so, we
+have ah; so, far ah talked about the relations
+
+119
+00:11:54,139 --> 00:12:00,759
+and ah relations going to either single files
+or multi table relations; ah multi table file
+
+120
+00:12:00,759 --> 00:12:05,809
+where ah multiple relations are on the same
+file. Now, if you look at the database as
+
+121
+00:12:05,809 --> 00:12:12,779
+a whole. So, what is a data base?
+The database as a whole has a whole lot of
+
+122
+00:12:12,779 --> 00:12:21,159
+ah tables; and so far we have just been focus
+on the fact that tables ah we know the tables
+
+123
+00:12:21,159 --> 00:12:27,189
+we know their attributes and the data resides
+in inside, but if you think in terms of the
+
+124
+00:12:27,190 --> 00:12:32,410
+database, then somebody; somewhere we will
+need to remember that what are my tables?
+
+125
+00:12:32,409 --> 00:12:37,659
+What are my relations? For a given relation
+I need to know what are the attributes that
+
+126
+00:12:37,659 --> 00:12:43,789
+the relation has, what is the; you know length
+type of this attributes I did remember what
+
+127
+00:12:43,789 --> 00:12:48,620
+are the views that ah I have created on the
+database the constraints that exist.
+
+128
+00:12:48,620 --> 00:12:56,750
+So, all of these information which you can
+say is ah databases own metadata information
+
+129
+00:12:56,750 --> 00:13:02,289
+needs to be also maintained; and ah what is
+done is that; also is maintained as a database
+
+130
+00:13:02,289 --> 00:13:09,610
+within the database system. And such a metadata
+system is ah usually known as the name of
+
+131
+00:13:09,610 --> 00:13:14,970
+data dictionary or system catalogues.
+So, it has informations like this. So, you
+
+132
+00:13:14,970 --> 00:13:22,920
+put them again, you create ah the schema design
+based on the all this metadata information
+
+133
+00:13:22,919 --> 00:13:28,669
+that you need, also you can have ah you will
+need to maintain information for users, ah
+
+134
+00:13:28,669 --> 00:13:34,969
+accounts, passwords and so, on. ah Then you
+may have statistical information, where ah
+
+135
+00:13:34,970 --> 00:13:40,220
+you would like to; we will see the use of
+statistical information when we talk about
+
+136
+00:13:40,220 --> 00:13:45,720
+indexing ah in in the following week ah you
+will see that you need to know, what is the
+
+137
+00:13:45,720 --> 00:13:50,290
+you know how frequently the different queries
+are fired, what are the number of peoples
+
+138
+00:13:50,289 --> 00:13:55,169
+in each relation and so, on; you may also
+need to ah have information in terms of what
+
+139
+00:13:55,169 --> 00:14:01,500
+has been your choices in terms of the physical
+locations of file the storage options and
+
+140
+00:14:01,500 --> 00:14:09,600
+so on the index ah files.
+So, here is ah a sample one. So, what ah if
+
+141
+00:14:09,600 --> 00:14:15,139
+you look into; so you can again ah see a number
+of ah schema. So, this is ah saying that the;
+
+142
+00:14:15,139 --> 00:14:22,379
+this is the relational metadata schema which
+is talking about, what is the different relations?
+
+143
+00:14:22,379 --> 00:14:29,301
+So, every record here is not keeping the data
+of your application, but its keeping the information
+
+144
+00:14:29,301 --> 00:14:36,230
+that here you have these ah different relations.
+For example, ah ah couple of modules back
+
+145
+00:14:36,230 --> 00:14:38,899
+we are talking about the library information
+system.
+
+146
+00:14:38,899 --> 00:14:44,370
+So, in the library information system we had
+different we designed different relations
+
+147
+00:14:44,370 --> 00:14:50,879
+ah the the book issue, the book catalogue,
+ah the book copies and so, on. So, those relation
+
+148
+00:14:50,879 --> 00:14:55,000
+names and the how many attributes they have?
+How will you organize the storage, where is
+
+149
+00:14:55,000 --> 00:15:01,129
+that storage will go to this particular ah
+table. Then depending on on the kind of ah
+
+150
+00:15:01,129 --> 00:15:07,009
+index that you are creating we have still
+not discussed about index we will do ah subsequently;
+
+151
+00:15:07,009 --> 00:15:12,279
+but those index information can be preserved
+the view information we can have attribute
+
+152
+00:15:12,279 --> 00:15:17,149
+ah metadata.
+So, it is is ah for the relation name ah what
+
+153
+00:15:17,149 --> 00:15:21,049
+is attribute name and what is the type of
+that attributes. So, if the relation name
+
+154
+00:15:21,049 --> 00:15:29,829
+is ah say ah book catalogue, then the attribute
+name is title, then what is the domain type.
+
+155
+00:15:29,830 --> 00:15:35,730
+So, we will say this is a varchar; then the
+position of that attribute, the length if
+
+156
+00:15:35,730 --> 00:15:40,779
+it is ah given the user metadata all of this
+are typical things that will go into this
+
+157
+00:15:40,779 --> 00:15:47,299
+ah system catalogue or the data dictionary
+that we will require.
+
+158
+00:15:47,299 --> 00:15:56,309
+So, finally, the access to the storage the
+database file ah as ah I have been ah repeatedly
+
+159
+00:15:56,309 --> 00:16:03,389
+saying is ah partition into fix length units
+called blocks, because blocks are defined
+
+160
+00:16:03,389 --> 00:16:10,689
+ah; so that ah they can be easily allocated
+and transfer and they are the fastest ah unit
+
+161
+00:16:10,690 --> 00:16:16,220
+of ah data that can be transferred between
+the disk and the memory.
+
+162
+00:16:16,220 --> 00:16:24,070
+So, unlike many of our ah typical algorithmic
+considerations; so when we talk about ah different
+
+163
+00:16:24,070 --> 00:16:29,379
+algorithms, what we try to minimize? We try
+to minimize certain expensive operations in
+
+164
+00:16:29,379 --> 00:16:37,230
+the CPU; say the comparison operation or the
+assignment or may be the memory read operation.
+
+165
+00:16:37,230 --> 00:16:46,130
+But in terms of database systems block is
+a basic unit of ah data transfer and the data
+
+166
+00:16:46,130 --> 00:16:54,250
+transfer two and from the disk is the most
+time taking factor much ah takes much larger
+
+167
+00:16:54,250 --> 00:17:01,750
+time compare to any in memory operation that
+we do. So, this ah kind of ah becomes ah the
+
+168
+00:17:01,750 --> 00:17:09,130
+primary unit of cost that we want to minimize.
+So, normally we will see that ah as we talk
+
+169
+00:17:09,130 --> 00:17:16,120
+about index saying and other ah different
+kinds of mechanisms, our primary target is
+
+170
+00:17:16,119 --> 00:17:25,549
+to minimize the number of block transfers.
+So, ah certainly we can ah do that by; um
+
+171
+00:17:25,549 --> 00:17:32,899
+ah can reduce the number of ah disk ah access
+by keeping as many blocks as possible in the
+
+172
+00:17:32,900 --> 00:17:38,120
+main memory. So, we can how can you minimize
+that transfer, if we can keep more of the
+
+173
+00:17:38,119 --> 00:17:43,539
+blocks in our main memory and naturally ah
+of course, there is a limitation because main
+
+174
+00:17:43,539 --> 00:17:48,119
+memory is much smaller. So, often we make
+use of different buffers.
+
+175
+00:17:48,119 --> 00:17:54,559
+So, a portion of the main memory will be kept
+to store copies of the disk block. So, every
+
+176
+00:17:54,559 --> 00:18:00,919
+time you need a block you may not want to
+ah need to bring it from the; ah disk storage.
+
+177
+00:18:00,920 --> 00:18:05,350
+So, you keep it in the buffer in main memory,
+and then you have a management strategy to
+
+178
+00:18:05,349 --> 00:18:11,659
+manage this buffer. So, whenever you want
+to actually access a ah record which ah should
+
+179
+00:18:11,660 --> 00:18:17,810
+be in a particular block; you check whether
+that block is already available in the buffer;
+
+180
+00:18:17,809 --> 00:18:22,040
+if it is available in the buffer it use that
+if it is not available in the buffer, then
+
+181
+00:18:22,040 --> 00:18:28,329
+you take it from the disk you will need ah
+quite a bit of cycles for that and as you
+
+182
+00:18:28,329 --> 00:18:34,970
+get that from the disk then you keep a copy
+in the buffer so that it can be used in future.
+
+183
+00:18:34,970 --> 00:18:40,549
+Now as you keep on doing that, naturally soon
+you will run out of ah the buffer memory.
+
+184
+00:18:40,549 --> 00:18:48,500
+So, you you will come to a situation, where
+ah we need to ah ah bring a block from the
+
+185
+00:18:48,500 --> 00:18:53,210
+disk to the memory, but the buffer does not
+have enough ah space. So, then we will have
+
+186
+00:18:53,210 --> 00:18:58,960
+to create replace some of the blocks and ah
+create space for that. So, here is a basic
+
+187
+00:18:58,960 --> 00:19:04,730
+buffer management ah strategy.
+So, ah ah as I said if we if we start if the
+
+188
+00:19:04,730 --> 00:19:09,829
+block is already there in the buffer, then
+ah that is given out if the block is not there
+
+189
+00:19:09,829 --> 00:19:14,808
+in the buffer the buffer manager will need
+to allocate some space how do you allocate
+
+190
+00:19:14,808 --> 00:19:21,250
+space by throwing out some other block which
+is not required or replace ah the; then replace
+
+191
+00:19:21,250 --> 00:19:29,140
+the block return back to disk and ah if it
+was modified and make space free and then
+
+192
+00:19:29,140 --> 00:19:34,470
+read from the disk and keep a copy in the
+buffer. So, that is a simple strategy as you
+
+193
+00:19:34,470 --> 00:19:41,579
+can see .
+Now, certainly when you have to replace the
+
+194
+00:19:41,579 --> 00:19:47,799
+block in the buffer, then ah the question
+is which block would you replace. Now ah if
+
+195
+00:19:47,799 --> 00:19:54,789
+you recall from your from similar situations
+in the ah in the operating system in terms
+
+196
+00:19:54,789 --> 00:20:00,940
+of memory management, you have read about
+different strategies for doing replacement
+
+197
+00:20:00,940 --> 00:20:06,930
+and one of the ah very common strategy ah
+more often used is the LRU strategy of the
+
+198
+00:20:06,930 --> 00:20:14,980
+least recently used strategy. So, the idea
+of behind LRU is use the pass pattern of block
+
+199
+00:20:14,980 --> 00:20:21,730
+references as to predict the future. So, least
+recently used is if this is not been ah used
+
+200
+00:20:21,730 --> 00:20:26,130
+in the ah recent past ah. So, it has less
+likely hood of being used in the future.
+
+201
+00:20:26,130 --> 00:20:35,650
+Now, ah to queries; ah now here we are trying
+to do the similar thing in terms of ah queries.
+
+202
+00:20:35,650 --> 00:20:45,009
+So, they have a well defined ah access pattern
+and ah database system can ah can make use
+
+203
+00:20:45,009 --> 00:20:51,220
+of that and as it turns out ah LRU can be
+a bad ah strategy for example, often you are
+
+204
+00:20:51,220 --> 00:20:57,150
+ah doing computations ah in in terms of such
+what you say such nested loops.
+
+205
+00:20:57,150 --> 00:21:03,269
+So, you have ah for each tuple you do this;
+so you have basically trying to do a join.
+
+206
+00:21:03,269 --> 00:21:08,429
+So, you have two relations and you are trying
+to do a join. So, when you do this when you
+
+207
+00:21:08,429 --> 00:21:13,630
+are going through the inner loop, there will
+be lot of ah transfers that will happen; and
+
+208
+00:21:13,630 --> 00:21:19,429
+ah the original block where you have been
+holding this ah is here and you are not accessing
+
+209
+00:21:19,429 --> 00:21:24,490
+that for quite some time.
+So, while you are doing this ah if you if
+
+210
+00:21:24,490 --> 00:21:31,599
+this ah block, which was which was holding
+r at that time if that turns out to be a LRU;
+
+211
+00:21:31,599 --> 00:21:36,149
+then you will throw it away, but with that
+when you complete this loop and come back
+
+212
+00:21:36,150 --> 00:21:43,870
+here, you will again have to read it from
+the disk. So, this is not LRU for such ah
+
+213
+00:21:43,869 --> 00:21:48,859
+nested computations may not be a good strategy,
+so may be some kind of mixed strategy would
+
+214
+00:21:48,859 --> 00:21:55,219
+ah work ah better.
+So, there are several ah that ah are used
+
+215
+00:21:55,220 --> 00:22:02,110
+in terms of ah buffer replacement one is called
+ah pin block, where you mark a certain memory
+
+216
+00:22:02,109 --> 00:22:08,740
+block which ah is not allow to be return back
+to the disk it has to stay in the buffer or
+
+217
+00:22:08,740 --> 00:22:15,460
+a toss immediate strategy is is quite often
+used. So, it ah frees the space occupied by
+
+218
+00:22:15,460 --> 00:22:19,430
+a block; as soon as ah the final tuple has
+been return.
+
+219
+00:22:19,430 --> 00:22:23,860
+So, its a toss immediate. So, as soon as you
+are done you just ah throw it out you are
+
+220
+00:22:23,859 --> 00:22:30,019
+you are done with it so you write it back.
+ah Another ah which is ah commonly uses most
+
+221
+00:22:30,019 --> 00:22:37,079
+recently use the; ah ah if ah whenever the
+block is ah currently being processed, then
+
+222
+00:22:37,079 --> 00:22:45,339
+ah the system will kind of keep a marker a
+pin. So, that it is not ah removed, but ah
+
+223
+00:22:45,339 --> 00:22:50,159
+after the final tuple has been processed,
+the block will be unpinned and then it becomes
+
+224
+00:22:50,160 --> 00:22:56,769
+a most ah recently used block and ah you can
+go with ah defining the most recently used
+
+225
+00:22:56,769 --> 00:23:01,509
+block and having the strategy.
+You can certainly use different kinds of ah
+
+226
+00:23:01,509 --> 00:23:10,558
+statistical information and ah in summary;
+so on this ah we have ah talked about ah the
+
+227
+00:23:10,558 --> 00:23:17,250
+basic organization of ah database files starting
+from the fixed record to ah variable record
+
+228
+00:23:17,250 --> 00:23:26,849
+ah handling of ah the different file organization
+and ah ah try to take a look in terms of how
+
+229
+00:23:26,849 --> 00:23:32,519
+records and relations are organized in terms
+of the in terms of the files and what are
+
+230
+00:23:32,519 --> 00:23:38,460
+the options that we have and ah we took a
+look at the data dictionary storage the basic
+
+231
+00:23:38,460 --> 00:23:42,730
+ah system catalogue, where database keeps
+its own information.
+
+232
+00:23:42,730 --> 00:23:49,620
+And ah then ah noted that ah block happens
+to be the major unit of data transfer between
+
+233
+00:23:49,619 --> 00:23:55,579
+the disk and the main memory and ah therefore,
+that is the unit of defining unit of cost
+
+234
+00:23:55,579 --> 00:24:00,960
+that we have to incur, and ah to minimize
+that we have a buffering strategy in the main
+
+235
+00:24:00,960 --> 00:24:07,110
+memory, where the disk blocks will be kept
+a a few disk blocks will be kept for quick
+
+236
+00:24:07,109 --> 00:24:12,639
+use whenever required. And there needs to
+be various different smart ah replacements
+
+237
+00:24:12,640 --> 00:24:16,380
+strategies for good management of this buffer.
+

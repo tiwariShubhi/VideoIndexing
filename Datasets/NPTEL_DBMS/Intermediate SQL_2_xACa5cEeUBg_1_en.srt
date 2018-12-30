@@ -1,0 +1,1414 @@
+﻿1
+00:00:16,440 --> 00:00:23,560
+Welcome to module ten of database management
+systems. We have been discussing about intermediate
+
+2
+00:00:23,559 --> 00:00:33,659
+level features in SQL; and this is a second
+and closing module on that. So, we have in
+
+3
+00:00:33,659 --> 00:00:41,419
+the last module talked about join expressions,
+views and transaction in a bit.
+
+4
+00:00:41,420 --> 00:00:49,010
+In this module, we will try to learn SQL expressions
+that are responsible for maintaining in the
+
+5
+00:00:49,009 --> 00:00:54,158
+integrity of the database. We have talked
+about integrity a little. We will now see
+
+6
+00:00:54,158 --> 00:00:59,460
+how explicitly integrity can be checked and
+how different kinds of integrity can be ensured
+
+7
+00:00:59,460 --> 00:01:06,409
+through SQL. We will also talk about more
+data types. We have seen the basic primitive
+
+8
+00:01:06,409 --> 00:01:12,049
+data types, and we had promised that we will
+talk more about the data types including user
+
+9
+00:01:12,049 --> 00:01:18,439
+defined data types here. And finally, we will
+talk about a very important aspect of authorisation
+
+10
+00:01:18,439 --> 00:01:24,090
+as to who can do what in a database in through
+SQL.
+
+11
+00:01:24,090 --> 00:01:30,390
+So, this is a module out line. We start with
+integrity constraints. Integrity constraints
+
+12
+00:01:30,390 --> 00:01:37,430
+guard against accidental damage to the database
+that is there are certain real world facts
+
+13
+00:01:37,430 --> 00:01:44,230
+that must be ensured in the database all the
+time. For example, in bank accounts, we have
+
+14
+00:01:44,230 --> 00:01:52,540
+a minimum balance that need to be maintained;
+for a particular customer, we might want that
+
+15
+00:01:52,540 --> 00:02:00,310
+the customers phone number must be present.
+We may have certain age bar in terms of entering
+
+16
+00:02:00,310 --> 00:02:08,830
+into certain memberships or certain employment
+and so on. All these kinds of real world constraints
+
+17
+00:02:08,830 --> 00:02:14,159
+need to be represented and maintained in the
+database and that is the purpose of the integrity
+
+18
+00:02:14,158 --> 00:02:19,818
+constraint.
+And we will first look at the issues of integrity
+
+19
+00:02:19,818 --> 00:02:28,699
+constraint for a single relation, and we have
+seen the use of not null and primary key.
+
+20
+00:02:28,699 --> 00:02:35,259
+We will also talk about what is unique and
+we will see how actually general constraints
+
+21
+00:02:35,259 --> 00:02:38,969
+can be checked in terms of a check clause
+with a predicate P.
+
+22
+00:02:38,969 --> 00:02:46,120
+So, not null we had seen this before we can
+while creating the database table. Create
+
+23
+00:02:46,120 --> 00:02:50,280
+table we can specify a field to be not null
+and then in that case null values will not
+
+24
+00:02:50,280 --> 00:02:57,030
+be allowed in those fields. So, they will
+must be some value given. You can say one
+
+25
+00:02:57,030 --> 00:03:03,620
+or more attributes to be unique. If you specify
+them to be unique; that means, that in any
+
+26
+00:03:03,620 --> 00:03:11,240
+instance of the table in future that cannot
+be two tuples which match in all of those
+
+27
+00:03:11,240 --> 00:03:17,490
+attribute. So, if you say A 1 to A m are unique;
+that means, that if we have two different
+
+28
+00:03:17,490 --> 00:03:25,110
+tuples in the table anytime in future. Two
+different rows in the table t 1 and t 2 then
+
+29
+00:03:25,110 --> 00:03:33,440
+across A 1, A 2, A m they must differ in at
+least one attribute value. So, uniqueness
+
+30
+00:03:33,439 --> 00:03:41,509
+is a basic requirement for being a candidate
+key, but they are, but still permitted to
+
+31
+00:03:41,509 --> 00:03:46,959
+be null which in contrast to what is the true
+for primary key already you know that primary
+
+32
+00:03:46,959 --> 00:03:54,539
+key values cannot be null, but uniqueness
+allows a null values, but they have to be
+
+33
+00:03:54,539 --> 00:04:01,879
+different.
+The check clause is where you say check and
+
+34
+00:04:01,879 --> 00:04:09,159
+then you put a predicate. So, the idea is
+like this suppose I know that I have specified
+
+35
+00:04:09,159 --> 00:04:16,009
+and attribute called semester. It is a varchar
+6 which means that it can have a string maximum
+
+36
+00:04:16,009 --> 00:04:23,689
+of length 6, but naturally I can write anything
+there I can write morning in that field. I
+
+37
+00:04:23,689 --> 00:04:29,360
+can write welcome in that field and so on,
+but those are not valid names of semester.
+
+38
+00:04:29,360 --> 00:04:38,460
+So, I want that in my design semester must
+have any of these values only.
+
+39
+00:04:38,459 --> 00:04:45,359
+So, we say semester in. So, I have listed
+the values that are allowed in is a set membership.
+
+40
+00:04:45,360 --> 00:04:49,720
+So, it says the semester in so which means
+the value of the semester is be one of this
+
+41
+00:04:49,720 --> 00:04:57,020
+fall. And this whole thing now becomes the
+predicate P which on which I give a check
+
+42
+00:04:57,019 --> 00:05:02,339
+which means that whenever I am creating once
+you have created the table when I want to
+
+43
+00:05:02,339 --> 00:05:09,339
+insert or update the values in the table,
+the records in the table then e the value
+
+44
+00:05:09,339 --> 00:05:13,339
+of semester has to be always within this.
+Otherwise, the check integrity constraint
+
+45
+00:05:13,339 --> 00:05:20,849
+will fail, and the update or insert will not
+happen and an exception will be raised. This
+
+46
+00:05:20,850 --> 00:05:27,420
+is the basic idea of check constraints.
+Now, let us move on to more involved integrity
+
+47
+00:05:27,420 --> 00:05:34,210
+check which goes beyond one table. So, let
+us suppose that we are talking about the instructor
+
+48
+00:05:34,209 --> 00:05:44,629
+table we have the instructor table. An instructor
+table has a department name. Similarly, we
+
+49
+00:05:44,629 --> 00:05:53,399
+have a department table which naturally has
+a department name. Now, we know that this
+
+50
+00:05:53,399 --> 00:05:59,409
+is the key in the department table and therefore,
+here it is the foreign key.
+
+51
+00:05:59,410 --> 00:06:05,550
+Now, while we are inserting records in the
+instructor table how do we guarantee that
+
+52
+00:06:05,550 --> 00:06:13,770
+the record that we insert has a corresponding
+entry in the foreign key table that is difference
+
+53
+00:06:13,769 --> 00:06:22,379
+table. So, it is when we are inserting and
+in a faculty in the saying that the faculty
+
+54
+00:06:22,379 --> 00:06:28,560
+belongs to biology department there needs
+to be a biology entry in the department table
+
+55
+00:06:28,560 --> 00:06:34,470
+as well. So, this is known as a referential
+integrity that is once you refer from one
+
+56
+00:06:34,470 --> 00:06:42,100
+table to the other that reference must also
+be a valid one; otherwise, all your computations
+
+57
+00:06:42,100 --> 00:06:48,699
+will go wrong.
+So, this is a for saying it formally there
+
+58
+00:06:48,699 --> 00:06:54,189
+are two relations and one relation as a primary
+key which is used in the other relation as
+
+59
+00:06:54,189 --> 00:06:59,969
+a foreign key then there is a referential
+integrity that needs to be maintained.
+
+60
+00:06:59,970 --> 00:07:06,460
+So, here we are just showing the effect of
+that. So, we have created a table this is
+
+61
+00:07:06,459 --> 00:07:14,239
+the first one is what you have seen earlier
+creating the table course and that table course
+
+62
+00:07:14,240 --> 00:07:19,370
+needs the name of the department. So, we are
+specifying that it references the department
+
+63
+00:07:19,370 --> 00:07:26,759
+table. Now, if it references the department
+table it must ensure the referential integrity.
+
+64
+00:07:26,759 --> 00:07:34,110
+So, this just says that this refers to the
+department table, but I can be more specific
+
+65
+00:07:34,110 --> 00:07:43,610
+to say what will happen if the integrity gets
+violated. For example, I have created this
+
+66
+00:07:43,610 --> 00:07:50,930
+and the course table has an entry, which has
+a department name say biology. Naturally,
+
+67
+00:07:50,930 --> 00:07:59,389
+biology department should have the entry there
+should be an entry in the department table
+
+68
+00:07:59,389 --> 00:08:03,430
+with this department name biology for this
+to be valid.
+
+69
+00:08:03,430 --> 00:08:11,240
+Now, say for some reason the biology department
+is abolished and that particular record from
+
+70
+00:08:11,240 --> 00:08:18,560
+the department table is removed, naturally,
+the course which is referring to biology in
+
+71
+00:08:18,560 --> 00:08:25,129
+terms of its department name that particular
+record will become invalid. So, we can say
+
+72
+00:08:25,129 --> 00:08:31,659
+that on delete, what you should be doing,
+one most common action that we specify in
+
+73
+00:08:31,660 --> 00:08:39,440
+referential integrity is cascade that if the
+referred entity is deleted then the referring
+
+74
+00:08:39,440 --> 00:08:45,160
+entity should also be deleted. So, if you
+delete the biology entry from the department
+
+75
+00:08:45,159 --> 00:08:51,709
+table, then all courses which have biology
+through references to department as their
+
+76
+00:08:51,710 --> 00:08:58,769
+field value should also get deleted.
+Similar thing can be there on update also.
+
+77
+00:08:58,769 --> 00:09:05,720
+For example, biology department say tomorrow
+changes the name to bioscience. Now, if I
+
+78
+00:09:05,720 --> 00:09:14,081
+have a referential integrity put on the course
+table as on update cascade, then as I change
+
+79
+00:09:14,081 --> 00:09:22,480
+the bioscience the name to bioscience. All
+records in the table course, which had the
+
+80
+00:09:22,480 --> 00:09:29,610
+department name as biology will necessarily
+get updated. So, this is the way to maintain
+
+81
+00:09:29,610 --> 00:09:35,830
+referential integrity. Cascading is one of
+the most common way to handle this, but there
+
+82
+00:09:35,830 --> 00:09:41,990
+could be other ways to take action also that
+could be no action that you say ok, I do not
+
+83
+00:09:41,990 --> 00:09:49,169
+care. Let that happen in that case some, because
+of the violation that could be some exceptions
+
+84
+00:09:49,169 --> 00:09:54,019
+thrown or even say that if this happens then
+I will set that field to null or I will set
+
+85
+00:09:54,019 --> 00:09:59,000
+that field to some default value and so on.
+So, this is how the referential integrity
+
+86
+00:09:59,000 --> 00:10:06,240
+has to be handled. There could be integrity
+violation during transactions also. This is
+
+87
+00:10:06,240 --> 00:10:13,289
+an example of a self-referential table which
+of persons which where every person's entry
+
+88
+00:10:13,289 --> 00:10:19,409
+needs the name of the mother and the father
+which are also entries in this table. So,
+
+89
+00:10:19,409 --> 00:10:26,519
+necessarily if you are entering a person record
+you need this feels to be populated and that
+
+90
+00:10:26,519 --> 00:10:31,528
+can be populated only if those records already
+exists. So, there is some order in which you
+
+91
+00:10:31,528 --> 00:10:38,730
+have to enter the records or you have to set
+them as null and then update them in future
+
+92
+00:10:38,730 --> 00:10:46,440
+and or some ways to say that well do not check
+this integrity now. We will talk about this
+
+93
+00:10:46,440 --> 00:10:51,269
+integrity at a later point of time. So, these
+are the issues that necessarily you will have
+
+94
+00:10:51,269 --> 00:10:57,950
+to be addressed.
+Let us move on and look at the SQL data types
+
+95
+00:10:57,950 --> 00:11:06,670
+and schemas. So, in addition to the data types
+like char, varchar, int and all that you have
+
+96
+00:11:06,669 --> 00:11:15,549
+an explicit date data type which gives you
+a year, month, date kind of format with a
+
+97
+00:11:15,549 --> 00:11:21,778
+four digit year, because date is very frequently
+required. You have a time type to give you
+
+98
+00:11:21,778 --> 00:11:29,539
+hour, minute, second time format. You have
+a timestamp, which is date and time together
+
+99
+00:11:29,539 --> 00:11:36,939
+and you have what is known as interval where
+you can do a date or time difference between
+
+100
+00:11:36,940 --> 00:11:42,339
+two different dates, two different time, two
+different time stamps and so on. So, these
+
+101
+00:11:42,339 --> 00:11:48,920
+are the common added built in types which
+makes it very easy to handle the temporal
+
+102
+00:11:48,919 --> 00:11:56,860
+aspects in SQL queries.
+In addition, the next that you can do is you
+
+103
+00:11:56,860 --> 00:12:05,240
+can create an index. So, let us look at this.
+So, this create table definition you understand
+
+104
+00:12:05,240 --> 00:12:13,709
+well by now. You can I can do this, I can
+say create index and give a name for the index
+
+105
+00:12:13,708 --> 00:12:20,278
+and specify which field on which the index
+should be created. So, here we are saying
+
+106
+00:12:20,278 --> 00:12:25,340
+that the index should happen here. This is
+the name of the relation, this is the name
+
+107
+00:12:25,340 --> 00:12:31,579
+of the attribute name of the field. Now, this
+does not change any data neither does it change
+
+108
+00:12:31,578 --> 00:12:41,208
+any schema, but it creates certain additional
+structure. So, that it becomes easier to search
+
+109
+00:12:41,208 --> 00:12:47,759
+this particular table using IDs.
+So, if I have a query like this that I am
+
+110
+00:12:47,759 --> 00:12:53,490
+trying to find out all information about a
+particular student then as we have said that
+
+111
+00:12:53,490 --> 00:13:01,110
+by default the different entries the rows
+of a relation are unordered. So, the only
+
+112
+00:13:01,110 --> 00:13:06,450
+way to find out this particular row and in
+fact, whether it actually exist would be to
+
+113
+00:13:06,450 --> 00:13:12,959
+go over all the relations one by one. But
+if we index it, then it creates some kind
+
+114
+00:13:12,958 --> 00:13:19,859
+of an efficient data structure through which
+it can be searched out very efficiently very
+
+115
+00:13:19,860 --> 00:13:27,050
+easily with a later module we will talk about
+index in. But just to give you the idea that
+
+116
+00:13:27,049 --> 00:13:31,929
+this is similar to finding out a value in
+an unordered array if you are thinking of
+
+117
+00:13:31,929 --> 00:13:36,019
+C.
+In contrast, I can we all know that this can
+
+118
+00:13:36,019 --> 00:13:42,169
+be done, but takes a whole lot of time it
+takes order in time. But I could keep those
+
+119
+00:13:42,169 --> 00:13:49,740
+numbers in terms of a some binary search tree,
+balanced binary search tree like red black
+
+120
+00:13:49,740 --> 00:13:57,209
+tree or two three four tree kind of, where
+the search can be conducted in a login time.
+
+121
+00:13:57,208 --> 00:14:02,569
+Or I could keep it in terms of some efficient
+hashing mechanism where the search could happen
+
+122
+00:14:02,570 --> 00:14:08,028
+in terms of an ordered one time also. So,
+index is has a has a lot of importance and
+
+123
+00:14:08,028 --> 00:14:15,480
+we will talk about that more, but this is
+how you create index in SQL.
+
+124
+00:14:15,480 --> 00:14:23,720
+You can have user defined types, you can say
+create type and use some specific you know
+
+125
+00:14:23,720 --> 00:14:31,000
+sub types of a type as and give it a name.
+So, you send numeric 12, 2. So, which is the
+
+126
+00:14:31,000 --> 00:14:38,139
+12 digit number with two decimal places of
+precision you can call it dollar and then
+
+127
+00:14:38,139 --> 00:14:44,370
+use that as a type name. So, type name doing
+this helps in to visit make sure that wherever
+
+128
+00:14:44,370 --> 00:14:49,080
+you actually have to conceptually refer to
+dollars you are talking about dollars it is
+
+129
+00:14:49,080 --> 00:14:54,639
+easier to understand and you are making sure
+that everywhere the same numeric precision
+
+130
+00:14:54,639 --> 00:15:00,500
+is used.
+You can also actually go further and create
+
+131
+00:15:00,500 --> 00:15:06,669
+domains which is very similar to create type.
+But domains are more powerful in the sense
+
+132
+00:15:06,669 --> 00:15:13,110
+that in a domain. You can also add constraints
+like not null and you say that this is person
+
+133
+00:15:13,110 --> 00:15:21,070
+name see say that this once you have set that
+this person name is 20 characters long and
+
+134
+00:15:21,070 --> 00:15:27,710
+it cannot be null then you do not specifically
+have to every time. You define a field based
+
+135
+00:15:27,710 --> 00:15:34,920
+on this domain type you do not have to specifically
+say that it is not null. You could also create
+
+136
+00:15:34,919 --> 00:15:40,409
+a specific constraints in terms of the check
+clause and make it easier. So, now if you
+
+137
+00:15:40,409 --> 00:15:45,698
+say degree level you do not have to put check
+clause explicitly in the SQL query, because
+
+138
+00:15:45,698 --> 00:15:52,208
+it is already specified in the created domain.
+SQL supports certain large-objects which are
+
+139
+00:15:52,208 --> 00:15:57,838
+either called blobs if they are binary, or
+called clob if they are character objects.
+
+140
+00:15:57,839 --> 00:16:03,040
+The only the major difference in terms of
+the large object types are they are not stored
+
+141
+00:16:03,039 --> 00:16:08,549
+as a part of the table. They stored elsewhere
+and you actually maintain a kind of a reference
+
+142
+00:16:08,549 --> 00:16:14,588
+a pointer to that large object. So, this is
+very useful in terms of handling photos, videos
+
+143
+00:16:14,589 --> 00:16:24,290
+and no big binary files, character files also.
+Let us move to authorization.
+
+144
+00:16:24,289 --> 00:16:32,139
+Next, authorization is the process by which
+you restrict different users to be able to
+
+145
+00:16:32,139 --> 00:16:40,940
+do different kind of operations. You recall
+in the early modules on database overview.
+
+146
+00:16:40,940 --> 00:16:46,910
+We mentioned that there could be several types
+of users for a database. There could be absolutely
+
+147
+00:16:46,909 --> 00:16:55,088
+application users who may necessarily do not
+feature as a part of the database development.
+
+148
+00:16:55,089 --> 00:17:00,020
+But there could be application developers
+expectedly most of you would become application
+
+149
+00:17:00,019 --> 00:17:06,509
+developers or there could be intermediate
+higher level of analyst who design databases,
+
+150
+00:17:06,509 --> 00:17:11,859
+design constraints, decide on indices and
+so on and that could be database administrator.
+
+151
+00:17:11,859 --> 00:17:18,000
+And also in terms of different application
+programs and programmers there is a need to
+
+152
+00:17:18,000 --> 00:17:21,898
+separate out who can access which part of
+the database. For example, if you look at
+
+153
+00:17:21,898 --> 00:17:31,949
+a add a banking system, then while I am by
+net banking application is accessing different
+
+154
+00:17:31,950 --> 00:17:37,399
+information about my account, one part I need
+to ensure that I can only access my account.
+
+155
+00:17:37,398 --> 00:17:43,589
+And also what the database system needs to
+ensure is that a net banking application should
+
+156
+00:17:43,589 --> 00:17:50,899
+in no way be able to access the information
+about the specific employees, because, in
+
+157
+00:17:50,900 --> 00:17:55,460
+the same database information about the bank
+employees will also be there. It should not
+
+158
+00:17:55,460 --> 00:18:02,919
+be possible for possible to access information
+about different physical information about
+
+159
+00:18:02,919 --> 00:18:08,210
+the branches as to where, how many square
+feet of area that branch has and so on and
+
+160
+00:18:08,210 --> 00:18:12,048
+so forth.
+So, we need to put variety of restrictions
+
+161
+00:18:12,048 --> 00:18:22,690
+and as we will see that authorisation or this
+process of restricting or allowing different
+
+162
+00:18:22,690 --> 00:18:29,058
+access and different authority to operate
+is decided based on two different factors.
+
+163
+00:18:29,058 --> 00:18:36,168
+One is what you want to do, and two is who
+wants to do that. So, what and who, so we
+
+164
+00:18:36,169 --> 00:18:45,220
+identify different operations or different
+operations on certain tables or operations
+
+165
+00:18:45,220 --> 00:18:52,308
+on certain attributes as what needs to be
+done. And on the other side, we will identify
+
+166
+00:18:52,308 --> 00:19:01,118
+who in terms of specific individual user IDs
+or groups of user IDs or roles that exist.
+
+167
+00:19:01,118 --> 00:19:07,829
+So, here we will just try to show you how
+we can do that in SQL. So, the first part
+
+168
+00:19:07,829 --> 00:19:14,460
+of the authorisation is being able to do different
+things with the database that means, the instances
+
+169
+00:19:14,460 --> 00:19:21,499
+of the database. So, there are authorisations
+to read insert, update and delete. So, read
+
+170
+00:19:21,499 --> 00:19:25,889
+is where you can access the data, but you
+cannot modify; insert is when you can add
+
+171
+00:19:25,888 --> 00:19:33,308
+new data, but you do not with insert rights
+authorisation, you cannot update an existing
+
+172
+00:19:33,308 --> 00:19:39,858
+data, you can only insert data. You can have
+update rights, where we can change make modifications,
+
+173
+00:19:39,858 --> 00:19:44,788
+but you may not be you are not allowed to
+delete data, and you can that would be delete
+
+174
+00:19:44,788 --> 00:19:54,450
+right where it allows you to delete data and
+my new this authorisations or not these are
+
+175
+00:19:54,450 --> 00:19:58,580
+all independent authorisation.
+So, you may have I mean certain authorisations
+
+176
+00:19:58,579 --> 00:20:04,358
+may need certain other authorisations to be
+present. For example, if you are updating
+
+177
+00:20:04,358 --> 00:20:11,538
+naturally evenly to read, but it is these
+are all independent authorisations, and you
+
+178
+00:20:11,538 --> 00:20:17,099
+may have one or more of them to be able to
+do the appropriate actions. Similar set of
+
+179
+00:20:17,099 --> 00:20:23,058
+another set of authorisations will exist,
+if you want to for those want to modify the
+
+180
+00:20:23,058 --> 00:20:33,888
+database schema, naturally, this is primarily
+for the applications and application programmers,
+
+181
+00:20:33,888 --> 00:20:42,490
+and this primarily would be for the analysts
+that you can index the different table you
+
+182
+00:20:42,490 --> 00:20:49,649
+can do. You can have authorisation for resources
+which mean you can create new relations, create
+
+183
+00:20:49,648 --> 00:20:54,000
+new schemas, you can alter schemas, you can
+drop schemas and so on. So, these are the
+
+184
+00:20:54,000 --> 00:20:57,138
+different kinds of authorisation that are
+possible.
+
+185
+00:20:57,138 --> 00:21:03,408
+So, let us see how it works the authorisation
+is specified in terms of a statement called
+
+186
+00:21:03,409 --> 00:21:15,759
+grant. So, you grant an authorisation to a
+privilege list and on certain relation to
+
+187
+00:21:15,759 --> 00:21:24,419
+a group of users. So, grant what kind of authorisation
+you are granting that is the privilege less
+
+188
+00:21:24,419 --> 00:21:37,659
+list on what relation on view you are granting
+that is on condition and to whom are you granting
+
+189
+00:21:37,659 --> 00:21:45,450
+those. So, user list could be a specific user
+ID or you could say public which in this case
+
+190
+00:21:45,450 --> 00:21:51,569
+everybody will have that or this could be
+a role which will see, what a role is.
+
+191
+00:21:51,569 --> 00:21:57,308
+Granting a privilege on a view does not imply
+granting any privileges on the underline relation,
+
+192
+00:21:57,308 --> 00:22:05,089
+please mind this one, because, you have seen
+that a view can be formed from multiple different
+
+193
+00:22:05,089 --> 00:22:13,058
+relations. So, if somebody has been granted
+a particular privilege say read privilege
+
+194
+00:22:13,058 --> 00:22:20,391
+on a view, then it does not mean that the
+corresponding underline relationship, you
+
+195
+00:22:20,391 --> 00:22:26,970
+been granted a read privilege on faculty relation
+that we faculty view that we did that does
+
+196
+00:22:26,970 --> 00:22:35,130
+not mean that the user will automatically
+get a read privilege on the underline in structure
+
+197
+00:22:35,130 --> 00:22:42,139
+relation. So, that has to be kept in mind.
+The grantor of the privilege must already
+
+198
+00:22:42,138 --> 00:22:46,808
+hold the privilege that is you cannot grant,
+naturally, grant will be done also by somebody
+
+199
+00:22:46,808 --> 00:22:55,108
+in some of the users you may be, so that user
+who is granting must also have the privilege
+
+200
+00:22:55,108 --> 00:23:01,079
+same privilege on the specific item. So, you
+cannot grant privilege on something, some
+
+201
+00:23:01,079 --> 00:23:06,798
+relation or view on which you yourself do
+not have that or it has to be the database
+
+202
+00:23:06,798 --> 00:23:11,629
+administrative who naturally has privilege
+for everything.
+
+203
+00:23:11,630 --> 00:23:18,499
+The privileges on SQL there is a select privilege,
+which is so you know this is the privilege
+
+204
+00:23:18,499 --> 00:23:23,960
+list. Select privilege which basically means
+read access. So, it is saying select privileges
+
+205
+00:23:23,960 --> 00:23:32,840
+is read access on instructor and these are
+the different users. So, this is how typically,
+
+206
+00:23:32,839 --> 00:23:38,839
+you can have insert to ability to insert tuples,
+the update privilege this should be easy to
+
+207
+00:23:38,839 --> 00:23:44,778
+understand now delete privilege. So, only
+thing is read is a called select here, so
+
+208
+00:23:44,778 --> 00:23:50,759
+these are the different privileges that you
+have in a SQL. And you have one all in compressing
+
+209
+00:23:50,759 --> 00:23:55,829
+privilege which is called all privileges so
+as a short form of allowing all these allowable
+
+210
+00:23:55,829 --> 00:24:00,368
+privileges.
+Certainly, if you can grant an authorization,
+
+211
+00:24:00,368 --> 00:24:07,720
+then needs to be a reverse process that is
+if we want to withdraw authorization of certain
+
+212
+00:24:07,720 --> 00:24:14,450
+privileges on certain items for certain users,
+so that is known as a revoke statement. So,
+
+213
+00:24:14,450 --> 00:24:21,038
+we can revoke it the structure looks exactly
+similar to the grant. So, you revoke a privilege
+
+214
+00:24:21,038 --> 00:24:27,628
+list, select, insert this kind of on certain
+relation and view from a set of users. So,
+
+215
+00:24:27,628 --> 00:24:34,428
+you can say that revoke select on branch from
+this. So, once this is done, then U 1, U 2
+
+216
+00:24:34,429 --> 00:24:40,960
+and U 3 will not be able to read the branch
+relation or the branch view. The privilege
+
+217
+00:24:40,960 --> 00:24:48,308
+list may be all to revoke all privileges.
+So, instead of revoking select insert, separately,
+
+218
+00:24:48,308 --> 00:24:55,589
+you can just say all and revoke all of that.
+The list of revoking can include public which
+
+219
+00:24:55,589 --> 00:25:03,668
+means all users lose that privilege and or
+though those were granted. If the same privileges
+
+220
+00:25:03,669 --> 00:25:12,169
+granted twice, now it is possible that a user
+gets privilege granted to him or her by two
+
+221
+00:25:12,169 --> 00:25:20,509
+different granting authorities, then the if
+ones is one of them is revoked the other will
+
+222
+00:25:20,509 --> 00:25:27,019
+still continue to remain. So, every privilege
+that is granted needs to be explicitly revoked
+
+223
+00:25:27,019 --> 00:25:31,759
+that is a basic meaning.
+So, all privileges that depend on the privilege
+
+224
+00:25:31,759 --> 00:25:39,148
+being revoked are also revoked. So, some privilege
+which is dependent on some other privilege,
+
+225
+00:25:39,148 --> 00:25:45,729
+if you revoke the update privilege then this
+select privilege will remain. But, if you
+
+226
+00:25:45,730 --> 00:25:51,339
+revoke the select privilege then if you also
+had the update privilege that will certainly
+
+227
+00:25:51,339 --> 00:25:58,339
+get revoked, because if you cannot read then
+naturally you cannot change.
+
+228
+00:25:58,339 --> 00:26:06,119
+The SQL also allows you to create certain
+roles. Roles are kind of like virtual use
+
+229
+00:26:06,119 --> 00:26:12,788
+that so, we all say that we all play certain
+role. So, I have an entity as an individual
+
+230
+00:26:12,788 --> 00:26:22,048
+say I may be user called P P B, but I have
+a role as an instructor, I have a role as
+
+231
+00:26:22,048 --> 00:26:29,038
+a say the head of the department, I have a
+role as a chairman of committee and so on.
+
+232
+00:26:29,038 --> 00:26:39,999
+So, often times it becomes easier to grant
+privileges to different roles. You do not
+
+233
+00:26:39,999 --> 00:26:47,298
+really care immediately about who that individual
+could be who that particular user could be
+
+234
+00:26:47,298 --> 00:26:54,710
+who has that privilege, whoever plays that
+role gets that privilege, whoever becomes
+
+235
+00:26:54,710 --> 00:27:02,548
+the director of IIT Kharagpur has the privilege
+to appoint faculty members it is of that kind.
+
+236
+00:27:02,548 --> 00:27:07,288
+It does not specifically. So, role is of that
+kind of a concept. So, you create role we
+
+237
+00:27:07,288 --> 00:27:13,179
+are saying that role is the role instructor
+is created.
+
+238
+00:27:13,179 --> 00:27:20,028
+And then you are saying that you grant instructor
+to Amit which says that Amit now plays the
+
+239
+00:27:20,028 --> 00:27:26,219
+role of instructor. So, any privilege that
+the instructor role has Amit will enjoy that.
+
+240
+00:27:26,219 --> 00:27:33,308
+So, let us see more of this the privileges
+can be grant to roles. So, earlier we said
+
+241
+00:27:33,308 --> 00:27:39,200
+it could be public, it could be users, but
+now you are saying that it could be two roles.
+
+242
+00:27:39,200 --> 00:27:44,980
+So, here this role was creates and the privilege
+is being granted to that. And since Amit plays
+
+243
+00:27:44,980 --> 00:27:50,389
+that role it will mean that Amit with this
+grant select on takes to instructor, Amit
+
+244
+00:27:50,388 --> 00:27:58,478
+will actually get a privilege of select on
+takes relation that is the kind of derived
+
+245
+00:27:58,479 --> 00:28:03,798
+structure that roles give you roles can be
+granted to users as well as to other roles.
+
+246
+00:28:03,798 --> 00:28:10,618
+So, roles are becoming like virtual users.
+So, you can create role teaching assistant
+
+247
+00:28:10,618 --> 00:28:19,129
+and grant teaching assistant to instructor,
+which means that if you do that you are granting
+
+248
+00:28:19,130 --> 00:28:24,539
+this. So, it means that any privilege the
+teaching assistant will have the instructor
+
+249
+00:28:24,538 --> 00:28:33,169
+will get those privileges, because, you have
+made in instructor to also play the role teaching
+
+250
+00:28:33,169 --> 00:28:40,278
+assistant mind you instructor itself is virtual
+entity. So, if Amit is an instructor by this,
+
+251
+00:28:40,278 --> 00:28:45,739
+then Amit plays this role and this role plays
+teaching assistant role and this teaching
+
+252
+00:28:45,739 --> 00:28:50,740
+assistant role has certain privileges, so
+naturally through this chain process Amit
+
+253
+00:28:50,740 --> 00:28:58,838
+will get those privileges. So, in an instructor
+inherits all privileges of teaching assistant.
+
+254
+00:28:58,838 --> 00:29:05,079
+So, this is what exactly, what I was talking
+of you can have a chain of roles create a
+
+255
+00:29:05,079 --> 00:29:11,408
+role dean new one, you have created, then
+grant instructor to dean grant dean to Satoshi.
+
+256
+00:29:11,409 --> 00:29:18,039
+So, which means that once you grant dean to
+instructor, so anybody who plays the dean's
+
+257
+00:29:18,038 --> 00:29:25,338
+role will get all privileges of instructor.
+Here you are saying that Satoshi is going
+
+258
+00:29:25,338 --> 00:29:34,558
+to play the dean role. So, the Satoshi in
+terms of chaining gets all the privileges
+
+259
+00:29:34,558 --> 00:29:43,210
+that instructor has.
+So, once this has been done, then you can
+
+260
+00:29:43,210 --> 00:29:50,249
+have authorization on views as well. So, you
+have created a view here. So, this is the
+
+261
+00:29:50,249 --> 00:29:57,499
+view created the geo instructor the Geology
+instructor. And on that view particularly
+
+262
+00:29:57,499 --> 00:30:08,719
+you have given the privilege to the geo staff.
+So, a geo staff member would be able to access
+
+263
+00:30:08,719 --> 00:30:20,419
+this view. And if this query is fired by a
+geo staff member, which I am assuming is a
+
+264
+00:30:20,419 --> 00:30:28,519
+role then this view will get executed and
+the results of all instructors in the department
+
+265
+00:30:28,519 --> 00:30:37,690
+geology will be update. But, what if the geo
+staff does not have permission on instructor,
+
+266
+00:30:37,690 --> 00:30:43,349
+does not matter that is the beauty of the
+whole thing. The geo staff may not have permission
+
+267
+00:30:43,348 --> 00:30:51,379
+to do select on instructor, but the geo staff
+has permission to select on geo instructor.
+
+268
+00:30:51,380 --> 00:30:58,239
+So, the geo staff will be able to execute
+this view, but the geo staff will not be able
+
+269
+00:30:58,239 --> 00:31:07,749
+to do a select on from the instructor database
+instructor table.
+
+270
+00:31:07,749 --> 00:31:18,778
+There are several other authorization features,
+the references a privilege to create foreign
+
+271
+00:31:18,778 --> 00:31:25,940
+key. So, we talked about basic read, write,
+data manipulation privileges, but there could
+
+272
+00:31:25,940 --> 00:31:31,659
+be other privileges like whether you can create
+a foreign key, whether you can transfer of
+
+273
+00:31:31,659 --> 00:31:40,409
+privilege. So, whether you can give one privilege
+to the another, so whether you can cascade,
+
+274
+00:31:40,409 --> 00:31:46,309
+whether you can restrict and so on. So, transfer
+of privileges is also privilege. I am naturally
+
+275
+00:31:46,308 --> 00:31:52,099
+will have to think of this is an authorization.
+So, actually what we can authorize is also
+
+276
+00:31:52,099 --> 00:31:58,699
+a privilege that needs to be authorized. So,
+these are the derived privileges that I have.
+
+277
+00:31:58,700 --> 00:32:08,538
+So, in summary, we have learnt about SQL expressions
+to deal with integrity constraints. We are
+
+278
+00:32:08,538 --> 00:32:17,739
+familiarized with more data types particularly
+user defined types and domains creation of
+
+279
+00:32:17,739 --> 00:32:24,690
+index and we have discussed about authorization
+in SQL. Each one of them particularly authorization
+
+280
+00:32:24,690 --> 00:32:32,099
+has lot more details, but at this intermediate
+level we just wanted to get a basic idea about
+
+281
+00:32:32,098 --> 00:32:37,579
+authorization to be able to deal with that.
+So, with this we close our discussion on the
+
+282
+00:32:37,579 --> 00:32:45,460
+intermediate level SQL features. In the next
+module that we start next week, we will talk
+
+283
+00:32:45,460 --> 00:32:48,189
+about some of the advanced SQL features.
+

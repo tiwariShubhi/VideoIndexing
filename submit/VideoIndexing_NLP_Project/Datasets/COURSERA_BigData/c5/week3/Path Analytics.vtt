@@ -1,0 +1,416 @@
+WEBVTT
+
+1
+00:00:01.320 --> 00:00:05.140
+In this video,
+we'll discuss what paths are and
+
+2
+00:00:05.140 --> 00:00:08.420
+how to find your way as it travels
+along the nodes and edges of the graph.
+
+3
+00:00:10.080 --> 00:00:11.020
+Let's start with an example.
+
+4
+00:00:12.480 --> 00:00:13.260
+For this example,
+
+5
+00:00:13.260 --> 00:00:17.740
+we'll consider an edge weighted
+graph with no loops as shown here.
+
+6
+00:00:17.740 --> 00:00:21.180
+Term edge weighted means
+the edges have weights.
+
+7
+00:00:22.520 --> 00:00:26.320
+The weight of the edge I to J is 15.
+
+8
+00:00:26.320 --> 00:00:30.770
+We can think of this graph as a small road
+network, where the nodes are cities, and
+
+9
+00:00:30.770 --> 00:00:33.190
+the edge weights are highway
+distances between them.
+
+10
+00:00:34.630 --> 00:00:38.470
+To walk, or traverse, through this
+graph we'll define what a walk is.
+
+11
+00:00:39.940 --> 00:00:43.040
+A walk is an arbitrary
+sequence of nodes and
+
+12
+00:00:43.040 --> 00:00:46.860
+edges that starts from some node and
+ends on some node.
+
+13
+00:00:46.860 --> 00:00:52.158
+Here we can go from H to F
+
+14
+00:00:52.158 --> 00:00:58.935
+to G to C to
+
+15
+00:00:58.935 --> 00:01:05.750
+F to E to B.
+
+16
+00:01:05.750 --> 00:01:09.880
+Notice that in this walk,
+we went through the node F twice.
+
+17
+00:01:11.230 --> 00:01:16.280
+In many applications, we do not want
+to consider arbitrary walks but
+
+18
+00:01:16.280 --> 00:01:19.640
+consider a walk where
+we do not repeat nodes
+
+19
+00:01:19.640 --> 00:01:21.510
+unless we need to come back
+to the starting point.
+
+20
+00:01:22.710 --> 00:01:25.640
+Such a constrained walk is called a path.
+
+21
+00:01:25.640 --> 00:01:28.920
+The green arrows indicate
+a path from J to B.
+
+22
+00:01:30.330 --> 00:01:34.580
+We said on the last slide that a path
+can start from a node and end on it.
+
+23
+00:01:34.580 --> 00:01:39.074
+Such a path is called a cycle when
+the path has a three or more nodes.
+
+24
+00:01:39.074 --> 00:01:43.694
+The J, G, C,
+
+25
+00:01:43.694 --> 00:01:48.260
+F, J, is a four node cycle,
+sometimes called a four cycle.
+
+26
+00:01:49.620 --> 00:01:52.010
+C, F, E is a three cycle.
+
+27
+00:01:53.650 --> 00:01:59.030
+However, although there is an edge from
+F to J and another from J back to F,
+
+28
+00:01:59.030 --> 00:02:03.590
+this two node path is not
+a cycle by our definition.
+
+29
+00:02:04.980 --> 00:02:08.680
+A network with no cycles
+is called acyclic.
+
+30
+00:02:10.440 --> 00:02:13.110
+A graph that is both directed and
+
+31
+00:02:13.110 --> 00:02:18.600
+acyclic is called a directed
+acyclic graph, in short, a deck.
+
+32
+00:02:19.780 --> 00:02:26.470
+A trail is a concept similar to a path,
+it is a walk with no repeating edges.
+
+33
+00:02:27.500 --> 00:02:33.211
+In the graph shown in the walk,
+H, F, G, C, F, E,
+
+34
+00:02:33.211 --> 00:02:38.500
+C, F, J, is not a trail.
+
+35
+00:02:38.500 --> 00:02:41.470
+Because C, F Is traversed twice.
+
+36
+00:02:43.130 --> 00:02:46.050
+Remember the seven bridges of
+the Konigsberg problem that we described
+
+37
+00:02:46.050 --> 00:02:47.580
+in module one?
+
+38
+00:02:47.580 --> 00:02:48.840
+In that problem,
+
+39
+00:02:48.840 --> 00:02:52.260
+we had the constraint that one
+cannot cross the same bridge twice.
+
+40
+00:02:54.200 --> 00:02:57.090
+Often we see such constraints
+in path planning problems.
+
+41
+00:02:58.510 --> 00:03:02.190
+A common notion in directive
+graphs is called reachability.
+
+42
+00:03:03.710 --> 00:03:08.280
+If there is a path from node U to node V,
+V is reachable from U.
+
+43
+00:03:09.460 --> 00:03:10.770
+Reachability is not symmetric.
+
+44
+00:03:11.860 --> 00:03:15.800
+Even if V is reachable from U,
+U may or may not be reachable from V.
+
+45
+00:03:16.960 --> 00:03:21.220
+As we can see in this graph,
+I is not reachable from A.
+
+46
+00:03:23.030 --> 00:03:25.300
+Look at A more carefully.
+
+47
+00:03:25.300 --> 00:03:27.560
+There is no outgoing edge from A at all.
+
+48
+00:03:28.570 --> 00:03:31.590
+So no node in this graph
+is reachable from A.
+
+49
+00:03:32.770 --> 00:03:35.790
+A is a terminal, a leaf node of the graph.
+
+50
+00:03:37.300 --> 00:03:39.480
+Where do we see this in real life?
+
+51
+00:03:39.480 --> 00:03:43.040
+Think of road network with one way streets
+and road blocks through the construction.
+
+52
+00:03:44.040 --> 00:03:46.610
+This can make some areas
+unreachable by cars.
+
+53
+00:03:48.370 --> 00:03:51.810
+In biology,
+there are gene regulation networks,
+
+54
+00:03:51.810 --> 00:03:53.930
+in which the nodes represent genes and
+
+55
+00:03:53.930 --> 00:03:58.479
+edges represent the fact that gene
+A regulates gene B and not visa verse.
+
+56
+00:03:59.530 --> 00:04:00.940
+This makes it a directed graph.
+
+57
+00:04:02.090 --> 00:04:06.930
+We can easily think of a case where
+A regulates B, and B regulates C, but
+
+58
+00:04:06.930 --> 00:04:09.270
+C does not regulate B or A.
+
+59
+00:04:09.270 --> 00:04:12.800
+That's making A unreachable from C.
+
+60
+00:04:12.800 --> 00:04:15.050
+The final concept you will
+explore in this graph,
+
+61
+00:04:15.050 --> 00:04:19.220
+in this lecture,
+is that of a graph diameter.
+
+62
+00:04:19.220 --> 00:04:24.950
+The diameter of a graph measures the
+maximum number of steps, also called hops,
+
+63
+00:04:24.950 --> 00:04:29.320
+want us to traverse to go to
+the most distant node in the graph.
+
+64
+00:04:30.580 --> 00:04:33.630
+That means,
+if you go from an arbitrary node
+
+65
+00:04:33.630 --> 00:04:39.160
+to any other arbitrary node in the graph,
+following only the shortest paths roots,
+
+66
+00:04:39.160 --> 00:04:41.790
+what is the maximum number
+of steps you have to take?
+
+67
+00:04:43.000 --> 00:04:44.520
+Let's see how this is computed.
+
+68
+00:04:45.670 --> 00:04:50.350
+For this task, we'll create a matrix
+called the shortest hop distance matrix.
+
+69
+00:04:51.790 --> 00:04:57.060
+Just like the adjacency matrix, the rows
+and columns here represent graph nodes.
+
+70
+00:04:58.070 --> 00:05:01.930
+And each cell contains the distance
+from the I eighth node,
+
+71
+00:05:01.930 --> 00:05:03.780
+to the G eighth node
+via the shortest path.
+
+72
+00:05:05.000 --> 00:05:09.700
+The distance from any
+node to itself is zero.
+
+73
+00:05:09.700 --> 00:05:12.870
+So all diagonal elements
+of the matrix are zero.
+
+74
+00:05:14.570 --> 00:05:18.440
+If a node I cannot reach
+node J through any path,
+
+75
+00:05:18.440 --> 00:05:21.200
+the distance is marked as infinity.
+
+76
+00:05:21.200 --> 00:05:25.600
+Thus, the distance from
+B to C is infinity.
+
+77
+00:05:25.600 --> 00:05:30.203
+You can go from E to F in two steps,
+E to C to F.
+
+78
+00:05:30.203 --> 00:05:36.670
+Therefore, the wait at the C cell is two.
+
+79
+00:05:36.670 --> 00:05:41.830
+If you fill this matrix, you will
+notice that the largest reachable value
+
+80
+00:05:41.830 --> 00:05:44.610
+is 4 in doing the infinite distance.
+
+81
+00:05:45.840 --> 00:05:50.463
+Thus, the diameter of this graph is
+4 where It represents the part from I
+
+82
+00:05:50.463 --> 00:05:55.020
+to A, through J, G and D.
+
+83
+00:05:55.020 --> 00:05:59.000
+There are a few noteworthy
+items in this Distance Matrix.
+
+84
+00:05:59.000 --> 00:06:05.310
+The row of A has a value of 0 with itself
+and infinity for every other node.
+
+85
+00:06:05.310 --> 00:06:08.230
+This happens because A is a leaf node.
+
+86
+00:06:09.740 --> 00:06:13.040
+Similarly, except for
+the 0 distance with itself,
+
+87
+00:06:13.040 --> 00:06:17.810
+the H column has infinity for
+all of the nodes.
+
+88
+00:06:17.810 --> 00:06:21.984
+This happens because H
+has no incoming edges and
+
+89
+00:06:21.984 --> 00:06:25.226
+therefore no other node can reach H.

@@ -1,0 +1,518 @@
+WEBVTT
+
+1
+00:00:01.430 --> 00:00:05.170
+After a brief overview of some
+of the processing systems
+
+2
+00:00:05.170 --> 00:00:09.480
+in the Big Data Landscape, it is time for
+us to dive deeper into Spark.
+
+3
+00:00:10.820 --> 00:00:15.170
+Spark was initiated at
+UC Berkeley in 2009 and
+
+4
+00:00:15.170 --> 00:00:19.840
+was transferred to
+Apache Software Foundation in 2013.
+
+5
+00:00:19.840 --> 00:00:24.240
+Since then, Spark has become a top
+level project with many users and
+
+6
+00:00:24.240 --> 00:00:25.700
+contributors worldwide.
+
+7
+00:00:27.550 --> 00:00:32.530
+After this video, you will be able
+to list the main motivations for
+
+8
+00:00:32.530 --> 00:00:36.980
+the development of Spark,
+draw the Spark stack as a layer diagram,
+
+9
+00:00:38.320 --> 00:00:42.130
+And explain the functionality of
+the components in the Spark stack.
+
+10
+00:00:44.520 --> 00:00:49.810
+As we have discussed in our earlier
+discussions, while Hadoop is great for
+
+11
+00:00:49.810 --> 00:00:53.460
+batch processing using
+the MapReduce programming module,
+
+12
+00:00:53.460 --> 00:00:55.710
+it has shortcomings in a number of ways.
+
+13
+00:00:57.110 --> 00:01:02.000
+First of all, since it is limited to
+Map and Reduce based transformations,
+
+14
+00:01:02.000 --> 00:01:07.020
+one has to restrict their big data
+pipeline to map and reduce steps.
+
+15
+00:01:08.520 --> 00:01:11.680
+But the number of applications
+can be implemented using Map and
+
+16
+00:01:11.680 --> 00:01:14.970
+Reduce, it's not always possible and
+
+17
+00:01:14.970 --> 00:01:18.810
+it is often not the most efficient
+way to express a big data pipeline.
+
+18
+00:01:20.460 --> 00:01:25.920
+For example, you might want to do a join
+operation between different data sets or
+
+19
+00:01:25.920 --> 00:01:28.430
+you might want to filter or
+sample your data.
+
+20
+00:01:29.440 --> 00:01:32.460
+Or you might have a more
+complicated data pipeline with
+
+21
+00:01:32.460 --> 00:01:36.680
+several steps including joins and
+group byes.
+
+22
+00:01:36.680 --> 00:01:41.280
+It might have a Map and Reduce face,
+but maybe another map face after that.
+
+23
+00:01:42.660 --> 00:01:48.140
+These types of operations are hard or
+impossible to express using MapReduce and
+
+24
+00:01:48.140 --> 00:01:51.760
+cannot be accommodated by
+the MapReduce framework in Hadoop.
+
+25
+00:01:53.080 --> 00:01:56.830
+Another important bottleneck in
+Hadoop MapReduce that is critical for
+
+26
+00:01:56.830 --> 00:02:01.880
+performance, is that MapReduce relies
+heavily on reading data from disc.
+
+27
+00:02:03.680 --> 00:02:08.470
+This is especially a problem for iterative
+algorithms that require taking several
+
+28
+00:02:08.470 --> 00:02:12.800
+passes through the data using
+a number of transformations.
+
+29
+00:02:12.800 --> 00:02:16.940
+Since each transformation will need
+to read its inputs from the disk,
+
+30
+00:02:16.940 --> 00:02:20.670
+this will end up in a performance
+bottleneck due to IO.
+
+31
+00:02:22.730 --> 00:02:25.610
+Most machine learning pipelines
+are in this category,
+
+32
+00:02:25.610 --> 00:02:28.850
+making Hadoop MapReduce not ideal for
+machine learning.
+
+33
+00:02:29.900 --> 00:02:34.070
+And as I mentioned in the system overview,
+the only programming language
+
+34
+00:02:34.070 --> 00:02:38.190
+that MapReduce provides
+a native interface for is Java.
+
+35
+00:02:38.190 --> 00:02:43.500
+Although, it's possible to run Python code
+to implementation for it is more complex
+
+36
+00:02:43.500 --> 00:02:48.020
+and not very efficient especially when
+you are running not with text data, but
+
+37
+00:02:48.020 --> 00:02:49.320
+with floating point numbers.
+
+38
+00:02:50.650 --> 00:02:54.417
+The programming language issue
+also affects how interactive
+
+39
+00:02:54.417 --> 00:02:55.830
+the environment is.
+
+40
+00:02:55.830 --> 00:02:58.490
+Most data scientist
+prefer to use scripting
+
+41
+00:02:58.490 --> 00:03:02.120
+languages due to their
+interactive shell capabilities.
+
+42
+00:03:02.120 --> 00:03:06.670
+Not having such an interface in Hadoop
+really makes it difficult to use and
+
+43
+00:03:06.670 --> 00:03:07.940
+adapt my many in the field.
+
+44
+00:03:09.530 --> 00:03:13.410
+In addition in the big data
+era having support for
+
+45
+00:03:13.410 --> 00:03:16.280
+streaming data processing is a key for
+
+46
+00:03:16.280 --> 00:03:20.920
+being able to run similar analysis on
+both real time and historical data.
+
+47
+00:03:22.380 --> 00:03:26.160
+Spark came out of the need to
+extend the MapReduce framework
+
+48
+00:03:26.160 --> 00:03:28.690
+to overcome this shortcomings and
+
+49
+00:03:28.690 --> 00:03:33.080
+provide an expressive cluster computing
+environment that can provide interactive
+
+50
+00:03:33.080 --> 00:03:37.820
+querying, efficient iterative analytics
+and streaming data processing.
+
+51
+00:03:39.140 --> 00:03:42.970
+So, how does Apache Spark provide
+solutions for these problems?
+
+52
+00:03:44.810 --> 00:03:48.820
+Spark provides a very rich and
+expressive programming module that
+
+53
+00:03:48.820 --> 00:03:53.690
+gives you more than 20 highly efficient
+distributed operations or transformations.
+
+54
+00:03:54.695 --> 00:03:58.810
+Pipe-lining any of these steps in Spark
+simply takes a few lines of code.
+
+55
+00:04:00.470 --> 00:04:05.040
+Another important feature of Spark is
+the ability to run these computations
+
+56
+00:04:05.040 --> 00:04:05.550
+in memory.
+
+57
+00:04:06.610 --> 00:04:10.350
+It's ability to cache and
+process data in memory,
+
+58
+00:04:10.350 --> 00:04:14.325
+makes it significantly faster for
+iterative applications.
+
+59
+00:04:14.325 --> 00:04:19.665
+This is proven to provide a factor
+of ten or even 100 speed-up
+
+60
+00:04:19.665 --> 00:04:23.805
+in the performance of some algorithms,
+especially using large data sets.
+
+61
+00:04:25.635 --> 00:04:30.625
+Additionally, Spark provides support for
+batch and streaming workloads at once.
+
+62
+00:04:31.790 --> 00:04:36.675
+Last but not least,
+Spark provides simple APIs for Python,
+
+63
+00:04:36.675 --> 00:04:41.570
+Scala, Java and SQL programming
+through an interactive shell to
+
+64
+00:04:41.570 --> 00:04:46.590
+accomplish analytical tasks through both
+external and its built-in libraries.
+
+65
+00:04:48.750 --> 00:04:52.500
+The Spark layer diagram,
+also called Stack,
+
+66
+00:04:52.500 --> 00:04:57.250
+consists of components that build on
+top of the Spark computational engine.
+
+67
+00:04:58.510 --> 00:05:04.860
+This engine distributes and monitors tasks
+across the nodes of a commodity cluster.
+
+68
+00:05:05.960 --> 00:05:10.400
+The components built on top of this
+engine are designed to interact and
+
+69
+00:05:10.400 --> 00:05:12.320
+communicate through this common engine.
+
+70
+00:05:13.430 --> 00:05:17.520
+Any improvements to
+the underlying engine becomes
+
+71
+00:05:17.520 --> 00:05:21.980
+an improvement in the other components,
+thanks to such close interaction.
+
+72
+00:05:23.390 --> 00:05:28.790
+This also enables building applications
+that's span across these different
+
+73
+00:05:28.790 --> 00:05:33.950
+components like querying data using
+Spark SQL and applying machine learning
+
+74
+00:05:33.950 --> 00:05:39.230
+algorithms, the query results using Sparks
+machine learning library and MLlib.
+
+75
+00:05:41.120 --> 00:05:45.240
+The Spark Core is where
+the core capability is
+
+76
+00:05:45.240 --> 00:05:48.520
+of the Spark Framework are implemented.
+
+77
+00:05:48.520 --> 00:05:50.010
+This includes support for
+
+78
+00:05:50.010 --> 00:05:54.460
+distributed scheduling,
+memory management and full tolerance.
+
+79
+00:05:55.570 --> 00:05:59.460
+Interaction with different schedulers,
+like YARN and Mesos and
+
+80
+00:05:59.460 --> 00:06:04.030
+various NoSQL storage systems like
+HBase also happen through Spark Core.
+
+81
+00:06:06.020 --> 00:06:10.068
+A very important part of
+Spark Core is the APIs for
+
+82
+00:06:10.068 --> 00:06:15.422
+defining resilient distributed data sets,
+or RDDs for short.
+
+83
+00:06:15.422 --> 00:06:18.858
+RDDs are the main programming
+abstraction in Spark,
+
+84
+00:06:18.858 --> 00:06:23.910
+which carry data across many computing
+nodes in parallel, and transform it.
+
+85
+00:06:23.910 --> 00:06:29.614
+Spark SQL is the component of Spark
+that provides querying structured and
+
+86
+00:06:29.614 --> 00:06:33.763
+unstructured data through
+a common query language.
+
+87
+00:06:33.763 --> 00:06:38.830
+It can connect to many data sources and
+provide APIs to convert
+
+88
+00:06:38.830 --> 00:06:43.714
+query results to RDDs in Python,
+Scala and Java programs.
+
+89
+00:06:43.714 --> 00:06:49.780
+Spark Streaming is where data
+manipulations take place in Spark.
+
+90
+00:06:51.060 --> 00:06:57.120
+Although, not a native real-time interface
+to datastreams, Spark streaming enables
+
+91
+00:06:57.120 --> 00:07:01.140
+creating small aggregates of data coming
+from streaming data ingestion systems.
+
+92
+00:07:03.490 --> 00:07:08.000
+These aggregate datasets
+are called micro-batches and
+
+93
+00:07:08.000 --> 00:07:11.680
+they can be converted into RDBs in
+Spark Streaming for processing.
+
+94
+00:07:13.740 --> 00:07:16.740
+MLlib is Sparks native library for
+
+95
+00:07:16.740 --> 00:07:21.240
+machine learning algorithms
+as well as model evaluation.
+
+96
+00:07:21.240 --> 00:07:26.050
+All of the functionality is potentially
+ported to any programming language Sparks
+
+97
+00:07:26.050 --> 00:07:30.030
+supports and
+is designed to scale out using Spark.
+
+98
+00:07:31.190 --> 00:07:35.840
+GraphX is the graph analytics
+library of Spark and
+
+99
+00:07:35.840 --> 00:07:41.270
+enables the Vertex edge data model of
+graphs to be converted into RDDs as
+
+100
+00:07:41.270 --> 00:07:45.328
+well as providing scalable implementations
+of graph processing algorithms.
+
+101
+00:07:47.390 --> 00:07:52.655
+To summarize, through these
+layers Spark provides diverse,
+
+102
+00:07:52.655 --> 00:07:57.731
+scalable interactive management and
+analyses of big data.
+
+103
+00:07:57.731 --> 00:08:03.166
+The interactive shell enables data
+scientists to conduct exploratory
+
+104
+00:08:03.166 --> 00:08:08.416
+analysis and create big data pipelines,
+while also enabling the big
+
+105
+00:08:08.416 --> 00:08:13.941
+data system integration engineers
+to scale these analytical pipelines
+
+106
+00:08:13.941 --> 00:08:18.850
+across commodity computing clusters and
+cloud environments.

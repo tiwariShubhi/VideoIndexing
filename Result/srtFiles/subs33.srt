@@ -1,0 +1,2196 @@
+
+1
+00:00:00.920 --> 00:00:05.020
+In this lecture, we will discuss
+the Naive Bayes classifier.
+
+2
+00:00:05.020 --> 00:00:09.680
+After this video, you will be able
+to discuss how a Naive Bayes model
+
+3
+00:00:09.680 --> 00:00:14.550
+works fro classification,
+define the components of Bayes' Rule and
+
+4
+00:00:14.550 --> 00:00:17.349
+explain what the naive
+means in Naive Bayes.
+
+5
+00:00:18.570 --> 00:00:24.500
+A Naive Bayes classification model uses a
+probabilistic approach to classification.
+
+6
+00:00:24.500 --> 00:00:28.190
+What this means is that the relationships
+between the input features and
+
+7
+00:00:28.190 --> 00:00:31.980
+the class is expressed as probabilities.
+
+8
+00:00:31.980 --> 00:00:36.390
+So given the input features for
+a sample, the probability for
+
+9
+00:00:36.390 --> 00:00:38.880
+each class is estimated.
+
+10
+00:00:38.880 --> 00:00:43.980
+The class with the highest probability
+then, determines the label for the sample.
+
+11
+00:00:45.800 --> 00:00:50.250
+In addition to using a probabilistic
+framework for classification,
+
+12
+00:00:50.250 --> 00:00:55.060
+the Naive Bayes classifier also uses
+what is known as Bayes' theorem.
+
+13
+00:00:55.060 --> 00:00:58.930
+The application of Bayes' theorem makes
+estimating the probabilities easier.
+
+14
+00:01:00.100 --> 00:01:04.850
+In addition, Naive Bayes assumes that
+the input features are statistically
+
+15
+00:01:04.850 --> 00:01:07.400
+independent of one another.
+
+16
+00:01:07.400 --> 00:01:10.070
+This means that, for a given class,
+
+17
+00:01:10.070 --> 00:01:15.060
+the value of one feature does not
+affect the value of any other feature.
+
+18
+00:01:15.060 --> 00:01:19.060
+This independence assumption is
+an oversimplified one that does not always
+
+19
+00:01:19.060 --> 00:01:23.330
+hold true, and so
+is considered a naive assumption.
+
+20
+00:01:23.330 --> 00:01:25.510
+The naive independence assumption and
+
+21
+00:01:25.510 --> 00:01:28.830
+the use of Bayes theorem gives this
+classification model its name.
+
+22
+00:01:29.910 --> 00:01:31.320
+We will cover Bayes theorem and
+
+23
+00:01:31.320 --> 00:01:34.120
+the independence assumption in
+more detail in this lecture.
+
+24
+00:01:35.580 --> 00:01:38.200
+Before we look at naive
+Bayes in more detail,
+
+25
+00:01:38.200 --> 00:01:40.630
+let's first start with some
+background on probability.
+
+26
+00:01:41.800 --> 00:01:45.970
+Probability is the measure
+of how likely an event is,
+
+27
+00:01:45.970 --> 00:01:51.060
+the probability of an event A occurring
+is denoted P and in parenthesis A.
+
+28
+00:01:52.330 --> 00:01:57.710
+It is calculated by dividing
+the number of ways event A can occur,
+
+29
+00:01:57.710 --> 00:01:59.769
+by the total number of possible outcomes.
+
+30
+00:02:01.370 --> 00:02:07.170
+For example, what is the probability
+of rolling a die and getting six?
+
+31
+00:02:07.170 --> 00:02:10.890
+When you roll a die you can get
+a number from one to six, so
+
+32
+00:02:10.890 --> 00:02:13.060
+the number of possible outcomes is six.
+
+33
+00:02:14.330 --> 00:02:17.310
+The number of ways fro getting six is one,
+
+34
+00:02:17.310 --> 00:02:21.850
+since the way you can get six is if
+the die shows six when it stops rolling.
+
+35
+00:02:22.850 --> 00:02:27.800
+That means that the probability of getting
+the number six when you roll a die
+
+36
+00:02:27.800 --> 00:02:30.080
+is one over six.
+
+37
+00:02:30.080 --> 00:02:34.790
+This is denoted p of six and
+that's equal to one over six and
+
+38
+00:02:34.790 --> 00:02:38.670
+is read as probability
+of six is one over six.
+
+39
+00:02:40.440 --> 00:02:45.020
+There's also a joint probability,
+the joint probability specifies
+
+40
+00:02:45.020 --> 00:02:49.930
+the probability of event A and
+event B occurring together.
+
+41
+00:02:51.090 --> 00:02:56.620
+In this diagram, the probability of event
+A occurring is shown as the blue circle
+
+42
+00:02:57.650 --> 00:03:01.710
+and the probability of event B
+occurring is shown as the green circle.
+
+43
+00:03:02.770 --> 00:03:07.630
+Then the joint probability,
+that is the probability of A and
+
+44
+00:03:07.630 --> 00:03:12.340
+B occurring together is shown as
+the overlap of these two circles.
+
+45
+00:03:13.470 --> 00:03:18.635
+The joint probability of A and
+B is denoted,
+
+46
+00:03:18.635 --> 00:03:21.610
+P(A,B) for
+
+47
+00:03:21.610 --> 00:03:26.860
+an example of joint probability,
+let's consider rolling 2 dice together.
+
+48
+00:03:26.860 --> 00:03:31.090
+What is the probability in getting
+2 sixes or a six from each die.
+
+49
+00:03:32.250 --> 00:03:37.020
+If the two events are independent, then
+the joint probability is simply the result
+
+50
+00:03:37.020 --> 00:03:40.880
+of multiplying the probabilities
+of the individual events together.
+
+51
+00:03:42.000 --> 00:03:45.690
+In this case then, we have
+the probability of rolling a six for
+
+52
+00:03:45.690 --> 00:03:51.040
+each die is one over six so
+the joint probability is one over 36,
+
+53
+00:03:51.040 --> 00:03:56.480
+this leads us to conditional probability.
+
+54
+00:03:56.480 --> 00:04:01.250
+The conditional probability is
+the probability of event A occurring
+
+55
+00:04:01.250 --> 00:04:04.090
+Given that event B has already occurred.
+
+56
+00:04:05.150 --> 00:04:11.570
+Another way to say this is that
+event A is conditioned on event B.
+
+57
+00:04:11.570 --> 00:04:16.170
+The conditional probability is
+the noted P and in parentheses A,
+
+58
+00:04:16.170 --> 00:04:21.390
+vertical line B and is read as,
+probability of A Given B.
+
+59
+00:04:22.730 --> 00:04:27.510
+This diagram gives a graphical
+definition of conditional probability.
+
+60
+00:04:27.510 --> 00:04:33.030
+As before, the blue circle is
+the probability of event A occurring,
+
+61
+00:04:33.030 --> 00:04:37.260
+the green circle is the probability
+of event B occurring.
+
+62
+00:04:37.260 --> 00:04:40.610
+The overlap is a joint
+probability of A and B.
+
+63
+00:04:41.730 --> 00:04:46.500
+The conditional probability,
+P(A given B) then is
+
+64
+00:04:46.500 --> 00:04:51.870
+calculated as the join probability
+divided by the probability of B.
+
+65
+00:04:53.040 --> 00:04:56.980
+The conditional probability is
+an important concept in classification
+
+66
+00:04:56.980 --> 00:04:58.800
+as we will see later.
+
+67
+00:04:58.800 --> 00:05:03.020
+It provides the means to specify
+the probability of a class label,
+
+68
+00:05:03.020 --> 00:05:04.240
+given the input values.
+
+69
+00:05:05.960 --> 00:05:12.390
+The relationship between conditional
+probabilities P of B given A and
+
+70
+00:05:12.390 --> 00:05:17.295
+P of A given B can be expressed
+through Bayes' Theorem.
+
+71
+00:05:17.295 --> 00:05:21.811
+This theorem is named after a reverend
+named Thomas Bayes who lived in the 1700s.
+
+72
+00:05:21.811 --> 00:05:26.691
+It is a way to look at how the probability
+of a hypothesis is affected by
+
+73
+00:05:26.691 --> 00:05:29.170
+new evidence gathered from data.
+
+74
+00:05:29.170 --> 00:05:34.925
+Bayes' theorem expresses the relationship
+between probability of B
+
+75
+00:05:34.925 --> 00:05:40.285
+given A and probability of A given
+B as shown in this equation.
+
+76
+00:05:40.285 --> 00:05:46.033
+Bayes' Theorem is also known
+as Bayes' Rule or Bayes' Law.
+
+77
+00:05:46.033 --> 00:05:49.750
+Now that we have reviewed some
+background on probability
+
+78
+00:05:49.750 --> 00:05:52.610
+let's see how all this relates
+to the classification problem.
+
+79
+00:05:53.840 --> 00:05:58.249
+With the probabilistic framework the
+classification task is defined as follows.
+
+80
+00:05:59.530 --> 00:06:03.930
+Capital X is the set of values for
+the input features in the sample,
+
+81
+00:06:05.090 --> 00:06:09.780
+given a sample with features X,
+predict the corresponding class C.
+
+82
+00:06:10.860 --> 00:06:15.930
+Another way to state this is,
+what is the class label associated with
+
+83
+00:06:15.930 --> 00:06:21.550
+the feature vector X or how should
+the feature vector x be classified?
+
+84
+00:06:22.910 --> 00:06:27.470
+To find the class label C we need to
+calculate the conditional probability of
+
+85
+00:06:27.470 --> 00:06:31.540
+class C, given X for all classes and
+
+86
+00:06:31.540 --> 00:06:33.990
+select a class with
+the highest probability.
+
+87
+00:06:35.450 --> 00:06:37.010
+So for classification,
+
+88
+00:06:37.010 --> 00:06:43.460
+we want to find the value of C that
+maximizes the probability of C given X.
+
+89
+00:06:43.460 --> 00:06:47.140
+The problem is that it is difficult
+to estimate this probability,
+
+90
+00:06:47.140 --> 00:06:52.530
+because we would need to enumerate every
+possible combination of feature values and
+
+91
+00:06:52.530 --> 00:06:54.460
+to know the conditional probability.
+
+92
+00:06:54.460 --> 00:06:59.570
+For each class given every
+possible feature combination and
+
+93
+00:06:59.570 --> 00:07:02.330
+here is where Bayes'
+theorem comes into play.
+
+94
+00:07:02.330 --> 00:07:06.710
+The classification problem can be
+reformulated using Bayes' theorem
+
+95
+00:07:06.710 --> 00:07:08.876
+to simplify the classification problem.
+
+96
+00:07:08.876 --> 00:07:16.060
+Specifically, using Bayes' theorem, the
+probability of c given x, can be expressed
+
+97
+00:07:16.060 --> 00:07:20.600
+using other probability quantities,
+which can be estimated from the data.
+
+98
+00:07:22.030 --> 00:07:26.010
+Here's Bayes' theorem again, but
+some additional terms defined.
+
+99
+00:07:26.010 --> 00:07:31.870
+Probability of C I X is referred to
+as the posterior probability since
+
+100
+00:07:31.870 --> 00:07:37.930
+it is the probability of the class label
+being C after observing input features X.
+
+101
+00:07:39.400 --> 00:07:43.850
+Probability of X given
+C is the probability of
+
+102
+00:07:43.850 --> 00:07:48.450
+observing input features X given
+that c is the class label.
+
+103
+00:07:49.540 --> 00:07:54.480
+This is the class conditional probability
+since it is conditioned on the class.
+
+104
+00:07:55.790 --> 00:08:00.440
+Probability of c is the probability
+of the class label being C,
+
+105
+00:08:01.470 --> 00:08:06.560
+this is the probability of each class
+prior to observing any input data.
+
+106
+00:08:06.560 --> 00:08:09.350
+And so
+is referred to as the prior probability.
+
+107
+00:08:10.810 --> 00:08:14.240
+The probability of X is the probability
+
+108
+00:08:14.240 --> 00:08:18.479
+of observing input features X
+regardless of what the class label is.
+
+109
+00:08:20.070 --> 00:08:24.617
+So for classification we want
+to calculate the posterior
+
+110
+00:08:24.617 --> 00:08:27.939
+probability P(C | X) for each class C.
+
+111
+00:08:27.939 --> 00:08:34.343
+From Bayes' theorem P(C | X) is related to
+
+112
+00:08:34.343 --> 00:08:40.250
+the P(X | C) P(C And probability of X.
+
+113
+00:08:41.790 --> 00:08:45.680
+Probability of X does not depend
+on the class C, therefore,
+
+114
+00:08:45.680 --> 00:08:49.040
+it is a constant value, given the input X.
+
+115
+00:08:49.040 --> 00:08:52.940
+Since it the same value for
+all classes, the probability
+
+116
+00:08:52.940 --> 00:08:57.610
+of X can be removed from the calculation
+of probability of C, given X.
+
+117
+00:08:58.610 --> 00:09:03.910
+What's left then are probability of
+X given C and the probability of C.
+
+118
+00:09:05.630 --> 00:09:09.826
+So estimating the probability
+of C given X boils down to
+
+119
+00:09:09.826 --> 00:09:14.583
+estimating the probability of X
+given C and probability of C.
+
+120
+00:09:14.583 --> 00:09:18.397
+The nice thing is that
+probability of X given C and
+
+121
+00:09:18.397 --> 00:09:22.220
+probability of C can be
+estimated from the data.
+
+122
+00:09:23.390 --> 00:09:28.200
+So now we have a way to calculate probably
+of C given X which is what we need for
+
+123
+00:09:28.200 --> 00:09:28.940
+classification.
+
+124
+00:09:30.150 --> 00:09:31.720
+To the estimate the probability of C
+
+125
+00:09:32.780 --> 00:09:37.450
+which is the probability of the class
+of C before observing any input data.
+
+126
+00:09:37.450 --> 00:09:41.690
+We simply calculate the fraction
+of samples with that class label
+
+127
+00:09:41.690 --> 00:09:42.910
+C in the training data.
+
+128
+00:09:44.170 --> 00:09:48.650
+For this example, there are four samples
+labeled as green circles out of 10
+
+129
+00:09:48.650 --> 00:09:55.740
+samples, so probability of green
+circle is 4 out of 10, or 0.4.
+
+130
+00:09:55.740 --> 00:10:01.650
+Similarly, the fraction of samples labeled
+as red triangles is 6 out of 10, or 0.6.
+
+131
+00:10:01.650 --> 00:10:06.500
+So estimating the prior
+probabilities is a simple count
+
+132
+00:10:06.500 --> 00:10:09.660
+of number of samples with each class label
+
+133
+00:10:09.660 --> 00:10:12.970
+divided by the total number of
+samples in the training data center.
+
+134
+00:10:14.410 --> 00:10:19.000
+In estimating probability of X
+given C which is the probability
+
+135
+00:10:19.000 --> 00:10:23.520
+of observing feature factor
+X given that the class is C,
+
+136
+00:10:23.520 --> 00:10:26.760
+we can use the independent
+assumption to simplify the problem.
+
+137
+00:10:27.790 --> 00:10:31.820
+The Independence Assumption of
+the Naive Bayes classifier assumes
+
+138
+00:10:31.820 --> 00:10:36.620
+that each feature X sub I
+in the featured vector X
+
+139
+00:10:36.620 --> 00:10:41.410
+is conditionally independent of every
+other feature, given the class C.
+
+140
+00:10:42.520 --> 00:10:47.600
+This means that we only need to
+estimate the probability of X
+
+141
+00:10:47.600 --> 00:10:51.360
+sub i given C, instead of having to
+
+142
+00:10:51.360 --> 00:10:56.030
+estimate the probability of
+the entire feature X given C.
+
+143
+00:10:56.030 --> 00:10:58.070
+For every combination of values for
+
+144
+00:10:58.070 --> 00:11:03.900
+the features in X then we would simply
+multiply these individual probabilities
+
+145
+00:11:03.900 --> 00:11:08.630
+together to get the probability
+of the entire feature vector X.
+
+146
+00:11:08.630 --> 00:11:14.660
+Given the class C to estimate
+the probability of X sub I,
+
+147
+00:11:14.660 --> 00:11:19.210
+given C, we count up the number
+of times a particular input
+
+148
+00:11:19.210 --> 00:11:23.820
+value is observed for
+the class c in the training data.
+
+149
+00:11:23.820 --> 00:11:28.880
+For example, the number of times that we
+see the value of yes for the future home
+
+150
+00:11:28.880 --> 00:11:35.380
+owner, when the class label is no it's
+three as indicated by the green arrows.
+
+151
+00:11:35.380 --> 00:11:40.980
+This is divided by the number of samples
+with no as the class label which is seven.
+
+152
+00:11:40.980 --> 00:11:43.160
+This fraction, three out of seven,
+
+153
+00:11:43.160 --> 00:11:47.910
+is the probability that home owner
+is Yes given that the class is No.
+
+154
+00:11:50.090 --> 00:11:53.420
+Similarly, the samples with
+the value of Single for
+
+155
+00:11:53.420 --> 00:11:58.710
+the feature Marital Status when it crosses
+Yes are indicated by the red arrows.
+
+156
+00:11:58.710 --> 00:12:02.050
+And the probability that
+Marital Status is Single,
+
+157
+00:12:02.050 --> 00:12:07.520
+given that the class label
+is Yes is 2/3 or 0.67.
+
+158
+00:12:09.050 --> 00:12:14.360
+Some things to know about the Naive Bayes
+classification model are it is a fast and
+
+159
+00:12:14.360 --> 00:12:15.840
+simple algorithm.
+
+160
+00:12:15.840 --> 00:12:19.940
+The algorithm boils down to calculating
+counts for probabilities and
+
+161
+00:12:19.940 --> 00:12:24.930
+performing some multiplication, so
+it is very simple to implement.
+
+162
+00:12:24.930 --> 00:12:28.000
+And the probabilities that are needed
+can be calculated with a single
+
+163
+00:12:28.000 --> 00:12:30.180
+scan of the data set and
+stored in a table.
+
+164
+00:12:31.610 --> 00:12:35.610
+Either two processing of the data
+is not necessary as with many other
+
+165
+00:12:35.610 --> 00:12:36.500
+machine learning algorithms.
+
+166
+00:12:37.540 --> 00:12:42.150
+So model building and
+testing of both task, it scales well.
+
+167
+00:12:42.150 --> 00:12:44.970
+Due today independent assumption,
+the probability for
+
+168
+00:12:44.970 --> 00:12:48.000
+each feature can be
+independently estimated.
+
+169
+00:12:48.000 --> 00:12:52.120
+These means that featured probability
+is can be calculated in parallel,
+
+170
+00:12:52.120 --> 00:12:56.270
+this also means that the data set size
+does not have to grow exponentially
+
+171
+00:12:56.270 --> 00:12:57.630
+with a number of features.
+
+172
+00:12:58.780 --> 00:13:02.130
+This avoids the many problems associated
+with the curse of dimensionality,
+
+173
+00:13:03.480 --> 00:13:06.480
+this also means that you do not need
+a lot of data to build the model.
+
+174
+00:13:07.700 --> 00:13:11.410
+The number of parameters scales
+linearly with the number of features.
+
+175
+00:13:12.740 --> 00:13:16.700
+The Independence assumption does
+not hold true in many cases.
+
+176
+00:13:16.700 --> 00:13:20.850
+In practice however, the Naive Bayes
+classifier still tends to perform very
+
+177
+00:13:20.850 --> 00:13:24.070
+well this is because even
+though Naive Bayes may
+
+178
+00:13:24.070 --> 00:13:28.400
+not provide good estimates of
+the correct class probabilities.
+
+179
+00:13:28.400 --> 00:13:32.870
+As long as the correct class is
+more probable than any other class,
+
+180
+00:13:32.870 --> 00:13:35.420
+the correct classification
+results will be reached.
+
+181
+00:13:36.920 --> 00:13:40.940
+The independence assumption also prevents
+the naive base classifier to model
+
+182
+00:13:40.940 --> 00:13:45.810
+interactions between features which
+limits its classification power.
+
+183
+00:13:45.810 --> 00:13:50.040
+The increased risk of smoking in a history
+of cancer would not be captured,
+
+184
+00:13:50.040 --> 00:13:50.560
+for example.
+
+185
+00:13:52.510 --> 00:13:56.230
+The Naive Bays classifier has been
+applied to many real world problems
+
+186
+00:13:56.230 --> 00:14:00.620
+including spam filtering, document
+classification, and sentiment analysis.
+
+187
+00:14:01.650 --> 00:14:06.530
+To summarize, the Naive Bayes classifier
+uses a probabilistic framework for
+
+188
+00:14:06.530 --> 00:14:08.120
+classification.
+
+189
+00:14:08.120 --> 00:14:11.916
+It applies Bayes Theorem and
+the Feature Independence Assumption,
+
+190
+00:14:11.916 --> 00:14:16.570
+to simplify the problem of estimating
+probabilities for the classification task.
+
+1
+00:00:01.130 --> 00:00:04.720
+In addition to the evaluation
+matrix covered n the last lecture.
+
+2
+00:00:04.720 --> 00:00:08.170
+The performance of a classification
+model can also be evaluated
+
+3
+00:00:08.170 --> 00:00:10.430
+using a Confusion Matrix.
+
+4
+00:00:10.430 --> 00:00:12.990
+We will introduce the Confusion Matrix,
+in this lecture.
+
+5
+00:00:14.180 --> 00:00:16.990
+After this video you will be able to,
+
+6
+00:00:16.990 --> 00:00:21.410
+describe how a confusion matrix can
+be used to evaluate a classifier.
+
+7
+00:00:21.410 --> 00:00:24.240
+Interpret the confusion matrix of a model.
+
+8
+00:00:24.240 --> 00:00:27.160
+And relate accuracy to values
+in a confusion matrix.
+
+9
+00:00:28.430 --> 00:00:34.080
+Let's use our example again of predicting
+whether a given animal is a mammal or not.
+
+10
+00:00:34.080 --> 00:00:38.280
+Recall that this is a binary
+classification task, with the Class Label
+
+11
+00:00:38.280 --> 00:00:42.849
+being either Yes, indicating mammal or
+No indicating non-mammal.
+
+12
+00:00:44.360 --> 00:00:47.190
+Now let's review the different Types
+of Errors that you can get with
+
+13
+00:00:47.190 --> 00:00:48.810
+Classification.
+
+14
+00:00:48.810 --> 00:00:50.650
+If the True Label is Yes and
+
+15
+00:00:50.650 --> 00:00:55.760
+the Predicted Label is Yes, then this
+is a True Positive, abbreviated as TP.
+
+16
+00:00:56.850 --> 00:01:00.450
+This is a case where the label is
+correctly predicted as positive.
+
+17
+00:01:01.500 --> 00:01:03.430
+If the True Label is No and
+
+18
+00:01:03.430 --> 00:01:08.280
+the Predicted Label is No, then this
+is a True Negative, abbreviated as TN.
+
+19
+00:01:09.350 --> 00:01:12.710
+This is the case where the label is
+correctly predicted as negative.
+
+20
+00:01:13.900 --> 00:01:15.970
+If the True Label is No and
+
+21
+00:01:15.970 --> 00:01:20.960
+the Predicted Label is Yes, then this
+is a False Positive, abbreviated as FP.
+
+22
+00:01:22.240 --> 00:01:26.910
+This is the case where the label is
+incorrectly predicted as positive
+
+23
+00:01:26.910 --> 00:01:27.830
+when it should be negative.
+
+24
+00:01:29.110 --> 00:01:32.850
+If the True Label is Yes and
+the Predicted Label is No,
+
+25
+00:01:32.850 --> 00:01:36.180
+then this is a False Negative
+abbreviated as FN.
+
+26
+00:01:37.300 --> 00:01:41.350
+This is the case where the label is
+incorrectly predicted as negative,
+
+27
+00:01:41.350 --> 00:01:42.390
+when it should be positive.
+
+28
+00:01:44.390 --> 00:01:47.910
+A Confusion Matrix can be used to
+summarize the different types of
+
+29
+00:01:47.910 --> 00:01:49.050
+classification errors.
+
+30
+00:01:50.100 --> 00:01:54.710
+The True Positive cell corresponds to the
+samples that are correctly predicted as
+
+31
+00:01:54.710 --> 00:01:56.180
+positive by the model.
+
+32
+00:01:57.290 --> 00:02:01.460
+The True Negative cell corresponds to
+the samples that are correctly predicted
+
+33
+00:02:01.460 --> 00:02:02.030
+as negative.
+
+34
+00:02:03.070 --> 00:02:07.240
+The False Positive cell corresponds to
+samples that are incorrectly predicted
+
+35
+00:02:07.240 --> 00:02:07.940
+as positive.
+
+36
+00:02:08.950 --> 00:02:13.310
+The False Negative cell corresponds to
+samples that are incorrectly predicted
+
+37
+00:02:13.310 --> 00:02:13.810
+as negative.
+
+38
+00:02:15.110 --> 00:02:19.280
+Each cell has the count, or percentage
+of samples, with each type of errors.
+
+39
+00:02:20.940 --> 00:02:25.520
+Let's look at an example to see how
+a Confusion Matrix is filled in.
+
+40
+00:02:25.520 --> 00:02:29.750
+The table on the lists True Labels
+along with the models prediction for
+
+41
+00:02:29.750 --> 00:02:31.910
+a data set of ten samples.
+
+42
+00:02:31.910 --> 00:02:34.610
+We'll summarize this results
+in a Confusion Matrix.
+
+43
+00:02:36.100 --> 00:02:39.140
+First let's figure out
+the number of true positives.
+
+44
+00:02:39.140 --> 00:02:42.860
+We call that a true positive occurrence
+when the output is correctly predicted
+
+45
+00:02:42.860 --> 00:02:44.320
+as positive.
+
+46
+00:02:44.320 --> 00:02:49.140
+In other words, the true label is Yes and
+the model's prediction is also Yes.
+
+47
+00:02:49.140 --> 00:02:54.680
+In this example, there are three true
+positives as indicated by the red arrows.
+
+48
+00:02:54.680 --> 00:02:58.390
+We enter three and the true positive
+cell in the Confusion Matrix.
+
+49
+00:02:59.660 --> 00:03:02.310
+Now let's look at the true negatives.
+
+50
+00:03:02.310 --> 00:03:06.950
+A true negative occurs when the output
+is correctly predicted as negative.
+
+51
+00:03:06.950 --> 00:03:12.150
+In other words, the true label is No and
+the models prediction is also No.
+
+52
+00:03:12.150 --> 00:03:13.160
+In this example,
+
+53
+00:03:13.160 --> 00:03:17.360
+there are four true negatives as
+indicated by the green arrows.
+
+54
+00:03:17.360 --> 00:03:21.050
+We enter four in the true negative
+cell in the Confusion Matrix.
+
+55
+00:03:22.800 --> 00:03:24.720
+What about false negatives?
+
+56
+00:03:24.720 --> 00:03:29.490
+A false negative occurs when the output
+is incorrectly predicted as negative,
+
+57
+00:03:29.490 --> 00:03:31.390
+when it should be positive.
+
+58
+00:03:31.390 --> 00:03:34.890
+That is the true label is Yes,
+and the model's prediction is No.
+
+59
+00:03:35.890 --> 00:03:36.690
+In this example,
+
+60
+00:03:36.690 --> 00:03:40.990
+there are two false negatives as
+indicated by the purple arrows.
+
+61
+00:03:40.990 --> 00:03:44.530
+We enter two in the false negative
+cell in the Confusion Matrix.
+
+62
+00:03:45.970 --> 00:03:49.030
+Finally we need to look
+at false positives.
+
+63
+00:03:49.030 --> 00:03:50.730
+A false positive occurs,
+
+64
+00:03:50.730 --> 00:03:55.760
+when the input is incorrectly predicted
+as positive, when it should be negative.
+
+65
+00:03:55.760 --> 00:04:00.380
+That is the true label is No and
+models prediction is Yes.
+
+66
+00:04:00.380 --> 00:04:04.020
+In this example there is one false
+positive as indicated by the yellow arrow.
+
+67
+00:04:05.300 --> 00:04:08.870
+We enter one in the false positive
+cell in the Confusion Matrix.
+
+68
+00:04:10.210 --> 00:04:13.460
+This is our complete Confusion Matrix for
+this example.
+
+69
+00:04:13.460 --> 00:04:16.630
+We see that the sum of the numbers
+in the cells add up to ten,
+
+70
+00:04:16.630 --> 00:04:18.820
+which is the number of
+samples in our dataset.
+
+71
+00:04:20.650 --> 00:04:23.320
+Note that the diagonal values,
+true positives and
+
+72
+00:04:23.320 --> 00:04:27.150
+true negatives are samples
+with Correct Predictions.
+
+73
+00:04:27.150 --> 00:04:30.010
+In our example, these values sum up to 7.
+
+74
+00:04:30.010 --> 00:04:34.340
+Meaning that 7 out of 10 samples were
+correctly predicted by the model.
+
+75
+00:04:35.370 --> 00:04:39.910
+The higher the sum of the diagonal values,
+the better the performance of the model.
+
+76
+00:04:41.430 --> 00:04:46.050
+The off diagonal values capture
+the misclassified samples.
+
+77
+00:04:46.050 --> 00:04:49.040
+Where the model's predictions
+do not match the true labels.
+
+78
+00:04:50.070 --> 00:04:55.242
+In this example these values indicate
+that there were three misclassifications.
+
+79
+00:04:55.242 --> 00:04:56.410
+Smaller values for
+
+80
+00:04:56.410 --> 00:05:01.130
+the off diagonal cells in the confusion
+matrix indicate better model performance.
+
+81
+00:05:03.320 --> 00:05:06.230
+Note that the diagonal values,
+true positives and
+
+82
+00:05:06.230 --> 00:05:10.080
+true negatives are samples
+with correct predictions.
+
+83
+00:05:10.080 --> 00:05:13.970
+In our example,
+these values sum up to 7 meaning
+
+84
+00:05:13.970 --> 00:05:18.030
+that 7 out of 10 samples were
+correctly predicted by the model.
+
+85
+00:05:18.030 --> 00:05:22.350
+The higher the sum of the diagonal values,
+the better the performance of the model.
+
+86
+00:05:23.460 --> 00:05:27.910
+You may have noticed that the diagonal
+values are related to Accuracy Rate.
+
+87
+00:05:27.910 --> 00:05:31.390
+Recall that accuracy is defined
+as the sum of two positives and
+
+88
+00:05:31.390 --> 00:05:34.610
+true negatives, divided by all samples.
+
+89
+00:05:34.610 --> 00:05:36.352
+The sum of two positives and
+
+90
+00:05:36.352 --> 00:05:40.839
+two negatives is the sum of the diagonal
+values in a confusion matrix.
+
+91
+00:05:40.839 --> 00:05:44.516
+The sum of the diagonal
+values in a confusion matrix,
+
+92
+00:05:44.516 --> 00:05:49.187
+divided by the total number of
+samples gives you the Accuracy Rate.
+
+93
+00:05:49.187 --> 00:05:54.200
+Similarly, the off diagonal values
+are related to the Error Rate.
+
+94
+00:05:54.200 --> 00:05:58.320
+Recall that the Error Rate is
+the opposite of the Accuracy Rate.
+
+95
+00:05:58.320 --> 00:06:02.222
+The sum of the off diagonal
+values in a confusion matrix,
+
+96
+00:06:02.222 --> 00:06:06.783
+divided by the total number of samples,
+gives you the Error Rate.
+
+97
+00:06:06.783 --> 00:06:10.399
+Looking at the values in the Confusion
+Matrix can help you understand
+
+98
+00:06:10.399 --> 00:06:13.529
+the kind of Misclassifications
+that your model is making.
+
+99
+00:06:13.529 --> 00:06:16.937
+A high value for
+this cell indicated by the yellow arrow,
+
+100
+00:06:16.937 --> 00:06:22.250
+means that classifying the Positive
+class is problematic for the model.
+
+101
+00:06:22.250 --> 00:06:26.460
+A high value for the cell indicated by
+the orange arrow on the other hand,
+
+102
+00:06:26.460 --> 00:06:30.260
+means that classifying the Negative
+class is problematic for the model.
+
+103
+00:06:31.340 --> 00:06:34.230
+In summary,
+the Confusion Matrix is a table
+
+104
+00:06:34.230 --> 00:06:37.980
+used to summarize the different
+types of errors for a classifier.
+
+105
+00:06:37.980 --> 00:06:41.990
+The values in a Confusion Matrix can
+be used to evaluate the performance of
+
+106
+00:06:41.990 --> 00:06:47.470
+a classifier and are related to evaluation
+metrics, such as accuracy and error rates.
+
+107
+00:06:47.470 --> 00:06:51.020
+They also indicate what other types of
+misclassifications the model is making.
+
+108
+00:06:52.040 --> 00:06:56.334
+Note that in some implementations
+of a Confusion Matrix, the true and
+
+109
+00:06:56.334 --> 00:06:58.460
+predictive labels are switched.
+
+110
+00:06:58.460 --> 00:07:03.025
+Be sure to review the documentation for
+the software you're using to generate
+
+111
+00:07:03.025 --> 00:07:06.565
+a Confusion Matrix to understand
+what each cell specifies.
+
+1
+00:00:01.780 --> 00:00:05.020
+In this activity, we will be
+evaluating the decision tree model
+
+2
+00:00:05.020 --> 00:00:08.788
+we created in the KNIME
+classification hands-on.
+
+3
+00:00:08.788 --> 00:00:12.630
+First, we will create a confusion
+matrix to determine the accuracy
+
+4
+00:00:12.630 --> 00:00:13.690
+of the decision tree model.
+
+5
+00:00:15.030 --> 00:00:16.920
+Next, we will use highlighting and
+
+6
+00:00:16.920 --> 00:00:19.820
+a scatter plot to analyze
+the classification errors.
+
+7
+00:00:22.606 --> 00:00:24.969
+Let's begin.
+
+8
+00:00:24.969 --> 00:00:29.281
+First, let's open the Classification
+workflow that we built in the previous
+
+9
+00:00:29.281 --> 00:00:30.033
+hands-on.
+
+10
+00:00:30.033 --> 00:00:34.252
+In the top-left of KNIME
+is a KNIME Explorer.
+
+11
+00:00:34.252 --> 00:00:36.780
+Double-click on the Classification,
+under LOCAL.
+
+12
+00:00:39.914 --> 00:00:43.802
+Next, we'll create a confusion
+matrix to analyze the accuracy
+
+13
+00:00:43.802 --> 00:00:45.530
+of our decision tree model.
+
+14
+00:00:47.040 --> 00:00:50.380
+To do this,
+we'll add the Scorer node to the canvas.
+
+15
+00:00:57.249 --> 00:01:02.340
+Connect the output of Decision Tree
+Predictor, to the input of Scorer.
+
+16
+00:01:03.340 --> 00:01:04.480
+Double-click on Scorer.
+
+17
+00:01:06.500 --> 00:01:08.635
+We'll use the default values, so click OK.
+
+18
+00:01:11.580 --> 00:01:13.280
+Next, run the workflow.
+
+19
+00:01:14.420 --> 00:01:15.810
+Now, let's view the confusion matrix.
+
+20
+00:01:20.998 --> 00:01:23.570
+I can see the accuracy as 80.282%.
+
+21
+00:01:23.570 --> 00:01:30.651
+At the top, I can see that it
+accurately predicted 76 values for
+
+22
+00:01:30.651 --> 00:01:36.205
+humidity_low and 95 for humidity_not_low.
+
+23
+00:01:36.205 --> 00:01:42.035
+It inaccurately predicted 24 values for
+humidty_low and
+
+24
+00:01:42.035 --> 00:01:48.242
+18 for humidty_not_low,
+for an error of 19.718%.
+
+25
+00:01:48.242 --> 00:01:52.225
+Close this.
+
+26
+00:01:52.225 --> 00:01:55.875
+Next, we use an interactive table to
+look at the values that were incorrectly
+
+27
+00:01:55.875 --> 00:01:56.500
+predicted.
+
+28
+00:01:57.730 --> 00:01:59.990
+We'll add the Interactive Table
+to the canvas.
+
+29
+00:02:08.767 --> 00:02:13.872
+We'll connect this to the output
+of Decision Tree Predictor,
+
+30
+00:02:13.872 --> 00:02:16.870
+run the workflow and view the table.
+
+31
+00:02:23.262 --> 00:02:27.810
+The right two columns have the real value
+for low_humidity and the prediction.
+
+32
+00:02:28.965 --> 00:02:32.150
+For some of these rows, we can tell
+that the prediction was not correct.
+
+33
+00:02:33.700 --> 00:02:39.119
+For example, in row ten, And in row 17.
+
+34
+00:02:43.800 --> 00:02:47.707
+Let's leave the table view open,
+and go back to the workflow.
+
+35
+00:02:47.707 --> 00:02:51.415
+Next, we'll add the Scatter Plot
+nodes to the workflow.
+
+36
+00:03:00.185 --> 00:03:02.790
+Connect this to the output
+of Decision Tree Predictor.
+
+37
+00:03:06.169 --> 00:03:09.900
+Execute the workflow, and
+view the scatter plot.
+
+38
+00:03:13.413 --> 00:03:17.840
+We'll select row 17, and
+choose, Hilite Selected.
+
+39
+00:03:19.720 --> 00:03:20.780
+Go back to the scatter plot,
+
+40
+00:03:20.780 --> 00:03:25.310
+and we see this particular value
+is highlighted in the plot.
+
+41
+00:03:26.930 --> 00:03:28.960
+We could choose another
+row from the table, and
+
+42
+00:03:28.960 --> 00:03:31.570
+highlight it again to see
+its place in the plot.
+
+43
+00:03:32.730 --> 00:03:33.730
+Let's choose row ten.
+
+44
+00:03:36.669 --> 00:03:40.083
+We can do this for
+values that were incorrectly predicted,
+
+45
+00:03:40.083 --> 00:03:42.620
+to find any patterns for further analysis.
+
+1
+00:00:00.990 --> 00:00:04.970
+In this activity we will use Spark
+to evaluate our decision tree.
+
+2
+00:00:04.970 --> 00:00:07.820
+First, we load
+the classification predictions,
+
+3
+00:00:07.820 --> 00:00:10.170
+created during the last
+Spark hands on activity.
+
+4
+00:00:11.180 --> 00:00:14.320
+We then compute the accuracy
+of these predictions.
+
+5
+00:00:14.320 --> 00:00:16.000
+And then, generate a confusion matrix.
+
+6
+00:00:18.050 --> 00:00:19.480
+Let's begin.
+
+7
+00:00:19.480 --> 00:00:22.065
+First, let's open the model
+evaluation notebook.
+
+8
+00:00:24.630 --> 00:00:28.320
+Next, let's execute the first
+cell to load the classes.
+
+9
+00:00:29.460 --> 00:00:32.740
+Then, execute the second cell
+to load the predictions we saved
+
+10
+00:00:32.740 --> 00:00:33.950
+during the previous hands on.
+
+11
+00:00:35.760 --> 00:00:38.580
+We could then complete
+the accuracy of these predictions
+
+12
+00:00:38.580 --> 00:00:41.539
+by using a multi-class
+classification evaluator.
+
+13
+00:00:42.590 --> 00:00:50.088
+Let's enter evaluator =
+MulticlassClassificationEvaluator(labelCo-
+
+14
+00:00:50.088 --> 00:00:55.124
+l="label", predictionCol="prediction") and
+
+15
+00:00:55.124 --> 00:01:00.505
+finally metricName="precision" and
+execute this.
+
+16
+00:01:04.253 --> 00:01:08.605
+We can then compute the accuracy by
+calling evaluate on the evaluator.
+
+17
+00:01:08.605 --> 00:01:13.384
+We'll enter
+evaluator.evaluate[predictions].
+
+18
+00:01:15.877 --> 00:01:18.924
+This says that the accuracy is about 81%.
+
+19
+00:01:19.940 --> 00:01:24.095
+Next, let's use multi-class metrics
+to compute a confusion matrix.
+
+20
+00:01:24.095 --> 00:01:28.485
+Multi-class metrics takes
+an RDD of numbers, and
+
+21
+00:01:28.485 --> 00:01:31.759
+our data is currently in a data frame.
+
+22
+00:01:31.759 --> 00:01:36.457
+We can access the RDD of the underlying
+data frame by using the RDD
+
+23
+00:01:36.457 --> 00:01:38.549
+attribute of predictions.
+
+24
+00:01:38.549 --> 00:01:44.184
+If we look at predictions.rdd.take(2)
+we see the RDD
+
+25
+00:01:44.184 --> 00:01:50.520
+is the RDD of rows, or
+each row has a prediction and label.
+
+26
+00:01:50.520 --> 00:01:54.660
+However multi-class metrics
+wants an RDD of numbers.
+
+27
+00:01:54.660 --> 00:01:56.046
+We could do this using a map.
+
+28
+00:01:56.046 --> 00:02:01.860
+We'll enter predictions.rdd.map and
+we'll use a key word,
+
+29
+00:02:01.860 --> 00:02:06.010
+tuple, and we'll look at the first
+two elements in this RDD.
+
+30
+00:02:06.010 --> 00:02:06.510
+Run this.
+
+31
+00:02:09.137 --> 00:02:11.740
+We can see now this RDD is just numbers.
+
+32
+00:02:12.810 --> 00:02:17.058
+Now we'll create a new instance of
+a multiclass metrics using this RDD.
+
+33
+00:02:17.058 --> 00:02:24.275
+Metrics =
+MulticlassMetrics(predrictions.rdd.map(tu-
+
+34
+00:02:24.275 --> 00:02:25.162
+ple)).
+
+35
+00:02:28.149 --> 00:02:32.667
+We can then display
+the confusion matrix by running
+
+36
+00:02:32.667 --> 00:02:38.780
+metrics.confusionMatrix().toArray().trans-
+pose().
+
+37
+00:02:38.780 --> 00:02:45.674
+We can see these results are similar
+to the confusion matrix in nine.
+
+1
+00:00:01.000 --> 00:00:05.150
+Generalization and overfitting are very
+important concepts in machine learning.
+
+2
+00:00:05.150 --> 00:00:07.390
+We will cover them in
+the next three lectures.
+
+3
+00:00:08.690 --> 00:00:13.660
+After this video you will be able
+to define what overfitting is,
+
+4
+00:00:13.660 --> 00:00:17.690
+describe how overfitting is
+related to generalization, and
+
+5
+00:00:17.690 --> 00:00:19.799
+explain why overfitting should be avoided.
+
+6
+00:00:21.140 --> 00:00:25.860
+Before we look at generalization and
+overfitting, let's first define some terms
+
+7
+00:00:25.860 --> 00:00:28.710
+that we will need to know to
+discuss errors in classification.
+
+8
+00:00:30.140 --> 00:00:35.400
+Recall that a machine learning model
+maps the input it receives to an output.
+
+9
+00:00:35.400 --> 00:00:39.760
+For a classification model, the model's
+output is the predicted class label for
+
+10
+00:00:39.760 --> 00:00:43.580
+the input variables and
+the true class label is the target.
+
+11
+00:00:45.210 --> 00:00:48.640
+Then if the classifier predicts
+the correct classes label for
+
+12
+00:00:48.640 --> 00:00:51.610
+a sample, that is a success.
+
+13
+00:00:51.610 --> 00:00:55.370
+If the predicted class label is
+different from the true class label,
+
+14
+00:00:55.370 --> 00:00:56.530
+then that is an error.
+
+15
+00:00:57.880 --> 00:01:02.950
+The error rate, then, is the percentage
+of errors made over the entire data set.
+
+16
+00:01:02.950 --> 00:01:07.330
+That is, it is the number of errors
+divided by the total number of samples
+
+17
+00:01:07.330 --> 00:01:07.950
+in a data set.
+
+18
+00:01:08.980 --> 00:01:13.260
+Error rate is also known as
+misclassification rate, or simply error.
+
+19
+00:01:14.690 --> 00:01:19.160
+In our lesson on classification we discuss
+that there is a training phase in which
+
+20
+00:01:19.160 --> 00:01:24.910
+the model is built, and a testing phase in
+which the model is applied to new data.
+
+21
+00:01:24.910 --> 00:01:30.070
+The model is built using training data and
+evaluated on test data.
+
+22
+00:01:30.070 --> 00:01:33.760
+The training and
+test data are two different data sets.
+
+23
+00:01:33.760 --> 00:01:37.810
+The goal in building a machine learning
+model is to have the model perform well
+
+24
+00:01:37.810 --> 00:01:41.450
+on training, as well as test data.
+
+25
+00:01:41.450 --> 00:01:46.290
+Error rate, or simply error, on the
+training data is refered to as training
+
+26
+00:01:46.290 --> 00:01:50.960
+error, and the error on test data
+is referred to as test error.
+
+27
+00:01:52.030 --> 00:01:56.120
+The error on the test data is
+an indication of how well the classifier
+
+28
+00:01:56.120 --> 00:01:57.560
+will perform on new data.
+
+29
+00:01:58.690 --> 00:02:01.210
+This is known as generalization.
+
+30
+00:02:01.210 --> 00:02:05.180
+Generalization refers to how well
+your model performs on new data,
+
+31
+00:02:05.180 --> 00:02:07.240
+that is data not used to train the model.
+
+32
+00:02:08.260 --> 00:02:11.530
+You want your model to
+generalize well to new data.
+
+33
+00:02:11.530 --> 00:02:15.200
+If your model generalizes well, then
+it will perform well on data sets that
+
+34
+00:02:15.200 --> 00:02:18.210
+are similar in structure
+to the training data, but
+
+35
+00:02:18.210 --> 00:02:21.330
+doesn't contain exactly the same
+samples as in the training set.
+
+36
+00:02:22.700 --> 00:02:27.280
+Since the test error indicates how well
+your model generalizes to new data,
+
+37
+00:02:27.280 --> 00:02:30.330
+note that the test error is also
+called generalization error.
+
+38
+00:02:31.780 --> 00:02:35.280
+A related concept to
+generalization is overfitting.
+
+39
+00:02:35.280 --> 00:02:37.810
+If your model has very
+low training error but
+
+40
+00:02:37.810 --> 00:02:41.290
+high generalization error,
+then it is overfitting.
+
+41
+00:02:41.290 --> 00:02:45.680
+This means that the model has learned to
+model the noise in the training data,
+
+42
+00:02:45.680 --> 00:02:48.250
+instead of learning the underlying
+structure of the data.
+
+43
+00:02:49.530 --> 00:02:52.180
+These plots illustrate what
+happens when a model overfits.
+
+44
+00:02:53.190 --> 00:02:55.470
+Training samples are shown as points, and
+
+45
+00:02:55.470 --> 00:03:00.340
+the input to output mapping that the model
+has learned is indicated as a curve.
+
+46
+00:03:00.340 --> 00:03:04.260
+The plot on the left shows that the model
+has learned the underlying structure of
+
+47
+00:03:04.260 --> 00:03:09.530
+the data, as the curve follows
+the trend of the sample point as well.
+
+48
+00:03:09.530 --> 00:03:10.580
+The plot on the right,
+
+49
+00:03:10.580 --> 00:03:14.640
+however, shows that the model has learned
+to model the noise in a data set.
+
+50
+00:03:15.640 --> 00:03:18.640
+The model tries to capture
+every sample point,
+
+51
+00:03:18.640 --> 00:03:21.210
+instead of the general trend
+of the samples together.
+
+52
+00:03:22.220 --> 00:03:23.220
+The training error and
+
+53
+00:03:23.220 --> 00:03:26.440
+the generalization error are plotted
+together, during model training.
+
+54
+00:03:28.400 --> 00:03:32.000
+What is the connection between
+overfitting and generalization?
+
+55
+00:03:32.000 --> 00:03:35.820
+A model that overfits will not
+generalize well to new data.
+
+56
+00:03:35.820 --> 00:03:39.525
+So the model will do well on just
+the data it was trained on, but
+
+57
+00:03:39.525 --> 00:03:42.410
+given a new data set,
+it will perform poorly.
+
+58
+00:03:43.420 --> 00:03:46.650
+A classifier that performs well
+on just the training data set
+
+59
+00:03:46.650 --> 00:03:48.270
+will not be very useful.
+
+60
+00:03:48.270 --> 00:03:52.370
+So it is essential that the goal of good
+generalization performance is kept in mind
+
+61
+00:03:52.370 --> 00:03:53.170
+when building a model.
+
+62
+00:03:54.890 --> 00:03:57.380
+A problem related to
+overfitting is underfitting.
+
+63
+00:03:58.890 --> 00:04:03.540
+Overfitting occurs when the model is
+fitting to the noise in the training data.
+
+64
+00:04:03.540 --> 00:04:06.770
+This results in low training error and
+high test error.
+
+65
+00:04:08.330 --> 00:04:09.830
+Underfitting on the other hand,
+
+66
+00:04:09.830 --> 00:04:13.940
+occurs when the model has not
+learned the structure of the data.
+
+67
+00:04:13.940 --> 00:04:16.930
+This results in high training error and
+high test error.
+
+68
+00:04:18.590 --> 00:04:20.164
+Both are undesirable,
+
+69
+00:04:20.164 --> 00:04:24.658
+since both mean that the model will
+not generalize well to new data.
+
+70
+00:04:24.658 --> 00:04:28.903
+Overfitting generally occurs when
+a model is too complex, that is,
+
+71
+00:04:28.903 --> 00:04:33.306
+it has too many parameters relative
+to the number of training samples.
+
+72
+00:04:33.306 --> 00:04:37.911
+So to avoid overfitting, the model needs
+to be kept as simple as possible, and yet
+
+73
+00:04:37.911 --> 00:04:42.400
+still solve the input/output mapping for
+the given data set.
+
+74
+00:04:42.400 --> 00:04:43.880
+We will discuss methods for
+
+75
+00:04:43.880 --> 00:04:46.470
+avoiding overfitting in
+the next couple of lectures.
+
+76
+00:04:47.940 --> 00:04:53.220
+In summary, overfitting is when your model
+has learned the noise in the training data
+
+77
+00:04:53.220 --> 00:04:55.870
+instead of the underlying
+structure of the data.
+
+78
+00:04:55.870 --> 00:05:00.353
+You want to avoid overfitting so that your
+model will generalize well to new data.

@@ -1,0 +1,1365 @@
+﻿1
+00:00:07,190 --> 00:00:13,620
+Top of Form
+Bottom of Form
+
+2
+00:00:13,619 --> 00:00:20,070
+Welcome to module 37 of Database Management
+Systems. We have been discussing about Database
+
+3
+00:00:20,070 --> 00:00:25,449
+Recovery. This is the second and concluding
+part of the Database Recovery.
+
+4
+00:00:25,449 --> 00:00:30,649
+We have ah earlier discussed about failure
+classification, storage structures and ah
+
+5
+00:00:30,649 --> 00:00:37,409
+significantly the log based ah recovery mechanism.
+In this, we will focus on concurrent transactions
+
+6
+00:00:37,409 --> 00:00:42,479
+and understand the recovery algorithm for
+them and the we will understand the operation
+
+7
+00:00:42,479 --> 00:00:47,459
+of logging for recovery with early lock release.
+We will learn about another kind of logging
+
+8
+00:00:47,460 --> 00:00:54,698
+mechanism; so, the recovery algorithm.
+So, what we have seen so far are we have learned
+
+9
+00:00:54,698 --> 00:00:58,748
+the basic concept of recovery and logging
+and we have assumed the serial execution of
+
+10
+00:00:58,749 --> 00:01:03,950
+transactions and now we discussed the Concurrency
+Control issues. So, now, we will assume that
+
+11
+00:01:03,950 --> 00:01:09,189
+there are multiple transactions operating
+at the same time and ah the components that
+
+12
+00:01:09,189 --> 00:01:13,819
+are required for the recovery of those.
+So, with Concurrent Transaction, all transactions
+
+13
+00:01:13,819 --> 00:01:19,179
+share we we already know that every transaction
+is a private work area that assumption stays,
+
+14
+00:01:19,180 --> 00:01:26,500
+but we talked about a system buffer area.
+So, that system ah buffer area the that area
+
+15
+00:01:26,500 --> 00:01:31,890
+would be common for all different transactions,
+also the log area would be common for all
+
+16
+00:01:31,890 --> 00:01:40,210
+transactions. So, now, the ah in the buffer
+area the, ah data rights are or reads or writes
+
+17
+00:01:40,209 --> 00:01:46,109
+are done for different transactions and in
+the log the different logs of different transactions
+
+18
+00:01:46,109 --> 00:01:52,450
+are fixed up.
+So, we make one assumption that ah if a transaction
+
+19
+00:01:52,450 --> 00:01:58,960
+has modified an item, then no other transaction
+can modify that same item unless that transaction
+
+20
+00:01:58,959 --> 00:02:05,069
+is committed or aborted. So, which means that
+kind of when the transaction modifies the
+
+21
+00:02:05,069 --> 00:02:11,318
+item it holds a lock and that lock is held
+till the end of the transaction and this is
+
+22
+00:02:11,318 --> 00:02:16,349
+a I mean if we if we ah think back in terms
+of our locking protocol, this is a strict
+
+23
+00:02:16,349 --> 00:02:20,810
+locking protocol that we are talking of. This
+is important ah for recovery because if we
+
+24
+00:02:20,810 --> 00:02:24,860
+did not have this, then it is possible that
+multiple updates to the same rate item are
+
+25
+00:02:24,860 --> 00:02:32,520
+done by multiple transactions. So, if we have
+to undo that ah then we will not know we were
+
+26
+00:02:32,520 --> 00:02:37,689
+which one it to be undone with. So, that is
+the basic problem. So, we will assume an exclusive
+
+27
+00:02:37,689 --> 00:02:43,099
+lock in this case and ah log records will
+be written interspersed as we have already
+
+28
+00:02:43,099 --> 00:02:47,159
+saw.
+So, in terms of our storage access ah mechanism,
+
+29
+00:02:47,159 --> 00:02:54,049
+the same eh earlier ah diagram, this is here
+is a disk, here is a buffer, the buffer is
+
+30
+00:02:54,050 --> 00:03:00,320
+common and the private work area. So, now,
+in addition to T 1, we have another transaction
+
+31
+00:03:00,319 --> 00:03:07,900
+T 2 with it is own buffer area, but so, the
+ah x has been written in T 1, has been read
+
+32
+00:03:07,900 --> 00:03:15,319
+in T 1 as x 1, x has also been read in T 2
+as x 2 and ah each are concurrently making
+
+33
+00:03:15,318 --> 00:03:22,729
+changes in that ah private work area, but
+they are using the same system buffer area
+
+34
+00:03:22,729 --> 00:03:28,098
+for the for writing the output back to the
+disk or reading directly from the disk. So,
+
+35
+00:03:28,098 --> 00:03:33,318
+this is a model that we will go with.
+So, what is the recovery algorithm, first
+
+36
+00:03:33,318 --> 00:03:39,659
+is logging and ah the logging structure remains
+same; the start ah transaction log, the update
+
+37
+00:03:39,659 --> 00:03:44,489
+transaction log and the commit transaction
+log as before ah.
+
+38
+00:03:44,489 --> 00:03:49,550
+When you have to do a transaction rollback
+during normal operation; so, for that transaction
+
+39
+00:03:49,550 --> 00:03:54,140
+T i to be rolled back, what we will need to
+do it is a rollback. So, undo has to happen.
+
+40
+00:03:54,139 --> 00:04:00,359
+So, scan will scan the log ah backwards from
+the end and for each log record update log
+
+41
+00:04:00,360 --> 00:04:07,610
+record, we will ah restore the original value
+for which was ah written over and we will
+
+42
+00:04:07,610 --> 00:04:13,280
+write a ah compensation log record as before
+and going backwards in this way when we come
+
+43
+00:04:13,280 --> 00:04:19,459
+across ah the start ah log record, then we
+will stop that scan and write a abort log
+
+44
+00:04:19,459 --> 00:04:22,430
+record in that place.
+So, it is exactly same to what we did.
+
+45
+00:04:22,430 --> 00:04:30,150
+So, now let us ah look into the actual Recovery
+Algorithm. So, the transaction rollback has
+
+46
+00:04:30,149 --> 00:04:37,129
+has no difference. So, in the Recovery Algorithm,
+what we do we have a recovery phase and where
+
+47
+00:04:37,129 --> 00:04:43,019
+we replay updates of all transactions. So,
+we make sure that all transactions whatever
+
+48
+00:04:43,019 --> 00:04:48,149
+they did they those are done again. So, after
+the failure we recover from the failure.
+
+49
+00:04:48,149 --> 00:04:52,849
+So, we up do all that again whether they are
+committed, whether they are aborted, whether
+
+50
+00:04:52,850 --> 00:04:58,860
+they are incomplete in every case and then
+we ah keep track of what are the transactions
+
+51
+00:04:58,860 --> 00:05:04,300
+which did not complete and for them we do
+an undo phase. So, here I am showing another
+
+52
+00:05:04,300 --> 00:05:11,960
+example here. So, this is ah the last checkpoint
+where eh all updates I mean freezing the updates,
+
+53
+00:05:11,959 --> 00:05:18,379
+everything was ah output to the disk the log
+as well as the ah data item updates were put
+
+54
+00:05:18,379 --> 00:05:26,089
+to the disk and the set of transactions that
+are live during that time well execution in
+
+55
+00:05:26,089 --> 00:05:31,419
+that time were recorded. So, if we look at
+that set L in this case, then it will be T
+
+56
+00:05:31,420 --> 00:05:36,910
+2, T 3 these two transactions.
+So, we can ah we have already seen that our
+
+57
+00:05:36,910 --> 00:05:42,560
+strategy would be that we will ignore T 1
+because it had completed before the last checkpoint.
+
+58
+00:05:42,560 --> 00:05:50,709
+T 2 and ah T 3 were ongoing and then T 4 has
+ah started after checkpoint and committed
+
+59
+00:05:50,709 --> 00:05:57,259
+before that, T 5 started after checkpoint,
+but was also active was also in execution
+
+60
+00:05:57,259 --> 00:06:04,259
+when system failed. So, our strategy would
+be, that we will assume as if ah the this,
+
+61
+00:06:04,259 --> 00:06:13,730
+this ah whole thing as is redone.
+So, T 2, T 3, T 4, T 5 all these log records
+
+62
+00:06:13,730 --> 00:06:18,479
+exist. So, we will follow through them and
+redo all of them. If we redo all of them then
+
+63
+00:06:18,478 --> 00:06:25,750
+naturally we come across ah T 3 and T 5 which
+cannot ah proceed further because the system
+
+64
+00:06:25,750 --> 00:06:29,418
+had could not proceed further because. So,
+we do not know in terms of the log what would
+
+65
+00:06:29,418 --> 00:06:34,728
+have happened to them because the system had
+failed. So, after having done this then, we
+
+66
+00:06:34,728 --> 00:06:41,901
+do an undo phase where we undo this, but naturally
+the effect of these will remain. Now you can
+
+67
+00:06:41,901 --> 00:06:45,889
+question that this could have been done in
+a more smart way, do we really need to redo
+
+68
+00:06:45,889 --> 00:06:50,680
+everything and then undo some parts of that,
+that is a ah override in terms of that which
+
+69
+00:06:50,680 --> 00:06:56,310
+is true, but this just makes the whole algorithm
+simple and over it actually is not very hard.
+
+70
+00:06:56,310 --> 00:07:01,728
+So, we are doing the redo phase, even the
+redo phase you will find the ah check point
+
+71
+00:07:01,728 --> 00:07:07,978
+and you will scan forward ah from the checkpoint
+record and as you scan forward from the checkpoint
+
+72
+00:07:07,978 --> 00:07:13,389
+record; if you have an update, you will simply
+redo which means V 2, will again be written
+
+73
+00:07:13,389 --> 00:07:22,960
+to X j and when you find a start transaction,
+then you do not know. Just look at this point
+
+74
+00:07:22,959 --> 00:07:28,430
+carefully; if you find a start transaction
+for example, when you are working on this,
+
+75
+00:07:28,430 --> 00:07:35,139
+suppose you come across a a start transaction
+here, you will come across the start transaction
+
+76
+00:07:35,139 --> 00:07:39,500
+transactions start here.
+So, whenever you get that, then you put this
+
+77
+00:07:39,500 --> 00:07:48,750
+into the undo list . Initially your undo list
+is L because they were going on. So, you do
+
+78
+00:07:48,750 --> 00:07:53,209
+not know that they could finish all that still
+need to be undone and when you come across
+
+79
+00:07:53,209 --> 00:07:59,930
+a new start, you add that to the undo list
+and then the rest of it is simple. So, you
+
+80
+00:07:59,930 --> 00:08:03,930
+keep on going this way, if you find that the
+commit has happened or abort has happened,
+
+81
+00:08:03,930 --> 00:08:09,519
+you remove that from the undo list, but if
+you do not find that then that stays in the
+
+82
+00:08:09,519 --> 00:08:14,709
+undo list. So, you know if you, if you proceed
+from in this direction in the redo phase,
+
+83
+00:08:14,709 --> 00:08:20,509
+you know and that way when you have scanned
+the whole log, you know what are the transactions
+
+84
+00:08:20,509 --> 00:08:25,459
+which still need to be undone. So, that is
+a simple strategy that is followed.
+
+85
+00:08:25,459 --> 00:08:31,978
+So, ma whenever you have a log record start,
+then you put it to the undo list and whenever
+
+86
+00:08:31,978 --> 00:08:37,068
+you get a log record which is committed abort
+which says that before the system failure
+
+87
+00:08:37,068 --> 00:08:42,539
+the transaction actually had either committed
+that it finished everything or you had to
+
+88
+00:08:42,539 --> 00:08:47,889
+roll back, then you remove that from the undo
+list. So, what will be left out, at the end
+
+89
+00:08:47,889 --> 00:08:52,259
+will be the undo list of transactions that
+need to be undone subsequently.
+
+90
+00:08:52,259 --> 00:08:58,960
+In the undo phase, in the undo phase, you
+go backwards because it is undo. So, what
+
+91
+00:08:58,960 --> 00:09:05,250
+you will do is is a very similar. So, if you
+have an update record, then you undo ah in
+
+92
+00:09:05,250 --> 00:09:12,100
+the ma transaction which is in undo list then
+you do exactly in terms of transaction rollback
+
+93
+00:09:12,100 --> 00:09:21,440
+that you write the old value and write a ah
+redo only log record. Now when you find going
+
+94
+00:09:21,440 --> 00:09:25,820
+backwards, when you find ah ti start. So,
+you know that this is a starting point of
+
+95
+00:09:25,820 --> 00:09:33,370
+the transaction and the transaction is in
+undo list. So, it ah it ah came across ah
+
+96
+00:09:33,370 --> 00:09:37,810
+because it could not be it it it was on the
+undo list. So, which means that it could not
+
+97
+00:09:37,809 --> 00:09:42,489
+be completed and therefore, you have found
+the start. So, this is where your undo operation
+
+98
+00:09:42,490 --> 00:09:47,539
+is over. So, you write a abort ah log record
+and once you have written that, then you are
+
+99
+00:09:47,539 --> 00:09:53,769
+done with the transaction. So, you remove
+that from the undo list and ah ah in the in
+
+100
+00:09:53,769 --> 00:09:59,100
+this way, you will continue till your undo
+list is ah becomes empty.
+
+101
+00:09:59,100 --> 00:10:03,259
+Once it becomes empty, so, then you have found
+that T i start for all transactions in the
+
+102
+00:10:03,259 --> 00:10:09,799
+undo list and there is nothing more to do
+. So, after undo phase completes normal transaction
+
+103
+00:10:09,799 --> 00:10:15,169
+processing can comment. So, your failure recovery
+from the failure is already ah taken care
+
+104
+00:10:15,169 --> 00:10:19,449
+of.
+So, here are certain examples which you could
+
+105
+00:10:19,450 --> 00:10:24,209
+ah check out, here is a start. So, this is
+the how that this is the order in which the
+
+106
+00:10:24,208 --> 00:10:31,059
+transactions are going and ah this is the
+crash point, this is where it failed and ah
+
+107
+00:10:31,059 --> 00:10:35,219
+mind you. So, this is where and this is where
+our checkpoint is. So, at checkpoint you can
+
+108
+00:10:35,220 --> 00:10:42,129
+see that ah T 0 and T 1 are ah what are your
+candidates. So, when you start in the redo
+
+109
+00:10:42,129 --> 00:10:48,269
+phase, you start from this point because before
+that everything has been done. You naturally,
+
+110
+00:10:48,269 --> 00:10:54,919
+you you come across this. So, you redo this
+which means you again actually change C from
+
+111
+00:10:54,919 --> 00:11:01,990
+it is old value 700 to 600 and then T 1 commits.
+As T 1 commits, you know that this transaction
+
+112
+00:11:01,990 --> 00:11:10,230
+is done with. So, you remove that. So, your
+ah undo list ah undo list at the beginning
+
+113
+00:11:10,230 --> 00:11:17,620
+is ah T 0, T 1, but going in the forward direction
+when you come across T 1 commit, you naturally
+
+114
+00:11:17,620 --> 00:11:21,570
+that ah from your undo list, then you come
+across T 2 start.
+
+115
+00:11:21,570 --> 00:11:26,800
+So, you know that another transaction is ah
+starting now. So, it may be you do not know
+
+116
+00:11:26,799 --> 00:11:31,349
+whether it come could complete or you could
+not. So, you add that to the undo list ah
+
+117
+00:11:31,350 --> 00:11:43,278
+then give effect to this update, then if for
+T 0 we have ah you have ah a rollback record
+
+118
+00:11:43,278 --> 00:11:48,570
+that is because ah T 0 actually you can see
+that T 0 has aborted. So, the change that
+
+119
+00:11:48,570 --> 00:11:54,330
+T 0 had done earlier this had to be rolled
+back, this rollback is a normal transaction
+
+120
+00:11:54,330 --> 00:12:01,200
+rollback, this is not because of the failure.
+So, this ah mm ah rollback ah had happened
+
+121
+00:12:01,200 --> 00:12:08,950
+and this is where the rollback is ah complete.
+So, T 2 e, T 0 is also completed. So, T 0
+
+122
+00:12:08,950 --> 00:12:16,350
+after this ah ah is taken care of, then in
+the redo phase T 0 is also complete and this
+
+123
+00:12:16,350 --> 00:12:23,589
+in where you reach the crash point. So, your
+undo list is left with only T 2. So, now,
+
+124
+00:12:23,589 --> 00:12:31,649
+when you have done this, so when you have
+taken ah done the redo here that is ah ah
+
+125
+00:12:31,649 --> 00:12:39,090
+this T 2 which is ongoing is there, then you
+write this ah log record. So, this these log
+
+126
+00:12:39,090 --> 00:12:46,149
+records are written during recovery not ah
+during the original transaction and ah T 2
+
+127
+00:12:46,149 --> 00:12:54,070
+had to ah abort because of the system failure.
+So, ah T 0 support was due to the transaction
+
+128
+00:12:54,070 --> 00:12:59,950
+rollback, but T 2 s abort is because of the
+system failure. So, T 2 is rolled back in
+
+129
+00:12:59,950 --> 00:13:05,360
+the can be rolled back in the undo phase.
+So, once this has been done, then you do the
+
+130
+00:13:05,360 --> 00:13:12,379
+undo phase starting with T 2 and ah then you
+go backwards as you go backwards here.
+
+131
+00:13:12,379 --> 00:13:19,039
+So, you will undo this, this is what you write
+you come across T 2 and naturally you have
+
+132
+00:13:19,039 --> 00:13:24,389
+rollback. So, you write T 2 abort. This is
+how the actual rollback can happen and you
+
+133
+00:13:24,389 --> 00:13:31,590
+can see that ah now the with this ah redo
+undo phase you can always bring back the database
+
+134
+00:13:31,590 --> 00:13:37,810
+to a consistent state and these transactions
+are executing concurrently and therefore,
+
+135
+00:13:37,809 --> 00:13:47,729
+your ah log record is a intermix of the log
+record of different transactions. Now the
+
+136
+00:13:47,730 --> 00:13:54,709
+last ah that ah ma we would like to talk about
+is Recovery with Early Lock Release.
+
+137
+00:13:54,708 --> 00:14:00,099
+What this means is well, so far we have talked
+about recovery which is only in terms of data
+
+138
+00:14:00,100 --> 00:14:06,100
+update, single data updates. So, I mean if
+I want to recover I can just ah you know write
+
+139
+00:14:06,100 --> 00:14:12,730
+back the old data, but ah this is not ah true
+in case of ah many other situations for example,
+
+140
+00:14:12,730 --> 00:14:19,610
+if you are inserting a record in a B-tree,
+then ah it is not enough only to undo that
+
+141
+00:14:19,610 --> 00:14:25,240
+because ah you cannot undo and get back the
+same. As you can understand that if you make
+
+142
+00:14:25,240 --> 00:14:30,399
+inserts or deletes in the B-tree, if you are
+made an insert then the structure of the B-tree
+
+143
+00:14:30,399 --> 00:14:35,569
+itself has changed and after that several
+other inserts, deletes may have happened.
+
+144
+00:14:35,570 --> 00:14:42,290
+So, if you now want to just go back and undo
+this particular insert in terms of values,
+
+145
+00:14:42,289 --> 00:14:51,099
+it is not possible to do that. So, ah when
+you ah want to do that, so you cannot do really
+
+146
+00:14:51,100 --> 00:14:56,209
+kind of ah repeating the history kind of strategy.
+So, what you have to do is do some kind of
+
+147
+00:14:56,208 --> 00:15:03,219
+an undo which is logical. So, so far the undo
+was physical that, you wrote this, you change
+
+148
+00:15:03,220 --> 00:15:08,399
+this value by this value. So, your undo is
+a physical. So, you restore the original value
+
+149
+00:15:08,399 --> 00:15:14,828
+and your undo is done here. It is logical
+that is for the operation that you have performed,
+
+150
+00:15:14,828 --> 00:15:21,059
+you try to ah find out a matching operation
+which creates the similar effect as of undo.
+
+151
+00:15:21,059 --> 00:15:26,919
+So, if you have inserted, then you your undo
+is a corresponding delete of that record.
+
+152
+00:15:26,919 --> 00:15:32,708
+If you have incremented by 10 then ah you
+can say that your corresponding undo is a
+
+153
+00:15:32,708 --> 00:15:38,500
+decrement by 10. So, that is what is known
+as the logical undo and it is ah logical undo
+
+154
+00:15:38,500 --> 00:15:44,620
+is is a very good option in case of ah delete
+of, insert delete of people.
+
+155
+00:15:44,620 --> 00:15:52,120
+So, if you have deleted a people undo to insert,
+if you have subtracted then ah undo to ah
+
+156
+00:15:52,120 --> 00:15:59,528
+undo deposit to go forward and so on.
+So, a redo information is logged physically,
+
+157
+00:15:59,528 --> 00:16:06,799
+so new values for each right even for operations
+which are ah logically, which has logical
+
+158
+00:16:06,799 --> 00:16:13,028
+undo. So, you do not ah do a logical redo
+I mean, I will not go into the details of
+
+159
+00:16:13,028 --> 00:16:19,528
+why this is not done, but it simply makes
+things very complicated. So, physical redo
+
+160
+00:16:19,528 --> 00:16:27,458
+is always physical and ah you can ah show
+that physical redo does not ah prohibit this
+
+161
+00:16:27,458 --> 00:16:35,229
+ah kind of operations that we are trying to
+do, but ah the logical ah redo is not used.
+
+162
+00:16:35,230 --> 00:16:39,240
+We will only use ah ah logical undo operation
+.
+
+163
+00:16:39,240 --> 00:16:48,850
+So, how do you log for such a logical undo
+operation, what you do is instead of now.
+
+164
+00:16:48,850 --> 00:16:55,129
+So, now, it is an operation it may not be
+an a a single value update. So, it is not
+
+165
+00:16:55,129 --> 00:17:02,169
+captured in terms of one you know log record,
+but it could be a number of log records which
+
+166
+00:17:02,169 --> 00:17:07,538
+have actually done 3, 4 different changes
+to make that operation happen and you want
+
+167
+00:17:07,538 --> 00:17:14,599
+to actually define an undo for that operation.
+So, when you start this. So, you start ah
+
+168
+00:17:14,599 --> 00:17:20,019
+with a log which says that ah what is the
+transaction and ah what is the operation.
+
+169
+00:17:20,019 --> 00:17:24,470
+So, you put an identifier to the operation
+and then you write operation begin.
+
+170
+00:17:24,470 --> 00:17:31,149
+So, you know this is where operation has started,
+then ah all the things that are ah happening
+
+171
+00:17:31,148 --> 00:17:36,439
+ah for this operation while the operation
+is executing then you write normal log records
+
+172
+00:17:36,440 --> 00:17:43,989
+with physical redo physical information. All
+these logs are written and when this operation
+
+173
+00:17:43,989 --> 00:17:48,700
+ends mind you, this is a particular operation
+you are talking of. So, not not the whole
+
+174
+00:17:48,700 --> 00:17:52,798
+transaction whole transaction will continue
+when that particular operation ends, then
+
+175
+00:17:52,798 --> 00:17:59,608
+you write an operation in record and along
+with that you write, what is a logical, what
+
+176
+00:17:59,608 --> 00:18:05,199
+is a logical undo information you put that
+in. So, let us ah have a look at the example.
+
+177
+00:18:05,200 --> 00:18:10,440
+So, suppose your operation is insert of a
+key record pair, so, let us say this is the
+
+178
+00:18:10,440 --> 00:18:20,230
+key record pair and ah into index ah I 9.
+So, this the operation starts here and then
+
+179
+00:18:20,230 --> 00:18:25,970
+there are several steps to be done; for example,
+you will have to say if X ah is on the key
+
+180
+00:18:25,970 --> 00:18:33,038
+value which had 10 and is becoming K 5, you
+will have a physical ah update undo record
+
+181
+00:18:33,038 --> 00:18:43,259
+of this. If ah Y is the record id which is
+RID 7, then it ah y changes from 45 to. So,
+
+182
+00:18:43,259 --> 00:18:49,249
+these are all physical redo steps in insert.
+So, these are the different instructions in
+
+183
+00:18:49,249 --> 00:18:54,940
+terms of this broad operation and when you
+are done with all that ah then your operation
+
+184
+00:18:54,940 --> 00:19:02,778
+ends and you write this undo information.
+So, insert of, so you had insert of this record
+
+185
+00:19:02,778 --> 00:19:06,950
+with index 9.
+So, now you do write your what will be the
+
+186
+00:19:06,950 --> 00:19:13,798
+undo, to delete that from index I 9, to delete
+this ah key record ID pair. So, this is a
+
+187
+00:19:13,798 --> 00:19:21,538
+whole locking that we do. So, you can make
+use of this ah undo ah operation in terms
+
+188
+00:19:21,538 --> 00:19:27,548
+of your recovery process.
+So, if the crash or rollback occurs before
+
+189
+00:19:27,548 --> 00:19:32,679
+the operation completes, then operation and
+log record is not found you will not find
+
+190
+00:19:32,679 --> 00:19:37,399
+it. So, you do not know what is the undo operation.
+So, in that case the physical undo information
+
+191
+00:19:37,398 --> 00:19:44,329
+is will be used to undo, but ah if we have
+a crash on rollback that happens after an
+
+192
+00:19:44,329 --> 00:19:49,269
+operation completes, then the operation end
+log ah will be available and in this case
+
+193
+00:19:49,269 --> 00:19:57,069
+we will use the undo operation that is given
+in the operation end log record and do a logical
+
+194
+00:19:57,069 --> 00:20:04,269
+undo and we will ignore all the physical undo
+information that the operation ah that that
+
+195
+00:20:04,269 --> 00:20:09,950
+we will find in the log records. Redo of course
+will still use the physical redo information
+
+196
+00:20:09,950 --> 00:20:14,409
+which is there .
+So, if we look into the actual ah if we if
+
+197
+00:20:14,409 --> 00:20:24,599
+we look into the um transaction rollback with
+logical undo. So, if I have an update record
+
+198
+00:20:24,598 --> 00:20:32,950
+which is naturally physical, ah and then we
+can perform the undo which is as we did last
+
+199
+00:20:32,950 --> 00:20:43,249
+time the creating a redo only record. If I
+find an operation end record, then to rollback
+
+200
+00:20:43,249 --> 00:20:52,960
+we will pick up the logical undo information
+from you and ah we will perform that operation.
+
+201
+00:20:52,960 --> 00:21:00,340
+At the end of that we will ah certainly write
+the operation abort record to show to mark
+
+202
+00:21:00,339 --> 00:21:08,538
+that this operation has been aborted.
+So, if we have a redo only record, then we
+
+203
+00:21:08,538 --> 00:21:17,509
+will ignore it and if we find an operation
+abort, then we will skip all the records that
+
+204
+00:21:17,509 --> 00:21:21,429
+were found till the beginning. Naturally,
+you can you can you can understand that 3
+
+205
+00:21:21,429 --> 00:21:27,330
+and 4 will not happen in a normal course of
+ah transaction, it will happen only when the
+
+206
+00:21:27,329 --> 00:21:34,220
+failures have happened during recovery and
+at the end we will add T i ah abort record
+
+207
+00:21:34,220 --> 00:21:41,970
+to the log. So, the critical thing to to ah
+remember in this that whenever we are doing
+
+208
+00:21:41,970 --> 00:21:51,769
+operation ah hmm unlogging ah, we we are doing
+undoing based on the operation logging then
+
+209
+00:21:51,769 --> 00:21:57,109
+since once we get the operation ends since
+we know what the undo information is, we have
+
+210
+00:21:57,109 --> 00:22:03,969
+to make sure that through the undo process
+we actually ignore the physical ah undo ah
+
+211
+00:22:03,970 --> 00:22:12,120
+records that exist in the log and just go
+with the operation case. So, this ah these
+
+212
+00:22:12,119 --> 00:22:19,168
+are the notes yeah I just mentioned it ok.
+So, this is ah an example which you will have
+
+213
+00:22:19,169 --> 00:22:24,840
+to spend some time and ah understand with
+ah care. So, you can see that a transaction
+
+214
+00:22:24,839 --> 00:22:32,608
+T 0 has started, this is where it has done
+a physical update, is a physical ah undo record
+
+215
+00:22:32,608 --> 00:22:39,119
+and then it does an operation. Of course,
+it is a simple operation which changes ah
+
+216
+00:22:39,119 --> 00:22:45,329
+the value of c from 700 to 600. So, naturally,
+so it has decremented by 100. So, your undo
+
+217
+00:22:45,329 --> 00:22:55,288
+operation here is incrementing by 100.
+So, if ah T 0 aborts here, if T 0 aborts somewhere
+
+218
+00:22:55,288 --> 00:23:01,829
+here you know before your operation end has
+happened then naturally the undo will have
+
+219
+00:23:01,829 --> 00:23:11,339
+to be based on this physical undo structure.
+So, you will have to replace 600 by 700, but
+
+220
+00:23:11,339 --> 00:23:17,249
+if if it happens after this, then this is
+the case if it is completed the operation
+
+221
+00:23:17,249 --> 00:23:23,620
+and then the failure happens, then you will
+do the logical undo that is whatever the value
+
+222
+00:23:23,619 --> 00:23:30,108
+of C is you will just logically add 100 to
+that. But that means, that when you go backwards
+
+223
+00:23:30,108 --> 00:23:36,019
+from here to find the begin, you will actually
+have to ignore this physical undo record because
+
+224
+00:23:36,019 --> 00:23:43,288
+you have already given effect to that in terms
+of the operation undo that you are doing.
+
+225
+00:23:43,288 --> 00:23:50,190
+So, this is the basic ah difference. Here
+are different ah subsequent examples on that
+
+226
+00:23:50,190 --> 00:23:56,990
+and ah you can you can see that ah well here
+after the operation end has happened, then
+
+227
+00:23:56,990 --> 00:24:01,108
+possibly it has released the T 0 has released
+a lock on C 1.
+
+228
+00:24:01,108 --> 00:24:08,319
+So, T 1 has again taken the log. T 1 has again
+done the updates. So, then it releases that
+
+229
+00:24:08,319 --> 00:24:19,288
+and T 0 at this point might ah decide to abort;
+if T 0 aborts, then this ah logical undo of
+
+230
+00:24:19,288 --> 00:24:27,210
+O 1 this operation will add, it had to add
+100. So, it adds now this C had become 400,
+
+231
+00:24:27,210 --> 00:24:36,140
+now it is adding 100 back. So, C becomes 500
+and ah then the operation is finished. So,
+
+232
+00:24:36,140 --> 00:24:43,799
+you write operation abort and O 1 undo of
+O 1 gets completed, but you still have after
+
+233
+00:24:43,798 --> 00:24:50,108
+going going backwards in this, you still have
+this record which was directly updated.
+
+234
+00:24:50,108 --> 00:24:55,368
+So, these are the undo transactions, undo
+lock record for that where B is being restored
+
+235
+00:24:55,368 --> 00:25:04,740
+from 2050 to 2000 and you record the transaction
+abort for T 0, T 1 eventually has committed
+
+236
+00:25:04,740 --> 00:25:11,440
+here. So, this is how the transaction rollback
+will happen when logical undo is also used
+
+237
+00:25:11,440 --> 00:25:15,979
+and this is a very powerful way to ah take
+care of that.
+
+238
+00:25:15,979 --> 00:25:22,450
+This is similarly ah another illustration
+for doing the failure recovery for with logical
+
+239
+00:25:22,450 --> 00:25:29,710
+undo. So, here is the undo is a re redo phase
+that you are seeing here, this is where the
+
+240
+00:25:29,710 --> 00:25:34,590
+end of log at the crash these are redo phase
+because these are check point where T 1 was
+
+241
+00:25:34,589 --> 00:25:41,468
+there. So, at the end of redo T 1 ah if you
+if you. So, you are starting to redo from
+
+242
+00:25:41,469 --> 00:25:47,639
+here. So, you have done operation end. T 1
+has not finished T 2 has started. So, you
+
+243
+00:25:47,638 --> 00:25:52,638
+have added T 2 to the undo list and when the
+crash has happened both of them are on the
+
+244
+00:25:52,638 --> 00:26:00,278
+undo list. So, they have to go through that
+undo pass. So, we undo T 2, C, 400. So, this
+
+245
+00:26:00,278 --> 00:26:05,788
+is what this is this is how you will go.
+So, this is the first thing you undo and then
+
+246
+00:26:05,788 --> 00:26:13,690
+naturally you have come to the beginning of
+T 2 start. So, you abort and ah you are going
+
+247
+00:26:13,690 --> 00:26:22,519
+going back again and you are trying to do
+this. Why are you doing this because when
+
+248
+00:26:22,519 --> 00:26:28,269
+you go back to undo from this point you come
+across this operation end which tells you
+
+249
+00:26:28,269 --> 00:26:35,710
+that the undo operation has to happen by incrementing
+C by 300. So, C which had become 400 is now
+
+250
+00:26:35,710 --> 00:26:42,450
+incremented by 300. You come to the check
+point which is the end here in terms of the
+
+251
+00:26:42,450 --> 00:26:50,319
+operation begin and naturally you declare
+operation abort and ah going back ah further
+
+252
+00:26:50,319 --> 00:26:54,408
+this is ah what you had when transaction T
+1 had started.
+
+253
+00:26:54,409 --> 00:26:59,820
+So, you undo that. That is again a physical
+undo and finally, t one aborts. So, this is
+
+254
+00:26:59,819 --> 00:27:07,678
+how ah in both cases of transaction rollback
+as well as in terms of the failure the ah
+
+255
+00:27:07,679 --> 00:27:10,129
+recovery can be done with the logical undo
+process.
+
+256
+00:27:10,128 --> 00:27:16,138
+Here I have given another example. I will
+not ah go through it step by step. So, at
+
+257
+00:27:16,138 --> 00:27:20,569
+a arts that you go through that following
+the same logic and convince yourself that
+
+258
+00:27:20,569 --> 00:27:25,968
+you understand that how this ah transaction
+rollbacks with physical undo as well as logical
+
+259
+00:27:25,969 --> 00:27:32,590
+undo is taking place.
+So, ma with this Recovery Algorithm with logical
+
+260
+00:27:32,589 --> 00:27:40,459
+undo will look very similar ah to what ah
+we have already done with the physical undo
+
+261
+00:27:40,460 --> 00:27:47,829
+redo and ah though that is what we have stated
+here, there is no nothing ah significantly
+
+262
+00:27:47,829 --> 00:27:51,968
+new. So, I expect that you should be able
+to go through these steps.
+
+263
+00:27:51,969 --> 00:27:58,710
+And ah those will be clear to you again we
+have a 2 phase ah recovery of redo phase and
+
+264
+00:27:58,710 --> 00:28:05,899
+the undo phase and we make use of the operation
+undo, logical undo as and when it is possible
+
+265
+00:28:05,898 --> 00:28:13,028
+and when that is and when we do that, we ignore
+all physical ah undo records and when it is
+
+266
+00:28:13,028 --> 00:28:19,848
+not possible, then we lose the physical undo
+records and that is how the recovery can be
+
+267
+00:28:19,848 --> 00:28:24,769
+achieved.
+So, in this module we have ah expose ourselves
+
+268
+00:28:24,769 --> 00:28:31,899
+with the Recovery Algorithms ah now for concurrent
+transactions as well and we have shown that
+
+269
+00:28:31,898 --> 00:28:41,398
+ah how recovery can be done using operational
+logging, operations logging and making sure
+
+270
+00:28:41,398 --> 00:28:50,288
+that ah really the database may not need to
+ah hold on to a lock for a long time on the
+
+271
+00:28:50,288 --> 00:28:56,749
+data item and delay other transactions, but
+if it can define the undo operation on the
+
+272
+00:28:56,749 --> 00:29:02,950
+on the data on the data item, then it can
+release that log early and use that ah logging
+
+273
+00:29:02,950 --> 00:29:06,669
+mechanism operation logging mechanism to recover
+the data.
+

@@ -1,0 +1,2247 @@
+
+1
+00:00:00.990 --> 00:00:05.240
+In this activity, we will use
+Spark to perform cluster analysis.
+
+2
+00:00:05.240 --> 00:00:07.320
+First, we will load
+the minute weather data.
+
+3
+00:00:08.600 --> 00:00:12.479
+Next, we will remove the unused and
+missing data and
+
+4
+00:00:12.479 --> 00:00:15.752
+then scale the data so
+that the mean is zero.
+
+5
+00:00:15.752 --> 00:00:18.931
+We will then create an elbow plot,
+a subset of the data,
+
+6
+00:00:18.931 --> 00:00:22.430
+to determine the optimal
+number of clusters.
+
+7
+00:00:22.430 --> 00:00:26.280
+And then cluster the full
+data set using k-means.
+
+8
+00:00:26.280 --> 00:00:30.390
+Finally, we will generate parallel plots
+to analyze the individual clusters.
+
+9
+00:00:32.000 --> 00:00:32.530
+Let's begin.
+
+10
+00:00:33.600 --> 00:00:35.560
+First, let's open the clustering notebook.
+
+11
+00:00:38.650 --> 00:00:41.259
+Execute the first cell
+to load the libraries.
+
+12
+00:00:43.090 --> 00:00:45.220
+Execute the second cell
+to load the data set.
+
+13
+00:00:47.630 --> 00:00:51.870
+This data set contains weather station
+measurements that were taken every minute.
+
+14
+00:00:51.870 --> 00:00:53.980
+So there's a lot of measurements.
+
+15
+00:00:53.980 --> 00:01:00.705
+We can count how many rows there are in
+the data frame by running df.count.
+
+16
+00:01:01.757 --> 00:01:05.860
+This says that there are over 1.5
+million rows in the data frame.
+
+17
+00:01:05.860 --> 00:01:10.090
+Clustering this much data on a single
+Cloudera VM can take a lot of time.
+
+18
+00:01:10.090 --> 00:01:12.680
+So let's only work with
+one-tenth of the data.
+
+19
+00:01:12.680 --> 00:01:15.340
+Let's subset the data
+into the new data frame.
+
+20
+00:01:15.340 --> 00:01:20.124
+We'll enter filteredDF
+
+21
+00:01:20.124 --> 00:01:25.820
+= df.filter((df.rowID
+
+22
+00:01:25.820 --> 00:01:29.924
+% 10)) == 0.
+
+23
+00:01:29.924 --> 00:01:38.182
+We then count the rows of the new data
+frame by calling filteredDF.count.
+
+24
+00:01:40.997 --> 00:01:45.130
+The new data frame has one-tenth as
+many rows as the original data set.
+
+25
+00:01:46.520 --> 00:01:48.888
+Let's compute the summary
+statistics using describe.
+
+26
+00:01:48.888 --> 00:01:54.613
+filteredDF.describe, and
+to display it nicely,
+
+27
+00:01:54.613 --> 00:01:59.303
+we'll enter toPandas().transpose.
+
+28
+00:01:59.303 --> 00:01:59.803
+Run this.
+
+29
+00:02:07.604 --> 00:02:10.895
+These weather measurements were taken
+during the period of a long drought.
+
+30
+00:02:12.090 --> 00:02:15.680
+As we can see from the mean values
+of the two rain measurements,
+
+31
+00:02:15.680 --> 00:02:19.820
+rain accumulation, the rain duration,
+the measurements are close to zero.
+
+32
+00:02:21.600 --> 00:02:24.504
+Let's count how many rain
+values are equal to 0.
+
+33
+00:02:24.504 --> 00:02:32.198
+FilterDF.filter(filterDF.rain_accumulation
+==
+
+34
+00:02:32.198 --> 00:02:35.431
+0.0).count().
+
+35
+00:02:38.436 --> 00:02:40.890
+Now let's do rain duration.
+
+36
+00:02:40.890 --> 00:02:47.994
+filteredDF.filter(filteredDF.rain_duration
+==
+
+37
+00:02:47.994 --> 00:02:51.563
+0.0).count().
+
+38
+00:02:51.563 --> 00:02:57.053
+We can see from these counts that most
+in these two measurements are zero.
+
+39
+00:02:57.053 --> 00:03:00.527
+So let's remove them from our data frame.
+
+40
+00:03:00.527 --> 00:03:06.719
+workingDF =
+filterDF.drop('rain_accumulation').drop('-
+
+41
+00:03:06.719 --> 00:03:08.710
+rain_duration').
+
+42
+00:03:08.710 --> 00:03:11.710
+And we'll also drop the column
+called hpwren_timestamp,
+
+43
+00:03:11.710 --> 00:03:13.502
+since we will not use it.
+
+44
+00:03:13.502 --> 00:03:16.099
+So .drop('hpwren_timestamp').
+
+45
+00:03:20.422 --> 00:03:25.608
+Next, let's drop rows with missing values,
+and count how many rows were dropped.
+
+46
+00:03:25.608 --> 00:03:30.085
+before = workingDF.count() workingDF =
+
+47
+00:03:30.085 --> 00:03:36.055
+workingDF.na.drop() after
+= workingDF.count(),
+
+48
+00:03:36.055 --> 00:03:42.147
+and finally, we'll print the difference,
+before- after.
+
+49
+00:03:46.410 --> 00:03:49.000
+So only 46 rows had missing values and
+were dropped.
+
+50
+00:03:50.320 --> 00:03:54.190
+Next, let's scale the data so that each
+feature will have a value of 0 for
+
+51
+00:03:54.190 --> 00:03:58.010
+the mean and a value of 1 for
+the standard deviation.
+
+52
+00:03:58.010 --> 00:04:01.500
+First, we need to combine the columns
+into a single vector column.
+
+53
+00:04:01.500 --> 00:04:06.366
+We can look at the existing columns
+by entering workingDF.columns.
+
+54
+00:04:06.366 --> 00:04:10.510
+We do not want to include rowID
+since it is a row number.
+
+55
+00:04:10.510 --> 00:04:13.430
+Additionally, the minimum wind
+measurements have a high correlation
+
+56
+00:04:13.430 --> 00:04:16.510
+to the average wind measurements,
+so we will not include this either.
+
+57
+00:04:17.560 --> 00:04:20.230
+Let's create an array of
+the columns we want to combine and
+
+58
+00:04:20.230 --> 00:04:23.798
+then use vector assembler to
+create the vector column.
+
+59
+00:04:23.798 --> 00:04:28.760
+featuresUsed = [.
+
+60
+00:04:28.760 --> 00:04:31.439
+Now, let's copy and
+paste the columns we want to use.
+
+61
+00:04:50.974 --> 00:04:57.085
+Assembler = VectorAssembler(inputCols
+= featuresUsed,
+
+62
+00:04:57.085 --> 00:05:01.358
+outputCol = "features_unscaled").
+
+63
+00:05:01.358 --> 00:05:07.534
+And finally, assembled =
+assembler.transform(workingDF).
+
+64
+00:05:07.534 --> 00:05:09.111
+Run this.
+
+65
+00:05:09.111 --> 00:05:15.021
+Now we'll use standard
+scaler to scale the data.
+
+66
+00:05:15.021 --> 00:05:21.255
+Scaler = standard scaler
+inputCol=”features _unscaler”,
+
+67
+00:05:21.255 --> 00:05:25.706
+outputCol=“features”, withStd = true,
+
+68
+00:05:25.706 --> 00:05:31.828
+withMean = True,
+scalerModel = scaler.fit(assembled),
+
+69
+00:05:31.828 --> 00:05:37.297
+scaledData =
+scalerModel.transform[assembled].
+
+70
+00:05:43.150 --> 00:05:46.642
+Next we will create an elbow plot
+to determine the value k, for
+
+71
+00:05:46.642 --> 00:05:48.400
+the number of clusters.
+
+72
+00:05:48.400 --> 00:05:52.440
+To create the elbow plot,
+we will calculate the within cluster,
+
+73
+00:05:52.440 --> 00:05:56.120
+sum of squared error, or WSSE,
+for different values of k.
+
+74
+00:05:56.120 --> 00:06:00.800
+So since some valves running
+K-means many times, let's do it for
+
+75
+00:06:00.800 --> 00:06:03.330
+a smaller subset of the data
+since it'll be faster.
+
+76
+00:06:05.350 --> 00:06:08.280
+First, let's choose the data to work with.
+
+77
+00:06:08.280 --> 00:06:10.286
+Let's subset the data.
+
+78
+00:06:10.286 --> 00:06:15.347
+So scaledData =
+scaledData.select("features"), ("rowID").
+
+79
+00:06:15.347 --> 00:06:22.407
+elbowset =
+scaledData.filter((scaledData.rowID
+
+80
+00:06:22.407 --> 00:06:28.173
+%3) == 0).select("features").
+
+81
+00:06:28.173 --> 00:06:32.907
+And finally,
+we'll call the persist method on elbowset.
+
+82
+00:06:32.907 --> 00:06:36.736
+Persist will keep it in memory,
+and make the calculations faster.
+
+83
+00:06:36.736 --> 00:06:40.925
+Run this.
+
+84
+00:06:40.925 --> 00:06:46.072
+Now, let's compute the WSSE values for
+different values of k.
+
+85
+00:06:46.072 --> 00:06:49.080
+We'll do for k, 2 to 30.
+
+86
+00:06:49.080 --> 00:06:53.693
+Clusters equals range(2,31).
+
+87
+00:06:53.693 --> 00:07:02.271
+wsseList = utils.elbow(elbowset,
+clusters).
+
+88
+00:07:02.271 --> 00:07:09.800
+Run this, This will print out
+the value of wsse for each value of k.
+
+89
+00:07:09.800 --> 00:07:13.410
+As you can tell, this'll take some
+time to run, let's skip to the end.
+
+90
+00:07:16.570 --> 00:07:19.158
+Now let's display the plot of our data.
+
+91
+00:07:19.158 --> 00:07:29.159
+utils.elbow_plot(wsseList, clusters).
+
+92
+00:07:29.159 --> 00:07:36.614
+The x axis is k, the number of clusters,
+and the y axis is the WSSE value.
+
+93
+00:07:36.614 --> 00:07:40.190
+You can see that the graph flattens
+out between 10 and 15 for k.
+
+94
+00:07:41.320 --> 00:07:45.620
+So let's choose k equals 12 as
+the midpoint for our number of clusters.
+
+95
+00:07:47.788 --> 00:07:52.040
+We'll now cluster the data into
+12 clusters using k-means.
+
+96
+00:07:52.040 --> 00:07:54.285
+First, let's select the data
+we want to cluster.
+
+97
+00:07:54.285 --> 00:08:01.726
+scaledDataFeat =
+scaledData.select("features"),
+
+98
+00:08:01.726 --> 00:08:05.142
+scaledDataFeat.persist.
+
+99
+00:08:07.496 --> 00:08:10.394
+Now I'll perform
+the clustering using kmeans.
+
+100
+00:08:10.394 --> 00:08:15.688
+kmeans = KMeans(k=12, seed=1).
+
+101
+00:08:15.688 --> 00:08:21.752
+model = KMeans.fit(scaledDataFeat),
+and finally,
+
+102
+00:08:21.752 --> 00:08:27.582
+transformed =
+model.transform(scaleDataFeat).
+
+103
+00:08:27.582 --> 00:08:29.198
+Run this.
+
+104
+00:08:29.198 --> 00:08:33.702
+We can now see the centre
+measurement of each
+
+105
+00:08:33.702 --> 00:08:38.459
+cluster by calling model.clusterCenters.
+
+106
+00:08:42.924 --> 00:08:47.080
+It is difficult to compare the cluster
+centers just by looking at these numbers.
+
+107
+00:08:47.080 --> 00:08:52.319
+So let's use parallel
+plots to visualize them.
+
+108
+00:08:52.319 --> 00:08:58.095
+P = utils.pd_centers(featuresUsed,
+
+109
+00:08:58.095 --> 00:09:02.000
+model.clusterCenters).
+
+110
+00:09:03.810 --> 00:09:04.850
+Let's show the clusters for
+
+111
+00:09:04.850 --> 00:09:08.390
+dry days where the weather samples
+have low relative humidity.
+
+112
+00:09:09.670 --> 00:09:19.670
+utils.parallel_plot(P[P['relative_humidi-
+ty']
+
+113
+00:09:20.714 --> 00:09:24.674
+< -0.5], P).
+
+114
+00:09:28.719 --> 00:09:31.920
+The x axis of this chart shows
+the different measurement types.
+
+115
+00:09:32.990 --> 00:09:36.730
+The y values show the standard deviations,
+with zero being the mean.
+
+116
+00:09:38.330 --> 00:09:42.330
+Each line is a different cluster, and
+there are five clusters in this graph.
+
+117
+00:09:44.010 --> 00:09:47.130
+We can see that they all have
+a low relative humidity.
+
+118
+00:09:47.130 --> 00:09:52.060
+Notice that cluster four, the red one,
+has a high average wind speed and
+
+119
+00:09:52.060 --> 00:09:53.430
+a high maximum wind speed.
+
+120
+00:09:55.400 --> 00:09:58.850
+Additionally, it has a low
+average wind direction.
+
+121
+00:09:58.850 --> 00:10:02.380
+Which means it was coming from
+the north and northeast directions.
+
+122
+00:10:02.380 --> 00:10:05.480
+So this cluster probably
+represents Santa Ana conditions.
+
+123
+00:10:07.770 --> 00:10:10.615
+Next, let's show the plot for warm days,
+
+124
+00:10:10.615 --> 00:10:13.867
+the weather samples with
+high air temperature.
+
+125
+00:10:13.867 --> 00:10:21.877
+utils.parallel_plot(P[P['air_temp'] >
+
+126
+00:10:21.877 --> 00:10:24.490
+0.5], P).
+
+127
+00:10:30.292 --> 00:10:34.283
+Other clusters in this plot have air
+temperature greater than 0.5 standard
+
+128
+00:10:34.283 --> 00:10:35.920
+deviations away from the mean.
+
+129
+00:10:36.930 --> 00:10:40.000
+However, they have different values for
+the other features.
+
+130
+00:10:40.000 --> 00:10:42.530
+Now let's show the clusters for cool days.
+
+131
+00:10:42.530 --> 00:10:46.430
+Weather samples with high relative
+humidity and low air temperatures.
+
+132
+00:10:47.650 --> 00:10:57.650
+utils.parallel_plot(P[(P['relative_humidi-
+ty']
+
+133
+00:10:59.966 --> 00:11:07.129
+> 0.5) & (P['air_temp']
+
+134
+00:11:07.129 --> 00:11:11.387
+< 0.5)], P).
+
+135
+00:11:11.387 --> 00:11:16.222
+All the clusters in this plot have
+relative humidity greater than 0.5
+
+136
+00:11:16.222 --> 00:11:21.608
+standard deviations and air temp
+less than 0.5 standard deviations.
+
+137
+00:11:21.608 --> 00:11:24.680
+These clusters represent cool
+temperature with high humidity and
+
+138
+00:11:24.680 --> 00:11:27.220
+possibly rainy weather patterns.
+
+139
+00:11:27.220 --> 00:11:29.980
+So far we have seen all
+the clusters except two.
+
+140
+00:11:29.980 --> 00:11:34.012
+Since it is not falling to any other
+categories let's plot this cluster,
+
+141
+00:11:34.012 --> 00:11:43.795
+utils.parallel_plot(P.iloc[[2]],
+
+142
+00:11:43.795 --> 00:11:44.527
+P).
+
+143
+00:11:47.556 --> 00:11:49.892
+Cluster two captures
+days with mild weather.
+
+1
+00:00:01.000 --> 00:00:04.770
+In addition to classification and
+regression, machine learning tasks and
+
+2
+00:00:04.770 --> 00:00:09.720
+techniques can also fall into another
+category known as cluster analysis.
+
+3
+00:00:09.720 --> 00:00:15.460
+After this video, you will be able to
+articulate the goal of cluster analysis,
+
+4
+00:00:15.460 --> 00:00:20.310
+discuss whether cluster analysis
+is supervised or unsupervised, and
+
+5
+00:00:20.310 --> 00:00:22.530
+list some ways that cluster
+results can be applied.
+
+6
+00:00:24.110 --> 00:00:25.150
+In cluster analysis,
+
+7
+00:00:25.150 --> 00:00:30.870
+the goal is to organize similar items in
+your data set into groups or clusters.
+
+8
+00:00:30.870 --> 00:00:36.550
+By segmenting your data into clusters, you
+can analyze each cluster more carefully.
+
+9
+00:00:36.550 --> 00:00:39.790
+Note that cluster analysis is
+also referred to as clustering.
+
+10
+00:00:41.480 --> 00:00:46.220
+A very common application of cluster
+analysis that we have discussed before is
+
+11
+00:00:46.220 --> 00:00:50.720
+to divide your customer base into segments
+based on their purchasing histories.
+
+12
+00:00:50.720 --> 00:00:54.180
+For example, you can segment customers
+into those who have purchased science
+
+13
+00:00:54.180 --> 00:00:58.960
+fiction books and videos, versus those
+who tend to buy nonfiction books,
+
+14
+00:00:58.960 --> 00:01:02.240
+versus those who have bought
+many children's books.
+
+15
+00:01:02.240 --> 00:01:06.860
+This way, you can provide more targeted
+suggestions to each different group.
+
+16
+00:01:06.860 --> 00:01:11.620
+Some other examples of cluster analysis
+are characterizing different weather
+
+17
+00:01:11.620 --> 00:01:15.620
+patterns for a region,
+grouping the latest news articles into
+
+18
+00:01:15.620 --> 00:01:19.450
+topics to identify the trending
+topics of the day, and
+
+19
+00:01:19.450 --> 00:01:23.650
+discovering hot spots for different
+types of crime from police reports
+
+20
+00:01:23.650 --> 00:01:26.690
+in order to provide sufficient
+police presence for problem areas.
+
+21
+00:01:28.550 --> 00:01:32.100
+Cluster analysis divides all
+the samples in a data set into groups.
+
+22
+00:01:33.340 --> 00:01:36.620
+In this diagram,
+we see that the red, green, and
+
+23
+00:01:36.620 --> 00:01:38.550
+purple data points are clustered together.
+
+24
+00:01:39.570 --> 00:01:43.630
+Which group a sample is placed in is
+based on some measure of similarity.
+
+25
+00:01:45.060 --> 00:01:50.070
+The goal of cluster analysis is to segment
+data so that differences between samples
+
+26
+00:01:50.070 --> 00:01:55.240
+in the same cluster are minimized, as
+shown by the yellow arrow, and differences
+
+27
+00:01:55.240 --> 00:02:00.280
+between samples of different clusters are
+maximized, as shown by the orange arrow.
+
+28
+00:02:00.280 --> 00:02:03.190
+Visually, you can think of
+this as getting samples in
+
+29
+00:02:03.190 --> 00:02:06.750
+each cluster to be as close
+together as possible, and
+
+30
+00:02:06.750 --> 00:02:10.540
+the samples from different clusters
+to be as far apart as possible.
+
+31
+00:02:11.810 --> 00:02:14.380
+Cluster analysis requires
+some sort of metric to
+
+32
+00:02:14.380 --> 00:02:17.425
+measure similarity between two samples.
+
+33
+00:02:17.425 --> 00:02:22.490
+Some common similarity measures are
+Euclidean distance, which is the distance
+
+34
+00:02:22.490 --> 00:02:26.325
+along a straight line between two points,
+A and B, as shown in this plot.
+
+35
+00:02:27.390 --> 00:02:31.920
+Manhattan distance, which is
+calculated on a strictly horizontal and
+
+36
+00:02:31.920 --> 00:02:35.100
+vertical path, as shown in the right plot.
+
+37
+00:02:35.100 --> 00:02:39.932
+To go from point A to point B, you can
+only step along either the x-axis or
+
+38
+00:02:39.932 --> 00:02:43.490
+the y-axis in a two-dimensional case.
+
+39
+00:02:43.490 --> 00:02:47.390
+So the path to calculate the Manhattan
+distance consists of segments
+
+40
+00:02:47.390 --> 00:02:52.240
+along the axes instead of along a diagonal
+path, as with Euclidean distance.
+
+41
+00:02:53.580 --> 00:02:58.010
+Cosine similarity measures the cosine
+of the angle between points A and
+
+42
+00:02:58.010 --> 00:03:00.460
+B, as shown in the bottom plot.
+
+43
+00:03:00.460 --> 00:03:05.400
+Since distance measures such as Euclidean
+distance are often used to measure
+
+44
+00:03:05.400 --> 00:03:09.048
+similarity between samples
+in clustering algorithms,
+
+45
+00:03:09.048 --> 00:03:13.152
+note that it may be necessary to
+normalize the input variables so
+
+46
+00:03:13.152 --> 00:03:16.889
+that no one value dominates
+the similarity calculation.
+
+47
+00:03:16.889 --> 00:03:18.071
+We discussed scaling and
+
+48
+00:03:18.071 --> 00:03:22.250
+normalizing variables in the lecture
+on feature transformation.
+
+49
+00:03:22.250 --> 00:03:25.500
+Normalizing is one method
+to scale variables.
+
+50
+00:03:25.500 --> 00:03:30.560
+Essentially, scaling the input variables
+puts the variables on the same scale so
+
+51
+00:03:30.560 --> 00:03:33.840
+that all variables have equal
+weighting in the calculation
+
+52
+00:03:33.840 --> 00:03:35.889
+to determine similarity between samples.
+
+53
+00:03:36.930 --> 00:03:41.110
+Scaling is necessary when you have
+variables that have very different scales,
+
+54
+00:03:41.110 --> 00:03:43.040
+such as weight and height.
+
+55
+00:03:43.040 --> 00:03:47.250
+The magnitude of the height values,
+which are in feet and inches,
+
+56
+00:03:47.250 --> 00:03:51.910
+will be much smaller than the magnitude of
+the weight values, which are in pounds.
+
+57
+00:03:51.910 --> 00:03:55.500
+So scaling both variables to
+a common value range will
+
+58
+00:03:55.500 --> 00:03:58.130
+make the contributions from
+both weight and height equal.
+
+59
+00:03:59.410 --> 00:04:01.710
+Here are some things to note
+about cluster analysis.
+
+60
+00:04:02.720 --> 00:04:06.220
+First, unlike classification or
+regression, in general,
+
+61
+00:04:06.220 --> 00:04:09.500
+cluster analysis is an unsupervised task.
+
+62
+00:04:09.500 --> 00:04:13.590
+This means that there is no target
+label for any sample in the data set.
+
+63
+00:04:15.020 --> 00:04:18.660
+In general,
+there is no correct clustering results.
+
+64
+00:04:18.660 --> 00:04:21.260
+The best set of clusters
+is highly dependent
+
+65
+00:04:21.260 --> 00:04:24.230
+on how the resulting
+clusters will be used.
+
+66
+00:04:24.230 --> 00:04:28.070
+There are numerical measures to
+compare two different clusters, but
+
+67
+00:04:28.070 --> 00:04:31.000
+since there are no labels to
+determine whether a sample has
+
+68
+00:04:31.000 --> 00:04:34.190
+been correctly clustered,
+there is no ground truth
+
+69
+00:04:34.190 --> 00:04:38.520
+to determine if a set of clustering
+results are truly correct or incorrect.
+
+70
+00:04:40.120 --> 00:04:42.190
+Clusters don't come with labels.
+
+71
+00:04:42.190 --> 00:04:45.410
+You may end up with five different
+clusters at the end of a cluster
+
+72
+00:04:45.410 --> 00:04:49.630
+analysis process, but you don't
+know what each cluster represents.
+
+73
+00:04:49.630 --> 00:04:52.410
+Only by analyzing
+the samples in each cluster
+
+74
+00:04:52.410 --> 00:04:56.450
+can you come out with reasonable
+labels for your clusters.
+
+75
+00:04:56.450 --> 00:05:00.150
+Given all this, it is important to
+keep in mind that interpretation and
+
+76
+00:05:00.150 --> 00:05:05.400
+analysis of the clusters
+are required to make sense of and
+
+77
+00:05:05.400 --> 00:05:07.869
+make use of the results
+of cluster analysis.
+
+78
+00:05:09.330 --> 00:05:13.040
+There are several ways that the results
+of cluster analysis can be used.
+
+79
+00:05:13.040 --> 00:05:16.570
+The most obvious is data segmentation and
+the benefits that come from that.
+
+80
+00:05:17.570 --> 00:05:21.230
+If you segment your customer base
+into different types of readers,
+
+81
+00:05:21.230 --> 00:05:25.280
+the resulting insights can be used
+to provide more effective marketing
+
+82
+00:05:25.280 --> 00:05:28.540
+to the different customer groups
+based on their preferences.
+
+83
+00:05:28.540 --> 00:05:32.840
+For example, analyzing each segment
+separately can provide valuable insights
+
+84
+00:05:32.840 --> 00:05:37.570
+into each group's likes, dislikes and
+purchasing behavior, just like we see
+
+85
+00:05:37.570 --> 00:05:40.730
+science fiction, non-fiction and
+children's books preferences here.
+
+86
+00:05:42.450 --> 00:05:45.910
+Clusters can also be used to
+classify new data samples.
+
+87
+00:05:45.910 --> 00:05:48.030
+When a new sample is received,
+
+88
+00:05:48.030 --> 00:05:52.520
+like the orange sample here, compute
+the similarity measure between it and
+
+89
+00:05:52.520 --> 00:05:57.160
+the centers of all clusters, and assign
+a new sample to the closest cluster.
+
+90
+00:05:57.160 --> 00:05:58.850
+The label of that cluster,
+
+91
+00:05:58.850 --> 00:06:04.020
+manually determined through analysis,
+is then used to classify the new sample.
+
+92
+00:06:04.020 --> 00:06:08.770
+In our book buyers' preferences example,
+a new customer can be classified as being
+
+93
+00:06:08.770 --> 00:06:12.950
+either a science fiction, non-fiction or
+children's books customer
+
+94
+00:06:12.950 --> 00:06:16.000
+depending on which cluster the new
+customer is most similar to.
+
+95
+00:06:17.530 --> 00:06:19.880
+Once cluster labels have been determined,
+
+96
+00:06:19.880 --> 00:06:24.660
+samples in each cluster can be used as
+labeled data for a classification task.
+
+97
+00:06:24.660 --> 00:06:28.090
+The samples would be the input
+to the classification model.
+
+98
+00:06:28.090 --> 00:06:31.750
+And the cluster label would be
+the target class for each sample.
+
+99
+00:06:31.750 --> 00:06:35.840
+This process can be used to provide much
+needed labeled data for classification.
+
+100
+00:06:37.240 --> 00:06:42.260
+Yet another use of cluster results
+is as a basis for anomaly detection.
+
+101
+00:06:42.260 --> 00:06:44.470
+If a sample is very far away, or
+
+102
+00:06:44.470 --> 00:06:49.490
+very different from any of the cluster
+centers, like the yellow sample here,
+
+103
+00:06:49.490 --> 00:06:53.720
+then that sample is a cluster outlier and
+can be flagged as an anomaly.
+
+104
+00:06:54.740 --> 00:06:58.060
+However, these anomalies
+require further analysis.
+
+105
+00:06:58.060 --> 00:07:02.130
+Depending on the application, these
+anomalies can be considered noise, and
+
+106
+00:07:02.130 --> 00:07:04.470
+should be removed from the data set.
+
+107
+00:07:04.470 --> 00:07:08.580
+An example of this would be a sample
+with a value of 150 for age.
+
+108
+00:07:09.840 --> 00:07:14.610
+For other cases, these anomalous cases
+should be studied more carefully.
+
+109
+00:07:14.610 --> 00:07:18.290
+Examples of this are in a credit
+card fraud detection, or,
+
+110
+00:07:18.290 --> 00:07:21.280
+a network intrusion detection application.
+
+111
+00:07:21.280 --> 00:07:25.810
+In these applications, examples outside
+of the norm are the interesting cases
+
+112
+00:07:25.810 --> 00:07:29.840
+that should be looked at to determine
+if they represent potential problems.
+
+113
+00:07:30.880 --> 00:07:36.440
+To summarize, cluster analysis is used to
+organize similar data items into groups or
+
+114
+00:07:36.440 --> 00:07:37.990
+clusters.
+
+115
+00:07:37.990 --> 00:07:41.830
+Analyzing the resulting clusters
+often leads to useful insights
+
+116
+00:07:41.830 --> 00:07:44.400
+about the characteristics of each group,
+
+117
+00:07:44.400 --> 00:07:47.240
+as well as the underlying
+structure of the entire data set.
+
+118
+00:07:48.530 --> 00:07:50.400
+Clusters require analysis and
+
+119
+00:07:50.400 --> 00:07:53.140
+interpretation to make
+sense of the results,
+
+120
+00:07:53.140 --> 00:07:58.580
+since there are no labels associated with
+samples or clusters in a clustering task.
+
+121
+00:07:58.580 --> 00:08:02.109
+In the next lecture, we will discuss
+a specific algorithm for cluster analysis.
+
+1
+00:00:00.050 --> 00:00:04.100
+k-means clustering is a simple yet
+effective algorithm for
+
+2
+00:00:04.100 --> 00:00:06.820
+cluster analysis that is
+commonly used in practice.
+
+3
+00:00:07.920 --> 00:00:08.720
+After this video,
+
+4
+00:00:08.720 --> 00:00:13.410
+you will be able to describe
+the steps in the k-means algorithm,
+
+5
+00:00:13.410 --> 00:00:18.229
+explain what the k stands for in k-means
+and define what a cluster centroid is.
+
+6
+00:00:19.300 --> 00:00:24.640
+Recall a cluster analysis divides samples
+in a data set into groups or clusters.
+
+7
+00:00:24.640 --> 00:00:29.590
+The idea is to group similar items in
+the same cluster, where similar is defined
+
+8
+00:00:29.590 --> 00:00:33.340
+by some metric that measures
+similarity between data samples.
+
+9
+00:00:33.340 --> 00:00:36.760
+So the goal of cluster analysis
+is to divide data sample
+
+10
+00:00:36.760 --> 00:00:41.260
+such that sample within a cluster
+are as close together as possible.
+
+11
+00:00:41.260 --> 00:00:46.387
+And samples from different clusters
+are as far apart as possible.
+
+12
+00:00:46.387 --> 00:00:50.440
+k-means is a classic algorithm used for
+cluster analysis.
+
+13
+00:00:50.440 --> 00:00:51.810
+The algorithm is very simple.
+
+14
+00:00:53.040 --> 00:00:56.015
+The first step is to select
+k initial centroids.
+
+15
+00:00:57.200 --> 00:01:01.540
+A centroid is simply the center of
+a cluster, as you see in the diagram here.
+
+16
+00:01:03.180 --> 00:01:07.950
+Next, assign each sample in
+a dataset to the closest centroid.
+
+17
+00:01:07.950 --> 00:01:10.920
+This means you calculate
+the distance between the sample and
+
+18
+00:01:10.920 --> 00:01:16.790
+each cluster center and assign a sample
+to the cluster with the closest centroid.
+
+19
+00:01:16.790 --> 00:01:18.140
+Then you calculate the mean,
+
+20
+00:01:18.140 --> 00:01:21.630
+or average, of each cluster
+to determine a new centroid.
+
+21
+00:01:23.165 --> 00:01:27.330
+These two steps are then repeated until
+some stopping criterion are reached.
+
+22
+00:01:28.450 --> 00:01:32.346
+Here's an illustration
+of how k-Means works.
+
+23
+00:01:32.346 --> 00:01:34.460
+(a) shows the original data
+set with some samples.
+
+24
+00:01:36.070 --> 00:01:38.990
+And (b) illustrates centroids
+initially selected.
+
+25
+00:01:40.385 --> 00:01:42.820
+(c) shows the first iteration.
+
+26
+00:01:42.820 --> 00:01:46.352
+Here, samples are assigned
+to the closest centroid.
+
+27
+00:01:46.352 --> 00:01:49.050
+In (d), the centroids are recalculated.
+
+28
+00:01:50.625 --> 00:01:52.560
+(e) shows the second iteration.
+
+29
+00:01:52.560 --> 00:01:55.540
+Samples are assigned to
+the closer centroid.
+
+30
+00:01:55.540 --> 00:01:59.040
+Note that some samples changed
+their cluster assignments.
+
+31
+00:01:59.040 --> 00:02:02.480
+And in (f),
+the centroids are recalculated again.
+
+32
+00:02:02.480 --> 00:02:03.630
+Cluster assignments and
+
+33
+00:02:03.630 --> 00:02:08.730
+centroid calculations are repeated until
+some stopping criteria is reached.
+
+34
+00:02:08.730 --> 00:02:10.940
+And you get your final clusters,
+as shown in (f).
+
+35
+00:02:12.700 --> 00:02:14.770
+How are the initial centroids selected?
+
+36
+00:02:14.770 --> 00:02:18.050
+The issue is that the final
+cluster results are sensitive
+
+37
+00:02:18.050 --> 00:02:19.500
+to initial centroids.
+
+38
+00:02:19.500 --> 00:02:22.990
+This means that cluster results with
+one set of initial centroids can be
+
+39
+00:02:22.990 --> 00:02:27.270
+very different from results with
+another set of initial centroids.
+
+40
+00:02:27.270 --> 00:02:30.145
+There are many approaches to
+selecting the initial centroids for
+
+41
+00:02:30.145 --> 00:02:33.660
+k-means varying in levels
+of sophistication.
+
+42
+00:02:33.660 --> 00:02:38.620
+The easiest and most widely used approach
+is to apply k-means several times
+
+43
+00:02:38.620 --> 00:02:43.510
+with different initial centroids
+randomly chosen to cluster you dataset.
+
+44
+00:02:43.510 --> 00:02:47.020
+And then select the centroids that
+give the best clustering results.
+
+45
+00:02:48.130 --> 00:02:50.970
+To evaluate the cluster results,
+an error measure,
+
+46
+00:02:50.970 --> 00:02:55.870
+known as the within cluster sum
+of squared error, can be used.
+
+47
+00:02:55.870 --> 00:02:58.450
+The error associated with a sample
+
+48
+00:02:58.450 --> 00:03:03.720
+within a cluster is the distance between
+the sample and the cluster centroid.
+
+49
+00:03:03.720 --> 00:03:07.840
+The squared error of the sample then,
+is the squared of that distance.
+
+50
+00:03:09.020 --> 00:03:12.160
+We sum up all the squared errors for
+all samples for
+
+51
+00:03:12.160 --> 00:03:15.430
+a cluster to the get the squared error for
+that cluster.
+
+52
+00:03:16.590 --> 00:03:21.130
+We then do the same thing for all
+clusters to get the final calculation for
+
+53
+00:03:21.130 --> 00:03:24.590
+the within-cluster sum
+of squared error for
+
+54
+00:03:24.590 --> 00:03:27.490
+all clusters in the results
+of a cluster analysis run.
+
+55
+00:03:28.810 --> 00:03:33.920
+Given two clustering results, the one with
+the smaller within-cluster sum of squared
+
+56
+00:03:33.920 --> 00:03:39.400
+error, or WSSE for short,
+provides the better solution numerically.
+
+57
+00:03:39.400 --> 00:03:42.770
+However, as we've discussed before,
+there is no ground truth
+
+58
+00:03:42.770 --> 00:03:47.120
+to mathematically determine which set of
+clusters is more correct than the other.
+
+59
+00:03:48.160 --> 00:03:52.561
+In addition, note that increasing
+the number of clusters,
+
+60
+00:03:52.561 --> 00:03:56.977
+that is, increasing the value for
+k, always reduces WSSE.
+
+61
+00:03:56.977 --> 00:04:00.510
+So WSSE should be used with caution.
+
+62
+00:04:00.510 --> 00:04:04.770
+It only makes sense to use WSSE
+to compare two sets of clusters
+
+63
+00:04:04.770 --> 00:04:08.880
+with the same value for k and
+generate it from the same dataset.
+
+64
+00:04:10.060 --> 00:04:13.410
+Also the set of clusters with
+the smallest WSSE may not
+
+65
+00:04:13.410 --> 00:04:16.730
+always be the best solution for
+the application at hand.
+
+66
+00:04:16.730 --> 00:04:18.150
+Again, interpretation and
+
+67
+00:04:18.150 --> 00:04:22.430
+domain knowledge about what the cluster
+should represent and how they will be used
+
+68
+00:04:22.430 --> 00:04:26.710
+are crucial in determining
+which cluster results are best.
+
+69
+00:04:26.710 --> 00:04:30.710
+Now that there are several metrics that are
+used to evaluate cluster results as well.
+
+70
+00:04:31.950 --> 00:04:36.223
+Choosing the optimal value for k is
+always a big question in using k-means.
+
+71
+00:04:36.223 --> 00:04:39.185
+There are several methods to
+determine the value for k.
+
+72
+00:04:39.185 --> 00:04:41.140
+We will discuss a few here.
+
+73
+00:04:42.310 --> 00:04:45.880
+Visualization techniques can be used
+to determine the dataset to see if
+
+74
+00:04:45.880 --> 00:04:48.720
+there are natural
+groupings of the samples.
+
+75
+00:04:48.720 --> 00:04:49.700
+Scatter plots and
+
+76
+00:04:49.700 --> 00:04:53.450
+the use of dimensionality reduction
+are useful here, to visualize the data.
+
+77
+00:04:54.850 --> 00:04:57.540
+A good value for
+k is application-dependent.
+
+78
+00:04:57.540 --> 00:05:02.260
+So domain knowledge of the application can
+drive the selection for the value of k.
+
+79
+00:05:02.260 --> 00:05:03.030
+For example,
+
+80
+00:05:03.030 --> 00:05:06.940
+if you want to cluster the types of
+products customers are purchasing,
+
+81
+00:05:06.940 --> 00:05:11.850
+a natural choice for k might be the number
+of product categories that you offer.
+
+82
+00:05:11.850 --> 00:05:16.510
+Or k might be selected to represent the
+geographical locations of respondents to
+
+83
+00:05:16.510 --> 00:05:17.670
+a survey.
+
+84
+00:05:17.670 --> 00:05:19.150
+In which case, a good value for
+
+85
+00:05:19.150 --> 00:05:22.655
+k would be the number of regions
+your interested in analyzing.
+
+86
+00:05:24.210 --> 00:05:28.330
+There are also data-driven method for
+determining the value of k.
+
+87
+00:05:28.330 --> 00:05:30.140
+These methods calculate symmetric for
+
+88
+00:05:30.140 --> 00:05:34.570
+different values of k to determine
+the best selections of k.
+
+89
+00:05:34.570 --> 00:05:36.540
+One such method is the elbow method.
+
+90
+00:05:37.790 --> 00:05:41.890
+The elbow method for determining
+the value of k is shown on this plot.
+
+91
+00:05:41.890 --> 00:05:44.140
+As we saw in the previous slide,
+
+92
+00:05:44.140 --> 00:05:48.690
+WSSE, or within-cluster sum of
+squared error, measures how much
+
+93
+00:05:48.690 --> 00:05:53.750
+data samples deviate from their respective
+centroids in a set of clustering results.
+
+94
+00:05:53.750 --> 00:05:58.810
+If we plot WSSE for different values for
+k, we can see how this
+
+95
+00:05:58.810 --> 00:06:04.170
+error measure changes as a value
+of k changes as seen in the plot.
+
+96
+00:06:04.170 --> 00:06:10.010
+The bend in this error curve indicates
+a drop in gain by adding more clusters.
+
+97
+00:06:10.010 --> 00:06:14.270
+So this elbow in the curve provides
+a suggestion for a good value of k.
+
+98
+00:06:15.320 --> 00:06:19.540
+Note that the elbow can not always be
+unambiguously determined, especially for
+
+99
+00:06:19.540 --> 00:06:21.170
+complex data.
+
+100
+00:06:21.170 --> 00:06:24.630
+And in many cases, the error curve
+will not have a clear suggestion for
+
+101
+00:06:24.630 --> 00:06:27.270
+one value, but for multiple values.
+
+102
+00:06:27.270 --> 00:06:30.810
+This can be used as a guideline for
+the range of values to try for k.
+
+103
+00:06:32.490 --> 00:06:34.650
+We've discussed choosing
+the initial centroids and
+
+104
+00:06:34.650 --> 00:06:38.370
+looked at ways to select a value for
+k, the number of clusters.
+
+105
+00:06:38.370 --> 00:06:40.440
+Let's now look at when to stop.
+
+106
+00:06:40.440 --> 00:06:42.763
+How do you know when to stop
+iterating when using k-means?
+
+107
+00:06:42.763 --> 00:06:48.890
+One obviously stopping criterion is when
+there are no changes to the centroids.
+
+108
+00:06:48.890 --> 00:06:52.370
+This means that no samples would
+change cluster assignments.
+
+109
+00:06:52.370 --> 00:06:56.140
+And recalculating the centroids
+will not result in any changes.
+
+110
+00:06:56.140 --> 00:06:59.410
+So additional iterations will
+not bring about any more changes
+
+111
+00:06:59.410 --> 00:07:00.320
+to the cluster results.
+
+112
+00:07:01.510 --> 00:07:06.350
+The stopping criterion can be relaxed to
+the second stopping criterion listed here.
+
+113
+00:07:06.350 --> 00:07:09.390
+Which is when the number of
+sample changing clusters is below
+
+114
+00:07:09.390 --> 00:07:13.180
+a certain threshold, say 1% for example.
+
+115
+00:07:13.180 --> 00:07:16.750
+At this point, the clusters
+are changing by only a few samples,
+
+116
+00:07:16.750 --> 00:07:20.820
+resulting in only minimal changes
+to the final cluster results.
+
+117
+00:07:20.820 --> 00:07:22.350
+So the algorithm can be stopped here.
+
+118
+00:07:23.880 --> 00:07:27.370
+At the end of k-means we have a set
+of clusters, each with a centroid.
+
+119
+00:07:28.370 --> 00:07:32.860
+Each centroid is the mean of
+the samples assigned to that cluster.
+
+120
+00:07:32.860 --> 00:07:37.500
+You can think of the centroid as
+a representative sample for that cluster.
+
+121
+00:07:37.500 --> 00:07:39.860
+So to interpret the cluster
+analysis results,
+
+122
+00:07:39.860 --> 00:07:42.580
+we can examine the cluster centroids.
+
+123
+00:07:42.580 --> 00:07:46.720
+Comparing the values of the variables
+between the centroids will reveal
+
+124
+00:07:46.720 --> 00:07:49.480
+how different or alike clusters are and
+
+125
+00:07:49.480 --> 00:07:52.800
+provide insights into what
+each cluster represents.
+
+126
+00:07:52.800 --> 00:07:57.259
+For example, if the value for age is
+different for different customer clusters,
+
+127
+00:07:57.259 --> 00:08:00.361
+this indicates that the clusters
+are encoding different
+
+128
+00:08:00.361 --> 00:08:03.213
+customer segments by age,
+among other variables.
+
+129
+00:08:03.213 --> 00:08:08.390
+In summary, k-means is a classic algorithm
+for performing cluster analysis.
+
+130
+00:08:08.390 --> 00:08:11.570
+It is an algorithm that is simple
+to understand and implement, and
+
+131
+00:08:11.570 --> 00:08:13.330
+is also efficient.
+
+132
+00:08:13.330 --> 00:08:17.158
+The value of k, the number of clusters,
+must be specified.
+
+133
+00:08:17.158 --> 00:08:20.070
+And final clusters are sensitive
+to initial centroids.
+
+1
+00:00:01.260 --> 00:00:04.590
+Linear regression is a very common
+algorithm to build regression models.
+
+2
+00:00:06.000 --> 00:00:11.150
+After this video you will be able to
+describe how linear regression works,
+
+3
+00:00:11.150 --> 00:00:16.120
+discuss how least squares is used in
+linear regression, define simple and
+
+4
+00:00:16.120 --> 00:00:17.260
+multiple linear regression.
+
+5
+00:00:19.070 --> 00:00:24.440
+A linear regression model captures the
+relationship between a numerical output
+
+6
+00:00:24.440 --> 00:00:26.440
+and the input variables.
+
+7
+00:00:26.440 --> 00:00:30.520
+The relationship is modeled as
+a linear relationship hence the linear
+
+8
+00:00:30.520 --> 00:00:31.410
+in linear regression.
+
+9
+00:00:32.620 --> 00:00:37.250
+To see how linear regression works, let's
+take a look at an example from the Iris
+
+10
+00:00:37.250 --> 00:00:41.792
+flower dataset, which is a commonly
+used dataset for machine learning.
+
+11
+00:00:41.792 --> 00:00:46.060
+This dataset has samples of
+different species of iris flowers
+
+12
+00:00:46.060 --> 00:00:49.630
+along with measurements such as
+petal width and petal length.
+
+13
+00:00:49.630 --> 00:00:54.600
+Here we have a plot with petal width
+measurements in centimeters on the x axis,
+
+14
+00:00:54.600 --> 00:00:57.610
+and petal length
+measurements on the y axis.
+
+15
+00:00:57.610 --> 00:01:01.589
+Let's say that we want to predict
+petal length based on petal width.
+
+16
+00:01:02.680 --> 00:01:06.240
+Then the regression task is this,
+given a measurement for
+
+17
+00:01:06.240 --> 00:01:08.350
+petal width predict the petal length.
+
+18
+00:01:09.620 --> 00:01:13.650
+We can build a linear regression model to
+capture this linear relationship between
+
+19
+00:01:13.650 --> 00:01:17.330
+the input petal width and
+the output petal length.
+
+20
+00:01:17.330 --> 00:01:21.510
+The linear relationship for this samples
+is shown as the red line on the plot.
+
+21
+00:01:22.910 --> 00:01:26.880
+From this example we see that linear
+regression works by finding the best
+
+22
+00:01:26.880 --> 00:01:29.740
+fitting straight line,
+through the samples.
+
+23
+00:01:29.740 --> 00:01:31.300
+This is called the regression line.
+
+24
+00:01:32.450 --> 00:01:35.360
+In the simple case with
+just one input variable,
+
+25
+00:01:35.360 --> 00:01:38.000
+the regression line is simply a line.
+
+26
+00:01:38.000 --> 00:01:43.290
+The equation for a line is y = mx + b,
+
+27
+00:01:43.290 --> 00:01:47.530
+where m determines
+the slope of the line and
+
+28
+00:01:47.530 --> 00:01:51.480
+b is the y intercept or
+where the line crosses the y axis.
+
+29
+00:01:52.790 --> 00:01:54.960
+M and b are the parameters of the model.
+
+30
+00:01:56.130 --> 00:01:59.850
+Training a linear regression model
+means adjusting these parameters to
+
+31
+00:01:59.850 --> 00:02:02.770
+fit the regression line to the samples.
+
+32
+00:02:02.770 --> 00:02:05.890
+The regression line can be
+determined using what's referred to
+
+33
+00:02:05.890 --> 00:02:07.380
+as the least squares method.
+
+34
+00:02:08.540 --> 00:02:12.100
+This plot illustrates how
+the least squares method works.
+
+35
+00:02:12.100 --> 00:02:13.980
+The yellow dots are the data samples.
+
+36
+00:02:15.320 --> 00:02:17.690
+The red line is the regression line,
+
+37
+00:02:17.690 --> 00:02:20.150
+the straight line that
+goes through the samples.
+
+38
+00:02:20.150 --> 00:02:24.210
+This line represents the model's
+prediction of the output given the input.
+
+39
+00:02:25.380 --> 00:02:30.010
+Each green line indicates the distance
+of each sample from the regression line.
+
+40
+00:02:30.010 --> 00:02:33.630
+So the green line represents
+the error between the prediction,
+
+41
+00:02:33.630 --> 00:02:37.870
+which is the value of the red regression
+line and the actual value of the sample.
+
+42
+00:02:38.990 --> 00:02:43.080
+The square of this distance is
+referred to as the residual
+
+43
+00:02:43.080 --> 00:02:45.390
+associated with that sample.
+
+44
+00:02:45.390 --> 00:02:47.970
+The least squares method
+finds the regression line
+
+45
+00:02:47.970 --> 00:02:52.430
+that makes the sum of
+the residuals as small as possible.
+
+46
+00:02:52.430 --> 00:02:55.920
+In other words, we want to find
+the line that minimizes the sum
+
+47
+00:02:55.920 --> 00:02:57.800
+of the squared errors of prediction.
+
+48
+00:02:59.040 --> 00:03:03.160
+The goal of linear regression then is
+to find the best fitting straight line
+
+49
+00:03:03.160 --> 00:03:05.490
+through the samples using
+the least squares method.
+
+50
+00:03:06.820 --> 00:03:10.550
+Once the regression model is built,
+we can use it to make predictions.
+
+51
+00:03:10.550 --> 00:03:14.200
+For example,
+given a measurement of 1.5 centimeters for
+
+52
+00:03:14.200 --> 00:03:18.920
+petal width, the model will predict
+a value of 4.5 centimeters for
+
+53
+00:03:18.920 --> 00:03:22.250
+petal length base on the regression
+line that it has constructed.
+
+54
+00:03:23.450 --> 00:03:27.808
+In linear regression, if there is only
+one input variable then the task is
+
+55
+00:03:27.808 --> 00:03:30.350
+referred to as simple linear regression.
+
+56
+00:03:31.490 --> 00:03:34.210
+In cases with more than
+one input variables,
+
+57
+00:03:34.210 --> 00:03:37.850
+then it is referred to as
+multiple linear regression.
+
+58
+00:03:37.850 --> 00:03:41.640
+To summarize, linear regression
+captures the linear relationship
+
+59
+00:03:41.640 --> 00:03:45.328
+between a numerical output and
+the input variables.
+
+60
+00:03:45.328 --> 00:03:49.240
+The least squares method can be used
+to build a linear regression model
+
+61
+00:03:49.240 --> 00:03:51.780
+by finding the best fitting
+line through the samples.
+
+1
+00:00:00.880 --> 00:00:04.540
+We studied the machine learning process,
+applied techniques to explore and
+
+2
+00:00:04.540 --> 00:00:08.910
+prepare data, discussed the different
+categories of machine learning tasks,
+
+3
+00:00:08.910 --> 00:00:11.200
+looked at metrics and
+methods for evaluating a model,
+
+4
+00:00:11.200 --> 00:00:16.020
+learned how to use scalable machine
+learning algorithms for big data problems,
+
+5
+00:00:16.020 --> 00:00:19.469
+and worked with two widely used tools to
+construct the machine learning models.
+
+6
+00:00:20.650 --> 00:00:24.040
+I hope that the lectures, along with
+the hands-on activities, have given you
+
+7
+00:00:24.040 --> 00:00:27.680
+a sound and practical introduction to
+machine learning tools and techniques.
+
+8
+00:00:27.680 --> 00:00:32.010
+I also hope that the course piqued
+your interest in the exiting and
+
+9
+00:00:32.010 --> 00:00:34.960
+rapidly developing field of
+machine learning for big data.
+
+10
+00:00:36.110 --> 00:00:38.630
+Keep in mind that the best
+way to learn machine learning
+
+11
+00:00:38.630 --> 00:00:40.600
+is to do machine learning.
+
+12
+00:00:40.600 --> 00:00:45.470
+So I encourage you to go out and find
+a problem or data set that interest you.
+
+13
+00:00:45.470 --> 00:00:49.800
+Apply the techniques you've learned in
+this course to it and start analyzing.
+
+14
+00:00:49.800 --> 00:00:53.110
+Thank you for your time and effort on
+this course, happy machine learning.

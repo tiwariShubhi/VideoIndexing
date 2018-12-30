@@ -1,0 +1,2277 @@
+﻿1
+00:00:10,019 --> 00:00:23,210
+Genetic algorithms and we want to look at
+GAs for solving TSP. So, as you know the
+
+2
+00:00:23,210 --> 00:00:32,549
+TSP of the travelling salesmen problem the
+problem where you have to have
+
+3
+00:00:32,549 --> 00:00:37,659
+Hamiltonian cycle b in which you visit every
+city exactly once and come back to the
+
+4
+00:00:37,659 --> 00:00:44,609
+original cities essentially and 1. So, for
+example, if you have 9 cities you may have
+
+5
+00:00:44,609 --> 00:00:54,539
+representation which is that you start with
+2. And you go to 4 and you go to 5 and you
+
+6
+00:00:54,539 --> 00:01:10,780
+go
+to 6 and you go to 9 go to 3 1 7 and 8. So,
+
+7
+00:01:10,780 --> 00:01:16,170
+this could be 1 to a and since I am doing
+JAS.
+
+8
+00:01:16,170 --> 00:01:22,359
+I may want to take 2 to us and try to see
+how I can generate new to us after that? So
+
+9
+00:01:22,359 --> 00:01:32,709
+let
+us I another to so let to say this is 3 7
+
+10
+00:01:32,709 --> 00:01:43,849
+some 2 to as have had mention this problem
+earlier
+
+11
+00:01:43,849 --> 00:01:53,368
+that how do you now, device cross over operators
+for the TSP problem? Because you
+
+12
+00:01:53,368 --> 00:01:57,468
+cannot do a single point or multi point cross
+aver have for the simple reason that
+
+13
+00:01:57,468 --> 00:02:05,629
+supposing have what a do of cross over some
+point then I 2 a would be 2 4 5 6 4. Now,
+
+14
+00:02:05,629 --> 00:02:09,449
+I
+able to came back 4 which means I close the
+
+15
+00:02:09,449 --> 00:02:13,459
+loop earlier and so I come do a simple thing
+like that.
+
+16
+00:02:13,459 --> 00:02:22,640
+.So they at 2 questions we want to look at.
+One is that given this representation and
+
+17
+00:02:22,639 --> 00:02:23,689
+this
+representation is called the path representation.
+
+18
+00:02:23,689 --> 00:02:38,599
+Because if all the told represented by
+path and it is implicit that from the last
+
+19
+00:02:38,599 --> 00:02:40,939
+city in the path you come back the first city.
+If
+
+20
+00:02:40,939 --> 00:02:48,689
+you means start with 2 4 5 6 9 3 1 7 8 and
+come back to 2 if I rotated this by certain
+
+21
+00:02:48,689 --> 00:02:54,719
+all
+would see the same to. So, that the 2 question
+
+22
+00:02:54,719 --> 00:03:04,840
+we want to ask is what the representation
+to choose and secondly what cross over function
+
+23
+00:03:04,840 --> 00:03:10,860
+to device all for that would the TSP is
+problemise we said which your very interest
+
+24
+00:03:10,860 --> 00:03:14,880
+many people, because it is got estimated
+many practical application as will. And people
+
+25
+00:03:14,879 --> 00:03:23,359
+would like to good get good solutions of
+TSP problem what about the valuation function?
+
+26
+00:03:23,360 --> 00:03:32,900
+As a simple function in this case which
+given a 2 you can the order commutates cost
+
+27
+00:03:32,900 --> 00:03:39,670
+an you can use valuation function keeping
+in mind that it is a minimization problem
+
+28
+00:03:39,669 --> 00:03:45,419
+that you want to minimize total cost. So,
+you
+
+29
+00:03:45,419 --> 00:03:50,309
+have to work out the problem will it is for
+selection in a care full fraction which I
+
+30
+00:03:50,310 --> 00:03:55,069
+inversely proportional to the cost how is
+it to solve the problem?
+
+31
+00:03:55,068 --> 00:04:00,699
+Because a very of a you can find representation
+and it help use all the problem very
+
+32
+00:04:00,699 --> 00:04:10,759
+quickly essentially. So, let me try out a
+small game with you. So, the game is that
+
+33
+00:04:10,759 --> 00:04:13,699
+that
+say you and I playing this game and we have
+
+34
+00:04:13,699 --> 00:04:23,089
+to divided this 9 cities between us. And we
+get to choose city by city so forget of the
+
+35
+00:04:23,089 --> 00:04:26,000
+cost to a cost nothing to do here this is
+the
+
+36
+00:04:26,000 --> 00:04:31,279
+different game. And the game is the following
+they give choose a city and I choose city
+
+37
+00:04:31,279 --> 00:04:38,929
+then you choose a city and I choose a city
+and so on. The first person to pick up 3 cities
+
+38
+00:04:38,930 --> 00:04:45,168
+exactly which is adder to 15 men’s again
+so nothing do with that your cost just a do
+
+39
+00:04:45,168 --> 00:04:52,769
+with
+city labels in the labels are 1 to 9. So,
+
+40
+00:04:52,769 --> 00:05:06,378
+how would you play this game? Let me say I
+choose you choose something I choose 5 when
+
+41
+00:05:06,379 --> 00:05:24,908
+will be look at my representation so your
+choose on what 8 I choose 5 you will choose
+
+42
+00:05:24,908 --> 00:05:40,918
+a 1 which will n1 that i to a chosen 8 and
+7.
+
+43
+00:05:40,918 --> 00:05:47,379
+.I chosen 5 and 4 you on some of 3 city 15
+not 2 cities.
+
+44
+00:05:47,379 --> 00:05:50,519
+Any 3 cities you pick up any 3 cities.
+
+45
+00:05:50,519 --> 00:05:59,209
+.You cannot choose 7 I would suppose game
+we cannot 7 will start again you
+
+46
+00:05:59,209 --> 00:06:00,209
+start 4.
+
+47
+00:06:00,209 --> 00:06:08,269
+I choose 6
+
+48
+00:06:08,269 --> 00:06:27,058
+.. I choose 2, I already chosen 6.
+
+49
+00:06:27,059 --> 00:06:28,059
+.
+
+50
+00:06:28,059 --> 00:06:33,719
+So you choose 4, I choose 6 any choose 5.
+
+51
+00:06:33,718 --> 00:06:36,389
+.no 5 not 5
+
+52
+00:06:36,389 --> 00:06:53,120
+You set pick 8; you choose 8 then your forcing
+will choose 3 anyway the point is not to
+
+53
+00:06:53,120 --> 00:06:59,168
+spend the whole class they in this game. But
+discuss at that I do not know what can of
+
+54
+00:06:59,168 --> 00:07:02,049
+is
+in your doing but, they can of is in I was
+
+55
+00:07:02,050 --> 00:07:31,749
+doing is shown by this figure. That I created
+this you recognize this it is a magic who
+
+56
+00:07:31,749 --> 00:07:38,119
+some is 15 and what I was doing? I was playing
+cross a cost I do not worth came you’re
+
+57
+00:07:38,119 --> 00:07:45,189
+playing something you a doing with. So, what
+the point of the whole thing is the representation
+
+58
+00:07:45,189 --> 00:07:51,249
+of and helps solve the problem.
+Especially if in some situation you have knowledge
+
+59
+00:07:51,249 --> 00:08:00,319
+related to some mapping that you
+can create with representation. So, will look
+
+60
+00:08:00,319 --> 00:08:05,991
+at representation here also, ideally we would
+like to have a representation in which I can
+
+61
+00:08:05,990 --> 00:08:09,008
+do single point cross over for TSP. But this
+is
+
+62
+00:08:09,009 --> 00:08:13,028
+not that 1 an there is 1 representation in
+which we can do single point cross over, but
+
+63
+00:08:13,028 --> 00:08:16,189
+will
+come to that later. So, let us look at the
+
+64
+00:08:16,189 --> 00:08:18,990
+various cross over that people have tried
+working
+
+65
+00:08:18,990 --> 00:08:32,778
+with TSP is a GAs and if you just look of
+the were will find quite of your. Now, while
+
+66
+00:08:32,778 --> 00:08:37,538
+devising cross over 1 thing 1 should keeping
+mind is at if should be nice if you can
+
+67
+00:08:37,538 --> 00:08:44,350
+.device cross over which would allow us to
+carry forward good feature of 2 hours.
+
+68
+00:08:44,350 --> 00:08:49,529
+So for example, 2 hour have me features such
+that some cities thing of cities which away
+
+69
+00:08:49,529 --> 00:08:54,829
+close each other are covered one by one in
+that order. And that would be nice feature
+
+70
+00:08:54,830 --> 00:08:57,040
+if
+in carried forward from 1 parent to a child
+
+71
+00:08:57,039 --> 00:09:04,819
+to be nice. So, let us look at some cross
+over’s
+
+72
+00:09:04,820 --> 00:09:24,830
+so 1 cross over which is called partially
+mapped crossover also call PMX workers
+
+73
+00:09:24,830 --> 00:09:33,889
+follows. That you choose 2 random points this
+is p 1 and this is p 2 so a choose 2 random
+
+74
+00:09:33,889 --> 00:09:53,429
+points lets a this 1 and this 1. Let me choose
+1 here then first you copy whatever is their
+
+75
+00:09:53,429 --> 00:10:01,780
+between those 2 points so you have I would
+not draw the segment know 6 9 3 1 here and
+
+76
+00:10:01,780 --> 00:10:12,459
+9 4 2 5. So, this is parent 1, parent 2 this
+is child 1, child 2 your trying bill. So,
+
+77
+00:10:12,460 --> 00:10:15,190
+first part
+some part of the solution in this copy in
+
+78
+00:10:15,190 --> 00:10:16,700
+to the child is respective child.
+
+79
+00:10:16,700 --> 00:10:20,360
+Now, remaining the part solution I really
+would like to get something from the other
+
+80
+00:10:20,360 --> 00:10:29,830
+parents. So, in partially max map crosser
+mapping between this city’s 6 and 9, 9 and
+
+81
+00:10:29,830 --> 00:10:33,830
+4, 3
+and 2 and 1 and 5 can use this us following.
+
+82
+00:10:33,830 --> 00:10:42,320
+Now, remember this see 1 which is got part
+of the 2 a from the first parent and you on
+
+83
+00:10:42,320 --> 00:10:46,560
+the next from the other parents. So, you try
+to
+
+84
+00:10:46,559 --> 00:10:54,959
+copy the less so what are the less? Remaining
+is 3 7 1 and 6 8 so you try to copy 3 here
+
+85
+00:10:54,960 --> 00:11:00,259
+in to this so this is c 1 in this c 2.
+
+86
+00:11:00,259 --> 00:11:09,700
+We find to c 1 can we want to get things for
+this is p 1 and hence p 2. We are try to know
+
+87
+00:11:09,700 --> 00:11:16,640
+copy things in to c 1 from p 2 so we are try
+to copy 3 with 3 we cannot copy, because 3
+
+88
+00:11:16,639 --> 00:11:23,129
+already exists in this. So, what this appropriate
+that follow the point from there so from 3
+
+89
+00:11:23,129 --> 00:11:30,100
+go to 2 and copy 2 here so we get 2 here.
+This is the class of this possible operators
+
+90
+00:11:30,100 --> 00:11:35,360
+if
+you let you a repeat this you are try to copy
+
+91
+00:11:35,360 --> 00:11:39,200
+this 3 here, but you cannot copy 3, because
+3
+
+92
+00:11:39,200 --> 00:11:45,550
+already exists in this child. So, you follow
+this point a from here and take 2 so you copy
+
+93
+00:11:45,549 --> 00:11:55,429
+to 2 here then you want to copy 7 here from
+here that is if you copy 7 here 1 you cannot
+
+94
+00:11:55,429 --> 00:12:05,179
+copy so if follow the point at to 5 and you
+get 5 here. Then 6 you cannot copy, because
+
+95
+00:12:05,179 --> 00:12:10,609
+6
+is here the follow the point got to 9, 9 you
+
+96
+00:12:10,610 --> 00:12:17,110
+cannot copy, because 9 is here follow he point
+at 4 an 4 can be copy it here. And that is
+
+97
+00:12:17,110 --> 00:12:23,950
+8 anyways with does not matter. So, this is
+the
+
+98
+00:12:23,950 --> 00:12:30,509
+partially mapped cross over and I just illustrated
+to this example and these the algorithms
+
+99
+00:12:30,509 --> 00:12:38,220
+for you to like. So, let me us repeat the
+example this part of the 2 are is common to
+
+100
+00:12:38,220 --> 00:12:41,529
+the
+parent. So, this c 1 gets this from p 1 an
+
+101
+00:12:41,529 --> 00:12:44,990
+c 2 gets this from p 2. The remaining part
+of the
+
+102
+00:12:44,990 --> 00:12:53,990
+2 which is 2 7 5 4 8 it is got from this process.
+The right to copy with 3 here, but I cannot
+
+103
+00:12:53,990 --> 00:12:58,500
+.copy 3, because 3 is already in might to
+so a follow the point if from 3 2 this is
+
+104
+00:12:58,500 --> 00:13:00,620
+the
+mapping that we a talking about partially
+
+105
+00:13:00,620 --> 00:13:01,620
+mapped process.
+
+106
+00:13:01,620 --> 00:13:05,549
+So, the mapping is between these set of cities
+that you can instead of 3 you can place 2
+
+107
+00:13:05,549 --> 00:13:13,740
+so and this copy the actually both piece when
+you do the others city you would do a
+
+108
+00:13:13,740 --> 00:13:19,950
+similar process. So, because I could not copy
+3, because already there I go to 2 I am
+
+109
+00:13:19,950 --> 00:13:23,560
+allowed I can copy to 2 here than 7 I can
+copy directly. Because the does not interfere
+
+110
+00:13:23,559 --> 00:13:30,439
+with anything 1 I cannot copy, because it
+is here so I got to 5 and copy that. And then
+
+111
+00:13:30,440 --> 00:13:34,870
+4 6
+I cannot copies of 6 I go to 9, but 9 already
+
+112
+00:13:34,870 --> 00:13:38,009
+here of 9 go to 4 9 get 4 here and 8 here.
+So,
+
+113
+00:13:38,009 --> 00:13:45,509
+let us to the other 1 just complete the example.
+So, I want to copy 2 here, but I cannot
+
+114
+00:13:45,509 --> 00:13:53,669
+copy 2 I go to 3 and I can am allow to copy
+with 3 here than 4 I cannot copy here.
+
+115
+00:13:53,669 --> 00:14:02,919
+Because its sales I go to 9 I cannot copy
+9 so I go to 6 I can copy 6. Then 5 I cannot
+
+116
+00:14:02,919 --> 00:14:12,829
+copy, because 5 is here I copy 1 here from
+the mapping then 7 I can copy directly and
+
+117
+00:14:12,830 --> 00:14:16,980
+8 I
+can directly. As this process as a given only
+
+118
+00:14:16,980 --> 00:14:24,120
+these 2 children from this to parents. The
+keep into many device is crossover operators
+
+119
+00:14:24,120 --> 00:14:30,490
+is see that the resultant things at you have
+are valid to us the and the whole idea is
+
+120
+00:14:30,490 --> 00:14:39,299
+try in device cross over which are valid to
+us.
+
+121
+00:14:39,299 --> 00:14:51,859
+Another popular cross over to be slinks is
+the order cross over. And it works as follows
+
+122
+00:14:51,860 --> 00:15:05,029
+that that like in this crossover you copy
+first some things 6 9 3 1 9 4 2 5. And for
+
+123
+00:15:05,029 --> 00:15:09,360
+the
+remaining part you take the slinks in the
+
+124
+00:15:09,360 --> 00:15:12,100
+order in which they appear in the other parent
+so
+
+125
+00:15:12,100 --> 00:15:25,500
+what do I mean by that? That basically I want
+all the cities to appear in my 2 out of this,
+
+126
+00:15:25,500 --> 00:15:30,490
+but I want to select them from the second
+parent now.
+
+127
+00:15:30,490 --> 00:15:38,919
+But I got 6 9 3 1 from the first parent so
+in my first parent I already have for this
+
+128
+00:15:38,919 --> 00:15:53,559
+9 6 3
+and 1 this 4 I already got and what this already
+
+129
+00:15:53,559 --> 00:16:03,719
+crossover is that for the remaining cities
+which I want which is 7 4 2 5 and 8 I simply
+
+130
+00:16:03,720 --> 00:16:06,879
+copy them in the other in which appear in
+the other parents. So, for example, I can
+
+131
+00:16:06,879 --> 00:16:19,399
+simply an added this in 7 4 2 5 8 how do can
+this? 7 is here 4 is here 2 is here 5 is here
+
+132
+00:16:19,399 --> 00:16:22,149
+8 is here. So, in the order in which occurred
+in
+
+133
+00:16:22,149 --> 00:16:28,990
+the other parent I copy them in to this new
+child. So, this child is got have the 2 are
+
+134
+00:16:28,990 --> 00:16:31,629
+from
+its first parent and the remaining 2 are somehow
+
+135
+00:16:31,629 --> 00:16:37,919
+it is got from the other parent with I self
+good crossover not you should think about
+
+136
+00:16:37,919 --> 00:16:53,870
+this an may be .. Let us
+say another representation anything of another
+
+137
+00:16:53,870 --> 00:16:59,100
+representation for the traveling salesman
+problem. I mean this is the simplest representation
+
+138
+00:16:59,100 --> 00:17:01,090
+the past representation it tells you
+
+139
+00:17:01,090 --> 00:17:04,490
+.from which city to go to with city an so
+an this is that self representation.
+
+140
+00:17:04,490 --> 00:17:05,490
+.
+
+141
+00:17:05,490 --> 00:17:26,549
+So, there is one representation which is called
+ordinal representation 
+
+142
+00:17:26,549 --> 00:17:33,919
+and another 1 which
+is called adjacency representation. Let us
+
+143
+00:17:33,920 --> 00:17:48,920
+do the other 1 first and this works as follows
+that I created representation for this to
+
+144
+00:17:48,920 --> 00:17:57,900
+find something 3 7 1 9 4 2 5 6 8 and it work
+as
+
+145
+00:17:57,900 --> 00:18:21,650
+follows. That we haven index this is as index
+in my representation and the value that is
+
+146
+00:18:21,650 --> 00:18:25,269
+a
+told for each sell in the value that I would
+
+147
+00:18:25,269 --> 00:18:29,240
+go. So, you if i is a index which is one of
+the
+
+148
+00:18:29,240 --> 00:18:37,400
+value. Then the value that I will tell is
+the city that I will go to from higher cities.
+
+149
+00:18:37,400 --> 00:18:43,930
+So, if I
+just look at this to this too is 3 7 1 9 4
+
+150
+00:18:43,930 --> 00:18:50,779
+2 5 6 8 from 1 I am going to 9. So, I have
+9 here
+
+151
+00:18:50,779 --> 00:19:00,109
+then from 2 I am going to 5 I have 5 here.
+From 3 I am going to 7 here, from 4 I am
+
+152
+00:19:00,109 --> 00:19:17,889
+going to 2, from 5 I am going to 6. From 6
+I am going to 8, from 7 I am going to 1, from
+
+153
+00:19:17,890 --> 00:19:27,360
+8 going to 3 which is the first 1 from 9 I
+am going to 4. So, this representation is
+
+154
+00:19:27,359 --> 00:19:30,969
+called
+as adjacency representation this a different
+
+155
+00:19:30,970 --> 00:19:39,640
+representation of a too are
+So, you got if how we got this representation?
+
+156
+00:19:39,640 --> 00:19:45,350
+So this is the representation of
+with this 2 only same as this to its us senses
+
+157
+00:19:45,349 --> 00:19:47,740
+the representation is different. This choice
+I
+
+158
+00:19:47,740 --> 00:19:53,329
+that I am going from 3 to 7 to 1 to 9 to 4
+to 2 to 5 to 6 to 8.
+
+159
+00:19:53,329 --> 00:19:57,500
+This representation says that you tell me
+any city and I tell you where to go from that
+
+160
+00:19:57,500 --> 00:20:02,220
+city. So, if you tell me city 3 where you
+going from 3, so look at this index 3 you
+
+161
+00:20:02,220 --> 00:20:03,220
+say
+
+162
+00:20:03,220 --> 00:20:07,750
+.going to 7 where you going from 6 you going
+from 6 to 8. So, if you see a 6 to 8, so
+
+163
+00:20:07,750 --> 00:20:16,579
+these a different is a called adjacency. Now,
+every not every premonition is a legal
+
+164
+00:20:16,579 --> 00:20:21,559
+adjacency representation so let me given example.
+Supposing I want to represent
+
+165
+00:20:21,559 --> 00:20:34,639
+something like this you go to 2 from 1 and
+you go to 1 from 2 and so on. Now,
+
+166
+00:20:34,640 --> 00:20:44,600
+obviously, formation of number 1 to 9 I have
+shown you formation the I do not care what
+
+167
+00:20:44,599 --> 00:20:51,029
+is the rest I am saying the this is not a
+valid told. Because from 1 you going 2 according
+
+168
+00:20:51,029 --> 00:20:56,710
+to this is the index from 1 you going 2 from
+2 you a going to 1 so already done know in
+
+169
+00:20:56,710 --> 00:21:07,179
+this cycle so it cannot to be part of a. So,
+not so is my poser to you in the past
+
+170
+00:21:07,179 --> 00:21:14,480
+representation every formation in the value
+to a in adjacency representation is not every
+
+171
+00:21:14,480 --> 00:21:27,099
+formation in the value to so is an in conscience
+here I am losing out on some 2 hours
+
+172
+00:21:27,099 --> 00:21:29,558
+here.
+
+173
+00:21:29,558 --> 00:21:43,690
+So, if will member that in the past representation
+if I what a located this representation
+
+174
+00:21:43,690 --> 00:21:51,539
+by cycle of any length. For example, I would
+start with 4 2 5 6 8 3 7 1 9 then I would
+
+175
+00:21:51,539 --> 00:21:56,289
+get
+same to our back which is the different formation,
+
+176
+00:21:56,289 --> 00:22:02,710
+but the same 2 hours essentially where
+is every 2 are has a unique representation
+
+177
+00:22:02,710 --> 00:22:06,480
+in the adjacency representation. Whereas,
+to be
+
+178
+00:22:06,480 --> 00:22:13,710
+may in 9 city to a you a start from any other
+9 cities and that would be still the same
+
+179
+00:22:13,710 --> 00:22:25,380
+to
+.. Now, given the adjacency representation
+
+180
+00:22:25,380 --> 00:22:37,090
+so again of will it as this is
+the index can you thing of a crossover. Given
+
+181
+00:22:37,089 --> 00:22:47,049
+2, 2 as adjacency representation can you
+know exploit this fact that you know that
+
+182
+00:22:47,049 --> 00:22:51,339
+from this city 1 parent is going to 1. So,
+let us
+
+183
+00:22:51,339 --> 00:23:05,808
+to the other 1 in the other 1 you going from
+1 to 7 from 2, 4 from 3 to 1 from 4 to 5 from
+
+184
+00:23:05,808 --> 00:23:24,440
+5 to 6 from 6 to 9 from 7 to 8 from 8 to 2
+and from 9 to 3 S. I have this to 2 us in
+
+185
+00:23:24,440 --> 00:23:27,900
+the in
+the first to this is p 1 and this p 2 the
+
+186
+00:23:27,900 --> 00:23:31,120
+different adjacency representation work and
+of a
+
+187
+00:23:31,119 --> 00:23:35,929
+customer of at any think of.
+
+188
+00:23:35,930 --> 00:23:44,808
+Especially if you want to ensure that one
+of the child is at least a better child better
+
+189
+00:23:44,808 --> 00:23:49,829
+than
+the parents look as a 1 once simple crossover
+
+190
+00:23:49,829 --> 00:24:08,460
+operator it is called alternating crossover.
+And we basically says that all alternating
+
+191
+00:24:08,460 --> 00:24:13,250
+cities you pick the parent from the you pick
+the
+
+192
+00:24:13,250 --> 00:24:37,558
+next city from the different parent alternating
+parents. So, choose from known parents so
+
+193
+00:24:37,558 --> 00:24:43,609
+that construct 1 2 so you choose let us say
+the first so you a constructing lets a c 3
+
+194
+00:24:43,609 --> 00:24:50,219
+another child we choose the first 1 from p
+1. So, this say you are going to 7 from 1,
+
+195
+00:24:50,220 --> 00:24:56,490
+we a
+going to 7 then from 7 where are we going
+
+196
+00:24:56,490 --> 00:25:02,700
+to go 1 city says go to 1. And other city
+says
+
+197
+00:25:02,700 --> 00:25:18,259
+go to 8 essentially from 7. So, here we cannot
+choose 1, because if at know you can
+
+198
+00:25:18,259 --> 00:25:24,069
+.choose 1 in other problem we choose know
+you cannot choose 1. If you go for 1 to 7
+
+199
+00:25:24,069 --> 00:25:26,649
+and
+from 7 to 1 in you already in cycles so you
+
+200
+00:25:26,650 --> 00:25:31,080
+cannot choose 1. So, at this point you only
+to
+
+201
+00:25:31,079 --> 00:25:39,558
+choose 1, but you are not to allow choose
+1, because it is form a cycle you can either
+
+202
+00:25:39,558 --> 00:25:51,230
+choose other parent or you can make an random
+choice so people if I both of something.
+
+203
+00:25:51,230 --> 00:26:08,190
+So, the basic idea in alternating crossover
+is to try and choose as you construct that
+
+204
+00:26:08,190 --> 00:26:11,179
+the
+parent from alternate all the next city from
+
+205
+00:26:11,179 --> 00:26:15,040
+the alternating parent. And if you cannot
+then
+
+206
+00:26:15,039 --> 00:26:19,629
+you to result to some 10 of random process
+any things next so either you can u use 8
+
+207
+00:26:19,630 --> 00:26:24,520
+here
+or you can choose random process. So, let
+
+208
+00:26:24,519 --> 00:26:32,950
+us say we choose 8 here and than we say for
+the next 1 from 8 you go to 3 choose from
+
+209
+00:26:32,950 --> 00:26:38,140
+the other 1 you put 3 here. And then from
+3
+
+210
+00:26:38,140 --> 00:26:43,630
+choose from the first parent you 1 go to 1
+so you go to 7 you 1 go to 7 so you choose
+
+211
+00:26:43,630 --> 00:26:52,010
+something random. So, you can see that neither
+of them can come here, because if you
+
+212
+00:26:52,009 --> 00:26:59,379
+go to choose 1 here then you saying form 1
+go to 7, from 7 go to 8 from 8 go to 3 and
+
+213
+00:26:59,380 --> 00:27:03,030
+from 3 go to 1. So, that is so cycle that
+you do not want to form and for the single
+
+214
+00:27:03,029 --> 00:27:05,670
+reason
+you we any way you cannot go to 7 from 2 cities
+
+215
+00:27:05,670 --> 00:27:14,420
+so you can put 7 there so you would put
+7 random value here. You can the exchange
+
+216
+00:27:14,420 --> 00:27:21,240
+this idea in say the alternating you can say
+subtour crossover.
+
+217
+00:27:21,240 --> 00:27:39,200
+So, thus as be selected subtour to here in
+both these example you can say choose a
+
+218
+00:27:39,200 --> 00:27:44,890
+subtour from 1 parent then choose a next subtour
+from the next parent an then choose
+
+219
+00:27:44,890 --> 00:27:50,350
+remaining from the first and so on. Also,
+in say of the alternating cities you can alternate
+
+220
+00:27:50,349 --> 00:28:00,099
+subtour crossover you can exchange in this
+idea. But the most in testing 1 here is called
+
+221
+00:28:00,099 --> 00:28:22,439
+Heuristic crossover, so let me write it here.
+And what the heuristic crossover says is at
+
+222
+00:28:22,440 --> 00:28:35,429
+you first random a choose some city so let
+us say you started city 6 or city 1 lets a
+
+223
+00:28:35,429 --> 00:28:41,169
+city 6
+in another matter. Then for deciding as to
+
+224
+00:28:41,169 --> 00:28:50,831
+way to go from that city you look at the 2
+toward if your chosen 6. For example, as a
+
+225
+00:28:50,830 --> 00:29:00,178
+starting point 1 parent says go to 8 the other
+parent says go to 9 from 6 the heuristic crossover
+
+226
+00:29:00,179 --> 00:29:10,210
+says that take the short a of the 2 adjust
+so 1 says go from 6 to 8 1 goes other says
+
+227
+00:29:10,210 --> 00:29:20,259
+go to 6 to 9. This one says the choose the
+shorter of the 2 in this essentially. So,
+
+228
+00:29:20,259 --> 00:29:23,950
+depending on what the values are we will choose
+the 8 or 9 in then construct the 2 of a from
+
+229
+00:29:23,950 --> 00:29:28,730
+8 other 9 in a similar. At every stage we
+try to
+
+230
+00:29:28,730 --> 00:29:35,940
+choose where to go from that city based on
+the distance to the next city and that is
+
+231
+00:29:35,940 --> 00:29:39,650
+easy
+to do with this I, because you are now easing
+
+232
+00:29:39,650 --> 00:29:45,090
+in this fashion essentially. Try to do that
+heuristic crossover with this and should be
+
+233
+00:29:45,089 --> 00:29:49,058
+quite difficult is an essentially. Because
+this
+
+234
+00:29:49,058 --> 00:29:54,329
+.as the index representation it tells you
+exactly that if you 1 go from 6 from city
+
+235
+00:29:54,329 --> 00:29:59,049
+5 what
+are 2 parents in? Here you would at scan the
+
+236
+00:29:59,049 --> 00:30:04,659
+whole thing in say 5 from 5 go to 6 and then
+5 from 5 go to 6 in this also.
+
+237
+00:30:04,660 --> 00:30:05,660
+.
+
+238
+00:30:05,660 --> 00:30:23,210
+So, the last one that you on look at is called
+ordinal representation and it work as follows.
+
+239
+00:30:23,210 --> 00:30:46,110
+The let us take the first 2 an you just copy
+here 2 4 5 6 9 3 in the ordinary representation
+
+240
+00:30:46,109 --> 00:30:56,569
+what you do? You just listen carefully to
+this process you look at position, so think
+
+241
+00:30:56,569 --> 00:31:00,990
+of
+this index this is 1 2 and so on as both.
+
+242
+00:31:00,990 --> 00:31:03,940
+So, this is the first city in a 2 a second
+city is a
+
+243
+00:31:03,940 --> 00:31:09,269
+third city is a 4 city is and so on. You have
+to a reference in this and is so less assume
+
+244
+00:31:09,269 --> 00:31:13,049
+as
+the reference index simply this which is the
+
+245
+00:31:13,049 --> 00:31:36,808
+already in this cities name. So the first
+city in
+
+246
+00:31:36,808 --> 00:31:44,960
+you 2 is 2 and that is second and the reference
+index so you right 2 here. But your know
+
+247
+00:31:44,960 --> 00:31:56,590
+this from here reference here new reference
+is the reference without the city 2 the next
+
+248
+00:31:56,589 --> 00:32:07,678
+city in your 2 are is 4 and its reference
+is 1 2 3 so you right 3 here and we remove
+
+249
+00:32:07,679 --> 00:32:16,340
+that
+from there. The next city here 2 are 5 and
+
+250
+00:32:16,339 --> 00:32:24,349
+its indexes 3 here we right 3 here again and
+remove this from here. And next cities 6 and
+
+251
+00:32:24,349 --> 00:32:29,590
+its indexes 1 2 3 its again 3 next cities
+9 so
+
+252
+00:32:29,590 --> 00:32:41,519
+remove 6 from here 1 2 3 4 5, 5 here we remove
+that the next 3 which is 2 here. And we
+
+253
+00:32:41,519 --> 00:32:53,789
+remove this and 1 which is 1 an then remove
+1 then 7 which is 1 we remover 7 and 8 at
+
+254
+00:32:53,789 --> 00:33:00,819
+this representation of the 2 are is calling
+ordinary representation.
+
+255
+00:33:00,819 --> 00:33:10,849
+.So, just repeat what we are doing here is
+that we have a reference index which is
+
+256
+00:33:10,849 --> 00:33:17,639
+dynamic which is only the index which have
+the new cities the remaining cities.
+
+257
+00:33:17,640 --> 00:33:21,830
+Essentially we have all 1 to 9 so 2 is in
+position to here so with 8 then we remove
+
+258
+00:33:21,829 --> 00:33:27,730
+to then
+4 comes to position 3 then we remove 4 from
+
+259
+00:33:27,730 --> 00:33:46,490
+their 5 comes in position 3 remove 5 and
+so on 1 we get this 2. As an exercise I will
+
+260
+00:33:46,490 --> 00:33:54,169
+ask to construct the to a ordinary
+representation for the second 2 a as well
+
+261
+00:33:54,169 --> 00:34:01,330
+all lets to it know so 3 is in position 3
+when we
+
+262
+00:34:01,329 --> 00:34:08,389
+remove 3 we get 7 which will be an position
+6 and so on. So new I live it is an exercise
+
+263
+00:34:08,389 --> 00:34:15,740
+we to do. The interesting thing and this is
+the exercise it I want to try would is at
+
+264
+00:34:15,739 --> 00:34:20,469
+1 to
+represent 2 2 us using an ordinary representation
+
+265
+00:34:20,469 --> 00:34:49,699
+then you just to a single point
+crossover. And you get 2 valued 2 us so why
+
+266
+00:34:49,699 --> 00:34:55,549
+do you like this single point crossover? We
+like it simply, because it is very easy to
+
+267
+00:34:55,550 --> 00:35:01,750
+implement that is once you have a representation
+the already do is cut of this thing at 1 place
+
+268
+00:35:01,750 --> 00:35:07,429
+and put together the cut race and new haven
+1 new 2. But if you try to imaging words happing
+
+269
+00:35:07,429 --> 00:35:14,819
+here is at with is few different schemes
+of representation they allow you different
+
+270
+00:35:14,820 --> 00:35:17,039
+says of crossover.
+
+271
+00:35:17,039 --> 00:35:22,340
+And for example, this adjacency representation
+which is 1 of the most popular it allows it
+
+272
+00:35:22,340 --> 00:35:28,579
+you some form of heuristic knowledge we says
+that from a given city you can makes
+
+273
+00:35:28,579 --> 00:35:34,929
+some in form choices to where to go next city.
+So, even if you 1 not able to fill in the
+
+274
+00:35:34,929 --> 00:35:39,159
+parent from 1 of the 2 base on this whether
+it is alternating crossover or subtour
+
+275
+00:35:39,159 --> 00:35:44,589
+crossover or heuristic crossover if you are
+not able to filling from another parent. You
+
+276
+00:35:44,590 --> 00:35:50,340
+can say heuristically choose the closer city
+which is the allowed and try to bill shorter
+
+277
+00:35:50,340 --> 00:35:53,190
+2
+to us in the you are the ultimate go list
+
+278
+00:35:53,190 --> 00:35:57,369
+bill shorter to us where this presentation
+does not
+
+279
+00:35:57,369 --> 00:36:06,099
+allow any such at all this presentation the
+earn allow that. But it at is allows it do
+
+280
+00:36:06,099 --> 00:36:09,309
+a
+simple crossover of essentially and remember
+
+281
+00:36:09,309 --> 00:36:16,820
+that is crossover as to be done in every
+cycle for in every of parents at a choose
+
+282
+00:36:16,820 --> 00:36:17,820
+essentially.
+
+283
+00:36:17,820 --> 00:36:18,820
+..
+
+284
+00:36:18,820 --> 00:36:36,359
+So continue in our study of population based
+methods. We look at nature again to get
+
+285
+00:36:36,358 --> 00:36:44,170
+inspiration from different way that the members
+of the population interact with each
+
+286
+00:36:44,170 --> 00:36:53,840
+other. So, member, that we a said, that call
+genetic algorithms some it action in genetic
+
+287
+00:36:53,840 --> 00:37:12,730
+level which is the process of recombination
+at genotype level. So, recombination happen
+
+288
+00:37:12,730 --> 00:37:30,740
+as a genotype level where as selection . happens
+of the phenotype
+
+289
+00:37:30,739 --> 00:37:46,239
+level. So, the such is happening at a micro
+level the mixing of gens from 2 different
+
+290
+00:37:46,239 --> 00:37:52,959
+parents to come off with new candidates. And
+those candidates fainting without in some
+
+291
+00:37:52,960 --> 00:37:59,610
+real the women training to serve I have essentially.
+Now, there is the another clause of
+
+292
+00:37:59,610 --> 00:38:10,190
+methods which some people call as cultural
+algorithms, because they involve high level
+
+293
+00:38:10,190 --> 00:38:16,940
+interaction between the agency at what you
+my say is a cultural level.
+
+294
+00:38:16,940 --> 00:38:17,940
+..
+
+295
+00:38:17,940 --> 00:38:28,880
+And there are various names by which these
+algorithms go so 1 is all swarm intelligence
+
+296
+00:38:28,880 --> 00:38:36,970
+and it is in quite popular as optimization
+method in the recent pass. Even choose a term
+
+297
+00:38:36,969 --> 00:38:53,419
+ant colony of optimization and we will look
+at continue looking at the TSP problem for
+
+298
+00:38:53,420 --> 00:39:03,920
+ant colony optimization. So, you must the
+familiar with ant colony this ant colony was
+
+299
+00:39:03,920 --> 00:39:09,088
+a
+terms which was use by . in one of this book
+
+300
+00:39:09,088 --> 00:39:13,070
+. the
+very shows that an individual ant cannot be
+
+301
+00:39:13,070 --> 00:39:18,050
+a very effective feature in some sense. But
+I
+
+302
+00:39:18,050 --> 00:39:25,670
+colony of fans all society of fans is very
+successful in that task what is the main task
+
+303
+00:39:25,670 --> 00:39:28,409
+at
+ant such trying do? There the building nest
+
+304
+00:39:28,409 --> 00:39:31,149
+that were there is the we and sitting out
+they
+
+305
+00:39:31,150 --> 00:39:37,340
+an there is worker and who job is so go out
+to in the world for verge in food and get
+
+306
+00:39:37,340 --> 00:39:48,849
+some food bag essentially. Now, in terms of
+that am interact with each other to a process
+
+307
+00:39:48,849 --> 00:40:02,340
+of symbol essentially and this kind of interaction
+called mimetic 
+
+308
+00:40:02,340 --> 00:40:15,220
+is that 2 symbols 2 signs
+ant symbol essentially. And is very common
+
+309
+00:40:15,219 --> 00:40:21,739
+in the animal world for animals for feature
+to use symbol for examples you know animal
+
+310
+00:40:21,739 --> 00:40:30,019
+used to mark territory essentially dogs
+another predators used to mark territory.
+
+311
+00:40:30,019 --> 00:40:39,849
+But these ants are using it know kind of cooperative
+fashion and they want to used. They
+
+312
+00:40:39,849 --> 00:40:45,539
+want to convey were they having being to the
+less of the ant community and they do this
+
+313
+00:40:45,539 --> 00:40:59,119
+by a process of pheromone trails. So, pheromone
+is a chemical sentences which an ant
+
+314
+00:40:59,119 --> 00:41:04,030
+drops wherever it goes essentially. So, you
+can a imagine situation in the real world
+
+315
+00:41:04,030 --> 00:41:08,460
+.where the ants are answer exploring some
+piece an dropping pheromone on the way back
+
+316
+00:41:08,460 --> 00:41:12,590
+essentially. Now, how to the use is pheromone?
+Either drop was themselves always
+
+317
+00:41:12,590 --> 00:41:17,769
+somebody else is that have a tendency to go
+in a direction which as pheromone trails
+
+318
+00:41:17,769 --> 00:41:23,869
+essentially. So, it is like marking out pass
+for each other and following the pass
+
+319
+00:41:23,869 --> 00:41:30,259
+essentially. So you can imaging the situation
+where there is an ant nest and that is if
+
+320
+00:41:30,260 --> 00:41:32,640
+4
+hypothetical ants go of in 4 different direction
+
+321
+00:41:32,639 --> 00:41:45,319
+in such of a food. And let us say this is
+founds some sugar here some 4 it is found
+
+322
+00:41:45,320 --> 00:41:48,920
+essentially 1 some food as the end of the
+trail
+
+323
+00:41:48,920 --> 00:41:53,659
+essentially. So, let us a why in this happens
+after some time some more ants come out
+
+324
+00:41:53,659 --> 00:41:58,449
+and them what to the do? So initially 4 ant
+spent out there after sometime 4 so let us
+
+325
+00:41:58,449 --> 00:42:01,299
+a 4
+more just for the sake of the argument 4 more
+
+326
+00:42:01,300 --> 00:42:05,070
+ants come out then they likely to follow
+the trails. Some goes this way some goes this
+
+327
+00:42:05,070 --> 00:42:07,320
+way some goes this way some go that.
+
+328
+00:42:07,320 --> 00:42:13,570
+Now, this ant which is found this piece of
+food what was it do? Very unselfishly it brings
+
+329
+00:42:13,570 --> 00:42:18,690
+bag to the nest essentially so once it is
+found this food it just follow its own trail
+
+330
+00:42:18,690 --> 00:42:23,500
+back
+and goes back to the next and deposits a food.
+
+331
+00:42:23,500 --> 00:42:28,530
+But in the process if as tendency the trail
+it
+
+332
+00:42:28,530 --> 00:42:32,619
+as deposited more pheromone on the way back.
+So, this amount of pheromone on this
+
+333
+00:42:32,619 --> 00:42:38,280
+trail because more essentially. Now, if you
+assume that that ant has a tendency to move
+
+334
+00:42:38,280 --> 00:42:42,720
+al1 pheromone trail in the more pheromone
+there is in a kale the more the antive likely
+
+335
+00:42:42,719 --> 00:42:45,449
+to
+following. So, the next ant which comes out
+
+336
+00:42:45,449 --> 00:42:47,960
+is more like to choose this selection then
+in
+
+337
+00:42:47,960 --> 00:42:53,710
+your base directions and follow that kale.
+And notice that once more and more ants go
+
+338
+00:42:53,710 --> 00:42:59,269
+along with trail more and more pheromone will
+be deposited along the way and the kale
+
+339
+00:42:59,269 --> 00:43:04,389
+becomes strong and stronger. And eventually
+after period of time you will find that this
+
+340
+00:43:04,389 --> 00:43:12,929
+entered ant colony is sub tour travelling
+food and back essentially.
+
+341
+00:43:12,929 --> 00:43:19,639
+Hence it is a common pheromone you must have
+absorb in the real world essentially. Not
+
+342
+00:43:19,639 --> 00:43:26,210
+only that if you go to put an optical in the
+pass of these ants if you own experiment then
+
+343
+00:43:26,210 --> 00:43:30,289
+off course we cannot follow the trail. So,
+this part the cannot full so they will start
+
+344
+00:43:30,289 --> 00:43:36,949
+diverting in different direction. But eventually
+some of them will come back to this trail
+
+345
+00:43:36,949 --> 00:43:42,559
+or some of them may find different pass of
+the trail some make come back to the trail.
+
+346
+00:43:42,559 --> 00:43:53,650
+And in the thing is that the ant switch come
+back to this trail will do it faster essentially.
+
+347
+00:43:53,650 --> 00:43:57,760
+So, they will is establish of pheromone trail
+faster than an ant with goals of wonders of
+
+348
+00:43:57,760 --> 00:44:03,420
+in
+count pack. And this fact that ants which
+
+349
+00:44:03,420 --> 00:44:10,108
+happen to do things faster they live the trails
+earlier. And more ants follow on that trail
+
+350
+00:44:10,108 --> 00:44:12,049
+can be seen as process of optimization,
+
+351
+00:44:12,050 --> 00:44:18,089
+.because they are so the fine in the shorter
+paths shortest paths of found first. Assuming
+
+352
+00:44:18,088 --> 00:44:23,329
+the they enough number of ants in this environment
+shortest pass will be found first and
+
+353
+00:44:23,329 --> 00:44:29,098
+they will be followed first in so on about.
+In that sense you will see that ants for you
+
+354
+00:44:29,099 --> 00:44:38,849
+open fine go to task to the 
+to the source to the source of food an back
+
+355
+00:44:38,849 --> 00:44:40,430
+to the essentially.
+
+356
+00:44:40,429 --> 00:44:41,429
+.
+
+357
+00:44:41,429 --> 00:44:50,608
+Now, there was is group of miss chest that
+by DORIGO at an who device is all go set up
+
+358
+00:44:50,608 --> 00:45:02,610
+all will comes call an colony optimization.
+And we look at it with an example of the TSP
+
+359
+00:45:02,610 --> 00:45:19,490
+problem. And the way that is algorithms works
+is follows that let they we N cities and let
+
+360
+00:45:19,489 --> 00:45:28,479
+they we M ants. And we assume that is ants
+kind of distributed randomly across these
+
+361
+00:45:28,480 --> 00:45:54,500
+cities. The basic process that we will follow
+is at each ant constructs a tour in a greedy
+
+362
+00:45:54,500 --> 00:46:06,909
+fashion. Each ant constructs to a Grady fashion
+and this will take N time steps because
+
+363
+00:46:06,909 --> 00:46:20,549
+the to a will have to have N cities. And each
+ant also deposits pheromone we just use at
+
+364
+00:46:20,550 --> 00:46:36,620
+the pheromone again on the tour it constructs.
+So, you can imagine that all these M ants
+
+365
+00:46:36,619 --> 00:46:42,509
+are there trying to find so all that travelling
+salesmen problem try to fine the shortest
+
+366
+00:46:42,510 --> 00:46:48,650
+tour. Each an constructs a tour in a Grady
+fashion and deposits certain want of
+
+367
+00:46:48,650 --> 00:46:59,639
+pheromone on the tour it is created. So, the
+way will be look at tour is that we will look
+
+368
+00:46:59,639 --> 00:47:06,230
+at the amount of pheromone at the end of N
+time units after each ants constructs a tour.
+
+369
+00:47:06,230 --> 00:47:18,809
+So, we will use T i j to stand for the pheromone
+on the link from the higher city to this j
+
+370
+00:47:18,809 --> 00:47:19,809
+i
+
+371
+00:47:19,809 --> 00:47:27,779
+.city. So, this is city i this is city j an
+than off course there is the other thing essentially
+
+372
+00:47:27,780 --> 00:47:31,269
+so
+how much pheromone is on this? You will do
+
+373
+00:47:31,269 --> 00:47:41,050
+not by T i j and we will update it at every
+N time units. So, if you know the tau pherom1
+
+374
+00:47:41,050 --> 00:47:48,130
+on time t you can compute the pheromone
+at time T plus N after each. And this will
+
+375
+00:47:48,130 --> 00:47:57,240
+be updated as 
+some of the whole pheromone
+
+376
+00:47:57,239 --> 00:48:03,569
+that was let from earlier times plus new pheromone
+which has been deposited by ants in
+
+377
+00:48:03,570 --> 00:48:08,769
+the last 2. And the whole pheromone that will
+deposit in earlier times as the tendency
+
+378
+00:48:08,769 --> 00:48:15,679
+you operate. So, we will assume that some
+of it will you operate so whatever the value
+
+379
+00:48:15,679 --> 00:48:25,989
+was at time T it we get you operate by some
+value which is 1 minus let us a lambda
+
+380
+00:48:25,989 --> 00:48:37,649
+where lambda we will calls as a coefficient
+of you operation. So, lambda tells you how
+
+381
+00:48:37,650 --> 00:48:45,760
+fast the pheromone you operates. If lambda
+is high if it is close to 1 then you can see
+
+382
+00:48:45,760 --> 00:48:48,490
+that
+none of the whole will remain if lambda is
+
+383
+00:48:48,489 --> 00:48:49,489
+low.
+
+384
+00:48:49,489 --> 00:48:51,889
+Then you can see that some of 2 whole will
+remain plus the new pheromone that is
+
+385
+00:48:51,889 --> 00:49:19,509
+deposits and that we will call as tau i j
+n let a say. We can say the incremental amount
+
+386
+00:49:19,510 --> 00:49:30,109
+is
+delta tau i j at time t plus n let us say.
+
+387
+00:49:30,108 --> 00:49:33,569
+So, this is the incremental amount of pherom1
+that
+
+388
+00:49:33,570 --> 00:49:37,700
+and so deposited in the last cycle and this
+is for tremens of the whole pherom1
+
+389
+00:49:37,699 --> 00:49:50,319
+essentially an how much is this amount? This
+is basically the sum fall i is equal to 1
+
+390
+00:49:50,320 --> 00:49:55,070
+to n
+for each of the ants the amount of pheromone
+
+391
+00:49:55,070 --> 00:50:09,920
+deposited while in the k let use k here were
+using i n j here deposited by the k ant essentially.
+
+392
+00:50:09,920 --> 00:50:14,260
+So, the total pherom1 deposited in the
+last cycle is the sum of the pheromone to
+
+393
+00:50:14,260 --> 00:50:19,640
+deposited by all the ants and for each ants
+this
+
+394
+00:50:19,639 --> 00:50:30,989
+term delta tau i j k would be either 0 or
+little be sum value it to be 0 if that and
+
+395
+00:50:30,989 --> 00:50:36,269
+does not
+have this i j h in h 2 an it to non zero if
+
+396
+00:50:36,269 --> 00:50:38,909
+it is it has i at in this 2.
+
+397
+00:50:38,909 --> 00:51:04,899
+So that 2 cases a 0 if ant does not tours
+edge i j otherwise it is a value it is denoted
+
+398
+00:51:04,900 --> 00:51:09,660
+by q
+divided by l k were q is sum constant that
+
+399
+00:51:09,659 --> 00:51:14,909
+we use control this own computation. And l
+k
+
+400
+00:51:14,909 --> 00:51:29,779
+is a cost of tour found by is ant kin the
+k ant essentially. So, the important thing
+
+401
+00:51:29,780 --> 00:51:32,980
+here the
+way the this dapples from the real world situation
+
+402
+00:51:32,980 --> 00:51:40,639
+is at the amount of tour amount of
+pheromone that an deposits on an edge is inversely
+
+403
+00:51:40,639 --> 00:51:48,500
+proportional to length of the tour. It is
+found which means that the ant switch fine
+
+404
+00:51:48,500 --> 00:51:53,280
+shorter to us will end of the deposits more
+pheromone on those i j is and I am switch
+
+405
+00:51:53,280 --> 00:51:56,130
+a found long to us will at the deposited in
+less
+
+406
+00:51:56,130 --> 00:52:02,349
+pheromone. So, again we want reinforce the
+idea that an sit of fine shorter to us they
+
+407
+00:52:02,349 --> 00:52:05,050
+will
+encourage other and so follow that real essentially
+
+408
+00:52:05,050 --> 00:52:09,510
+and that why I will do deposit more
+pheromone essentially. So, this is how pheromone
+
+409
+00:52:09,510 --> 00:52:12,670
+is updated at the end of every cycle
+
+410
+00:52:12,670 --> 00:52:18,019
+.now that lives is part of the Grady to a
+construction how does and actually constructed
+
+411
+00:52:18,019 --> 00:52:23,039
+to
+is basically simple stochastic process in
+
+412
+00:52:23,039 --> 00:52:29,389
+which an ant and looks at a set of cities
+at it can
+
+413
+00:52:29,389 --> 00:52:39,069
+move to and moves to it in a holistic fashion.
+
+414
+00:52:39,070 --> 00:52:57,300
+So, let us assume that ant at a city i 
+moves to city j with a probability little
+
+415
+00:52:57,300 --> 00:53:01,560
+bit like what
+we did in the simulated . which is the proportional
+
+416
+00:53:01,559 --> 00:53:16,009
+to the following.
+The amount of pheromone on that edge that
+
+417
+00:53:16,010 --> 00:53:27,349
+it is considering raise to sum power alpha
+multiply it by a factor which is called eta
+
+418
+00:53:27,349 --> 00:53:33,200
+i j is to power beta, so again alpha and beta
+to
+
+419
+00:53:33,199 --> 00:53:38,679
+constant, if you control the influence of
+these 2 factors. So, there 2 factors tau i
+
+420
+00:53:38,679 --> 00:53:43,099
+j is a
+want of pherom1 on that which an eta i j is
+
+421
+00:53:43,099 --> 00:54:03,239
+called visibility. Basically it is inversely
+proportion to cost of that edge. So, in other
+
+422
+00:54:03,239 --> 00:54:08,229
+words if that the adjust very if the if the
+city j
+
+423
+00:54:08,230 --> 00:54:12,769
+is very close to city i and this eta factor
+will shoot up. Because this is inversely
+
+424
+00:54:12,769 --> 00:54:18,809
+proportion to cost and then the ants so this
+factors says that the ant is likely to choose
+
+425
+00:54:18,809 --> 00:54:21,440
+a
+city which is close to the city i at which
+
+426
+00:54:21,440 --> 00:54:22,440
+it is.
+
+427
+00:54:22,440 --> 00:54:28,000
+This factor says the ants likely to follow
+that to good go to that city on which the
+
+428
+00:54:28,000 --> 00:54:35,460
+pheromone trails is higher. And then they
+a control by these 2 parameters divided by
+
+429
+00:54:35,460 --> 00:54:46,280
+sum
+of all a city that it can go to so T i h is
+
+430
+00:54:46,280 --> 00:54:54,720
+to alpha eta i h is to beta were h is the
+set of
+
+431
+00:54:54,719 --> 00:55:03,809
+allowed city and what you mean by allowed
+cities? Cities which will not close a loop
+
+432
+00:55:03,809 --> 00:55:07,449
+in
+is remember the, that ask at we a try to find
+
+433
+00:55:07,449 --> 00:55:13,769
+is complete tour the ants a so as at ask of
+constructing a complete tour in a Grady fashion.
+
+434
+00:55:13,769 --> 00:55:21,108
+So, it goes of city to city and at any
+point it only considers those cities as prospective
+
+435
+00:55:21,108 --> 00:55:29,828
+destinations which will not close to
+.. So, essentially what this ants it doing
+
+436
+00:55:29,829 --> 00:55:36,730
+is sitting at this location i and
+it is got is we a assuming a completely connecting
+
+437
+00:55:36,730 --> 00:55:41,829
+graph here the it as we do in the TSP
+so it can move to any other city.
+
+438
+00:55:41,829 --> 00:55:50,460
+But we will only choose those cities which
+first of all it has not already tour, because
+
+439
+00:55:50,460 --> 00:55:56,920
+you
+do not wonder close the loop again so it cannot
+
+440
+00:55:56,920 --> 00:56:01,329
+go to city which it has already tour
+essentially. So, these only set of allowed
+
+441
+00:56:01,329 --> 00:56:04,039
+cities and from the allowed cities we chooses
+is
+
+442
+00:56:04,039 --> 00:56:12,289
+to move to 1 of them call j probabilistically.
+And the probability is proportion 2 thing;
+
+443
+00:56:12,289 --> 00:56:19,599
+one is how strong is pheromone trail on that
+h. And secondly how close that new city is
+
+444
+00:56:19,599 --> 00:56:23,710
+to the current city, because eventually you
+want to find shortest pass. In shortest pass
+
+445
+00:56:23,710 --> 00:56:28,519
+is
+always be need of it adjust which are short
+
+446
+00:56:28,519 --> 00:56:30,869
+adjust essentially so this is the ant colony
+
+447
+00:56:30,869 --> 00:56:32,960
+.optimization algorithm.
+
+448
+00:56:32,960 --> 00:56:42,869
+You have the set up ants each ant construct
+a tour then base on the 2 it is constructed
+
+449
+00:56:42,869 --> 00:56:50,019
+each ant deposits a certain amount of pheromone
+on every edge that it has moved on and
+
+450
+00:56:50,019 --> 00:56:56,670
+that the end of this whole process, we update
+the amount of pheromone on every edge in
+
+451
+00:56:56,670 --> 00:57:05,550
+the graph. So, edges on which ants will travel
+will have pheromone edges on which ants
+
+452
+00:57:05,550 --> 00:57:10,810
+will travel to fine short to us will have
+more pheromone. And they will influence more
+
+453
+00:57:10,809 --> 00:57:16,449
+ants to follow, because of this factor on
+those adjust. So, in the end ideally like
+
+454
+00:57:16,449 --> 00:57:18,989
+in this
+situation if all the ants of moving along
+
+455
+00:57:18,989 --> 00:57:24,299
+like 1 caravan. In the TS also 1 would expect
+all
+
+456
+00:57:24,300 --> 00:57:32,818
+the ants would be travelling 1 optimal to
+essentially. And it would be a go to exercise
+
+457
+00:57:32,818 --> 00:57:35,590
+for
+you to influent this an colony optimization
+
+458
+00:57:35,590 --> 00:57:41,930
+and see how man, how the ants out up
+converts to the shortest to at least for small
+
+459
+00:57:41,929 --> 00:57:49,419
+problems you can we seen quite easily. So,
+will stop here and in the next class we will
+
+460
+00:57:49,420 --> 00:57:54,950
+move away from this optimization. And we
+go back to state space such and try to see
+
+461
+00:57:54,949 --> 00:57:57,578
+deterministic algorithms for fine in shortest
+pass essentially.
+
+462
+00:57:57,579 --> 00:58:07,579
+.
+

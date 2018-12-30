@@ -1,0 +1,1773 @@
+﻿1
+00:00:16,890 --> 00:00:21,910
+Welcome to module 34 of Database Management
+Systems, in this module and the next we will
+
+2
+00:00:21,910 --> 00:00:26,759
+talk about Concurrency Control a very key
+concept of ah database transactions.
+
+3
+00:00:26,759 --> 00:00:32,599
+So, in the last module we have talked about
+continuing on the transactions, we had talked
+
+4
+00:00:32,598 --> 00:00:38,929
+about ah recoverability of databases, how
+to satisfy the acid properties the basic transaction
+
+5
+00:00:38,929 --> 00:00:45,039
+in SQL and we have introduced a second form
+of serializability in terms of the view serializability.
+
+6
+00:00:45,039 --> 00:00:53,960
+Now, here in this we will talk more on the
+different aspects of concurrency control because,
+
+7
+00:00:53,960 --> 00:00:58,870
+it is good that if 2 schedules are given,
+we can we may try to prove if there conflict
+
+8
+00:00:58,869 --> 00:01:05,069
+serializable, if their view serializable and
+then we can use them, but doing that in general
+
+9
+00:01:05,069 --> 00:01:10,500
+while the database is in execution is an extremely
+difficult problem because, who is going to
+
+10
+00:01:10,500 --> 00:01:15,890
+give the who is who will be able to give the
+all possible different types of transactions
+
+11
+00:01:15,890 --> 00:01:20,890
+that may happen 100s of them that may be going
+on in a in the database at any given point
+
+12
+00:01:20,890 --> 00:01:21,890
+of time.
+
+13
+00:01:21,890 --> 00:01:26,890
+So, how do you prove that ah or how do you
+know whether they are conflicts serial, or
+
+14
+00:01:26,890 --> 00:01:31,260
+which of them are conflict serializable sets
+of view serializable sets and so, on.
+
+15
+00:01:31,260 --> 00:01:36,380
+So, we introduce a different kind of need
+to have a different kind of mechanism and
+
+16
+00:01:36,379 --> 00:01:39,009
+that is the mechanism of lock that is used.
+
+17
+00:01:39,010 --> 00:01:44,480
+So, we will discuss about those aspects issues
+and the lock based mechanisms.
+
+18
+00:01:44,480 --> 00:01:53,020
+So, a database must provide a mechanism that
+will ensure all possible schedules are both
+
+19
+00:01:53,019 --> 00:01:58,569
+conflict serializable, that is a basic requirement
+and are recoverable and preferable in a cascade
+
+20
+00:01:58,569 --> 00:01:59,569
+less manner.
+
+21
+00:01:59,569 --> 00:02:02,929
+So, that is the basic requirements that we
+have seen.
+
+22
+00:02:02,930 --> 00:02:06,579
+Naturally if we have everything as serial
+that will happen by default, but that will
+
+23
+00:02:06,578 --> 00:02:10,879
+have very poor degree of concurrency and very
+low throughput.
+
+24
+00:02:10,879 --> 00:02:19,289
+So, ah concurrency control schemes will trade
+off the amount of concurrency that is allowed
+
+25
+00:02:19,289 --> 00:02:21,219
+and, the amount of over it.
+
+26
+00:02:21,219 --> 00:02:27,590
+So, what will I have to be ensured is I should
+able to for example, if I say that the the
+
+27
+00:02:27,590 --> 00:02:33,739
+schedules are always serial then the overhead
+of ensuring concurrency is the minimum, but
+
+28
+00:02:33,739 --> 00:02:39,550
+naturally the benefit is also minimum, we
+get a very poor throughput.
+
+29
+00:02:39,550 --> 00:02:44,780
+The more we would like to allow for more and
+more concurrence in the system, but at the
+
+30
+00:02:44,780 --> 00:02:49,280
+same time we will need to have to see what
+is the overhead of that what is the cost of
+
+31
+00:02:49,280 --> 00:02:55,919
+that what how do we have to ensure those and,
+naturally as we I have already said testing
+
+32
+00:02:55,919 --> 00:03:02,589
+for a scheduled to be serializable ah after
+it has happened is; obviously, too late and
+
+33
+00:03:02,590 --> 00:03:07,009
+the question is beforehand how do I get to
+know it in a general setting.
+
+34
+00:03:07,009 --> 00:03:13,799
+So, we need to have a certain protocol through
+which that transactions might be written,
+
+35
+00:03:13,800 --> 00:03:18,360
+a protocol through which the transactions
+must operate so, that we can achieve good
+
+36
+00:03:18,360 --> 00:03:20,069
+concurrency in the system.
+
+37
+00:03:20,068 --> 00:03:26,599
+So, here our objective is to develop concurrency
+control protocols that will ensure serializability
+
+38
+00:03:26,599 --> 00:03:29,579
+and if possible cascadeless recovery.
+
+39
+00:03:29,580 --> 00:03:39,409
+So, naturally what you do you try to see whenever
+we have conflict, the basic problem of serializability
+
+40
+00:03:39,408 --> 00:03:47,628
+is conflict that is what are you are you reading
+the right data and, what happens if you inadvertently
+
+41
+00:03:47,628 --> 00:03:54,060
+make changes in in a data that has already
+been read by someone else and so on.
+
+42
+00:03:54,060 --> 00:04:01,430
+So, the why we need to achieve isolation of
+the transactions would be to make the accesses
+
+43
+00:04:01,430 --> 00:04:03,819
+as mutually exclusive as possible.
+
+44
+00:04:03,818 --> 00:04:07,469
+So, naturally 1 way it could be to do it using
+locks.
+
+45
+00:04:07,469 --> 00:04:11,870
+So, we by the basic concept of the lock is
+you say that this data item is in use.
+
+46
+00:04:11,870 --> 00:04:14,400
+So, others should not use it.
+
+47
+00:04:14,400 --> 00:04:18,750
+Now what should be the data item, should it
+be the whole database, it can be the whole
+
+48
+00:04:18,750 --> 00:04:23,360
+database we say this database is in use other
+transaction cannot use it, which boils down
+
+49
+00:04:23,360 --> 00:04:27,410
+to saying almost that you have a serial schedule.
+
+50
+00:04:27,410 --> 00:04:31,960
+So, at any point of time only 1 transaction
+can operate on the database naturally your
+
+51
+00:04:31,959 --> 00:04:33,500
+concurrency will be very poor.
+
+52
+00:04:33,500 --> 00:04:36,470
+So, that is not what is ah what is acceptable.
+
+53
+00:04:36,470 --> 00:04:44,090
+So, we need ah locking mechanisms, or a mechanism
+to control exclusivity in terms of holding
+
+54
+00:04:44,089 --> 00:04:49,019
+locks on smaller items possibly at a record
+level at a value level and so on.
+
+55
+00:04:49,019 --> 00:04:53,629
+So, that gives rise to a whole lot of lock
+based protocol some of which we are going
+
+56
+00:04:53,629 --> 00:04:54,629
+to discuss.
+
+57
+00:04:54,629 --> 00:05:00,360
+So, lock is a mechanism to control concurrent
+access and to start with there are a variety
+
+58
+00:05:00,360 --> 00:05:07,270
+of locks that exist in a database system variety
+of types, but to start with we are talking
+
+59
+00:05:07,269 --> 00:05:13,269
+about 2 locking modes 1 is exclusive mode,
+which is designated as X and other is shared
+
+60
+00:05:13,269 --> 00:05:18,949
+mode and which is designated as S.
+Naturally the exclusive in the exclusive mode,
+
+61
+00:05:18,949 --> 00:05:24,769
+the data item can be read and written both
+and such a lock is obtained ah by doing it
+
+62
+00:05:24,769 --> 00:05:30,609
+lock X instruction and in the shared mode
+the data item can only be read.
+
+63
+00:05:30,610 --> 00:05:36,600
+So, as you can understand why is it exclusive,
+when you do read write because if 2 transactions
+
+64
+00:05:36,600 --> 00:05:41,849
+try to write the same item at the same time,
+then you do not know what is who has been
+
+65
+00:05:41,848 --> 00:05:46,699
+successful and who is the last right and what
+is the actual final value they will become
+
+66
+00:05:46,699 --> 00:05:48,389
+indeterminate.
+
+67
+00:05:48,389 --> 00:05:52,810
+But if I have a value and multiple transactions
+read that at the same time certainly there
+
+68
+00:05:52,810 --> 00:05:55,819
+is no problem because, all of them necessarily
+will read the same data.
+
+69
+00:05:55,819 --> 00:06:02,069
+So, that is what is called shared and a shared
+lock or a shared mode lock can be obtained
+
+70
+00:06:02,069 --> 00:06:05,209
+in terms of the lock X instruction.
+
+71
+00:06:05,209 --> 00:06:12,739
+And transaction when it has a lock it can
+unlock that by an unlock on the same data
+
+72
+00:06:12,740 --> 00:06:13,740
+item.
+
+73
+00:06:13,740 --> 00:06:18,509
+So, there is a concurrency control manager
+to whom the lock requests are made, whether
+
+74
+00:06:18,509 --> 00:06:24,519
+it is a request to grant, or it is a request
+to release and a transaction can proceed only
+
+75
+00:06:24,519 --> 00:06:26,439
+after the request has been granted.
+
+76
+00:06:26,439 --> 00:06:31,769
+So, let us look into finer details this is
+what is known as a lock compatibility matrix.
+
+77
+00:06:31,769 --> 00:06:37,250
+So, if there are multiple lock modes which
+is what is expected, then you try to see which
+
+78
+00:06:37,250 --> 00:06:41,718
+locks can be held or operated simultaneously.
+
+79
+00:06:41,718 --> 00:06:47,250
+So, this is shown in terms of our present
+assumption that has shared an exclusive lock
+
+80
+00:06:47,250 --> 00:06:53,350
+naturally, it transact 2 transactions can
+hold a shared lock simultaneously on the same
+
+81
+00:06:53,350 --> 00:07:00,250
+data item, but all other combinations that
+is no 2 transactions can hold a shared and
+
+82
+00:07:00,250 --> 00:07:04,990
+an exclusive, or 2 exclusive locks on the
+same data item at the same time.
+
+83
+00:07:04,990 --> 00:07:09,730
+So, which means that 2 transactions can read
+a value at the same time, but 2 transactions
+
+84
+00:07:09,730 --> 00:07:14,870
+cannot 1 is reading the value and other is
+writing, the value is not possible the reverse
+
+85
+00:07:14,870 --> 00:07:19,579
+is also not possible and 2 transactions writing,
+the value is not possible those are called
+
+86
+00:07:19,579 --> 00:07:23,848
+said to be the incompatible modes of loss.
+
+87
+00:07:23,848 --> 00:07:31,689
+So, if the transaction is granted a log, if
+it is compatible with the lock that is already
+
+88
+00:07:31,689 --> 00:07:38,709
+held by another transaction, you cannot get
+an incompatible lock granted to you.
+
+89
+00:07:38,709 --> 00:07:44,579
+And any number of transactions certainly can
+hold the shared lock and an item, but if any
+
+90
+00:07:44,579 --> 00:07:50,629
+transaction wants to have an exclusive lock
+on the item, then no other transaction may
+
+91
+00:07:50,629 --> 00:07:52,409
+hold any lock on that item.
+
+92
+00:07:52,410 --> 00:07:58,880
+So, if I want to write that as a transaction
+I must be the only transaction who is who
+
+93
+00:07:58,879 --> 00:08:03,659
+has to have that exclusive lock I must be
+the only transaction who is trying to write,
+
+94
+00:08:03,660 --> 00:08:08,010
+but when I want to read many transactions
+can simultaneously read.
+
+95
+00:08:08,009 --> 00:08:15,259
+So, if a lock cannot be granted that if I
+want a lock either a shared lock, or an exclusive
+
+96
+00:08:15,259 --> 00:08:22,139
+lock and if it cannot be granted, then the
+transaction has to wait till the all incompatible
+
+97
+00:08:22,139 --> 00:08:29,519
+locks have been released and, only then this
+lock can be requested lock in being granted.
+
+98
+00:08:29,519 --> 00:08:35,549
+And certainly a transaction who is holding
+a lock on a data item can unlock it at some
+
+99
+00:08:35,549 --> 00:08:42,000
+some point, after it is purpose of accessing
+the data item is over and, a transaction must
+
+100
+00:08:42,000 --> 00:08:47,129
+hold a lock on the data item as long as it
+is accessing the item that is the basic protocol.
+
+101
+00:08:47,129 --> 00:08:52,580
+So, you must request first get a grant of
+that lock do the operations that you want
+
+102
+00:08:52,580 --> 00:09:00,340
+and then you unlock, this is a basic process
+that has to happen, usually it is said that
+
+103
+00:09:00,340 --> 00:09:06,490
+as soon as you are done with the operations
+of the data item you mean unlock that, you
+
+104
+00:09:06,490 --> 00:09:13,220
+may want to wait for a little longer for the
+ensuring the serializability these details
+
+105
+00:09:13,220 --> 00:09:14,690
+we will see subsequently.
+
+106
+00:09:14,690 --> 00:09:17,982
+So, let us come to an example.
+
+107
+00:09:17,981 --> 00:09:19,829
+So, here are 2 transactions T 1 and T 2.
+
+108
+00:09:19,830 --> 00:09:26,330
+So, this is a the 2 transactions T 1 T 2 the
+transaction T 1 does this operation it transfers
+
+109
+00:09:26,330 --> 00:09:32,980
+50 dollar from accountB to account A.
+So, it debitsB here credits A here.
+
+110
+00:09:32,980 --> 00:09:40,460
+So, it transfers and transaction T 2 displays
+the total sum of money in the accounts A and
+
+111
+00:09:40,460 --> 00:09:47,341
+B. So, it reads A readsB displays and say
+initially the transaction initially let us
+
+112
+00:09:47,341 --> 00:09:50,970
+say these accounts have values 100 and 200.
+
+113
+00:09:50,970 --> 00:09:56,040
+So, what this transaction will do it needs
+to do the transfer.
+
+114
+00:09:56,039 --> 00:10:03,569
+So, it needs to readB debit and write and
+what it has to do since it has to read it
+
+115
+00:10:03,570 --> 00:10:06,780
+must have A shared lock.
+
+116
+00:10:06,779 --> 00:10:13,870
+Since it has to write it must have a exclusive
+lock and, if it has got an exclusive lock
+
+117
+00:10:13,870 --> 00:10:16,440
+it will also be able to read that data.
+
+118
+00:10:16,440 --> 00:10:20,780
+So, what it does it performs an exclusive
+lock.
+
+119
+00:10:20,779 --> 00:10:25,990
+So, it requests for an exclusive lock and
+only on getting that it can do this and, when
+
+120
+00:10:25,990 --> 00:10:33,750
+this is over the purpose is over it unlocks
+B. Similarly to update a it takes an exclusive
+
+121
+00:10:33,750 --> 00:10:39,070
+lock on a updates and, then releases a lock.
+
+122
+00:10:39,070 --> 00:10:42,870
+Transaction T 2 what it does it has to read
+and display.
+
+123
+00:10:42,870 --> 00:10:49,000
+So, it does not need an exclusive lock it
+takes the shared lock reads and unlocks, it
+
+124
+00:10:49,000 --> 00:10:56,610
+again takes a shared lock onB reads and unlocks
+and finally, displays the 2 data.
+
+125
+00:10:56,610 --> 00:11:05,639
+Now, if these transactions are executed serially
+that is T 1 after T 2 or T 2 after T 1, then
+
+126
+00:11:05,639 --> 00:11:12,259
+the transaction T 2 will always display the
+value 300 because, 300s is the initial value
+
+127
+00:11:12,259 --> 00:11:20,059
+that we will be able to see if T 2 runs first
+and T 1 300 is all so, the final value because
+
+128
+00:11:20,059 --> 00:11:24,139
+only 50 dollar has been transferred fromB
+to A. So, the sum remains same.
+
+129
+00:11:24,139 --> 00:11:27,759
+So, you will be able to see that if T 2 runs
+after T 1.
+
+130
+00:11:27,759 --> 00:11:30,779
+So, the consistency of the database is maintained.
+
+131
+00:11:30,779 --> 00:11:40,000
+Now, let us see let us consider a schedule
+written here as schedule 1 and the the transactions
+
+132
+00:11:40,000 --> 00:11:42,360
+are executing concurrently.
+
+133
+00:11:42,360 --> 00:11:48,740
+So, then this is a possible schedule and let
+us see what will happen.
+
+134
+00:11:48,740 --> 00:11:57,750
+So, what it does this is where the lock exclusive
+lock on B is held and B is updated, then A
+
+135
+00:11:57,750 --> 00:12:06,240
+is read then B is read display is done and
+then this update on a has happened.
+
+136
+00:12:06,240 --> 00:12:09,360
+And this is where we are showing that how
+the grants are happening.
+
+137
+00:12:09,360 --> 00:12:17,669
+So, as the lock is requested then the the
+request goes to the system that a exclusive
+
+138
+00:12:17,669 --> 00:12:22,309
+lock on B is requested by transaction T 1.
+
+139
+00:12:22,309 --> 00:12:27,939
+So, that subsequently gets granted and only
+when the grant has happened the corresponding
+
+140
+00:12:27,940 --> 00:12:34,380
+axis can start, but it can be any indeterminate
+amount of time between the request of the
+
+141
+00:12:34,379 --> 00:12:40,340
+lock which is here and, the actual grant of
+the lock, but this operation can happen only
+
+142
+00:12:40,340 --> 00:12:41,540
+after the grant has happened.
+
+143
+00:12:41,539 --> 00:12:46,500
+So, in every case that is what has to be observed
+right.
+
+144
+00:12:46,500 --> 00:12:51,159
+Now what happens in this schedule what will
+be the consequence.
+
+145
+00:12:51,159 --> 00:13:00,980
+So, in this schedule if we look at the transaction
+T 2 will display only 250 dollar, it will
+
+146
+00:13:00,980 --> 00:13:08,930
+not display 300 dollar why because, if you
+if you look at this carefully, if you look
+
+147
+00:13:08,929 --> 00:13:13,439
+at this carefully this is where B has got
+updated.
+
+148
+00:13:13,440 --> 00:13:17,170
+So, B has become 50 dollar less.
+
+149
+00:13:17,169 --> 00:13:20,519
+And then the whole of a and B have been read
+and displayed.
+
+150
+00:13:20,519 --> 00:13:24,509
+So, naturally the total sum is 50 dollar less.
+
+151
+00:13:24,509 --> 00:13:33,539
+So, ah even though we have used a lock it
+has not been able to achieve the required
+
+152
+00:13:33,539 --> 00:13:42,860
+even though, we have used the lock we have
+not been able to achieve the required serializability.
+
+153
+00:13:42,860 --> 00:13:50,539
+And it is possible to create a schedule where
+inconsistent data is getting generated T 2
+
+154
+00:13:50,539 --> 00:13:53,519
+is actually reading an inconsistent data.
+
+155
+00:13:53,519 --> 00:13:59,460
+So, you have seen inconsistent state in terms
+of here.
+
+156
+00:13:59,460 --> 00:14:05,660
+Why did it happen?
+
+157
+00:14:05,659 --> 00:14:13,480
+This happened because if we look carefully
+this has happened because, T 1 has unlocked
+
+158
+00:14:13,480 --> 00:14:19,080
+to prematurely T 1 has unlocked as soon as
+the update to be was over.
+
+159
+00:14:19,080 --> 00:14:32,480
+So, it was possible for 
+T 2 to read that value of B which is not what
+
+160
+00:14:32,480 --> 00:14:38,700
+is desirable and we will see that we might
+want to delay the unlocking till the end,
+
+161
+00:14:38,700 --> 00:14:42,220
+let us see what happens if we do that.
+
+162
+00:14:42,220 --> 00:14:54,480
+So, we are here now it is the same transaction
+in in terms of the notion, but T 1 has been
+
+163
+00:14:54,480 --> 00:15:02,399
+made to T 3 here, where you have seen that
+unlocking is been pushed to the end T 2 has
+
+164
+00:15:02,399 --> 00:15:05,909
+been made into T 4, where the unlocking is
+pushed to the end.
+
+165
+00:15:05,909 --> 00:15:16,379
+And now naturally if you look into this, if
+you wanted to do a schedule 1 you cannot do
+
+166
+00:15:16,379 --> 00:15:21,519
+this kind of a schedule 1 that schedule will
+not be permissible because, you will not be
+
+167
+00:15:21,519 --> 00:15:27,360
+able to get the locks, T 4 will not be able
+to get the locks that T 2 could get in the
+
+168
+00:15:27,360 --> 00:15:36,779
+sequence of reads and writes in schedule 1
+is no longer possible.
+
+169
+00:15:36,779 --> 00:15:45,250
+So, whatever way we actually do the schedule
+T 4 will always correctly show, that the sum
+
+170
+00:15:45,250 --> 00:15:52,080
+is three hundred dollar.
+
+171
+00:15:52,080 --> 00:16:03,250
+So, here we are again showing T 3 T 4 this
+is a schedule given schedule 2, which is just
+
+172
+00:16:03,250 --> 00:16:05,519
+given partially.
+
+173
+00:16:05,519 --> 00:16:12,850
+And since T 3 is holding an exclusive lock
+on B and T 4 is requesting a shared lock.
+
+174
+00:16:12,850 --> 00:16:19,670
+So, if I hold it this is T 3 is holding an
+exclusive lock and T 4 is requesting for a
+
+175
+00:16:19,669 --> 00:16:21,000
+shared lock.
+
+176
+00:16:21,000 --> 00:16:33,830
+So, T 4 has to wait for T 3 to unlock B before
+it can actually do that operation.
+
+177
+00:16:33,830 --> 00:16:42,470
+Similarly you will find if you look further
+T 4 has already got a shared lock to read
+
+178
+00:16:42,470 --> 00:16:51,980
+A. And T 3 needs a shared lock on I am sorry
+T 3 needs an exclusive lock on A to be able
+
+179
+00:16:51,980 --> 00:16:53,300
+to proceed.
+
+180
+00:16:53,299 --> 00:16:58,049
+So, this 1 is here.
+
+181
+00:16:58,049 --> 00:17:07,209
+So, T 4 cannot go beyond this point because
+T 3 has the lock on B and, 1 is this T 3 cannot
+
+182
+00:17:07,209 --> 00:17:12,850
+go beyond this point because T 4 has that
+shared lock.
+
+183
+00:17:12,849 --> 00:17:16,619
+So, what we situation are we getting into.
+
+184
+00:17:16,619 --> 00:17:26,789
+So, we are getting into a situation where,
+neither of T 3 or T 4 can actually proceed
+
+185
+00:17:26,789 --> 00:17:35,980
+the normal execution, T 3 is waiting for exclusive
+lock on A and which T 4 has and T 4 is waiting
+
+186
+00:17:35,980 --> 00:17:42,009
+for the shared lock on B, which T 3 already
+holds as an exclusive manner.
+
+187
+00:17:42,009 --> 00:17:49,180
+And this in so, this this is kind this is
+what is called deadlock, if you have a studied
+
+188
+00:17:49,180 --> 00:17:54,640
+operating system, then you have must be knowing
+deadlock very well, and there the deadlock
+
+189
+00:17:54,640 --> 00:18:00,900
+happens 2 different other issues of sharing
+resources here it is because of the lock.
+
+190
+00:18:00,900 --> 00:18:06,269
+So, moment you use locks there is a possible
+danger of having deadlock.
+
+191
+00:18:06,269 --> 00:18:11,970
+And once you have a deadlock there is no other
+way than to unroll 1 or more of the transaction,
+
+192
+00:18:11,970 --> 00:18:18,680
+then start all over again, it has to roll
+back 1 of the 2 transactions to be able to
+
+193
+00:18:18,680 --> 00:18:19,680
+proceed.
+
+194
+00:18:19,680 --> 00:18:24,150
+AHnd once the transactions are rolled back
+the data items that were locked by the transactions
+
+195
+00:18:24,150 --> 00:18:25,590
+will also be unlocked.
+
+196
+00:18:25,589 --> 00:18:33,250
+So, please understand this in view of the
+earlier discussion we had in terms of transact
+
+197
+00:18:33,250 --> 00:18:34,250
+TCL commands.
+
+198
+00:18:34,250 --> 00:18:42,710
+So, when you actually which we are roll back
+we had at that point could only say that your
+
+199
+00:18:42,710 --> 00:18:47,809
+value of the data item in the database will
+be rolled back, but certainly as now you can
+
+200
+00:18:47,809 --> 00:18:53,129
+understand that, if you roll back also the
+locks that you have required we also get unlocked
+
+201
+00:18:53,130 --> 00:18:56,630
+so, that other transactions can get those
+locks and proceed.
+
+202
+00:18:56,630 --> 00:19:02,600
+So, then the data items become available for
+other transactions and, that can continue
+
+203
+00:19:02,599 --> 00:19:04,009
+the execution.
+
+204
+00:19:04,009 --> 00:19:10,990
+So, if we do not so, so we are saying that
+we wanted to use locks to get better control
+
+205
+00:19:10,990 --> 00:19:13,079
+on the serializability and so on.
+
+206
+00:19:13,079 --> 00:19:19,329
+And it was partly possible, but then we are
+getting into different other kinds of different
+
+207
+00:19:19,329 --> 00:19:20,329
+problems.
+
+208
+00:19:20,329 --> 00:19:26,619
+So, if you do not use locking or, if we unlock
+data items very early then after reading,
+
+209
+00:19:26,619 --> 00:19:32,299
+or writing them then we may get inconsistent
+state this is what you have seen, on the other
+
+210
+00:19:32,299 --> 00:19:39,039
+hand, if we do not unlock a data item before
+requesting a lock on another data item that
+
+211
+00:19:39,039 --> 00:19:43,339
+is if we hold it on for a very long time,
+then deadlock may occur.
+
+212
+00:19:43,339 --> 00:19:48,529
+So, if we do it too soon we do not use the
+lock that we have a problem of inconsistent
+
+213
+00:19:48,529 --> 00:19:54,700
+state, if we do it hold it for too long then
+there could be problem of deadlock.
+
+214
+00:19:54,700 --> 00:20:01,730
+Now, deadlocks are necessarily evil of locking,
+if you do locking you will always face a deadlock,
+
+215
+00:20:01,730 --> 00:20:06,140
+ah if we want to avoid inconsistent states.
+
+216
+00:20:06,140 --> 00:20:11,350
+Now between these two; obviously, we would
+prefer deadlock the reason, we will prefer
+
+217
+00:20:11,349 --> 00:20:15,949
+deadlock to inconsistent state is the fact
+that, if we have deadlock we still have the
+
+218
+00:20:15,950 --> 00:20:20,900
+option of rolling back and we can take different
+strategies to decide what to rollback and
+
+219
+00:20:20,900 --> 00:20:27,920
+how much to rollback and so on whereas, inconsistent
+states may lead to real world problems ah
+
+220
+00:20:27,920 --> 00:20:29,900
+that cannot be handled by the database system.
+
+221
+00:20:29,900 --> 00:20:35,480
+In fact, in some in many cases I may get into
+some inconsistent state which is very difficult
+
+222
+00:20:35,480 --> 00:20:38,279
+to even recognize that it is an inconsistent
+state.
+
+223
+00:20:38,279 --> 00:20:45,819
+So, we will continue and prefer deadlocks
+over inconsistent states and, we will define
+
+224
+00:20:45,819 --> 00:20:51,539
+we will try to define different locking protocols
+a set of rules that the transactions should
+
+225
+00:20:51,539 --> 00:20:56,428
+follow, while the request and release locks
+to make our life relatively easier.
+
+226
+00:20:56,429 --> 00:21:02,480
+So, locking protocols necessarily will restrict
+the set of possible schedules because, we
+
+227
+00:21:02,480 --> 00:21:08,329
+will put in some discipline in terms of how
+we look and how we release them, and the set
+
+228
+00:21:08,329 --> 00:21:12,839
+of all such schedules is a proper subset of
+possible serializable schedules that is easy
+
+229
+00:21:12,839 --> 00:21:14,720
+to understand.
+
+230
+00:21:14,720 --> 00:21:20,710
+And ah we will present locking protocols that
+allow only conflict serializable schedule
+
+231
+00:21:20,710 --> 00:21:22,230
+which ensures isolation.
+
+232
+00:21:22,230 --> 00:21:29,259
+So, let us look at the most widely used protocol
+this is called the 2 phase locking protocol
+
+233
+00:21:29,259 --> 00:21:34,759
+which guarantees conflict serializability,
+it does a simple thing it has 2 phases a growing
+
+234
+00:21:34,759 --> 00:21:40,519
+phase, where it transaction may obtain locks
+and may not release any lock.
+
+235
+00:21:40,519 --> 00:21:46,389
+And a shrinking phase which the transaction
+may release locks and may not obtain any law.
+
+236
+00:21:46,390 --> 00:21:53,590
+So, you are just separating out the you know
+the grant or the access of locks holding of
+
+237
+00:21:53,589 --> 00:21:57,740
+locks and the releasing of locks into 2 different
+phases you do not mix them up.
+
+238
+00:21:57,740 --> 00:22:02,140
+And that is the 2 phrases phases of the locking
+protocol.
+
+239
+00:22:02,140 --> 00:22:07,370
+And this ensures so, we are we will not do
+the proof, but you can look it up in the book
+
+240
+00:22:07,369 --> 00:22:14,819
+or, but you can see through examples that
+it can be shown that transactions can be serialized
+
+241
+00:22:14,819 --> 00:22:17,990
+in the order of the points where they do the
+locking.
+
+242
+00:22:17,990 --> 00:22:24,179
+So, these are known as lock points and, that
+is where the transaction actually acquired
+
+243
+00:22:24,179 --> 00:22:25,790
+it is final block.
+
+244
+00:22:25,789 --> 00:22:31,389
+So, there can be conflict serializable schedules
+that cannot be obtained, if 2 phase locking
+
+245
+00:22:31,390 --> 00:22:32,390
+is used.
+
+246
+00:22:32,390 --> 00:22:35,780
+So, what this is saying if you use 2 phase
+locking you are guaranteed to have conflict
+
+247
+00:22:35,779 --> 00:22:41,480
+serializable schedule, but there are conflicts
+serializable schedules for which you may not
+
+248
+00:22:41,480 --> 00:22:44,529
+be able to honor the 2 phase locking protocol.
+
+249
+00:22:44,529 --> 00:22:49,680
+So, 2 phase locking protocol is kind of a
+sufficiency condition.
+
+250
+00:22:49,680 --> 00:22:56,450
+So, you could also in refine the 2 phase locking
+with what is known as lock conversion that
+
+251
+00:22:56,450 --> 00:23:02,940
+is you can acquire in the in the growing phase,
+or the first phase you can acquire a exclusive
+
+252
+00:23:02,940 --> 00:23:08,840
+lock, a shared lock, or you can convert a
+shared lock that you already have into an
+
+253
+00:23:08,839 --> 00:23:11,558
+exclusive lock which is called the lock upgrade
+process.
+
+254
+00:23:11,558 --> 00:23:16,190
+Similarly, in the shrinking phase you can
+release a shared lock release an exclusive
+
+255
+00:23:16,190 --> 00:23:20,380
+lock, or you are holding an exclusive lock
+you can make it a shared lock.
+
+256
+00:23:20,380 --> 00:23:21,380
+So, you can download.
+
+257
+00:23:21,380 --> 00:23:27,620
+So, you can understand that upgrade and downgrade
+are strategies to ah only use that much of
+
+258
+00:23:27,619 --> 00:23:34,039
+restriction that you need, to impose on others
+and to allow others to access the data to
+
+259
+00:23:34,039 --> 00:23:35,950
+the based possible way.
+
+260
+00:23:35,950 --> 00:23:42,539
+This protocol again issuers serializability
+and the it certainly depends on the programmer
+
+261
+00:23:42,539 --> 00:23:46,579
+as to how the programmer inserts the various
+locking instructions.
+
+262
+00:23:46,579 --> 00:23:51,019
+ah
+Now, you will have to when you want to do
+
+263
+00:23:51,019 --> 00:23:57,019
+read or write, you may acquire locks automatically
+the database systems will allow that.
+
+264
+00:23:57,019 --> 00:23:59,359
+So, this is a very simple algorithm.
+
+265
+00:23:59,359 --> 00:24:05,729
+So, if you want to read a data, I if you have
+a lock already on that either shared, or exclusive
+
+266
+00:24:05,730 --> 00:24:12,910
+you can simply read it, if you do not have
+that then if you may have to wait until no
+
+267
+00:24:12,910 --> 00:24:18,919
+other transaction has an exclusive lock on
+that because, you know that read or shared
+
+268
+00:24:18,919 --> 00:24:21,990
+lock is not compatible with the exclusive
+lock.
+
+269
+00:24:21,990 --> 00:24:27,250
+So, you may have to wait till all are the
+in no other transaction the transaction that
+
+270
+00:24:27,250 --> 00:24:33,160
+was having exclusive lock possibly has released
+it and, then take a grant of the shared lock
+
+271
+00:24:33,160 --> 00:24:37,961
+on this item and, then read it it is a very
+simple algorithm to automatically acquire
+
+272
+00:24:37,961 --> 00:24:39,259
+locks.
+
+273
+00:24:39,259 --> 00:24:43,509
+Write is little bit more complex because to
+be able to write either, you already have
+
+274
+00:24:43,509 --> 00:24:50,349
+an exclusive lock on D, then you write or
+you may have to wait till no other transaction
+
+275
+00:24:50,349 --> 00:24:54,808
+has any log because, exclusive lock is not
+compatible with shared lock or with other
+
+276
+00:24:54,808 --> 00:24:56,039
+exclusive lock.
+
+277
+00:24:56,039 --> 00:25:02,000
+So, as long as some transaction has a lock
+on D you cannot proceed, but once you come
+
+278
+00:25:02,000 --> 00:25:09,339
+to a state, that you already if no other transaction
+has a lock, then you see whether you yourself
+
+279
+00:25:09,339 --> 00:25:15,679
+have a shared lock on D, if you have a shared
+lock then you upgrade it to an exclusive lock,
+
+280
+00:25:15,680 --> 00:25:20,730
+if you do not have a shared lock, then you
+they take a grant of the exclusive lock and
+
+281
+00:25:20,730 --> 00:25:21,740
+then you can go and write.
+
+282
+00:25:21,740 --> 00:25:26,130
+So, it is if you follow the 2 phases these
+algorithms become very simple.
+
+283
+00:25:26,130 --> 00:25:32,580
+And when you commit or the abort the transaction,
+then naturally all locks are get will get
+
+284
+00:25:32,579 --> 00:25:33,720
+released.
+
+285
+00:25:33,720 --> 00:25:40,460
+So, the 2 phase protocol we have already seen
+that does not ensure freedom from deadlock,
+
+286
+00:25:40,460 --> 00:25:45,610
+you can may follow 2 phase locking protocol
+here is an example, but you may still have
+
+287
+00:25:45,609 --> 00:25:48,819
+schedules which will have deadlocks.
+
+288
+00:25:48,819 --> 00:25:53,319
+So, this is 1 example you can just convince
+yourself.
+
+289
+00:25:53,319 --> 00:25:59,079
+There is another problem that can happen,
+in addition to deadlock this is a code there
+
+290
+00:25:59,079 --> 00:26:06,829
+is a possibility of what is known as starvation;
+starvation, occurs usually it occurs when
+
+291
+00:26:06,829 --> 00:26:11,799
+the control concurrency control manager is
+not a efficient 1.
+
+292
+00:26:11,799 --> 00:26:17,909
+So, what did we see in terms of automatic
+locks in read and write operation is you may
+
+293
+00:26:17,910 --> 00:26:23,920
+have to wait because, someone else is holding
+a lock on an item.
+
+294
+00:26:23,920 --> 00:26:30,310
+Now holding an exclusive lock on the item,
+now it is possible that like the current transaction
+
+295
+00:26:30,309 --> 00:26:35,509
+there may be couple of other transactions
+who are also waiting for a lock on that item
+
+296
+00:26:35,509 --> 00:26:40,349
+and, when the opportunity comes that there
+is no log being held by any transaction, one
+
+297
+00:26:40,349 --> 00:26:45,418
+of the waiting transactions must be given
+the lock you cannot if it is an exclusive
+
+298
+00:26:45,419 --> 00:26:50,170
+lock you cannot give it to more than 1 transaction,
+but say 3 transactions were waiting for the
+
+299
+00:26:50,170 --> 00:26:56,660
+exclusive lock and one of them get, that and
+that transaction can proceed the other transactions
+
+300
+00:26:56,660 --> 00:26:59,759
+have to rollback because, they are not getting
+the lock.
+
+301
+00:26:59,759 --> 00:27:05,660
+So, now you again start you again come to
+the point where you wanted the exclusive lock
+
+302
+00:27:05,660 --> 00:27:09,870
+on that item and at that time somebody is
+holding it and there are other transactions
+
+303
+00:27:09,869 --> 00:27:12,199
+who are also requesting for exclusive lock.
+
+304
+00:27:12,200 --> 00:27:18,400
+And when you come back and when finally, the
+exclusive lock is released by all other transactions,
+
+305
+00:27:18,400 --> 00:27:23,679
+then again it is possible that while you are
+waiting some other transaction that was waiting
+
+306
+00:27:23,679 --> 00:27:28,179
+who gets that exclusive lock and you do not
+get that so, you roll back and this could
+
+307
+00:27:28,179 --> 00:27:30,100
+repeatedly could keep on happening.
+
+308
+00:27:30,099 --> 00:27:35,809
+So, if you have a weak strategy in terms of
+concurrency control, you have you will see
+
+309
+00:27:35,809 --> 00:27:41,879
+that you have had infinite possibilities infinite
+occurrences, where you could have got that
+
+310
+00:27:41,880 --> 00:27:47,549
+exclusive lock, but you are not being able
+to get that and therefore, you starve on the
+
+311
+00:27:47,548 --> 00:27:52,808
+data and this is known as a tower starvation
+problem which will also have to be checked
+
+312
+00:27:52,808 --> 00:27:57,089
+while we do the concurrency control policies.
+
+313
+00:27:57,089 --> 00:28:04,720
+There is a the potential for deadlock exists
+in most locking protocols, as we have seen
+
+314
+00:28:04,720 --> 00:28:10,029
+and when a deadlock occurs there is a possibility
+of cascading roll back because, when it deadlock
+
+315
+00:28:10,029 --> 00:28:12,359
+happens then naturally you will have to roll
+back.
+
+316
+00:28:12,359 --> 00:28:18,209
+So, you may have to do a cascading roll back
+as this example is showing.
+
+317
+00:28:18,210 --> 00:28:23,679
+And it is possible for a 2 phase locking protocol
+have we have in the example is shown here,
+
+318
+00:28:23,679 --> 00:28:32,470
+where all the transactions are following cascading
+roll back has to as following 2 phase locking
+
+319
+00:28:32,470 --> 00:28:45,101
+protocol, but if T 5 fails after the the read
+step of T 7 after the read step of T 7, if
+
+320
+00:28:45,101 --> 00:28:51,169
+T 5 fails then it leads to a cascading rollback
+T 7 T 5 has to be rolled back.
+
+321
+00:28:51,169 --> 00:28:56,620
+So, T 6 will have to be rolled back, so T
+7 will have to be rolled back and so on.
+
+322
+00:28:56,619 --> 00:28:59,269
+ah
+Interestingly there are several other protocols
+
+323
+00:28:59,269 --> 00:29:06,538
+and particularly 2 more 2 phase locking protocol
+1 is called strict 2 phase locking, which
+
+324
+00:29:06,538 --> 00:29:12,829
+avoids cascading roll back, where a transaction
+must hold all exclusive locks till it finally,
+
+325
+00:29:12,829 --> 00:29:19,410
+commits and aborts naturally you can figure
+out that you are making the time for the transaction
+
+326
+00:29:19,411 --> 00:29:20,750
+to hold lock longer.
+
+327
+00:29:20,750 --> 00:29:26,308
+So, naturally the level of concurrency will
+go down that is all possible serializable
+
+328
+00:29:26,308 --> 00:29:31,139
+schedules will be smaller, but this guarantees
+that you will not have a cascading roll back.
+
+329
+00:29:31,140 --> 00:29:38,540
+And there is an even stricter rigorous 2 phase
+locking where all locks are held till commit
+
+330
+00:29:38,539 --> 00:29:39,659
+or abort.
+
+331
+00:29:39,660 --> 00:29:46,160
+In the strict 1 only exclusive locks are held
+till commit or abort there is a till the end
+
+332
+00:29:46,160 --> 00:29:51,040
+of that transaction, but in rigorous 2 phase
+locking all locks are held till the committed
+
+333
+00:29:51,039 --> 00:29:56,259
+abort, in this protocol transaction can be
+serialized, in the order in which they do
+
+334
+00:29:56,259 --> 00:30:02,410
+the commit and in that way this is a serializable
+protocol, which also avoids the cascading
+
+335
+00:30:02,410 --> 00:30:04,070
+roll back up.
+
+336
+00:30:04,069 --> 00:30:08,809
+Now finally, before you close this module
+a quick word in terms of how do you implement
+
+337
+00:30:08,809 --> 00:30:09,809
+locking.
+
+338
+00:30:09,809 --> 00:30:17,558
+It is the lock there is a lock manager, which
+implements the locking the lock manager itself
+
+339
+00:30:17,558 --> 00:30:23,940
+runs on a different process to which every
+transactions end lock and unlock requests.
+
+340
+00:30:23,940 --> 00:30:30,820
+And the lock manager maintains a data structure
+to maintain what are the transactions, who
+
+341
+00:30:30,819 --> 00:30:37,779
+are holding different locks on different items
+and based on that the grant messages are queued
+
+342
+00:30:37,779 --> 00:30:45,629
+on that data structure and, these messages
+actually release the locks and, otherwise
+
+343
+00:30:45,630 --> 00:30:51,670
+the transaction has to wait the lock manager
+maintains this as a lock table.
+
+344
+00:30:51,670 --> 00:30:57,110
+And this is typically a in memory hash table
+because, it needs to naturally be very fast
+
+345
+00:30:57,109 --> 00:31:00,479
+and is in the name of the data item being
+locked.
+
+346
+00:31:00,480 --> 00:31:06,370
+So, let us just show you and so, these are
+the different this is an instance of a lock
+
+347
+00:31:06,369 --> 00:31:10,329
+table and, the nodes are different data items.
+
+348
+00:31:10,329 --> 00:31:19,918
+So, I 7, I 9, 12, I 4, I 44, I 23 are different
+data items this is a hash table.
+
+349
+00:31:19,919 --> 00:31:26,370
+So, you can see that on I 7 and I 23 there
+is a collision and there is collate state
+
+350
+00:31:26,369 --> 00:31:28,459
+chain happening on that.
+
+351
+00:31:28,460 --> 00:31:37,048
+And then for every item you have you maintain
+a list of locks that are granted to different
+
+352
+00:31:37,048 --> 00:31:41,461
+transactions and the list of requests that
+are waiting, the dark blue here shows the
+
+353
+00:31:41,461 --> 00:31:46,480
+grant and the light blue shows a waiting status
+here.
+
+354
+00:31:46,480 --> 00:31:51,269
+So, it takes it naturally says what type of
+lock o'clock is granted and requested and
+
+355
+00:31:51,269 --> 00:31:56,429
+based on this therefore, when you get a request
+to put it in the you come and put it you hash
+
+356
+00:31:56,429 --> 00:32:02,538
+it to that data item, put that request on
+that queue and based on the current status
+
+357
+00:32:02,538 --> 00:32:06,419
+you can decide, whether it can be granted
+or it has to wait.
+
+358
+00:32:06,419 --> 00:32:11,509
+So, it is added new requests are added at
+the end of that queue, it is first in first
+
+359
+00:32:11,509 --> 00:32:19,759
+out and whenever a release happens, then naturally
+a granted node is removed and a waiting node
+
+360
+00:32:19,759 --> 00:32:25,720
+might get a chance to block that item, if
+the transaction reports all waiting, or granted
+
+361
+00:32:25,720 --> 00:32:31,140
+requests of the transactions certainly will
+get deleted ok.
+
+362
+00:32:31,140 --> 00:32:34,960
+So, this is a simple way to manage the locks.
+
+363
+00:32:34,960 --> 00:32:41,220
+So, in this module on concurrency control
+we have understood the basic locking mechanism
+
+364
+00:32:41,220 --> 00:32:47,419
+and protocols, we have specifically looked
+at the lock compatibility matrix and the strategies
+
+365
+00:32:47,419 --> 00:32:55,509
+of granting and releasing locks and, we have
+seen the consequent danger of having deadlock
+
+366
+00:32:55,509 --> 00:33:00,788
+and in some cases starvation, which we have
+agreed to live with.
+
+367
+00:33:00,788 --> 00:33:06,558
+So, if deadlock happens we will have to roll
+back 1 or more transactions and then restart
+
+368
+00:33:06,558 --> 00:33:16,349
+again and, but we cannot take the risk of
+not having serializable transactions because,
+
+369
+00:33:16,349 --> 00:33:20,909
+that might lead to inconsistent state of the
+database which is not acceptable.
+

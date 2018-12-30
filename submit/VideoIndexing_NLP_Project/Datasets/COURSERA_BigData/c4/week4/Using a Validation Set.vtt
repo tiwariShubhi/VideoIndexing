@@ -1,0 +1,692 @@
+WEBVTT
+
+1
+00:00:00.980 --> 00:00:04.400
+In this lecture, we will discuss
+what a validation set is and
+
+2
+00:00:04.400 --> 00:00:07.610
+how it relates to overfitting and
+model performance evaluation.
+
+3
+00:00:09.150 --> 00:00:13.300
+After this video, you will be able to
+describe how validation sets can be
+
+4
+00:00:13.300 --> 00:00:15.450
+used to avoid overfitting.
+
+5
+00:00:15.450 --> 00:00:19.940
+Articulate how training,
+validation, and test sets are used.
+
+6
+00:00:19.940 --> 00:00:22.539
+And list three ways that
+validation can be performed.
+
+7
+00:00:23.920 --> 00:00:25.600
+In our lesson on classification,
+
+8
+00:00:25.600 --> 00:00:29.570
+we discussed that there is a training
+phase in which the model is built, and
+
+9
+00:00:29.570 --> 00:00:33.690
+a testing phase in which
+the model is applied to new data.
+
+10
+00:00:33.690 --> 00:00:38.580
+The model is built using training data and
+evaluated on test data.
+
+11
+00:00:38.580 --> 00:00:42.290
+The training and
+test data are two different datasets.
+
+12
+00:00:42.290 --> 00:00:46.490
+The goal in building a machine learning
+model is to have the model perform well
+
+13
+00:00:46.490 --> 00:00:51.110
+on the training set, as well as generalize
+well on new data in the test set.
+
+14
+00:00:52.750 --> 00:00:57.690
+Recall that a model that overfits
+does not generalize well to new data.
+
+15
+00:00:57.690 --> 00:01:03.630
+Recall also that overfitting generally
+occurs when a model is too complex.
+
+16
+00:01:03.630 --> 00:01:07.110
+So to have a model with good
+generalization performance,
+
+17
+00:01:07.110 --> 00:01:11.550
+model training has to stop before
+the model gets too complex.
+
+18
+00:01:11.550 --> 00:01:13.170
+How do you determine
+when this should occur?
+
+19
+00:01:14.730 --> 00:01:19.184
+A validation set can be used to guide the
+training process to avoid overfitting and
+
+20
+00:01:19.184 --> 00:01:22.450
+deliver good generalization performance.
+
+21
+00:01:22.450 --> 00:01:26.550
+We have discussed having a training
+set and a separate test set.
+
+22
+00:01:26.550 --> 00:01:29.000
+The training set is used
+to build a model and
+
+23
+00:01:29.000 --> 00:01:31.900
+the test set is used to see how
+the model performs a new data.
+
+24
+00:01:32.960 --> 00:01:37.450
+Now we want to further divide up
+the training data into a training set and
+
+25
+00:01:37.450 --> 00:01:39.200
+a validation set.
+
+26
+00:01:39.200 --> 00:01:42.680
+The training set is used to
+train the model as before and
+
+27
+00:01:42.680 --> 00:01:46.780
+the validation set is used to determine
+when to stop training the model
+
+28
+00:01:46.780 --> 00:01:50.800
+to avoid overfitting, in order to get
+the best generalization performance.
+
+29
+00:01:52.060 --> 00:01:55.010
+The idea is to look at the errors
+on both training set and
+
+30
+00:01:55.010 --> 00:01:58.500
+validation set during model
+training as shown here.
+
+31
+00:01:58.500 --> 00:02:02.670
+The orange solid line on the plot
+is the training error and
+
+32
+00:02:02.670 --> 00:02:05.960
+the green line is the validation error.
+
+33
+00:02:05.960 --> 00:02:09.760
+We see that as model building
+progresses along the x-axis,
+
+34
+00:02:09.760 --> 00:02:11.890
+the number of nodes increases.
+
+35
+00:02:11.890 --> 00:02:15.280
+That is the complexity
+of the model increases.
+
+36
+00:02:15.280 --> 00:02:21.200
+We can see that as the model complexity
+increases, the training error decreases.
+
+37
+00:02:21.200 --> 00:02:25.140
+On the other hand, the validation
+error initially decreases but
+
+38
+00:02:25.140 --> 00:02:26.370
+then starts to increase.
+
+39
+00:02:27.900 --> 00:02:32.960
+When the validation error increases, this
+indicates that the model is overfitting,
+
+40
+00:02:32.960 --> 00:02:35.800
+resulting in decreased
+generalization performance.
+
+41
+00:02:37.640 --> 00:02:40.950
+This can be used to determine
+when to stop training.
+
+42
+00:02:40.950 --> 00:02:45.390
+Where validation error starts to increase
+is when you get the best generalization
+
+43
+00:02:45.390 --> 00:02:48.340
+performance, so
+training should stop there.
+
+44
+00:02:48.340 --> 00:02:52.050
+This method of using a validation set
+to determine when to stop training
+
+45
+00:02:52.050 --> 00:02:54.610
+is referred to as model selection
+
+46
+00:02:54.610 --> 00:02:58.610
+since you're selecting one from
+many of varying complexities.
+
+47
+00:02:58.610 --> 00:03:02.831
+Note that this was illustrated for
+a decision tree classifier, but
+
+48
+00:03:02.831 --> 00:03:07.135
+the same method can be applied to
+any type of machine learning model.
+
+49
+00:03:07.135 --> 00:03:12.510
+There are several ways to create and use
+the validation set to avoid overfitting.
+
+50
+00:03:12.510 --> 00:03:16.482
+The different methods are holdout method,
+
+51
+00:03:16.482 --> 00:03:21.313
+random subsampling,
+k-fold cross-validation,
+
+52
+00:03:21.313 --> 00:03:25.300
+and leave-one-out cross-validation.
+
+53
+00:03:25.300 --> 00:03:29.050
+The first way to use a validation
+set is the holdout method.
+
+54
+00:03:29.050 --> 00:03:31.900
+This describes the scenario
+that we have been discussing,
+
+55
+00:03:31.900 --> 00:03:36.270
+where part of the training data
+is reserved as a validation set.
+
+56
+00:03:36.270 --> 00:03:38.300
+The validation set is
+then the holdout set.
+
+57
+00:03:39.300 --> 00:03:42.950
+Errors on the training set and the holdout
+set are calculated at each step
+
+58
+00:03:42.950 --> 00:03:47.080
+during model training and
+plotted together as we've seen before.
+
+59
+00:03:47.080 --> 00:03:50.950
+And the lowest error on the holdout
+set is when training should stop.
+
+60
+00:03:50.950 --> 00:03:54.240
+This is the just the process that
+we have described here before.
+
+61
+00:03:54.240 --> 00:03:56.670
+There's some limitations to
+the holdout method however.
+
+62
+00:03:57.710 --> 00:04:01.970
+First, since some samples are reserved for
+the holdout validation set,
+
+63
+00:04:01.970 --> 00:04:05.580
+the training set now has less data
+than it originally started out with.
+
+64
+00:04:06.770 --> 00:04:11.810
+Secondly, if the training and holdout sets
+do not have the same data distributions,
+
+65
+00:04:11.810 --> 00:04:14.140
+then the results will be misleading.
+
+66
+00:04:14.140 --> 00:04:18.750
+For example, if the training data has
+many more samples of one class and
+
+67
+00:04:18.750 --> 00:04:22.540
+the holdout dataset has many
+more samples of another class.
+
+68
+00:04:22.540 --> 00:04:27.100
+The next method for using
+a validation set is repeated holdout.
+
+69
+00:04:27.100 --> 00:04:28.260
+As the name implies,
+
+70
+00:04:28.260 --> 00:04:32.220
+this is essentially repeating
+the holdout method several times.
+
+71
+00:04:32.220 --> 00:04:37.170
+With each iteration, samples are randomly
+selected from the original training data
+
+72
+00:04:37.170 --> 00:04:40.040
+to create the holdout validation set.
+
+73
+00:04:40.040 --> 00:04:43.740
+This is repeated several times with
+different training and validation sets.
+
+74
+00:04:44.810 --> 00:04:48.010
+Then the iterates on the holdout set for
+the different iterations
+
+75
+00:04:48.010 --> 00:04:53.150
+are averaged together to get the overall
+iterate for model selection.
+
+76
+00:04:53.150 --> 00:04:57.420
+A potential problem with repeated holdout
+is that you could end up with some samples
+
+77
+00:04:57.420 --> 00:04:59.570
+being used more than others for training.
+
+78
+00:05:00.640 --> 00:05:05.470
+Since a sample can be used for either
+testing or training any number of times,
+
+79
+00:05:05.470 --> 00:05:10.050
+some samples may be put in the training
+set more times than other samples.
+
+80
+00:05:10.050 --> 00:05:14.250
+So you might end up with some
+samples being overrepresented while
+
+81
+00:05:14.250 --> 00:05:17.430
+other samples are underrepresented
+in training or testing.
+
+82
+00:05:19.520 --> 00:05:24.154
+A way to improve on the repeated
+holdout method is use cross-validation.
+
+83
+00:05:24.154 --> 00:05:26.628
+Cross-validation works as follows.
+
+84
+00:05:26.628 --> 00:05:31.440
+Segment the data into k number
+of disjoint partitions.
+
+85
+00:05:31.440 --> 00:05:36.420
+During each iteration, one partition
+is used as the validation set.
+
+86
+00:05:36.420 --> 00:05:38.690
+Repeat the process k times.
+
+87
+00:05:38.690 --> 00:05:42.230
+Each time using a different partition for
+validation.
+
+88
+00:05:42.230 --> 00:05:45.880
+So each partition is used for
+validation exactly once.
+
+89
+00:05:45.880 --> 00:05:48.230
+This is illustrated in this figure.
+
+90
+00:05:48.230 --> 00:05:52.520
+In the fist iteration, the first
+partition, specified in green, is used for
+
+91
+00:05:52.520 --> 00:05:53.960
+validation.
+
+92
+00:05:53.960 --> 00:05:56.950
+In the second iteration,
+the second partition is used for
+
+93
+00:05:56.950 --> 00:05:58.160
+validation and so on.
+
+94
+00:05:59.300 --> 00:06:03.920
+The overall validation error is calculated
+by averaging the validation errors for
+
+95
+00:06:03.920 --> 00:06:04.980
+all k iterations.
+
+96
+00:06:06.040 --> 00:06:10.490
+The model with the smallest average
+validation error then is selected.
+
+97
+00:06:10.490 --> 00:06:15.530
+The process we just described is
+referred to as k-fold cross-validation.
+
+98
+00:06:15.530 --> 00:06:19.390
+This is a very commonly used approach
+to model selection in practice.
+
+99
+00:06:20.440 --> 00:06:25.405
+This approach gives you a more structured
+way to divide available data up between
+
+100
+00:06:25.405 --> 00:06:30.371
+training and validation datasets and
+provides a way to overcome the variability
+
+101
+00:06:30.371 --> 00:06:35.134
+in performance that you can get when
+using a single partitioning of the data.
+
+102
+00:06:35.134 --> 00:06:39.401
+Leave-one-out cross-validation
+is a special case of k-fold
+
+103
+00:06:39.401 --> 00:06:44.220
+cross-validation where k equals N,
+where N is the size of your dataset.
+
+104
+00:06:45.260 --> 00:06:49.860
+Here, for each iteration the validation
+set has exactly one sample.
+
+105
+00:06:49.860 --> 00:06:53.240
+So the model is trained to
+using N minus one samples and
+
+106
+00:06:53.240 --> 00:06:55.920
+is validated on the remaining sample.
+
+107
+00:06:55.920 --> 00:07:01.600
+The rest of the process works the same
+way as regular k-fold cross-validation.
+
+108
+00:07:01.600 --> 00:07:06.391
+Note that cross-validation is often
+abbreviated CV and leave-one-out
+
+109
+00:07:06.391 --> 00:07:11.340
+cross-validation is in abbreviated
+L-O-O-C-V and pronounced LOOCV.
+
+110
+00:07:13.550 --> 00:07:17.990
+We have described several ways to use
+a validation set to address overfitting.
+
+111
+00:07:17.990 --> 00:07:21.750
+Error on the validation set is used
+to determine when to stop training so
+
+112
+00:07:21.750 --> 00:07:23.350
+that the model does not overfit.
+
+113
+00:07:24.400 --> 00:07:28.440
+Note that the validation error that comes
+out of this process can also be used
+
+114
+00:07:28.440 --> 00:07:31.720
+to estimate generalization
+performance of the model.
+
+115
+00:07:31.720 --> 00:07:32.780
+In other words,
+
+116
+00:07:32.780 --> 00:07:37.420
+the error on the validation set provides
+an estimate of the error on the test set.
+
+117
+00:07:38.890 --> 00:07:40.570
+With the addition of the validation set,
+
+118
+00:07:40.570 --> 00:07:44.460
+you really need three distinct
+datasets when you build a model.
+
+119
+00:07:44.460 --> 00:07:45.660
+Let's review these datasets.
+
+120
+00:07:47.080 --> 00:07:51.560
+The training dataset is used to train the
+model, that is to adjust the parameters of
+
+121
+00:07:51.560 --> 00:07:53.990
+the model to learn the input
+to output mapping.
+
+122
+00:07:55.640 --> 00:07:59.710
+The validation dataset is used to
+determine when training should stop
+
+123
+00:07:59.710 --> 00:08:01.370
+in order to avoid overfitting.
+
+124
+00:08:03.110 --> 00:08:07.490
+The test data set is used to evaluate
+the performance of the model on new data.
+
+125
+00:08:09.640 --> 00:08:14.320
+Note that the test data set should never,
+ever be used in any way to create or
+
+126
+00:08:14.320 --> 00:08:15.940
+tune the model.
+
+127
+00:08:15.940 --> 00:08:17.070
+It should not be used, for
+
+128
+00:08:17.070 --> 00:08:21.010
+example, in a cross-validation process
+to determine when to stop training.
+
+129
+00:08:22.020 --> 00:08:26.680
+The test dataset must always remain
+independent from model training and
+
+130
+00:08:26.680 --> 00:08:31.980
+remain untouched until the very end
+when all training has been completed.
+
+131
+00:08:31.980 --> 00:08:36.467
+Note that in sampling the original dataset
+to create the training, validation, and
+
+132
+00:08:36.467 --> 00:08:40.909
+test sets, all datasets must contain the
+same distribution of the target classes.
+
+133
+00:08:40.909 --> 00:08:46.362
+For example, if in the original dataset,
+70% of the samples belong to one class and
+
+134
+00:08:46.362 --> 00:08:51.297
+30% to the other class, then this same
+distribution should approximately
+
+135
+00:08:51.297 --> 00:08:55.427
+be present in each of the training,
+validation, and test sets.
+
+136
+00:08:55.427 --> 00:08:58.713
+Otherwise, analysis results
+will be misleading.
+
+137
+00:08:58.713 --> 00:09:01.667
+To summarize, we have discuss the need for
+
+138
+00:09:01.667 --> 00:09:04.900
+three different datasets
+in building model.
+
+139
+00:09:04.900 --> 00:09:09.588
+A training set to train the model,
+a validation set to determine when to stop
+
+140
+00:09:09.588 --> 00:09:12.920
+training, and a test to evaluate
+performance on new data.
+
+141
+00:09:14.210 --> 00:09:17.800
+We learned how a validation set can
+be used to avoid overfitting and
+
+142
+00:09:17.800 --> 00:09:22.600
+in the process, provide an estimate
+of generalization performance.
+
+143
+00:09:22.600 --> 00:09:24.982
+And we covered different
+ways to create and
+
+144
+00:09:24.982 --> 00:09:28.236
+use a validation set such
+as k-fold cross-validation.

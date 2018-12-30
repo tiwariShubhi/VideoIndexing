@@ -1,0 +1,1964 @@
+﻿1
+00:00:10,689 --> 00:00:19,899
+So, we are looking at rule based systems power
+changing systems, and now we want to
+
+2
+00:00:19,899 --> 00:00:26,848
+look at the inference engine.
+.
+
+3
+00:00:26,849 --> 00:00:38,308
+So, the inference engine is basically a program
+which works in three phases. The first
+
+4
+00:00:38,308 --> 00:01:05,709
+phase is called match, and what it takes as
+input is a set of rules and some data and
+
+5
+00:01:05,709 --> 00:01:17,489
+produces a set of matching rules which in
+their terminology is called the conflict set.
+
+6
+00:01:17,489 --> 00:01:25,319
+It
+produces the data. So, let us first see what
+
+7
+00:01:25,319 --> 00:01:27,779
+is match is doing.
+
+8
+00:01:27,780 --> 00:01:28,780
+..
+
+9
+00:01:28,780 --> 00:01:38,319
+So, if you have these rules. Mainly notice
+that we have written this two rules in the
+
+10
+00:01:38,319 --> 00:01:43,259
+last
+class. This rule has three conditions 1, 2,
+
+11
+00:01:43,260 --> 00:01:46,270
+3. This rule has four conditions, this is
+1, this is
+
+12
+00:01:46,269 --> 00:01:54,250
+2, and 3, and 4. One of them is in negative
+condition. So, essentially a rule is a collection
+
+13
+00:01:54,250 --> 00:01:58,680
+of patterns and actions. As far as matching
+is concerned, we are only interested in
+
+14
+00:01:58,680 --> 00:02:06,750
+patterns. So, we can think of this as P 11,
+P 12, P 13. So, that is for the first rule.
+
+15
+00:02:06,750 --> 00:02:14,469
+Then, P
+21, P 22, P 23, P 24. So, for this rule for
+
+16
+00:02:14,469 --> 00:02:21,939
+example and then, so on.
+So, P K R or whatever, depending on how many
+
+17
+00:02:21,939 --> 00:02:27,449
+rules you have and how many patterns
+each rules has essentially. So, that is rule
+
+18
+00:02:27,449 --> 00:02:32,429
+memory and when Simon annual for talking
+about this kind of problems. They would associates
+
+19
+00:02:32,430 --> 00:02:45,620
+it is a long term memory. So, they,
+so, basically rules capture the problem solving
+
+20
+00:02:45,620 --> 00:02:49,340
+solver knowledge essentially, which is
+always there with the problem solver so, you
+
+21
+00:02:49,340 --> 00:02:52,729
+can think of it is long term memory.
+Whereas the actual problem that you have trying
+
+22
+00:02:52,729 --> 00:03:12,689
+to solve sets in a memory which we call
+as working memory or WM which is also ordered.
+
+23
+00:03:12,689 --> 00:03:26,579
+So, you have this data elements which
+we call working M E 1. So, this is the data
+
+24
+00:03:26,580 --> 00:03:41,560
+item 1 then 2 and so on essentially.
+Now, remember that the actions on the right
+
+25
+00:03:41,560 --> 00:03:47,599
+hand side of rules, I allow to delete data
+which means they might delete some working
+
+26
+00:03:47,599 --> 00:03:52,189
+memory element. So, some things might
+vanish from the way. But initially let us
+
+27
+00:03:52,189 --> 00:03:56,370
+assume that we have some capital N number
+of
+
+28
+00:03:56,370 --> 00:04:09,640
+working memory elements. Now, this can be
+thought of as a time stamp, which says
+
+29
+00:04:09,639 --> 00:04:16,439
+.when was this working memory element created
+and as far as we are concerned time is
+
+30
+00:04:16,439 --> 00:04:20,500
+just an ordering. So, this is the first element,
+second element, third element.
+
+31
+00:04:20,500 --> 00:04:30,110
+We will see that this plays a role in the
+control of the execution essentially. So,
+
+32
+00:04:30,110 --> 00:04:38,939
+we can
+also think of these as short term memory.
+
+33
+00:04:38,939 --> 00:04:44,060
+If you want to think of this as how we solve
+problems essentially. So, we have these two
+
+34
+00:04:44,060 --> 00:04:48,170
+memories, one is the working memory
+which contains is working memory elements,
+
+35
+00:04:48,170 --> 00:04:54,430
+and we saw examples of that. The other is
+the set of rules where each rule consists
+
+36
+00:04:54,430 --> 00:04:57,740
+of a set of patterns. So, this rule has 3
+patterns,
+
+37
+00:04:57,740 --> 00:05:01,750
+this rules has 4 patterns and so on and so
+forth. And these are the examples of such
+
+38
+00:05:01,750 --> 00:05:03,259
+rules
+essentially.
+
+39
+00:05:03,259 --> 00:05:13,129
+Now, for a rule to match, now the first task
+is to match which means look at all the rules,
+
+40
+00:05:13,129 --> 00:05:21,490
+look at all the data and compute which rule
+matches with which data. So, if you look at
+
+41
+00:05:21,490 --> 00:05:28,009
+this first rule for example, it says that
+to play any card it does not specify which
+
+42
+00:05:28,009 --> 00:05:30,750
+card to
+play. Now, if you a just starting the game
+
+43
+00:05:30,750 --> 00:05:36,920
+and let us assume that this rule here. So,
+let us
+
+44
+00:05:36,920 --> 00:05:42,169
+say this is, this one of the working memory
+element is this here. So, let a say this one
+
+45
+00:05:42,168 --> 00:05:52,049
+is
+turn to play S. So, let us say S is a name
+
+46
+00:05:52,050 --> 00:05:59,170
+of a player. So, it is S turn to play. So,
+there is a
+
+47
+00:05:59,170 --> 00:06:05,079
+piece of data, here there is a pattern which
+says turn to some variable name. So, this
+
+48
+00:06:05,079 --> 00:06:09,829
+will
+match with this, which with this data essentially.
+
+49
+00:06:09,829 --> 00:06:21,300
+And let us say, this element is suit to play,
+let us say club. So, this is a working memory
+
+50
+00:06:21,300 --> 00:06:31,259
+element which will match that pattern, second
+pattern that suit in play, in play. This is
+
+51
+00:06:31,259 --> 00:06:34,550
+a
+constant. The data will only have constants,
+
+52
+00:06:34,550 --> 00:06:38,170
+variables are only in the patterns and if
+a
+
+53
+00:06:38,170 --> 00:06:43,069
+pattern has a variable it means it can match
+anything essentially. Whether this was clubs
+
+54
+00:06:43,069 --> 00:06:48,889
+or diamonds or hearts that rule would still
+match essentially. And then look at this third
+
+55
+00:06:48,889 --> 00:06:58,000
+element that player P, in this case P is S
+has some cards of, let us say this player
+
+56
+00:06:58,000 --> 00:07:05,810
+has 6
+cards of clubs. So, there would be 6 card,
+
+57
+00:07:05,810 --> 00:07:18,319
+this player is S and suit is clubs.
+Let us say name is 3. So, let us say he has
+
+58
+00:07:18,319 --> 00:07:21,129
+3 of clubs and he has a 7 of clubs and the
+9 of
+
+59
+00:07:21,129 --> 00:07:28,209
+clubs and the 8 of clubs and jack of clubs
+and the queen of clubs. So, let us say this
+
+60
+00:07:28,209 --> 00:07:33,508
+player has got 1, 2, 3, 4, 5, 6 cards of clubs
+essentially. That is effective and 6 working
+
+61
+00:07:33,509 --> 00:07:38,150
+memory element in which says and each memory
+element is saying that there is 3 of
+
+62
+00:07:38,149 --> 00:07:47,689
+clubs it is held by S. So, let us say S stand
+for south essentially. Now, you can see that
+
+63
+00:07:47,689 --> 00:07:56,319
+this rule, the first rule will have 6 instances,
+for each of these 6 cards 1 instance of that
+
+64
+00:07:56,319 --> 00:07:58,789
+rule will fire will match.
+
+65
+00:07:58,788 --> 00:08:06,399
+.So, 1 instance will says yes it is south’s
+turn to play, the suit in play is clubs and
+
+66
+00:08:06,399 --> 00:08:08,739
+he has
+got the 3 of clubs. Another instance of that
+
+67
+00:08:08,740 --> 00:08:13,639
+rule will say yes it is south turns to play,
+suit
+
+68
+00:08:13,639 --> 00:08:18,560
+in plays clubs and he has got a 7 of clubs.
+So, like this for each of this cards, 1 instance
+
+69
+00:08:18,560 --> 00:08:24,709
+of the rule will fire and they may be of course
+many rules in the system and each will
+
+70
+00:08:24,709 --> 00:08:27,209
+have some instances, it should ready to fire
+essentially.
+
+71
+00:08:27,209 --> 00:08:35,110
+So, the task of match this first part of the
+inference engine is to compute this set of
+
+72
+00:08:35,110 --> 00:08:41,430
+instances of rules and the corresponding matching
+data and put it into this set which they
+
+73
+00:08:41,429 --> 00:08:48,109
+call is a complex set. So, this is rule. So,
+let us say I call this rule 1 and this is
+
+74
+00:08:48,110 --> 00:08:52,550
+rule 2 then,
+my conflict set will have something like.
+
+75
+00:08:52,549 --> 00:08:53,549
+.
+
+76
+00:08:53,549 --> 00:09:02,259
+Rule 1 matches with first, second and third
+working memory element. first, second, third.
+
+77
+00:09:02,259 --> 00:09:12,200
+Let us say this is rule 1 another entry into
+my working memory element into my conflicts
+
+78
+00:09:12,200 --> 00:09:20,970
+at would be rule 2 matches with 1, 2 and let
+us say 4. Another one would be rule sorry
+
+79
+00:09:20,970 --> 00:09:29,450
+the rule 1, rule 1 matches with 1, 2 and 5.
+Let us say where 3, 4 and 5 are those these
+
+80
+00:09:29,450 --> 00:09:31,430
+element.
+So, this is the third one, the fourth one,
+
+81
+00:09:31,429 --> 00:09:34,449
+and the fifth one. This is saying that this
+is an
+
+82
+00:09:34,450 --> 00:09:38,950
+instance of rule 1 which is. So, these are
+the times stamps we are using from that
+
+83
+00:09:38,950 --> 00:09:43,470
+working memory. It is matching working memory
+number 1 and 2 and 3. This one is
+
+84
+00:09:43,470 --> 00:09:47,990
+matching the same rule in matching 1 and 2
+and 4. This one is matching 1 and 2 and 5.
+
+85
+00:09:47,990 --> 00:09:57,509
+And likewise for rule 2 and rule 3 and whatever
+rules we have this set is called the
+
+86
+00:09:57,509 --> 00:10:04,220
+.conflict set and the objective of the first
+phase of the algorithm which is the match
+
+87
+00:10:04,220 --> 00:10:06,830
+phase
+is to compute this conflict set. Why do you
+
+88
+00:10:06,830 --> 00:10:11,070
+call it conflict set?
+It is like each rules clambering to say I
+
+89
+00:10:11,070 --> 00:10:13,370
+will, I will execute, I will execute and so
+on. So,
+
+90
+00:10:13,370 --> 00:10:20,299
+there is a conflict between all these rules.
+But you can execute only one rule at a time
+
+91
+00:10:20,299 --> 00:10:24,679
+assuming that you are talking of sequential
+system here. So, people talk of parallel
+
+92
+00:10:24,679 --> 00:10:30,489
+systems in which parallel rule firing takes
+place, but you will not get into that here.
+
+93
+00:10:30,490 --> 00:10:36,009
+What
+is the complexity of these task? How difficult
+
+94
+00:10:36,009 --> 00:10:39,730
+is it to compute this conflict set in terms
+of
+
+95
+00:10:39,730 --> 00:10:42,789
+how many operations, how many comparison you
+have to do?
+
+96
+00:10:42,789 --> 00:10:51,179
+So, the brute force algorithm would take the
+first pattern which is P 1 1 which means the
+
+97
+00:10:51,179 --> 00:10:57,079
+first pattern of the first rule and try matching
+it again solve these things. Then, it will
+
+98
+00:10:57,080 --> 00:10:59,450
+take
+the second pattern of the first rule and try
+
+99
+00:10:59,450 --> 00:11:01,730
+matching it with all these things, then the
+third
+
+100
+00:11:01,730 --> 00:11:05,139
+pattern of the first rule try matching it
+with all of this then it will go to the second
+
+101
+00:11:05,139 --> 00:11:07,289
+rule. I
+mean here it you do not have to distinguish
+
+102
+00:11:07,289 --> 00:11:12,759
+between rules. We have just a set of patterns.
+So, each pattern in this it will try to match
+
+103
+00:11:12,759 --> 00:11:14,659
+with each of this and at the end of it, it
+will
+
+104
+00:11:14,659 --> 00:11:21,789
+compute the conflicts set let us keep this
+in mind.
+
+105
+00:11:21,789 --> 00:11:33,969
+So, this conflicts set is a set of rules which
+is ready to execute. So, we use a term execute
+
+106
+00:11:33,970 --> 00:11:43,889
+or fire. So, rule is ready to fire essentially.
+We keep this conflict set to step which is
+
+107
+00:11:43,889 --> 00:12:01,600
+called resolve 
+and it work it does is it select a rule. So,
+
+108
+00:12:01,600 --> 00:12:06,450
+there is another program, another
+module to the program which looks at this
+
+109
+00:12:06,450 --> 00:12:12,110
+conflict set and picks one of them to fire
+essentially. Now obviously, what this resolve
+
+110
+00:12:12,110 --> 00:12:20,250
+needs is strategy. What is your problem
+solving strategy given that many rules of
+
+111
+00:12:20,250 --> 00:12:23,889
+ready to execute which rule should be select
+to
+
+112
+00:12:23,889 --> 00:12:26,049
+execute actually essentially.
+
+113
+00:12:26,049 --> 00:12:27,049
+..
+
+114
+00:12:27,049 --> 00:12:33,060
+Now, there are different kinds of strategies.
+So, one strategy which is called lax in
+
+115
+00:12:33,061 --> 00:12:43,860
+((Refer Time. terminologies or lexicon graphic
+strategy. It says that choose a rule
+
+116
+00:12:43,860 --> 00:12:59,490
+that matches or that makes a maximum number
+of test and what do I mean by test. By
+
+117
+00:12:59,490 --> 00:13:01,990
+test I mean each individual these things.
+.
+
+118
+00:13:01,990 --> 00:13:06,110
+So, for example, I will match the class name
+with the working memory element that is
+
+119
+00:13:06,110 --> 00:13:11,528
+one tests. Then, I will match the value of
+this attribute to play which the working
+
+120
+00:13:11,528 --> 00:13:17,350
+memory element that is the second test. Third,
+fourth, fifth, sixth, seventh, eighth. So,
+
+121
+00:13:17,350 --> 00:13:22,759
+.this rule has eight tests that it is doing,
+this rules has a little bit more tests than
+
+122
+00:13:22,759 --> 00:13:30,700
+it is doing.
+So, the lax strategy says that choose a rule
+
+123
+00:13:30,700 --> 00:13:36,879
+that makes the maximum number of tests
+essentially. So, what is the strategy essentially
+
+124
+00:13:36,879 --> 00:13:37,879
+doing?
+.
+
+125
+00:13:37,879 --> 00:13:46,269
+It is saying specificity. In other words,
+it is saying choose the most specific rule
+
+126
+00:13:46,269 --> 00:13:50,289
+which
+matches. Now, if you look at this two examples
+
+127
+00:13:50,289 --> 00:13:52,069
+that we have.
+.
+
+128
+00:13:52,070 --> 00:14:01,769
+In these two rules, one rule is saying that,
+if you have to play a card of suit S and if
+
+129
+00:14:01,769 --> 00:14:04,870
+you
+have a card of suite S play that. This rule
+
+130
+00:14:04,870 --> 00:14:06,870
+is saying, if you have to play a card of suite
+S
+
+131
+00:14:06,870 --> 00:14:14,759
+.and if you have many cards of suite S, then
+pick the one which is the highest or highest
+
+132
+00:14:14,759 --> 00:14:23,889
+rank card and play that card. Now, obviously
+given any data that I have so, for example,
+
+133
+00:14:23,889 --> 00:14:32,429
+I said that we have these 6 cards. So, this
+will have rank 3, this will have rank 4, and
+
+134
+00:14:32,429 --> 00:14:38,958
+so
+on and so forth. Both rules are matching,
+
+135
+00:14:38,958 --> 00:14:47,219
+both rules 6 instances of this rule will match
+and 1 instance of this rule will match.
+
+136
+00:14:47,220 --> 00:14:52,410
+So, there are 7 rules which are trying to
+tell me which card to play essentially. So,
+
+137
+00:14:52,409 --> 00:14:55,919
+6 rules
+are saying any of these cards and the seventh
+
+138
+00:14:55,919 --> 00:15:00,459
+rule is specifically saying this card queen,
+which is of highest rank why because we have
+
+139
+00:15:00,460 --> 00:15:07,610
+said that the rank of this card is r then
+there is no card held by this player whose
+
+140
+00:15:07,610 --> 00:15:13,440
+rank is higher or higher than r which means
+the
+
+141
+00:15:13,440 --> 00:15:22,870
+the number is lower than r. So, this rule
+is more specific than this rule. So, this
+
+142
+00:15:22,870 --> 00:15:26,409
+conflicts
+resolution strategy at as it is called which
+
+143
+00:15:26,409 --> 00:15:32,419
+is specificity will choose the second rule
+essentially or if the second rule matches
+
+144
+00:15:32,419 --> 00:15:36,828
+little.
+So, you can see that this strategy allows
+
+145
+00:15:36,828 --> 00:15:41,588
+you to implement what we sometimes call as
+default reasoning which is you like many rules
+
+146
+00:15:41,589 --> 00:15:46,860
+essentially. So, it is like saying one rule
+says if you are hungry go to the mess and
+
+147
+00:15:46,860 --> 00:15:50,289
+eat essentially. The other rule says if you
+are
+
+148
+00:15:50,289 --> 00:15:54,419
+hungry and you have lots of money and you
+do not have any exam tomorrow then go out
+
+149
+00:15:54,419 --> 00:16:01,069
+to a restaurant an eat essentially. Now, the
+first rule is less specific than the second
+
+150
+00:16:01,070 --> 00:16:03,820
+rule.
+The second rule requires many conditions to
+
+151
+00:16:03,820 --> 00:16:07,900
+be true that you should have money you
+should be free and that kind of stuff. If
+
+152
+00:16:07,899 --> 00:16:10,360
+both rule matches than the second rule would
+be
+
+153
+00:16:10,360 --> 00:16:17,339
+selected, if only if the second rule does
+not match that means you do not have money,
+
+154
+00:16:17,339 --> 00:16:22,240
+or
+you have an exam tomorrow then that will not
+
+155
+00:16:22,240 --> 00:16:27,610
+match and then only the first rule will
+match and that will execute. So, you can see
+
+156
+00:16:27,610 --> 00:16:32,701
+that the more specific the rule the greater
+we
+
+157
+00:16:32,701 --> 00:16:39,039
+would like it to reselected and specificity
+say exactly that choose a rule, which is making
+
+158
+00:16:39,039 --> 00:16:47,199
+more number of tests out of the competing
+set of rules essentially.
+
+159
+00:16:47,200 --> 00:16:48,200
+..
+
+160
+00:16:48,200 --> 00:17:02,959
+Another strategy is looking at the time stamp
+which is called recency. It says choose a
+
+161
+00:17:02,958 --> 00:17:17,349
+rule that matches a most recent data 
+and what do you mean by most recent data?
+
+162
+00:17:17,349 --> 00:17:20,118
+Is
+basically this time stamp that we have said
+
+163
+00:17:20,118 --> 00:17:25,078
+which has the highest time stamping. So, if
+every rule will match certain number of elements
+
+164
+00:17:25,078 --> 00:17:28,839
+remember for example, this is my thing
+1, 2 and 3, this is my thing 1, 2 and 4 and
+
+165
+00:17:28,839 --> 00:17:34,819
+so on and so forth.
+Whichever rule is matching the latest data
+
+166
+00:17:34,819 --> 00:17:41,729
+choose that essentially. What is the intention
+behind this strategy? It is to kind of maintain
+
+167
+00:17:41,729 --> 00:17:46,249
+of flow of reasoning essentially. So, just
+imagine you are doing theorem proving, you
+
+168
+00:17:46,249 --> 00:17:52,089
+are proving something, you have proved
+some lambda 1 then, you want to use lambda
+
+169
+00:17:52,089 --> 00:17:56,678
+1 to prove lambda 2 and this rule will allow
+you to do that because lambda 1 which is whatever
+
+170
+00:17:56,679 --> 00:18:01,479
+that lambda is could be the latest
+entry into a database and if a rule is matching
+
+171
+00:18:01,479 --> 00:18:03,690
+that, that will automatic get selected. So,
+it
+
+172
+00:18:03,690 --> 00:18:09,899
+sort of helps in maintain chain of reasoning.
+
+173
+00:18:09,898 --> 00:18:10,898
+..
+
+174
+00:18:10,898 --> 00:18:18,449
+There is a first strategy which is called
+mea, which stands for may be at some point
+
+175
+00:18:18,450 --> 00:18:27,690
+we
+will a discuss this, means ends which is due
+
+176
+00:18:27,690 --> 00:18:40,859
+to a Simon and Noel and it essentially
+combines these two by saying recency of pattern
+
+177
+00:18:40,858 --> 00:18:59,849
+one and if there is still a conflict then
+specificity. So, I should write else. So,
+
+178
+00:18:59,849 --> 00:19:04,148
+by this I mean that you are only looking at
+the
+
+179
+00:19:04,148 --> 00:19:08,120
+recency of the pattern one and pattern one
+is the first pattern in a every rule essentially.
+
+180
+00:19:08,121 --> 00:19:12,788
+So, this is the first pattern, this is the
+first pattern, this is the first pattern and
+
+181
+00:19:12,788 --> 00:19:15,288
+so on.
+So, the first element which follows after
+
+182
+00:19:15,288 --> 00:19:18,349
+the rule, look at the recency of that and
+as you
+
+183
+00:19:18,349 --> 00:19:23,488
+can see all these are same, but some of the
+rule may have higher recency and use that
+
+184
+00:19:23,489 --> 00:19:33,249
+essentially. If there is still conflict that
+is more than one rule which is in contention
+
+185
+00:19:33,249 --> 00:19:36,329
+then
+use specificity to choose between them essentially.
+
+186
+00:19:36,329 --> 00:19:40,808
+So, that is why I have written else
+specificity. So, what is the intention behind
+
+187
+00:19:40,808 --> 00:19:44,408
+this? Essentially, you can partition your
+rule
+
+188
+00:19:44,409 --> 00:19:51,082
+sets into, set into groups which will solve
+particular problems essentially. So, let us
+
+189
+00:19:51,082 --> 00:19:57,130
+say
+you are making dinner essentially. Then, you
+
+190
+00:19:57,130 --> 00:20:04,109
+might have a set of rules let say to how to
+make sambar and another set of rules how to
+
+191
+00:20:04,108 --> 00:20:10,668
+make subjee and so on and so forth.
+Now, if you in each of this rules, if you
+
+192
+00:20:10,669 --> 00:20:12,519
+have the first element which says something
+like
+
+193
+00:20:12,519 --> 00:20:20,278
+making sambar or making subjee or making chapati
+or making rice, then the moment you
+
+194
+00:20:20,278 --> 00:20:27,638
+create a context for saying, okay now I am
+making rice then you will add that data
+
+195
+00:20:27,638 --> 00:20:34,519
+element saying making rice that will become
+the most recent and all the rules which are
+
+196
+00:20:34,519 --> 00:20:37,788
+concern with making rice they will get priority
+essentially.
+
+197
+00:20:37,788 --> 00:20:42,279
+.And that is done by the fact that recency
+of the first pattern. The first pattern setting
+
+198
+00:20:42,279 --> 00:20:46,058
+the
+context, making rice, making tea or whatever
+
+199
+00:20:46,058 --> 00:20:51,700
+essentially. The moment you said this is
+my task I am doing only those rules which
+
+200
+00:20:51,700 --> 00:20:55,298
+have that as the first pattern will be in
+contention the rest will not come into play.
+
+201
+00:20:55,298 --> 00:21:01,519
+So, you can see it is a combination of these
+two things. It helps you keep focus to what
+
+202
+00:21:01,519 --> 00:21:07,750
+you are doing, but it also tries to see which
+rules are best and so on.
+
+203
+00:21:07,750 --> 00:21:08,750
+.
+
+204
+00:21:08,750 --> 00:21:27,710
+Now, one more thing is refractoriness, this
+simply says that a same rule cannot fire with
+
+205
+00:21:27,710 --> 00:21:34,179
+the same data again essentially. So, this
+comes from some neurobiological studies which
+
+206
+00:21:34,179 --> 00:21:41,009
+says that, you know when neurons are firing
+then once a neuron gets certain set of input
+
+207
+00:21:41,009 --> 00:21:45,009
+they can only fire once with that input and
+then there is a period of refractoriness in
+
+208
+00:21:45,009 --> 00:21:49,979
+which they do not, they are not active at
+all essentially. But from our point of view,
+
+209
+00:21:49,979 --> 00:21:53,150
+we
+can see that we do not want the same rule
+
+210
+00:21:53,150 --> 00:21:56,788
+to fire again and again and again essentially.
+So, let us say you are doing a classification
+
+211
+00:21:56,788 --> 00:22:03,119
+task or let us say now the task is to classify
+students into grades essentially. So, you
+
+212
+00:22:03,119 --> 00:22:06,239
+have said if a student has got more than 95
+and
+
+213
+00:22:06,240 --> 00:22:14,609
+he has done all the assignments then give
+an a grade. And this let us say, this rule
+
+214
+00:22:14,609 --> 00:22:16,748
+get
+selected and it fires. So, you have already
+
+215
+00:22:16,749 --> 00:22:21,100
+done with the task of giving the a grade or
+classifying the student in as a student. You
+
+216
+00:22:21,099 --> 00:22:25,058
+do not want that rule to fire again essentially
+with the same piece of data.
+
+217
+00:22:25,058 --> 00:22:30,999
+.And that is what refractoriness says that
+every rule can only fire once with that piece
+
+218
+00:22:30,999 --> 00:22:36,429
+of
+data. Which means of course, with the same
+
+219
+00:22:36,429 --> 00:22:41,499
+time stamps in the working memory if you
+were to delete some data and add the same
+
+220
+00:22:41,499 --> 00:22:53,269
+data again with a new time stamp then it
+could fire, that is a different story.
+
+221
+00:22:53,269 --> 00:22:54,269
+.
+
+222
+00:22:54,269 --> 00:23:02,460
+And then so, its selects a rule and gives
+it to a module call execute and what is execute
+
+223
+00:23:02,460 --> 00:23:22,509
+does is to applies the actions 
+of selected rule. So, remember that this resolve
+
+224
+00:23:22,509 --> 00:23:27,500
+module
+resolves the conflicts between all these rules
+
+225
+00:23:27,500 --> 00:23:29,409
+and it says this is the rule that is going
+to
+
+226
+00:23:29,409 --> 00:23:35,080
+execute and this execute module basically
+takes a rule and takes its right hand side
+
+227
+00:23:35,079 --> 00:23:38,648
+which
+is the actions and in and sort of execute
+
+228
+00:23:38,648 --> 00:23:43,028
+to those actions.
+So, remember what was, what was the actions
+
+229
+00:23:43,028 --> 00:24:06,638
+thinks like make or delete and so on
+essentially. So, what is this doing? It changes
+
+230
+00:24:06,638 --> 00:24:15,959
+the working memory. The effect of execute
+is to change the working memory. It may add
+
+231
+00:24:15,960 --> 00:24:20,020
+some new data and it will deletes some old
+data from the working memory.
+
+232
+00:24:20,020 --> 00:24:25,819
+So, now you have a new working memory and
+now you have to go back all the way and
+
+233
+00:24:25,819 --> 00:24:46,079
+do the match all over again. So, this is the
+algorithm which the, this in some sense a
+
+234
+00:24:46,079 --> 00:24:47,939
+high
+level algorithm. Actually, you do implement
+
+235
+00:24:47,940 --> 00:24:51,230
+it like this. We will see how it is done,
+but
+
+236
+00:24:51,230 --> 00:24:56,159
+you can think of it as doing like this. That
+first is a match phase, which looks at all
+
+237
+00:24:56,159 --> 00:24:59,019
+the
+rules and all the data and by that mean everything
+
+238
+00:24:59,019 --> 00:25:01,419
+in the working memory and creates
+
+239
+00:25:01,419 --> 00:25:09,330
+.this set or this list of rules and the corresponding
+times stamps of the data elements they
+
+240
+00:25:09,329 --> 00:25:15,308
+are matching.
+Then resolve looks at this set and picks one
+
+241
+00:25:15,308 --> 00:25:20,808
+element out of that and says this is the rule
+that we will execute and then when execution
+
+242
+00:25:20,808 --> 00:25:24,720
+happens, the right hand of the side of the
+rule may make some changes in the working
+
+243
+00:25:24,720 --> 00:25:29,940
+memory. So, some elements are deleted,
+some may be added and then we go back to matching
+
+244
+00:25:29,940 --> 00:25:35,119
+again and selecting a rule and so.
+So, we keep doing this till some termination
+
+245
+00:25:35,118 --> 00:25:39,648
+criteria which could be that either the
+conflict sets becomes empty at some point,
+
+246
+00:25:39,648 --> 00:25:43,768
+which means no rules are matching all we
+have an explicit halt statement somewhere
+
+247
+00:25:43,769 --> 00:25:48,858
+in the program which says if you see a certain
+pattern that then you halt and execute.
+
+248
+00:25:48,858 --> 00:25:59,740
+So, let us now discuss the complexity of this
+whole process. What can we do to improve
+
+249
+00:25:59,740 --> 00:26:06,940
+this essentially? Now, empirically people
+have found which is the hardest part of this,
+
+250
+00:26:06,940 --> 00:26:13,710
+in
+terms of complexity, which one will take the
+
+251
+00:26:13,710 --> 00:26:20,470
+most amount of computing time match or
+resolve or execute. which one will take the
+
+252
+00:26:20,470 --> 00:26:26,339
+most amount of time? Look at the complexity
+of each of the task, look at these tasks,
+
+253
+00:26:26,339 --> 00:26:31,689
+execute what is it doing? So, in this example
+the
+
+254
+00:26:31,690 --> 00:26:38,619
+right hand side has only one action which
+is to add one working memory element with
+
+255
+00:26:38,618 --> 00:26:45,999
+this particular this one. So, you can see
+it is a little bit of work.
+
+256
+00:26:45,999 --> 00:26:53,929
+What does resolve have to do? Resolve has
+to look at this entire set of matching rules
+
+257
+00:26:53,929 --> 00:26:57,259
+of
+the conflict set and applied a chosen strategy
+
+258
+00:26:57,259 --> 00:27:04,868
+whichever the strategy we have chosen, to
+select one of these from this and what does
+
+259
+00:27:04,868 --> 00:27:10,538
+match have to do? Match has to look at the
+entire set of rules or the entire set of patterns
+
+260
+00:27:10,538 --> 00:27:16,210
+we have compare it with the entire working
+memory and try to find out what is the conflict
+
+261
+00:27:16,210 --> 00:27:21,940
+set it is. So obviously, this is a largest
+task, the number of comparison we have to
+
+262
+00:27:21,940 --> 00:27:25,499
+do if you have k rules and each rule as let
+us
+
+263
+00:27:25,499 --> 00:27:31,558
+say p patterns. So, k into p patterns totally
+and each pattern may have a certain number
+
+264
+00:27:31,558 --> 00:27:34,759
+of
+tests essentially and then, all these working
+
+265
+00:27:34,759 --> 00:27:37,269
+memory elements. So, with each you have to
+find.
+
+266
+00:27:37,269 --> 00:27:44,118
+Remember that you want to find every rule
+that can possibly execute or every rule that
+
+267
+00:27:44,118 --> 00:27:49,519
+matches. It is not that you are if you find
+one or two rules match you are done. All the
+
+268
+00:27:49,519 --> 00:27:53,769
+rules with match, the complete set must be,
+this conflict set must be exhaustive. It must
+
+269
+00:27:53,769 --> 00:28:01,558
+consist all possible rules which are matching.
+So, this is really the most time consuming
+
+270
+00:28:01,558 --> 00:28:05,798
+part of the algorithm and people have observed
+that match takes up something like 80
+
+271
+00:28:05,798 --> 00:28:13,210
+.percent of computation time. So, just like
+you know they say in an industry that most
+
+272
+00:28:13,210 --> 00:28:15,579
+of
+the time of computing is spent in sorting
+
+273
+00:28:15,579 --> 00:28:22,599
+for example, most of the time in power
+changing inference engine is spent in matching
+
+274
+00:28:22,599 --> 00:28:28,579
+essentially.
+You could have other strategies which I have
+
+275
+00:28:28,579 --> 00:28:34,468
+not mentioned here. If you know how
+prolog works. Prolog will take the first rule
+
+276
+00:28:34,469 --> 00:28:39,338
+with matches. So, it sort of goes down the
+program and the first rule which matches it
+
+277
+00:28:39,338 --> 00:28:45,118
+applies essentially. It does not compute all
+possible matches and then selects one. So,
+
+278
+00:28:45,118 --> 00:28:50,618
+that is a different strategy that is the,
+something like order of rules or something
+
+279
+00:28:50,618 --> 00:28:52,868
+like that. Here we are considering rules to
+be
+
+280
+00:28:52,868 --> 00:29:11,108
+floating in some space and there is no order
+and any rule is as good as any other rule.
+
+281
+00:29:11,108 --> 00:29:16,999
+So,
+what Charles Forgy. So, if you look up some
+
+282
+00:29:16,999 --> 00:29:21,569
+of these terms either ((Refer Time.)
+Charles Forgy or this algorithm which he developed
+
+283
+00:29:21,569 --> 00:29:25,308
+which is called the rete algorithm.
+.
+
+284
+00:29:25,308 --> 00:29:32,118
+Which is what you want to study, but I think
+you do not have enough time today so, we
+
+285
+00:29:32,118 --> 00:29:43,278
+will do it in the next class. Charles Forgy
+device the rate algorithm in 1979, his phd
+
+286
+00:29:43,278 --> 00:29:53,269
+theses at a you and subsequently it became
+a commercial product. It is available in any
+
+287
+00:29:53,269 --> 00:29:58,979
+these business rule management engine you
+talk about, it uses some variation of rate
+
+288
+00:29:58,979 --> 00:30:01,119
+for
+matching rules because it is really the hardest
+
+289
+00:30:01,118 --> 00:30:09,528
+part of doing that essentially. So, this is
+off
+
+290
+00:30:09,528 --> 00:30:13,249
+course available to us that we have a paper
+written by Charles Forgy and you can find
+
+291
+00:30:13,249 --> 00:30:18,348
+it
+on the net which talks about this is rete
+
+292
+00:30:18,348 --> 00:30:19,348
+algorithm.
+
+293
+00:30:19,348 --> 00:30:24,178
+.And then he went on to develop algorithm
+called rete 2 and from there onwards they
+
+294
+00:30:24,179 --> 00:30:28,298
+stop
+disclosing their algorithm to the public because
+
+295
+00:30:28,298 --> 00:30:32,690
+they have commercial interest. They had
+this company which was selling that algorithm
+
+296
+00:30:32,690 --> 00:30:36,120
+and did not want to diverse this create
+secret that this say.
+
+297
+00:30:36,119 --> 00:30:37,119
+.
+
+298
+00:30:37,119 --> 00:30:47,388
+And eventually he wrote on algorithm call
+rete NT. For those of you who are familiar
+
+299
+00:30:47,388 --> 00:30:52,158
+with windows will see the influence of windows,
+so just around that time windows NT
+
+300
+00:30:52,159 --> 00:30:58,690
+came, it was a new thing, and so, this rete
+NT was new thing. This rete NT is suppose
+
+301
+00:30:58,690 --> 00:31:02,288
+to
+be 500 times faster than these original rete
+
+302
+00:31:02,288 --> 00:31:08,429
+algorithm, which means it takes 500 times
+less time to the same match essentially. And
+
+303
+00:31:08,429 --> 00:31:13,389
+you can see that the great improvement
+instead of having to wait of few minutes,
+
+304
+00:31:13,388 --> 00:31:16,808
+you might have to just wait a second for your
+match to be done essentially. Unfortunately
+
+305
+00:31:16,808 --> 00:31:21,249
+we do not know the algorithm, we will only
+look at the rete algorithm.
+
+306
+00:31:21,249 --> 00:31:29,339
+Rete itself, the word rete is a latin word
+which means the net essentially. And what
+
+307
+00:31:29,339 --> 00:31:32,519
+this
+rete algorithm does is to, it compiles the
+
+308
+00:31:32,519 --> 00:31:34,909
+rules into a network which we will see in
+the
+
+309
+00:31:34,909 --> 00:31:43,450
+next class to improve upon the efficiency
+of match. So, what we want to do today now
+
+310
+00:31:43,450 --> 00:31:46,348
+is
+to observe where does the inefficiency come
+
+311
+00:31:46,348 --> 00:31:54,589
+from in matching these things. There are
+two sources of inefficiency and can you think
+
+312
+00:31:54,589 --> 00:32:04,628
+about then. See one is the following, that
+we have many rules and each rule has some
+
+313
+00:32:04,628 --> 00:32:09,628
+number of patterns and those patterns have
+to be match with data. Now, if you look at
+
+314
+00:32:09,628 --> 00:32:11,788
+that two rules that I have written.
+
+315
+00:32:11,788 --> 00:32:12,788
+..
+
+316
+00:32:12,788 --> 00:32:23,919
+We have these pattern, we have these pattern
+turn to play p. So, it was match a working
+
+317
+00:32:23,919 --> 00:32:28,429
+memory element whose class name is turn and
+whose to play attribute must match
+
+318
+00:32:28,429 --> 00:32:32,269
+something, there must be something in the
+these thing. It could be south, north, east,
+
+319
+00:32:32,269 --> 00:32:37,579
+west
+to use the terminology from which. This rule
+
+320
+00:32:37,579 --> 00:32:47,368
+also has a same pattern so, this one could
+be here for example, and this one could be
+
+321
+00:32:47,368 --> 00:32:55,278
+here. Likewise as you can see the second
+pattern is also the same suit in play S, suit
+
+322
+00:32:55,278 --> 00:33:07,979
+in play S. So, this and this are the same.
+Why should we spend computation time doing
+
+323
+00:33:07,979 --> 00:33:13,769
+this match separately? Why not once and
+for all save as the this is match, then we
+
+324
+00:33:13,769 --> 00:33:15,969
+can tell this rule there is matching also
+tell this
+
+325
+00:33:15,969 --> 00:33:21,558
+rule that is pattern is matching. So, if you
+can reduce that there will say sometime
+
+326
+00:33:21,558 --> 00:33:27,888
+essentially. Not only that in this third pattern
+certain things are common. So, card, suit,
+
+327
+00:33:27,888 --> 00:33:35,278
+play these things. These also has card, player,
+suit, name. It has a additional thing called
+
+328
+00:33:35,278 --> 00:33:40,240
+rank, but at least for those 3 tests or 4
+tests, we can share those 4 tests.
+
+329
+00:33:40,240 --> 00:33:47,548
+So, the first thing that we would like to
+do is to share the tests the different rules
+
+330
+00:33:47,548 --> 00:33:50,788
+are
+doing and different patterns are doing. So,
+
+331
+00:33:50,788 --> 00:33:53,048
+that as far as possible each test we make
+only
+
+332
+00:33:53,048 --> 00:33:58,628
+ones or each pattern will match only ones.
+So, if you match this pattern ones and then
+
+333
+00:33:58,628 --> 00:34:06,738
+both the rules come to know about it, then
+we are saving time essentially. So, that is
+
+334
+00:34:06,739 --> 00:34:10,980
+one.
+So, this is one source of inefficiency or
+
+335
+00:34:10,980 --> 00:34:14,599
+one avenue for increasing the efficiency of
+your
+
+336
+00:34:14,599 --> 00:34:16,000
+match algorithm.
+
+337
+00:34:16,000 --> 00:34:25,989
+.But there is another which will occur to
+you if you look at what this execute is doing.
+
+338
+00:34:25,989 --> 00:34:35,428
+What is this execute doing? It is making some
+new working memory elements or it is
+
+339
+00:34:35,429 --> 00:34:43,409
+deleting of you working memory elements. So,
+in a large working memory of this kind.
+
+340
+00:34:43,409 --> 00:34:44,409
+.
+
+341
+00:34:44,409 --> 00:35:13,480
+Let me rub this out. So, what execute my do?
+It might send a signal that this is to be
+
+342
+00:35:13,480 --> 00:35:18,730
+deleted, so I will use minus sign for deletion
+here. It might say this to be deleted and
+
+343
+00:35:18,730 --> 00:35:31,429
+it
+might say new one to be added. So, typically
+
+344
+00:35:31,429 --> 00:35:33,980
+a rule when it executes it will delete may
+be
+
+345
+00:35:33,980 --> 00:35:39,440
+a couple of element from the working memory,
+at may add a couple of elements to the
+
+346
+00:35:39,440 --> 00:35:46,490
+working memory.
+Now, what is it doing? After it executes its
+
+347
+00:35:46,489 --> 00:35:54,868
+goes back to the match and at least if you
+look at it from the brute force point of view,
+
+348
+00:35:54,869 --> 00:35:56,588
+it is going to match all the rules with all
+the
+
+349
+00:35:56,588 --> 00:36:04,500
+data all over again. Does it need to do that?
+Now, if you look at this first rule here,
+
+350
+00:36:04,500 --> 00:36:07,300
+which
+says play any card, it is adding one working
+
+351
+00:36:07,300 --> 00:36:13,260
+memory element essentially. And let us say
+I had a 100 rules for playing cards and all
+
+352
+00:36:13,260 --> 00:36:18,528
+of them I have done the match in the previous
+cycle and all of the above matching that say
+
+353
+00:36:18,528 --> 00:36:24,250
+2, 3 instances. So I have 3 or 400 instances
+of rules which I match in the last cycle.
+
+354
+00:36:24,250 --> 00:36:29,789
+What I have done when I executed this rule.
+Let us say this was executive for some reason
+
+355
+00:36:29,789 --> 00:36:34,519
+or this one is executive for some reason,
+yeah I have added 1 working memory element
+
+356
+00:36:34,518 --> 00:36:47,439
+to my these thing. So, why should I match
+those other 99 rules again. In this particular
+
+357
+00:36:47,440 --> 00:36:52,210
+example, I am only adding 1 working
+memory element and assuming that those 99
+
+358
+00:36:52,210 --> 00:36:55,460
+rules do not have negative clauses. Even if
+
+359
+00:36:55,460 --> 00:37:00,420
+.they have why should I do that match all
+over again essentially. Rule number 2, rule
+
+360
+00:37:00,420 --> 00:37:04,200
+number 3, rule number 7 they were matching
+with some data which is nothing to do with
+
+361
+00:37:04,199 --> 00:37:09,879
+this 4 data elements that we are talking about.
+May be some, may be the some rule was matching
+
+362
+00:37:09,880 --> 00:37:15,240
+a data here and data here and data
+here. If it was matching in the last cycle,
+
+363
+00:37:15,239 --> 00:37:25,739
+it will match in the, this cycle as well.
+So,
+
+364
+00:37:25,739 --> 00:37:39,759
+essentially what the rete net does. So, what
+is the match doing? Match is taking rules
+
+365
+00:37:39,760 --> 00:37:43,140
+and
+data which is working memory and producing
+
+366
+00:37:43,139 --> 00:37:45,179
+the conflicts set.
+.
+
+367
+00:37:45,179 --> 00:37:54,879
+The rete net is an algorithm or the rete algorithm
+is a algorithm which uses a structure
+
+368
+00:37:54,880 --> 00:38:08,640
+call the rate net or let me just a use algorithm
+here, takes as input changes in working
+
+369
+00:38:08,639 --> 00:38:13,750
+memory which is what this execute action is
+doing. This change is in working memory,
+
+370
+00:38:13,750 --> 00:38:18,500
+its changing, is deleting a few elements and
+adding a few elements. This algorithm rete
+
+371
+00:38:18,500 --> 00:38:32,380
+algorithm takes changes in working memory
+and gives you changes in the conflicts set.
+
+372
+00:38:32,380 --> 00:38:39,240
+So, compare this with this thing this match
+here. What match is doing is taking the full
+
+373
+00:38:39,239 --> 00:38:43,838
+working memory, taking all the rules and producing
+the complex set and it is doing this
+
+374
+00:38:43,838 --> 00:38:48,989
+every time we are going through this cycle.
+Every time a rule fires it go the does match
+
+375
+00:38:48,989 --> 00:38:53,098
+all over again or the area algorithm does
+is says tell me what are the changes in the
+
+376
+00:38:53,099 --> 00:38:58,750
+working memory element and it computes that
+as a result what are the changes in the
+
+377
+00:38:58,750 --> 00:39:04,278
+complex set. So obviously, as you can imagine
+this is must less work as compare to
+
+378
+00:39:04,278 --> 00:39:11,489
+.doing the full match all over again essentially.
+We only have to see the effect of these
+
+379
+00:39:11,489 --> 00:39:15,949
+changes into the conflict set.
+May be, if I have because of adding this may
+
+380
+00:39:15,949 --> 00:39:20,129
+be because of deleting this some rule which
+was firing matching earlier will not match
+
+381
+00:39:20,130 --> 00:39:24,450
+now. So, I should able to know that
+essentially. Likewise if I have add this some
+
+382
+00:39:24,449 --> 00:39:28,088
+new rules may come into the conflict set
+and may be some rules might even go out of
+
+383
+00:39:28,088 --> 00:39:32,130
+the conflict set, if there was a negative
+clause here. I should be able to capture that
+
+384
+00:39:32,130 --> 00:39:40,930
+essentially.
+So, in the next class we will look at this
+
+385
+00:39:40,929 --> 00:39:48,409
+rete net, which is basically a sort of a
+discrimination net or you can some people
+
+386
+00:39:48,409 --> 00:39:55,179
+are use other terms like many sorted network
+or it is a generalization of a trice structure,
+
+387
+00:39:55,179 --> 00:39:59,098
+but basically it is a network which
+discriminates between different kinds of data
+
+388
+00:39:59,099 --> 00:40:02,829
+essentially. You might even think of it as
+a
+
+389
+00:40:02,829 --> 00:40:08,160
+extension of binary search tree, which this
+discriminates between only one kind of data
+
+390
+00:40:08,159 --> 00:40:12,280
+which is numbers. So, its sends you down one
+branch or the other.
+
+391
+00:40:12,280 --> 00:40:20,230
+So, same principle holds except that this
+is of multifaceted data and we have different
+
+392
+00:40:20,230 --> 00:40:26,460
+kind of test which are being. So, we even
+have a test which says that the rank is less
+
+393
+00:40:26,460 --> 00:40:30,670
+than
+r or rank not equal to r or something like,
+
+394
+00:40:30,670 --> 00:40:32,329
+things like that essentially. So, all those
+tests
+
+395
+00:40:32,329 --> 00:40:37,970
+should be will together. So, will take this
+up in the next class which is on Friday and
+
+396
+00:40:37,969 --> 00:40:39,358
+complete this part of the this unit.
+
+397
+00:40:39,358 --> 00:40:49,358
+.
+

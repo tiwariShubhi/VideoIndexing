@@ -1,0 +1,357 @@
+WEBVTT
+
+1
+00:00:00.670 --> 00:00:05.260
+As we said earlier,
+while the Giraph paradigm implements BSB,
+
+2
+00:00:05.260 --> 00:00:07.220
+it must also be pragmatic.
+
+3
+00:00:08.590 --> 00:00:12.590
+One such point of pragmatism is
+the computation of aggregate values.
+
+4
+00:00:13.820 --> 00:00:16.550
+In the think like a vertex paradigm,
+
+5
+00:00:16.550 --> 00:00:20.360
+operations local to a vertex can
+be performed in parallel, and
+
+6
+00:00:20.360 --> 00:00:24.220
+each vertex only has to work
+with its immediate neighborhood.
+
+7
+00:00:24.220 --> 00:00:28.260
+This is very useful, but
+it isn't sufficient at times.
+
+8
+00:00:28.260 --> 00:00:32.450
+For example, we need to know and use
+the total number of edges in the graph.
+
+9
+00:00:33.470 --> 00:00:37.720
+This will be computed by adding
+edges connected to each vertex, but
+
+10
+00:00:37.720 --> 00:00:41.140
+once aggregated,
+it does not belong to any specific vertex.
+
+11
+00:00:42.440 --> 00:00:45.170
+So whom does this vertex
+send the aggregate to?
+
+12
+00:00:46.750 --> 00:00:50.500
+Also suppose, a vertex creates some
+edges as part of its compute step.
+
+13
+00:00:51.630 --> 00:00:54.060
+When does this information get sent out?
+
+14
+00:00:55.260 --> 00:00:57.000
+Let's answer the first question first.
+
+15
+00:00:58.240 --> 00:01:03.337
+The class in charge of these aggregates
+is called the DefaultMasterCompute class.
+
+16
+00:01:04.580 --> 00:01:07.250
+This class specializes MasterCompute.
+
+17
+00:01:09.070 --> 00:01:12.460
+How does the DefaultMasterCompute
+relate to the basic vertex computation?
+
+18
+00:01:14.430 --> 00:01:19.150
+We have seen that all vertex programs are
+created by first defining a vertex class.
+
+19
+00:01:20.450 --> 00:01:25.314
+This class has a compute function that
+performs like the think like a vertex
+
+20
+00:01:25.314 --> 00:01:25.860
+logic.
+
+21
+00:01:27.000 --> 00:01:32.665
+Now let's add to it a basic vertex
+function and an aggregate function.
+
+22
+00:01:32.665 --> 00:01:33.530
+Now this function, for
+
+23
+00:01:33.530 --> 00:01:38.580
+our example of all the total number
+of aggregate edges looks like this.
+
+24
+00:01:40.460 --> 00:01:42.070
+The name of the function is aggregate.
+
+25
+00:01:43.270 --> 00:01:47.990
+As you can see in yellow, it just gets
+the number of edges off this vertex.
+
+26
+00:01:49.470 --> 00:01:55.003
+What's a little strange is that the first
+argument of this aggregation has
+
+27
+00:01:55.003 --> 00:01:59.690
+an id of something whose
+name is total number edges.
+
+28
+00:02:01.180 --> 00:02:03.740
+What really happens is as follows.
+
+29
+00:02:03.740 --> 00:02:08.302
+The defaltMasterCompute class, which
+is in charge of this global aggregate
+
+30
+00:02:08.302 --> 00:02:11.610
+operations, is specialized
+by your aggregate class.
+
+31
+00:02:12.730 --> 00:02:14.482
+This class has an ID, and
+
+32
+00:02:14.482 --> 00:02:20.080
+the aggregator gets registered with
+Giraph's defaultMasterCompute class.
+
+33
+00:02:21.630 --> 00:02:28.220
+The ID we saw before refers to your
+registered aggregator's classes ID.
+
+34
+00:02:28.220 --> 00:02:32.085
+The MasterCompute class performs
+the centralized computation between
+
+35
+00:02:32.085 --> 00:02:33.830
+supersteps.
+
+36
+00:02:33.830 --> 00:02:37.110
+This class is initiated
+on the master node and
+
+37
+00:02:37.110 --> 00:02:41.560
+will run every superstep
+before the workers do.
+
+38
+00:02:41.560 --> 00:02:45.550
+Communication with the workers
+should be performed via aggregators.
+
+39
+00:02:47.260 --> 00:02:50.080
+The values of the aggregators
+are broadcast to the workers before
+
+40
+00:02:50.080 --> 00:02:52.380
+the vertex compute is called.
+
+41
+00:02:52.380 --> 00:02:56.670
+And collected by the master before
+the master compute is called.
+
+42
+00:02:56.670 --> 00:03:01.550
+This means the aggregator values
+used by the workers are consistent
+
+43
+00:03:01.550 --> 00:03:06.000
+with the aggregator values from
+the master from the same superstep.
+
+44
+00:03:06.000 --> 00:03:08.750
+And the aggregator used by
+the master are consistent
+
+45
+00:03:08.750 --> 00:03:12.330
+with the aggregator values from
+the workers from the previous superstep.
+
+46
+00:03:13.630 --> 00:03:16.430
+Now let's go back to the big picture for
+a second.
+
+47
+00:03:16.430 --> 00:03:17.980
+Giraph is a big data software.
+
+48
+00:03:19.090 --> 00:03:24.390
+Why not implement the Giraph system
+with a set of MapReduce jobs?
+
+49
+00:03:24.390 --> 00:03:25.863
+Too much disk requirement.
+
+50
+00:03:25.863 --> 00:03:28.077
+No in-memory caching.
+
+51
+00:03:28.077 --> 00:03:30.950
+Every superstep becomes a job.
+
+52
+00:03:30.950 --> 00:03:34.680
+So all intermediate steps
+are written to files, and
+
+53
+00:03:34.680 --> 00:03:38.750
+that is not a very scalable solution for
+iterative operations.
+
+54
+00:03:38.750 --> 00:03:42.370
+However, it will be incorrect
+to think that Giraph works
+
+55
+00:03:42.370 --> 00:03:44.041
+only in an in memory process.
+
+56
+00:03:45.180 --> 00:03:48.220
+It can always have less
+memory than it needs.
+
+57
+00:03:48.220 --> 00:03:52.740
+There are two broad categories of
+what's called out-of-core computation.
+
+58
+00:03:54.000 --> 00:03:57.650
+The first situation occurs when the graph
+is really large compared to the capacity
+
+59
+00:03:57.650 --> 00:03:58.680
+of the cluster it's running on.
+
+60
+00:03:59.980 --> 00:04:04.020
+Each worker stores the vertices assigned
+to it inside a set of partitions.
+
+61
+00:04:05.300 --> 00:04:09.150
+Inside a partition are a subset of
+vertices together with their data.
+
+62
+00:04:10.430 --> 00:04:13.700
+During a superstep, the worker node
+
+63
+00:04:13.700 --> 00:04:18.610
+processes multiple partitions
+concurrently, one per thread.
+
+64
+00:04:18.610 --> 00:04:23.700
+If a graph is large, then not all
+partitions are stored in memory.
+
+65
+00:04:23.700 --> 00:04:28.120
+Typically only N partitions
+are kept in memory at all times and
+
+66
+00:04:28.120 --> 00:04:31.180
+the rest of the partitions
+are swapped into disk.
+
+67
+00:04:32.980 --> 00:04:37.110
+The second situation occurs when
+the number of messages becomes high.
+
+68
+00:04:38.570 --> 00:04:41.530
+Normally, vertices are processed
+in the order of their IDs.
+
+69
+00:04:42.710 --> 00:04:45.840
+A large number of messages
+is handled by creating
+
+70
+00:04:45.840 --> 00:04:49.950
+temporary message stores which
+are sorted by their destination IDs.
+
+71
+00:04:51.100 --> 00:04:54.930
+All messages going to the same
+vertex are placed together.
+
+72
+00:04:54.930 --> 00:04:59.210
+To do this, messages are sorted
+in memory periodically.
+
+73
+00:04:59.210 --> 00:05:02.220
+The message store files
+are accessed based on
+
+74
+00:05:02.220 --> 00:05:04.170
+which vertices are being
+processed at this moment.
+
+75
+00:05:05.240 --> 00:05:09.271
+This whole system is managed by
+Giraph's out of core message processor.

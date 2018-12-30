@@ -1,0 +1,1543 @@
+﻿1
+00:00:16,039 --> 00:00:20,410
+.
+Welcome to module 14 of database management
+
+2
+00:00:20,410 --> 00:00:21,750
+systems.
+
+3
+00:00:21,750 --> 00:00:27,259
+In the last module we will started our discussions
+on the entity relationship model, we will
+
+4
+00:00:27,259 --> 00:00:33,980
+continue that in this module as well, and
+actually conclude it in the next module.
+
+5
+00:00:33,979 --> 00:00:40,148
+So, these are the items that we had discussed
+in the last module.
+
+6
+00:00:40,149 --> 00:00:48,230
+In the present one, we will first illustrate
+the entity relationship diagram notation;
+
+7
+00:00:48,229 --> 00:00:54,768
+that graphical notation for E-R model, how
+nicely this can be shown in terms of certain
+
+8
+00:00:54,768 --> 00:00:56,079
+diagrams.
+
+9
+00:00:56,079 --> 00:01:04,829
+And then we will explore how E-R models can
+be translated to relational schemas, which
+
+10
+00:01:04,829 --> 00:01:13,379
+is a basic step of the logical design . So,
+these are the topics.
+
+11
+00:01:13,379 --> 00:01:16,709
+So, we start with the E-R diagram.
+
+12
+00:01:16,709 --> 00:01:23,280
+Naturally the first thing to represent in
+ah an E-R model is the entity set.
+
+13
+00:01:23,280 --> 00:01:26,920
+Every entity set is represented by a rectangle.
+
+14
+00:01:26,920 --> 00:01:30,900
+On the top, we write the name of that entity
+set.
+
+15
+00:01:30,900 --> 00:01:33,410
+As you can see examples here the instructor.
+
+16
+00:01:33,409 --> 00:01:39,879
+And student are the 2 entity sets and below
+that we write the names of the attributes
+
+17
+00:01:39,879 --> 00:01:41,530
+that are involved.
+
+18
+00:01:41,530 --> 00:01:47,950
+And we underline the attribute or attributes
+that form the primary key of that entity set
+
+19
+00:01:47,950 --> 00:01:54,400
+.
+A relationship between ah 2 entity sets is
+
+20
+00:01:54,400 --> 00:02:00,600
+represented by a diamond, and 2 connecting
+lines to the 2 entity sets.
+
+21
+00:02:00,599 --> 00:02:08,169
+So, here it says that advisor is a relationship
+between entity set instructor, and entity
+
+22
+00:02:08,169 --> 00:02:09,609
+set student.
+
+23
+00:02:09,610 --> 00:02:18,620
+Trying to convey the real-world situation
+that students are advised by the instructors
+
+24
+00:02:18,620 --> 00:02:27,968
+or students have instructors and so on .
+As we had mentioned that relationships could
+
+25
+00:02:27,968 --> 00:02:29,098
+also have attributes.
+
+26
+00:02:29,098 --> 00:02:37,120
+So, if the advisor relationship has an attribute
+date then it will be tagged to the adviser
+
+27
+00:02:37,120 --> 00:02:44,239
+relationship with the attribute coming as
+a within a rectangle and attached to the name
+
+28
+00:02:44,239 --> 00:02:48,998
+of the relationship by a dotted line.
+
+29
+00:02:48,998 --> 00:02:52,519
+So, this shows that advisor is the relationship
+between instructor.
+
+30
+00:02:52,519 --> 00:03:00,230
+And student and the adviser relationship has
+an attribute date .
+
+31
+00:03:00,229 --> 00:03:11,209
+It is possible that ah the relationship that
+hold between 2 entity sets can be can use
+
+32
+00:03:11,209 --> 00:03:12,878
+entity sets which are same.
+
+33
+00:03:12,878 --> 00:03:17,310
+That is, it is possible that a set is related
+to itself.
+
+34
+00:03:17,310 --> 00:03:27,959
+So, as an example we show, the entity set
+course which has a relationship prereq, prerequisite
+
+35
+00:03:27,959 --> 00:03:35,289
+which takes a course id, and relates it to
+another course id called the prerequisite
+
+36
+00:03:35,289 --> 00:03:36,289
+id.
+
+37
+00:03:36,289 --> 00:03:38,628
+Because obviously, if a course has a prerequisite.
+
+38
+00:03:38,628 --> 00:03:44,638
+Then that prerequisite itself is another course
+id which must occur in this table itself.
+
+39
+00:03:44,639 --> 00:03:52,879
+So, in this case, if you can see that unlike
+the earlier ah case the prereq id is not actually
+
+40
+00:03:52,878 --> 00:03:56,688
+a field of this ah relation course.
+
+41
+00:03:56,688 --> 00:03:58,318
+So, we say these are rules.
+
+42
+00:03:58,318 --> 00:04:12,438
+So, we say the rule that prereq relate from
+the course relation to itself are course id
+
+43
+00:04:12,438 --> 00:04:20,399
+and prereq id; where in the actual table both
+of them relate to course id, but prereq will
+
+44
+00:04:20,399 --> 00:04:28,810
+pair them to show which course has what prerequisite.
+
+45
+00:04:28,810 --> 00:04:34,870
+And we often need this kind of; we have ah
+seen ah similar instances of this while we
+
+46
+00:04:34,870 --> 00:04:39,569
+treated dealt with the recursive queries in
+databases.
+
+47
+00:04:39,569 --> 00:04:47,199
+The source destination of ah aligns problem
+that we discussed has similar kind of relationship
+
+48
+00:04:47,199 --> 00:04:48,199
+structure.
+
+49
+00:04:48,199 --> 00:04:58,279
+So, you can think about a relationship flies
+from the set of ah source to this set of destination,
+
+50
+00:04:58,279 --> 00:05:04,149
+and basically this these 2 sets the places
+source places in the destination place are
+
+51
+00:05:04,149 --> 00:05:11,000
+necessarily the same set the same relation
+. There could be a constraint on the cardinality.
+
+52
+00:05:11,000 --> 00:05:21,560
+So, the line that links the relationship diamond
+with the rectangles of the relations rectangles
+
+53
+00:05:21,560 --> 00:05:23,879
+of the entity sets.
+
+54
+00:05:23,879 --> 00:05:31,149
+Those lines could have an arrow at the end
+or may not have an arrow at the end.
+
+55
+00:05:31,149 --> 00:05:38,689
+So, if it has got an arrow, then it means
+that suppose it has an arrow it means 1.
+
+56
+00:05:38,689 --> 00:05:42,540
+And if it does not have a arrow if it is simple
+then it means many.
+
+57
+00:05:42,540 --> 00:05:50,780
+So, using this rotation we can designate one
+to one one to many these all different kinds
+
+58
+00:05:50,779 --> 00:05:53,779
+of cardinalities that we had discussed.
+
+59
+00:05:53,779 --> 00:06:02,319
+So, for example, if we are showing this ah
+arrow on both hands, both ends of this relationship
+
+60
+00:06:02,319 --> 00:06:06,829
+advisor then, it means that it is a one to
+one relationship.
+
+61
+00:06:06,829 --> 00:06:08,689
+Because there is an arrow here.
+
+62
+00:06:08,689 --> 00:06:12,569
+So, this is 1 . There is an arrow here.
+
+63
+00:06:12,569 --> 00:06:13,689
+So, this is 1.
+
+64
+00:06:13,689 --> 00:06:15,180
+There is an arrow here.
+
+65
+00:06:15,180 --> 00:06:24,129
+So, this is 1; which means that a student
+is associated at most with at most one instructor.
+
+66
+00:06:24,129 --> 00:06:30,319
+And it also means that and an instructor is
+associated with at most student.
+
+67
+00:06:30,319 --> 00:06:34,649
+This may not be a reality this usually is
+not the reality, but this we are just showing
+
+68
+00:06:34,649 --> 00:06:36,339
+this as an example.
+
+69
+00:06:36,339 --> 00:06:46,139
+So, if the student instructor relationship
+advisor relationship is one to one, then this
+
+70
+00:06:46,139 --> 00:07:00,389
+is how we will denote it .
+If it is one to many . So, which side is 1,
+
+71
+00:07:00,389 --> 00:07:03,229
+this side is 1 and this side is many.
+
+72
+00:07:03,230 --> 00:07:11,250
+So, it is one to many from instructor to student;
+which says that every student has at most
+
+73
+00:07:11,250 --> 00:07:13,079
+one instructor.
+
+74
+00:07:13,079 --> 00:07:17,930
+And an instructor may have several students.
+
+75
+00:07:17,930 --> 00:07:20,269
+It could be null also it could be none also.
+
+76
+00:07:20,269 --> 00:07:25,990
+So, for an instructor here there are many
+students, but for a student here there are
+
+77
+00:07:25,990 --> 00:07:27,750
+only at most one instructor.
+
+78
+00:07:27,750 --> 00:07:35,279
+So, it is one to many and this is how we designate
+a similar thing will happen, if I read the
+
+79
+00:07:35,279 --> 00:07:39,250
+same relation in the other direction.
+
+80
+00:07:39,250 --> 00:07:42,319
+So, instructor to student was one to many.
+
+81
+00:07:42,319 --> 00:07:51,430
+So, student instructor also drawn in the same
+way, because this is ah this is the one side,
+
+82
+00:07:51,430 --> 00:07:52,990
+this is the one side and this is the many
+side.
+
+83
+00:07:52,990 --> 00:07:55,449
+So, if the situation is the same.
+
+84
+00:07:55,449 --> 00:08:02,060
+So, if we read from the student instructor,
+then it is also designates the many to one
+
+85
+00:08:02,060 --> 00:08:04,519
+relationship.
+
+86
+00:08:04,519 --> 00:08:09,599
+And finally, we can have a many to many relationship,
+where there is no arrow at either end which
+
+87
+00:08:09,600 --> 00:08:13,530
+means that an instructor is associated with.
+
+88
+00:08:13,529 --> 00:08:19,079
+Several possibly none no student why the advisor
+relation and the student may also have several
+
+89
+00:08:19,079 --> 00:08:21,229
+instructors by the advisor relationship.
+
+90
+00:08:21,230 --> 00:08:28,680
+Now, we can you can certainly figure out that
+in the particular case of student instructor
+
+91
+00:08:28,680 --> 00:08:36,509
+scenario of providing advice, one to one as
+well as many to many are not the usual real
+
+92
+00:08:36,509 --> 00:08:43,259
+world scenarios, but these are we have just
+using to show you how to model this usual
+
+93
+00:08:43,259 --> 00:08:48,179
+scenario would be from instructor to student
+it is one to many relationship .
+
+94
+00:08:48,179 --> 00:08:57,778
+A relationship could be total or it could
+be partial.
+
+95
+00:08:57,778 --> 00:09:04,549
+If you if one side of the relationship, or
+whichever side of the relationship is total,
+
+96
+00:09:04,549 --> 00:09:08,058
+then we draw a double line.
+
+97
+00:09:08,058 --> 00:09:12,269
+So, you can you can see here in the diagram
+we are drawing a double line, which means
+
+98
+00:09:12,269 --> 00:09:18,179
+that in the advisor relationship the involvement
+of the student is total, which means that
+
+99
+00:09:18,179 --> 00:09:22,188
+every student must feature in the advisor
+relationship.
+
+100
+00:09:22,188 --> 00:09:27,439
+Or in other words every student must have
+an advisor.
+
+101
+00:09:27,440 --> 00:09:44,999
+But it is partial on the instructor side because
+every instructor may not have a student .
+
+102
+00:09:44,999 --> 00:09:56,439
+So, this double life shows that reality . Some
+entities may not participate in any relationship
+
+103
+00:09:56,438 --> 00:10:04,929
+is a partial .
+Now, this ah constraints the cardinality constraints
+
+104
+00:10:04,929 --> 00:10:09,278
+can be made more precise by actually using
+numbers.
+
+105
+00:10:09,278 --> 00:10:14,470
+You can actually say on the 2 sides of the
+relationship, that at the minimum how many
+
+106
+00:10:14,470 --> 00:10:19,259
+entities should relate, and at the maximum
+how many entities can relate.
+
+107
+00:10:19,259 --> 00:10:27,050
+For example, if we are saying that we are
+on the right-hand side here, if you see we
+
+108
+00:10:27,049 --> 00:10:34,349
+are saying that it is maximum minimum is one
+maximum is one which what does it say it says
+
+109
+00:10:34,350 --> 00:10:38,769
+that every student the minimum is one.
+
+110
+00:10:38,769 --> 00:10:42,659
+So, every student must feature in the advisor
+relationship.
+
+111
+00:10:42,659 --> 00:10:51,500
+So, in real world, every student must have
+a an advisor, must have an instructor.
+
+112
+00:10:51,500 --> 00:10:57,929
+It says maximum is one; which says that every
+student can have at most one instructor.
+
+113
+00:10:57,929 --> 00:11:03,138
+So, this one to one one, dot dot one says
+that every student must have at least one
+
+114
+00:11:03,139 --> 00:11:06,680
+instructor, every student must have at most
+one instructor.
+
+115
+00:11:06,679 --> 00:11:12,739
+So, together it says that every student must
+have exactly one instructor.
+
+116
+00:11:12,740 --> 00:11:20,289
+Whereas if I if we see on this side, it says
+that 0 dot, dot, star, star stands for no
+
+117
+00:11:20,289 --> 00:11:21,389
+limit.
+
+118
+00:11:21,389 --> 00:11:23,860
+It can be anything any number.
+
+119
+00:11:23,860 --> 00:11:29,310
+So, the minimum is 0 which means that an instructor
+may not have a student.
+
+120
+00:11:29,309 --> 00:11:33,278
+And star says that if the instructor can have
+any number of student.
+
+121
+00:11:33,278 --> 00:11:37,688
+Naturally 0, 1, 2, 3, 4, 2, or 200.
+
+122
+00:11:37,688 --> 00:11:41,049
+So, any instructor can advise any number of
+students.
+
+123
+00:11:41,049 --> 00:11:50,919
+So, these kind of precise number constraints
+can be put in addition to the one to many,
+
+124
+00:11:50,919 --> 00:11:55,149
+or one to one, many to many kind of notations
+in the diagram.
+
+125
+00:11:55,149 --> 00:12:04,639
+So, when we do that we have the precise cardinality
+of the complex relations that exist .
+
+126
+00:12:04,639 --> 00:12:17,009
+Next, we take a look into the handling of
+the complex attributes.
+
+127
+00:12:17,009 --> 00:12:22,769
+The first you remember that, the first kind
+of complex attribute is 1 which is composite.
+
+128
+00:12:22,769 --> 00:12:34,558
+Say, name which has first name middle name,
+initial middle initials and last name.
+
+129
+00:12:34,558 --> 00:12:48,328
+So, when we have that, then the way we represent
+is at the actual name of the attribute is
+
+130
+00:12:48,328 --> 00:12:51,138
+at the outermost level.
+
+131
+00:12:51,139 --> 00:12:57,438
+And it is composites are written with certain
+shift on the left.
+
+132
+00:12:57,438 --> 00:13:00,269
+So, these all say that these are composites
+of name.
+
+133
+00:13:00,269 --> 00:13:09,379
+So, if this says that street city state zip
+are composites of address, and further indentation
+
+134
+00:13:09,379 --> 00:13:12,438
+say, that these are composites of street.
+
+135
+00:13:12,438 --> 00:13:19,159
+So, this is how graphically we show that how
+complex attributes feature .
+
+136
+00:13:19,159 --> 00:13:29,610
+Now, let us go back to discussing the weak
+entity sets.
+
+137
+00:13:29,610 --> 00:13:37,470
+In the E-R diagram, a weak entity set is represented
+by a double rectangle.
+
+138
+00:13:37,470 --> 00:13:39,569
+You remember the section is a weak entity
+set.
+
+139
+00:13:39,568 --> 00:13:41,269
+And why is it so?
+
+140
+00:13:41,269 --> 00:13:48,278
+Because the same course may have 2 different,
+I am sorry, 2 different courses may have the
+
+141
+00:13:48,278 --> 00:13:55,739
+same section id semester and year that is
+2 courses 2 or more courses may run sections
+
+142
+00:13:55,739 --> 00:13:58,429
+by the same name in the same semester and
+the year.
+
+143
+00:13:58,428 --> 00:14:05,100
+So, a section cannot be uniquely identified
+by these 3 attributes.
+
+144
+00:14:05,100 --> 00:14:13,600
+It needs a relationship with the identifying
+entity set course to be specific the course
+
+145
+00:14:13,600 --> 00:14:19,278
+id so that the entities here in can be uniquely
+specified.
+
+146
+00:14:19,278 --> 00:14:21,299
+So, since this has happened.
+
+147
+00:14:21,299 --> 00:14:29,528
+So, we designate that by putting this double
+rectangle around the weak entity set section
+
+148
+00:14:29,528 --> 00:14:36,759
+. We underlined the discriminator of a weak
+entity set with dashed line.
+
+149
+00:14:36,759 --> 00:14:40,789
+So, you remember these are the discriminators.
+
+150
+00:14:40,789 --> 00:14:46,169
+Because given the identifying attribute in
+the identifying set.
+
+151
+00:14:46,169 --> 00:14:54,139
+These are the attributes which distinguish
+different tuples of section.
+
+152
+00:14:54,139 --> 00:15:01,419
+So, they are not shown with solid underline,
+they are shown as dotted underline, dashed
+
+153
+00:15:01,419 --> 00:15:02,419
+underlined.
+
+154
+00:15:02,419 --> 00:15:06,309
+So, that you can make out that this is a weak
+entity set and these are the discriminators
+
+155
+00:15:06,309 --> 00:15:12,948
+.
+The relationship set connecting the weak entity
+
+156
+00:15:12,948 --> 00:15:18,188
+set to the identifying strong entity set,
+is also so, this the moment you have weak
+
+157
+00:15:18,188 --> 00:15:19,188
+entity set.
+
+158
+00:15:19,188 --> 00:15:24,588
+You know that there has to be a relationship
+to the strong entity set which identifies
+
+159
+00:15:24,589 --> 00:15:25,589
+it.
+
+160
+00:15:25,589 --> 00:15:34,739
+So, that relationship set course which say
+, course id against this minds that is designated
+
+161
+00:15:34,739 --> 00:15:36,100
+with a double diamond.
+
+162
+00:15:36,100 --> 00:15:43,928
+So, that you know that this is the identifying
+relationship between a weak entity set and
+
+163
+00:15:43,928 --> 00:15:52,738
+the corresponding strong entity set . And
+once that happens in the primary key becomes
+
+164
+00:15:52,739 --> 00:16:00,689
+the discriminators of section the weak entity
+set, and the primary key of the identifying
+
+165
+00:16:00,688 --> 00:16:03,259
+a strong entity set the course.
+
+166
+00:16:03,259 --> 00:16:11,079
+So, that forms our final primary key for this
+entity set section.
+
+167
+00:16:11,078 --> 00:16:17,838
+My new course id is not a part of this relation,
+but it actually plays the role through this
+
+168
+00:16:17,839 --> 00:16:26,429
+section id as a key for the section relation
+without which the section entities in the
+
+169
+00:16:26,428 --> 00:16:29,519
+section cannot be uniquely identified.
+
+170
+00:16:29,519 --> 00:16:36,459
+So, having said that this is a the E-R diagram
+of the university enterprise.
+
+171
+00:16:36,458 --> 00:16:39,528
+Some of the points that you could take a look
+at.
+
+172
+00:16:39,528 --> 00:16:42,129
+This is the weak entity set we have just seen.
+
+173
+00:16:42,129 --> 00:16:50,649
+This is the relationship to the identifying
+strong entity set . This is a prerequisite
+
+174
+00:16:50,649 --> 00:16:53,919
+multi role relationship.
+
+175
+00:16:53,919 --> 00:16:57,988
+Ah this we can see is a is a total involvement.
+
+176
+00:16:57,989 --> 00:17:06,459
+So, worry why is it a total involvement, because
+every section must have at least one teacher.
+
+177
+00:17:06,459 --> 00:17:11,230
+So, there cannot be a section which does not
+feature in the teacher's relationship.
+
+178
+00:17:11,230 --> 00:17:18,259
+Similarly, every section must get a timeslot
+where the classes for that section is held.
+
+179
+00:17:18,259 --> 00:17:22,029
+So, every section must feature in the sec
+timeslot.
+
+180
+00:17:22,029 --> 00:17:26,319
+So, these are the similarly, it must get a
+classroom.
+
+181
+00:17:26,319 --> 00:17:32,240
+So, these are all different total involvements.
+
+182
+00:17:32,240 --> 00:17:36,019
+That we total roles that we can see we can
+see some of that elsewhere as well.
+
+183
+00:17:36,019 --> 00:17:42,389
+For example, you can see it here, we can see
+it here, because in between instructor and
+
+184
+00:17:42,390 --> 00:17:48,570
+the department the inst department relationship
+. Certainly, every instructor must have a
+
+185
+00:17:48,569 --> 00:17:49,569
+department.
+
+186
+00:17:49,569 --> 00:17:55,059
+So, it is total, but it is not the same for
+the department, every department will not
+
+187
+00:17:55,059 --> 00:17:56,589
+have instructors.
+
+188
+00:17:56,589 --> 00:18:01,179
+So, these is how if we can you can go through
+carefully.
+
+189
+00:18:01,180 --> 00:18:07,279
+And for example, this is another which is
+total, which means that every course need
+
+190
+00:18:07,279 --> 00:18:11,039
+a department you cannot run a course which
+does not have a department.
+
+191
+00:18:11,039 --> 00:18:18,109
+So, this is how we can see that how the E-R
+diagram that the first conceptual level diagram
+
+192
+00:18:18,109 --> 00:18:25,309
+of a very simple university enterprise is
+being designed following the notions and symbols
+
+193
+00:18:25,309 --> 00:18:31,049
+of E-R model that we have already developed.
+
+194
+00:18:31,049 --> 00:18:36,349
+Next comes the part where, from this model
+which is primarily diagram based we have to
+
+195
+00:18:36,349 --> 00:18:40,879
+really go to the relational schema, which
+is names of relations and attributes which
+
+196
+00:18:40,880 --> 00:18:44,100
+is ah pretty much a straightforward job.
+
+197
+00:18:44,099 --> 00:18:50,399
+So, entity sets and relationship sets have
+to be represented in terms of relational schema.
+
+198
+00:18:50,400 --> 00:18:53,620
+What is the beauty of the E-R model?
+
+199
+00:18:53,619 --> 00:18:58,519
+And the relational schema is that that, when
+you reduce the entity relationship model to
+
+200
+00:18:58,519 --> 00:19:03,549
+relational schema both entity sets and relationships
+sets.
+
+201
+00:19:03,549 --> 00:19:08,579
+Both of them turn out to be relational schemas
+. And so, that the database finally, can be
+
+202
+00:19:08,579 --> 00:19:16,529
+represented simply as a set of schemas each
+one of which must have a set of identifying
+
+203
+00:19:16,529 --> 00:19:18,460
+primary key.
+
+204
+00:19:18,460 --> 00:19:23,660
+So, let us look into that.
+
+205
+00:19:23,660 --> 00:19:30,920
+So, on the strong entity set, that reduces
+to schema with the same attribute as student.
+
+206
+00:19:30,920 --> 00:19:35,850
+So, student has id name and total credit.
+
+207
+00:19:35,849 --> 00:19:38,129
+So, which we saw earlier.
+
+208
+00:19:38,130 --> 00:19:45,270
+Now this gets converted to a schema with id
+being the primary key.
+
+209
+00:19:45,269 --> 00:19:51,389
+The other case of weak entity set, section
+which had the 3 discriminators, and through
+
+210
+00:19:51,390 --> 00:19:57,150
+set course relationship was identified from
+the strong entity set.
+
+211
+00:19:57,150 --> 00:20:06,320
+Course borrows the primary key of the course
+to be defined in terms of this relational
+
+212
+00:20:06,319 --> 00:20:16,919
+schema one moment . This borrows ah the primary
+key from here and becomes.
+
+213
+00:20:16,920 --> 00:20:25,370
+So, you can see that in the E-R model, the
+section did not have course id as an attribute,
+
+214
+00:20:25,369 --> 00:20:33,139
+but while we reduce this to the relational
+schema through this sec course relationship,
+
+215
+00:20:33,140 --> 00:20:37,020
+we have borrowed this primary key from course.
+
+216
+00:20:37,019 --> 00:20:43,139
+The primary key of course, the course id and
+added that to section to make it a complete
+
+217
+00:20:43,140 --> 00:20:52,110
+relational schema .
+Next comes the representation of relationships.
+
+218
+00:20:52,109 --> 00:20:54,859
+So, we are showing a relationship advisor.
+
+219
+00:20:54,859 --> 00:20:58,269
+So, which relates instructors to students.
+
+220
+00:20:58,269 --> 00:21:05,789
+So, naturally every instructor is identified
+by id every student is identified by id.
+
+221
+00:21:05,789 --> 00:21:08,369
+Since both of the attributes have the same
+name id.
+
+222
+00:21:08,369 --> 00:21:14,299
+We are calling them as s underscore id, and
+for the student and I underscore id for the
+
+223
+00:21:14,299 --> 00:21:15,299
+instructor.
+
+224
+00:21:15,299 --> 00:21:21,399
+So, the advisor relation is basically a pairing
+of these 2 ids.
+
+225
+00:21:21,400 --> 00:21:27,240
+Which gives rise to a relationship which looks
+like this relationship schema which looks
+
+226
+00:21:27,240 --> 00:21:28,240
+like this.
+
+227
+00:21:28,240 --> 00:21:33,319
+So, it can in general say that if we have
+a relationship ah in the E-R model, which
+
+228
+00:21:33,319 --> 00:21:41,210
+we want to represent in the schema then we
+will take, we will create a schema which has
+
+229
+00:21:41,210 --> 00:21:46,120
+the primary key of both the sets, and put
+them together.
+
+230
+00:21:46,119 --> 00:21:52,439
+And if the names clash we will just change
+the name with the name of the relation, and
+
+231
+00:21:52,440 --> 00:21:57,720
+that will give us the schema for the relationship
+in this case the advisor.
+
+232
+00:21:57,720 --> 00:22:04,880
+So, you have seen how to represent entity
+sets, weak entity sets and relationships ah
+
+233
+00:22:04,880 --> 00:22:08,100
+let us look at how do we deal with composite
+attributes.
+
+234
+00:22:08,099 --> 00:22:15,099
+Because so far, we had assumed that the relational
+schema has attributes, and every attribute
+
+235
+00:22:15,099 --> 00:22:17,569
+has a domain.
+
+236
+00:22:17,569 --> 00:22:19,589
+The type from where it is values come.
+
+237
+00:22:19,589 --> 00:22:24,740
+So, if I have a composite attribute, where
+every attribute has a set of components.
+
+238
+00:22:24,740 --> 00:22:31,009
+Then the easiest way to handle this is to
+what is known as flatten the composite attribute.
+
+239
+00:22:31,009 --> 00:22:36,720
+So, flattening basically is for example, if
+I take a name it has 3 components.
+
+240
+00:22:36,720 --> 00:22:44,440
+So, each one of them I can call by given new
+name name underscore first name name underscore
+
+241
+00:22:44,440 --> 00:22:52,180
+middle initial name underscore last name . By
+prefixing with the attribute name, I make
+
+242
+00:22:52,180 --> 00:22:55,630
+the names of these components necessarily
+unique.
+
+243
+00:22:55,630 --> 00:23:01,500
+Now after I do the prefix thing I might figure
+out that actually prefixing is not required
+
+244
+00:23:01,500 --> 00:23:03,799
+first name itself is a unique.
+
+245
+00:23:03,799 --> 00:23:09,799
+Because it does not occur anywhere else if
+it is then I can I may drop the prefix name.
+
+246
+00:23:09,799 --> 00:23:14,960
+But in general, I can take the attribute name
+prefix on the component, and just flatten
+
+247
+00:23:14,960 --> 00:23:19,870
+them out make them all attributes each separate
+attribute.
+
+248
+00:23:19,869 --> 00:23:28,069
+So, here when we ah flatten out we will have
+ah first name, middle, initial, last name
+
+249
+00:23:28,069 --> 00:23:35,859
+as you can see these flattened out from here.
+
+250
+00:23:35,859 --> 00:23:43,579
+Then we have street number, street name, apartment
+number, flattened out from the street.
+
+251
+00:23:43,579 --> 00:23:46,929
+Subsequently, we have city state zip flattened
+out from here.
+
+252
+00:23:46,930 --> 00:23:50,890
+So, all of them flattened out has become separate
+attributes.
+
+253
+00:23:50,890 --> 00:23:56,570
+And flattening is a very straightforward mechanism
+by which you can convert complex composite
+
+254
+00:23:56,569 --> 00:24:02,710
+attributes into the regular schema design
+.
+
+255
+00:24:02,710 --> 00:24:06,640
+Getting to little bit of issue if you have
+a multi valued attribute.
+
+256
+00:24:06,640 --> 00:24:12,040
+Multivalued attribute is one where one attribute
+may have multiple values at the same time.
+
+257
+00:24:12,039 --> 00:24:16,799
+And the example we talked about is ah a phone
+number.
+
+258
+00:24:16,799 --> 00:24:18,730
+I may have multiple phone numbers.
+
+259
+00:24:18,730 --> 00:24:23,120
+So, certainly against an attribute I can keep
+only one value.
+
+260
+00:24:23,119 --> 00:24:25,909
+So, if I if my attribute is multiple value.
+
+261
+00:24:25,910 --> 00:24:31,130
+Then the basic idea is to use a separate schema
+to maintain this multiple values.
+
+262
+00:24:31,130 --> 00:24:36,180
+For example, if I have to maintain multiple
+phone numbers of an instructor.
+
+263
+00:24:36,180 --> 00:24:41,410
+I may have a separate I may decide to have
+a separate relation . Which relates the key
+
+264
+00:24:41,410 --> 00:24:48,690
+of the instructor relation, and the attribute
+that I want to ah maintain multipally.
+
+265
+00:24:48,690 --> 00:24:56,529
+So, in this relationship in this relation
+inst underscore phone against the same id
+
+266
+00:24:56,529 --> 00:24:58,660
+I can have different phone numbers.
+
+267
+00:24:58,660 --> 00:25:02,529
+So, there will be different records which
+match on the id, but do not match on the phone
+
+268
+00:25:02,529 --> 00:25:07,609
+number which gives me the different values
+that the phone number can take.
+
+269
+00:25:07,609 --> 00:25:15,109
+And then this inst phone in conjunction with
+the instructor relation will actually denote
+
+270
+00:25:15,109 --> 00:25:19,389
+the multi valued phone number attribute.
+
+271
+00:25:19,390 --> 00:25:29,110
+So, this is just an example showing that for
+one primary key of an instructor 1 to 2 2
+
+272
+00:25:29,109 --> 00:25:31,109
+2 2 and there are 2 phone numbers.
+
+273
+00:25:31,109 --> 00:25:35,269
+So, this will basically mean you have 2 tuples
+in the new relation.
+
+274
+00:25:35,269 --> 00:25:42,490
+So, with that we can ah handle multiple multivalued
+attributes also.
+
+275
+00:25:42,490 --> 00:25:49,309
+Some of the relationships that we may have
+modeled, which we have done ah in ah doing
+
+276
+00:25:49,309 --> 00:25:54,500
+the database E-R schema could have redundancy.
+
+277
+00:25:54,500 --> 00:25:58,220
+For example, take a case here we have the
+instructor.
+
+278
+00:25:58,220 --> 00:26:03,680
+And we have the student advisor relation is
+incidental here, and we have department.
+
+279
+00:26:03,680 --> 00:26:08,870
+So, we want to say that the instructors belong
+to certain departments.
+
+280
+00:26:08,869 --> 00:26:12,679
+Every instructor belongs to one department
+which is the totality of the relationship
+
+281
+00:26:12,680 --> 00:26:13,680
+here.
+
+282
+00:26:13,680 --> 00:26:18,590
+Similarly, every student belongs to a department,
+totality of the relationship on this side.
+
+283
+00:26:18,589 --> 00:26:25,500
+And inst dept inst dept in that context is
+a relationship which is between instructor
+
+284
+00:26:25,500 --> 00:26:27,740
+and department.
+
+285
+00:26:27,740 --> 00:26:38,029
+Similarly , so, we can there is certain redundancy
+in this, because ah we can get make this simpler
+
+286
+00:26:38,029 --> 00:26:48,160
+if we just take the primary key of this relation
+and put in here.
+
+287
+00:26:48,160 --> 00:26:52,150
+If we do that then basically this become redundant
+these are no more required.
+
+288
+00:26:52,150 --> 00:26:58,720
+So, all that you are saying is the instructor
+has a dept name field which says which department
+
+289
+00:26:58,720 --> 00:27:00,259
+does it belong to.
+
+290
+00:27:00,259 --> 00:27:08,799
+So, if there is a choice between whether you
+will keep such relationships or you will actually
+
+291
+00:27:08,799 --> 00:27:16,309
+reduce the redundancy in the schema, and involve
+the primary key of the other relation into
+
+292
+00:27:16,309 --> 00:27:24,240
+your primary table which is instructor or
+the student here . So, instead instead of
+
+293
+00:27:24,240 --> 00:27:27,890
+creating a schema for relationship set inst
+department.
+
+294
+00:27:27,890 --> 00:27:30,250
+You will simply add a department name.
+
+295
+00:27:30,250 --> 00:27:36,259
+So, mind you this is at the at the E-R model
+level you did have a separate relationship,
+
+296
+00:27:36,259 --> 00:27:44,299
+but while you reduce it to your relationship
+relational schema you are reducing that relationship
+
+297
+00:27:44,299 --> 00:27:48,089
+by including the dept name as an attribute
+in instructor.
+
+298
+00:27:48,089 --> 00:27:53,349
+So, that is called the reduction of schema
+which is often used.
+
+299
+00:27:53,349 --> 00:27:56,240
+Ah for one to one relationship.
+
+300
+00:27:56,240 --> 00:28:02,349
+So, this is this, was ah this is ah good if
+you have many to one relation.
+
+301
+00:28:02,349 --> 00:28:06,929
+Because this was possible, because every instructor
+has one department.
+
+302
+00:28:06,930 --> 00:28:11,019
+So, if you just include the department name
+with the instructor.
+
+303
+00:28:11,019 --> 00:28:14,259
+Or every student has one department ah.
+
+304
+00:28:14,259 --> 00:28:21,379
+So, it is possible that way, but if you have
+a one to one relationship, then naturally
+
+305
+00:28:21,380 --> 00:28:27,720
+you can do the similar reduction by I by choosing
+the either side as the many.
+
+306
+00:28:27,720 --> 00:28:32,130
+You know, because because the the unique side
+has to come on the many side.
+
+307
+00:28:32,130 --> 00:28:36,070
+The unique side here . This is the unique
+side here.
+
+308
+00:28:36,069 --> 00:28:40,099
+Because every instructor has a unique department,
+and this is the many side here.
+
+309
+00:28:40,099 --> 00:28:43,189
+So, the unique side has to attribute has to
+come in here.
+
+310
+00:28:43,190 --> 00:28:45,840
+The unique side primary key has to come in
+here.
+
+311
+00:28:45,839 --> 00:28:53,409
+So, instead of ah so, you can apply the same
+principle to a one to one relationship by
+
+312
+00:28:53,410 --> 00:28:59,400
+treating any one of them as a many side, and
+add the extra attribute on the other side
+
+313
+00:28:59,400 --> 00:29:02,580
+to get rid of this additional schema.
+
+314
+00:29:02,579 --> 00:29:07,449
+The schema corresponding to a relationship
+set linking a weak entity set to it is underlying
+
+315
+00:29:07,450 --> 00:29:13,130
+strong entity set is certainly redundant,
+we have already seen this.
+
+316
+00:29:13,130 --> 00:29:24,490
+So, this ah is made redundant by including
+the primary key of the identifying relation,
+
+317
+00:29:24,490 --> 00:29:30,089
+identifying entity set in the weak entity
+set . So, that is another reduction of schema
+
+318
+00:29:30,089 --> 00:29:31,869
+that can be done.
+
+319
+00:29:31,869 --> 00:29:42,219
+So, to summarize we have in this module illustrated
+the entity relationship diagram, which are
+
+320
+00:29:42,220 --> 00:29:47,809
+very nice ways of graphically representing
+what we see in the real world.
+
+321
+00:29:47,809 --> 00:29:56,669
+So, it has graphical representation of entity
+sets, attributes the key attributes primary
+
+322
+00:29:56,670 --> 00:30:08,970
+key attributes the weak entity sets, and the
+relationships along with the cardinality information.
+
+323
+00:30:08,970 --> 00:30:17,720
+And then we have shown that using certain
+reduction rules how we can easily reduce this
+
+324
+00:30:17,720 --> 00:30:26,549
+entity relationship diagram or entity relationship
+model into the traditional relational schema.
+
+325
+00:30:26,549 --> 00:30:33,849
+And we have seen that both the entity sets
+as well as the relationship sets become relational
+
+326
+00:30:33,849 --> 00:30:34,219
+schemas.
+

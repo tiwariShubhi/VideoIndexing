@@ -1,0 +1,2004 @@
+
+1
+00:00:00.163 --> 00:00:04.662
+This activity we'll be exploring
+weather data in Spark.
+
+2
+00:00:04.662 --> 00:00:09.936
+First, we will load weather data from
+a CSV file into a Spark DataFrame.
+
+3
+00:00:09.936 --> 00:00:15.259
+Next, we will examine the columns and
+schema of the DataFrame.
+
+4
+00:00:15.259 --> 00:00:20.957
+We will then view the summary statistics
+and drop rows with missing values.
+
+5
+00:00:20.957 --> 00:00:23.762
+Finally, we will compute
+the correlation between two columns.
+
+6
+00:00:26.918 --> 00:00:28.698
+Let's begin.
+
+7
+00:00:28.698 --> 00:00:32.088
+First, we'll create a new
+Jupyter Python notebook.
+
+8
+00:00:32.088 --> 00:00:36.741
+You do this by clicking on New and
+choosing Python 3.
+
+9
+00:00:40.522 --> 00:00:44.058
+Next, we'll import SQL context.
+
+10
+00:00:44.058 --> 00:00:48.007
+This is done by entering from
+
+11
+00:00:48.007 --> 00:00:52.960
+pyspark.sql import SQLContext.
+
+12
+00:00:52.960 --> 00:00:55.320
+Next, we'll create an instance
+of the SQLContext.
+
+13
+00:00:56.320 --> 00:01:03.510
+We'll enter sqlContext = SQLContext(sc).
+
+14
+00:01:03.510 --> 00:01:06.490
+Now let's read our weather
+data into a DataFrame.
+
+15
+00:01:06.490 --> 00:01:12.177
+We'll call the DataFrame df and
+we'll read it using the sqlContext.
+
+16
+00:01:12.177 --> 00:01:17.027
+We'll enter sqlContext.read.load.
+
+17
+00:01:17.027 --> 00:01:20.808
+The first argument is the URL of the file.
+
+18
+00:01:20.808 --> 00:01:28.681
+That's
+file:///home/cloudera/Downloads/big-data--
+
+19
+00:01:28.681 --> 00:01:34.313
+4/daily_weather.csv.
+
+20
+00:01:34.313 --> 00:01:39.269
+The second argument specifies
+the format of how to read the file.
+
+21
+00:01:39.269 --> 00:01:44.246
+In this case, we're going to use the
+Spark CSV package from Databricks to load
+
+22
+00:01:44.246 --> 00:01:46.748
+the CSV directly into the DataFrame.
+
+23
+00:01:46.748 --> 00:01:51.202
+We need to use this because
+the Cloudera image only has Spark 1.
+
+24
+00:01:51.202 --> 00:01:54.628
+In Spark 2 and later,
+this package is included so
+
+25
+00:01:54.628 --> 00:01:57.166
+we don't have to use this argument.
+
+26
+00:01:57.166 --> 00:02:01.159
+We'll enter ,format= and
+
+27
+00:02:01.159 --> 00:02:09.510
+the name of the package is
+com.databricks.spark.csv.
+
+28
+00:02:09.510 --> 00:02:13.745
+The next argument specifies that the first
+line in the CSV file is the header,
+
+29
+00:02:13.745 --> 00:02:19.060
+header='true'.
+
+30
+00:02:19.060 --> 00:02:24.503
+The last argument tells Spark
+to try to infer the schema
+
+31
+00:02:24.503 --> 00:02:29.366
+from the CSV header, inferSchema='true'.
+
+32
+00:02:29.366 --> 00:02:31.020
+Run this.
+
+33
+00:02:31.020 --> 00:02:33.240
+Now let's look at our DataFrame.
+
+34
+00:02:33.240 --> 00:02:38.873
+We can run a df.columns to see
+the names of all the columns.
+
+35
+00:02:38.873 --> 00:02:42.633
+We can also run df.printSchema to
+see the schema of the DataFrame.
+
+36
+00:02:46.360 --> 00:02:49.983
+Next, let's look at the summary
+statistics for the data.
+
+37
+00:02:49.983 --> 00:02:52.645
+We can do this using the describe method.
+
+38
+00:02:52.645 --> 00:02:58.459
+We'll run df.describe().show().
+
+39
+00:03:02.491 --> 00:03:06.739
+This shows summary statistics for
+all the columns in the DataFrame.
+
+40
+00:03:06.739 --> 00:03:10.020
+There's a lot of information here,
+so lets just choose one column.
+
+41
+00:03:10.020 --> 00:03:13.490
+Let's look at air pressure at 9 AM.
+
+42
+00:03:13.490 --> 00:03:18.867
+We can see the summary statistics for
+air pressure 9 AM by running
+
+43
+00:03:18.867 --> 00:03:23.868
+df.describe('air_pressure_9am').show().
+
+44
+00:03:28.531 --> 00:03:34.860
+There are five statistics in this output,
+the count, the number of rows,
+
+45
+00:03:34.860 --> 00:03:40.300
+the mean, the standard deviation,
+and the min and max values.
+
+46
+00:03:40.300 --> 00:03:46.872
+We can see the total number of columns in
+the DataFrame by running len(df.columns).
+
+47
+00:03:50.056 --> 00:03:56.214
+We can also see the total number of rows
+in the DataFrame by writing df.count.
+
+48
+00:03:56.214 --> 00:04:00.502
+This says that there are 1,095
+rows in the DataFrame.
+
+49
+00:04:00.502 --> 00:04:05.393
+However, the summary statistics for
+air_pressure_9am,
+
+50
+00:04:05.393 --> 00:04:07.889
+we see the count is 1,092.
+
+51
+00:04:09.800 --> 00:04:12.882
+Summary statistics do not
+include rows of missing values.
+
+52
+00:04:12.882 --> 00:04:17.587
+This means that there are three rows in
+the air_pressure_9am column that have
+
+53
+00:04:17.587 --> 00:04:18.630
+missing values.
+
+54
+00:04:18.630 --> 00:04:21.066
+We can drop these missing values.
+
+55
+00:04:21.066 --> 00:04:24.670
+Let's create a new DataFrame where
+we've dropped these missing values.
+
+56
+00:04:26.370 --> 00:04:29.572
+We'll call the new DataFrame df2.
+
+57
+00:04:29.572 --> 00:04:34.773
+To drop the missing values, we'll enter
+
+58
+00:04:34.773 --> 00:04:42.656
+df.na.drop(subset=['air_pressure_9am']).
+
+59
+00:04:42.656 --> 00:04:47.779
+We can then count the total number of
+rows in the new DataFrame, df2.count.
+
+60
+00:04:50.551 --> 00:04:55.208
+We see this value agrees with
+our earlier value of 1092.
+
+61
+00:04:55.208 --> 00:05:00.772
+Next, let's compute the correlation
+between two columns in the DataFrame.
+
+62
+00:05:00.772 --> 00:05:05.485
+We'll compute the correlation between
+rain accumulation and rain duration.
+
+63
+00:05:05.485 --> 00:05:11.144
+To do this, we'll enter df2.stat.corr and
+
+64
+00:05:11.144 --> 00:05:15.245
+then the names of the two columns,
+
+65
+00:05:15.245 --> 00:05:22.182
+rain_accumulation_9am and
+rain_duration_9am.
+
+1
+00:00:01.100 --> 00:00:05.060
+Visualizing your data is a very
+effective way to explore your data.
+
+2
+00:00:05.060 --> 00:00:08.780
+We'll look at different ways to
+visualize your data in this lecture.
+
+3
+00:00:08.780 --> 00:00:09.950
+After this video,
+
+4
+00:00:09.950 --> 00:00:15.150
+you will be able to discuss how plots
+can be useful in exploring data,
+
+5
+00:00:15.150 --> 00:00:19.669
+describe how you would use a scatter plot,
+and summarize what a boxplot shows.
+
+6
+00:00:20.840 --> 00:00:24.390
+Visualizing data,
+that is looking at data graphically,
+
+7
+00:00:24.390 --> 00:00:26.800
+is a great way to explore your data set.
+
+8
+00:00:26.800 --> 00:00:30.505
+Data visualization is a nice complement
+to using summary statistics for
+
+9
+00:00:30.505 --> 00:00:31.422
+exploring data.
+
+10
+00:00:31.422 --> 00:00:35.358
+We will cover several ways to
+visualize your data in this lecture.
+
+11
+00:00:35.358 --> 00:00:40.080
+There are several types of plots that
+you can use to visualize your data.
+
+12
+00:00:40.080 --> 00:00:47.350
+We will go over histogram, line plot,
+scatter plot, bar plot, and box plot.
+
+13
+00:00:47.350 --> 00:00:50.550
+These are the most commonly used plots,
+but there are many others as well.
+
+14
+00:00:51.750 --> 00:00:55.930
+A histogram is used to display
+the distribution of a variable.
+
+15
+00:00:55.930 --> 00:01:00.250
+The range of values for the variable
+is divided into the number of bins, and
+
+16
+00:01:00.250 --> 00:01:03.610
+the number of values that fall
+into each bin is counted.
+
+17
+00:01:03.610 --> 00:01:05.660
+Which determines the height of each bin.
+
+18
+00:01:07.410 --> 00:01:11.600
+A histogram can reveal many things
+about a variable in your data, for
+
+19
+00:01:11.600 --> 00:01:16.200
+example, you can usually determine
+the central tendency of a variable,
+
+20
+00:01:16.200 --> 00:01:19.060
+that is where the majority
+of the values lie.
+
+21
+00:01:19.060 --> 00:01:21.989
+You can also see the most frequent
+value of values for that variable.
+
+22
+00:01:23.280 --> 00:01:27.940
+A histogram also shows whether the values
+for that variable are skewed and
+
+23
+00:01:27.940 --> 00:01:30.920
+whether the skewness is to
+the left towards smaller values or
+
+24
+00:01:30.920 --> 00:01:32.810
+to the right towards larger values.
+
+25
+00:01:33.860 --> 00:01:37.340
+You can also pick outliers in
+the histogram as shown on the bottom plot.
+
+26
+00:01:38.820 --> 00:01:42.460
+A line plot shows how data
+values change over time.
+
+27
+00:01:42.460 --> 00:01:46.910
+The values of a variable or
+variables are shown on the Y axis and
+
+28
+00:01:46.910 --> 00:01:49.780
+the X axis shows the motion of time.
+
+29
+00:01:49.780 --> 00:01:52.810
+The resulting line displays
+the data values over time.
+
+30
+00:01:54.070 --> 00:01:57.780
+A line plot can show
+patterns in your variables.
+
+31
+00:01:57.780 --> 00:02:02.840
+For example, a cyclical pattern
+can be detected as in this plot,
+
+32
+00:02:02.840 --> 00:02:06.720
+where the values start high,
+then decrease and go back up again.
+
+33
+00:02:07.870 --> 00:02:12.060
+Trends can also be detected as
+shown in the upper-right plot
+
+34
+00:02:12.060 --> 00:02:16.550
+where the values fluctuate but
+show a general upward trend over time.
+
+35
+00:02:17.630 --> 00:02:22.030
+It is also easy to compare how multiple
+variables change over time on a single
+
+36
+00:02:22.030 --> 00:02:24.930
+line plot as displayed in
+the center bottom plot.
+
+37
+00:02:26.500 --> 00:02:31.360
+A scatter plot is a great way to visualize
+the relationship between two variables.
+
+38
+00:02:31.360 --> 00:02:33.830
+One variable is on the x axis.
+
+39
+00:02:33.830 --> 00:02:37.530
+The other variable is on
+the y axis Each sample is
+
+40
+00:02:37.530 --> 00:02:42.010
+a product using the values of the 2
+variables aspects and Y coordinates.
+
+41
+00:02:42.010 --> 00:02:46.590
+The resulting plot shows how one variable
+changes as the other is changed.
+
+42
+00:02:47.870 --> 00:02:52.220
+A scatter plot can be used to display
+the correlation between 2 variables.
+
+43
+00:02:52.220 --> 00:02:56.090
+For example, 2 variables such as
+the high temperature of the day, and
+
+44
+00:02:56.090 --> 00:02:57.240
+the low temperature of the day,
+
+45
+00:02:57.240 --> 00:02:59.920
+can have a positive correlation
+as shown in this plot.
+
+46
+00:03:01.080 --> 00:03:05.200
+A positive correlation means that as
+the value of one variable increases,
+
+47
+00:03:05.200 --> 00:03:10.205
+the value of the other variable
+also increases by a similar amount.
+
+48
+00:03:10.205 --> 00:03:13.745
+The upper right scatter plot shows
+a negative correlation between two
+
+49
+00:03:13.745 --> 00:03:15.015
+variables.
+
+50
+00:03:15.015 --> 00:03:18.285
+This means that as the value
+of one variable increases,
+
+51
+00:03:18.285 --> 00:03:22.730
+there is a corresponding decrease in
+the other variable, two variables
+
+52
+00:03:22.730 --> 00:03:27.440
+can also have a non-linear correlation
+as shown in the lower left plot.
+
+53
+00:03:27.440 --> 00:03:30.040
+This means that a change
+in one variable will not
+
+54
+00:03:30.040 --> 00:03:33.550
+always correspond to the same
+change in the other variable.
+
+55
+00:03:33.550 --> 00:03:37.010
+This is indicated by the curve in
+the scatter plot as opposed to something
+
+56
+00:03:37.010 --> 00:03:39.640
+closer to a straight line for
+linear correlation.
+
+57
+00:03:40.750 --> 00:03:43.890
+There can also be no correlation
+between two variables.
+
+58
+00:03:43.890 --> 00:03:46.910
+In this case, you will see something
+like randomly placed dots as
+
+59
+00:03:46.910 --> 00:03:49.730
+displayed in the lower right plot,
+indicating no
+
+60
+00:03:49.730 --> 00:03:53.250
+relationship between how the two variables
+change with respect to each other.
+
+61
+00:03:54.580 --> 00:03:58.980
+A bar plot is used to show
+the distribution of categorical variables.
+
+62
+00:03:58.980 --> 00:04:02.980
+Recall that a histogram is also used to
+look at the distribution of the values
+
+63
+00:04:02.980 --> 00:04:04.450
+of the variable.
+
+64
+00:04:04.450 --> 00:04:07.860
+The difference is that in general,
+a histogram is used for
+
+65
+00:04:07.860 --> 00:04:12.990
+numeric variables whereas a bar plot
+is used for categorical variables.
+
+66
+00:04:12.990 --> 00:04:17.850
+In a bar chart, the different categories
+of a categorical variable is shown along
+
+67
+00:04:17.850 --> 00:04:23.870
+the x-axis, and the count of instances for
+each category is displayed on the y-axis.
+
+68
+00:04:23.870 --> 00:04:27.670
+This is an effective way to
+compare the different categories.
+
+69
+00:04:27.670 --> 00:04:30.700
+For example, the most frequent
+category can be easily determined.
+
+70
+00:04:32.090 --> 00:04:36.790
+A bar plot is also a great way to
+compare two categorical variables.
+
+71
+00:04:36.790 --> 00:04:40.630
+For example, this plot compares
+two categorical variables.
+
+72
+00:04:40.630 --> 00:04:45.270
+One in blue and the other in orange,
+each with three different categories.
+
+73
+00:04:45.270 --> 00:04:47.638
+Here you can see that for
+the first category,
+
+74
+00:04:47.638 --> 00:04:49.757
+the blue variable has the higher count,
+
+75
+00:04:49.757 --> 00:04:53.949
+while the orange variable has a higher
+count for the second and third category.
+
+76
+00:04:53.949 --> 00:04:57.642
+This type of Bar Plot is
+called a Grouped Bar Chart.
+
+77
+00:04:57.642 --> 00:05:00.480
+And the different variables
+of products side by side.
+
+78
+00:05:01.830 --> 00:05:05.580
+A different kind of comparison can be
+performed using a Stacked Bar chart
+
+79
+00:05:05.580 --> 00:05:08.040
+as seen in a lower right quad.
+
+80
+00:05:08.040 --> 00:05:11.460
+Here, the accounts for the two variables
+are stacked on top of each other for
+
+81
+00:05:11.460 --> 00:05:12.160
+each category.
+
+82
+00:05:13.290 --> 00:05:16.700
+With this bar chart, you can
+determine that the combined count for
+
+83
+00:05:16.700 --> 00:05:21.830
+the first category is about equal to
+the combine count for the second category,
+
+84
+00:05:21.830 --> 00:05:25.000
+while the compliant count for
+the third category is much larger.
+
+85
+00:05:26.140 --> 00:05:31.140
+A box plot is another plot that shows
+the distribution of a numeric variable,
+
+86
+00:05:31.140 --> 00:05:34.510
+it shows the distribution in a different
+format than the histogram, however.
+
+87
+00:05:35.870 --> 00:05:38.990
+This is how a box plot displays
+the distribution of values for
+
+88
+00:05:38.990 --> 00:05:43.530
+a variable, the gray portion
+in the figure is the box part.
+
+89
+00:05:43.530 --> 00:05:48.110
+The lower and upper boundaries of
+the box represent the 25th and
+
+90
+00:05:48.110 --> 00:05:50.830
+75th percentiles respectively.
+
+91
+00:05:50.830 --> 00:05:54.480
+This means that the box represents
+the middle 50% of the data,
+
+92
+00:05:54.480 --> 00:05:59.430
+the median is the 50th percentile,
+meaning that 50% of
+
+93
+00:05:59.430 --> 00:06:04.560
+the data is greater than its value and
+50% of the data is less than this value.
+
+94
+00:06:05.600 --> 00:06:10.540
+The top and bottom lines are the Whiskers
+and represent the 10th and
+
+95
+00:06:10.540 --> 00:06:12.890
+90th percentiles respectively.
+
+96
+00:06:12.890 --> 00:06:17.210
+So, 80% of the data are in the region
+indicated by the upper extreme and
+
+97
+00:06:17.210 --> 00:06:18.710
+lower extreme.
+
+98
+00:06:18.710 --> 00:06:21.790
+Any data values outside of
+this region are outliers and
+
+99
+00:06:21.790 --> 00:06:24.080
+are indicated as single
+point on the box plot.
+
+100
+00:06:25.410 --> 00:06:28.600
+Note that there are different
+variations of the box plot,
+
+101
+00:06:28.600 --> 00:06:32.520
+with the whiskers representing
+different types of extreme values.
+
+102
+00:06:32.520 --> 00:06:36.700
+Box plots provide a compact way to
+show how variables are distributed, so
+
+103
+00:06:36.700 --> 00:06:39.660
+they are often used to compare variables.
+
+104
+00:06:39.660 --> 00:06:40.920
+The box plot on the left for
+
+105
+00:06:40.920 --> 00:06:44.540
+example compares the base salary for
+two different roles.
+
+106
+00:06:44.540 --> 00:06:48.720
+This plot can quickly provide information
+regarding the median value, the range and
+
+107
+00:06:48.720 --> 00:06:51.950
+the spread of the two different variables.
+
+108
+00:06:51.950 --> 00:06:54.200
+We can quickly see that
+the median salary for
+
+109
+00:06:54.200 --> 00:06:57.160
+the marketing role is higher
+than the research role.
+
+110
+00:06:58.170 --> 00:07:01.210
+We can also see that the variation or
+spread of the values for
+
+111
+00:07:01.210 --> 00:07:06.240
+marketing is greater than for research,
+due to the larger area of the purple box.
+
+112
+00:07:07.870 --> 00:07:11.380
+A box plot can also show you if
+the distribution of the data values is
+
+113
+00:07:11.380 --> 00:07:15.740
+symmetrical, positively skewed or
+negatively skewed.
+
+114
+00:07:15.740 --> 00:07:19.480
+Here we see that a box plot can
+also be displayed on its side.
+
+115
+00:07:19.480 --> 00:07:22.890
+A symmetric distribution is
+indicated if the line in the box
+
+116
+00:07:22.890 --> 00:07:27.090
+which specifies the median,
+is in the center of the box.
+
+117
+00:07:27.090 --> 00:07:30.430
+A negative skew is indicated
+when the median is to the right
+
+118
+00:07:30.430 --> 00:07:32.030
+of the center of the box.
+
+119
+00:07:32.030 --> 00:07:35.470
+This means that there are more
+values that are less than the median
+
+120
+00:07:35.470 --> 00:07:37.010
+than there are values
+greater than the median.
+
+121
+00:07:38.140 --> 00:07:42.310
+Similarly, a positive skew is indicated
+when the median is to the left
+
+122
+00:07:42.310 --> 00:07:43.270
+of the center of the box.
+
+123
+00:07:44.455 --> 00:07:47.370
+To summarize,
+data visualization provides a quick and
+
+124
+00:07:47.370 --> 00:07:49.910
+intuitive way to examine your data.
+
+125
+00:07:49.910 --> 00:07:52.680
+Data visualization should be
+used in conjunction with summary
+
+126
+00:07:52.680 --> 00:07:56.420
+statistics that we discussed in
+the last lecture to explore data.
+
+127
+00:07:56.420 --> 00:08:00.210
+The different types of plots that we have
+covered in this lecture will also be very
+
+128
+00:08:00.210 --> 00:08:03.960
+helpful in communicating your results
+throughout your machine learning project.
+
+1
+00:00:00.950 --> 00:00:04.820
+Let's look at how we can use summary
+statistics to explore data in more detail.
+
+2
+00:00:06.320 --> 00:00:11.740
+After this video you will be able to
+define what a summary statistic is,
+
+3
+00:00:11.740 --> 00:00:14.610
+list three common summary statistics and
+
+4
+00:00:14.610 --> 00:00:17.930
+explain how summary statistics
+are useful in exploring data.
+
+5
+00:00:19.830 --> 00:00:24.096
+Summary statistics are quantities
+that describe a set of data values.
+
+6
+00:00:24.096 --> 00:00:29.750
+Summary statistics provide a simple and
+quick way to summarize a dataset.
+
+7
+00:00:29.750 --> 00:00:33.270
+We will discuss three main
+categories of summary statistics.
+
+8
+00:00:33.270 --> 00:00:38.650
+Measures of location or centrality,
+measures of spread, and measures of shape.
+
+9
+00:00:40.680 --> 00:00:44.970
+Measures of location are summary
+statistics that describe the central or
+
+10
+00:00:44.970 --> 00:00:47.670
+typical value in your dataset.
+
+11
+00:00:47.670 --> 00:00:51.700
+These statistics give a sense of
+the middle or center of the dataset.
+
+12
+00:00:52.730 --> 00:00:56.870
+Examples of these are mean,
+median and mode.
+
+13
+00:00:56.870 --> 00:01:00.720
+The mean is just the average
+of the values in a dataset.
+
+14
+00:01:00.720 --> 00:01:05.198
+The median is the value in the middle if
+you sorted the values in your dataset.
+
+15
+00:01:05.198 --> 00:01:10.300
+In a sorted list, half of the values
+will be less than the median and
+
+16
+00:01:10.300 --> 00:01:11.930
+half will be greater than the median.
+
+17
+00:01:13.200 --> 00:01:15.700
+If the number of data values is even,
+
+18
+00:01:15.700 --> 00:01:18.609
+then the median is the mean
+of the two middle values.
+
+19
+00:01:19.620 --> 00:01:23.550
+The mode is a value that is repeated
+more often than any other value.
+
+20
+00:01:25.660 --> 00:01:29.290
+In this example we have
+a dataset with ten values.
+
+21
+00:01:29.290 --> 00:01:30.667
+For this dataset,
+
+22
+00:01:30.667 --> 00:01:36.010
+the mean is 51.1 which is the number
+of all the values divided by 10.
+
+23
+00:01:36.010 --> 00:01:43.380
+The median is 46, if you sort these
+numbers, the middle numbers are 42 and 50.
+
+24
+00:01:43.380 --> 00:01:47.151
+The average of these two numbers is 46.
+
+25
+00:01:47.151 --> 00:01:51.054
+There are two modes for
+the this dataset, 42 and 78,
+
+26
+00:01:51.054 --> 00:01:55.705
+since each occurs twice,
+more than any other value in the dataset.
+
+27
+00:01:57.480 --> 00:02:02.187
+Measures of spread describe how
+dispersed or varied your dataset is.
+
+28
+00:02:02.187 --> 00:02:06.764
+Common measures of spread are minimum,
+maximum, range,
+
+29
+00:02:06.764 --> 00:02:10.450
+standard deviation and variance.
+
+30
+00:02:10.450 --> 00:02:13.440
+Minimum and
+maximum are of course the smallest and
+
+31
+00:02:13.440 --> 00:02:16.740
+largest values in your
+dataset respectively.
+
+32
+00:02:16.740 --> 00:02:21.070
+The range is simply the difference
+between the maximum and minimum and
+
+33
+00:02:21.070 --> 00:02:24.020
+tells you how spread out your data is.
+
+34
+00:02:24.020 --> 00:02:27.785
+Standard deviation describes the amount
+of variation in your dataset.
+
+35
+00:02:28.920 --> 00:02:32.620
+A low standard deviation value means
+that the samples in your dataset
+
+36
+00:02:32.620 --> 00:02:34.630
+tend to be close to the mean.
+
+37
+00:02:34.630 --> 00:02:39.050
+And a high standard deviation value means
+that the data samples are spread out.
+
+38
+00:02:39.050 --> 00:02:42.480
+Variance is closely related
+to standard deviation.
+
+39
+00:02:42.480 --> 00:02:46.530
+In fact the variance is the square
+of the standard deviation.
+
+40
+00:02:46.530 --> 00:02:51.900
+So it also indicates how spread out
+the data samples are from the mean.
+
+41
+00:02:51.900 --> 00:02:56.780
+For the same dataset, the range is 66
+which is a difference between the largest
+
+42
+00:02:56.780 --> 00:03:00.964
+number which is 87 and
+the smallest number which is 21.
+
+43
+00:03:00.964 --> 00:03:04.620
+The variance is 548.767,
+
+44
+00:03:04.620 --> 00:03:09.770
+you can calculate this using
+a calculator or a spreadsheet.
+
+45
+00:03:09.770 --> 00:03:15.030
+And the standard deviation is 23.426
+which is the square root of the variance.
+
+46
+00:03:16.680 --> 00:03:21.470
+Measures of shape describe the shape
+of the distribution of a set of values.
+
+47
+00:03:21.470 --> 00:03:24.740
+Common members of shape are skewness and
+kurtosis.
+
+48
+00:03:25.790 --> 00:03:30.150
+Skewness indicates whether the data
+values are asymmetrically distributed.
+
+49
+00:03:31.150 --> 00:03:35.020
+A skewness value of around zero
+indicates that the data distribution
+
+50
+00:03:35.020 --> 00:03:38.760
+is approximately normal, as shown in
+the middle figure in the top diagram.
+
+51
+00:03:39.830 --> 00:03:44.280
+A negative skewness value indicates that
+the distribution is skewed to the left,
+
+52
+00:03:44.280 --> 00:03:47.590
+as indicated in the left
+figure in the top diagram.
+
+53
+00:03:47.590 --> 00:03:50.200
+A positive skewness
+value on the other hand
+
+54
+00:03:50.200 --> 00:03:53.230
+indicates that the data distribution
+is skewed to the right.
+
+55
+00:03:54.340 --> 00:03:58.430
+Kurtosis measures the tailedness
+of the data distribution or
+
+56
+00:03:58.430 --> 00:04:02.170
+how heavy or
+fat the tails of the distribution are.
+
+57
+00:04:02.170 --> 00:04:07.040
+A high kurtosis value describes a
+distribution with longer and fatter tails
+
+58
+00:04:07.040 --> 00:04:12.075
+and a higher and sharper central peak,
+indicating the presence of outliers.
+
+59
+00:04:12.075 --> 00:04:14.692
+A low kurtosis value on the other hand,
+
+60
+00:04:14.692 --> 00:04:19.376
+describes a distribution with shorter and
+lighter tails and lower and
+
+61
+00:04:19.376 --> 00:04:23.280
+broader central peak,
+suggesting the lack of outliers.
+
+62
+00:04:25.140 --> 00:04:31.740
+In our age example, the skewness is about
+0.3 indicating a slight positive skew.
+
+63
+00:04:31.740 --> 00:04:37.210
+And the kurtosis is -1.2 indicating
+a distribution with a low and
+
+64
+00:04:37.210 --> 00:04:39.940
+broad central peak and
+shorter and lighter tails.
+
+65
+00:04:41.080 --> 00:04:46.210
+Measures of dependence determine if any
+relationship exists between variables.
+
+66
+00:04:46.210 --> 00:04:49.560
+Pairwise correlation is a commonly
+used measure of dependence.
+
+67
+00:04:50.850 --> 00:04:55.480
+This is a table that shows pairwise
+correlation for a set of variables.
+
+68
+00:04:55.480 --> 00:04:58.430
+Note that correlation applies
+only to numerical variables.
+
+69
+00:04:59.470 --> 00:05:04.517
+Correlations is between zero and one,
+with zero indicating no correlation,
+
+70
+00:05:04.517 --> 00:05:07.430
+and one indicating a one
+to one correlation.
+
+71
+00:05:07.430 --> 00:05:10.268
+So a correlation of
+0.89 is very strong and
+
+72
+00:05:10.268 --> 00:05:15.240
+this is expected since a person's height
+and weight should be very correlated.
+
+73
+00:05:16.780 --> 00:05:21.480
+The summary statistics we just covered
+are useful for numerical variables.
+
+74
+00:05:21.480 --> 00:05:25.900
+For categorical variables, we want to look
+at statistics that describe the number of
+
+75
+00:05:25.900 --> 00:05:29.290
+categories and
+the frequency of each category.
+
+76
+00:05:29.290 --> 00:05:31.400
+This is done using a contingency table.
+
+77
+00:05:32.940 --> 00:05:35.860
+Here's an example that shows
+a distribution of people's pets and
+
+78
+00:05:35.860 --> 00:05:37.140
+their colors.
+
+79
+00:05:37.140 --> 00:05:42.150
+We can see the most common pet is
+a dog and least common's a fish.
+
+80
+00:05:42.150 --> 00:05:45.948
+Similarly, black is the most common
+color and orange the least common.
+
+81
+00:05:45.948 --> 00:05:51.240
+The contingency table also shows
+the distribution between the categories.
+
+82
+00:05:51.240 --> 00:05:56.750
+For example, only fish are orange
+while most of the brown pets are dogs.
+
+83
+00:05:56.750 --> 00:05:59.810
+In addition to looking at
+the traditional summary statistics for
+
+84
+00:05:59.810 --> 00:06:05.100
+numerical variables, and
+category count for categorical variables.
+
+85
+00:06:05.100 --> 00:06:06.370
+For machine learning problems,
+
+86
+00:06:06.370 --> 00:06:10.450
+we also want to examine some additional
+statistics to quickly validate the data.
+
+87
+00:06:11.760 --> 00:06:15.050
+One of the first things to
+check is the number of rows and
+
+88
+00:06:15.050 --> 00:06:17.660
+the number of columns in your dataset.
+
+89
+00:06:17.660 --> 00:06:21.080
+Does the number of rows match
+the expected number of samples?
+
+90
+00:06:21.080 --> 00:06:25.110
+Does the number of columns match
+the expected number of variables?
+
+91
+00:06:25.110 --> 00:06:27.000
+These should be very quick and
+easy checks.
+
+92
+00:06:28.490 --> 00:06:32.770
+Another easy data validation check is
+to look at the values in the first and
+
+93
+00:06:32.770 --> 00:06:36.170
+last few samples in your dataset
+to see if they're reasonable.
+
+94
+00:06:37.500 --> 00:06:41.780
+For example, do the temperature values
+looks to be in the right units of measure.
+
+95
+00:06:43.180 --> 00:06:45.514
+Do the values for rainfall look correct or
+
+96
+00:06:45.514 --> 00:06:48.053
+are there some values
+that look out of place?
+
+97
+00:06:48.053 --> 00:06:51.447
+Are the data types for
+your variables correct, for example,
+
+98
+00:06:51.447 --> 00:06:55.130
+is the date field captured as dates or
+timestamp.
+
+99
+00:06:55.130 --> 00:06:57.926
+Or is it capture as a string or
+numerical value?
+
+100
+00:06:57.926 --> 00:07:01.770
+These will have consequences in how
+these fields should be processed.
+
+101
+00:07:03.210 --> 00:07:06.490
+Another important step is to check for
+missing values.
+
+102
+00:07:06.490 --> 00:07:10.280
+You need to determine the number
+of samples with missing values.
+
+103
+00:07:10.280 --> 00:07:13.060
+You also need to determine
+if there are any variables
+
+104
+00:07:13.060 --> 00:07:14.964
+with a high percentage of missing values.
+
+105
+00:07:16.155 --> 00:07:19.585
+Handling missing values is a very
+important step in data preparation
+
+106
+00:07:19.585 --> 00:07:21.260
+which we will cover in the next module.
+
+107
+00:07:21.260 --> 00:07:25.875
+Having this information will be very
+helpful in determining how missing values
+
+108
+00:07:25.875 --> 00:07:27.915
+should be handled in data preparation.
+
+109
+00:07:29.270 --> 00:07:33.190
+We covered several types of summary
+statistics useful for exploring data and
+
+110
+00:07:33.190 --> 00:07:34.590
+machine learning.
+
+111
+00:07:34.590 --> 00:07:39.020
+The statistics provide useful information
+about your dataset and should be
+
+112
+00:07:39.020 --> 00:07:42.480
+thoroughly examine if you want to get
+a better understanding of your data.
+
+1
+00:00:01.066 --> 00:00:05.080
+Now that we are familiar with some
+commonly use terms to describe data,
+
+2
+00:00:05.080 --> 00:00:08.010
+let's look at what data exploration is and
+why it's important.
+
+3
+00:00:09.180 --> 00:00:13.610
+After this video,
+you will be able to explain why data
+
+4
+00:00:13.610 --> 00:00:18.760
+exploration is necessary, articulate
+the objectives of data exploration,
+
+5
+00:00:18.760 --> 00:00:20.920
+list the categories of techniques for
+exploring data.
+
+6
+00:00:22.520 --> 00:00:25.160
+Data exploration means
+doing some preliminary
+
+7
+00:00:25.160 --> 00:00:27.300
+investigation of your data set.
+
+8
+00:00:27.300 --> 00:00:31.860
+The goal is to gain a better understanding
+of the data that you have to work with.
+
+9
+00:00:31.860 --> 00:00:36.120
+If you understand the characteristics of
+your data, you can make optimal use of it
+
+10
+00:00:36.120 --> 00:00:39.320
+in whatever subsequent processing and
+analysis you do with the data.
+
+11
+00:00:40.690 --> 00:00:45.730
+Note that data exploration is also
+called exploratory data analysis, or
+
+12
+00:00:45.730 --> 00:00:46.470
+EDA for short.
+
+13
+00:00:47.810 --> 00:00:49.780
+How do you go about exploring data?
+
+14
+00:00:49.780 --> 00:00:53.150
+There are two main categories of
+techniques to explore your data,
+
+15
+00:00:53.150 --> 00:00:57.130
+one based on summary statistics and
+the other based on visualization methods.
+
+16
+00:00:58.570 --> 00:01:02.580
+Summary statistics provide important
+information that summarizes a set
+
+17
+00:01:02.580 --> 00:01:04.120
+of data values.
+
+18
+00:01:04.120 --> 00:01:06.050
+There are many such statistics.
+
+19
+00:01:06.050 --> 00:01:08.470
+Many of them you have
+probably heard of before,
+
+20
+00:01:08.470 --> 00:01:14.560
+such as mean, median,
+and standard deviation.
+
+21
+00:01:14.560 --> 00:01:18.602
+These are some very commonly
+used summary statistics.
+
+22
+00:01:18.602 --> 00:01:22.780
+A summary statistic provides a single
+quantity that summarizes some aspects of
+
+23
+00:01:22.780 --> 00:01:24.090
+the dataset.
+
+24
+00:01:24.090 --> 00:01:28.200
+For example, the mean, is a single
+value that describes the average value
+
+25
+00:01:28.200 --> 00:01:31.630
+of the dataset,
+no matter how large that dataset is.
+
+26
+00:01:31.630 --> 00:01:36.140
+You can think of the mean as an indicator
+of where your dataset is centrally located
+
+27
+00:01:36.140 --> 00:01:39.720
+on a number line, thus summary
+statistics provide a simple and
+
+28
+00:01:39.720 --> 00:01:41.285
+quick way to summarize a dataset.
+
+29
+00:01:42.710 --> 00:01:47.000
+Data visualization techniques allow
+you to look at your data, graphically.
+
+30
+00:01:47.000 --> 00:01:50.540
+There are several types of plots that
+you can use to visualize your data.
+
+31
+00:01:50.540 --> 00:01:55.790
+Some examples are histogram,
+line plot, and scatter plot.
+
+32
+00:01:57.290 --> 00:02:01.590
+Each type of plot serves a different
+purpose, we will cover the use of plots to
+
+33
+00:02:01.590 --> 00:02:03.710
+visualize your data in
+an upcoming lecture.
+
+34
+00:02:05.190 --> 00:02:08.110
+What should you look for
+when exploring your data?
+
+35
+00:02:08.110 --> 00:02:10.910
+You use statistics and
+visual methods to summarize and
+
+36
+00:02:10.910 --> 00:02:14.240
+describe your dataset, and
+some of the things you'll want to look for
+
+37
+00:02:14.240 --> 00:02:17.430
+are correlations,
+general trends and outliers.
+
+38
+00:02:18.900 --> 00:02:21.940
+Correlations provide information
+about the relation took between
+
+39
+00:02:21.940 --> 00:02:23.760
+variables in your data.
+
+40
+00:02:23.760 --> 00:02:25.220
+By looking at correlations,
+
+41
+00:02:25.220 --> 00:02:29.200
+you may be able to determine that
+two variables are very correlated.
+
+42
+00:02:29.200 --> 00:02:33.500
+This means they provide the same or
+similar information about your data.
+
+43
+00:02:33.500 --> 00:02:37.440
+Since this contain redundant information,
+this suggest that you may want to
+
+44
+00:02:37.440 --> 00:02:40.220
+remove one of the variables
+to make the analysis simpler.
+
+45
+00:02:41.780 --> 00:02:45.690
+Trends in your data will reveal
+characteristics in your data.
+
+46
+00:02:45.690 --> 00:02:49.940
+For example, you can see where
+the majority of the data values lie,
+
+47
+00:02:49.940 --> 00:02:51.220
+whether your data is skilled or
+
+48
+00:02:51.220 --> 00:02:55.585
+not, what the most frequent value or
+values are in a date set, etc.
+
+49
+00:02:56.960 --> 00:03:00.660
+Looking at trends in your data can also
+reveal that a variable is moving in
+
+50
+00:03:00.660 --> 00:03:05.380
+a certain direction, such as sales revenue
+increasing or decreasing over the years.
+
+51
+00:03:06.820 --> 00:03:08.954
+Calculating the minimum, the maximum and
+
+52
+00:03:08.954 --> 00:03:12.910
+range of the data values are basic
+steps in exploring your data.
+
+53
+00:03:12.910 --> 00:03:16.450
+Determining outliers is
+a also very important.
+
+54
+00:03:16.450 --> 00:03:19.340
+Outliers indicate potential
+problems with the data and
+
+55
+00:03:19.340 --> 00:03:21.560
+may need to be eliminated
+in some applications.
+
+56
+00:03:22.660 --> 00:03:23.830
+In other applications,
+
+57
+00:03:23.830 --> 00:03:28.560
+outliers represent interesting data points
+that should be looked at more closely.
+
+58
+00:03:28.560 --> 00:03:31.680
+In either case, outliers usually
+require further examination.
+
+59
+00:03:32.850 --> 00:03:36.600
+In summary, what you get by exploring
+your data is a better understanding of
+
+60
+00:03:36.600 --> 00:03:40.826
+the complexity of the data so
+you can work with it more effectively.
+
+61
+00:03:40.826 --> 00:03:44.560
+Better understanding in turn will
+guide the rest of the process and
+
+62
+00:03:44.560 --> 00:03:47.200
+lead to more informed analysis.
+
+63
+00:03:47.200 --> 00:03:48.450
+Summary statistics and
+
+64
+00:03:48.450 --> 00:03:52.190
+visualization techniques
+are essential in exploring your data.
+
+65
+00:03:52.190 --> 00:03:55.330
+This should be used together
+to examined a dataset.
+
+66
+00:03:55.330 --> 00:03:56.523
+In the next two lectures,
+
+67
+00:03:56.523 --> 00:03:59.895
+we will look at a specific methods that
+you can apply to explore your data.
+
+1
+00:00:01.040 --> 00:00:04.230
+In this lesson you will learn how
+to prepare data for analysis.
+
+2
+00:00:05.500 --> 00:00:09.950
+After this video, you will be able
+to articulate the importance of data
+
+3
+00:00:09.950 --> 00:00:14.480
+preparation, define the objectives
+of data preparation, and
+
+4
+00:00:14.480 --> 00:00:16.310
+list some activities in preparing data.
+
+5
+00:00:18.170 --> 00:00:22.040
+The raw data that you get directly from
+your sources is rarely in the format
+
+6
+00:00:22.040 --> 00:00:24.790
+that you can use to perform analysis on.
+
+7
+00:00:24.790 --> 00:00:29.070
+The goal of data preparation is to create
+the data that will be used for analysis.
+
+8
+00:00:30.600 --> 00:00:36.240
+This means cleaning the data, and putting
+the data in the right format for analysis.
+
+9
+00:00:36.240 --> 00:00:40.470
+The latter generally involves selecting
+the appropriate features to use and
+
+10
+00:00:40.470 --> 00:00:42.070
+transforming the data as needed.
+
+11
+00:00:43.520 --> 00:00:46.950
+The data that you've acquired
+will likely have many problems.
+
+12
+00:00:46.950 --> 00:00:50.940
+An important part of data preparation is
+to clean the data that you have to work
+
+13
+00:00:50.940 --> 00:00:57.030
+with to address what are referred
+to as data quality issues.
+
+14
+00:00:57.030 --> 00:01:01.049
+There are many types of
+data quality issues,
+
+15
+00:01:01.049 --> 00:01:05.176
+including missing values, duplicate data,
+
+16
+00:01:05.176 --> 00:01:10.180
+inconsistent or invalid data,
+noise, and outliers.
+
+17
+00:01:10.180 --> 00:01:14.310
+The problems listed here can negatively
+affect the quality of the data and
+
+18
+00:01:14.310 --> 00:01:17.430
+compromise the analysis process and
+results.
+
+19
+00:01:17.430 --> 00:01:21.139
+So it is very important to detect and
+address these data quality issues.
+
+20
+00:01:22.370 --> 00:01:27.260
+Some techniques to address data quality
+issues include removing data records
+
+21
+00:01:27.260 --> 00:01:31.250
+with missing values,
+merging duplicate records,
+
+22
+00:01:31.250 --> 00:01:36.430
+generating a best, or at most reasonable,
+estimate for invalid values.
+
+23
+00:01:36.430 --> 00:01:40.859
+We will discuss these techniques in
+more detail in the next lecture.
+
+24
+00:01:40.859 --> 00:01:45.135
+Since the goal of the step of data
+preparation is cleaning the data,
+
+25
+00:01:45.135 --> 00:01:48.520
+it is referred to as Data Cleaning or
+Data Cleansing.
+
+26
+00:01:50.030 --> 00:01:53.360
+After the data has been cleaned,
+another goal of data preparation is to
+
+27
+00:01:53.360 --> 00:01:56.720
+get the data into the format needed for
+the analysis.
+
+28
+00:01:56.720 --> 00:02:01.709
+This step is referred to by many names,
+Data Munching, Data Wrangling and
+
+29
+00:02:01.709 --> 00:02:03.220
+Data Preprocessing.
+
+30
+00:02:04.930 --> 00:02:08.910
+The two broad categories of data
+wrangling are feature selection and
+
+31
+00:02:08.910 --> 00:02:09.940
+feature transformation.
+
+32
+00:02:11.040 --> 00:02:13.770
+Feature selection involves
+deciding on which features
+
+33
+00:02:13.770 --> 00:02:16.150
+to use from the existing
+ones available in your data.
+
+34
+00:02:17.160 --> 00:02:20.860
+Features can be removed,
+added or combined.
+
+35
+00:02:20.860 --> 00:02:23.770
+Feature transformation involves
+changing the format of the data
+
+36
+00:02:23.770 --> 00:02:29.610
+in some way to reduce noise or variability
+or make the data easier to analyze.
+
+37
+00:02:29.610 --> 00:02:32.450
+Two common feature transformations
+are scaling the data so
+
+38
+00:02:32.450 --> 00:02:37.260
+that all features have the same value
+range and reducing the dimensionality,
+
+39
+00:02:37.260 --> 00:02:40.490
+which is effectively the number
+of features of the data.
+
+40
+00:02:40.490 --> 00:02:42.750
+We will discuss these techniques
+later in this lesson.
+
+41
+00:02:44.440 --> 00:02:48.390
+Data preparation is a very important
+part of the machine learning process.
+
+42
+00:02:48.390 --> 00:02:51.840
+It can be a tedious process,
+but it is a crucial step.
+
+43
+00:02:51.840 --> 00:02:54.750
+If you do not spend the time and
+effort to create good data for
+
+44
+00:02:54.750 --> 00:02:57.230
+the analysis,
+you will not get good results,
+
+45
+00:02:57.230 --> 00:03:01.200
+no matter how sophisticated the analysis
+technique you are using is.
+
+46
+00:03:01.200 --> 00:03:04.530
+Always remember, garbage in, garbage out.
+
+47
+00:03:04.530 --> 00:03:08.189
+So take the time to prepare your data
+if you want good analysis results.

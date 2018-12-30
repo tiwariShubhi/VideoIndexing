@@ -1,0 +1,1155 @@
+﻿1
+00:00:15,558 --> 00:00:26,519
+Welcome to module 6 of database management
+systems, this is the starting of week 2. In
+
+2
+00:00:26,519 --> 00:00:36,579
+week 1 we have done 5 modules, after the overview
+of the course, we have primarily introduced
+
+3
+00:00:36,579 --> 00:00:45,238
+the basic notions of DBMS and we have discussed
+about the relational module, the fundamentals
+
+4
+00:00:45,238 --> 00:00:53,780
+of it.
+In this background, in this week we are primarily
+
+5
+00:00:53,780 --> 00:01:02,489
+focusing on the query language the structured
+query language SQL. So, all the 5 modules
+
+6
+00:01:02,488 --> 00:01:13,489
+will relate to discussions on query language
+and this module 6 7 and 8, the 3 modules will
+
+7
+00:01:13,489 --> 00:01:26,218
+introduce SQL at a first level and the last
+2 modules 8 and 9, I am sorry 9 and 10 will
+
+8
+00:01:26,218 --> 00:01:33,269
+discuss about intermediate, that is somewhat
+advanced level of features in the SQL.
+
+9
+00:01:33,269 --> 00:01:39,468
+The objective of the current module is to,
+understand the relational query language and
+
+10
+00:01:39,468 --> 00:01:48,449
+particularly the data definition and the basic
+query structure, that will hold for all SQL
+
+11
+00:01:48,450 --> 00:01:58,640
+queries, particularly this the modules this
+week would be important for writing any kind
+
+12
+00:01:58,640 --> 00:02:05,468
+of database applications, squaring the database
+to find information from the existing data
+
+13
+00:02:05,468 --> 00:02:13,229
+and to manipulate it. So, please put a lot
+of focus in the whole material of this week
+
+14
+00:02:13,229 --> 00:02:21,789
+and practice them well, to understand the
+basic issues of database systems, in depth
+
+15
+00:02:21,789 --> 00:02:29,870
+in a well oriented manner. In this module
+we will first talk about the history and then
+
+16
+00:02:29,870 --> 00:02:36,938
+we will see how to define data and start manipulating
+them.
+
+17
+00:02:36,938 --> 00:02:47,919
+SQL was originally called IBM sequel language
+and was a part of system R, it was subsequently
+
+18
+00:02:47,919 --> 00:02:56,268
+renamed as structured query language and like
+any other good programming language that we
+
+19
+00:02:56,269 --> 00:03:05,599
+have, SQL also gets standardized by ANSI and
+ISO and there have been several standards
+
+20
+00:03:05,598 --> 00:03:15,738
+of SQL, that has come up with SQL 92 in the
+most popular one, and the commercial system,
+
+21
+00:03:15,739 --> 00:03:24,560
+most of them try to provide support for SQL
+92 features, but they do vary between themselves.
+
+22
+00:03:24,560 --> 00:03:33,549
+So, it is possible that the examples that
+we show here, may or may not all of them execute
+
+23
+00:03:33,549 --> 00:03:38,829
+in the system that you are using. So, you
+will have to look at what standard your system
+
+24
+00:03:38,829 --> 00:03:45,269
+is actually following.
+So, the first what we will talk about is a
+
+25
+00:03:45,269 --> 00:03:54,560
+DDL data definition language, as we had discussed
+earlier this is the features to create that
+
+26
+00:03:54,560 --> 00:03:58,780
+schema the tables in a database management
+system.
+
+27
+00:03:58,780 --> 00:04:05,209
+So, it allows for the creation or definition
+of the schema, for each relation that we have
+
+28
+00:04:05,209 --> 00:04:12,359
+in the database it specifies the domain of
+values associated with each attribute of the
+
+29
+00:04:12,359 --> 00:04:20,340
+schema and it also defines a variety of integrity
+constraints, later in the course we will see
+
+30
+00:04:20,339 --> 00:04:26,489
+that, it also has to specify other related
+information like indexing, security authorization,
+
+31
+00:04:26,490 --> 00:04:34,590
+physical storage and so on.
+So, first the domain of possible values. So,
+
+32
+00:04:34,589 --> 00:04:42,969
+we have already specified that, every domain
+in SQL is more of an atomic nature. So, they
+
+33
+00:04:42,970 --> 00:04:49,360
+are more like the primitive or built in data
+types of languages like c, c plus plus, java.
+
+34
+00:04:49,360 --> 00:04:56,530
+So, the common domain types are character
+which are basically strings of character,
+
+35
+00:04:56,529 --> 00:05:03,359
+having a certain length then you can have
+variable character string which means that
+
+36
+00:05:03,360 --> 00:05:09,389
+the length here specifies that, the maximum
+length that the string can take, but a string
+
+37
+00:05:09,389 --> 00:05:16,019
+could be shorter than that integer; obviously,
+then small integer, which in a system may
+
+38
+00:05:16,019 --> 00:05:21,879
+give a smaller range of integer values.
+Then there is a numeric type which is often
+
+39
+00:05:21,879 --> 00:05:31,459
+very important, which says what is the precision
+of the numbers that are to be written in this
+
+40
+00:05:31,459 --> 00:05:37,029
+format stored in this format. So, d basically
+gives that precision value and p gives the
+
+41
+00:05:37,029 --> 00:05:44,008
+size, then you can have real and double precision
+numbers you have can have floating point numbers
+
+42
+00:05:44,009 --> 00:05:52,050
+and so on, and there are some more data types,
+which we will discuss later in the course.
+
+43
+00:05:52,050 --> 00:05:58,740
+Given all these domain types; so, what we
+will try to do is, here is a schema for the
+
+44
+00:05:58,740 --> 00:06:07,319
+university database, which has multiple different
+relations designed in that showing the attributes
+
+45
+00:06:07,319 --> 00:06:13,900
+and marking out, what are the keys? And what
+are the foreign keys? So, we would take examples
+
+46
+00:06:13,899 --> 00:06:19,549
+of some of these and try to code them in the
+SQL.
+
+47
+00:06:19,550 --> 00:06:29,300
+Now, to create a table this is how you go
+about, the SQL keywords create table is the
+
+48
+00:06:29,300 --> 00:06:37,300
+basic command. So, with the create table you
+have to specify a name, here the name that
+
+49
+00:06:37,300 --> 00:06:44,750
+is given is in terms of this name r, which
+is the name of the relation and then you provide
+
+50
+00:06:44,750 --> 00:06:52,668
+a series of attributes, separating by comma
+A I are different attributes and for every
+
+51
+00:06:52,668 --> 00:07:00,169
+attribute, there is a corresponding type domain
+type specified. So, is it says that A 1 is
+
+52
+00:07:00,170 --> 00:07:05,840
+of domain type d 1, A 2 is of domain type
+d 2 and so on. And all of these attribute
+
+53
+00:07:05,839 --> 00:07:12,459
+descriptions, are then followed by a series
+of integrity constraints. It is possible that
+
+54
+00:07:12,459 --> 00:07:19,149
+a create table may not provide any constraint,
+but often you will have a number of constraints
+
+55
+00:07:19,149 --> 00:07:34,049
+to work with. So, here is one example.
+So, in this we are trying to code the creation
+
+56
+00:07:34,050 --> 00:07:42,960
+of this instructor table, as you can see it
+has 4 different fields ID name, department
+
+57
+00:07:42,959 --> 00:07:50,310
+name and salary and for each one we have specified
+the domain type. So, ID is char 5, this means
+
+58
+00:07:50,310 --> 00:07:59,060
+that the identity of this table instructor
+will be strings of length 5 whereas, the name
+
+59
+00:07:59,060 --> 00:08:05,889
+or the department name are strings, but they
+have a maximum length 20, but they could have
+
+60
+00:08:05,889 --> 00:08:13,180
+be of variable length where a salary is of
+numeric type having specification 8 2. So,
+
+61
+00:08:13,180 --> 00:08:20,598
+it can have 2 decimal places and be of size
+8 maximum. So, this is the basic form of definition
+
+62
+00:08:20,598 --> 00:08:26,668
+that we have for creating a table, defining
+a table or defining a schema.
+
+63
+00:08:26,668 --> 00:08:36,000
+Now, we can add a number of integrity constraints
+to the create table, 3 integrity constraints
+
+64
+00:08:36,000 --> 00:08:42,679
+we will discuss here, one is not null, one
+is primary key and other third is foreign
+
+65
+00:08:42,679 --> 00:08:48,620
+key. So, not null we specify whether a field
+can be null or not, primary key as we have
+
+66
+00:08:48,620 --> 00:08:54,139
+seen will specify the attributes which form
+the primary key, and the foreign key will
+
+67
+00:08:54,139 --> 00:09:03,879
+specify the attributes which reference some
+other table and our key in that table. So,
+
+68
+00:09:03,879 --> 00:09:17,000
+here is an example, in the instructor relation
+here we have we had seen this part, the attribute
+
+69
+00:09:17,000 --> 00:09:23,690
+what we have added here is, this not null.
+So, we say the name is not null which means
+
+70
+00:09:23,690 --> 00:09:32,890
+that, in the instructor table it is not possible
+to insert a record, where the name of the
+
+71
+00:09:32,889 --> 00:09:38,740
+instructor is null that is unknown, but it
+is possible if the same thing is not said
+
+72
+00:09:38,740 --> 00:09:44,769
+about department name same thing is not said
+about salary. So, it is possible that these
+
+73
+00:09:44,769 --> 00:09:54,259
+could be null.
+Now, we additionally say that primary key
+
+74
+00:09:54,259 --> 00:10:02,990
+is ID. So, this field ID is a primary key
+and it is a property of SQL create table command
+
+75
+00:10:02,990 --> 00:10:11,440
+that, if an attribute is referred as a primary
+key, then it cannot be not null. So, you do
+
+76
+00:10:11,440 --> 00:10:19,180
+not need to specify that is here you do not
+need to write not null, because it is a primary
+
+77
+00:10:19,179 --> 00:10:26,419
+key it will be known to be not null, because
+certainly we have discussed that key is the
+
+78
+00:10:26,419 --> 00:10:31,088
+distinguishing attribute in a database a table.
+So, it cannot be null.
+
+79
+00:10:31,089 --> 00:10:38,490
+So, it will not be able to distinguish similarly,
+we have finally we have the third integrity
+
+80
+00:10:38,490 --> 00:10:47,549
+constant which is foreign key which says that,
+it is referencing this table department and
+
+81
+00:10:47,549 --> 00:10:57,129
+the foreign key of this is here, the depth
+name this particular field is a foreign key,
+
+82
+00:10:57,129 --> 00:11:05,759
+which is a key of the department table. And
+so, we will be able to refer this, from this
+
+83
+00:11:05,759 --> 00:11:12,970
+table as a foreign key and we know that it
+will be key in the department table. So, these
+
+84
+00:11:12,970 --> 00:11:26,519
+are the ways to specify the integrity constraint.
+So, here are a couple of more examples. So,
+
+85
+00:11:26,519 --> 00:11:35,820
+I will not go through them in detail, I will
+request you to take time and carefully understand
+
+86
+00:11:35,820 --> 00:11:44,850
+them, again these are about different relations
+that exist here, about the student and about
+
+87
+00:11:44,850 --> 00:11:51,730
+the courses that the students take, and in
+every case we have specified the set of fields,
+
+88
+00:11:51,730 --> 00:11:58,970
+that you have in the table in the design of
+the schema are listed, in the create table
+
+89
+00:11:58,970 --> 00:12:05,970
+the ID information about the primary key is
+provided and also the information about the
+
+90
+00:12:05,970 --> 00:12:08,759
+foreign key.
+Here department name is the foreign key which
+
+91
+00:12:08,759 --> 00:12:15,129
+is mapping to this point, similar things can
+be observed about the takes relationship which
+
+92
+00:12:15,129 --> 00:12:25,919
+show the how students are actually taking
+courses. So, it relates different it has a
+
+93
+00:12:25,919 --> 00:12:34,360
+set of fields but it has 2 kinds of primary
+foreign keys, one that relate to the student
+
+94
+00:12:34,360 --> 00:12:43,579
+through the ID and this combination of attributes
+which refer to the section.
+
+95
+00:12:43,578 --> 00:12:54,989
+So, this is how different tables can be created
+using the data definition language, here is
+
+96
+00:12:54,990 --> 00:13:05,090
+a note that you should observe that if you
+consider this section ID, the section ID is
+
+97
+00:13:05,090 --> 00:13:16,879
+a part of the primary key which means that
+2 records cannot be same, if they are different
+
+98
+00:13:16,879 --> 00:13:25,159
+in the section ID, then such records are allowed.
+So which means that it is possible that, a
+
+99
+00:13:25,159 --> 00:13:33,299
+student can attend or take a course in the
+same semester, in the same year with 2 different
+
+100
+00:13:33,299 --> 00:13:38,289
+section IDs because they are primary keys.
+So, they can be different. So, if we drop
+
+101
+00:13:38,289 --> 00:13:45,338
+this from the primary key then we will enforce
+the condition that, no student will be able
+
+102
+00:13:45,339 --> 00:13:52,579
+to take a course, in 2 sections in the same
+semester and the same year. So, this is these
+
+103
+00:13:52,578 --> 00:13:59,979
+are the different design choices that we have
+and we will move on, here is one more example
+
+104
+00:13:59,980 --> 00:14:09,278
+trying to show you the create table command
+for the course relation, that we have in the
+
+105
+00:14:09,278 --> 00:14:16,740
+university database.
+Moving on, let us look at how to update or
+
+106
+00:14:16,740 --> 00:14:23,899
+actually put in different records, in a table
+which has already been created, the basic
+
+107
+00:14:23,899 --> 00:14:31,990
+command is insert, and the keywords for that
+is insert into and values, in between you
+
+108
+00:14:31,990 --> 00:14:37,519
+write the name of the relation, where the
+record will have to be inserted and then the
+
+109
+00:14:37,519 --> 00:14:45,769
+values, will have to be put as a tuple in
+the same order in which you would have defined
+
+110
+00:14:45,769 --> 00:14:52,209
+the attributes of that relation, and certainly
+each of the values like this is ID value,
+
+111
+00:14:52,208 --> 00:14:58,518
+next is the name value the department the
+salary, each one of them should be from the
+
+112
+00:14:58,519 --> 00:15:04,720
+same domain type, as has been specified during
+the create table come on.
+
+113
+00:15:04,720 --> 00:15:10,870
+So, these things will have to remember. And
+so, every record will get inserted through
+
+114
+00:15:10,870 --> 00:15:18,740
+one insert command, similarly a deletion can
+be done by delete from students, if you do
+
+115
+00:15:18,740 --> 00:15:25,528
+delete from students without specifying which
+record you want to delete, basically all records
+
+116
+00:15:25,528 --> 00:15:31,860
+will get deleted. We will see how selective
+deletion will happen, that will come on later.
+
+117
+00:15:31,860 --> 00:15:37,050
+Drop table is a command to remove a table,
+a table that has been created can be removed
+
+118
+00:15:37,049 --> 00:15:44,189
+from the database altogether, by doing drop
+table and the relation name you can also change
+
+119
+00:15:44,190 --> 00:15:52,050
+the schema of a table by using alter table.
+So, the form is altar table is a the key words,
+
+120
+00:15:52,049 --> 00:15:59,240
+you can add a new attribute to relation are
+by writing the name of the attribute and the
+
+121
+00:15:59,240 --> 00:16:08,409
+domain of the attribute one after the other.
+Similarly, it is possible also to drop an
+
+122
+00:16:08,409 --> 00:16:16,500
+attribute that already exists and the syntax
+for that will be, alter table the relation
+
+123
+00:16:16,500 --> 00:16:22,990
+name drop is a keyword and the name of the
+attribute, mind you all database systems may
+
+124
+00:16:22,990 --> 00:16:29,940
+not allow you to drop an attribute to alter
+table to remove attributes. And so, it works
+
+125
+00:16:29,940 --> 00:16:38,269
+in some and it does not work in the rest.
+Now, let us. So, that was about the definition
+
+126
+00:16:38,269 --> 00:16:45,610
+of the table and the basic definition of the
+data. So, now we will get into the basics
+
+127
+00:16:45,610 --> 00:16:52,009
+query structure which is with tables with
+existing data, how do I query and find out
+
+128
+00:16:52,009 --> 00:16:57,690
+different information.
+So, the structure of an SQL query and this
+
+129
+00:16:57,690 --> 00:17:04,880
+you should observe very carefully is normally
+said to be, select from where colloquially
+
+130
+00:17:04,880 --> 00:17:11,940
+will often say, let us have a select from
+where. So, it has 3 keywords select which
+
+131
+00:17:11,940 --> 00:17:20,910
+is followed by a set of this is a set of attributes.
+So, this specifies that, when a select query
+
+132
+00:17:20,910 --> 00:17:29,590
+runs it will finally give us a new relation
+and in that relation, the attributes that
+
+133
+00:17:29,589 --> 00:17:39,720
+will be available are the attributes that
+feature in the select list. The next clause
+
+134
+00:17:39,720 --> 00:17:46,269
+or the next keyword in this is from, which
+specifies a set of existing relations.
+
+135
+00:17:46,269 --> 00:17:53,559
+So, r 1 r 2 r m represent different relations
+and these are the relations, which will be
+
+136
+00:17:53,559 --> 00:18:01,019
+used to actually find the information extract
+the information. Finally, the where clause
+
+137
+00:18:01,019 --> 00:18:09,720
+has a predicate as a condition, which specify
+that what condition has to be satisfied. So,
+
+138
+00:18:09,720 --> 00:18:18,839
+that certain peoples from the relations r
+1 to r m, will be chosen and put in this new
+
+139
+00:18:18,839 --> 00:18:24,709
+selected result, table in terms of the attributes
+a 1 to a n.
+
+140
+00:18:24,710 --> 00:18:34,039
+So, this is the basic understanding of the
+or structure of the SQL query and naturally
+
+141
+00:18:34,039 --> 00:18:40,589
+as I mentioned that will result in a relation.
+Now, we will go over each and every clause
+
+142
+00:18:40,589 --> 00:18:46,159
+carefully, the select clause as I said will
+list all the attributes. So, it is like a
+
+143
+00:18:46,160 --> 00:18:53,529
+projection in terms of the relational algebra
+that we have done. So, if we write select
+
+144
+00:18:53,529 --> 00:19:02,450
+name from instructor then this will result
+in finding the names of all instructors from
+
+145
+00:19:02,450 --> 00:19:08,590
+the instructor table, because this is this
+you know is a relation, because it is happening
+
+146
+00:19:08,589 --> 00:19:14,279
+it is a featuring in the from clause and in
+select, we are saying that the attribute that
+
+147
+00:19:14,279 --> 00:19:21,710
+we want to select is the attribute name.
+So, it will the instructor table has 4 attributes
+
+148
+00:19:21,710 --> 00:19:28,680
+ID, name, depth name and salary from that
+it will simply take the name of the instructor
+
+149
+00:19:28,680 --> 00:19:37,549
+and list that in the output table. So, the
+basic form of selection that happens and this
+
+150
+00:19:37,549 --> 00:19:43,940
+point you may also note, that in SQL everything
+is case insensitive, it does not matter whether
+
+151
+00:19:43,940 --> 00:19:49,460
+you write in upper case or lower case. So,
+you can choose the style that you prefer to
+
+152
+00:19:49,460 --> 00:19:55,500
+use.
+This is a very important factor, that you
+
+153
+00:19:55,500 --> 00:20:02,549
+should keep in mind that we said a while introducing
+relational algebra, that in the relational
+
+154
+00:20:02,549 --> 00:20:11,049
+algebra every relation is a set and which
+means that according to set theory. We cannot
+
+155
+00:20:11,049 --> 00:20:16,710
+have 2 tuples in the same relation, which
+are identical in all it is values, because
+
+156
+00:20:16,710 --> 00:20:24,299
+set theory does not allow that, but please
+keep in mind that SQL actually allows duplicates
+
+157
+00:20:24,299 --> 00:20:31,690
+in relations. So, it is possible that in the
+same relation in the same table, I may have
+
+158
+00:20:31,690 --> 00:20:39,259
+more than one record which are identical in
+all the fields, in all the attributes of that
+
+159
+00:20:39,259 --> 00:20:46,720
+table and this will have lot of consequences
+and we will see how often, this property will
+
+160
+00:20:46,720 --> 00:20:51,339
+have to be used.
+So, if you want a typical set theoretic kind
+
+161
+00:20:51,339 --> 00:20:59,799
+of output, that is if you want the result
+to be distinct, all records to be distinct,
+
+162
+00:20:59,799 --> 00:21:06,149
+then you have to explicitly say that you want
+distinct values to be selected. So, all that
+
+163
+00:21:06,150 --> 00:21:11,210
+you are doing is you are after select and
+before the attribute name, you introduce another
+
+164
+00:21:11,210 --> 00:21:16,559
+keyword distinct.
+So, select distinct depth name from instructor
+
+165
+00:21:16,559 --> 00:21:24,779
+will actually, select the departments of all
+instructors and quite why if it just selects
+
+166
+00:21:24,779 --> 00:21:29,269
+department name of all instructor, then it
+is quite possible that the same department
+
+167
+00:21:29,269 --> 00:21:35,379
+name will appear number of times, because
+every department has multiple instructors.
+
+168
+00:21:35,380 --> 00:21:45,030
+But when we use distinct, then the every name
+will feature only once in that selection,
+
+169
+00:21:45,029 --> 00:21:51,750
+then you can also specify another keyword
+all which ensures that the duplicates are
+
+170
+00:21:51,750 --> 00:21:58,150
+not removed. So, if you do select all depth
+name, then all the names will feature with
+
+171
+00:21:58,150 --> 00:22:05,800
+duplicates, if some department had 3 instructors
+the name of that department will feature thrice.
+
+172
+00:22:05,799 --> 00:22:13,230
+You can use an asterisk after select, to specify
+that you are interested in all the attributes
+
+173
+00:22:13,230 --> 00:22:21,509
+that the relation or the collection of relations
+in the from clause has. You can also specify
+
+174
+00:22:21,509 --> 00:22:30,730
+a select with a literal and without a from
+clause, if you do that then it will simply
+
+175
+00:22:30,730 --> 00:22:36,279
+return you a table with a single row having
+that literal value and you can also rename
+
+176
+00:22:36,279 --> 00:22:46,559
+that table, using what is known as clause
+as command. So, this will give you a table
+
+177
+00:22:46,559 --> 00:22:57,849
+Foo, where there is only one row and that
+row has an entry 437. You can use that, for
+
+178
+00:22:57,849 --> 00:23:06,199
+other purposes also you can do a select of
+a literal, from a table with using a from
+
+179
+00:23:06,200 --> 00:23:13,509
+clause where in a, you will get a single column
+table, where as many is as there are records
+
+180
+00:23:13,509 --> 00:23:20,750
+in the instructor will be produced.
+Select clause can also use basic arithmetic
+
+181
+00:23:20,750 --> 00:23:26,920
+operations for example, here we are showing
+a select where the third attribute as you
+
+182
+00:23:26,920 --> 00:23:33,259
+can see, the third attribute is salary by
+12, assuming that the instructor table has
+
+183
+00:23:33,259 --> 00:23:38,890
+a salary number which is annual salary by
+12 naturally you give you the monthly salary.
+
+184
+00:23:38,890 --> 00:23:49,620
+So, those such arithmetic choices can also
+be made, you can also rename that field that
+
+185
+00:23:49,619 --> 00:23:59,329
+particular salary by 12 field by a new name,
+as I said as can be used to rename. So, if
+
+186
+00:23:59,329 --> 00:24:06,949
+we if you use that then, when you get the
+output you will get the column names are ID,
+
+187
+00:24:06,950 --> 00:24:12,740
+name and monthly salary and in monthly salary
+you will actually have a computation, which
+
+188
+00:24:12,740 --> 00:24:19,890
+is salary by 12 and in the same way, you can
+use multiple different kinds of arithmetic
+
+189
+00:24:19,890 --> 00:24:24,180
+operators.
+Now, we come to the where clause, where clause
+
+190
+00:24:24,180 --> 00:24:29,900
+specifies the condition is a predicate which
+corresponds to the selection predicate of
+
+191
+00:24:29,900 --> 00:24:35,019
+relational algebra. So, it will specify some
+condition, here is an example if we want to
+
+192
+00:24:35,019 --> 00:24:43,359
+find all instructors from the instructor table,
+who are associated with computer science department,
+
+193
+00:24:43,359 --> 00:24:53,049
+then you can say select name from instructor
+and to specify that they are from the computer
+
+194
+00:24:53,049 --> 00:24:59,629
+science department, you will specify department
+name is equal to computer science.
+
+195
+00:24:59,630 --> 00:25:06,630
+So, this will ensure that you select the records
+only when this condition is satisfied. So,
+
+196
+00:25:06,630 --> 00:25:12,360
+all records for which department name is different
+from computer science will not be included
+
+197
+00:25:12,359 --> 00:25:26,659
+here. You can also write predicates using
+the different logical connectives and or not
+
+198
+00:25:26,660 --> 00:25:32,740
+and so on. So, here is an example, where you
+are finding all instructors in computer science
+
+199
+00:25:32,740 --> 00:25:39,099
+with salary greater than 80000. So, here we
+have used and clause. So, only records where
+
+200
+00:25:39,099 --> 00:25:44,929
+the department name is computer science and
+salary is greater than 8000 will be chosen
+
+201
+00:25:44,930 --> 00:25:53,600
+in the result. So, and then the projection
+will be done on the name of those instructors,
+
+202
+00:25:53,599 --> 00:26:00,179
+you can apply comparisons of arithmetic expression.
+So, where clause can really write different
+
+203
+00:26:00,180 --> 00:26:10,390
+kind of things.
+Finally, the from clause is sets all the different
+
+204
+00:26:10,390 --> 00:26:16,820
+relations from where you are actually looking
+for the records. So, it kind of corresponds
+
+205
+00:26:16,819 --> 00:26:28,250
+to the Cartesian product of the relational
+algebra. So, if we want to say compute instructor
+
+206
+00:26:28,250 --> 00:26:36,369
+Cartesian product teachers, then you can say
+select star instructor one table comma teachers.
+
+207
+00:26:36,369 --> 00:26:45,379
+So, this will choose records from instructed
+relation, as well as from teacher's relation
+
+208
+00:26:45,380 --> 00:26:51,070
+and in all possible combined way, it will
+put them in the output we have used a star.
+
+209
+00:26:51,069 --> 00:26:57,849
+So, all fields of in tractor and all fields
+of teaches will be there in the output, and
+
+210
+00:26:57,849 --> 00:27:05,389
+since some fields may have identical name
+like ID in instructor and there is ID in teachers,
+
+211
+00:27:05,390 --> 00:27:15,050
+they will be qualified by the name of the
+relation, from can have 1 relation 2 relation
+
+212
+00:27:15,049 --> 00:27:22,849
+any number of relations as you require. So,
+this will cause the Cartesian product to be
+
+213
+00:27:22,849 --> 00:27:30,219
+computed which may not be very useful as a
+an independent feature, but we will see in
+
+214
+00:27:30,220 --> 00:27:36,069
+the next module how it can give very important
+computations, in terms of computing joints
+
+215
+00:27:36,069 --> 00:27:41,859
+and so on.
+So, here is an example of the Cartesian product
+
+216
+00:27:41,859 --> 00:27:46,979
+that we talked of. So, here is a instructor
+relation, the teacher's relation and as you
+
+217
+00:27:46,980 --> 00:27:54,620
+can see when we have done this cartesian product,
+that is select star from instructor comma
+
+218
+00:27:54,619 --> 00:28:03,500
+teachers, then all fields this is a ID of
+the instructor it has there is an ID in teachers.
+
+219
+00:28:03,500 --> 00:28:10,619
+So, that is also specified here qualified
+by the name of the relation whereas, name
+
+220
+00:28:10,619 --> 00:28:16,659
+comes in directly because there is no attribute
+called name in teachers, the department name
+
+221
+00:28:16,660 --> 00:28:22,700
+comes in directly, salary comes in, directly
+course ID comes in, section ID comes in, semester
+
+222
+00:28:22,700 --> 00:28:31,930
+comes in, year comes in and so on. And the
+combination of all tuples in their instructor
+
+223
+00:28:31,930 --> 00:28:38,710
+relation, against all tuples of the teacher's
+relation all possible combinations have come
+
+224
+00:28:38,710 --> 00:28:46,860
+in this result, which eventually is a cartesian
+product of the relational algebra.
+
+225
+00:28:46,859 --> 00:28:57,449
+So, this is the what we have to summarize,
+we have introduced the relational query language
+
+226
+00:28:57,450 --> 00:29:03,799
+and particularly familiarize ourselves with
+the data definition, that is creation of the
+
+227
+00:29:03,799 --> 00:29:11,480
+table creation, of the schema with the attribute
+names, domain types and constraints. And the
+
+228
+00:29:11,480 --> 00:29:18,670
+updates to the table in terms of insertion
+and deletion of values or addition or deletion
+
+229
+00:29:18,670 --> 00:29:26,870
+of attributes or removing a table altogether
+and then, we have given the basic structure
+
+230
+00:29:26,869 --> 00:29:34,250
+of the select from where query of SQL, which
+will be the key language feature of a query
+
+231
+00:29:34,250 --> 00:29:38,250
+language, that we will continue to discuss
+all through this course. .
+

@@ -1,0 +1,845 @@
+
+1
+00:00:00.940 --> 00:00:03.250
+Welcome back to the fourth and
+final module of the course.
+
+2
+00:00:04.470 --> 00:00:09.740
+In this module, we'll cover the underlying
+principles of large scale graph processing
+
+3
+00:00:09.740 --> 00:00:11.800
+and the software infrastructure
+that supports it.
+
+4
+00:00:13.380 --> 00:00:16.440
+So, in this module,
+you'll learn a programming model for
+
+5
+00:00:16.440 --> 00:00:19.900
+graph computation and
+systems that implement this model.
+
+6
+00:00:21.200 --> 00:00:25.530
+After this model, you'll be able to
+formulate graph analytics computations
+
+7
+00:00:25.530 --> 00:00:26.930
+in terms of the programming model.
+
+8
+00:00:27.970 --> 00:00:30.340
+This module will consist of three lessons.
+
+9
+00:00:31.360 --> 00:00:35.790
+The first lesson, will revisit
+the concept of the programming model and
+
+10
+00:00:35.790 --> 00:00:39.720
+introduce a programming model
+called Bulk Synchronous Parallel or
+
+11
+00:00:39.720 --> 00:00:44.250
+BSP that is designed specifically for
+graph oriented computation.
+
+12
+00:00:45.400 --> 00:00:50.520
+I will discuss two well known versions of
+the central idea, Pregel from Google, and
+
+13
+00:00:50.520 --> 00:00:52.760
+Graphlab from Carnegie Mellon University.
+
+14
+00:00:53.760 --> 00:00:57.260
+The second lesson,
+we'll discuss two software systems,
+
+15
+00:00:57.260 --> 00:01:01.390
+Giraph that operates on Hadoop,
+and GraphX that operates on Spark.
+
+16
+00:01:02.560 --> 00:01:05.890
+We'll compare the basic architecture
+of these two systems and
+
+17
+00:01:05.890 --> 00:01:07.090
+point out their differences.
+
+18
+00:01:08.200 --> 00:01:13.170
+The final lesson will show example
+computations, using graphics platform.
+
+19
+00:01:13.170 --> 00:01:15.210
+Since graphics come with Spark,
+
+20
+00:01:15.210 --> 00:01:19.320
+we've created these examples on the
+virtual machine, which you have access to.
+
+21
+00:01:19.320 --> 00:01:21.181
+The code and
+some data sets are available for
+
+22
+00:01:21.181 --> 00:01:22.849
+those who wish to play with the system.
+
+1
+00:00:00.830 --> 00:00:02.950
+Now we are going to
+introduce you to Graphx,
+
+2
+00:00:04.080 --> 00:00:06.967
+which we'll primarily cover
+as a hands-on presentation.
+
+3
+00:00:08.490 --> 00:00:12.440
+Graphx was developed by the Amp
+lab at UC Berkeley, and
+
+4
+00:00:12.440 --> 00:00:14.020
+has now become an Apache product.
+
+5
+00:00:15.280 --> 00:00:19.610
+In this brief introduction, we are using
+a few slides from Amp lab presentations.
+
+6
+00:00:22.450 --> 00:00:26.540
+Like [INAUDIBLE] graphic
+uses a property graph model.
+
+7
+00:00:27.580 --> 00:00:31.690
+That means both nodes and
+edges can have attributes and values.
+
+8
+00:00:33.212 --> 00:00:37.700
+In Graphx, the node properties
+are stored in a Vertex Table.
+
+9
+00:00:37.700 --> 00:00:39.940
+And edge properties
+are stored in an Edge Table.
+
+10
+00:00:41.140 --> 00:00:45.680
+The connectivity information, that is
+which edge connects to which nodes,
+
+11
+00:00:45.680 --> 00:00:49.570
+is stored separately from the nodes and
+edge properties.
+
+12
+00:00:49.570 --> 00:00:51.700
+Since Graphx is based on spark,
+
+13
+00:00:51.700 --> 00:00:57.179
+whose central information representation
+is based on resilient data sets or RDDs.
+
+14
+00:00:58.230 --> 00:01:02.520
+You may recall that RDDs are typically
+in memory information objects.
+
+15
+00:01:03.700 --> 00:01:07.320
+These objects can be used to perform
+an action, which returns a value.
+
+16
+00:01:08.320 --> 00:01:12.420
+Or they can perform a transformation,
+which can produce another RDD.
+
+17
+00:01:13.865 --> 00:01:17.330
+Graphx is built on special RDDs for
+vertices and edges.
+
+18
+00:01:18.820 --> 00:01:22.810
+Note that VertexIDs are defined
+to be unique by design.
+
+19
+00:01:22.810 --> 00:01:28.680
+VertexRDD A represents a set of vertices
+all of which have an attribute called A.
+
+20
+00:01:30.400 --> 00:01:35.400
+The Edge class is an object with a source
+vertex, a destination vertex, and
+
+21
+00:01:35.400 --> 00:01:35.930
+edge attribute.
+
+22
+00:01:37.280 --> 00:01:42.230
+The EdgeRDD extends this
+basic edge by storing
+
+23
+00:01:42.230 --> 00:01:47.546
+edges in a columnar format on
+each partition of performance.
+
+24
+00:01:47.546 --> 00:01:52.140
+Very often, it's easier to operate
+on a data structure that has both
+
+25
+00:01:52.140 --> 00:01:54.120
+node properties and edge properties.
+
+26
+00:01:55.380 --> 00:01:59.620
+If you are familiar with this schema, you
+will readily see that this is a three-way
+
+27
+00:01:59.620 --> 00:02:03.990
+join operation between the node set,
+the edge set and the second node set.
+
+28
+00:02:05.010 --> 00:02:08.600
+Finally, GraphX implements
+it's own version of BSP.
+
+29
+00:02:09.820 --> 00:02:12.820
+This implementation,
+not surprisingly, is called Pregel.
+
+30
+00:02:13.950 --> 00:02:19.610
+It allows a user to write a vertex
+program, a send message routine,
+
+31
+00:02:19.610 --> 00:02:21.990
+and a message combiner routine,
+just like BSP.
+
+32
+00:02:23.160 --> 00:02:26.840
+However, this implementation also performs
+
+33
+00:02:26.840 --> 00:02:28.970
+vertex partitioning like
+we saw in graph lab.
+
+34
+00:02:30.210 --> 00:02:32.170
+Also, similarly to graph lab,
+
+35
+00:02:32.170 --> 00:02:36.770
+it enables the message sending computation
+to reach the attributes of both vertices.
+
+36
+00:02:37.960 --> 00:02:40.570
+The code limit shown here
+is written in Scala.
+
+37
+00:02:42.230 --> 00:02:46.495
+The hands on code after this you'll
+see are all certain in scatter.
+
+38
+00:02:46.495 --> 00:02:48.860
+Will have a notice here in no scatter.
+
+39
+00:02:48.860 --> 00:02:53.640
+We would like to show you
+here an example which uses
+
+40
+00:02:53.640 --> 00:02:58.600
+the Pregel runtime object in GraphX
+to implement the simple BSP desk.
+
+41
+00:02:59.870 --> 00:03:04.280
+We would like to show here how Pregel
+runtime objects in Graphx works.
+
+42
+00:03:05.890 --> 00:03:08.760
+We point out all the functions
+that are defined by users
+
+43
+00:03:08.760 --> 00:03:10.160
+in running the Pregel operation.
+
+44
+00:03:11.420 --> 00:03:16.301
+The vprogf function,
+which takes a vertex and a message and
+
+45
+00:03:16.301 --> 00:03:20.220
+returns a new attribute value for
+that vertex.
+
+46
+00:03:20.220 --> 00:03:25.660
+The sendMsgr function, which computes
+the new message along each edge.
+
+47
+00:03:26.880 --> 00:03:31.850
+The Option[M] construct says that it is
+optional for a vertex to send the message.
+
+48
+00:03:31.850 --> 00:03:34.520
+That is,
+the system should not show an error
+
+49
+00:03:34.520 --> 00:03:37.650
+if your message is not sent for
+the vertex.
+
+50
+00:03:37.650 --> 00:03:40.230
+The combinef function is
+a message combiner that we
+
+51
+00:03:40.230 --> 00:03:42.210
+mention in passive for graph.
+
+52
+00:03:42.210 --> 00:03:46.913
+Finally, the user can also specify
+the number of reiterations that
+
+53
+00:03:46.913 --> 00:03:49.483
+the GraphX BSP process will run for.
+
+1
+00:00:01.040 --> 00:00:01.700
+In 2010, Google
+
+2
+00:00:03.550 --> 00:00:06.650
+published a paper outlining a system
+that they had been working on.
+
+3
+00:00:09.130 --> 00:00:13.740
+This publication about a system called
+Pregel, has been one of the most
+
+4
+00:00:13.740 --> 00:00:18.370
+influential publications on
+large scale graph computing.
+
+5
+00:00:18.370 --> 00:00:22.160
+The Pregel system essentially implemented
+the BSB model that we covered in
+
+6
+00:00:22.160 --> 00:00:22.850
+the last lecture.
+
+7
+00:00:24.230 --> 00:00:27.180
+To show how the Pregel
+system is programmed,
+
+8
+00:00:27.180 --> 00:00:32.810
+we present the published code of Google's
+most famous algorithm, the PageRank.
+
+9
+00:00:34.300 --> 00:00:38.080
+Recall that PageRank's task is
+to compute note centrality.
+
+10
+00:00:39.240 --> 00:00:43.160
+The basic philosophy of PageRank is
+that a note that is connected to an more
+
+11
+00:00:43.160 --> 00:00:45.350
+important note gains more importance.
+
+12
+00:00:46.900 --> 00:00:51.400
+In the filler on the right, B is a very
+important node with a high page rank
+
+13
+00:00:51.400 --> 00:00:55.650
+because a lot of other nodes directly or
+indirectly point to it.
+
+14
+00:00:55.650 --> 00:01:00.130
+So C being his direct neighbor
+that receives an edge from B,
+
+15
+00:01:00.130 --> 00:01:02.050
+also has a high page rank.
+
+16
+00:01:02.050 --> 00:01:05.190
+All the C itself,
+there's not have too many incident edges.
+
+17
+00:01:06.820 --> 00:01:10.500
+On the left side we have
+Google's published C++ code
+
+18
+00:01:10.500 --> 00:01:13.130
+that implements PageRank method
+on the Pregel infrastructure.
+
+19
+00:01:14.450 --> 00:01:17.730
+You don't have to know C++ to understand
+the basic essence of the code.
+
+20
+00:01:18.840 --> 00:01:22.860
+We will explain the basic elements of
+the Vertex program in the next few slides.
+
+21
+00:01:24.540 --> 00:01:27.690
+Remember from the last lecture
+that the VSP technique considers
+
+22
+00:01:27.690 --> 00:01:28.980
+a vertex to be a process.
+
+23
+00:01:30.360 --> 00:01:34.100
+Every vertex implements
+a method called compute.
+
+24
+00:01:36.070 --> 00:01:40.760
+This method, implements the logic of what
+a vertex should do during the super steps.
+
+25
+00:01:42.490 --> 00:01:47.350
+The program starts by creating a special
+kind of vertex called the PageRank vertex
+
+26
+00:01:47.350 --> 00:01:49.880
+for which this compute
+method is specified.
+
+27
+00:01:51.100 --> 00:01:55.500
+You will notice that the compute
+method starts by saying what happens
+
+28
+00:01:55.500 --> 00:01:57.810
+when the super step is one or more.
+
+29
+00:01:59.060 --> 00:02:00.590
+But what happens in super step zero?
+
+30
+00:02:01.900 --> 00:02:05.691
+Usually, superstep 0 is used for
+initialization.
+
+31
+00:02:05.691 --> 00:02:10.940
+Every vertex, initialization
+PageRank value to a same number
+
+32
+00:02:10.940 --> 00:02:14.870
+which is one divided by the total
+number of vertices in the graph.
+
+33
+00:02:16.090 --> 00:02:21.840
+Computationally, a PageRank of a vertex is
+a number calculated by adding two terms.
+
+34
+00:02:23.380 --> 00:02:27.790
+The first term, depends on the total
+number of vertices in the graph, and
+
+35
+00:02:27.790 --> 00:02:29.120
+is therefore the same every time.
+
+36
+00:02:29.120 --> 00:02:34.990
+And the second term depends on the page
+rank of the neighbors of the vertex.
+
+37
+00:02:36.420 --> 00:02:38.200
+How does the vertex
+compute the second term?
+
+38
+00:02:39.270 --> 00:02:42.590
+It gets the PageRank values of
+the neighbors in its messages,
+
+39
+00:02:42.590 --> 00:02:43.170
+and adds them up.
+
+40
+00:02:44.390 --> 00:02:48.950
+As we saw for SSSP,
+after a vertex computes its value,
+
+41
+00:02:48.950 --> 00:02:54.170
+it goes to the propagate step and
+sends a message to its outgoing edges.
+
+42
+00:02:54.170 --> 00:02:57.210
+For PageRank, the message it sends out
+
+43
+00:02:57.210 --> 00:03:00.680
+is just computed value divided
+by the number of outgoing edges.
+
+44
+00:03:01.890 --> 00:03:06.800
+When this is done, the node halts for
+the next superstep, and waits for
+
+45
+00:03:06.800 --> 00:03:08.190
+some other node to wake it up.
+
+46
+00:03:09.650 --> 00:03:14.590
+At this point, we have seen two
+examples of graph analytic operations
+
+47
+00:03:14.590 --> 00:03:18.380
+executed on the BSB programming model.
+
+48
+00:03:18.380 --> 00:03:22.370
+Now, we'll look at the same problem
+from a slightly different viewpoint.
+
+49
+00:03:23.710 --> 00:03:28.220
+GraphLab, originally a project from
+Carnegie Mellon University, now turned
+
+50
+00:03:28.220 --> 00:03:32.450
+into a company called Dato, took a similar
+yet different approach to the problem.
+
+51
+00:03:33.970 --> 00:03:37.540
+In GraphLab, any kind of data can be
+associated with a vertex or an edge.
+
+52
+00:03:38.710 --> 00:03:41.310
+This information is stored in
+what is called a data graph.
+
+53
+00:03:42.610 --> 00:03:45.050
+Let's look at the same
+page like I already did.
+
+54
+00:03:45.050 --> 00:03:48.780
+The syntax is a bit different but
+the logical blocks are identical.
+
+55
+00:03:50.080 --> 00:03:52.500
+These are the same blocks
+that we highlighted before.
+
+56
+00:03:53.820 --> 00:03:58.450
+GraphLab breaks up these blocks into
+three different user specified functions
+
+57
+00:03:59.910 --> 00:04:03.780
+called Gather, Apply,
+Scatter, or GAS, for short.
+
+58
+00:04:05.540 --> 00:04:07.050
+Okay, so what's different?
+
+59
+00:04:08.110 --> 00:04:11.523
+Let's mention a few important differences.
+
+60
+00:04:11.523 --> 00:04:13.300
+First, let's consider gather.
+
+61
+00:04:14.830 --> 00:04:19.234
+Rather than adopting a message passing or
+data flow model like Pregel,
+
+62
+00:04:19.234 --> 00:04:24.230
+GraphLab allows the user defined update
+function complete freedom to read and
+
+63
+00:04:24.230 --> 00:04:28.032
+modify any of the data on
+adjacent vertices edges.
+
+64
+00:04:29.822 --> 00:04:35.180
+In GraphLab, a receiving vertex has
+access to the data on adjacent vertices
+
+65
+00:04:35.180 --> 00:04:40.060
+even if the adjacent vertices did
+not schedule the current update.
+
+66
+00:04:41.450 --> 00:04:46.340
+In contrast, for Pregel the control
+is with descending nodes.
+
+67
+00:04:46.340 --> 00:04:49.420
+An update can happen only when
+a node sends out messages.
+
+68
+00:04:50.530 --> 00:04:54.710
+For some graph analytics operations
+like a dynamic version of PageRank,
+
+69
+00:04:54.710 --> 00:04:55.620
+this is very important.
+
+70
+00:04:56.830 --> 00:05:02.100
+Further, if vertex can update
+its value asynchronously.
+
+71
+00:05:02.100 --> 00:05:06.260
+That is, as soon as it receives
+an update without having to wait for
+
+72
+00:05:06.260 --> 00:05:08.250
+all nodes like we do in VSP.
+
+73
+00:05:09.630 --> 00:05:14.520
+This often helps some intuitive algorithms
+like page rank converge faster.
+
+74
+00:05:15.610 --> 00:05:18.620
+When the graph is large and
+must be split across machines,
+
+75
+00:05:19.700 --> 00:05:23.310
+BSP cuts the graph along edges,
+as we see on this slide.
+
+76
+00:05:24.480 --> 00:05:28.770
+So every cut edge results in
+a machine to machine communication.
+
+77
+00:05:29.850 --> 00:05:32.710
+If we increase the number
+of across machine edges,
+
+78
+00:05:32.710 --> 00:05:35.250
+we increase communication cost.
+
+79
+00:05:35.250 --> 00:05:37.330
+This has an interesting
+practical consequence.
+
+80
+00:05:39.110 --> 00:05:43.650
+As we have mentioned,
+many graph applications have communities.
+
+81
+00:05:43.650 --> 00:05:45.290
+And central nodes that have high degree.
+
+82
+00:05:46.290 --> 00:05:49.150
+Many young people today have
+over 500 Facebook friends.
+
+83
+00:05:50.410 --> 00:05:53.005
+So when an analytical
+operation like Page Rank,
+
+84
+00:05:53.005 --> 00:05:56.850
+that goes through multiple
+iterations until convergence, for
+
+85
+00:05:56.850 --> 00:06:00.070
+these graphs, the communication
+cost can become very high.
+
+86
+00:06:01.270 --> 00:06:05.540
+In the cluster graph shown here, every
+color represents a different machine.
+
+87
+00:06:06.780 --> 00:06:08.917
+Let's look at that red vertex.
+
+88
+00:06:08.917 --> 00:06:11.239
+What would happen if we
+split it like this instead?
+
+89
+00:06:13.515 --> 00:06:16.250
+The red node gets split.
+
+90
+00:06:16.250 --> 00:06:21.260
+And different vertices of different
+machines work with their own copy
+
+91
+00:06:21.260 --> 00:06:21.960
+of the red vertex.
+
+92
+00:06:23.480 --> 00:06:27.490
+In the diagram,
+the primary red vertex is marked zero and
+
+93
+00:06:27.490 --> 00:06:29.330
+copies are marked one through five.
+
+94
+00:06:30.970 --> 00:06:33.400
+Now the gather phase happens for
+each copy.
+
+95
+00:06:36.010 --> 00:06:39.590
+Followed by a second operation from
+the copies to the primary red vertex.
+
+96
+00:06:41.100 --> 00:06:45.000
+And this is followed by new user
+defined operation called merge
+
+97
+00:06:45.000 --> 00:06:48.488
+that combines the partial results from
+the copies to the primary vertex.
+
+98
+00:06:48.488 --> 00:06:53.290
+So for PageRank, the merge operation
+boils down to computing the total
+
+99
+00:06:53.290 --> 00:06:57.760
+summation of the partial summation
+of the edges computed at the copies.
+
+100
+00:06:57.760 --> 00:07:02.230
+Thus in this lesson,
+we have seen two of the most influential
+
+101
+00:07:02.230 --> 00:07:06.470
+paradigms of large scale graph
+computation when the number of nodes and
+
+102
+00:07:06.470 --> 00:07:09.400
+edges run into tens of millions and more.

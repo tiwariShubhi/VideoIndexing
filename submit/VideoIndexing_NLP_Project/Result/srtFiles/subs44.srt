@@ -1,0 +1,1813 @@
+
+1
+00:00:01.140 --> 00:00:04.910
+Next, we'll count the number of
+vertices and edges, define a min and
+
+2
+00:00:04.910 --> 00:00:10.140
+max function for Spark's reduce method,
+computer the min and max degrees,
+
+3
+00:00:10.140 --> 00:00:14.390
+and compute the histogram data
+of the degree of connectedness.
+
+4
+00:00:16.490 --> 00:00:19.320
+In this hands on,
+we will cover the degree distribution of
+
+5
+00:00:19.320 --> 00:00:22.810
+the metros graph from
+the first hands on exercise.
+
+6
+00:00:22.810 --> 00:00:27.110
+This will help you practice finding
+the degrees of connectedness in a graph.
+
+7
+00:00:27.110 --> 00:00:28.310
+These numbers will be used for
+
+8
+00:00:28.310 --> 00:00:31.780
+plotting the visualizations in
+the next hands on exercises.
+
+9
+00:00:34.330 --> 00:00:36.650
+The degree of a vertex is
+the number of edges or
+
+10
+00:00:36.650 --> 00:00:39.810
+connections the vertex has to
+other vertices in the graph.
+
+11
+00:00:40.880 --> 00:00:44.460
+In directed graphs,
+each vertex has an in degree,
+
+12
+00:00:44.460 --> 00:00:47.555
+the number of edges
+directed to the vertex.
+
+13
+00:00:47.555 --> 00:00:52.797
+In and out degree, the number of
+edges directed away from the vertex.
+
+14
+00:00:52.797 --> 00:00:55.580
+The metros graph is an example
+of a directed graph.
+
+15
+00:00:57.080 --> 00:01:01.650
+Each metropolis vertex has one
+outgoing edge to a country vertex.
+
+16
+00:01:02.700 --> 00:01:08.460
+Each country vertex has one or more
+incoming edges from metropolis vertices.
+
+17
+00:01:08.460 --> 00:01:09.725
+This will be a quiz question.
+
+18
+00:01:16.366 --> 00:01:20.976
+Starting again where we left off from
+the previous hands-on exercise, first,
+
+19
+00:01:20.976 --> 00:01:23.280
+ensure your Cloudera VM is started, and
+
+20
+00:01:23.280 --> 00:01:27.430
+that you downloaded the dataset
+examples of analytics.
+
+21
+00:01:27.430 --> 00:01:29.110
+The link is in the content for this week.
+
+22
+00:01:30.460 --> 00:01:34.662
+Use the numEdges attribute to print
+the number of edges in metrosGraph.
+
+23
+00:01:34.662 --> 00:01:37.385
+As you can see the result is 65,
+
+24
+00:01:37.385 --> 00:01:42.360
+which matches the number of
+lines in metro_country.csv.
+
+25
+00:01:42.360 --> 00:01:46.178
+Now use the numVertices
+attribute to print the number
+
+26
+00:01:46.178 --> 00:01:48.258
+of vertices in metrosGraph.
+
+27
+00:01:48.258 --> 00:01:53.344
+As you can see the result is 93,
+which matches the number of
+
+28
+00:01:53.344 --> 00:01:59.655
+lines in metro.csv65 plus the number
+of lines in country.csv, 28.
+
+29
+00:02:06.666 --> 00:02:11.061
+Define the max and the min reduce
+operation to compute the highest and
+
+30
+00:02:11.061 --> 00:02:12.586
+lowest degree vertex.
+
+31
+00:02:15.929 --> 00:02:20.725
+Let us find the vertex with
+the most outgoing edges or
+
+32
+00:02:20.725 --> 00:02:25.848
+the vertex with the largest
+out degree by passing the max
+
+33
+00:02:25.848 --> 00:02:32.065
+function to a reduced operation on
+the out degrees of metrosGraph.
+
+34
+00:02:33.190 --> 00:02:38.310
+The result in this case is vertex
+ID five with one outgoing edge.
+
+35
+00:02:38.310 --> 00:02:42.680
+The result could have been any metropolis
+because every metropolis in this graph
+
+36
+00:02:42.680 --> 00:02:45.600
+has one outgoing edge to its country.
+
+37
+00:02:45.600 --> 00:02:48.890
+Let us find the vertex with
+the most incoming edges, or
+
+38
+00:02:48.890 --> 00:02:51.620
+the vertex with the largest inDegree.
+
+39
+00:02:51.620 --> 00:02:54.620
+This is done the same way
+as the previous example,
+
+40
+00:02:54.620 --> 00:02:59.170
+except you'll run the reduce operation
+on the inDegrees of metrosGraph.
+
+41
+00:02:59.170 --> 00:03:04.350
+The result is VertexId 108
+with 14 incoming edges.
+
+42
+00:03:05.390 --> 00:03:11.640
+Apply a filter to the metrosGraph
+vertices to find out which vertex is 108.
+
+43
+00:03:11.640 --> 00:03:14.280
+The answer is the United States.
+
+44
+00:03:14.280 --> 00:03:20.860
+This means that the United States has
+14 metropolises in the metros.csvfile.
+
+45
+00:03:20.860 --> 00:03:25.500
+We can also compute how many vertices have
+one out going edge by applying a filter of
+
+46
+00:03:25.500 --> 00:03:28.530
+one to the outgoing degrees and
+counting the results.
+
+47
+00:03:29.550 --> 00:03:36.160
+The result is 65 because there are 65
+metropolises with one outgoing degree.
+
+48
+00:03:36.160 --> 00:03:38.520
+None of the countries have
+any outgoing degrees.
+
+49
+00:03:39.790 --> 00:03:42.850
+Let us ignore whether or
+not the edge is in or out, and
+
+50
+00:03:42.850 --> 00:03:45.850
+just find which vertex has the most edges.
+
+51
+00:03:45.850 --> 00:03:49.460
+Again, we will run the reduce
+operation with the max function.
+
+52
+00:03:49.460 --> 00:03:52.310
+But this time we will run it on
+metrosGraph's degrees attribute.
+
+53
+00:03:53.340 --> 00:03:56.960
+The result is 108 again
+with 14 connections.
+
+54
+00:03:56.960 --> 00:04:01.239
+This means that the United States is
+the most connected vertex in metrosGraph.
+
+55
+00:04:08.252 --> 00:04:11.910
+Finally, let us calculate
+the histogram data of the degrees for
+
+56
+00:04:11.910 --> 00:04:13.750
+the countries in metrosGraph.
+
+57
+00:04:14.880 --> 00:04:18.010
+First, create a map that
+only includes countries.
+
+58
+00:04:18.010 --> 00:04:22.640
+So create a filter to only include
+the vertices with the vertex ID that is
+
+59
+00:04:22.640 --> 00:04:24.815
+greater than or equal to 100.
+
+60
+00:04:24.815 --> 00:04:27.888
+Then you will group the map
+by the size of the degree and
+
+61
+00:04:27.888 --> 00:04:30.430
+sort the map from lowest
+to highest degree.
+
+62
+00:04:32.310 --> 00:04:36.620
+The output shows six pairs in an array.
+
+63
+00:04:36.620 --> 00:04:39.020
+The first number is the number of edges,
+and
+
+64
+00:04:39.020 --> 00:04:43.810
+the second number is the number of
+vertices that have that number of edges.
+
+65
+00:04:43.810 --> 00:04:48.462
+In other words, the result of
+the query shows that there are 18
+
+66
+00:04:48.462 --> 00:04:53.461
+countries with 1 metropolis,
+4 countries with 2 metropolises,
+
+67
+00:04:53.461 --> 00:04:58.805
+2 countries with 3 metropolises,
+2 countries with 5 metropolises,
+
+68
+00:04:58.805 --> 00:05:04.260
+1 country with 9 metropolises, and
+1 country with 14 metropolises.
+
+1
+00:00:00.520 --> 00:00:06.640
+Next, we'll import the GraphX libraries,
+import the Vertices, import the Edges,
+
+2
+00:00:06.640 --> 00:00:12.820
+create a Graph, and use Spark's filter
+method to return Vertices in the graph.
+
+3
+00:00:12.820 --> 00:00:15.670
+Hi, this is Cristine Kirkpatrick,
+division director for
+
+4
+00:00:15.670 --> 00:00:17.720
+Information Technology Systems and
+
+5
+00:00:17.720 --> 00:00:21.320
+Services at
+the San Diego Super Computer Center.
+
+6
+00:00:21.320 --> 00:00:23.810
+I'll guide you through
+the hands-on exercises.
+
+7
+00:00:23.810 --> 00:00:26.440
+I recommend you follow
+along with the video once.
+
+8
+00:00:26.440 --> 00:00:28.370
+Then, either using the video or
+
+9
+00:00:28.370 --> 00:00:32.360
+the hands-on reading, go through the
+hands-on exercise on your own computer.
+
+10
+00:00:33.460 --> 00:00:37.440
+This hands-on exercise will show you
+how to build a graph using GraphX,
+
+11
+00:00:37.440 --> 00:00:40.720
+Spark's API for graphs, and
+graph-parallel computation.
+
+12
+00:00:41.750 --> 00:00:44.720
+We'll start with importing the data and
+then build a simple graph.
+
+13
+00:00:45.890 --> 00:00:49.050
+Note that the first four hands on
+assignments are meant to be completed
+
+14
+00:00:49.050 --> 00:00:50.640
+sequentially.
+
+15
+00:00:50.640 --> 00:00:54.430
+That is, you will need to have your
+Cloudera VM running continuously.
+
+16
+00:00:54.430 --> 00:00:55.840
+If you must shut down your VM and
+
+17
+00:00:55.840 --> 00:01:00.460
+restart, you will need to run the commands
+from this first hands on assignment again.
+
+18
+00:01:01.470 --> 00:01:05.930
+Otherwise you may receive error messages
+because the data has not been imported.
+
+19
+00:01:05.930 --> 00:01:07.680
+The data references metro areas.
+
+20
+00:01:08.860 --> 00:01:13.190
+In an effort to disambiguate or
+distinguish between metropolitan areas and
+
+21
+00:01:13.190 --> 00:01:15.700
+an English word also used
+to refer to a train or
+
+22
+00:01:15.700 --> 00:01:19.240
+light rail, when we mean metro
+area we will say metropolis.
+
+23
+00:01:20.340 --> 00:01:23.070
+First, ensure your
+cloudera vm is started and
+
+24
+00:01:23.070 --> 00:01:26.780
+that you've downloaded the data set,
+examples of analytics.
+
+25
+00:01:26.780 --> 00:01:28.600
+The link is in the content for this week.
+
+26
+00:01:29.720 --> 00:01:32.780
+The download process might name
+the zip file something very long.
+
+27
+00:01:33.960 --> 00:01:39.170
+Copy the examples of analytics.zip
+file to the cloudera's home folder.
+
+28
+00:01:39.170 --> 00:01:41.300
+If the zip file is on the desktop,
+
+29
+00:01:41.300 --> 00:01:44.880
+simply drag it to the Cloudera's
+home folder on the desktop.
+
+30
+00:01:44.880 --> 00:01:47.820
+If the file is saved elsewhere,
+then you will need to navigate
+
+31
+00:01:47.820 --> 00:01:51.680
+to the folder where it is saved before
+dragging it to the Cloudera's home folder.
+
+32
+00:01:52.750 --> 00:01:57.490
+Open the terminal window by clicking the
+terminal icon at the top of the screen.
+
+33
+00:01:57.490 --> 00:02:01.860
+Use the unzip command to extract the zip
+file to the cloudera home directory.
+
+34
+00:02:01.860 --> 00:02:04.830
+You can copy and
+paste the name of the zip file.
+
+35
+00:02:04.830 --> 00:02:07.750
+Let it extract with the default name,
+ExamplesOfAnalytics.
+
+36
+00:02:08.960 --> 00:02:11.690
+Go into the ExamplesOfAnalytics
+directory and
+
+37
+00:02:11.690 --> 00:02:15.260
+list the contents of
+the EOA data directory.
+
+38
+00:02:15.260 --> 00:02:18.430
+You should see five .csv files and
+one .txt file.
+
+39
+00:02:19.720 --> 00:02:25.460
+In order to access the CSV and TXT files,
+we have to first copy the files to HDFS.
+
+40
+00:02:26.950 --> 00:02:32.500
+Rally HDFS foot command to copy
+the EOA data directory to HDFS
+
+41
+00:02:32.500 --> 00:02:35.990
+then less the contents of
+the EOA data directory on HDFS.
+
+42
+00:02:37.580 --> 00:02:42.140
+Start the spark shell and include the
+graph stream and breeze fizz libraries.
+
+43
+00:02:42.140 --> 00:02:45.030
+Don't worry about copying
+the full command from the video.
+
+44
+00:02:45.030 --> 00:02:48.526
+A text version will be included within
+the course reading that contains the full
+
+45
+00:02:48.526 --> 00:02:50.048
+command for you to copy and paste.
+
+46
+00:02:53.310 --> 00:02:57.083
+Import the log for j classes and
+suppress the notice in info messages.
+
+47
+00:03:03.571 --> 00:03:09.410
+Import sparks graphx and
+rdd classes along with scala source class.
+
+48
+00:03:09.410 --> 00:03:14.180
+The data set we are going to use in
+this hands on is from three files.
+
+49
+00:03:14.180 --> 00:03:18.860
+The metro.csv file and the country.csv
+file contain the vertices for
+
+50
+00:03:18.860 --> 00:03:22.700
+the graph and
+metro underscore country.csv.
+
+51
+00:03:22.700 --> 00:03:26.740
+contains the edges that make up the
+relationships between the metro areas and
+
+52
+00:03:26.740 --> 00:03:27.980
+the country they belong too.
+
+53
+00:03:29.010 --> 00:03:33.940
+Before importing any of the CSV files, we
+are going to list the first five lines of
+
+54
+00:03:33.940 --> 00:03:36.710
+each file to verify that
+they are indeed CSV files.
+
+55
+00:03:37.880 --> 00:03:44.540
+Notice that the metric.csv contains an ID,
+the metropolis name and the population.
+
+56
+00:03:44.540 --> 00:03:48.838
+The country.csv file contains
+only an ID and the country name.
+
+57
+00:03:48.838 --> 00:03:52.667
+The metro_country.csv file
+contains the metro ID and
+
+58
+00:03:52.667 --> 00:03:56.339
+the ID of the country that
+the metropolis belongs to.
+
+59
+00:04:02.179 --> 00:04:07.110
+Create a class called PlaceNode to store
+the information about the vertices.
+
+60
+00:04:07.110 --> 00:04:10.870
+Then extend the PlaceNode class
+with case classes specifically for
+
+61
+00:04:10.870 --> 00:04:12.920
+the metro's and the countries vertices.
+
+62
+00:04:13.920 --> 00:04:14.990
+Create attributes for
+
+63
+00:04:14.990 --> 00:04:19.900
+the metro class to store the name and
+the population from the CSV file.
+
+64
+00:04:19.900 --> 00:04:22.660
+The country class only needs
+an attribute to store the name.
+
+65
+00:04:23.930 --> 00:04:29.490
+To import the metro.csv file, create
+a spark resilient distributive data set or
+
+66
+00:04:29.490 --> 00:04:35.235
+rdd named metros made up of
+a vertex id in the metro class.
+
+67
+00:04:35.235 --> 00:04:38.310
+An rdd represents an immutable
+partition collection
+
+68
+00:04:38.310 --> 00:04:40.740
+of elements that can be
+operated on in parallel.
+
+69
+00:04:41.800 --> 00:04:44.630
+When the contents of
+the .csv files printed,
+
+70
+00:04:44.630 --> 00:04:47.900
+the line with the column names
+started with the symbol #.
+
+71
+00:04:47.900 --> 00:04:51.590
+So create a filter to ignore any
+line that starts with a # so
+
+72
+00:04:51.590 --> 00:04:54.080
+that the column names
+don't import into the RDD.
+
+73
+00:04:55.540 --> 00:04:59.870
+The .csv files being imported
+contain values separated by commas.
+
+74
+00:04:59.870 --> 00:05:03.770
+So you will need to split each line
+in the metro.csv file into rows,
+
+75
+00:05:03.770 --> 00:05:06.470
+by using a comma as a delimiter.
+
+76
+00:05:06.470 --> 00:05:08.970
+Map the first row to the vertex ID.
+
+77
+00:05:08.970 --> 00:05:11.610
+The second row is the metro
+name attribute, and
+
+78
+00:05:11.610 --> 00:05:13.630
+the third row is the population attribute.
+
+79
+00:05:14.700 --> 00:05:19.162
+You're going to import the country's .csv
+feed file the same way as the metro.csv
+
+80
+00:05:19.162 --> 00:05:20.080
+feed file.
+
+81
+00:05:20.080 --> 00:05:25.120
+However this time since the ids in both
+the metro.csv file and the country.csv
+
+82
+00:05:25.120 --> 00:05:30.350
+file start with one you will add 100
+to the vertex id of the countries.
+
+83
+00:05:30.350 --> 00:05:34.570
+So that the vertex ids are unique
+between both data sets.
+
+84
+00:05:34.570 --> 00:05:37.400
+If the ids are not unique
+that will prevent us from
+
+85
+00:05:37.400 --> 00:05:39.430
+creating an accurate graph.
+
+86
+00:05:39.430 --> 00:05:40.011
+This will be on the quiz.
+
+87
+00:05:46.001 --> 00:05:50.200
+Import the edges into
+an RDD named mclinks.
+
+88
+00:05:50.200 --> 00:05:53.550
+This is done the same way as
+the previous two examples.
+
+89
+00:05:53.550 --> 00:05:56.646
+Remember to add 100 to
+the countries vertex ID.
+
+90
+00:06:02.462 --> 00:06:07.142
+Concatenate the metros and countries
+vertices into a single variable and
+
+91
+00:06:07.142 --> 00:06:11.143
+use GraphX's graph function to
+create a graph of the metros and
+
+92
+00:06:11.143 --> 00:06:14.030
+countries vertices with
+the MC links edges.
+
+93
+00:06:15.140 --> 00:06:17.690
+Let us take a look at
+what is in the graph.
+
+94
+00:06:17.690 --> 00:06:20.879
+Use the vertices and edges attributes
+to print five vertices and
+
+95
+00:06:20.879 --> 00:06:22.599
+five edges from the metros graph.
+
+96
+00:06:28.613 --> 00:06:31.064
+Query the graph to find
+how the metropolises and
+
+97
+00:06:31.064 --> 00:06:33.340
+the countries are related.
+
+98
+00:06:33.340 --> 00:06:35.990
+Let us find which country Tokyo is in.
+
+99
+00:06:35.990 --> 00:06:38.850
+Tokyo has a vertex ID of 1.
+
+100
+00:06:38.850 --> 00:06:42.450
+Use RDD's filter method to filter
+all of the edges in metro's graph
+
+101
+00:06:42.450 --> 00:06:47.360
+that have a source for text ID of one and
+create a map of destination vertex ID's.
+
+102
+00:06:48.550 --> 00:06:51.420
+The result is 101 which is Japan.
+
+103
+00:06:51.420 --> 00:06:56.530
+You can verify this by looking at
+the metro.csv and country.csv files.
+
+104
+00:06:56.530 --> 00:07:01.470
+Remember, we added 100 to
+the IDs in country.csv.
+
+105
+00:07:01.470 --> 00:07:02.910
+Now, let us do the opposite and
+
+106
+00:07:02.910 --> 00:07:07.320
+find all of the metropolises that are in
+China which has a vertex ID of 103.
+
+107
+00:07:07.320 --> 00:07:11.880
+This time we're going to filter
+all of the edges in metro's graph
+
+108
+00:07:11.880 --> 00:07:17.530
+that have a vertex ID of 103 and
+create a map of all of the source IDs.
+
+109
+00:07:17.530 --> 00:07:21.480
+The result is 3,4, 7, 24, and 34.
+
+110
+00:07:21.480 --> 00:07:28.353
+You can look in metrostats.csv and verify
+that those metropolises are in China.
+
+1
+00:00:00.450 --> 00:00:05.380
+Next, we'll create a new dataset,
+join two datasets with JoinVertices,
+
+2
+00:00:05.380 --> 00:00:10.130
+join two datasets with outerJoinVertices,
+and create a new return type for
+
+3
+00:00:10.130 --> 00:00:11.238
+the joined vertices.
+
+4
+00:00:11.238 --> 00:00:13.310
+In this hands-on exercise,
+
+5
+00:00:13.310 --> 00:00:17.370
+we will create a new graph made
+up of five airline flights.
+
+6
+00:00:17.370 --> 00:00:19.720
+The vertices will represent the airports,
+
+7
+00:00:19.720 --> 00:00:23.690
+and the edges will represent
+the departures and the arrivals.
+
+8
+00:00:23.690 --> 00:00:27.180
+Once the graph has been created
+we will add a second dataset
+
+9
+00:00:27.180 --> 00:00:29.670
+with additional airport information and
+
+10
+00:00:29.670 --> 00:00:35.570
+practice using GraphX's join methods to
+create new graphs by joining the datasets.
+
+11
+00:00:35.570 --> 00:00:38.140
+We will start a new spark shell session,
+so
+
+12
+00:00:38.140 --> 00:00:40.460
+we will be opening a new terminal window.
+
+13
+00:00:41.530 --> 00:00:45.000
+Open the new terminal window by
+clicking the terminal icon at the top
+
+14
+00:00:45.000 --> 00:00:45.570
+of the screen.
+
+15
+00:00:47.060 --> 00:00:48.152
+Start the spark shell.
+
+16
+00:00:58.295 --> 00:01:02.955
+Import the log for j classes and
+suppress the notice and info messages.
+
+17
+00:01:04.105 --> 00:01:07.925
+Import sparks graphics and rdd classes.
+
+18
+00:01:07.925 --> 00:01:11.255
+Now we will create the vertices
+ourselves from a list.
+
+19
+00:01:11.255 --> 00:01:15.375
+The list will contain the vertex ID and
+the name of the airport.
+
+20
+00:01:15.375 --> 00:01:17.280
+Now we will create the edges.
+
+21
+00:01:17.280 --> 00:01:20.730
+The edges will represent a flight
+departing from one airport and
+
+22
+00:01:20.730 --> 00:01:22.150
+arriving at another.
+
+23
+00:01:22.150 --> 00:01:25.710
+We will set the edge property
+to a fake flight number.
+
+24
+00:01:25.710 --> 00:01:28.380
+Create the flights graph
+by joining the vertices and
+
+25
+00:01:28.380 --> 00:01:30.690
+the edges using graph
+flexes graph functions.
+
+26
+00:01:31.720 --> 00:01:34.050
+Let us explore the graph so far.
+
+27
+00:01:34.050 --> 00:01:38.430
+Look through each triplet in flights graph
+and print the contents of the graph.
+
+28
+00:01:38.430 --> 00:01:41.690
+We will specify which airport
+the flight departs from,
+
+29
+00:01:41.690 --> 00:01:44.980
+which airport the flight arrives at,
+and the flight number.
+
+30
+00:01:44.980 --> 00:01:47.710
+You'll just put all of
+the vertices in the graph.
+
+31
+00:01:47.710 --> 00:01:51.690
+Now we are willing to create an additional
+dataset to store additional information
+
+32
+00:01:51.690 --> 00:01:53.330
+about each airport.
+
+33
+00:01:53.330 --> 00:01:58.390
+First, we will create a case class called
+airport information with the city and
+
+34
+00:01:58.390 --> 00:02:00.380
+airport code properties.
+
+35
+00:02:00.380 --> 00:02:04.320
+Then we are going to create the airport
+information vertices from a list
+
+36
+00:02:04.320 --> 00:02:05.900
+as we did earlier.
+
+37
+00:02:05.900 --> 00:02:07.830
+We will make sure the vertex ID for
+
+38
+00:02:07.830 --> 00:02:13.930
+the airport information matches the vertex
+ID of the airport defined earlier.
+
+39
+00:02:13.930 --> 00:02:17.810
+Note, there does not have to be a one
+to one relationship between the airport
+
+40
+00:02:17.810 --> 00:02:20.960
+vertices and
+the airport information vertices.
+
+41
+00:02:20.960 --> 00:02:25.640
+Los Angeles International Airport is
+present in the airport vertices, but
+
+42
+00:02:25.640 --> 00:02:28.990
+it is missing from the airport
+information vertices.
+
+43
+00:02:28.990 --> 00:02:33.380
+The airport information vertices contains
+information about airports in London and
+
+44
+00:02:33.380 --> 00:02:34.370
+Hong Kong.
+
+45
+00:02:34.370 --> 00:02:37.984
+But we don't have any flights departing or
+arriving from those airports.
+
+46
+00:02:43.926 --> 00:02:46.540
+Let us complete our first join.
+
+47
+00:02:46.540 --> 00:02:51.050
+A mapping function has to be defined in
+order to join vertices with graphics join
+
+48
+00:02:51.050 --> 00:02:52.890
+vertices method.
+
+49
+00:02:52.890 --> 00:02:56.680
+We are going to define a map function that
+will join the name of the airport from
+
+50
+00:02:56.680 --> 00:03:01.580
+the airport vertices with the city name
+from the airport information vertices.
+
+51
+00:03:01.580 --> 00:03:05.460
+In order to create a new graph with
+the vertices that has the airport name
+
+52
+00:03:05.460 --> 00:03:07.240
+colon city name.
+
+53
+00:03:07.240 --> 00:03:08.957
+After the map function in defined,
+
+54
+00:03:08.957 --> 00:03:12.228
+then we will use the joined vertices
+method to create the new graph.
+
+55
+00:03:12.228 --> 00:03:17.770
+Vertices without a matching value in
+the RDD, retain their original value.
+
+56
+00:03:17.770 --> 00:03:20.540
+Now, print out the vertices
+of the new graph.
+
+57
+00:03:20.540 --> 00:03:23.814
+Notice all of the vertices contain
+the airport and city names,
+
+58
+00:03:23.814 --> 00:03:28.089
+except Los Angeles International Airport,
+which retained its original value.
+
+59
+00:03:33.291 --> 00:03:37.890
+Now we will join the vertices using
+GraphX's outerJoinVertices method.
+
+60
+00:03:38.890 --> 00:03:42.060
+OuterJoinVertices is
+similar to JoinVertices,
+
+61
+00:03:42.060 --> 00:03:46.080
+except that the user-defined map
+function is applied to all vertices and
+
+62
+00:03:46.080 --> 00:03:47.910
+it can change the vertex property type.
+
+63
+00:03:49.740 --> 00:03:53.580
+Here, we are using the OuterJoinVertices
+method to create a new graph where
+
+64
+00:03:53.580 --> 00:03:57.140
+the vertices contain a property
+with the name of the airport and
+
+65
+00:03:57.140 --> 00:04:00.830
+a property makeup of
+the airport information class.
+
+66
+00:04:00.830 --> 00:04:03.010
+Print the vertices once
+the new graph is made.
+
+67
+00:04:04.160 --> 00:04:08.200
+Notice that the type of the second
+vertex property is sum.
+
+68
+00:04:08.200 --> 00:04:11.250
+This is because
+Los Angeles International Airport
+
+69
+00:04:11.250 --> 00:04:14.970
+does not have a corresponding
+vertex in airport information.
+
+70
+00:04:14.970 --> 00:04:18.990
+Therefore GraphX assigned all of
+the properties the sum type so
+
+71
+00:04:18.990 --> 00:04:21.700
+that all of the vertex
+property types are the same.
+
+72
+00:04:22.960 --> 00:04:24.030
+We can use the get or
+
+73
+00:04:24.030 --> 00:04:28.400
+else method to assign a default
+value if one does not exist.
+
+74
+00:04:28.400 --> 00:04:31.240
+Now, let us rerun
+the outer join vertices but
+
+75
+00:04:31.240 --> 00:04:35.930
+this time use the get, get or
+else method to create an airport
+
+76
+00:04:35.930 --> 00:04:41.630
+information class with NA as the values
+for the city and the airport code.
+
+77
+00:04:41.630 --> 00:04:44.140
+Print the vertices once
+the new graph is made.
+
+78
+00:04:45.270 --> 00:04:50.196
+Now, the type of the second vertex
+property is airport information in
+
+79
+00:04:50.196 --> 00:04:54.957
+Los Angeles International Airport,
+airport information class,
+
+80
+00:04:54.957 --> 00:04:57.055
+has the properties NA and NA.
+
+81
+00:05:02.404 --> 00:05:07.295
+Finally, in this last exercise, we will
+create a new case class called Airport
+
+82
+00:05:07.295 --> 00:05:12.490
+that contains property for the name,
+city, and code of the airport.
+
+83
+00:05:12.490 --> 00:05:16.080
+First, we will define the new Airport
+case class with the name, city, and
+
+84
+00:05:16.080 --> 00:05:18.040
+code properties.
+
+85
+00:05:18.040 --> 00:05:21.580
+Then use the outer join vertices
+method to join the data sets, and
+
+86
+00:05:21.580 --> 00:05:22.350
+create the new graph.
+
+87
+00:05:23.380 --> 00:05:28.260
+Create a mapping so if the airport has an
+airport information vertex, the city and
+
+88
+00:05:28.260 --> 00:05:32.250
+code are taken from the instance
+of the airport information class.
+
+89
+00:05:32.250 --> 00:05:34.770
+Otherwise, only include the airport name.
+
+90
+00:05:35.920 --> 00:05:39.370
+Finally, print the vertices
+of the new graph.
+
+91
+00:05:39.370 --> 00:05:44.775
+The new graph has only one vertex property
+which is an instance of the airport class.
+
+92
+00:05:44.775 --> 00:05:48.330
+GraphX has lots of methods for
+joining graph datasets.
+
+93
+00:05:48.330 --> 00:05:52.721
+This hands on example only scratched
+the surface of GraphX's power.
+
+1
+00:00:01.400 --> 00:00:05.190
+Next, we'll create a new graph by
+adding the continents dataset,
+
+2
+00:00:05.190 --> 00:00:07.430
+import the GraphStream library,
+
+3
+00:00:07.430 --> 00:00:11.120
+import the countriesGraph into
+a GraphStream SingleGraph,
+
+4
+00:00:11.120 --> 00:00:14.680
+visualize the countriesGraph,
+and visualize the Facebook graph.
+
+5
+00:00:15.688 --> 00:00:19.510
+In this hands-on exercise we
+will use the GraphStream library
+
+6
+00:00:19.510 --> 00:00:21.510
+to visualize countries graph.
+
+7
+00:00:21.510 --> 00:00:25.180
+The metros graph that we have been
+working with in the previous exercises.
+
+8
+00:00:25.180 --> 00:00:27.990
+This time with the continent vertices and
+edges added.
+
+9
+00:00:30.120 --> 00:00:33.391
+Starting again where we left off
+from the previous hands-on exercise,
+
+10
+00:00:33.391 --> 00:00:36.970
+ensure your [INAUDIBLE] has started and
+that you've imported the data.
+
+11
+00:00:43.079 --> 00:00:46.307
+First, in order to make
+the graph more interesting,
+
+12
+00:00:46.307 --> 00:00:50.754
+we are going to import additional
+vertices from the continent.csv, and
+
+13
+00:00:50.754 --> 00:00:54.342
+additional edges from
+country_continent.csv to create
+
+14
+00:00:54.342 --> 00:00:58.520
+a relationship between the country and
+the continent it belongs to.
+
+15
+00:00:59.530 --> 00:01:02.442
+We will show the steps for
+importing the datasets, but
+
+16
+00:01:02.442 --> 00:01:04.351
+we do not cover the steps in detail.
+
+17
+00:01:04.351 --> 00:01:07.111
+If you aren't sure how to
+import a dataset, go back and
+
+18
+00:01:07.111 --> 00:01:09.700
+view the video called
+hands-on building a graph.
+
+19
+00:01:11.580 --> 00:01:16.250
+Now, we are going to concatenate the
+metros, countries, and continents vertices
+
+20
+00:01:16.250 --> 00:01:20.800
+into a single variable and concatenate
+the metros to countries edges, and
+
+21
+00:01:20.800 --> 00:01:25.010
+countries to continent edges
+into another single variable.
+
+22
+00:01:25.010 --> 00:01:28.271
+Finally, you will create a new
+graph called countriesGraph.
+
+23
+00:01:36.474 --> 00:01:39.540
+Now, import the GraphStream library.
+
+24
+00:01:39.540 --> 00:01:43.310
+We will not go over in detail how
+to use the GraphStream library.
+
+25
+00:01:43.310 --> 00:01:45.246
+You can review its documentation and
+
+26
+00:01:45.246 --> 00:01:48.314
+other online resources on your
+own if you are interested.
+
+27
+00:01:54.742 --> 00:01:58.548
+First, create a new instance of
+GraphStreams SingleGraph class,
+
+28
+00:01:58.548 --> 00:02:00.160
+using the countriesGraph.
+
+29
+00:02:08.574 --> 00:02:12.293
+Next, we will set some attributes for
+the graph we are going to visualize,
+
+30
+00:02:12.293 --> 00:02:14.395
+including setting a style for the graph.
+
+31
+00:02:14.395 --> 00:02:17.620
+GraphStream uses cascading style sheets or
+
+32
+00:02:17.620 --> 00:02:22.970
+CSS just like ordinary web pages,
+to control the appearance of the graph.
+
+33
+00:02:22.970 --> 00:02:27.300
+The zip file that you downloaded from
+Coursera contain the CSS file that we will
+
+34
+00:02:27.300 --> 00:02:28.557
+use in this hands-on exercise.
+
+35
+00:02:30.590 --> 00:02:34.330
+Now, load the countries graph
+vertices into the visualization
+
+36
+00:02:34.330 --> 00:02:37.610
+using GraphStreams add node method.
+
+37
+00:02:37.610 --> 00:02:41.910
+Notice that we are setting
+the style UI.class of each vertex
+
+38
+00:02:41.910 --> 00:02:46.410
+depending on if the vertex is an instance
+of the metro, country or continent class.
+
+39
+00:02:48.480 --> 00:02:53.470
+Add the edges of country's graph to
+the visualization using GraphStreams
+
+40
+00:02:53.470 --> 00:02:54.220
+add edge method.
+
+41
+00:02:55.960 --> 00:02:59.740
+Finally, call the display
+method to visualize the graph.
+
+42
+00:02:59.740 --> 00:03:01.090
+The graph will look similar to this.
+
+43
+00:03:02.090 --> 00:03:06.260
+The small blue dots are the metropolises,
+the medium sized red dots
+
+44
+00:03:06.260 --> 00:03:09.470
+are the countries, and
+the large green dots are the continents.
+
+45
+00:03:10.790 --> 00:03:13.590
+By looking at the clusters
+you can easily identify which
+
+46
+00:03:13.590 --> 00:03:16.790
+continent in the visualization
+is Antarctica.
+
+47
+00:03:16.790 --> 00:03:19.780
+It is the green dot that
+has no connections or
+
+48
+00:03:19.780 --> 00:03:22.500
+it is the least connected
+cluster in the network.
+
+49
+00:03:22.500 --> 00:03:24.950
+I hope your paying attention,
+because this will be on the quiz.
+
+50
+00:03:26.040 --> 00:03:30.205
+The large cluster of dots at the bottom is
+Asia because it has the most countries and
+
+51
+00:03:30.205 --> 00:03:32.380
+metropolises in the graph.
+
+52
+00:03:32.380 --> 00:03:36.360
+The Asia cluster is the most
+connected cluster in the network.
+
+53
+00:03:36.360 --> 00:03:38.980
+Can you identify which clusters
+are the other continents
+
+54
+00:03:38.980 --> 00:03:40.330
+by looking at the visualization?
+
+55
+00:03:46.796 --> 00:03:50.572
+Let's look at the visualization
+of a much larger dataset,
+
+56
+00:03:50.572 --> 00:03:53.904
+the Facebook dataset with 90,000 vertices.
+
+57
+00:03:53.904 --> 00:03:57.244
+You've seen these techniques
+before with the metro dataset, but
+
+58
+00:03:57.244 --> 00:04:00.230
+that graph had only around 90 vertices.
+
+59
+00:04:00.230 --> 00:04:04.736
+Because we want you to learn the concepts,
+not be bogged down with repetitive tasks,
+
+60
+00:04:04.736 --> 00:04:09.321
+we've supplied this Cloudera file in order
+to create the visualization of the graph.
+
+61
+00:04:09.321 --> 00:04:12.230
+All you need to do is open
+a new terminal window.
+
+62
+00:04:13.290 --> 00:04:16.122
+Go into the examples of
+analytic directory and
+
+63
+00:04:16.122 --> 00:04:19.546
+run the spark shell with
+the Facebook.Cloudera file.
+
+64
+00:04:19.546 --> 00:04:22.610
+Don't worry about copying
+the full command from the video.
+
+65
+00:04:22.610 --> 00:04:25.340
+A text version will be included
+within the course reading
+
+66
+00:04:25.340 --> 00:04:28.230
+that contains the full command for
+you to copy and paste.
+
+67
+00:04:33.442 --> 00:04:35.050
+What do you see?
+
+68
+00:04:35.050 --> 00:04:37.560
+My first reaction is that
+it looks like broccoli.
+
+69
+00:04:37.560 --> 00:04:41.560
+A green vegetable reviled by many
+American children, unjustly.
+
+70
+00:04:41.560 --> 00:04:44.790
+Social networks are made up of
+several clusters of communities or
+
+71
+00:04:44.790 --> 00:04:47.700
+pockets of people who interact densely
+
+72
+00:04:47.700 --> 00:04:51.570
+that are brought together by people who
+are members of multiple communities.
+
+73
+00:04:51.570 --> 00:04:54.380
+This interlinking of clusters
+gives the social network
+
+74
+00:04:54.380 --> 00:04:57.140
+a broccoli like shape when visualized.
+
+75
+00:04:57.140 --> 00:05:00.218
+I hope you heard the last thing I said
+because that will be on the quiz.
+
+1
+00:00:00.570 --> 00:00:04.940
+Next we'll import the BreezeViz library,
+define a function to calculate the degree
+
+2
+00:00:04.940 --> 00:00:09.810
+histogram, calculate the probability
+distribution for the degree histogram, and
+
+3
+00:00:09.810 --> 00:00:11.500
+graph the results.
+
+4
+00:00:11.500 --> 00:00:14.580
+In this hands on exercise,
+we will plot the degree histogram created
+
+5
+00:00:14.580 --> 00:00:18.130
+in the previous hands on exercise
+using the BreezeViz library.
+
+6
+00:00:24.258 --> 00:00:28.742
+Starting again where we left off
+in the previous hands-on exercise,
+
+7
+00:00:28.742 --> 00:00:30.880
+ensure your is started.
+
+8
+00:00:30.880 --> 00:00:33.170
+First we will import
+the BreezeViz library.
+
+9
+00:00:40.286 --> 00:00:44.958
+Next, we will define a function to
+calculate the degree histogram of Metro's
+
+10
+00:00:44.958 --> 00:00:47.480
+graph, so we can plot it with BreezeViz.
+
+11
+00:00:47.480 --> 00:00:51.310
+The definition of the degree histogram
+function is nearly identical
+
+12
+00:00:51.310 --> 00:00:54.680
+to the code from the previous
+exercise that helped us create.
+
+13
+00:00:54.680 --> 00:00:56.050
+The histogram data array.
+
+14
+00:01:02.003 --> 00:01:06.623
+Now we will calculate the probability
+distribution of the vertex degrees over
+
+15
+00:01:06.623 --> 00:01:11.453
+the whole graph by normalizing the vertex
+degree by the total number of vertices so
+
+16
+00:01:11.453 --> 00:01:14.930
+that the degree probabilities add up to 1.
+
+17
+00:01:14.930 --> 00:01:20.070
+The output of the first command is 28,
+the number of countries in country.csv.
+
+18
+00:01:20.070 --> 00:01:25.200
+The output of the second command
+is an array of numbered pairs.
+
+19
+00:01:25.200 --> 00:01:27.190
+The first number is the vertex degree,
+
+20
+00:01:27.190 --> 00:01:31.180
+and the second number is
+the probability distribution.
+
+21
+00:01:31.180 --> 00:01:34.590
+Notice that the sum of all
+the probability distributions equals one.
+
+22
+00:01:40.915 --> 00:01:44.950
+Now we will plot two graphs to
+visualize the degree histogram.
+
+23
+00:01:44.950 --> 00:01:48.340
+The first graph will be a line
+graph of the degree histogram and
+
+24
+00:01:48.340 --> 00:01:51.720
+the second will be
+the degree histogram itself.
+
+25
+00:01:51.720 --> 00:01:56.540
+We will not go over in detail how to use
+the BreezeViz library to create graphs.
+
+26
+00:01:56.540 --> 00:02:00.540
+The project is well documented and there
+are many resources online if you want to
+
+27
+00:02:00.540 --> 00:02:03.070
+explore the BreezeViz library on your own.
+
+28
+00:02:04.740 --> 00:02:08.970
+For the first graph we will define
+the X axis as the vertex degree and
+
+29
+00:02:08.970 --> 00:02:11.910
+the Y axis as the degree probability.
+
+30
+00:02:11.910 --> 00:02:14.520
+For the second graph we will
+just pass the metro graph
+
+31
+00:02:14.520 --> 00:02:17.360
+degree attribute to
+BreezeViz's histogram function
+
+32
+00:02:37.513 --> 00:02:41.200
+You should see two graphical
+representations of the data.
+
+33
+00:02:41.200 --> 00:02:43.260
+The bottom one is the histogram.
+
+34
+00:02:43.260 --> 00:02:46.880
+The top shows the degrees
+distribution plotting the histogram.
+
+35
+00:02:46.880 --> 00:02:51.287
+As we saw in the previous exercise's
+array most countries have one metropolis.

@@ -1,0 +1,321 @@
+WEBVTT
+
+1
+00:00:01.230 --> 00:00:06.440
+Listens on activity who will be performing
+queries assessing the Postgres database.
+
+2
+00:00:06.440 --> 00:00:10.650
+First, will open a terminal window and
+start the Postgres shell.
+
+3
+00:00:10.650 --> 00:00:14.430
+Next, we will look at table and
+column definitions in database.
+
+4
+00:00:15.670 --> 00:00:19.000
+Who’s in query the content
+of the buy-clicks table?
+
+5
+00:00:19.000 --> 00:00:24.170
+And see how to do this query, but filter
+specific rows and columns from the table.
+
+6
+00:00:24.170 --> 00:00:25.950
+Next, we will perform average and
+
+7
+00:00:25.950 --> 00:00:28.780
+some aggregation operations
+on a specific column.
+
+8
+00:00:30.040 --> 00:00:30.590
+And finally,
+
+9
+00:00:30.590 --> 00:00:33.960
+we will see how to combine two tables
+by joining them on a single column.
+
+10
+00:00:35.900 --> 00:00:37.130
+Let's begin.
+
+11
+00:00:37.130 --> 00:00:40.300
+First, click on the terminal
+icon at the top of the toolbar
+
+12
+00:00:40.300 --> 00:00:41.390
+to open a Terminal window.
+
+13
+00:00:43.930 --> 00:00:48.347
+Next, let's start the Postgres
+shell by running psql.
+
+14
+00:00:51.821 --> 00:00:56.410
+The Postgres shell allows us to
+enter queries and run commands for
+
+15
+00:00:56.410 --> 00:00:58.180
+the postgres database.
+
+16
+00:00:58.180 --> 00:01:02.028
+We can see what tables are in
+the database by running \d.
+
+17
+00:01:06.453 --> 00:01:11.350
+This says that there are three
+tables in the database,
+
+18
+00:01:11.350 --> 00:01:14.980
+adclicks, buyclicks and gameclicks.
+
+19
+00:01:14.980 --> 00:01:19.689
+We could use \d table name to see
+the definition of one of these tables.
+
+20
+00:01:20.830 --> 00:01:26.786
+Let's look at the definition of buyclicks,
+
+21
+00:01:26.786 --> 00:01:30.084
+we enter \d buyclicks.
+
+22
+00:01:32.395 --> 00:01:35.090
+This shows that there's seven
+columns in the database.
+
+23
+00:01:36.400 --> 00:01:41.490
+These are the column names and here's
+the data type for each of the columns.
+
+24
+00:01:44.240 --> 00:01:46.630
+Now let's look at the contents
+of the buyclicks table.
+
+25
+00:01:48.310 --> 00:01:56.718
+We can query the contents by running
+the command select * from buyclicks;.
+
+26
+00:01:56.718 --> 00:02:00.050
+The select says that
+we want to do a query.
+
+27
+00:02:00.050 --> 00:02:03.730
+The star means we want to
+retrieve all the columns and
+
+28
+00:02:03.730 --> 00:02:07.450
+from buyclicks says,
+which table to perform the query from.
+
+29
+00:02:08.660 --> 00:02:14.226
+And finally, all commands in Postgres
+shell need to end with a semicolon.
+
+30
+00:02:14.226 --> 00:02:19.299
+When we run this command we see
+the contents of the buyclicks table.
+
+31
+00:02:21.120 --> 00:02:24.760
+Column header is at the top and
+the contents are below.
+
+32
+00:02:26.530 --> 00:02:31.609
+Again hit Space to scroll through
+the contents, and hit Q when we're done.
+
+33
+00:02:34.341 --> 00:02:37.250
+Now, let's view the contents
+of only two of the columns.
+
+34
+00:02:38.370 --> 00:02:42.889
+Let's query only the price and
+the user id from the buyclicks table.
+
+35
+00:02:42.889 --> 00:02:49.180
+To do this we run select price,
+userid from buyclicks.
+
+36
+00:02:52.020 --> 00:02:55.245
+This command says,
+we want to query only the price and
+
+37
+00:02:55.245 --> 00:02:57.747
+userid columns from the buyclicks table
+
+38
+00:03:00.568 --> 00:03:05.166
+When we run this,
+We only get those two columns.
+
+39
+00:03:07.416 --> 00:03:10.892
+We can also perform queries that
+just select certain rows and
+
+40
+00:03:10.892 --> 00:03:12.400
+meet a certain criteria.
+
+41
+00:03:13.570 --> 00:03:14.630
+For example,
+
+42
+00:03:14.630 --> 00:03:19.744
+let's make a query that only shows
+the rows containing the price over $10.
+
+43
+00:03:20.770 --> 00:03:25.538
+You can do this by running select price,
+
+44
+00:03:25.538 --> 00:03:30.736
+userid from buyclicks where price > 10.
+
+45
+00:03:30.736 --> 00:03:35.159
+This query says, we only want to see
+the price and userid columns from
+
+46
+00:03:35.159 --> 00:03:40.762
+the buyclicks table where the value in the
+price column has a value greater than 10.
+
+47
+00:03:43.008 --> 00:03:49.437
+We run this, we see that we always
+have price values greater than 10.
+
+48
+00:03:51.588 --> 00:03:55.650
+The SQL language has a number of
+aggregation operations built into it.
+
+49
+00:03:57.250 --> 00:04:04.277
+For example,
+we can take the average price by running,
+
+50
+00:04:04.277 --> 00:04:09.219
+select avg(price) from buyclicks.
+
+51
+00:04:09.219 --> 00:04:17.925
+This command will show the average price
+from all the data in the buyclicks table.
+
+52
+00:04:17.925 --> 00:04:20.920
+Another aggregate operation is sum.
+
+53
+00:04:20.920 --> 00:04:25.531
+We can see the total price by running,
+
+54
+00:04:25.531 --> 00:04:30.297
+select sum(price) from buyclicks.
+
+55
+00:04:34.474 --> 00:04:39.547
+We can also combine two tables
+by joining on a common column.
+
+56
+00:04:39.547 --> 00:04:44.050
+If you recall we have three
+tables in our database adclicks,
+
+57
+00:04:44.050 --> 00:04:46.180
+buyclicks and gameclicks.
+
+58
+00:04:47.870 --> 00:04:55.594
+We look at the description the definition
+of adclicks buy running \d adclicks.
+
+59
+00:04:59.061 --> 00:05:04.810
+You can see that it also
+has a column called userid.
+
+60
+00:05:04.810 --> 00:05:09.030
+Let's combine buyclicks and
+adclicks based on this common column.
+
+61
+00:05:10.180 --> 00:05:16.252
+You can do this by running, select adid,
+
+62
+00:05:16.252 --> 00:05:23.019
+buyid, adclicks.userid from adclicks join
+
+63
+00:05:23.019 --> 00:05:31.011
+buyclicks on adclicks.userid
+= buyclicks.userid
+
+64
+00:05:33.704 --> 00:05:38.278
+This query says,
+we want to just see the adid, buyid and
+
+65
+00:05:38.278 --> 00:05:43.252
+userid columns, and
+we want to combine the adclicks table,
+
+66
+00:05:43.252 --> 00:05:47.729
+the buyclicks table, and
+we will be combining them on
+
+67
+00:05:47.729 --> 00:05:52.524
+the userid column and
+it's common in both those tables.
+
+68
+00:05:55.767 --> 00:05:58.809
+When we run it,
+you see just the three columns.
